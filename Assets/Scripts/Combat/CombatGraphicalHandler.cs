@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.UI;
-using Vanaring_DepaDemo.Assets.Scripts.Combat.CharacterSheet;
+using Vanaring_DepaDemo;
 
 namespace Vanaring_DepaDemo
 {

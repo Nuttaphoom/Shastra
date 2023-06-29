@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 
-namespace Vanaring_DepaDemo.Assets.Scripts.Combat.CharacterSheet
+namespace Vanaring_DepaDemo 
 {
     [CreateAssetMenu(fileName= "Combat Ability" , menuName = "ScriptableObject/Combat/CombatAbility" )]
     public class CombatActionSO : ScriptableObject

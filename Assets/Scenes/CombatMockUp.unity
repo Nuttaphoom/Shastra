@@ -605,7 +605,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _competators:
-  - {fileID: 2018466318}
+  - _side: 0
+    _entity: {fileID: 2018466318}
 --- !u!1 &750421053
 GameObject:
   m_ObjectHideFlags: 0
@@ -2102,6 +2103,7 @@ GameObject:
   - component: {fileID: 2018466316}
   - component: {fileID: 2018466318}
   - component: {fileID: 2018466317}
+  - component: {fileID: 2018466319}
   m_Layer: 0
   m_Name: ASha-Combat-Entity
   m_TagString: Untagged
@@ -2155,8 +2157,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0ab295370cca3f4ebfaa836aaef2aa1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _characterSheet: {fileID: 0}
+  _characterSheet: {fileID: 11400000, guid: 1d606afc8aa682a45835a3198b8fac31, type: 2}
   _spellAbilities: []
+--- !u!114 &2018466319
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2018466315}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87f48723ee0bde74a9e5479d441da328, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _testeFFECT: {fileID: 11400000, guid: 1b17b879d54beec459908e24458dc80c, type: 2}
 --- !u!1 &2106367342
 GameObject:
   m_ObjectHideFlags: 0

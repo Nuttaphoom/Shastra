@@ -5,8 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 
-namespace Vanaring_DepaDemo.Assets.Scripts.Combat.CharacterSheet
-{
+namespace Vanaring_DepaDemo
+{ 
     [CreateAssetMenu(fileName = "Spell Ability", menuName = "ScriptableObject/Combat/SpellAbility")]
     public class SpellAbilitySO : CombatActionSO
     {

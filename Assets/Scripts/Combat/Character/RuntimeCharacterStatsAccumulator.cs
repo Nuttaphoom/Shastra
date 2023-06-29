@@ -10,7 +10,7 @@ using UnityEngine;
 
  
 
-namespace Vanaring_DepaDemo.Assets.Scripts.Combat.CharacterSheet
+namespace Vanaring_DepaDemo 
 {
 
     public enum ECharacterStatType
@@ -20,15 +20,11 @@ namespace Vanaring_DepaDemo.Assets.Scripts.Combat.CharacterSheet
 
     public class RuntimeCharacterStatsAccumulator  
     {
-
-        [Header("Entity Base Stats")]
-        private CharacterSheetSO _entityStatsSO;
-
-        Dictionary<ECharacterStatType, RuntimeStat> _characterStats;
+        private Dictionary<ECharacterStatType, RuntimeStat> _characterStats = new Dictionary<ECharacterStatType, RuntimeStat>() ;
 
         private RuntimeMangicalEnergy _mangicalEnergy = new RuntimeMangicalEnergy();
 
-        public RuntimeCharacterStatsAccumulator()
+        public RuntimeCharacterStatsAccumulator(CharacterSheetSO _entityStatsSO)
         {
             _mangicalEnergy = new RuntimeMangicalEnergy(); 
 
