@@ -8,6 +8,9 @@ namespace Vanaring_DepaDemo
     [CreateAssetMenu( fileName = "CharacterSheet",menuName = "ScriptableObject/Combat/Character/CharacterSheet" )]
     public class CharacterSheetSO : ScriptableObject
     {
+        [SerializeField]
+        private string _characterName = "No name"; 
+
         [Header("Peak HP of this entity")]
         [SerializeField]
         private int _HP;
@@ -17,7 +20,7 @@ namespace Vanaring_DepaDemo
         private int _ATK;
 
         public int GetHP => _HP;
-
+        public string CharacterName => _characterName;
         public int GetATK => _ATK;
     }
 

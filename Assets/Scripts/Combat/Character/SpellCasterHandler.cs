@@ -10,14 +10,16 @@ using Vanaring_DepaDemo;
 /// Used in CombatEntity class to handle casting, modify energy, and stuffs about spell 
 /// </summary>
 /// 
+[Serializable]
 public class SpellCasterHandler
 {
     [SerializeField]
-    private List<SpellAbilitySO> _spellAbilities;
+    private List<SpellAbilitySO> _spellAbilities = new List<SpellAbilitySO>() ;
 
     public List<SpellAbilitySO> SpellAbilities => _spellAbilities;
 
     private RuntimeMangicalEnergy _mangicalEnergy; 
+    
     public SpellCasterHandler()
     {
         _mangicalEnergy = new RuntimeMangicalEnergy();

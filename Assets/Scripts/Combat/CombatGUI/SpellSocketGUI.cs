@@ -5,28 +5,42 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro; 
 
 namespace Vanaring_DepaDemo
 {
     
     public class SpellSocketGUI : MonoBehaviour
     {
-         
-        private SpellAbilitySO _spellSO; 
 
-        public void Init(SpellAbilitySO spell)
-        {
-            _spellSO = spell; 
+        [SerializeField]
+        private Button _actionButton ;
 
-            for (int i = 0; i < transform.childCount; i++)
-            {
-                if (transform.GetChild(i).TryGetComponent(out Button button))
-                {
-                    button.onClick.AddListener(() => { Debug.Log("hi!"); });
-                } 
-            }
+        [SerializeField]
+        private TextMeshProUGUI _textMeshProUGUI ;
 
+        [SerializeField]
+        private Image _skillImage;  
+
+        private SpellAbilitySO _spellSO;
+
+        private CombatEntity _caster; 
+
+        public void Init(SpellAbilitySO spell, CombatEntity combatEntity)
+        { 
+            _spellSO = spell;
+            this._caster = combatEntity;
+            _actionButton.onClick.AddListener(ChooseSpell ) ;
+            _textMeshProUGUI.text = spell.AbilityName.ToString() ; 
         }
+
+        private void ChooseSpell()
+        {
+            Debug.Log("choose spell");
+            StartCoroutine(TargetSelectionFlowControl.Instance.InitializeTargetSelectionScheme
+                (_caster, _spellSO.EffectFactory));
+        }
+    
 
         
     }

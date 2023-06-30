@@ -7,6 +7,7 @@ using System.Linq;
 using Unity.Burst.CompilerServices;
 using Unity.VisualScripting;
 using UnityEditor.Experimental.GraphView;
+using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -24,6 +25,8 @@ namespace Vanaring_DepaDemo
 
     public class CombatReferee : MonoBehaviour
     {
+        public static CombatReferee instance = null ; 
+
         [Serializable] 
         private struct CompetatorDetailStruct
         {
@@ -45,6 +48,8 @@ namespace Vanaring_DepaDemo
 
         private void Awake()
         {
+            instance = this; 
+
             //Initialize the competators 
             //like loaded data from character sheet 
             foreach (CompetatorDetailStruct competator in _competators)
@@ -126,6 +131,18 @@ namespace Vanaring_DepaDemo
         {
             return _competators.Where(v => v.Side == ESide).Select(v => v.Competator).ToList(); 
         }
+
+        public ECompetatorSide GetCharacterSide(CombatEntity entity)
+        {
+            foreach (var competator in _competators) {
+                if (competator.Competator == entity ) {
+                    return competator.Side; 
+                }
+            }
+
+            throw new Exception("Given entity is not registered in CombatReferee"); 
+        }
+        
         #endregion
 
     }

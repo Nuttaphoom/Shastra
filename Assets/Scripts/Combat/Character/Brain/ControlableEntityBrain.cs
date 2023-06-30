@@ -32,6 +32,12 @@ namespace Vanaring_DepaDemo
         }
 
         public override IEnumerator GetAction(  ) {
+
+            if (TargetSelectionFlowControl.Instance.PrepareAction() )
+            {
+                var latestAction = TargetSelectionFlowControl.Instance.GetLatestAction();
+                InitializeAction(latestAction.Item1, latestAction.Item2);
+            }
             yield return _action ;
 
             if (_action != null ) 

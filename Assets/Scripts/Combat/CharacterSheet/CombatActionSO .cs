@@ -17,6 +17,13 @@ namespace Vanaring_DepaDemo
         private string _desscription;  
         
         [SerializeField]
-        private RuntimeEffectFactorySO _effect ; 
+        private RuntimeEffectFactorySO _effect ;
+
+        #region GETTER
+        public string AbilityName => _abilityName; 
+        public string Desscription => _desscription;
+        public RuntimeEffectFactorySO EffectFactory => _effect;
+
+        #endregion
     }
 }

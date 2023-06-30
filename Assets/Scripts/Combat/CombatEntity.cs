@@ -14,8 +14,9 @@ namespace Vanaring_DepaDemo
         [SerializeField]
         private CharacterSheetSO _characterSheet;
 
-        private BaseEntityBrain _baseEntityBrain ;  
+        private BaseEntityBrain _baseEntityBrain ;
 
+        [SerializeField]
         private SpellCasterHandler _spellCaster ;  
         
         private RuntimeCharacterStatsAccumulator _runtimeCharacterStatsAccumulator ;
@@ -29,7 +30,6 @@ namespace Vanaring_DepaDemo
         public void Init()
         {
             _runtimeCharacterStatsAccumulator = new RuntimeCharacterStatsAccumulator(_characterSheet) ;
-
             if (! TryGetComponent(out _baseEntityBrain))
             {
                 throw new Exception("BaseEntityBrain haven't been assigned"); 

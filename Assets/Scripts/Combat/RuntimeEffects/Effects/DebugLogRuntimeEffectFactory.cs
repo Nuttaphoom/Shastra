@@ -26,7 +26,11 @@ namespace Vanaring_DepaDemo
 
         public override IEnumerator ExecuteRuntimeCoroutine(CombatEntity caster)
         {
-            Debug.Log("cast by " + caster.name);  
+            Debug.Log("cast by " + caster.name);
+            foreach (var target in _targets)
+            {
+                Debug.Log(target.name); 
+            }
             yield return null; 
         }
 

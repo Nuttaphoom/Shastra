@@ -10,9 +10,7 @@ namespace Vanaring_DepaDemo {
 
     [RequireComponent(typeof(CombatEntity))]
     public abstract class BaseEntityBrain : MonoBehaviour
-    {
-       
-
+    { 
         public abstract IEnumerator TurnEnter(); 
 
         public abstract IEnumerator TurnLeave();
