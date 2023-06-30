@@ -22,7 +22,7 @@ namespace Vanaring_DepaDemo
 
         #region GETTER
         public RuntimeCharacterStatsAccumulator StatsAccumulator => _runtimeCharacterStatsAccumulator ;
-        public SpellCasterHandler SpellCaster => _spellCaster ;  
+        public SpellCasterHandler SpellCaster => _spellCaster;
         #endregion
 
 
