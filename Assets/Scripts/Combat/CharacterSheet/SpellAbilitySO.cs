@@ -15,5 +15,8 @@ namespace Vanaring_DepaDemo
 
         [SerializeField]
         private int _energyRequire;
+
+        public RuntimeMangicalEnergy.EnergySide EnergySide { get { return _energySide; } }
+        public int EnergyRequire { get { return _energyRequire; } }
     }
 }

@@ -6,18 +6,33 @@ namespace Vanaring_DepaDemo
 {
     public class SpellWindowManager : MonoBehaviour
     {
-        private SpellSocketGUI _templatePrefab;  
+        [SerializeField]
+        private CombatEntity _combatEntity;  
+
+        [SerializeField]
+        private SpellSocketGUI _templatePrefab;
+
+        [SerializeField]
+        private Transform _socketVerticalLayout; 
 
         // Start is called before the first frame update
         void Start()
         {
-            Debug.Log("TODO : Spell Window manager need to properly init all of the spell socket that this character can perform");
+            foreach (SpellAbilitySO spellAbility in _combatEntity.SpellCaster.SpellAbilities)
+            {
+                SpellSocketGUI newSocket = Instantiate(_templatePrefab,_templatePrefab.transform.position, _templatePrefab.transform.rotation); 
+                newSocket.transform.parent = _socketVerticalLayout.transform;
+                newSocket.transform.localScale = _templatePrefab.transform.localScale;
+                newSocket.Init(spellAbility) ;
+            }
+
+            _templatePrefab.gameObject.SetActive(false);  
         }
 
         // Update is called once per frame
         void Update()
         {
-        
+            
         }
     }
 }

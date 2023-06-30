@@ -16,12 +16,14 @@ namespace Vanaring_DepaDemo
 
         private BaseEntityBrain _baseEntityBrain ;  
 
-        [SerializeField] 
-        private List<SpellAbilitySO> _spellAbilities ; 
+        private SpellCasterHandler _spellCaster ;  
         
         private RuntimeCharacterStatsAccumulator _runtimeCharacterStatsAccumulator ;
-        
-        public RuntimeCharacterStatsAccumulator StatsAccumulator => _runtimeCharacterStatsAccumulator ;  
+
+        #region GETTER
+        public RuntimeCharacterStatsAccumulator StatsAccumulator => _runtimeCharacterStatsAccumulator ;
+        public SpellCasterHandler SpellCaster => _spellCaster ;  
+        #endregion
 
 
         public void Init()
@@ -32,7 +34,6 @@ namespace Vanaring_DepaDemo
             {
                 throw new Exception("BaseEntityBrain haven't been assigned"); 
             }
-
         }
 
         public bool IsTurnEnd ()

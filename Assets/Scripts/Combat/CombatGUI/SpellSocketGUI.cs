@@ -11,9 +11,23 @@ namespace Vanaring_DepaDemo
     
     public class SpellSocketGUI : MonoBehaviour
     {
-        [Header("like now we manually assigned spell abitliy SO")]
-        [SerializeField] 
+         
         private SpellAbilitySO _spellSO; 
 
+        public void Init(SpellAbilitySO spell)
+        {
+            _spellSO = spell; 
+
+            for (int i = 0; i < transform.childCount; i++)
+            {
+                if (transform.GetChild(i).TryGetComponent(out Button button))
+                {
+                    button.onClick.AddListener(() => { Debug.Log("hi!"); });
+                } 
+            }
+
+        }
+
+        
     }
 }

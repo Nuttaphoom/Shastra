@@ -22,12 +22,10 @@ namespace Vanaring_DepaDemo
     {
         private Dictionary<ECharacterStatType, RuntimeStat> _characterStats = new Dictionary<ECharacterStatType, RuntimeStat>() ;
 
-        private RuntimeMangicalEnergy _mangicalEnergy = new RuntimeMangicalEnergy();
 
         public RuntimeCharacterStatsAccumulator(CharacterSheetSO _entityStatsSO)
         {
-            _mangicalEnergy = new RuntimeMangicalEnergy(); 
-
+ 
             _characterStats.Add(ECharacterStatType.HP, new RuntimeStat(_entityStatsSO.GetHP, _entityStatsSO.GetHP));
             _characterStats.Add(ECharacterStatType.ATK, new RuntimeStat(_entityStatsSO.GetATK, _entityStatsSO.GetATK)) ; 
         }
@@ -56,19 +54,7 @@ namespace Vanaring_DepaDemo
         }
         #endregion
 
-        #region Modify Energy  
-       
 
-        public int GetEnergyAmount(RuntimeMangicalEnergy.EnergySide side)
-        {
-            return _mangicalEnergy.GetEnergy(side) ;  
-        }
-
-        public void ModifyEnergy(int value, RuntimeMangicalEnergy.EnergySide side)
-        {
-            _mangicalEnergy.ModifyEnergy(value, side);
-        }
-        #endregion
 
         #region GETTER 
 
