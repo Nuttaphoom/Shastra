@@ -12,11 +12,6 @@ namespace Vanaring_DepaDemo
 
     public class ControlableEntityBrain : BaseEntityBrain
     {
-        private void Update()
-        {
-             
-        }
-
         [SerializeField]
         private RuntimeEffectFactorySO _testeFFECT;  
 
@@ -40,8 +35,12 @@ namespace Vanaring_DepaDemo
             }
             yield return _action ;
 
-            if (_action != null ) 
-                _action = null; 
+            if (_action != null)
+            {
+                _action = null;
+            }
+
+            yield return null; 
         }
 
         private void InitializeAction(RuntimeEffectFactorySO _factory, List<CombatEntity> _targets )

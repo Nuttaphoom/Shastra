@@ -21,11 +21,8 @@ namespace Vanaring_DepaDemo
     public class RuntimeCharacterStatsAccumulator  
     {
         private Dictionary<ECharacterStatType, RuntimeStat> _characterStats = new Dictionary<ECharacterStatType, RuntimeStat>() ;
-
-
         public RuntimeCharacterStatsAccumulator(CharacterSheetSO _entityStatsSO)
         {
- 
             _characterStats.Add(ECharacterStatType.HP, new RuntimeStat(_entityStatsSO.GetHP, _entityStatsSO.GetHP));
             _characterStats.Add(ECharacterStatType.ATK, new RuntimeStat(_entityStatsSO.GetATK, _entityStatsSO.GetATK)) ; 
         }

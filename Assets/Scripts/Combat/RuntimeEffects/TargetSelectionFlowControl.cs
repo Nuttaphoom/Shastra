@@ -5,7 +5,6 @@ using TMPro.EditorUtilities;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEditor.Build;
-using UnityEditor.Rendering.Universal;
 using UnityEngine;
 using Vanaring_DepaDemo;
  
@@ -39,7 +38,7 @@ public class TargetSelectionFlowControl : MonoBehaviour
         if (_activlySelecting) {
             if (Input.GetKeyDown(KeyCode.D))
             {
-                Debug.Log("D");
+                Debug.Log("D"); 
                 _currentSelectIndex = (_currentSelectIndex + 1) % _validTargets.Count;
             }
             else if (Input.GetKeyDown(KeyCode.A))
@@ -75,7 +74,7 @@ public class TargetSelectionFlowControl : MonoBehaviour
     {
         if (_activlySelecting)
             throw new Exception("Try to active selection scheme while it is already active");
-        
+
         _activlySelecting = true;
         _action = null; 
 

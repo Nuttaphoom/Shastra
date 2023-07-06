@@ -3,8 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using Unity.Burst.CompilerServices;
+using System.Linq; 
 using Unity.VisualScripting;
 using UnityEditor.Experimental.GraphView;
 using UnityEditorInternal;
@@ -21,7 +20,6 @@ namespace Vanaring_DepaDemo
         Hostile 
     }
 
-    
 
     public class CombatReferee : MonoBehaviour
     {
@@ -83,22 +81,31 @@ namespace Vanaring_DepaDemo
             //Starting new turn 
 
             CombatEntity _entity = _turnOrder.Dequeue();
-            Debug.Log("turn of " + _entity.name);
+            Debug.Log("new turn : " + _entity.name);
+
+            bool takenAction = false;
             yield return _entity.TurnEnter() ;
 
             //While loop will keep being called until the turn is end
-            while (! _entity.IsTurnEnd()) {
+            while (! takenAction) {
                 IEnumerator actionCoroutine = _entity.GetAction() ;  
                 while (actionCoroutine.MoveNext())
                 {
                     if (actionCoroutine.Current != null && actionCoroutine.Current.GetType().IsSubclassOf(typeof(RuntimeEffect)))
                     {
-                        yield return ((actionCoroutine.Current as DebugLogRuntimeEffect).ExecuteRuntimeCoroutine(_entity));
+                        //ExecuteAction 
+                        yield return ((actionCoroutine.Current as RuntimeEffect).ExecuteRuntimeCoroutine(_entity));
+                        //When the action is finish executed (like playing animation), end turn 
+                        takenAction = true; 
                     }  
                 }
                 //If GetAction is null, we wait for end of frame
                 yield return new WaitForEndOfFrame() ; 
             }
+
+        EndTurnFlag:
+
+            Debug.Log("turn end");
 
             yield return _entity.TurnLeave() ;
 

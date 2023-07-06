@@ -36,7 +36,6 @@ namespace Vanaring_DepaDemo
 
         private void ChooseSpell()
         {
-            Debug.Log("choose spell");
             StartCoroutine(TargetSelectionFlowControl.Instance.InitializeTargetSelectionScheme
                 (_caster, _spellSO.EffectFactory));
         }
