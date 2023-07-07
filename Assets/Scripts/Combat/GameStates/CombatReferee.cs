@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics.Tracing;
 using System.Linq; 
 using Unity.VisualScripting;
 using UnityEditor.Experimental.GraphView;
@@ -42,7 +43,10 @@ namespace Vanaring_DepaDemo
 
         List<CompetatorDetailStruct> _competators; 
 
-        private Queue<CombatEntity> _turnOrder = new Queue<CombatEntity>() ;
+        private ECompetatorSide _currentSide = ECompetatorSide.Ally;
+        private List<CombatEntity> _activeEntities = new List<CombatEntity> ();
+
+        private int _currentEntityIndex = 0; 
 
         private void Awake()
         {
@@ -53,16 +57,27 @@ namespace Vanaring_DepaDemo
             foreach (CompetatorDetailStruct competator in _competators)
                  competator.Competator.Init();
             
-
             StartCoroutine(CustomTick()) ;
+        }
 
+        private void Update()
+        {
+            //TODO : Centralize the input 
+            if (Input.GetKeyDown(KeyCode.D))
+            {
+                StartCoroutine(ChangeActiveEntityIndex(-1, true, false) ) ;
+            }
+            else if (Input.GetKeyDown(KeyCode.A))
+            {
+                StartCoroutine(ChangeActiveEntityIndex(-1, false, true));
+            }
         }
 
         private IEnumerator CustomTick()
         {
             while (!IsCombatEnded())
             {
-                if (_turnOrder.Count <= 0)
+                if (_activeEntities.Count <= 0)
                 {
                     SetupNewRound();
                 }                
@@ -72,23 +87,26 @@ namespace Vanaring_DepaDemo
         }
         private void SetupNewRound()
         {
-            ConstructTurnQueue(); 
+            _currentSide = (ECompetatorSide)(((int)_currentSide + 1) % 2);
+            _activeEntities = GetCompetatorsBySide(_currentSide);
         }
 
         #region TurnModifer 
         private IEnumerator AdvanceTurn()
         {
             //Starting new turn 
-
-            CombatEntity _entity = _turnOrder.Dequeue();
-            Debug.Log("new turn : " + _entity.name);
-
-            bool takenAction = false;
-            yield return _entity.TurnEnter() ;
+            Debug.Log("START NET TURN IN " + _currentSide);
+            //Call Enter Turn of the entity, this included running status effect 
+            foreach (CombatEntity entity in _activeEntities)
+            {
+                yield return entity.TurnEnter();
+            }
 
             //While loop will keep being called until the turn is end
-            while (! takenAction) {
-                IEnumerator actionCoroutine = _entity.GetAction() ;  
+            while (_activeEntities.Count > 0) {
+                CombatEntity _entity = _activeEntities[_currentEntityIndex] ;
+                IEnumerator actionCoroutine = _entity.GetAction() ;
+
                 while (actionCoroutine.MoveNext())
                 {
                     if (actionCoroutine.Current != null && actionCoroutine.Current.GetType().IsSubclassOf(typeof(RuntimeEffect)))
@@ -96,33 +114,29 @@ namespace Vanaring_DepaDemo
                         //ExecuteAction 
                         yield return ((actionCoroutine.Current as RuntimeEffect).ExecuteRuntimeCoroutine(_entity));
                         //When the action is finish executed (like playing animation), end turn 
-                        takenAction = true; 
-                    }  
+
+                        if (_activeEntities.Count > 1)
+                            yield return SwitchControl(_currentEntityIndex, (_currentEntityIndex + 1) % _activeEntities.Count);
+                        else
+                            yield return SwitchControl(_currentEntityIndex, _currentEntityIndex) ;
+
+                        _activeEntities.RemoveAt(_currentEntityIndex);
+                    }
+                    else
+                        yield return actionCoroutine.Current;  
                 }
                 //If GetAction is null, we wait for end of frame
                 yield return new WaitForEndOfFrame() ; 
             }
 
-        EndTurnFlag:
-
             Debug.Log("turn end");
 
-            yield return _entity.TurnLeave() ;
-
-
-            //Endding this turn 
-        }
-
-        private void ConstructTurnQueue()
-        {
-            //TODO : Create solid algorithm to dertermine turn order 
-            _turnOrder.Clear();
-            for (int i =0;  i < _competators.Count; i++)
+            foreach (CombatEntity entity in _activeEntities)
             {
-                _turnOrder.Enqueue(_competators[i].Competator) ; 
+                yield return entity.TurnLeave() ;
             }
 
-
+            //Endding this turn 
         }
 
         #endregion
@@ -130,7 +144,7 @@ namespace Vanaring_DepaDemo
         #region GETTER 
         public bool IsCombatEnded()
         {
-            //TODO - Determine how the turn should end  
+            //TODO - Determine how the combat should end  
             return false; 
         }
 
@@ -148,6 +162,42 @@ namespace Vanaring_DepaDemo
             }
 
             throw new Exception("Given entity is not registered in CombatReferee"); 
+        }
+        
+
+        public IEnumerator SwitchControl(int prev, int next)
+        {
+            yield return _activeEntities[prev].LeaveControl();
+            if (prev != next) 
+                yield return _activeEntities[next].TakeControl();
+        }
+        public IEnumerator ChangeActiveEntityIndex(int index = -1, bool increase = false, bool decrease = false)
+        {
+            if (_activeEntities.Count > 0)
+            {
+                int temp = _currentEntityIndex ;
+                if (index != -1)
+                {
+                    _currentEntityIndex = index;
+                }
+                else
+                {
+                    if (increase)
+                        _currentEntityIndex = (_currentEntityIndex + 1) % _activeEntities.Count;
+                    else if (decrease)
+                           _currentEntityIndex = _currentEntityIndex == 0 ? (_activeEntities.Count -1) : (_currentEntityIndex - 1) ;
+                }
+
+                if (temp != _currentEntityIndex )
+                {
+                    Debug.Log("change from " + temp + " to " + _currentEntityIndex);
+                    yield return SwitchControl(temp,_currentEntityIndex); 
+                }
+            }else
+            {
+                _currentEntityIndex = 0;
+            }
+
         }
         
         #endregion

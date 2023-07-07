@@ -10,20 +10,24 @@ using UnityEngine;
 namespace Vanaring_DepaDemo
 {
 
-    public class ControlableEntityBrain : BaseEntityBrain
+    public class ControlableEntityBrain : BaseEntityBrain 
     {
-        [SerializeField]
-        private RuntimeEffectFactorySO _testeFFECT;  
 
-        RuntimeEffect _action;  
+        [SerializeField]
+        private CombatGraphicalHandler _combatGraphicalHandler;
+
+        RuntimeEffect _action;
+
+        #region Turn Callback Methods 
         public override IEnumerator TurnEnter()
         {
-            yield return null; 
+
+            yield return TakeControl();   
         }
 
         public override IEnumerator TurnLeave()
         {
-            yield return null; 
+            yield return TakeControlLeave() ; 
         }
 
         public override IEnumerator GetAction(  ) {
@@ -42,6 +46,7 @@ namespace Vanaring_DepaDemo
 
             yield return null; 
         }
+        #endregion
 
         private void InitializeAction(RuntimeEffectFactorySO _factory, List<CombatEntity> _targets )
         {
@@ -54,6 +59,22 @@ namespace Vanaring_DepaDemo
                     _action = (RuntimeEffect)coroutine.Current;
                 } 
             }
-        } 
+        }
+
+        public override IEnumerator TakeControl()
+        {
+            if (_combatGraphicalHandler == null)
+                _combatGraphicalHandler = GetComponent<CombatGraphicalHandler>();
+
+            _combatGraphicalHandler.EnableGraphicalElements();
+
+            yield return null;
+        }
+
+        public override IEnumerator TakeControlLeave()
+        {
+            _combatGraphicalHandler.DisableGraphicalElements();
+            yield return null;
+        }
     }
 }

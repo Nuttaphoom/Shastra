@@ -8,7 +8,7 @@ using static UnityEngine.GraphicsBuffer;
 namespace Vanaring_DepaDemo
 {
     [RequireComponent(typeof(BaseEntityBrain))]
-    public class CombatEntity : MonoBehaviour, IStatusEffectable
+    public class CombatEntity : MonoBehaviour, IStatusEffectable, ITurnState
     {
         [Header("Right now we manually assign CharacterSheet, TO DO : Make it loaded from the main database")]
         [SerializeField]
@@ -57,13 +57,16 @@ namespace Vanaring_DepaDemo
 
             yield return _statusEffectHandler.ExecuteStatusRuntimeEffectCoroutine();
 
-            yield return _baseEntityBrain.TurnEnter() ; 
+            yield return _baseEntityBrain.TurnEnter(); 
+ 
         }
 
         public  IEnumerator TurnLeave()
         {
             if (_baseEntityBrain == null)
                 throw new Exception("Base Entity Brain of " + gameObject.name + " hasn't been assgined");
+
+            
 
             yield return _baseEntityBrain.TurnLeave();
         }
@@ -74,6 +77,7 @@ namespace Vanaring_DepaDemo
                 throw new Exception("Base Entity Brain of " + gameObject.name + " hasn't been assgined");
 
             IEnumerator coroutine = (_baseEntityBrain.GetAction());
+
             while (coroutine.MoveNext())
             {
                 //No need to return null 
@@ -82,8 +86,21 @@ namespace Vanaring_DepaDemo
                     //Need to cast to RuntimeEffect before returning            
                     yield return (RuntimeEffect)coroutine.Current;
                 }
+                else 
+                    yield return coroutine.Current ;
             }
         }
+
+        public IEnumerator TakeControl()
+        {
+            yield return _baseEntityBrain.TakeControl(); 
+        }
+
+        public IEnumerator LeaveControl()
+        {
+            yield return _baseEntityBrain.TakeControlLeave(); 
+        }
+
         #endregion
     }
 }
