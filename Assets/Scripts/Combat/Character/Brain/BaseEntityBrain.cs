@@ -11,9 +11,9 @@ namespace Vanaring_DepaDemo {
     [RequireComponent(typeof(CombatEntity))]
     public abstract class BaseEntityBrain : MonoBehaviour, ITurnState
     { 
-        CombatEntity _combateEntity;
+        protected CombatEntity _combateEntity;
         
-        private void Awake()
+        protected virtual void Awake()
         {
             _combateEntity = GetComponent<CombatEntity>() ; 
         }

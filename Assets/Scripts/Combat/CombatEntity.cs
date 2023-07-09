@@ -8,7 +8,7 @@ using static UnityEngine.GraphicsBuffer;
 namespace Vanaring_DepaDemo
 {
     [RequireComponent(typeof(BaseEntityBrain))]
-    public class CombatEntity : MonoBehaviour, IStatusEffectable, ITurnState
+    public class CombatEntity : MonoBehaviour, IStatusEffectable, ITurnState, IDamagable, IAttackter
     {
         [Header("Right now we manually assign CharacterSheet, TO DO : Make it loaded from the main database")]
         [SerializeField]
@@ -19,19 +19,9 @@ namespace Vanaring_DepaDemo
         [SerializeField]
         private SpellCasterHandler _spellCaster ;
 
-        private StatusEffectHandler _statusEffectHandler;  
+        private StatusEffectHandler _statusEffectHandler ;  
         
         private RuntimeCharacterStatsAccumulator _runtimeCharacterStatsAccumulator ;
-
-        #region GETTER
-        public RuntimeCharacterStatsAccumulator StatsAccumulator => _runtimeCharacterStatsAccumulator ;
-        public SpellCasterHandler SpellCaster => _spellCaster;
-        public StatusEffectHandler GetStatusEffectHandler()
-        {
-            return _statusEffectHandler; 
-        }
-        #endregion
-
 
         public void Init()
         {
@@ -44,8 +34,6 @@ namespace Vanaring_DepaDemo
             }
         }
 
-      
-
     #region Turn Handler Methods 
         public IEnumerator TurnEnter()
         {
@@ -55,10 +43,13 @@ namespace Vanaring_DepaDemo
             if (_statusEffectHandler == null)
                 throw new Exception("Status Effect Handler hasn't never been init");
 
-            yield return _statusEffectHandler.ExecuteStatusRuntimeEffectCoroutine();
+
+
+            
+            yield return (_statusEffectHandler.ExecuteStatusRuntimeEffectCoroutine()) ;
+
 
             yield return _baseEntityBrain.TurnEnter(); 
- 
         }
 
         public  IEnumerator TurnLeave()
@@ -66,8 +57,8 @@ namespace Vanaring_DepaDemo
             if (_baseEntityBrain == null)
                 throw new Exception("Base Entity Brain of " + gameObject.name + " hasn't been assgined");
 
-            
-
+            yield return _runtimeCharacterStatsAccumulator.ResetTemporaryIncreasedValue(); 
+           
             yield return _baseEntityBrain.TurnLeave();
         }
 
@@ -101,6 +92,54 @@ namespace Vanaring_DepaDemo
             yield return _baseEntityBrain.TakeControlLeave(); 
         }
 
+        public bool ReadyForControl()
+        {
+            return ! _runtimeCharacterStatsAccumulator.IsStunt();
+        }
+
+        public StatusEffectHandler GetStatusEffectHandler()
+        {
+            return _statusEffectHandler ;
+        }
         #endregion
+
+    #region GETTER
+        public RuntimeCharacterStatsAccumulator StatsAccumulator => _runtimeCharacterStatsAccumulator;
+        public SpellCasterHandler SpellCaster => _spellCaster;
+
+        #endregion
+
+    #region InterfaceFunction 
+
+    public void LogicHurt(int inputdmg)
+    {
+        float trueDmg = inputdmg;
+
+            //Do some math here
+            trueDmg =  -trueDmg;
+
+       _runtimeCharacterStatsAccumulator.ModifyHPStat(trueDmg);
+
+            Debug.Log(gameObject.name + "Remaining HP : " + _runtimeCharacterStatsAccumulator.GetHPAmount()); 
+    }
+
+    //Receive animation info and play it accordingly 
+    public IEnumerator Attack(List<CombatEntity> targets,float multiplier ,object animationinfo)
+    {
+        //Prepare for status effect  
+        yield return _statusEffectHandler.ExecuteAttackStatusRuntimeEffectCoroutine(); 
+
+        //1.) Do apply dmg 
+        int inputDmg = (int) (multiplier * StatsAccumulator.GetATKAmount()) ;  
+        foreach (CombatEntity target in targets) {
+                target.LogicHurt(inputDmg);  
+        }
+
+            //2.) play animation
+
+            //3.) visually update the remaining HP, or make it dead it nessesary 
+         
+    }
+    #endregion
     }
 }

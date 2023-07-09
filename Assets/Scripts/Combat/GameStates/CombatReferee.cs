@@ -43,7 +43,7 @@ namespace Vanaring_DepaDemo
 
         List<CompetatorDetailStruct> _competators; 
 
-        private ECompetatorSide _currentSide = ECompetatorSide.Ally;
+        private ECompetatorSide _currentSide = ECompetatorSide.Hostile ; // Assign this to the opposite of the actual turn we want to start with 
         private List<CombatEntity> _activeEntities = new List<CombatEntity> ();
 
         private int _currentEntityIndex = 0; 
@@ -87,24 +87,52 @@ namespace Vanaring_DepaDemo
         }
         private void SetupNewRound()
         {
-            _currentSide = (ECompetatorSide)(((int)_currentSide + 1) % 2);
-            _activeEntities = GetCompetatorsBySide(_currentSide);
+            _currentSide = (ECompetatorSide)(((int)_currentSide + 1) % 2)   ;
+            _activeEntities = GetCompetatorsBySide(_currentSide)            ;
         }
 
         #region TurnModifer 
         private IEnumerator AdvanceTurn()
         {
             //Starting new turn 
-            Debug.Log("START NET TURN IN " + _currentSide);
+            Debug.Log("START TURN IN " + _currentSide);
             //Call Enter Turn of the entity, this included running status effect 
             foreach (CombatEntity entity in _activeEntities)
             {
-                yield return entity.TurnEnter();
+                IEnumerator coroutine =  entity.TurnEnter() ; 
+               while (coroutine.MoveNext())
+                {
+                    yield return coroutine.Current; 
+                }
             }
 
+            List<int> temp = new List<int>();
+            //Remove control for character that is not ready 
+            for (int i = 0; i < _activeEntities.Count; i++)
+            {
+                if (!_activeEntities[i].ReadyForControl())
+                {
+                    Debug.Log(_activeEntities[i].name + "is not ready for control");
+                    temp.Add(i); 
+                   // _activeEntities.RemoveAt(i);
+                     
+                }
+            }
+
+            for (int i = temp.Count - 1; i >= 0; i--)
+            {
+                _activeEntities.RemoveAt(temp[i]); 
+            }
+
+            if (_activeEntities.Count > 0)
+            {
+                _currentEntityIndex = 0;
+                yield return _activeEntities[_currentEntityIndex].TakeControl();
+            }
             //While loop will keep being called until the turn is end
             while (_activeEntities.Count > 0) {
                 CombatEntity _entity = _activeEntities[_currentEntityIndex] ;
+
                 IEnumerator actionCoroutine = _entity.GetAction() ;
 
                 while (actionCoroutine.MoveNext())
@@ -129,7 +157,6 @@ namespace Vanaring_DepaDemo
                 yield return new WaitForEndOfFrame() ; 
             }
 
-            Debug.Log("turn end");
 
             foreach (CombatEntity entity in _activeEntities)
             {
@@ -190,7 +217,6 @@ namespace Vanaring_DepaDemo
 
                 if (temp != _currentEntityIndex )
                 {
-                    Debug.Log("change from " + temp + " to " + _currentEntityIndex);
                     yield return SwitchControl(temp,_currentEntityIndex); 
                 }
             }else

@@ -36,14 +36,14 @@ public class TargetSelectionFlowControl : MonoBehaviour
         //maybe use IInputSomething to settle down this behavior
 
         if (_activlySelecting) {
-            if (Input.GetKeyDown(KeyCode.D))
+            if (Input.GetKeyDown(KeyCode.W))
             {
-                Debug.Log("D"); 
+                Debug.Log("W"); 
                 _currentSelectIndex = (_currentSelectIndex + 1) % _validTargets.Count;
             }
-            else if (Input.GetKeyDown(KeyCode.A))
+            else if (Input.GetKeyDown(KeyCode.S))
             {
-                Debug.Log("A");
+                Debug.Log("S");
                 _currentSelectIndex = (_currentSelectIndex - 1) < 0 ? _validTargets.Count - 1 : (_currentSelectIndex - 1);
             }
             else if (Input.GetKeyDown(KeyCode.Space))
@@ -70,7 +70,7 @@ public class TargetSelectionFlowControl : MonoBehaviour
         return _activlySelecting && _action != null ; 
     }
     
-    public  IEnumerator InitializeTargetSelectionScheme(CombatEntity caster, RuntimeEffectFactorySO action)
+    public  IEnumerator InitializeTargetSelectionScheme(CombatEntity caster, RuntimeEffectFactorySO action, bool randomTarget = false)
     {
         if (_activlySelecting)
             throw new Exception("Try to active selection scheme while it is already active");
@@ -83,7 +83,17 @@ public class TargetSelectionFlowControl : MonoBehaviour
 
         while (_selectedTarget.Count < action.TargetSelect.MaxTarget )
         {
-            
+            if (randomTarget)
+            {
+                _currentSelectIndex = UnityEngine.Random.Range(0, _validTargets.Count);
+                Debug.Log("random to " + _currentSelectIndex );
+                _selectedTarget.Add(_validTargets[_currentSelectIndex]);
+                Debug.Log("select " + _validTargets[_currentSelectIndex]);
+                _validTargets.RemoveAt(_currentSelectIndex); 
+                
+                continue ;
+            }
+
             yield return new WaitForEndOfFrame();
         }
 
@@ -92,11 +102,12 @@ public class TargetSelectionFlowControl : MonoBehaviour
 
   
 
-        yield return null;  
+        yield return null ;  
     }
     
     private void AssignPossibleTargets(CombatEntity caster, RuntimeEffectFactorySO action)
     {
+
         ECompetatorSide eCompetatorSide = CombatReferee.instance.GetCharacterSide(caster);
 
         if (action.TargetSelect.TargetOppose)

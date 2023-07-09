@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -46,11 +47,23 @@ namespace Vanaring_DepaDemo
         }
 
         //value can be negative 
-        public void ModifyValue(int value)
+        public void ModifyValue(int value, bool temp = true, bool peakUpdate = false )
         {
-            _increasedValue += value;
-            if (_increasedValue + _defaultValue > _peakValue)
-                _increasedValue = _peakValue - _defaultValue;
+            if (temp)
+            {
+                _increasedValue += value;
+                if (_increasedValue + _defaultValue > _peakValue)
+                    _increasedValue = _peakValue - _defaultValue;
+                if (_increasedValue < 0)
+                    _increasedValue = 0;
+            }
+            else
+            {
+                _defaultValue += value ;
+                if (peakUpdate)
+                    _peakValue += value; 
+            }
+               
         }
 
         public void ModifyPeakValue(int value)

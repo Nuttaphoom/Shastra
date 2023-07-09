@@ -21,8 +21,7 @@ namespace Vanaring_DepaDemo
         #region Turn Callback Methods 
         public override IEnumerator TurnEnter()
         {
-
-            yield return TakeControl();   
+            yield return null;
         }
 
         public override IEnumerator TurnLeave()

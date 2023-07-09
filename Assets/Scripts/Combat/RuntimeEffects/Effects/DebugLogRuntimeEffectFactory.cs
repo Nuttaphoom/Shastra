@@ -25,8 +25,6 @@ namespace Vanaring_DepaDemo
 
     public  class DebugLogRuntimeEffect : RuntimeEffect 
     {
-        
-
         public override IEnumerator ExecuteRuntimeCoroutine(CombatEntity caster)
         {
             Debug.Log("cast by " + caster.name);
