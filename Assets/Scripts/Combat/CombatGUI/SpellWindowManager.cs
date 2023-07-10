@@ -16,16 +16,16 @@ namespace Vanaring_DepaDemo
         private Transform _socketVerticalLayout; 
 
         // Start is called before the first frame update
-        void Start()
+        void Awake()
         {
             foreach (SpellAbilitySO spellAbility in _combatEntity.SpellCaster.SpellAbilities)
             {
                 SpellSocketGUI newSocket = Instantiate(_templatePrefab,_templatePrefab.transform.position, _templatePrefab.transform.rotation); 
                 newSocket.transform.parent = _socketVerticalLayout.transform;
                 newSocket.transform.localScale = _templatePrefab.transform.localScale;
-                newSocket.Init(spellAbility) ;
+                newSocket.Init(spellAbility, _combatEntity) ;
             }
-
+            
             _templatePrefab.gameObject.SetActive(false);  
         }
 

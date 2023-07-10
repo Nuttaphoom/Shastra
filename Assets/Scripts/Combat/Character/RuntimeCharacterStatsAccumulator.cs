@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Resources;
@@ -15,19 +16,18 @@ namespace Vanaring_DepaDemo
 
     public enum ECharacterStatType
     {
-        HP,ATK
+        HP,ATK, Stunt 
     }
 
     public class RuntimeCharacterStatsAccumulator  
     {
         private Dictionary<ECharacterStatType, RuntimeStat> _characterStats = new Dictionary<ECharacterStatType, RuntimeStat>() ;
-
-
         public RuntimeCharacterStatsAccumulator(CharacterSheetSO _entityStatsSO)
         {
- 
             _characterStats.Add(ECharacterStatType.HP, new RuntimeStat(_entityStatsSO.GetHP, _entityStatsSO.GetHP));
-            _characterStats.Add(ECharacterStatType.ATK, new RuntimeStat(_entityStatsSO.GetATK, _entityStatsSO.GetATK)) ; 
+            _characterStats.Add(ECharacterStatType.ATK, new RuntimeStat(_entityStatsSO.GetATK, _entityStatsSO.GetATK)) ;
+            _characterStats.Add(ECharacterStatType.Stunt, new RuntimeStat(1,0));
+
         }
 
         #region ATKStatsManipulationMethod  
@@ -45,7 +45,7 @@ namespace Vanaring_DepaDemo
         #region HPStatsManipulationmethod
         public void ModifyHPStat(float amt)
         {
-            _characterStats[ECharacterStatType.HP].ModifyValue((int)amt);
+            _characterStats[ECharacterStatType.HP].ModifyValue((int)amt,false);
         }
 
         public int GetHPAmount()
@@ -54,6 +54,34 @@ namespace Vanaring_DepaDemo
         }
         #endregion
 
+        #region StuntManipulationMethod 
+
+        public void ApplyStunt()
+        {
+            _characterStats[ECharacterStatType.Stunt].ResetIncreasedValue() ; 
+            _characterStats[ECharacterStatType.Stunt].ModifyValue(1) ; 
+        } 
+
+        public void RemoveStunt()
+        {
+            _characterStats[ECharacterStatType.Stunt].ResetIncreasedValue();
+        }
+
+        public bool IsStunt()
+        {
+            return  _characterStats[ECharacterStatType.Stunt].GetStatValue() == 1; 
+        }
+
+        public IEnumerator ResetTemporaryIncreasedValue()
+        {
+            foreach (ECharacterStatType type in _characterStats.Keys)
+            {
+                _characterStats[type].ResetIncreasedValue();
+                //yield for some sec for removing status animation 
+                yield return null; 
+            }
+        } 
+        #endregion
 
 
         #region GETTER 

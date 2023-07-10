@@ -9,14 +9,23 @@ using UnityEngine;
 namespace Vanaring_DepaDemo {
 
     [RequireComponent(typeof(CombatEntity))]
-    public abstract class BaseEntityBrain : MonoBehaviour
-    {
-       
+    public abstract class BaseEntityBrain : MonoBehaviour, ITurnState
+    { 
+        protected CombatEntity _combateEntity;
+        
+        protected virtual void Awake()
+        {
+            _combateEntity = GetComponent<CombatEntity>() ; 
+        }
 
         public abstract IEnumerator TurnEnter(); 
 
         public abstract IEnumerator TurnLeave();
 
         public abstract IEnumerator GetAction( );
+
+        public abstract IEnumerator TakeControl(); 
+
+        public abstract IEnumerator TakeControlLeave();
     }
 }

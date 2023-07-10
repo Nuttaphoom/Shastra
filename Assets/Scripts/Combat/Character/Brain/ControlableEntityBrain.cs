@@ -10,33 +10,42 @@ using UnityEngine;
 namespace Vanaring_DepaDemo
 {
 
-    public class ControlableEntityBrain : BaseEntityBrain
+    public class ControlableEntityBrain : BaseEntityBrain 
     {
-        private void Update()
-        {
-             
-        }
 
         [SerializeField]
-        private RuntimeEffectFactorySO _testeFFECT;  
+        private CombatGraphicalHandler _combatGraphicalHandler;
 
-        RuntimeEffect _action;  
+        RuntimeEffect _action;
+
+        #region Turn Callback Methods 
         public override IEnumerator TurnEnter()
         {
-            yield return null; 
+            yield return null;
         }
 
         public override IEnumerator TurnLeave()
         {
-            yield return null; 
+            yield return TakeControlLeave() ; 
         }
 
         public override IEnumerator GetAction(  ) {
+
+            if (TargetSelectionFlowControl.Instance.PrepareAction() )
+            {
+                var latestAction = TargetSelectionFlowControl.Instance.GetLatestAction();
+                InitializeAction(latestAction.Item1, latestAction.Item2);
+            }
             yield return _action ;
 
-            if (_action != null ) 
-                _action = null; 
+            if (_action != null)
+            {
+                _action = null;
+            }
+
+            yield return null; 
         }
+        #endregion
 
         private void InitializeAction(RuntimeEffectFactorySO _factory, List<CombatEntity> _targets )
         {
@@ -49,6 +58,22 @@ namespace Vanaring_DepaDemo
                     _action = (RuntimeEffect)coroutine.Current;
                 } 
             }
-        } 
+        }
+
+        public override IEnumerator TakeControl()
+        {
+            if (_combatGraphicalHandler == null)
+                _combatGraphicalHandler = GetComponent<CombatGraphicalHandler>();
+
+            _combatGraphicalHandler.EnableGraphicalElements();
+
+            yield return null;
+        }
+
+        public override IEnumerator TakeControlLeave()
+        {
+            _combatGraphicalHandler.DisableGraphicalElements();
+            yield return null;
+        }
     }
 }

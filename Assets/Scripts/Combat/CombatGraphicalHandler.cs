@@ -53,6 +53,18 @@ namespace Vanaring_DepaDemo
 
         }
 
+        public void DisableGraphicalElements()
+        {
+            _mainPanel.gameObject.SetActive(false);
+            _spellPanel.gameObject.SetActive(false);
+        }
+
+        public void EnableGraphicalElements()
+        {
+            _mainPanel.gameObject.SetActive(true) ;
+            _spellPanel.gameObject.SetActive(false);
+        } 
+
 
     }
 }

@@ -13,8 +13,11 @@ namespace Vanaring_DepaDemo
         public override IEnumerator Factorize( List<CombatEntity> targets)
         {
             RuntimeEffect retEffect = new DebugLogRuntimeEffect();
-            foreach (CombatEntity target in targets) 
-                retEffect.AssignTarget(target) ;
+            if (targets != null)
+            {
+                foreach (CombatEntity target in targets)
+                    retEffect.AssignTarget(target);
+            }
 
             yield return retEffect ;
         }
@@ -22,11 +25,13 @@ namespace Vanaring_DepaDemo
 
     public  class DebugLogRuntimeEffect : RuntimeEffect 
     {
-        
-
         public override IEnumerator ExecuteRuntimeCoroutine(CombatEntity caster)
         {
-            Debug.Log("cast by " + caster.name);  
+            Debug.Log("cast by " + caster.name);
+            foreach (var target in _targets)
+            {
+                Debug.Log("target is " + target.name); 
+            }
             yield return null; 
         }
 
