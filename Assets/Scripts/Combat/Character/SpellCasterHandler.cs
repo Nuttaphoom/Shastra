@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.Events;
 using Vanaring_DepaDemo;
 
 /// <summary>
@@ -15,19 +16,24 @@ public class SpellCasterHandler
 {
     [SerializeField]
     private List<SpellAbilitySO> _spellAbilities = new List<SpellAbilitySO>() ;
-
     public List<SpellAbilitySO> SpellAbilities => _spellAbilities;
 
-    private RuntimeMangicalEnergy _mangicalEnergy; 
-    
+    private RuntimeMangicalEnergy _mangicalEnergy;
+
+    private UnityAction<RuntimeMangicalEnergy.EnergySide, int> OnModifyEnergy;
+
+    public void SubOnModifyEnergy(UnityAction<RuntimeMangicalEnergy.EnergySide, int> argc )
+    {
+        OnModifyEnergy += argc; 
+    }
     public SpellCasterHandler()
     {
         _mangicalEnergy = new RuntimeMangicalEnergy();
     }
 
-    public bool IsEnergySufficient(SpellAbilitySO spell)
+    public bool IsEnergySufficient(SpellAbilityRuntime spell)
     {
-        return GetEnergyAmount(spell.EnergySide) >= spell.EnergyRequire  ; 
+        return GetEnergyAmount(spell.RequireEnergySide) >= spell.RequireEnergyAmount  ; 
     }
     #region Modify Energy  
 
@@ -36,9 +42,10 @@ public class SpellCasterHandler
         return _mangicalEnergy.GetEnergy(side);
     }
 
-    public void ModifyEnergy(int value, RuntimeMangicalEnergy.EnergySide side)
+    public void ModifyEnergy(RuntimeMangicalEnergy.EnergySide side,int value)
     {
-        _mangicalEnergy.ModifyEnergy(value, side);
+        _mangicalEnergy.ModifyEnergy(value, side); 
+        OnModifyEnergy?.Invoke(side, value);
     }
     #endregion
 
@@ -91,7 +98,23 @@ public class RuntimeMangicalEnergy
             default:
                 throw new System.Exception("Trying to access invalid side of energy");
         }
+
+
     }
 
     #endregion
+}
+
+
+[Serializable]
+public struct EnergyModifierData
+{
+    [SerializeField]
+    private RuntimeMangicalEnergy.EnergySide _side ;
+    
+    [SerializeField]
+    private int _amount ;
+
+    public RuntimeMangicalEnergy.EnergySide Side { get { return _side; } } 
+    public int Amount { get { return _amount;} }
 }

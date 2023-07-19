@@ -141,6 +141,8 @@ namespace Vanaring_DepaDemo
                     {
                         //ExecuteAction 
                         yield return ((actionCoroutine.Current as RuntimeEffect).ExecuteRuntimeCoroutine(_entity));
+                        
+                        yield return ((actionCoroutine.Current as RuntimeEffect).OnExecuteRuntimeDone(_entity));
                         //When the action is finish executed (like playing animation), end turn 
 
                         if (_activeEntities.Count > 1)

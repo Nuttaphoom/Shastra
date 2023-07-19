@@ -47,6 +47,7 @@ namespace Vanaring_DepaDemo
                 StatusRuntimeEffect statusEffect = _currentEffects[i];
 
                 yield return statusEffect.ExecuteRuntimeCoroutine(caster);
+                yield return statusEffect.OnExecuteRuntimeDone(caster) ;
 
                 statusEffect.UpdateTTLCondition();
 

@@ -5,13 +5,15 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro; 
+using TMPro;
+using System.Collections;
 
 namespace Vanaring_DepaDemo
 {
     
     public class SpellSocketGUI : MonoBehaviour
     {
+        
 
         [SerializeField]
         private Button _actionButton ;
@@ -36,11 +38,12 @@ namespace Vanaring_DepaDemo
 
         private void ChooseSpell()
         {
-            StartCoroutine(TargetSelectionFlowControl.Instance.InitializeTargetSelectionScheme
-                (_caster, _spellSO.EffectFactory));
+            SpellAbilityRuntime runtimeSpell = _spellSO.Factorize();
+            if (_caster.SpellCaster.IsEnergySufficient(runtimeSpell))
+            {
+                StartCoroutine((TargetSelectionFlowControl.Instance.InitializeSpellTargetSelectionScheme
+                   (_caster, runtimeSpell)));
+            }
         }
-    
-
-        
     }
 }

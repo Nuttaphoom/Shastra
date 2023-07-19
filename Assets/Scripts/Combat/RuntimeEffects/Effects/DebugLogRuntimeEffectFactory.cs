@@ -7,7 +7,7 @@ using UnityEngine.Experimental.GlobalIllumination;
 
 namespace Vanaring_DepaDemo
 {
-    [CreateAssetMenu(fileName = "DebugLogRuntimeEffectFactory", menuName = "ScriptableObject/RuntimeEffectFactory/Utility/DebugLogRuntimeEffectFactory")]
+    [CreateAssetMenu(fileName = "DebugLogRuntimeEffectFactory", menuName = "ScriptableObject/RuntimeEffect/Utility/DebugLogRuntimeEffectFactory")]
     public class DebugLogRuntimeEffectFactory : RuntimeEffectFactorySO
     {
         public override IEnumerator Factorize( List<CombatEntity> targets)
@@ -34,15 +34,5 @@ namespace Vanaring_DepaDemo
             }
             yield return null; 
         }
-
-        public override IEnumerator OnExecuteRuntimeDone(CombatEntity caster)
-        {
-            yield return null;
-        }
-
-        
-
-
-
     }
 }

@@ -8,6 +8,9 @@ namespace Vanaring_DepaDemo
 {
     public class BarScaler : MonoBehaviour
     {
+        [SerializeField]
+        private CombatEntity _owner  ;
+
         public Image image;
         public Image targetpoint;
         private int lightNum = 50;
@@ -19,6 +22,26 @@ namespace Vanaring_DepaDemo
         private int _size;
         private int maxBar = 100;
         private float mul = 2.2f;
+
+        private void Awake()
+        {
+            _owner.SpellCaster.SubOnModifyEnergy(OnEnergyModified); 
+        }
+
+        private void OnEnergyModified(RuntimeMangicalEnergy.EnergySide side , int val)
+        { 
+
+            if (side == RuntimeMangicalEnergy.EnergySide.LightEnergy)
+            {
+                increaseScale(val);
+            }else
+            {
+                decreaseScale(val);
+            }
+
+
+        }
+
         private void Start()
         {
             _size = 110;
@@ -35,19 +58,19 @@ namespace Vanaring_DepaDemo
             RectTransform rectTransform = image.GetComponent<RectTransform>();
             rectTransform.sizeDelta = new Vector2(newSize, newSize);
         }
-        public void increaseScale(float num)
+        public void increaseScale(int num)
         {
             _size = _size + 10;
-            lightNumA += 10;
-            darkNumA -= 10;
+            lightNumA += num;
+            darkNumA -= num;
             StartCoroutine(increaseDark());
             ResizeImage(_size);
         }
-        public void decreaseScale(float num)
+        public void decreaseScale(int num)
         {
-            _size = _size - 10;
-            lightNumA -= 10;
-            darkNumA += 10;
+            _size = _size - num;
+            lightNumA -= num;
+            darkNumA += num ;
             StartCoroutine(increaseDark());
             ResizeImage(_size);
         }

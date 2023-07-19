@@ -23,11 +23,15 @@ namespace Vanaring_DepaDemo
         
         private RuntimeCharacterStatsAccumulator _runtimeCharacterStatsAccumulator ;
 
+        [SerializeField]
+        private CombatEntityAnimationHandler _combatEntityAnimationHandler ; 
+
         public void Init()
         {
             _runtimeCharacterStatsAccumulator = new RuntimeCharacterStatsAccumulator(_characterSheet) ;
             _statusEffectHandler = new StatusEffectHandler(this) ;
-            
+            _combatEntityAnimationHandler = new CombatEntityAnimationHandler(this, _combatEntityAnimationHandler) ;  
+
             if (! TryGetComponent(out _baseEntityBrain))
             {
                 throw new Exception("BaseEntityBrain haven't been assigned"); 
@@ -115,16 +119,16 @@ namespace Vanaring_DepaDemo
     {
         float trueDmg = inputdmg;
 
-            //Do some math here
-            trueDmg =  -trueDmg;
+        //Do some math here
+        trueDmg =  -trueDmg;
 
        _runtimeCharacterStatsAccumulator.ModifyHPStat(trueDmg);
 
-            Debug.Log(gameObject.name + "Remaining HP : " + _runtimeCharacterStatsAccumulator.GetHPAmount()); 
+        Debug.Log(gameObject.name + "Remaining HP : " + _runtimeCharacterStatsAccumulator.GetHPAmount()); 
     }
 
     //Receive animation info and play it accordingly 
-    public IEnumerator Attack(List<CombatEntity> targets,float multiplier ,object animationinfo)
+    public IEnumerator Attack(List<CombatEntity> targets,float multiplier , ActionAnimationInfo animationinfo)
     {
         //Prepare for status effect  
         yield return _statusEffectHandler.ExecuteAttackStatusRuntimeEffectCoroutine(); 
@@ -135,9 +139,10 @@ namespace Vanaring_DepaDemo
                 target.LogicHurt(inputDmg);  
         }
 
-            //2.) play animation
+        //2.) play animation
+        yield return _combatEntityAnimationHandler.PlayActionAnimation(animationinfo);
 
-            //3.) visually update the remaining HP, or make it dead it nessesary 
+        //3.) visually update the remaining HP, or make it dead it nessesary 
          
     }
     #endregion

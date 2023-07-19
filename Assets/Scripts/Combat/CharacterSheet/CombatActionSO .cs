@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 namespace Vanaring_DepaDemo 
 {
@@ -14,7 +15,7 @@ namespace Vanaring_DepaDemo
         private string _abilityName;
 
         [SerializeField]
-        private string _desscription;  
+        private string _desscription;
         
         [SerializeField]
         private RuntimeEffectFactorySO _effect ;

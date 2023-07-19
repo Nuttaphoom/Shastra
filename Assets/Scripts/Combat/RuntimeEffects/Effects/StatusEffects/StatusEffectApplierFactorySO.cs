@@ -6,7 +6,7 @@ using static UnityEngine.GraphicsBuffer;
 using Vanaring_DepaDemo;
 using System.Runtime.CompilerServices;
 
-[CreateAssetMenu(fileName = "StatusEffectApplierFactorySO", menuName = "ScriptableObject/RuntimeFactory/StatusEffectFactory/StatusEffectApplierFactorySO")]
+[CreateAssetMenu(fileName = "StatusEffectApplierFactorySO", menuName = "ScriptableObject/RuntimeEffect/StatusEffectApplierFactorySO")]
 public class StatusEffectApplierFactorySO : RuntimeEffectFactorySO
 {
     [SerializeField]

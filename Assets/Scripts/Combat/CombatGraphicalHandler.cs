@@ -19,7 +19,6 @@ namespace Vanaring_DepaDemo
         [SerializeField]
         private Button _weaponButton;
 
-        
         [SerializeField]
         private Transform _mainPanel;
 
@@ -34,7 +33,6 @@ namespace Vanaring_DepaDemo
             _itemButton.onClick.AddListener(() => { DisplayItemPanel(); });
             _spellButton.onClick.AddListener(() => { DisplaySpellPanel(); });
             _weaponButton.onClick.AddListener(() => { DisplayWeaponPanel(); });
-
         }
 
         private void DisplayItemPanel()

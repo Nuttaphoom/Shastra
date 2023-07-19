@@ -11,7 +11,9 @@ namespace Vanaring_DepaDemo
     {
         [SerializeField]
         private TargetSelector _targetSelector ;
+        
 
+        
         public TargetSelector TargetSelect => _targetSelector;
         public abstract IEnumerator Factorize( List<CombatEntity> targets)  ;
     }
@@ -31,8 +33,6 @@ namespace Vanaring_DepaDemo
         {
             _targets.Add(target);
         }
-
-
 
     }
 }

@@ -12,8 +12,6 @@ namespace Vanaring_DepaDemo
 
     public class ControlableEntityBrain : BaseEntityBrain 
     {
-
-        [SerializeField]
         private CombatGraphicalHandler _combatGraphicalHandler;
 
         RuntimeEffect _action;
@@ -30,20 +28,36 @@ namespace Vanaring_DepaDemo
         }
 
         public override IEnumerator GetAction(  ) {
-
+            SpellAbilityRuntime latestSpell = null;
             if (TargetSelectionFlowControl.Instance.PrepareAction() )
             {
+
+                latestSpell = TargetSelectionFlowControl.Instance.IsLatedActionSpell();
+                if (latestSpell == null)
+                {
+                    Debug.Log("latestSpell is null"); 
+                }
                 var latestAction = TargetSelectionFlowControl.Instance.GetLatestAction();
                 InitializeAction(latestAction.Item1, latestAction.Item2);
             }
+
             yield return _action ;
 
             if (_action != null)
             {
+                //After return action, we check if we need to modify energy or not 
+                //TODO - Properly check if we should modify the energy 
+                if (latestSpell != null)
+                {
+                    Debug.LogWarning("TODO : Properly check if we should modify the energy or not in a separate class or scheme");
+                    _combateEntity.SpellCaster.ModifyEnergy(latestSpell.ModifiedEnergySide,latestSpell.ModifiedEnergyAmount) ;
+                }
+
+                latestSpell = null; 
                 _action = null;
             }
 
-            yield return null; 
+            
         }
         #endregion
 

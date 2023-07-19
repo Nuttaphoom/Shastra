@@ -8,7 +8,7 @@ using static UnityEngine.GraphicsBuffer;
 namespace Vanaring_DepaDemo
 {
 
-    [CreateAssetMenu(fileName = "DebugStatusEffectFactorySO", menuName = "ScriptableObject/RuntimeFactory/DebugStatusEffectFactory/DebugStatusEffectFactorySO")]
+    [CreateAssetMenu(fileName = "DebugStatusEffectFactorySO", menuName = "ScriptableObject/RuntimeEffect/DebugStatusEffectFactory/DebugStatusEffectFactorySO")]
     public class DebugStatusEffectFactorySO : StatusRuntimeEffectFactorySO
     {
       

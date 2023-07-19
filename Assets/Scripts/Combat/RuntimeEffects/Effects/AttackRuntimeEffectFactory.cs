@@ -8,17 +8,22 @@ using UnityEngine.Experimental.GlobalIllumination;
 
 namespace Vanaring_DepaDemo
 {
-    [CreateAssetMenu(fileName = "AttackRuntimeEffectFactory", menuName = "ScriptableObject/RuntimeEffectFactory/AttackRuntimeEffectFactory")]
+    [CreateAssetMenu(fileName = "AttackRuntimeEffectFactory", menuName = "ScriptableObject/RuntimeEffect/AttackRuntimeEffectFactory")]
     public class AttackRuntimeEffectFactory : RuntimeEffectFactorySO
     {
         [SerializeField]
         private EDamageScaling _damagScaling;
 
         [SerializeField]
-        private int realDmg = -1; 
+        private int realDmg = -1;
+
+        [SerializeField]
+        private ActionAnimationInfo _actionAnimation;
+
+
         public override IEnumerator Factorize(List<CombatEntity> targets)
         {
-            AttackRuntimeEffect retEffect = new AttackRuntimeEffect(_damagScaling,realDmg);
+            AttackRuntimeEffect retEffect = new AttackRuntimeEffect(_damagScaling,realDmg, _actionAnimation );
             if (targets != null)
             {
                 foreach (CombatEntity target in targets)
@@ -33,11 +38,13 @@ namespace Vanaring_DepaDemo
     {
         private EDamageScaling _damagScaling;
         private int _realDmg;
-        
-        public AttackRuntimeEffect(EDamageScaling scaling, int realDmg)
+        private ActionAnimationInfo _actionAnimation;  
+        public AttackRuntimeEffect(EDamageScaling scaling, int realDmg, ActionAnimationInfo actionAnimation)
         {
             _damagScaling  = scaling;
             _realDmg = realDmg; 
+            _actionAnimation = actionAnimation;  
+
         }
         public override IEnumerator ExecuteRuntimeCoroutine(CombatEntity caster)
         {
@@ -62,16 +69,12 @@ namespace Vanaring_DepaDemo
                     mul = 1.5f; break;  
             }
 
-            //Need to be cast with animation data 
-            yield return caster.Attack(_targets,mul, null) ; 
+            yield return caster.Attack(_targets,mul, _actionAnimation ) ; 
             
         }
 
          
-        public override IEnumerator OnExecuteRuntimeDone(CombatEntity caster)
-        {
-            yield return null;
-        }
+         
 
 
 

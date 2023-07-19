@@ -20,7 +20,9 @@ public class TargetSelectionFlowControl : MonoBehaviour
 
     private int _currentSelectIndex = 0;
 
-    private RuntimeEffectFactorySO _action; 
+    private SpellAbilityRuntime _latestSelectedSpell; 
+
+    private RuntimeEffectFactorySO _latestAction ; 
     
     private void Awake()
     {
@@ -60,23 +62,36 @@ public class TargetSelectionFlowControl : MonoBehaviour
     public (RuntimeEffectFactorySO, List<CombatEntity>) GetLatestAction()
     {
         if (PrepareAction()) {
-            _activlySelecting = false; 
+            _activlySelecting = false;
+            _latestSelectedSpell = null; 
         }
-        return (_action, _selectedTarget);
+        return (_latestAction, _selectedTarget);
     }
+
+    //TODO : Properly separate Spell action so that we don't need to return the spell like this
+    public SpellAbilityRuntime IsLatedActionSpell()
+    {
+        if (_latestSelectedSpell != null)
+            Debug.Log("_latestSelectedSpell is not null"); 
+        return _latestSelectedSpell ; 
+    }
+ 
 
     public bool PrepareAction()
     {
-        return _activlySelecting && _action != null ; 
+        return _activlySelecting && _latestAction != null ; 
     }
     
     public  IEnumerator InitializeTargetSelectionScheme(CombatEntity caster, RuntimeEffectFactorySO action, bool randomTarget = false)
     {
+
         if (_activlySelecting)
             throw new Exception("Try to active selection scheme while it is already active");
 
+        ColorfulLogger.LogWithColor("Initialize Target Selection", Color.green); 
         _activlySelecting = true;
-        _action = null; 
+        _latestAction = null;
+
 
         ValidateData();
         AssignPossibleTargets(caster, action); 
@@ -97,14 +112,19 @@ public class TargetSelectionFlowControl : MonoBehaviour
             yield return new WaitForEndOfFrame();
         }
 
-
-        _action = action;
-
-  
+        _latestAction = action;
 
         yield return null ;  
     }
     
+    public IEnumerator InitializeSpellTargetSelectionScheme(CombatEntity caster, SpellAbilityRuntime spell, bool randomTarget = false)
+    {
+        _latestSelectedSpell = spell;
+
+        yield return InitializeTargetSelectionScheme(caster,spell.EffectFactory,randomTarget) ;
+         
+
+    }
     private void AssignPossibleTargets(CombatEntity caster, RuntimeEffectFactorySO action)
     {
 
