@@ -22,16 +22,14 @@ namespace Vanaring_DepaDemo
         }
         public override IEnumerator GetAction()
         {
+            yield return new    WaitForSeconds(3.0f); 
             foreach (RuntimeEffectFactorySO eff in _botBehaviorHandler.GetBehaviorEffect())
             {
                 yield return TargetSelectionFlowControl.Instance.InitializeTargetSelectionScheme(_combateEntity, eff, true);
                 RuntimeEffectFactorySO factory ;
                 List<CombatEntity> selectedTarget ;
                 (factory, selectedTarget) = TargetSelectionFlowControl.Instance.GetLatestAction();
-                foreach (var v in selectedTarget)
-                {
-                    Debug.Log("target before factorize is " + v.gameObject.name); 
-                }
+                 
                 IEnumerator coroutine =   factory.Factorize(selectedTarget);
 
                 while (coroutine.MoveNext())

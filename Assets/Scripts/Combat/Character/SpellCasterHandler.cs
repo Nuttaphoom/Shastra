@@ -12,20 +12,31 @@ using Vanaring_DepaDemo;
 /// </summary>
 /// 
 [Serializable]
-public class SpellCasterHandler
+public class SpellCasterHandler  
 {
+
     [SerializeField]
     private List<SpellAbilitySO> _spellAbilities = new List<SpellAbilitySO>() ;
-    public List<SpellAbilitySO> SpellAbilities => _spellAbilities;
+    public List<SpellAbilitySO> SpellAbilities => _spellAbilities ;
 
-    private RuntimeMangicalEnergy _mangicalEnergy;
+    private RuntimeMangicalEnergy _mangicalEnergy ;
 
-    private UnityAction<RuntimeMangicalEnergy.EnergySide, int> OnModifyEnergy;
+    private UnityAction<RuntimeMangicalEnergy.EnergySide, int> OnModifyEnergy ;
 
+    private CombatEntity _combatEntity; 
+    #region Event Sub
     public void SubOnModifyEnergy(UnityAction<RuntimeMangicalEnergy.EnergySide, int> argc )
     {
         OnModifyEnergy += argc; 
     }
+
+    public void UnSubOnModifyEnergy(UnityAction<RuntimeMangicalEnergy.EnergySide, int> argc)
+    {
+        OnModifyEnergy -= argc;  
+    }
+    #endregion EndSub 
+
+
     public SpellCasterHandler()
     {
         _mangicalEnergy = new RuntimeMangicalEnergy();
@@ -33,6 +44,7 @@ public class SpellCasterHandler
 
     public bool IsEnergySufficient(SpellAbilityRuntime spell)
     {
+        Debug.Log("require energy is " + spell.RequireEnergyAmount + " current contain " + GetEnergyAmount(spell.RequireEnergySide));
         return GetEnergyAmount(spell.RequireEnergySide) >= spell.RequireEnergyAmount  ; 
     }
     #region Modify Energy  
@@ -44,9 +56,23 @@ public class SpellCasterHandler
 
     public void ModifyEnergy(RuntimeMangicalEnergy.EnergySide side,int value)
     {
-        _mangicalEnergy.ModifyEnergy(value, side); 
-        OnModifyEnergy?.Invoke(side, value);
+        _mangicalEnergy.ModifyEnergy(value, side) ; 
+        OnModifyEnergy?.Invoke(side, value) ; 
     }
+
+    public bool IsEnergyOverheat()
+    {
+        foreach (RuntimeMangicalEnergy.EnergySide key in Enum.GetValues(typeof(RuntimeMangicalEnergy.EnergySide)))
+        {
+            if (GetEnergyAmount(key) >= 100) 
+                return true ;
+        }
+        return false;
+
+    }
+ 
+
+
     #endregion
 
 }
@@ -88,18 +114,16 @@ public class RuntimeMangicalEnergy
         switch (side)
         {
             case EnergySide.LightEnergy:
-                _lightEnergy.ModifyValue(value);
-                _darkEnergy.ModifyValue(-value);
+                _lightEnergy.ModifyValue(value,false);
+                _darkEnergy.ModifyValue(-value,false);
                 break;
             case EnergySide.DarkEnergy:
-                _lightEnergy.ModifyValue(-value);
-                _darkEnergy.ModifyValue(value);
+                _lightEnergy.ModifyValue(-value, false);
+                _darkEnergy.ModifyValue(value, false);
                 break;
             default:
                 throw new System.Exception("Trying to access invalid side of energy");
         }
-
-
     }
 
     #endregion

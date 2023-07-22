@@ -71,8 +71,6 @@ public class TargetSelectionFlowControl : MonoBehaviour
     //TODO : Properly separate Spell action so that we don't need to return the spell like this
     public SpellAbilityRuntime IsLatedActionSpell()
     {
-        if (_latestSelectedSpell != null)
-            Debug.Log("_latestSelectedSpell is not null"); 
         return _latestSelectedSpell ; 
     }
  
@@ -101,9 +99,8 @@ public class TargetSelectionFlowControl : MonoBehaviour
             if (randomTarget)
             {
                 _currentSelectIndex = UnityEngine.Random.Range(0, _validTargets.Count);
-                Debug.Log("random to " + _currentSelectIndex );
                 _selectedTarget.Add(_validTargets[_currentSelectIndex]);
-                Debug.Log("select " + _validTargets[_currentSelectIndex]);
+                ColorfulLogger.LogWithColor("AI Action target is " + _validTargets[_currentSelectIndex], Color.yellow);  
                 _validTargets.RemoveAt(_currentSelectIndex); 
                 
                 continue ;

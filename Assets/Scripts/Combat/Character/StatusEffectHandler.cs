@@ -16,18 +16,21 @@ namespace Vanaring_DepaDemo
 
     public class StatusEffectHandler
     {
-        private CombatEntity caster;
+        private CombatEntity _appliedEntity ;
         List<StatusRuntimeEffect> _currentEffects = new List<StatusRuntimeEffect>();
 
-        public StatusEffectHandler(CombatEntity caster)
+        public StatusEffectHandler(CombatEntity appliedEntity)
         {
-            this.caster = caster;   
+            this._appliedEntity = appliedEntity ;   
         }
 
         //the effect should be factorize exactly before being applied 
-        public IEnumerator ApplyNewEffect(StatusRuntimeEffectFactorySO factory, List<CombatEntity> targets )
+        public IEnumerator ApplyNewEffect(StatusRuntimeEffectFactorySO factory  )
         {
-            IEnumerator  co =  factory.Factorize( targets) ; 
+            Debug.Log("" + _appliedEntity.gameObject.name + " is applied status effect : " + _appliedEntity.name);
+
+            IEnumerator co = factory.Factorize(new List<CombatEntity>() { _appliedEntity } )  ;
+
             while (co.MoveNext())
             {
                 if (co.Current != null && co.Current.GetType().IsSubclassOf(typeof(RuntimeEffect) ))
@@ -46,8 +49,8 @@ namespace Vanaring_DepaDemo
             {
                 StatusRuntimeEffect statusEffect = _currentEffects[i];
 
-                yield return statusEffect.ExecuteRuntimeCoroutine(caster);
-                yield return statusEffect.OnExecuteRuntimeDone(caster) ;
+                yield return statusEffect.ExecuteRuntimeCoroutine(_appliedEntity);
+                yield return statusEffect.OnExecuteRuntimeDone(_appliedEntity) ;
 
                 statusEffect.UpdateTTLCondition();
 
@@ -68,7 +71,7 @@ namespace Vanaring_DepaDemo
             {
                 StatusRuntimeEffect statusEffect = _currentEffects[i];
 
-                yield return statusEffect.BeforeAttackEffect(caster);
+                yield return statusEffect.BeforeAttackEffect(_appliedEntity);
 
             }
 

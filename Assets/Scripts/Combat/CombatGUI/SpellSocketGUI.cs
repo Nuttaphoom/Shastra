@@ -10,10 +10,8 @@ using System.Collections;
 
 namespace Vanaring_DepaDemo
 {
-    
-    public class SpellSocketGUI : MonoBehaviour
+    public class SpellSocketGUI : MonoBehaviour  
     {
-        
 
         [SerializeField]
         private Button _actionButton ;
@@ -33,6 +31,7 @@ namespace Vanaring_DepaDemo
             _spellSO = spell;
             this._caster = combatEntity;
             _actionButton.onClick.AddListener(ChooseSpell ) ;
+
             _textMeshProUGUI.text = spell.AbilityName.ToString() ; 
         }
 

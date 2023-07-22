@@ -12,8 +12,6 @@ namespace Vanaring_DepaDemo
         [SerializeField]
         private TargetSelector _targetSelector ;
         
-
-        
         public TargetSelector TargetSelect => _targetSelector;
         public abstract IEnumerator Factorize( List<CombatEntity> targets)  ;
     }
@@ -21,7 +19,6 @@ namespace Vanaring_DepaDemo
     public abstract class RuntimeEffect 
     {
         protected List<CombatEntity> _targets = new List<CombatEntity>();
- 
         public abstract IEnumerator ExecuteRuntimeCoroutine(CombatEntity caster);
 
         public virtual IEnumerator OnExecuteRuntimeDone(CombatEntity caster)

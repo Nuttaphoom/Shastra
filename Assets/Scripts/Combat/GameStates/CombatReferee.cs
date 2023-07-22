@@ -95,11 +95,12 @@ namespace Vanaring_DepaDemo
         private IEnumerator AdvanceTurn()
         {
             //Starting new turn 
-            Debug.Log("START TURN IN " + _currentSide);
+            ColorfulLogger.LogWithColor("START TURN IN " + _currentSide, Color.blue); 
+
             //Call Enter Turn of the entity, this included running status effect 
             foreach (CombatEntity entity in _activeEntities)
             {
-                IEnumerator coroutine =  entity.TurnEnter() ; 
+               IEnumerator coroutine =  entity.TurnEnter() ; 
                while (coroutine.MoveNext())
                 {
                     yield return coroutine.Current; 

@@ -24,13 +24,17 @@ namespace Vanaring_DepaDemo
         private RuntimeCharacterStatsAccumulator _runtimeCharacterStatsAccumulator ;
 
         [SerializeField]
-        private CombatEntityAnimationHandler _combatEntityAnimationHandler ; 
+        private CombatEntityAnimationHandler _combatEntityAnimationHandler ;
+
+        [SerializeField]
+        private EnergyOverflowHandler _energyOverflowHandler ;  
 
         public void Init()
         {
             _runtimeCharacterStatsAccumulator = new RuntimeCharacterStatsAccumulator(_characterSheet) ;
             _statusEffectHandler = new StatusEffectHandler(this) ;
-            _combatEntityAnimationHandler = new CombatEntityAnimationHandler(this, _combatEntityAnimationHandler) ;  
+            _combatEntityAnimationHandler = new CombatEntityAnimationHandler(this, _combatEntityAnimationHandler) ;
+            _energyOverflowHandler.Initialize(this); 
 
             if (! TryGetComponent(out _baseEntityBrain))
             {
@@ -88,6 +92,7 @@ namespace Vanaring_DepaDemo
 
         public IEnumerator TakeControl()
         {
+            Debug.Log("take control"); 
             yield return _baseEntityBrain.TakeControl(); 
         }
 
@@ -124,7 +129,7 @@ namespace Vanaring_DepaDemo
 
        _runtimeCharacterStatsAccumulator.ModifyHPStat(trueDmg);
 
-        Debug.Log(gameObject.name + "Remaining HP : " + _runtimeCharacterStatsAccumulator.GetHPAmount()); 
+        ColorfulLogger.LogWithColor(gameObject.name + "is hit with " + trueDmg + " remaining HP : " + _runtimeCharacterStatsAccumulator.GetHPAmount(), Color.red); 
     }
 
     //Receive animation info and play it accordingly 

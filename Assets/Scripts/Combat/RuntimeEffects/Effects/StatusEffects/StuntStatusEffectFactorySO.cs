@@ -35,9 +35,7 @@ namespace Vanaring_DepaDemo
 
         //_cgs can be null =, be careful not assuming he got _cgs 
         public override IEnumerator ExecuteRuntimeCoroutine(CombatEntity caster)
-        {
-
-            List<CombatEntity> aTargetForNewStatus = new List<CombatEntity>();
+        { 
             foreach (CombatEntity target in _targets)
             {
                 if (target is not IStatusEffectable)
@@ -53,7 +51,9 @@ namespace Vanaring_DepaDemo
 
             yield return null;
         }
-    }
+
+        
+    } 
 
 
 }

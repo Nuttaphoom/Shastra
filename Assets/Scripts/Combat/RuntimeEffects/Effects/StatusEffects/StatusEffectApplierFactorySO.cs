@@ -17,7 +17,7 @@ public class StatusEffectApplierFactorySO : RuntimeEffectFactorySO
         foreach (CombatEntity target in targets)
             retEffect.AssignTarget(target);
 
-        yield return retEffect;
+        yield return retEffect   ;
     }
 }
 
@@ -36,24 +36,23 @@ public class StatusEffectApplierRuntimeEffect : RuntimeEffect
     //_cgs can be null =, be careful not assuming he got _cgs 
     public override IEnumerator ExecuteRuntimeCoroutine(CombatEntity caster)
     {
-
-        List<CombatEntity> aTargetForNewStatus = new List<CombatEntity>();
         foreach (CombatEntity target in _targets)
         {
             if (target is not IStatusEffectable)
                 throw new System.Exception("Assigned target is not IStatusEffectable");
 
-            aTargetForNewStatus.Add(target);
-
             foreach (StatusRuntimeEffectFactorySO effect in _effects)
             {
-                yield return ((target as IStatusEffectable).GetStatusEffectHandler().ApplyNewEffect(effect, aTargetForNewStatus));
+                Debug.Log("yield return to  " + target) ;
+                yield return (target).TakeControl(); 
+                
+                yield return (target).GetStatusEffectHandler().ApplyNewEffect(effect);
+                Debug.Log("finish yield return"); 
             }
-            aTargetForNewStatus.Clear();
-
         }
-
         yield return null;
     }
+
+    
 }
 

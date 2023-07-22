@@ -61,7 +61,12 @@ namespace Vanaring_DepaDemo
             {
                 _defaultValue += value ;
                 if (peakUpdate)
-                    _peakValue += value; 
+                    _peakValue += value;
+
+                if (_defaultValue < 0)
+                    _defaultValue = 0;
+                else if (_defaultValue > _peakValue)
+                    _defaultValue = _peakValue;
             }
                
         }
