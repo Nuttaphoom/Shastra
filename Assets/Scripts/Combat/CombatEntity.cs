@@ -19,6 +19,9 @@ namespace Vanaring_DepaDemo
         [SerializeField]
         private SpellCasterHandler _spellCaster ;
 
+        [SerializeField]
+        private ItemUserHandler _itemUser;
+
         private StatusEffectHandler _statusEffectHandler ;  
         
         private RuntimeCharacterStatsAccumulator _runtimeCharacterStatsAccumulator ;
@@ -115,12 +118,13 @@ namespace Vanaring_DepaDemo
     #region GETTER
         public RuntimeCharacterStatsAccumulator StatsAccumulator => _runtimeCharacterStatsAccumulator;
         public SpellCasterHandler SpellCaster => _spellCaster;
+        public ItemUserHandler ItemUser => _itemUser;
 
         #endregion
 
-    #region InterfaceFunction 
+        #region InterfaceFunction 
 
-    public void LogicHurt(int inputdmg)
+        public void LogicHurt(int inputdmg)
     {
         float trueDmg = inputdmg;
 

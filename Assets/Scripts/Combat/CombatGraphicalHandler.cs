@@ -24,6 +24,8 @@ namespace Vanaring_DepaDemo
 
         [SerializeField]
         private Transform _spellPanel;
+        [SerializeField]
+        private Transform _itemPanel;
 
         private void Awake()
         {
@@ -37,7 +39,8 @@ namespace Vanaring_DepaDemo
 
         private void DisplayItemPanel()
         {
-
+            _mainPanel.gameObject.SetActive(false);
+            _itemPanel.gameObject.SetActive(true);
         }
 
         private void DisplaySpellPanel()
