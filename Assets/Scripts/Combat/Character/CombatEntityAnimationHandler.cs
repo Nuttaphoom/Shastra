@@ -12,7 +12,7 @@ using UnityEngine;
 namespace Vanaring_DepaDemo
 {
     [Serializable]
-    public class CombatEntityAnimationHandler
+    public class CombatEntityAnimationHandler : MonoBehaviour
     {
         private CombatEntity _combatEntity ;
 
@@ -27,7 +27,7 @@ namespace Vanaring_DepaDemo
             _animator = _mesh.GetComponent<Animator>() ;  
         }
 
-        public IEnumerator PlayActionAnimation(ActionAnimationInfo actionAnimation)
+        public IEnumerator PlayActionAnimation(ActionAnimationInfo actionAnimation, List<CombatEntity> targets = null)
         {
             //AnimatorOverrideController overrideController = new AnimatorOverrideController(_animator.runtimeAnimatorController);
 
@@ -36,14 +36,31 @@ namespace Vanaring_DepaDemo
             //_animator.StopPlayback();
 
             //_animator.Play(actionAnimation.SkeletonAnimationClip);  
-            _animator.SetTrigger(actionAnimation.TrigerID) ; 
+            _animator.SetTrigger(actionAnimation.TrigerID) ;
+
+            List<GameObject> vfxs = new List<GameObject>();
+            GameObject vfx = Instantiate(actionAnimation.CasterVfxAnimationPrefab, _mesh.transform.position, Quaternion.identity);
+            vfxs.Add(vfx);
+            if (targets != null)
+            {
+                foreach (CombatEntity combatEntity in targets)
+                {
+                    vfx = Instantiate(actionAnimation.TargetVfxAnimationPrefab, combatEntity.transform.position, Quaternion.identity);
+                    vfxs.Add(vfx);
+                }
+            }
 
             while (_animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1.0f)
             {
                 yield return null ;  
             }
 
-            yield return new WaitForSeconds(3.0f) ; 
+            yield return new WaitForSeconds(3.0f) ;
+
+            foreach (GameObject gameObject in vfxs)
+            {
+                gameObject.SetActive(false);
+            }
         }
     }
 }

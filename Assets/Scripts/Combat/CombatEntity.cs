@@ -143,13 +143,13 @@ namespace Vanaring_DepaDemo
         yield return _statusEffectHandler.ExecuteAttackStatusRuntimeEffectCoroutine(); 
 
         //1.) Do apply dmg 
-        int inputDmg = (int) (multiplier * StatsAccumulator.GetATKAmount()) ;  
+        int inputDmg = (int) (multiplier * StatsAccumulator.GetATKAmount()) ;
         foreach (CombatEntity target in targets) {
-                target.LogicHurt(inputDmg);  
+                target.LogicHurt(inputDmg);
         }
 
         //2.) play animation
-        yield return _combatEntityAnimationHandler.PlayActionAnimation(animationinfo);
+        yield return _combatEntityAnimationHandler.PlayActionAnimation(animationinfo, targets);
 
         //3.) visually update the remaining HP, or make it dead it nessesary 
          

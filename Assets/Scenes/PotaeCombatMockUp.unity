@@ -1238,7 +1238,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 627700992}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 2.4900012, y: 1.27, z: -2.7799997}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1.7515999, y: 1.7516, z: 1.7515999}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3556,6 +3556,7 @@ GameObject:
   - component: {fileID: 1629957302}
   - component: {fileID: 1629957304}
   - component: {fileID: 1629957303}
+  - component: {fileID: 1629957305}
   m_Layer: 0
   m_Name: Ghost1
   m_TagString: Untagged
@@ -3571,7 +3572,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1629957299}
   m_LocalRotation: {x: -0, y: 0.77176535, z: -0, w: 0.6359075}
-  m_LocalPosition: {x: 6.9227495, y: -0.17000002, z: -3.1113586}
+  m_LocalPosition: {x: 3.66, y: 0.5, z: -5.22}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -3596,8 +3597,7 @@ MonoBehaviour:
     _spellAbilities: []
   _itemUser:
     _itemAbilities: []
-  _combatEntityAnimationHandler:
-    _mesh: {fileID: 1629957299}
+  _combatEntityAnimationHandler: {fileID: 1629957305}
   _energyOverflowHandler:
     _stuntEffectApplier: {fileID: 11400000, guid: 711b3fdb8207def469538edd1bc5e13b, type: 2}
 --- !u!114 &1629957303
@@ -3625,6 +3625,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _behaviorSocketSOs: {fileID: 11400000, guid: 512999529dd092d499160083067ac2da, type: 2}
+--- !u!114 &1629957305
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1629957299}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d0b4c94e51503647971675bfb7fce7d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _mesh: {fileID: 1629957299}
 --- !u!1 &1646560310
 GameObject:
   m_ObjectHideFlags: 0
@@ -4437,6 +4450,7 @@ GameObject:
   - component: {fileID: 2018466318}
   - component: {fileID: 2018466317}
   - component: {fileID: 2018466319}
+  - component: {fileID: 2018466320}
   m_Layer: 0
   m_Name: ASha-Combat-Entity
   m_TagString: Untagged
@@ -4500,8 +4514,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 3deb0a622cd9d844580049ce5ec43934, type: 2}
     - {fileID: 11400000, guid: 3deb0a622cd9d844580049ce5ec43934, type: 2}
     - {fileID: 11400000, guid: ba4db471659909444b56c5bc158ea52b, type: 2}
-  _combatEntityAnimationHandler:
-    _mesh: {fileID: 304572739}
+  _combatEntityAnimationHandler: {fileID: 2018466320}
   _energyOverflowHandler:
     _stuntEffectApplier: {fileID: 11400000, guid: 711b3fdb8207def469538edd1bc5e13b, type: 2}
 --- !u!114 &2018466319
@@ -4516,6 +4529,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87f48723ee0bde74a9e5479d441da328, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &2018466320
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2018466315}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d0b4c94e51503647971675bfb7fce7d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _mesh: {fileID: 304572739}
 --- !u!1 &2098724488
 GameObject:
   m_ObjectHideFlags: 0

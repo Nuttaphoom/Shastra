@@ -18,7 +18,12 @@ namespace Vanaring_DepaDemo
         //public AnimationClip SkeletonAnimationClip => _skeletonAnimationClip ;
         [Header("Use for vfx and camera movement for the animation")] 
         [SerializeField]
-        private GameObject _secondaryAnimationPrefab;
+        private GameObject _casterVfxAnimationPrefab;
+        [SerializeField]
+        private GameObject _targetVfxAnimationPrefab;
+
+        public GameObject CasterVfxAnimationPrefab => _casterVfxAnimationPrefab;
+        public GameObject TargetVfxAnimationPrefab => _targetVfxAnimationPrefab;
 
         public string TrigerID ;  
 
