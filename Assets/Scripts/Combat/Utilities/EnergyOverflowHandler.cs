@@ -11,10 +11,10 @@ using UnityEngine;
 namespace Vanaring_DepaDemo
 {
     [Serializable]
-    public class EnergyOverflowHandler : RequireInitializationHandler<CombatEntity, Null,Null> 
+    public class EnergyOverflowHandler : MonoBehaviour
     {
         [SerializeField]
-        private StatusEffectApplierFactorySO _stuntEffectApplier;
+        private StatusEffectApplierFactorySO _statusEffectFactory ;
 
         private CombatEntity _combatEntity;
 
@@ -22,45 +22,35 @@ namespace Vanaring_DepaDemo
         
         ~EnergyOverflowHandler() {
             _spellCasterHandler.UnSubOnModifyEnergy(OnModifyEnergy);
-
         }
 
         #region Method 
         public void OnModifyEnergy(RuntimeMangicalEnergy.EnergySide side, int amount)
         {
-            if (! IsInit)
-                ThrowInitException() ;
 
-                if ( _spellCasterHandler.IsEnergyOverheat() )  {
-                IEnumerator coroutine = _stuntEffectApplier.Factorize(new List<CombatEntity>() { _combatEntity } );
+            if ( _spellCasterHandler.IsEnergyOverheat() )  
+            {
+                IEnumerator coroutine = _statusEffectFactory.Factorize(new List<CombatEntity>(){ _combatEntity}); 
                 while (coroutine.MoveNext())
                 {
-                    if (coroutine.Current != null && coroutine.Current is RuntimeEffect)
-                    {
-                       IEnumerator ie =  (coroutine.Current as StatusEffectApplierRuntimeEffect).ExecuteRuntimeCoroutine(_combatEntity) ;
-                       while (ie.MoveNext())
-                       {
-                           
-                       }
+                    if (coroutine.Current != null && coroutine.Current.GetType().IsSubclassOf(typeof(RuntimeEffect)) ) {
+                        StartCoroutine((coroutine.Current as RuntimeEffect).ExecuteRuntimeCoroutine(_combatEntity)); 
                     }
                 }
-            }
+
+                _combatEntity.SpellCaster.ResetEnergy(); 
+            } 
         }
 
-       
-
-        public override void Initialize(CombatEntity argc, Null argv = null, Null argg = null)
+        private void Awake()
         {
-            if (IsInit)
-                throw new Exception("Trying to Initialize EnergyOverflowHandler in " + argc.name + "more than once");
-
-            SetInit(true); 
-
-            this._combatEntity = argc;
-            this._spellCasterHandler = this._combatEntity.SpellCaster  ;
+            this._combatEntity = GetComponent<CombatEntity>() ; 
+            this._spellCasterHandler = this._combatEntity.SpellCaster;
 
             _spellCasterHandler.SubOnModifyEnergy(OnModifyEnergy);
         }
+
+       
 
 
         #endregion

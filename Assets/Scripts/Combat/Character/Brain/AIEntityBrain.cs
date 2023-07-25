@@ -42,6 +42,8 @@ namespace Vanaring_DepaDemo
             }
         }
 
+
+
         public override IEnumerator TurnEnter()
         {
             yield return null; 

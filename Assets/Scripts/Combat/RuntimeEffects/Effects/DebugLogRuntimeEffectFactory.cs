@@ -27,11 +27,14 @@ namespace Vanaring_DepaDemo
     {
         public override IEnumerator ExecuteRuntimeCoroutine(CombatEntity caster)
         {
+            Debug.Log("Debug Skill------------");
             Debug.Log("cast by " + caster.name);
             foreach (var target in _targets)
             {
-                Debug.Log("target is " + target.name); 
+                Debug.Log("target is " + target.name);
             }
+            Debug.Log("End Debug Skill---------------"); 
+
             yield return null; 
         }
     }

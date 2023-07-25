@@ -37,7 +37,6 @@ namespace Vanaring_DepaDemo
             _runtimeCharacterStatsAccumulator = new RuntimeCharacterStatsAccumulator(_characterSheet) ;
             _statusEffectHandler = new StatusEffectHandler(this) ;
             _combatEntityAnimationHandler = new CombatEntityAnimationHandler(this, _combatEntityAnimationHandler) ;
-            _energyOverflowHandler.Initialize(this); 
 
             if (! TryGetComponent(out _baseEntityBrain))
             {
@@ -63,6 +62,11 @@ namespace Vanaring_DepaDemo
             yield return _baseEntityBrain.TurnEnter(); 
         }
 
+        public IEnumerator TEST()
+        {
+            Debug.Log("test");
+            yield return null ; 
+        }
         public  IEnumerator TurnLeave()
         {
             if (_baseEntityBrain == null)
@@ -95,7 +99,6 @@ namespace Vanaring_DepaDemo
 
         public IEnumerator TakeControl()
         {
-            Debug.Log("take control"); 
             yield return _baseEntityBrain.TakeControl(); 
         }
 

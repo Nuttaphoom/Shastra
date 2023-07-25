@@ -56,7 +56,6 @@ namespace Vanaring_DepaDemo
 
                 if (statusEffect.IsExpired())
                 {
-                    Debug.Log("effect is expired");
                     //TODO - Remove status effect visually
                     _currentEffects.RemoveAt(i);
                     i--;

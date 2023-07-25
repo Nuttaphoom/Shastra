@@ -161,7 +161,7 @@ namespace Vanaring_DepaDemo
             }
 
 
-            foreach (CombatEntity entity in _activeEntities)
+            foreach (CombatEntity entity in GetCompetatorsBySide(_currentSide))
             {
                 yield return entity.TurnLeave() ;
             }

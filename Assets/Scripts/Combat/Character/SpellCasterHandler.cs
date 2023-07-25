@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Events;
 using Vanaring_DepaDemo;
+using static UnityEngine.Rendering.DebugUI;
 
 /// <summary>
 /// Used in CombatEntity class to handle casting, modify energy, and stuffs about spell 
@@ -30,7 +31,7 @@ public class SpellCasterHandler
         OnModifyEnergy += argc; 
     }
 
-    public void UnSubOnModifyEnergy(UnityAction<RuntimeMangicalEnergy.EnergySide, int> argc)
+    public void UnSubOnModifyEnergy( UnityAction<RuntimeMangicalEnergy.EnergySide, int> argc)
     {
         OnModifyEnergy -= argc;  
     }
@@ -68,9 +69,22 @@ public class SpellCasterHandler
                 return true ;
         }
         return false;
+    }
+
+    public void ResetEnergy()
+    {
+        int lightEnergy = _mangicalEnergy.GetEnergy(RuntimeMangicalEnergy.EnergySide.LightEnergy);
+        int darkEnergy  = _mangicalEnergy.GetEnergy(RuntimeMangicalEnergy.EnergySide.DarkEnergy);
+
+        int dif = (int) MathF.Abs(50 - lightEnergy);
+        RuntimeMangicalEnergy.EnergySide modifiedSide = ( lightEnergy > darkEnergy ?
+         RuntimeMangicalEnergy.EnergySide.DarkEnergy : RuntimeMangicalEnergy.EnergySide.LightEnergy ) ; 
+
+        _mangicalEnergy.ModifyEnergy(dif, modifiedSide) ;
+        OnModifyEnergy?.Invoke(modifiedSide, dif) ;
 
     }
- 
+
 
 
     #endregion
