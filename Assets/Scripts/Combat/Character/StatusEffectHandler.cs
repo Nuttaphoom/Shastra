@@ -17,26 +17,47 @@ namespace Vanaring_DepaDemo
     public class StatusEffectHandler
     {
         private CombatEntity _appliedEntity ;
-        List<StatusRuntimeEffect> _currentEffects = new List<StatusRuntimeEffect>();
+        Dictionary<string, List<StatusRuntimeEffect>> _effects = new Dictionary<string, List<StatusRuntimeEffect>>(); 
 
         public StatusEffectHandler(CombatEntity appliedEntity)
         {
-            this._appliedEntity = appliedEntity ;   
+            this._appliedEntity = appliedEntity ;
+
         }
 
         //the effect should be factorize exactly before being applied 
         public IEnumerator ApplyNewEffect(StatusRuntimeEffectFactorySO factory  )
         {
-            Debug.Log("" + _appliedEntity.gameObject.name + " is applied status effect : " + _appliedEntity.name);
-
             IEnumerator co = factory.Factorize(new List<CombatEntity>() { _appliedEntity } )  ;
 
+            string key = factory.StackInfo.StackID() ;  
             while (co.MoveNext())
             {
                 if (co.Current != null && co.Current.GetType().IsSubclassOf(typeof(RuntimeEffect) ))
                 {
+                    if (_effects.ContainsKey(key))
+                    {
+                        if (factory.StackInfo.Stackable)
+                        {
+                            _effects[key].Add(co.Current as StatusRuntimeEffect);
+
+                        }
+                        else if (factory.StackInfo.Overwrite)
+                        {
+                            while (_effects[key].Count > 0)
+                                _effects[key].RemoveAt(0);
+                            
+                            _effects[key].Add(co.Current as StatusRuntimeEffect);
+
+                        }
+                    }
+                    else
+                    {
+                        _effects.Add(key, new List<StatusRuntimeEffect>() );
+                        _effects[key].Add(co.Current as StatusRuntimeEffect); 
+                    }
+
                     //TODO - Visually 
-                    _currentEffects.Add(co.Current as StatusRuntimeEffect) ;
                 }
                 yield return new WaitForEndOfFrame() ; 
             }
@@ -45,33 +66,38 @@ namespace Vanaring_DepaDemo
 
         public IEnumerator ExecuteStatusRuntimeEffectCoroutine()
         {
-            for (int i = 0; i < _currentEffects.Count; i++)
+            foreach (var key in _effects.Keys)
             {
-                StatusRuntimeEffect statusEffect = _currentEffects[i];
-
-                yield return statusEffect.ExecuteRuntimeCoroutine(_appliedEntity);
-                yield return statusEffect.OnExecuteRuntimeDone(_appliedEntity) ;
-
-                statusEffect.UpdateTTLCondition();
-
-                if (statusEffect.IsExpired())
+                for (int i = 0; i < _effects[key].Count; i++)
                 {
-                    //TODO - Remove status effect visually
-                    _currentEffects.RemoveAt(i);
-                    i--;
-                    continue;
+                    StatusRuntimeEffect statusEffect = _effects[key][i];
+
+                    yield return statusEffect.ExecuteRuntimeCoroutine(_appliedEntity);
+                    yield return statusEffect.OnExecuteRuntimeDone(_appliedEntity);
+
+                    statusEffect.UpdateTTLCondition();
+
+                    if (statusEffect.IsExpired())
+                    {
+                        //TODO - Remove status effect visually
+                        _effects[key].RemoveAt(i);
+                        i--;
+                        continue;
+                    }
                 }
             }
         }
 
         public IEnumerator ExecuteAttackStatusRuntimeEffectCoroutine()
         {
-            for (int i = 0; i < _currentEffects.Count; i++)
+            foreach (var key in _effects.Keys)
             {
-                StatusRuntimeEffect statusEffect = _currentEffects[i];
+                for (int i = 0; i < _effects[key].Count; i++)
+                {
+                    StatusRuntimeEffect statusEffect = _effects[key][i];
 
-                yield return statusEffect.BeforeAttackEffect(_appliedEntity);
-
+                    yield return statusEffect.BeforeAttackEffect(_appliedEntity);
+                }
             }
 
         }

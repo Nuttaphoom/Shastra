@@ -3,16 +3,49 @@ using System.Collections;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-
+using System.Diagnostics.Eventing.Reader;
 
 namespace Vanaring_DepaDemo
 {
 
+    [Serializable]
+    public struct StatusStackInfo
+    {
+        [SerializeField]
+        private string stackID ; 
+
+        [SerializeField]
+        private bool _stackable  ;
+        [SerializeField] 
+        private bool _overwriten ;
+
+        public bool Stackable => _stackable  ;  
+        public bool Overwrite => _overwriten ;
+
+        public bool IsSameStatus(string id) {
+            return (stackID == id) ; 
+        } 
+
+        public string StackID()
+        {
+            if (stackID == "")
+                throw new Exception("StackID is null"); 
+            
+            return stackID; 
+        }
+    }
     public abstract class StatusRuntimeEffectFactorySO : RuntimeEffectFactorySO
     {
         [SerializeField]
         [Header("Duration (turn unit) for this status effect")]
         protected int _TTL;
+
+        [SerializeField]
+        [Header("Status when applied multiple instance of same status effect")]
+        protected StatusStackInfo _stackInfo   ;
+
+        public StatusStackInfo StackInfo => _stackInfo ; 
+
     }
 
 
