@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Diagnostics.Eventing.Reader;
+using Unity.VisualScripting.Antlr3.Runtime.Misc;
 
 namespace Vanaring_DepaDemo
 {
@@ -41,6 +42,10 @@ namespace Vanaring_DepaDemo
         protected int _TTL;
 
         [SerializeField]
+        [Header("InfiniteTTL status wait until certain thing happens")] 
+        protected bool _infiniteTTL ;
+
+        [SerializeField]
         [Header("Status when applied multiple instance of same status effect")]
         protected StatusStackInfo _stackInfo   ;
 
@@ -52,9 +57,22 @@ namespace Vanaring_DepaDemo
     //All of the status effect should have "target" assigned to them 
     public abstract class StatusRuntimeEffect : RuntimeEffect
     {
-        //Turn base TTL
-        protected float _timeToLive = 0.0f;
 
+        protected bool _infiniteTTL = false; 
+        //Turn base TTL
+        protected int _timeToLive = 0 ;
+
+        public StatusRuntimeEffect(bool infiniteTTL, int ttl)
+        {
+            this._infiniteTTL = infiniteTTL ;
+            this._timeToLive = ttl ;
+        }
+
+        /// <summary>
+        /// Called before "start" attack scheme (to get benefit from the effect) 
+        /// </summary>
+        /// <param name="caster"></param>
+        /// <returns></returns>
         public virtual IEnumerator BeforeAttackEffect(CombatEntity caster)
         {
             yield return null;
@@ -72,7 +90,8 @@ namespace Vanaring_DepaDemo
 
         public virtual void UpdateTTLCondition()
         {
-            _timeToLive -= 1;
+            if (! _infiniteTTL) 
+                _timeToLive -= 1;
         }
 
 

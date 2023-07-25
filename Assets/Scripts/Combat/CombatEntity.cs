@@ -62,11 +62,6 @@ namespace Vanaring_DepaDemo
             yield return _baseEntityBrain.TurnEnter(); 
         }
 
-        public IEnumerator TEST()
-        {
-            Debug.Log("test");
-            yield return null ; 
-        }
         public  IEnumerator TurnLeave()
         {
             if (_baseEntityBrain == null)

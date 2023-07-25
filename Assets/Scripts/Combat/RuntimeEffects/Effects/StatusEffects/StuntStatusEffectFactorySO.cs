@@ -14,7 +14,7 @@ namespace Vanaring_DepaDemo
 
         public override IEnumerator Factorize(List<CombatEntity> targets)
         {
-            StuntStatusEffect retEffect = new StuntStatusEffect(_TTL);
+            StuntStatusEffect retEffect = new StuntStatusEffect(_TTL,_infiniteTTL);
             foreach (CombatEntity target in targets)
             {
                  retEffect.AssignTarget(target);
@@ -27,9 +27,9 @@ namespace Vanaring_DepaDemo
 
     public class StuntStatusEffect : StatusRuntimeEffect
     {
-        public StuntStatusEffect(int TTL)
+        public StuntStatusEffect(int ttl, bool infTTL) : base(infTTL,ttl)   
         {
-            this._timeToLive = TTL;
+
         }
 
 

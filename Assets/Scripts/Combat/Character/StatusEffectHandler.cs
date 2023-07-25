@@ -54,6 +54,7 @@ namespace Vanaring_DepaDemo
                     else
                     {
                         _effects.Add(key, new List<StatusRuntimeEffect>() );
+                        Debug.Log("status runtime apply " + key);
                         _effects[key].Add(co.Current as StatusRuntimeEffect); 
                     }
 
@@ -94,9 +95,18 @@ namespace Vanaring_DepaDemo
             {
                 for (int i = 0; i < _effects[key].Count; i++)
                 {
+                    Debug.Log("call atk");
                     StatusRuntimeEffect statusEffect = _effects[key][i];
 
                     yield return statusEffect.BeforeAttackEffect(_appliedEntity);
+
+                    if (statusEffect.IsExpired())
+                    {
+                        //TODO - Remove status effect visually
+                        _effects[key].RemoveAt(i);
+                        i--;
+                        continue;
+                    }
                 }
             }
 
