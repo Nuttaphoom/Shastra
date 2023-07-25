@@ -42,7 +42,7 @@ namespace Vanaring_DepaDemo
         protected int _TTL;
 
         [SerializeField]
-        [Header("InfiniteTTL status wait until certain thing happens")] 
+        [Header("InfiniteTTL status wait until certain thing happens, if it happens, it reduce _TTL by one")] 
         protected bool _infiniteTTL ;
 
         [SerializeField]
