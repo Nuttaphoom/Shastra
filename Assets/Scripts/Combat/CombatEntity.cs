@@ -37,7 +37,8 @@ namespace Vanaring_DepaDemo
             _runtimeCharacterStatsAccumulator = new RuntimeCharacterStatsAccumulator(_characterSheet) ;
             _statusEffectHandler = new StatusEffectHandler(this) ;
             _combatEntityAnimationHandler = new CombatEntityAnimationHandler(this, _combatEntityAnimationHandler) ;
-
+            _itemUser.Initialize(this);
+                
             if (! TryGetComponent(out _baseEntityBrain))
             {
                 throw new Exception("BaseEntityBrain haven't been assigned"); 
@@ -52,9 +53,6 @@ namespace Vanaring_DepaDemo
 
             if (_statusEffectHandler == null)
                 throw new Exception("Status Effect Handler hasn't never been init");
-
-
-
             
             yield return (_statusEffectHandler.ExecuteStatusRuntimeEffectCoroutine()) ;
 

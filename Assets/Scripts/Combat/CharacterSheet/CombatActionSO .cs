@@ -12,10 +12,10 @@ namespace Vanaring_DepaDemo
     public class CombatActionSO : ScriptableObject
     {
         [SerializeField]
-        private string _abilityName;
+        protected string _abilityName;
 
         [SerializeField]
-        private string _desscription;
+        protected string _desscription;
         
         [SerializeField]
         private RuntimeEffectFactorySO _effect ;

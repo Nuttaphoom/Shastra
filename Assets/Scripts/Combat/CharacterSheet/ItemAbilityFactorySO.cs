@@ -8,11 +8,9 @@ using UnityEngine;
 namespace Vanaring_DepaDemo
 { 
     [CreateAssetMenu(fileName = "Item Ability", menuName = "ScriptableObject/Combat/ItemAbility")]
-    public class ItemAbilitySO : CombatActionSO
+    public class ItemAbilityFactorySO : CombatActionSO
     {
-        [Header("===Effect of the item===")]
-        [SerializeField]
-        private int _itemEffect;
+         
 
         //[Header("===Require Energy amount before casting===")]
         //[SerializeField]
@@ -22,32 +20,39 @@ namespace Vanaring_DepaDemo
         //[SerializeField]
         //private EnergyModifierData _energyModifier;
 
-        public ItemAbilityRuntime Factorize()
+        public ItemAbilityRuntime FactorizeRuntimeItem()
         {
-            return new ItemAbilityRuntime(_itemEffect, EffectFactory);
+            return new ItemAbilityRuntime(EffectFactory,this) ;
         }
 
     }
 
     public class ItemAbilityRuntime
     {
-        public ItemAbilityRuntime(int itemEffect, RuntimeEffectFactorySO effect)
+        private string _itemName;
+        private string _description;
+
+        private ItemAbilityFactorySO _factory; 
+        private RuntimeEffectFactorySO _effectFactory ;
+
+        public ItemAbilityRuntime(RuntimeEffectFactorySO effect, ItemAbilityFactorySO factory)
         {
-            _effect = effect;
-            _itemEffect = itemEffect;
+            _effectFactory = effect;
+             _factory = factory;  
         }
 
-        private int _itemEffect;
-        private RuntimeEffectFactorySO _effect;
 
         //public RuntimeMangicalEnergy.EnergySide RequireEnergySide { get { return _requiredEnergy.Side; } }
         //public int RequireEnergyAmount { get { return _requiredEnergy.Amount; } }
 
         //public RuntimeMangicalEnergy.EnergySide ModifiedEnergySide { get { return _energyModifier.Side; } }
 
-        public int ItemEffect { get { return _itemEffect; } }
+        public RuntimeEffectFactorySO EffectFactory { get { return _effectFactory; } }
+        public string ItemName => _factory.AbilityName;
+        public string ItemDescrption => _factory.Desscription;
+        
+        
 
-        public RuntimeEffectFactorySO EffectFactory { get { return _effect; } }
     }
 
 }

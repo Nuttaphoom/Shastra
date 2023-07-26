@@ -15,14 +15,14 @@ namespace Vanaring_DepaDemo
         [SerializeField]
         private Transform _socketVerticalLayout;
 
-        private List<ItemAbilitySO> _inventory;
+        private List<ItemAbilityRuntime> _inventory;
         private List<ItemSocketGUI> _GUIinventory;
         // Start is called before the first frame update
-        void Awake()
+        void Start()
         {
             _GUIinventory = new List<ItemSocketGUI>();
-            _inventory = _combatEntity.ItemUser.ItemAbilities;
-            foreach (ItemAbilitySO itemAbility in _inventory)
+            _inventory = _combatEntity.ItemUser.Items;
+            foreach (ItemAbilityRuntime itemAbility in _inventory)
             {
                 if (ItemIsContained(itemAbility))
                 {
@@ -38,12 +38,12 @@ namespace Vanaring_DepaDemo
             _templatePrefab.gameObject.SetActive(false);
         }
 
-        private bool ItemIsContained(ItemAbilitySO itemAbility)
+        private bool ItemIsContained(ItemAbilityRuntime itemAbility)
         {
             bool found = false;
             foreach (ItemSocketGUI eSocket in _GUIinventory)
             {
-                if (eSocket.IsSameItem(itemAbility.AbilityName.ToString()))
+                if (eSocket.IsSameItem(itemAbility.ItemName.ToString()))
                 {
                     eSocket.AddItem(1);
                     found = true;
@@ -53,10 +53,6 @@ namespace Vanaring_DepaDemo
             return found;
         }
 
-        // Update is called once per frame
-        void Update()
-        {
-            
-        }
+         
     }
 }
