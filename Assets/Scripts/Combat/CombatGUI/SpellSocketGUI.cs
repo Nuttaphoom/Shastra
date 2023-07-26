@@ -10,8 +10,17 @@ using System.Collections;
 
 namespace Vanaring_DepaDemo
 {
-    public class SpellSocketGUI : MonoBehaviour  
+    interface ISocketGUI<T>
     {
+        public void HandleGUI(T s);
+    }
+    public class SpellSocketGUI : MonoBehaviour, ISocketGUI<SpellAbilitySO>
+    {
+
+        public void HandleGUI(SpellAbilitySO spell)
+        {
+
+        }
 
         [SerializeField]
         private Button _actionButton ;
