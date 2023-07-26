@@ -13,7 +13,7 @@ namespace Vanaring_DepaDemo
     {
         public override IEnumerator Factorize(List<CombatEntity> targets)
         {
-            DebugStatusEffectApplier retEffect = new DebugStatusEffectApplier(_infiniteTTL,_TTL);
+            DebugStatusEffectApplier retEffect = new DebugStatusEffectApplier(this);
             foreach (CombatEntity target in targets)
                 retEffect.AssignTarget(target);
 
@@ -24,7 +24,7 @@ namespace Vanaring_DepaDemo
 
     public class DebugStatusEffectApplier : StatusRuntimeEffect
     {
-        public DebugStatusEffectApplier(bool inf, int TTL) : base(inf, TTL)
+        public DebugStatusEffectApplier(StatusRuntimeEffectFactorySO factory) : base(factory)
         {
  
         }

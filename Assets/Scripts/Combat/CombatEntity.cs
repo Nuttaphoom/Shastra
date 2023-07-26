@@ -56,7 +56,6 @@ namespace Vanaring_DepaDemo
             
             yield return (_statusEffectHandler.ExecuteStatusRuntimeEffectCoroutine()) ;
 
-
             yield return _baseEntityBrain.TurnEnter(); 
         }
 

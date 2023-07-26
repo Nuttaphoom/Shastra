@@ -20,7 +20,7 @@ namespace Vanaring_DepaDemo
 
         public override IEnumerator Factorize(List<CombatEntity> targets)
         {
-            EnhanceATKStatusEffect retEffect = new EnhanceATKStatusEffect(_TTL, _infiniteTTL, _modifiedPercent, _realIncreasedAmount);
+            EnhanceATKStatusEffect retEffect = new EnhanceATKStatusEffect(this, _modifiedPercent, _realIncreasedAmount);
             foreach (CombatEntity target in targets)
             {
                 retEffect.AssignTarget(target);
@@ -36,7 +36,7 @@ namespace Vanaring_DepaDemo
         private int _modifiedPercent = 0 ;
         private int _realIncreasedAmount = 0; 
 
-        public EnhanceATKStatusEffect(int ttl, bool infTTL,int modifiedPercent,int realIncreasedAmount) : base(infTTL, ttl)
+        public EnhanceATKStatusEffect(StatusRuntimeEffectFactorySO factory, int modifiedPercent,int realIncreasedAmount) : base(factory)
         {
             this._modifiedPercent = modifiedPercent ; 
             this._realIncreasedAmount = realIncreasedAmount ; 

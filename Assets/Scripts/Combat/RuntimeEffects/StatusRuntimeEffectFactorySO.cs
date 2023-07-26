@@ -5,9 +5,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Diagnostics.Eventing.Reader;
 using Unity.VisualScripting.Antlr3.Runtime.Misc;
+using UnityEditor;
 
 namespace Vanaring_DepaDemo
 {
+    public enum EEvokeKey
+    {
+        NOKEY,
+        HAVOC,
+    }
+
 
     [Serializable]
     public struct StatusStackInfo
@@ -46,10 +53,18 @@ namespace Vanaring_DepaDemo
         protected bool _infiniteTTL ;
 
         [SerializeField]
+        [Header("Evoke keys when user want to find specific status effects")]
+        protected EEvokeKey _evokeKey = EEvokeKey.NOKEY ;
+
+        [SerializeField]
         [Header("Status when applied multiple instance of same status effect")]
         protected StatusStackInfo _stackInfo   ;
 
-        public StatusStackInfo StackInfo => _stackInfo ; 
+
+        public StatusStackInfo StackInfo => _stackInfo ;
+        public int TTL => _TTL;
+        public bool InfiniteTTL => _infiniteTTL ;
+        public EEvokeKey EvokeKey => _evokeKey;
 
     }
 
@@ -58,14 +73,16 @@ namespace Vanaring_DepaDemo
     public abstract class StatusRuntimeEffect : RuntimeEffect
     {
 
-        protected bool _infiniteTTL = false; 
+        protected bool _infiniteTTL = false;
         //Turn base TTL
-        protected int _timeToLive = 0 ;
+        protected int _timeToLive = 0;
 
-        public StatusRuntimeEffect(bool infiniteTTL, int ttl)
+        protected EEvokeKey _evokeKey;
+        public StatusRuntimeEffect(StatusRuntimeEffectFactorySO effectFactory)
         {
-            this._infiniteTTL = infiniteTTL ;
-            this._timeToLive = ttl ;
+            this._evokeKey = effectFactory.EvokeKey ; 
+            this._infiniteTTL = effectFactory.InfiniteTTL ;
+            this._timeToLive = effectFactory.TTL ;
         }
 
         /// <summary>
@@ -78,7 +95,13 @@ namespace Vanaring_DepaDemo
             yield return null;
         }
 
-        public virtual IEnumerator BeforeHurtEffect(CombatEntity caster)
+        /// <summary>
+        /// attacker = CombatEntity who attacks
+        /// subject = CombatEntity who is attacked
+        /// </summary>
+        /// <param name="caster"></param>
+        /// <returns></returns>
+        public virtual IEnumerator BeforeHurtEffect(CombatEntity attacker, CombatEntity subject)
         {
             yield return null;
         }
@@ -90,12 +113,13 @@ namespace Vanaring_DepaDemo
 
         public virtual void UpdateTTLCondition()
         {
-            if (! _infiniteTTL) 
+            if (!_infiniteTTL)
                 _timeToLive -= 1;
         }
 
-
-
+        public bool IsCorrectEvokeKey(EEvokeKey evokeKey)
+        {
+            return (_evokeKey == evokeKey) ;
+        }
     }
-
 }
