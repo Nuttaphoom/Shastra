@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.VFX;
 
 namespace Vanaring_DepaDemo
 {
@@ -13,6 +14,11 @@ namespace Vanaring_DepaDemo
         [SerializeField]
         private BotBehaviorSocketSO _behaviorSocketSOs;
 
+        [SerializeField]
+        private GameObject _telegraphyPrefab;
+
+        private VisualEffect _vfxObject = null;
+
         int _nextBehavior = 0;
         int _currentBehavior = 0;
 
@@ -20,6 +26,13 @@ namespace Vanaring_DepaDemo
         {
             yield return null;
             _nextBehavior = Random.Range(0, _behaviorSocketSOs.GetBehaviorSize);
+            if (_vfxObject == null)
+            {
+                _telegraphyPrefab.SetActive(true);
+                _vfxObject = _telegraphyPrefab.GetComponent<VisualEffect>();
+            }
+            Debug.Log("100");
+            _vfxObject.playRate = 100;
         }
 
         public List<RuntimeEffectFactorySO> GetBehaviorEffect()

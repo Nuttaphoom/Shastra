@@ -22,6 +22,7 @@ namespace Vanaring_DepaDemo
         }
         public override IEnumerator GetAction()
         {
+            //Debug.Log("GetAction!!!!!!");
             yield return new    WaitForSeconds(3.0f); 
             foreach (RuntimeEffectFactorySO eff in _botBehaviorHandler.GetBehaviorEffect())
             {
@@ -50,6 +51,7 @@ namespace Vanaring_DepaDemo
         public override IEnumerator TurnLeave()
         {
             //calculate next behavior 
+            Debug.Log("TurnLeave!");
             yield return _botBehaviorHandler.CalculateNextBehavior(); 
 
             yield return null; 
@@ -57,6 +59,7 @@ namespace Vanaring_DepaDemo
 
         public override IEnumerator TakeControl()
         {
+            //Debug.Log("TakeControl!!!!!!");
             yield return null;
         }
 

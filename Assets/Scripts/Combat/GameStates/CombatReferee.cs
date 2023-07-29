@@ -132,6 +132,7 @@ namespace Vanaring_DepaDemo
             }
             //While loop will keep being called until the turn is end
             while (_activeEntities.Count > 0) {
+                //Debug.Log("_activeEntities Count!!!!");
                 CombatEntity _entity = _activeEntities[_currentEntityIndex] ;
 
                 IEnumerator actionCoroutine = _entity.GetAction() ;
@@ -163,6 +164,7 @@ namespace Vanaring_DepaDemo
 
             foreach (CombatEntity entity in _activeEntities)
             {
+                Debug.Log("leave turn!!!!");
                 yield return entity.TurnLeave() ;
             }
 

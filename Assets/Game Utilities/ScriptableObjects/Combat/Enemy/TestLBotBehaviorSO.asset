@@ -9,12 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4b32bddd7cdd7fe4d8debf176d667e75, type: 3}
-  m_Name: EnergyModifierRuntimeEffectFactory
+  m_Script: {fileID: 11500000, guid: 3afe9cb98b612154a9da824bf7815921, type: 3}
+  m_Name: TestLBotBehaviorSO
   m_EditorClassIdentifier: 
-  _targetSelector:
-    _maxTargetSize: 1
-    _targetSide: 1
-  _data:
-    _side: 1
-    _amount: 40
+  actionname: ModifyingSpell L
+  _factories:
+  - {fileID: 11400000, guid: e48c9baf5af539d418817446a330d6ae, type: 2}
