@@ -46,7 +46,9 @@ namespace Vanaring_DepaDemo
         private void DisplaySpellPanel()
         {
             _mainPanel.gameObject.SetActive(false);
-            _spellPanel.gameObject.SetActive(true) ; 
+            _spellPanel.gameObject.SetActive(true) ;
+            _itemPanel.gameObject.SetActive(false);
+
         }
 
         private void DisplayWeaponPanel()
@@ -58,13 +60,15 @@ namespace Vanaring_DepaDemo
         {
             _mainPanel.gameObject.SetActive(false);
             _spellPanel.gameObject.SetActive(false);
+            _itemPanel.gameObject.SetActive(false);
         }
 
         public void EnableGraphicalElements()
         {
             _mainPanel.gameObject.SetActive(true) ;
             _spellPanel.gameObject.SetActive(false);
-        } 
+            _itemPanel.gameObject.SetActive(false);
+        }
 
 
     }

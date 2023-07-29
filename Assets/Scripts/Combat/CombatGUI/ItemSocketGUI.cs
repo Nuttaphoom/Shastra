@@ -27,20 +27,20 @@ namespace Vanaring_DepaDemo
         [SerializeField]
         private Image _skillImage;  
 
-        private ItemAbilitySO _itemSO;
+        private ItemAbilityRuntime _item ;
 
         private CombatEntity _caster;
 
         private int _itemAmount;
 
-        public void Init(ItemAbilitySO item, CombatEntity combatEntity)
-        { 
-            _itemSO = item;
+        public void Init(ItemAbilityRuntime item, CombatEntity combatEntity)
+        {
+            _item = item;
             this._caster = combatEntity;
             _actionButton.onClick.AddListener(ChooseItem) ;
 
-            _textMeshProUGUI.text = item.AbilityName.ToString() ;
-            _itemName = item.AbilityName.ToString();
+            _textMeshProUGUI.text = item.ItemName.ToString() ;
+            _itemName = item.ItemName.ToString();
             _itemAmount = 1;
         }
 
@@ -57,13 +57,8 @@ namespace Vanaring_DepaDemo
 
         private void ChooseItem()
         {
-            
-            //SpellAbilityRuntime runtimeSpell = _itemSO.Factorize();
-            //if (_caster.SpellCaster.IsEnergySufficient(runtimeSpell))
-            //{
-            //    StartCoroutine((TargetSelectionFlowControl.Instance.InitializeSpellTargetSelectionScheme
-            //       (_caster, runtimeSpell)));
-            //}
+                StartCoroutine((TargetSelectionFlowControl.Instance.InitializeTargetSelectionScheme
+                   (_caster, _item.EffectFactory)));   
         }
     }
 }

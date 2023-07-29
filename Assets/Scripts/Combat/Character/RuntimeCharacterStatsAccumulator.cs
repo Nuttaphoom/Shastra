@@ -25,7 +25,7 @@ namespace Vanaring_DepaDemo
         public RuntimeCharacterStatsAccumulator(CharacterSheetSO _entityStatsSO)
         {
             _characterStats.Add(ECharacterStatType.HP, new RuntimeStat(_entityStatsSO.GetHP, _entityStatsSO.GetHP));
-            _characterStats.Add(ECharacterStatType.ATK, new RuntimeStat(_entityStatsSO.GetATK, _entityStatsSO.GetATK)) ;
+            _characterStats.Add(ECharacterStatType.ATK, new RuntimeStat(VanaringMathConst.InfinityValue ,_entityStatsSO.GetATK)) ;
             _characterStats.Add(ECharacterStatType.Stunt, new RuntimeStat(1,0));
 
         }
@@ -33,7 +33,24 @@ namespace Vanaring_DepaDemo
         #region ATKStatsManipulationMethod  
         public void ModifyATKAmount(int atk)
         {
-            _characterStats[ECharacterStatType.ATK].ModifyValue(atk);
+            _characterStats[ECharacterStatType.ATK].ModifyValue(atk,true,true) ;
+
+        }
+
+        public void ModifyATKAmountByPercent(int percent)
+        {
+            Debug.Log("increased ATK by percent " + percent);
+
+
+            int currentValue = _characterStats[ECharacterStatType.ATK].GetStatValue() ; 
+            int increasedAmount = (currentValue * percent ) / 100 ;
+            Debug.Log("increased ATK by   " + increasedAmount);
+            Debug.Log("before increase " + _characterStats[ECharacterStatType.ATK].GetStatValue());
+
+            _characterStats[ECharacterStatType.ATK].ModifyValue(increasedAmount, true, true);
+
+            Debug.Log("after increase " + _characterStats[ECharacterStatType.ATK].GetStatValue());
+
         }
 
         public int GetATKAmount()

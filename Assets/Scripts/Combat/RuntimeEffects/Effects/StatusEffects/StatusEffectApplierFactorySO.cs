@@ -38,18 +38,20 @@ public class StatusEffectApplierRuntimeEffect : RuntimeEffect
     {
         foreach (CombatEntity target in _targets)
         {
+
             if (target is not IStatusEffectable)
                 throw new System.Exception("Assigned target is not IStatusEffectable");
 
             foreach (StatusRuntimeEffectFactorySO effect in _effects)
             {
-                Debug.Log("yield return to  " + target) ;
-                yield return (target).TakeControl(); 
-                
+                //yield return target.TEST(); 
                 yield return (target).GetStatusEffectHandler().ApplyNewEffect(effect);
-                Debug.Log("finish yield return"); 
             }
         }
+
+        yield return null; 
+
+
         yield return null;
     }
 
