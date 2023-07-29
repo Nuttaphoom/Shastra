@@ -6,7 +6,7 @@ using TMPro;
 
 namespace Vanaring_DepaDemo
 {
-    public class BarScaler : MonoBehaviour
+    public class EnergyBarScaler : MonoBehaviour
     {
         [SerializeField]
         private CombatEntity _owner  ;
@@ -36,11 +36,11 @@ namespace Vanaring_DepaDemo
         {
             if (side == RuntimeMangicalEnergy.EnergySide.LightEnergy)
             {
-                increaseScale(val);
+                lightScaleIncrease(val);
             }
             else
             {
-                decreaseScale(val);
+                lightScaleDecrease(val);
             }
         }
 
@@ -71,16 +71,16 @@ namespace Vanaring_DepaDemo
             //test
             if (Input.GetKeyDown("e"))
             {
-                increaseScale(10);
+                lightScaleIncrease(10);
                 Debug.Log(lightScale);
             }
             if (Input.GetKeyDown("q"))
             {
-                decreaseScale(10);
+                lightScaleDecrease(10);
                 Debug.Log(lightScale);
             }
         }
-        public void increaseScale(int val)
+        public void lightScaleIncrease(int val)
         {
             if(lightScale + val > 100)
             {
@@ -91,7 +91,7 @@ namespace Vanaring_DepaDemo
             StartCoroutine(IEAnimateBarScale());
             //UpdateEnergyBarScaleGUI();
         }
-        public void decreaseScale(int val)
+        public void lightScaleDecrease(int val)
         {
             if (lightScale - val < 0)
             {
