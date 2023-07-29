@@ -31,12 +31,7 @@ namespace Vanaring_DepaDemo
             SpellAbilityRuntime latestSpell = null;
             if (TargetSelectionFlowControl.Instance.PrepareAction() )
             {
-
                 latestSpell = TargetSelectionFlowControl.Instance.IsLatedActionSpell();
-                if (latestSpell == null)
-                {
-                    Debug.Log("latestSpell is null"); 
-                }
                 var latestAction = TargetSelectionFlowControl.Instance.GetLatestAction();
                 InitializeAction(latestAction.Item1, latestAction.Item2);
             }
@@ -80,7 +75,7 @@ namespace Vanaring_DepaDemo
                 _combatGraphicalHandler = GetComponent<CombatGraphicalHandler>();
 
             _combatGraphicalHandler.EnableGraphicalElements();
-
+            Debug.Log(gameObject.name+ "take control");
             yield return null;
         }
 

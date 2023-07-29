@@ -11,6 +11,11 @@ using Vanaring_DepaDemo;
 
 public class TargetSelectionFlowControl : MonoBehaviour
 {
+
+    [Header("Broadcast to ")]
+    [SerializeField]
+    private CombatEntityEventChannel _combatEntityEventChannel; 
+
     private  List<CombatEntity> _validTargets = new List<CombatEntity>();
     private List<CombatEntity> _selectedTarget = new List<CombatEntity>(); 
 
@@ -22,8 +27,9 @@ public class TargetSelectionFlowControl : MonoBehaviour
 
     private SpellAbilityRuntime _latestSelectedSpell; 
 
-    private RuntimeEffectFactorySO _latestAction ; 
-    
+    private RuntimeEffectFactorySO _latestAction ;
+
+    private bool _forceStop = false; 
     private void Awake()
     {
         Instance = this; 
@@ -55,8 +61,19 @@ public class TargetSelectionFlowControl : MonoBehaviour
                 if (_validTargets.Count != 0)
                     _currentSelectIndex = _currentSelectIndex % _validTargets.Count;
                 
+            }else if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                ForceStop(); 
             }
         } 
+    }
+
+    private void ForceStop()
+    {
+        _activlySelecting = true;
+        _latestAction = null;
+        _forceStop = false;
+        _latestSelectedSpell = null; 
     }
 
     public (RuntimeEffectFactorySO, List<CombatEntity>) GetLatestAction()
@@ -79,23 +96,33 @@ public class TargetSelectionFlowControl : MonoBehaviour
     {
         return _activlySelecting && _latestAction != null ; 
     }
+
+    public void TEST(CombatEntity com, Null c, Null s )
+    {
+
+    }
     
     public  IEnumerator InitializeTargetSelectionScheme(CombatEntity caster, RuntimeEffectFactorySO action, bool randomTarget = false)
     {
-
         if (_activlySelecting)
             throw new Exception("Try to active selection scheme while it is already active");
 
-        ColorfulLogger.LogWithColor("Initialize Target Selection", Color.green); 
+        ColorfulLogger.LogWithColor("Initialize Target Selection", Color.green);         
+
         _activlySelecting = true;
         _latestAction = null;
-
 
         ValidateData();
         AssignPossibleTargets(caster, action); 
 
         while (_selectedTarget.Count < action.TargetSelect.MaxTarget )
         {
+            if (_forceStop)
+            {
+                _forceStop = false ;
+                ColorfulLogger.LogWithColor("Cancel Target Selection", Color.green);
+                goto End; 
+            }
             if (randomTarget)
             {
                 _currentSelectIndex = UnityEngine.Random.Range(0, _validTargets.Count);
@@ -110,6 +137,9 @@ public class TargetSelectionFlowControl : MonoBehaviour
         }
 
         _latestAction = action;
+
+        End:
+
 
         yield return null ;  
     }
@@ -148,7 +178,6 @@ public class TargetSelectionFlowControl : MonoBehaviour
 [Serializable]
 public class TargetSelector    
 {
-    
     private enum TargetSide
     {
         Self,Oppose

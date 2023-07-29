@@ -3,9 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System.ComponentModel;
+using UnityEditor;
+using Unity.Collections;
+using Unity.Jobs;
 
 namespace Vanaring_DepaDemo
 {
+    
     public class EnergyBarScaler : MonoBehaviour
     {
         [SerializeField]
@@ -15,21 +20,29 @@ namespace Vanaring_DepaDemo
         public TextMeshProUGUI darkNumText;
 
         [Header("EnergyBarValue")]
-        [SerializeField] private float lightScale;
-        [SerializeField] private float darkScale;
+        
+        private float lightScale = 50 ;
+        
+        private float darkScale = 50;
+        
         private float maxBarVal = 100.0f;
         [SerializeField] private Image lightImage;
-        [SerializeField] private Image lightImageIcon;
 
         [Header("HPBarValue")]
-        [SerializeField] private float hpScale;
+        private float hpScale;
         private float maxHP = 100.0f;
         [SerializeField] private Image hpImage;
-        [SerializeField] private Image hpImageIcon;
+   
 
         private void Awake()
         {
-            _owner.SpellCaster.SubOnModifyEnergy(OnEnergyModified); 
+            _owner.SpellCaster.SubOnModifyEnergy(OnEnergyModified);
+            lightScale = 50;
+            darkScale = 50;
+            UpdateEnergyBarScaleGUI();
+            UpdateHPBarScaleGUI();
+            lightNumText.text = lightScale.ToString();
+            darkNumText.text = darkScale.ToString();
         }
 
         private void OnEnergyModified(RuntimeMangicalEnergy.EnergySide side , int val)
@@ -47,25 +60,14 @@ namespace Vanaring_DepaDemo
         private void UpdateEnergyBarScaleGUI()
         {
             lightImage.fillAmount = (int.Parse(lightNumText.text) / maxBarVal);
-            lightImageIcon.fillAmount = (int.Parse(lightNumText.text) / maxBarVal);
         }
 
         private void UpdateHPBarScaleGUI()
         {
             hpImage.fillAmount = (hpScale / maxHP);
-            hpImageIcon.fillAmount = (hpScale / maxHP);
         }
 
-        private void Start()
-        {
-            lightScale = 50;
-            darkScale = 50;
-            UpdateEnergyBarScaleGUI();
-            UpdateHPBarScaleGUI();
-            lightNumText.text = lightScale.ToString();
-            darkNumText.text = darkScale.ToString();
-            
-        }
+         
         private void Update()
         {
             //test
