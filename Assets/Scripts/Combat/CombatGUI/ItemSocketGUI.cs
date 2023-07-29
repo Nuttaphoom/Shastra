@@ -57,8 +57,8 @@ namespace Vanaring_DepaDemo
 
         private void ChooseItem()
         {
-                StartCoroutine((TargetSelectionFlowControl.Instance.InitializeTargetSelectionScheme
-                   (_caster, _item.EffectFactory)));   
+            throw new Exception("Choose Item functinolity hasn't been implemented (the choose button scheme was re structured)");
+            //TargetSelectionFlowControl.Instance.StartInitializeTargetSelectionScheme(_caster, _item.EffectFactory) ;
         }
     }
 }

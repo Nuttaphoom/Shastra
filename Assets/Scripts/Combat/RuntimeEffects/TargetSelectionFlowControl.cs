@@ -6,15 +6,15 @@ using Unity.VisualScripting;
 using UnityEditor;
 using UnityEditor.Build;
 using UnityEngine;
+using UnityEngine.Rendering.VirtualTexturing;
 using Vanaring_DepaDemo;
  
 
 public class TargetSelectionFlowControl : MonoBehaviour
 {
-
     [Header("Broadcast to ")]
     [SerializeField]
-    private CombatEntityEventChannel _combatEntityEventChannel; 
+    private CombatEntityEventChannel OnTargetSelectionSchemeStart ; 
 
     private  List<CombatEntity> _validTargets = new List<CombatEntity>();
     private List<CombatEntity> _selectedTarget = new List<CombatEntity>(); 
@@ -97,63 +97,69 @@ public class TargetSelectionFlowControl : MonoBehaviour
         return _activlySelecting && _latestAction != null ; 
     }
 
-    public void TEST(CombatEntity com, Null c, Null s )
-    {
+    #region Static Methods 
+   
 
-    }
-    
-    public  IEnumerator InitializeTargetSelectionScheme(CombatEntity caster, RuntimeEffectFactorySO action, bool randomTarget = false)
+
+
+
+    public IEnumerator InitializeSpellTargetSelectionScheme(CombatEntity caster, SpellAbilityRuntime spell, bool randomTarget = false)
     {
         if (_activlySelecting)
             throw new Exception("Try to active selection scheme while it is already active");
 
-        ColorfulLogger.LogWithColor("Initialize Target Selection", Color.green);         
-
-        _activlySelecting = true;
-        _latestAction = null;
-
-        ValidateData();
-        AssignPossibleTargets(caster, action); 
-
-        while (_selectedTarget.Count < action.TargetSelect.MaxTarget )
-        {
-            if (_forceStop)
-            {
-                _forceStop = false ;
-                ColorfulLogger.LogWithColor("Cancel Target Selection", Color.green);
-                goto End; 
-            }
-            if (randomTarget)
-            {
-                _currentSelectIndex = UnityEngine.Random.Range(0, _validTargets.Count);
-                _selectedTarget.Add(_validTargets[_currentSelectIndex]);
-                ColorfulLogger.LogWithColor("AI Action target is " + _validTargets[_currentSelectIndex], Color.yellow);  
-                _validTargets.RemoveAt(_currentSelectIndex); 
-                
-                continue ;
-            }
-
-            yield return new WaitForEndOfFrame();
-        }
-
-        _latestAction = action;
-
-        End:
-
-
-        yield return null ;  
-    }
-    
-    public IEnumerator InitializeSpellTargetSelectionScheme(CombatEntity caster, SpellAbilityRuntime spell, bool randomTarget = false)
-    {
         _latestSelectedSpell = spell;
 
         yield return InitializeTargetSelectionScheme(caster,spell.EffectFactory,randomTarget) ;
          
 
     }
+    #endregion
 
-    
+    #region Private
+    public IEnumerator InitializeTargetSelectionScheme(CombatEntity caster, RuntimeEffectFactorySO action, bool randomTarget = false)
+    {
+        if (_activlySelecting)
+            throw new Exception("Try to active selection scheme while it is already active");
+
+        OnTargetSelectionSchemeStart.PlayEvent(caster);
+
+        ColorfulLogger.LogWithColor("Initialize Target Selection", Color.green);
+
+        _activlySelecting = true;
+        _latestAction = null;
+
+        ValidateData();
+        AssignPossibleTargets(caster, action);
+
+        while (_selectedTarget.Count < action.TargetSelect.MaxTarget)
+        {
+            if (_forceStop)
+            {
+                _forceStop = false;
+                ColorfulLogger.LogWithColor("Cancel Target Selection", Color.green);
+                goto End;
+            }
+            if (randomTarget)
+            {
+                _currentSelectIndex = UnityEngine.Random.Range(0, _validTargets.Count);
+                _selectedTarget.Add(_validTargets[_currentSelectIndex]);
+                ColorfulLogger.LogWithColor("AI Action target is " + _validTargets[_currentSelectIndex], Color.yellow);
+                _validTargets.RemoveAt(_currentSelectIndex);
+
+                continue;
+            }
+            Debug.Log(_selectedTarget.Count + " vs " + action.TargetSelect.MaxTarget);
+            yield return new WaitForEndOfFrame();
+        }
+
+        _latestAction = action;
+
+    End:
+
+
+        yield return null;
+    }
 
     private void AssignPossibleTargets(CombatEntity caster, RuntimeEffectFactorySO action)
     {
@@ -172,6 +178,7 @@ public class TargetSelectionFlowControl : MonoBehaviour
         _selectedTarget = new List<CombatEntity>();
         _currentSelectIndex = 0;
     }
+    #endregion
 }
 
 

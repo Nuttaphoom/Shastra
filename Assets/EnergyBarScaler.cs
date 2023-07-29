@@ -36,13 +36,23 @@ namespace Vanaring_DepaDemo
 
         private void Awake()
         {
-            _owner.SpellCaster.SubOnModifyEnergy(OnEnergyModified);
             lightScale = 50;
             darkScale = 50;
             UpdateEnergyBarScaleGUI();
             UpdateHPBarScaleGUI();
             lightNumText.text = lightScale.ToString();
             darkNumText.text = darkScale.ToString();
+        }
+
+        private void OnEnable()
+        {
+            _owner.SpellCaster.SubOnModifyEnergy(OnEnergyModified);
+
+        }
+
+        private void OnDisable()
+        {
+            _owner.SpellCaster.UnSubOnModifyEnergy(OnEnergyModified);
         }
 
         private void OnEnergyModified(RuntimeMangicalEnergy.EnergySide side , int val)

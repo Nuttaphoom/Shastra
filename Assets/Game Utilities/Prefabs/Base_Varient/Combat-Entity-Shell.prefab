@@ -1045,6 +1045,7 @@ GameObject:
   - component: {fileID: 5545487563961315906}
   - component: {fileID: 6137838095766412537}
   - component: {fileID: 8392231529484741683}
+  - component: {fileID: 722352022195908904}
   m_Layer: 0
   m_Name: Combat-Entity-Shell
   m_TagString: Untagged
@@ -1081,8 +1082,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _characterSheet: {fileID: 0}
-  _spellCaster:
-    _spellAbilities: []
+  _spellCaster: {fileID: 722352022195908904}
   _itemUser:
     _itemAbilities: []
   _combatEntityAnimationHandler: {fileID: 6137838095766412537}
@@ -1099,6 +1099,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0313c7f10f00e9340a9792dfd67e77d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  OnTargetSelectionSchemeStart: {fileID: 11400000, guid: 1e9050e9d3c378f448db94ea309439fc, type: 2}
   _itemButton: {fileID: 8264156161497259021}
   _spellButton: {fileID: 2124068535465552329}
   _weaponButton: {fileID: 3808094540615621616}
@@ -1143,6 +1144,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _statusEffectFactory: {fileID: 11400000, guid: 711b3fdb8207def469538edd1bc5e13b, type: 2}
+--- !u!114 &722352022195908904
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1791284638935840313}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99e08b160a785144191e8aba8883c539, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _spellAbilities: []
 --- !u!1 &1804415277746990593
 GameObject:
   m_ObjectHideFlags: 0
@@ -1774,9 +1788,7 @@ MonoBehaviour:
   lightNumText: {fileID: 3882765441047858594}
   darkNumText: {fileID: 7719547003370795366}
   lightImage: {fileID: 4233160917927242381}
-  hpScale: 0
   hpImage: {fileID: 1759276226706477756}
-  hpImageIcon: {fileID: 0}
 --- !u!1 &2538119367756543536
 GameObject:
   m_ObjectHideFlags: 0
@@ -3954,9 +3966,7 @@ MonoBehaviour:
   lightNumText: {fileID: 0}
   darkNumText: {fileID: 0}
   lightImage: {fileID: 0}
-  hpScale: 0
   hpImage: {fileID: 0}
-  hpImageIcon: {fileID: 0}
 --- !u!1 &8273031900595175173
 GameObject:
   m_ObjectHideFlags: 0

@@ -43,6 +43,12 @@ namespace Vanaring_DepaDemo
             {
                 throw new Exception("BaseEntityBrain haven't been assigned"); 
             }
+
+            if (_spellCaster == null)
+            {
+                throw new Exception("SpellCaster haven't been assigned (should never use 'GetComponent' for SpellCaster as it would be too slow') ");
+
+            }
         }
 
     #region Turn Handler Methods 
@@ -117,7 +123,7 @@ namespace Vanaring_DepaDemo
 
         #endregion
 
-        #region InterfaceFunction 
+    #region InterfaceFunction 
 
         public void LogicHurt(int inputdmg)
     {
