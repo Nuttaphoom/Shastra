@@ -9,9 +9,9 @@ namespace Vanaring_DepaDemo
         public BarScaler _bs;
         public float newSize = 200f; // The new size for the image
 
-        public void ResizeImage()
-        {
-            _bs.ResizeImage(newSize);
-        }
+        //public void ResizeImage()
+        //{
+        //    _bs.ResizeImage(newSize);
+        //}
     }
 }

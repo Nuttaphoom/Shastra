@@ -11,17 +11,21 @@ namespace Vanaring_DepaDemo
         [SerializeField]
         private CombatEntity _owner  ;
 
-        public Image image;
-        public Image targetpoint;
-        private int lightNum = 50;
-        private int darkNum = 50;
-        private int lightNumA = 50;
-        private int darkNumA = 50;
-        public TextMeshProUGUI lightNumImg;
-        public TextMeshProUGUI darkNumImg;
-        private int _size;
-        private int maxBar = 100;
-        private float mul = 2.2f;
+        public TextMeshProUGUI lightNumText;
+        public TextMeshProUGUI darkNumText;
+
+        [Header("EnergyBarValue")]
+        [SerializeField] private float lightScale;
+        [SerializeField] private float darkScale;
+        private float maxBarVal = 100.0f;
+        [SerializeField] private Image lightImage;
+        [SerializeField] private Image lightImageIcon;
+
+        [Header("HPBarValue")]
+        [SerializeField] private float hpScale;
+        private float maxHP = 100.0f;
+        [SerializeField] private Image hpImage;
+        [SerializeField] private Image hpImageIcon;
 
         private void Awake()
         {
@@ -29,84 +33,93 @@ namespace Vanaring_DepaDemo
         }
 
         private void OnEnergyModified(RuntimeMangicalEnergy.EnergySide side , int val)
-        { 
-
+        {
             if (side == RuntimeMangicalEnergy.EnergySide.LightEnergy)
             {
                 increaseScale(val);
-            }else
+            }
+            else
             {
                 decreaseScale(val);
             }
+        }
 
+        private void UpdateEnergyBarScaleGUI()
+        {
+            lightImage.fillAmount = (int.Parse(lightNumText.text) / maxBarVal);
+            lightImageIcon.fillAmount = (int.Parse(lightNumText.text) / maxBarVal);
+        }
 
+        private void UpdateHPBarScaleGUI()
+        {
+            hpImage.fillAmount = (hpScale / maxHP);
+            hpImageIcon.fillAmount = (hpScale / maxHP);
         }
 
         private void Start()
         {
-            _size = 110;
-            lightNumImg.text = lightNum.ToString();
-            darkNumImg.text = darkNum.ToString();
-            ResizeImage(_size);
+            lightScale = 50;
+            darkScale = 50;
+            UpdateEnergyBarScaleGUI();
+            UpdateHPBarScaleGUI();
+            lightNumText.text = lightScale.ToString();
+            darkNumText.text = darkScale.ToString();
+            
         }
         private void Update()
         {
-            
+            //test
+            if (Input.GetKeyDown("e"))
+            {
+                increaseScale(10);
+                Debug.Log(lightScale);
+            }
+            if (Input.GetKeyDown("q"))
+            {
+                decreaseScale(10);
+                Debug.Log(lightScale);
+            }
         }
-        public void ResizeImage(float newSize)
+        public void increaseScale(int val)
         {
-            RectTransform rectTransform = image.GetComponent<RectTransform>();
-            rectTransform.sizeDelta = new Vector2(newSize, newSize);
+            if(lightScale + val > 100)
+            {
+                Debug.Log("Value can't be exceed 100!");
+                return;
+            }
+            lightScale += val;
+            StartCoroutine(IEAnimateBarScale());
+            //UpdateEnergyBarScaleGUI();
         }
-        public void increaseScale(int num)
+        public void decreaseScale(int val)
         {
-            _size = _size + 10;
-            lightNumA += num;
-            darkNumA -= num;
-            StartCoroutine(increaseDark());
-            ResizeImage(_size);
-        }
-        public void decreaseScale(int num)
-        {
-            _size = _size - num;
-            lightNumA -= num;
-            darkNumA += num ;
-            StartCoroutine(increaseDark());
-            ResizeImage(_size);
+            if (lightScale - val < 0)
+            {
+                Debug.Log("Value can't be lower than 0!");
+                return;
+            }
+            lightScale -= val;
+            StartCoroutine(IEAnimateBarScale());
+            //UpdateEnergyBarScaleGUI();
         }
 
-        private IEnumerator increaseDark()
+        private IEnumerator IEAnimateBarScale()
         {
-            while (lightNum < lightNumA)
+            while (int.Parse(lightNumText.text) < lightScale)
             {
-                lightNum += 1;
-                darkNum -= 1;
-                lightNumImg.text = lightNum.ToString();
-                darkNumImg.text = darkNum.ToString();
+                lightNumText.text = (int.Parse(lightNumText.text) + 1).ToString();
+                darkNumText.text = (int.Parse(darkNumText.text) - 1).ToString();
+                UpdateEnergyBarScaleGUI();
                 yield return new WaitForSeconds(0.1f);
             }
-            while (darkNum < darkNumA)
+            while (int.Parse(lightNumText.text) > lightScale)
             {
-                darkNum += 1;
-                lightNum -= 1;
-                lightNumImg.text = lightNum.ToString();
-                darkNumImg.text = darkNum.ToString();
+                lightNumText.text = (int.Parse(lightNumText.text) - 1).ToString();
+                darkNumText.text = (int.Parse(darkNumText.text) + 1).ToString();
+                UpdateEnergyBarScaleGUI();
                 yield return new WaitForSeconds(0.1f);
             }
             yield return null;
         }
-
-        private IEnumerator increaseLight()
-        {
-            
-            yield return null;
-        }
-
-
-        //public void target()
-        //{
-        //    if(targetpoint.gameObject.active == tru[e)
-        //    targetpoint.gameObject.SetActive(true);
-        //}
     }
 }
