@@ -58,6 +58,6 @@ public class ItemUserHandler : MonoBehaviour //inventory
     public void RemoveItem(ItemAbilityRuntime item)
     {
         //TODO - visually remove item from ivnentory 
-        _runtimeItems.Remove(item) ;
+        //_runtimeItems.Remove(item) ;
     }
 }

@@ -1,13 +1,14 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Resources;
 using System.Security.AccessControl;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
-
+using UnityEngine.Events;
 
 namespace Vanaring_DepaDemo
 {
@@ -27,40 +28,35 @@ namespace Vanaring_DepaDemo
             _animator = _mesh.GetComponent<Animator>() ;  
         }
 
-        public IEnumerator PlayActionAnimation(ActionAnimationInfo actionAnimation, List<CombatEntity> targets = null)
+        public IEnumerator PlayTriggerAnimation(string triggerName)
         {
-            //AnimatorOverrideController overrideController = new AnimatorOverrideController(_animator.runtimeAnimatorController);
+            _animator.SetTrigger(triggerName) ;
 
-            //overrideController.runtimeAnimatorController.animationClips[0] = null;  
-
-            //_animator.StopPlayback();
-
-            //_animator.Play(actionAnimation.SkeletonAnimationClip);  
-            _animator.SetTrigger(actionAnimation.TrigerID) ;
-
-            List<GameObject> vfxs = new List<GameObject>();
-            GameObject vfx = Instantiate(actionAnimation.CasterVfxAnimationPrefab, _mesh.transform.position, Quaternion.identity);
-            vfxs.Add(vfx);
-            if (targets != null)
-            {
-                foreach (CombatEntity combatEntity in targets)
-                {
-                    vfx = Instantiate(actionAnimation.TargetVfxAnimationPrefab, combatEntity.transform.position, Quaternion.identity);
-                    vfxs.Add(vfx);
-                }
-            }
-
-            while (_animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1.0f)
-            {
-                yield return null ;  
-            }
-
-            yield return new WaitForSeconds(3.0f) ;
-
-            foreach (GameObject gameObject in vfxs)
-            {
-                gameObject.SetActive(false);
-            }
+            yield return new WaitForSeconds(3.0f);
         }
+        public IEnumerator PlayActionAnimation(ActionAnimationInfo actionAnimation )
+        {
+            Debug.Log("PlayActionAnimation Start"); 
+
+            //Self VFX
+            GameObject vfx = Instantiate(actionAnimation.CasterVfxAnimationPrefab, _mesh.transform.position, Quaternion.identity);
+
+            //Play Animation 
+            yield return PlayTriggerAnimation(actionAnimation.SelfTrigerID);
+
+            Debug.Log("PlayActionAnimation End");
+            Destroy(vfx); 
+ 
+        }
+
+        public IEnumerator PlayVFXActionAnimation<T>(ActionAnimationInfo actionAnimation, CombatEntity target, VFXEntity<T>.VFXCallback argc, T param  )
+        {
+            GameObject vfx = Instantiate(actionAnimation.TargetVfxAnimationPrefab, target.transform.position, Quaternion.identity);
+            CombatEntity entity = target;
+            VFXEntity<T> vfxEntity = new VFXEntity<T>(target.gameObject, vfx, 3.0f, argc  );
+            yield return (vfxEntity.PlayVFX(param));
+        }
+
+
     }
 }

@@ -5,6 +5,10 @@ using UnityEngine;
 using UnityEngine.Events;
 
 
+namespace Telegrahy
+{
+    
+}
 
 namespace  Vanaring_DepaDemo {
     [CreateAssetMenu(fileName = "BotBehaviorSO", menuName = "ScriptableObject/BotBehavior/BotBehaviorSO")]

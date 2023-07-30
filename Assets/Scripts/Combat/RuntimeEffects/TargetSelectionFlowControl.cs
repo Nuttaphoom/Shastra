@@ -83,7 +83,6 @@ public class TargetSelectionFlowControl : MonoBehaviour
 
     public (RuntimeEffectFactorySO, List<CombatEntity>) GetLatestAction()
     {
-        Debug.Log("prepare action");
         if (PrepareAction()) {
             _activlySelecting = false;
             _latestSelectedSpell = null;
