@@ -678,6 +678,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd0fd9952005c5045aea0e6dcf9be0ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  OnTargetSelectionSchemeStart: {fileID: 0}
+  OnTargetSelectionSchemeEnd: {fileID: 0}
 --- !u!1 &144219674
 GameObject:
   m_ObjectHideFlags: 0
@@ -6070,13 +6072,8 @@ MonoBehaviour:
   _owner: {fileID: 2018466318}
   lightNumText: {fileID: 1107573142}
   darkNumText: {fileID: 1630115131}
-  lightScale: 50
-  darkScale: 0
   lightImage: {fileID: 1497136651}
-  lightImageIcon: {fileID: 1096221089}
-  hpScale: 50
   hpImage: {fileID: 2059783785}
-  hpImageIcon: {fileID: 1555057849}
 --- !u!1 &1549771389
 GameObject:
   m_ObjectHideFlags: 0
@@ -6357,10 +6354,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _characterSheet: {fileID: 11400000, guid: 0d9057bbe6779cb4090c694a5b2cb026, type: 2}
-  _spellCaster:
-    _spellAbilities: []
-  _itemUser:
-    _itemAbilities: []
+  _spellCaster: {fileID: 0}
+  _itemUser: {fileID: 0}
   _combatEntityAnimationHandler: {fileID: 1629957305}
   _energyOverflowHandler: {fileID: 1629957306}
 --- !u!114 &1629957303
@@ -6838,13 +6833,8 @@ MonoBehaviour:
   _owner: {fileID: 2018466318}
   lightNumText: {fileID: 0}
   darkNumText: {fileID: 0}
-  lightScale: 0
-  darkScale: 0
   lightImage: {fileID: 0}
-  lightImageIcon: {fileID: 0}
-  hpScale: 0
   hpImage: {fileID: 0}
-  hpImageIcon: {fileID: 0}
 --- !u!4 &1763343410
 Transform:
   m_ObjectHideFlags: 0
@@ -7874,6 +7864,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0313c7f10f00e9340a9792dfd67e77d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  OnTargetSelectionSchemeStart: {fileID: 0}
+  OnTargetSelectionSchemeEnd: {fileID: 0}
   _itemButton: {fileID: 1516919534}
   _spellButton: {fileID: 417439022}
   _weaponButton: {fileID: 691079670}
@@ -7893,16 +7885,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _characterSheet: {fileID: 11400000, guid: bdf69885820d48e4f86ed5e1990ada08, type: 2}
-  _spellCaster:
-    _spellAbilities:
-    - {fileID: 11400000, guid: 41e02732b44fdb64aa66146ff1c2063a, type: 2}
-    - {fileID: 11400000, guid: d063ad6fc39f40b438a6756e50fa8745, type: 2}
-    - {fileID: 11400000, guid: 9020396ea732bcb43929f36212dc533b, type: 2}
-    - {fileID: 11400000, guid: aa58f05603ff6c649a0e06f84ac54e69, type: 2}
-  _itemUser:
-    _itemAbilities:
-    - {fileID: 11400000, guid: 3deb0a622cd9d844580049ce5ec43934, type: 2}
-    - {fileID: 11400000, guid: ba4db471659909444b56c5bc158ea52b, type: 2}
+  _spellCaster: {fileID: 0}
+  _itemUser: {fileID: 0}
   _combatEntityAnimationHandler: {fileID: 2018466320}
   _energyOverflowHandler: {fileID: 2018466321}
 --- !u!114 &2018466319
