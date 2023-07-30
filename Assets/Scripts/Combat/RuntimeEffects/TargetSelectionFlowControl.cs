@@ -14,7 +14,10 @@ public class TargetSelectionFlowControl : MonoBehaviour
 {
     [Header("Broadcast to ")]
     [SerializeField]
-    private CombatEntityEventChannel OnTargetSelectionSchemeStart ; 
+    private CombatEntityEventChannel OnTargetSelectionSchemeStart ;
+
+    [SerializeField]
+    private CombatEntityEventChannel OnTargetSelectionSchemeEnd; 
 
     private  List<CombatEntity> _validTargets = new List<CombatEntity>();
     private List<CombatEntity> _selectedTarget = new List<CombatEntity>(); 
@@ -70,9 +73,9 @@ public class TargetSelectionFlowControl : MonoBehaviour
 
     private void ForceStop()
     {
-        _activlySelecting = true;
-        _latestAction = null;
-        _forceStop = false;
+        _activlySelecting = false ;
+        _latestAction = null ;
+        _forceStop = true ;
         _latestSelectedSpell = null; 
     }
 
@@ -149,14 +152,13 @@ public class TargetSelectionFlowControl : MonoBehaviour
 
                 continue;
             }
-            Debug.Log(_selectedTarget.Count + " vs " + action.TargetSelect.MaxTarget);
             yield return new WaitForEndOfFrame();
         }
 
         _latestAction = action;
 
     End:
-
+        OnTargetSelectionSchemeEnd.PlayEvent(caster);
 
         yield return null;
     }

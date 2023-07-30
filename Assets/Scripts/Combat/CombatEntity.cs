@@ -30,7 +30,7 @@ namespace Vanaring_DepaDemo
         private CombatEntityAnimationHandler _combatEntityAnimationHandler ;
 
         [SerializeField]
-        private EnergyOverflowHandler _energyOverflowHandler ;  
+        private EnergyOverflowHandler _energyOverflowHandler ;
 
         public void Init()
         {
@@ -104,7 +104,7 @@ namespace Vanaring_DepaDemo
         {
             yield return _baseEntityBrain.TakeControlLeave(); 
         }
-
+ 
         public bool ReadyForControl()
         {
             return ! _runtimeCharacterStatsAccumulator.IsStunt();
