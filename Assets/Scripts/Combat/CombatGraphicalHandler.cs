@@ -104,12 +104,8 @@ namespace Vanaring_DepaDemo
         {
             if (_combatEntity == combatEntity)
             {
-                Debug.Log("yes enable this one");
                 _mainPanel.gameObject.SetActive(true);
-            }else
-            {
-                Debug.Log("no dont enable thsi one");
-            }
+            } 
         }
 
         #endregion

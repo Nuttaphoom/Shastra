@@ -29,9 +29,12 @@ namespace Vanaring_DepaDemo
 
         public override IEnumerator GetAction(  ) {
             SpellAbilityRuntime latestSpell = null;
+            ItemAbilityRuntime latestItem = null; 
             if (TargetSelectionFlowControl.Instance.PrepareAction() )
             {
                 latestSpell = TargetSelectionFlowControl.Instance.IsLatedActionSpell();
+                latestItem = TargetSelectionFlowControl.Instance.IsLatedActionItem(); 
+
                 var latestAction = TargetSelectionFlowControl.Instance.GetLatestAction();
                 InitializeAction(latestAction.Item1, latestAction.Item2);
             }
@@ -46,6 +49,9 @@ namespace Vanaring_DepaDemo
                 {
                     Debug.LogWarning("TODO : Properly check if we should modify the energy or not in a separate class or scheme");
                     _combateEntity.SpellCaster.ModifyEnergy(latestSpell.ModifiedEnergySide,latestSpell.ModifiedEnergyAmount) ;
+                }if (latestItem != null)
+                {
+                    _combateEntity.ItemUser.RemoveItem(latestItem); 
                 }
 
                 latestSpell = null; 

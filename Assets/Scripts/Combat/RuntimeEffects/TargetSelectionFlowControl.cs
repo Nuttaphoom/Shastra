@@ -5,6 +5,7 @@ using TMPro.EditorUtilities;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEditor.Build;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.Rendering.VirtualTexturing;
 using Vanaring_DepaDemo;
@@ -28,7 +29,8 @@ public class TargetSelectionFlowControl : MonoBehaviour
 
     private int _currentSelectIndex = 0;
 
-    private SpellAbilityRuntime _latestSelectedSpell; 
+    private SpellAbilityRuntime _latestSelectedSpell;
+    private ItemAbilityRuntime _latestSelectedItem; 
 
     private RuntimeEffectFactorySO _latestAction ;
 
@@ -81,9 +83,11 @@ public class TargetSelectionFlowControl : MonoBehaviour
 
     public (RuntimeEffectFactorySO, List<CombatEntity>) GetLatestAction()
     {
+        Debug.Log("prepare action");
         if (PrepareAction()) {
             _activlySelecting = false;
-            _latestSelectedSpell = null; 
+            _latestSelectedSpell = null;
+            _latestSelectedItem = null; 
         }
         return (_latestAction, _selectedTarget);
     }
@@ -93,7 +97,13 @@ public class TargetSelectionFlowControl : MonoBehaviour
     {
         return _latestSelectedSpell ; 
     }
- 
+
+    public ItemAbilityRuntime IsLatedActionItem()
+    {
+        return _latestSelectedItem ; 
+    }
+
+
 
     public bool PrepareAction()
     {
@@ -114,9 +124,18 @@ public class TargetSelectionFlowControl : MonoBehaviour
         _latestSelectedSpell = spell;
 
         yield return InitializeTargetSelectionScheme(caster,spell.EffectFactory,randomTarget) ;
-         
-
     }
+
+    public IEnumerator InitializeItemTargetSelectionScheme(CombatEntity caster, ItemAbilityRuntime item , bool randomTarget = false)
+    {
+        if (_activlySelecting)
+            throw new Exception("Try to active selection scheme while it is already active");
+        _latestSelectedItem = item;
+
+        yield return InitializeTargetSelectionScheme(caster, item.EffectFactory, randomTarget);
+    }
+
+
     #endregion
 
     #region Private

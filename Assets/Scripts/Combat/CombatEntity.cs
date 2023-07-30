@@ -37,7 +37,6 @@ namespace Vanaring_DepaDemo
             _runtimeCharacterStatsAccumulator = new RuntimeCharacterStatsAccumulator(_characterSheet) ;
             _statusEffectHandler = new StatusEffectHandler(this) ;
             _combatEntityAnimationHandler = new CombatEntityAnimationHandler(this, _combatEntityAnimationHandler) ;
-            _itemUser.Initialize(this);
                 
             if (! TryGetComponent(out _baseEntityBrain))
             {
@@ -47,7 +46,11 @@ namespace Vanaring_DepaDemo
             if (_spellCaster == null)
             {
                 throw new Exception("SpellCaster haven't been assigned (should never use 'GetComponent' for SpellCaster as it would be too slow') ");
+            }
 
+            if (_itemUser == null)
+            {
+                throw new Exception("ItemUser haven't been assigned (should never use 'GetComponent' for SpellCaster as it would be too slow') ");
             }
         }
 

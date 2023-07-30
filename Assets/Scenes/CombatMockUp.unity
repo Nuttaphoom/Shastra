@@ -295,6 +295,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2012436587}
     m_Modifications:
+    - target: {fileID: 615433128092728605, guid: 6a417704d7c581c4fae94f3a2c84d717, type: 3}
+      propertyPath: _itemAbilities.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 615433128092728605, guid: 6a417704d7c581c4fae94f3a2c84d717, type: 3}
+      propertyPath: _itemAbilities.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: 3deb0a622cd9d844580049ce5ec43934, type: 2}
+    - target: {fileID: 615433128092728605, guid: 6a417704d7c581c4fae94f3a2c84d717, type: 3}
+      propertyPath: _itemAbilities.Array.data[1]
+      value: 
+      objectReference: {fileID: 11400000, guid: ba4db471659909444b56c5bc158ea52b, type: 2}
     - target: {fileID: 1790639167719186936, guid: 6a417704d7c581c4fae94f3a2c84d717, type: 3}
       propertyPath: _spellCaster
       value: 
@@ -642,6 +654,7 @@ GameObject:
   - component: {fileID: 1406938358}
   - component: {fileID: 1406938357}
   - component: {fileID: 1406938362}
+  - component: {fileID: 1406938363}
   m_Layer: 0
   m_Name: StrayGhost
   m_TagString: Untagged
@@ -730,8 +743,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _characterSheet: {fileID: 11400000, guid: 0d9057bbe6779cb4090c694a5b2cb026, type: 2}
   _spellCaster: {fileID: 1406938362}
-  _itemUser:
-    _itemAbilities: []
+  _itemUser: {fileID: 1406938363}
   _combatEntityAnimationHandler: {fileID: 1406938358}
   _energyOverflowHandler: {fileID: 1406938357}
 --- !u!114 &1406938362
@@ -747,6 +759,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _spellAbilities: []
+--- !u!114 &1406938363
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1406938355}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca89d3a2af4baff4187652a97560716d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _itemAbilities: []
 --- !u!1 &1792260266
 GameObject:
   m_ObjectHideFlags: 0

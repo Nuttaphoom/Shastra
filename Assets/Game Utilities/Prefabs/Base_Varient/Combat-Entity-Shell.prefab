@@ -1046,6 +1046,7 @@ GameObject:
   - component: {fileID: 6137838095766412537}
   - component: {fileID: 8392231529484741683}
   - component: {fileID: 722352022195908904}
+  - component: {fileID: 2881526843723125262}
   m_Layer: 0
   m_Name: Combat-Entity-Shell
   m_TagString: Untagged
@@ -1083,8 +1084,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _characterSheet: {fileID: 0}
   _spellCaster: {fileID: 722352022195908904}
-  _itemUser:
-    _itemAbilities: []
+  _itemUser: {fileID: 2881526843723125262}
   _combatEntityAnimationHandler: {fileID: 6137838095766412537}
   _energyOverflowHandler: {fileID: 8392231529484741683}
 --- !u!114 &8651267559761135159
@@ -1100,6 +1100,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   OnTargetSelectionSchemeStart: {fileID: 11400000, guid: 1e9050e9d3c378f448db94ea309439fc, type: 2}
+  OnTargetSelectionSchemeEnd: {fileID: 11400000, guid: 92748f06eaa2f9149a5e17e38fedc1da, type: 2}
   _itemButton: {fileID: 8264156161497259021}
   _spellButton: {fileID: 2124068535465552329}
   _weaponButton: {fileID: 3808094540615621616}
@@ -1157,6 +1158,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _spellAbilities: []
+--- !u!114 &2881526843723125262
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1791284638935840313}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca89d3a2af4baff4187652a97560716d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _itemAbilities: []
 --- !u!1 &1804415277746990593
 GameObject:
   m_ObjectHideFlags: 0
