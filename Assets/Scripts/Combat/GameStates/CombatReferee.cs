@@ -149,6 +149,8 @@ namespace Vanaring_DepaDemo
                 {
                     if (actionCoroutine.Current != null && actionCoroutine.Current.GetType().IsSubclassOf(typeof(RuntimeEffect)))
                     {
+                        yield return _activeEntities[_currentEntityIndex].LeaveControl();
+
                         //ExecuteAction 
                         yield return ((actionCoroutine.Current as RuntimeEffect).ExecuteRuntimeCoroutine(_entity));
                         
@@ -156,9 +158,9 @@ namespace Vanaring_DepaDemo
                         //When the action is finish executed (like playing animation), end turn 
 
                         if (_activeEntities.Count > 1)
-                            yield return SwitchControl(_currentEntityIndex, (_currentEntityIndex + 1) % _activeEntities.Count);
+                            yield return SwitchControl(_currentEntityIndex, (_currentEntityIndex + 1) % _activeEntities.Count,false) ;
                         else
-                            yield return SwitchControl(_currentEntityIndex, _currentEntityIndex) ;
+                            yield return SwitchControl(_currentEntityIndex, _currentEntityIndex, false) ;
 
                         _activeEntities.RemoveAt(_currentEntityIndex);
                     }
@@ -205,12 +207,14 @@ namespace Vanaring_DepaDemo
         }
         
 
-        public IEnumerator SwitchControl(int prev, int next)
+        public IEnumerator SwitchControl(int prev, int next, bool callLeaveControl = true)
         {
-            yield return _activeEntities[prev].LeaveControl();
+            if (callLeaveControl)
+                yield return _activeEntities[prev].LeaveControl();
             if (prev != next) 
                 yield return _activeEntities[next].TakeControl();
         }
+
         public IEnumerator ChangeActiveEntityIndex(int index = -1, bool increase = false, bool decrease = false)
         {
             if (_activeEntities.Count > 0)

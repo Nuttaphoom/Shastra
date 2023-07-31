@@ -57,9 +57,7 @@ namespace Vanaring_DepaDemo
 
         private void ChooseItem()
         {
-            Debug.Log("ChooseItem");
-                StartCoroutine((TargetSelectionFlowControl.Instance.InitializeTargetSelectionScheme
-                   (_caster, _item.EffectFactory)));   
+            _caster.ItemUser.UseItem(_item);
         }
     }
 }

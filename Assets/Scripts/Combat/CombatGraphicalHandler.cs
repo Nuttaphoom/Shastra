@@ -12,6 +12,12 @@ namespace Vanaring_DepaDemo
     [RequireComponent(typeof(CombatEntity))]
     public class CombatGraphicalHandler : MonoBehaviour
     {
+        [Header("Listen to ")]
+        [SerializeField]
+        private CombatEntityEventChannel OnTargetSelectionSchemeStart;
+        [SerializeField] 
+        private CombatEntityEventChannel OnTargetSelectionSchemeEnd; 
+
         [SerializeField]
         private Button _itemButton;
         [SerializeField]
@@ -27,14 +33,30 @@ namespace Vanaring_DepaDemo
         [SerializeField]
         private Transform _itemPanel;
 
+        private CombatEntity _combatEntity; 
+
         private void Awake()
         {
             if (_itemButton == null || _spellButton == null || _weaponButton == null)
                 throw new Exception("Buttons hasn't been correctly assigned");
 
+            _combatEntity = GetComponent<CombatEntity>(); 
+
             _itemButton.onClick.AddListener(() => { DisplayItemPanel(); });
             _spellButton.onClick.AddListener(() => { DisplaySpellPanel(); });
             _weaponButton.onClick.AddListener(() => { DisplayWeaponPanel(); });
+        }
+
+        private void OnEnable()
+        {
+            OnTargetSelectionSchemeStart.SubEvent(OnTargetSelectionStart_DisableUI) ;
+            OnTargetSelectionSchemeEnd.SubEvent(OnTargetSelectionEnd_EnableUI);
+        }
+
+        private void OnDisable()
+        {
+            OnTargetSelectionSchemeStart.UnSubEvent(OnTargetSelectionStart_DisableUI);
+            OnTargetSelectionSchemeEnd.UnSubEvent(OnTargetSelectionEnd_EnableUI);
         }
 
         private void DisplayItemPanel()
@@ -69,6 +91,24 @@ namespace Vanaring_DepaDemo
             _spellPanel.gameObject.SetActive(false);
             _itemPanel.gameObject.SetActive(false);
         }
+
+        #region EventListener
+        private void OnTargetSelectionStart_DisableUI(CombatEntity _combatEntity)
+        {
+            _mainPanel.gameObject.SetActive(false);
+            _spellPanel.gameObject.SetActive(false);
+            _itemPanel.gameObject.SetActive(false);
+        }
+
+        private void OnTargetSelectionEnd_EnableUI(CombatEntity combatEntity)
+        {
+            if (_combatEntity == combatEntity)
+            {
+                _mainPanel.gameObject.SetActive(true);
+            } 
+        }
+
+        #endregion
 
 
     }

@@ -17,20 +17,21 @@ namespace Vanaring_DepaDemo
             if (! TryGetComponent(out _botBehaviorHandler))
                 throw new System.Exception("BotBehaviorHandler hasn't been assigned");
 
-            StartCoroutine(_botBehaviorHandler.CalculateNextBehavior()); 
+            _botBehaviorHandler.CalculateNextBehavior(); 
 
         }
         public override IEnumerator GetAction()
         {
-            //Debug.Log("GetAction!!!!!!");
-            yield return new    WaitForSeconds(3.0f); 
+            yield return new WaitForSeconds(1.5f); 
             foreach (RuntimeEffectFactorySO eff in _botBehaviorHandler.GetBehaviorEffect())
             {
-                yield return TargetSelectionFlowControl.Instance.InitializeTargetSelectionScheme(_combateEntity, eff, true);
+                yield return TargetSelectionFlowControl.Instance.InitializeTargetSelectionScheme(_combateEntity, eff, true) ;
                 RuntimeEffectFactorySO factory ;
                 List<CombatEntity> selectedTarget ;
+                
+               
                 (factory, selectedTarget) = TargetSelectionFlowControl.Instance.GetLatestAction();
-                 
+                     
                 IEnumerator coroutine =   factory.Factorize(selectedTarget);
 
                 while (coroutine.MoveNext())
@@ -53,7 +54,6 @@ namespace Vanaring_DepaDemo
         public override IEnumerator TurnLeave()
         {
             //calculate next behavior 
-            //Debug.Log("TurnLeave!");
             yield return _botBehaviorHandler.CalculateNextBehavior(); 
 
             yield return null; 
@@ -61,7 +61,6 @@ namespace Vanaring_DepaDemo
 
         public override IEnumerator TakeControl()
         {
-            //Debug.Log("TakeControl!!!!!!");
             yield return null;
         }
 

@@ -5,12 +5,21 @@ using TMPro.EditorUtilities;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEditor.Build;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using UnityEngine.Rendering.VirtualTexturing;
 using Vanaring_DepaDemo;
  
 
 public class TargetSelectionFlowControl : MonoBehaviour
 {
+    [Header("Broadcast to ")]
+    [SerializeField]
+    private CombatEntityEventChannel OnTargetSelectionSchemeStart ;
+
+    [SerializeField]
+    private CombatEntityEventChannel OnTargetSelectionSchemeEnd; 
+
     private  List<CombatEntity> _validTargets = new List<CombatEntity>();
     private List<CombatEntity> _selectedTarget = new List<CombatEntity>(); 
 
@@ -20,10 +29,12 @@ public class TargetSelectionFlowControl : MonoBehaviour
 
     private int _currentSelectIndex = 0;
 
-    private SpellAbilityRuntime _latestSelectedSpell; 
+    private SpellAbilityRuntime _latestSelectedSpell;
+    private ItemAbilityRuntime _latestSelectedItem; 
 
-    private RuntimeEffectFactorySO _latestAction ; 
-    
+    private RuntimeEffectFactorySO _latestAction ;
+
+    private bool _forceStop = false; 
     private void Awake()
     {
         Instance = this; 
@@ -55,15 +66,27 @@ public class TargetSelectionFlowControl : MonoBehaviour
                 if (_validTargets.Count != 0)
                     _currentSelectIndex = _currentSelectIndex % _validTargets.Count;
                 
+            }else if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                ForceStop(); 
             }
         } 
+    }
+
+    private void ForceStop()
+    {
+        _activlySelecting = false ;
+        _latestAction = null ;
+        _forceStop = true ;
+        _latestSelectedSpell = null; 
     }
 
     public (RuntimeEffectFactorySO, List<CombatEntity>) GetLatestAction()
     {
         if (PrepareAction()) {
             _activlySelecting = false;
-            _latestSelectedSpell = null; 
+            _latestSelectedSpell = null;
+            _latestSelectedItem = null; 
         }
         return (_latestAction, _selectedTarget);
     }
@@ -73,57 +96,90 @@ public class TargetSelectionFlowControl : MonoBehaviour
     {
         return _latestSelectedSpell ; 
     }
- 
+
+    public ItemAbilityRuntime IsLatedActionItem()
+    {
+        return _latestSelectedItem ; 
+    }
+
+
 
     public bool PrepareAction()
     {
         return _activlySelecting && _latestAction != null ; 
     }
-    
-    public  IEnumerator InitializeTargetSelectionScheme(CombatEntity caster, RuntimeEffectFactorySO action, bool randomTarget = false)
-    {
 
+    #region Static Methods 
+   
+
+
+
+
+    public IEnumerator InitializeSpellTargetSelectionScheme(CombatEntity caster, SpellAbilityRuntime spell, bool randomTarget = false)
+    {
         if (_activlySelecting)
             throw new Exception("Try to active selection scheme while it is already active");
 
-        ColorfulLogger.LogWithColor("Initialize Target Selection", Color.green); 
+        _latestSelectedSpell = spell;
+
+        yield return InitializeTargetSelectionScheme(caster,spell.EffectFactory,randomTarget) ;
+    }
+
+    public IEnumerator InitializeItemTargetSelectionScheme(CombatEntity caster, ItemAbilityRuntime item , bool randomTarget = false)
+    {
+        if (_activlySelecting)
+            throw new Exception("Try to active selection scheme while it is already active");
+        _latestSelectedItem = item;
+
+        yield return InitializeTargetSelectionScheme(caster, item.EffectFactory, randomTarget);
+    }
+
+
+    #endregion
+
+    #region Private
+    public IEnumerator InitializeTargetSelectionScheme(CombatEntity caster, RuntimeEffectFactorySO action, bool randomTarget = false)
+    {
+        if (_activlySelecting)
+            throw new Exception("Try to active selection scheme while it is already active");
+
+        OnTargetSelectionSchemeStart.PlayEvent(caster);
+
+        ColorfulLogger.LogWithColor("Initialize Target Selection", Color.green);
+
         _activlySelecting = true;
         _latestAction = null;
-
 
         ValidateData();
         AssignPossibleTargets(caster, action);
 
-        while (_selectedTarget.Count < action.TargetSelect.MaxTarget )
+        while (_selectedTarget.Count < action.TargetSelect.MaxTarget)
         {
+            if (_forceStop)
+            {
+                _forceStop = false;
+                ColorfulLogger.LogWithColor("Cancel Target Selection", Color.green);
+                goto End;
+            }
             if (randomTarget)
             {
                 _currentSelectIndex = UnityEngine.Random.Range(0, _validTargets.Count);
                 _selectedTarget.Add(_validTargets[_currentSelectIndex]);
-                ColorfulLogger.LogWithColor("AI Action target is " + _validTargets[_currentSelectIndex], Color.yellow);  
-                _validTargets.RemoveAt(_currentSelectIndex); 
-                
-                continue ;
-            }
+                ColorfulLogger.LogWithColor("AI Action target is " + _validTargets[_currentSelectIndex], Color.yellow);
+                _validTargets.RemoveAt(_currentSelectIndex);
 
+                continue;
+            }
             yield return new WaitForEndOfFrame();
         }
 
         _latestAction = action;
 
-        yield return null ;  
+    End:
+        OnTargetSelectionSchemeEnd.PlayEvent(caster);
+
+        yield return null;
     }
-    
-    public IEnumerator InitializeSpellTargetSelectionScheme(CombatEntity caster, SpellAbilityRuntime spell, bool randomTarget = false)
-    {
-        _latestSelectedSpell = spell;
-
-        yield return InitializeTargetSelectionScheme(caster,spell.EffectFactory,randomTarget) ;
-         
-
-    }
-
-    
 
     private void AssignPossibleTargets(CombatEntity caster, RuntimeEffectFactorySO action)
     {
@@ -142,13 +198,13 @@ public class TargetSelectionFlowControl : MonoBehaviour
         _selectedTarget = new List<CombatEntity>();
         _currentSelectIndex = 0;
     }
+    #endregion
 }
 
 
 [Serializable]
 public class TargetSelector    
 {
-    
     private enum TargetSide
     {
         Self,Oppose

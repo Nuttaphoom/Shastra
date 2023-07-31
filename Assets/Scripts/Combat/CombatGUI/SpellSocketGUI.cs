@@ -40,8 +40,7 @@ namespace Vanaring_DepaDemo
             SpellAbilityRuntime runtimeSpell = _spellSO.Factorize();
             if (_caster.SpellCaster.IsEnergySufficient(runtimeSpell))
             {
-                StartCoroutine((TargetSelectionFlowControl.Instance.InitializeSpellTargetSelectionScheme
-                   (_caster, runtimeSpell)));
+                _caster.SpellCaster.CastSpell(runtimeSpell)  ; 
             }
         }
     }

@@ -24,7 +24,7 @@ namespace Vanaring_DepaDemo {
 
         public abstract IEnumerator GetAction( );
 
-        public abstract IEnumerator TakeControl(); 
+        public abstract IEnumerator TakeControl();
 
         public abstract IEnumerator TakeControlLeave();
     }

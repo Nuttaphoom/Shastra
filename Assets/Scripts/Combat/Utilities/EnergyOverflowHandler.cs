@@ -45,12 +45,16 @@ namespace Vanaring_DepaDemo
         private void Awake()
         {
             this._combatEntity = GetComponent<CombatEntity>() ; 
-            this._spellCasterHandler = this._combatEntity.SpellCaster;
-
-            _spellCasterHandler.SubOnModifyEnergy(OnModifyEnergy);
         }
 
-       
+        private void Start()
+        {
+            this._spellCasterHandler = this._combatEntity.SpellCaster;
+            _spellCasterHandler.SubOnModifyEnergy(OnModifyEnergy);
+
+        }
+
+
 
 
         #endregion
