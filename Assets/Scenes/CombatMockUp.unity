@@ -201,6 +201,57 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &441789745
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 441789746}
+  - component: {fileID: 441789747}
+  m_Layer: 0
+  m_Name: -----VfxTelegraphyManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &441789746
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 441789745}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1989031522}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &441789747
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 441789745}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 66f3801db0116524889647bb1d358b7f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _vfxTelegraphPrefab:
+  - {fileID: 1490992536037576312, guid: 16b3fe83a7d40d8408ebbed7a99a1005, type: 3}
+  - {fileID: 4224727857748352388, guid: 23050edc805c19a44b04235a07eddda2, type: 3}
+  - {fileID: 1639957703915365751, guid: 5bce8aad3980acd4b9eda14633d70e18, type: 3}
+  - {fileID: 1490992536037576312, guid: 58d53716d46122b44a6bb2e8dccbe41e, type: 3}
+  - {fileID: 4224727857748352388, guid: 5ee1ec309e53f9443ac74f459dd1d4dd, type: 3}
+  - {fileID: 1639957703915365751, guid: 3d1b2d1239be0a348bbc3ba5d255f46c, type: 3}
 --- !u!1 &581356743 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: ec70e7254e499d64282b28c0bd0ddc39, type: 3}
@@ -216,7 +267,6 @@ GameObject:
   m_Component:
   - component: {fileID: 712142589}
   - component: {fileID: 712142590}
-  - component: {fileID: 712142591}
   m_Layer: 0
   m_Name: -----Referee
   m_TagString: Untagged
@@ -256,25 +306,6 @@ MonoBehaviour:
     _entity: {fileID: 1292709025}
   - _side: 1
     _entity: {fileID: 1406938361}
---- !u!114 &712142591
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 712142588}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 66f3801db0116524889647bb1d358b7f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _vfxTelegraphPrefab:
-  - {fileID: 1490992536037576312, guid: 16b3fe83a7d40d8408ebbed7a99a1005, type: 3}
-  - {fileID: 4224727857748352388, guid: 23050edc805c19a44b04235a07eddda2, type: 3}
-  - {fileID: 1639957703915365751, guid: 5bce8aad3980acd4b9eda14633d70e18, type: 3}
-  - {fileID: 1490992536037576312, guid: 58d53716d46122b44a6bb2e8dccbe41e, type: 3}
-  - {fileID: 4224727857748352388, guid: 5ee1ec309e53f9443ac74f459dd1d4dd, type: 3}
-  - {fileID: 1639957703915365751, guid: 3d1b2d1239be0a348bbc3ba5d255f46c, type: 3}
 --- !u!1 &1156250900
 GameObject:
   m_ObjectHideFlags: 0
@@ -1096,6 +1127,7 @@ Transform:
   m_Children:
   - {fileID: 712142589}
   - {fileID: 105582815}
+  - {fileID: 441789746}
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
