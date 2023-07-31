@@ -36,7 +36,6 @@ namespace Vanaring_DepaDemo
         }
         public IEnumerator PlayActionAnimation(ActionAnimationInfo actionAnimation )
         {
-            Debug.Log("PlayActionAnimation Start"); 
 
             //Self VFX
             GameObject vfx = Instantiate(actionAnimation.CasterVfxAnimationPrefab, _mesh.transform.position, Quaternion.identity);
@@ -44,7 +43,6 @@ namespace Vanaring_DepaDemo
             //Play Animation 
             yield return PlayTriggerAnimation(actionAnimation.SelfTrigerID);
 
-            Debug.Log("PlayActionAnimation End");
             Destroy(vfx); 
  
         }

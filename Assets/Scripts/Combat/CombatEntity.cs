@@ -33,15 +33,19 @@ namespace Vanaring_DepaDemo
         [SerializeField]
         private CombatEntityAnimationHandler _combatEntityAnimationHandler ;
 
-        [SerializeField]
         private EnergyOverflowHandler _energyOverflowHandler ;
 
-        public void Init()
+        private bool _isDead = false;
+
+        public bool IsDead => _isDead; 
+
+        public void Awake()
         {
             _runtimeCharacterStatsAccumulator = new RuntimeCharacterStatsAccumulator(_characterSheet) ;
             _statusEffectHandler = new StatusEffectHandler(this) ;
             _combatEntityAnimationHandler = new CombatEntityAnimationHandler(this, _combatEntityAnimationHandler) ;
-                
+            _energyOverflowHandler = GetComponent<EnergyOverflowHandler>(); 
+
             if (! TryGetComponent(out _baseEntityBrain))
             {
                 throw new Exception("BaseEntityBrain haven't been assigned"); 
@@ -114,7 +118,7 @@ namespace Vanaring_DepaDemo
  
         public bool ReadyForControl()
         {
-            return ! _runtimeCharacterStatsAccumulator.IsStunt();
+            return ! _runtimeCharacterStatsAccumulator.IsStunt() && ! IsDead  ;
         }
 
         public StatusEffectHandler GetStatusEffectHandler()
@@ -143,11 +147,26 @@ namespace Vanaring_DepaDemo
            _runtimeCharacterStatsAccumulator.ModifyHPStat(trueDmg);
 
             ColorfulLogger.LogWithColor(gameObject.name + "is hit with " + trueDmg + " remaining HP : " + _runtimeCharacterStatsAccumulator.GetHPAmount(), Color.red); 
+       
+            if (_runtimeCharacterStatsAccumulator.GetHPAmount() <= 0)
+            {
+                _isDead = true; 
+            }
         }
 
         public IEnumerator VisualHurt(string animationTrigger = "Hurt")
         {
+            //Display DMG Text here
+
+            //Slow down time? 
+            
             yield return _combatEntityAnimationHandler.PlayTriggerAnimation(animationTrigger); 
+        
+            //If done playing animation, visually destroy the character (animation) not game object
+            if (IsDead)
+            {
+                Debug.Log("Destroy visually"); 
+            }
         }
 
 
@@ -177,11 +196,9 @@ namespace Vanaring_DepaDemo
 
             
             yield return new WaitAll(this,coroutines.ToArray() );
-            
-
-   
-
         }
-      #endregion
+
+        
+        #endregion
     }
 }

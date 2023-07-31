@@ -36,6 +36,12 @@ namespace Vanaring_DepaDemo
 
             public ECompetatorSide Side => _side;  
             public CombatEntity Competator => _entity;
+
+            public CompetatorDetailStruct(ECompetatorSide side, CombatEntity entity)
+            {
+                _side = side; 
+                _entity = entity; 
+            }
         }
 
         [SerializeField]
@@ -51,13 +57,21 @@ namespace Vanaring_DepaDemo
         private void Awake()
         {
             instance = this; 
+        }
 
-            //Initialize the competators 
-            //like loaded data from character sheet 
-            foreach (CompetatorDetailStruct competator in _competators)
-                 competator.Competator.Init();
-            
-            StartCoroutine(CustomTick()) ;
+        private void Start()
+        {
+            AssignCompetators(FindObjectOfType<EntityLoader>().LoadData() , ECompetatorSide.Hostile);
+            StartCoroutine(CustomTick());
+        }
+
+        public void AssignCompetators(List<CombatEntity> entites, ECompetatorSide side)
+        {
+            foreach (var entity in entites)
+            {
+                CompetatorDetailStruct c = new CompetatorDetailStruct(side, entity);
+                _competators.Add(c);
+            }
         }
 
         private void Update()
@@ -90,6 +104,36 @@ namespace Vanaring_DepaDemo
             _currentSide = (ECompetatorSide)(((int)_currentSide + 1) % 2)   ;
             _activeEntities = GetCompetatorsBySide(_currentSide)            ;
         }
+
+        private bool EndGameConditionMeet()
+        {
+            //Check for enemy first 
+            int allyAlive = 0;
+            int hostileAlive = 0;
+            foreach (var entity in _competators )
+            {
+                if (entity.Competator.IsDead == false)
+                {
+                    if (entity.Side == ECompetatorSide.Ally)
+                    {
+                        allyAlive++; 
+                    }else if (entity.Side == ECompetatorSide.Hostile)
+                    {
+                        hostileAlive++; 
+                    }
+                }
+            }
+
+            if (hostileAlive == 0)
+            {
+                return true; 
+            }else if (allyAlive == 0)
+            {
+                return true;
+            }
+
+            return false ;
+        } 
 
         #region TurnModifer 
         private IEnumerator AdvanceTurn()
@@ -141,7 +185,7 @@ namespace Vanaring_DepaDemo
                 {
                     if (actionCoroutine.Current != null && actionCoroutine.Current.GetType().IsSubclassOf(typeof(RuntimeEffect)))
                     {
-                        yield return _activeEntities[_currentEntityIndex].LeaveControl();
+                        yield return _entity.LeaveControl();
 
                         //ExecuteAction 
                         yield return ((actionCoroutine.Current as RuntimeEffect).ExecuteRuntimeCoroutine(_entity));
@@ -155,14 +199,33 @@ namespace Vanaring_DepaDemo
                             yield return SwitchControl(_currentEntityIndex, _currentEntityIndex, false) ;
 
                         _activeEntities.RemoveAt(_currentEntityIndex);
+
+                        for (int i = _competators.Count - 1; i >= 0; i--)
+                        {
+                            if (_competators[i].Competator.IsDead)
+                            {
+                                if (_competators[i].Side == _currentSide)
+                                {
+                                    _activeEntities.Remove(_competators[i].Competator);
+                                }
+                                _competators.RemoveAt(i);
+                            }
+                        }
+
+                        if (EndGameConditionMeet())
+                        {
+                            AssignCompetators(FindObjectOfType<EntityLoader>().LoadData(), ECompetatorSide.Hostile);
+                        }
                     }
                     else
                         yield return actionCoroutine.Current;  
                 }
+
                 //If GetAction is null, we wait for end of frame
                 yield return new WaitForEndOfFrame() ; 
             }
 
+             
 
             foreach (CombatEntity entity in GetCompetatorsBySide(_currentSide))
             {
