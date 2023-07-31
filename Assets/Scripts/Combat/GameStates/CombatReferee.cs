@@ -71,6 +71,14 @@ namespace Vanaring_DepaDemo
             {
                 StartCoroutine(ChangeActiveEntityIndex(-1, false, true));
             }
+
+            if (Input.GetKeyDown(KeyCode.O))
+            {
+                foreach (CombatEntity entity in GetCompetatorsBySide(_currentSide))
+                {
+                    entity.TurnLeave();
+                }
+            }
         }
 
         private IEnumerator CustomTick()
@@ -164,7 +172,7 @@ namespace Vanaring_DepaDemo
 
             foreach (CombatEntity entity in GetCompetatorsBySide(_currentSide))
             {
-                Debug.Log("leave turn!!!!");
+                //Debug.Log("leave turn!!!!");
                 yield return entity.TurnLeave() ;
             }
 

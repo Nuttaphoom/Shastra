@@ -92,7 +92,7 @@ public class TargetSelectionFlowControl : MonoBehaviour
 
 
         ValidateData();
-        AssignPossibleTargets(caster, action); 
+        AssignPossibleTargets(caster, action);
 
         while (_selectedTarget.Count < action.TargetSelect.MaxTarget )
         {

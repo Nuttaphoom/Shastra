@@ -11,28 +11,80 @@ namespace Vanaring_DepaDemo
     //Store a behavior socket that contain multiople behaviorSO
     class BotBehaviorHandler : MonoBehaviour
     {
+        enum EnergyModifyPeak { 
+            Min = 0,
+            Max = 100, // 0-100
+            lowtomid = 33, // 0-33
+            midtohigh = 66, // 34-66
+        }
+
         [SerializeField]
         private BotBehaviorSocketSO _behaviorSocketSOs;
 
         [SerializeField]
-        private GameObject _telegraphyPrefab;
+        private GameObject _telegraphyPos;
 
-        private VisualEffect _vfxObject = null;
+        private GameObject prefab;
 
         int _nextBehavior = 0;
         int _currentBehavior = 0;
 
         public IEnumerator CalculateNextBehavior()
         {
+            //Debug.Log("CalculateNextBehavior");
             yield return null;
             _nextBehavior = Random.Range(0, _behaviorSocketSOs.GetBehaviorSize);
-            if (_vfxObject == null)
+
+            //GetBehaviorEffect
+            IEnumerator coroutine = _behaviorSocketSOs.GetBehaviorEffect(_nextBehavior);
+
+            while (coroutine.MoveNext())
             {
-                _telegraphyPrefab.SetActive(true);
-                _vfxObject = _telegraphyPrefab.GetComponent<VisualEffect>();
+                if (coroutine.Current != null && coroutine.Current.GetType().IsSubclassOf(typeof(RuntimeEffectFactorySO)))
+                {
+                    RuntimeEffectFactorySO spell = coroutine.Current as RuntimeEffectFactorySO;
+                    EnergyModifierRuntimeEffectFactory EMspell = spell as EnergyModifierRuntimeEffectFactory;
+                    if (EMspell != null)
+                    {
+                        EnergyModifierData modifier = EMspell.ModifierData;
+                        int side = (int)modifier.Side; //0 -light, 1 -dark
+                        int amount = modifier.Amount;
+                        //magic number :D
+                        int index = 0;
+                        if ((int)EnergyModifyPeak.Min <= amount && (int)EnergyModifyPeak.Max >= amount)
+                        {
+                            if (amount >= (int)EnergyModifyPeak.lowtomid)
+                            {
+                                index = 1;
+                            }
+                            if (amount >= (int)EnergyModifyPeak.midtohigh)
+                            {
+                                index = 2;
+                            }
+                        }
+                        index += side * 3;
+                        if (prefab != null)
+                        {
+                            Destroy(prefab);
+                        }
+                        prefab = Instantiate(VfxPrefabHandler.instance.GetVfxTelegraphPrefab(index),
+                            _telegraphyPos.transform.position, _telegraphyPos.transform.rotation);
+                        if (amount == 0)
+                        {
+                            prefab.SetActive(false);
+                        }
+                        else
+                        {
+                            prefab.SetActive(true);
+                        }
+
+                        //Debug.Log("Summoned");
+                        //Destroy(prefab);
+                        //prefab.SetActive(false);
+                    }
+                }
             }
-            Debug.Log("100");
-            _vfxObject.playRate = 100;
+            //yield return null;
         }
 
         public List<RuntimeEffectFactorySO> GetBehaviorEffect()

@@ -18,7 +18,7 @@ public class ItemUserHandler : RequireInitializationHandler<CombatEntity,Null,Nu
 {
     [Header("right now me manullay assign Item factory for quick demo")]
     [SerializeField]
-    private List<ItemAbilityFactorySO> _itemAbilities = new List<ItemAbilityFactorySO>() ;
+    private List<ItemAbilityFactorySO> _itemInventory = new List<ItemAbilityFactorySO>() ;
     
     private  List<ItemAbilityRuntime> _runtimeItems = new List<ItemAbilityRuntime>() ;
 
@@ -44,7 +44,7 @@ public class ItemUserHandler : RequireInitializationHandler<CombatEntity,Null,Nu
             throw new Exception("ItemUserHandler hasn't never been inited") ;
 
         //TODO : Load inventory from somewhere instead of manually assign them
-        foreach (ItemAbilityFactorySO factory in _itemAbilities)
+        foreach (ItemAbilityFactorySO factory in _itemInventory)
         {
             _runtimeItems.Add(factory.FactorizeRuntimeItem());
         }
