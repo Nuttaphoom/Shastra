@@ -67,7 +67,7 @@ namespace Vanaring_DepaDemo
                         {
                             Destroy(prefab);
                         }
-                        prefab = Instantiate(VfxPrefabHandler.instance.GetVfxTelegraphPrefab(index),
+                        prefab = Instantiate(VfxTelegraphySingletonHandler.instance.GetVfxTelegraphPrefab(index),
                             _telegraphyPos.transform.position, _telegraphyPos.transform.rotation);
                         if (amount == 0)
                         {
@@ -77,14 +77,9 @@ namespace Vanaring_DepaDemo
                         {
                             prefab.SetActive(true);
                         }
-
-                        //Debug.Log("Summoned");
-                        //Destroy(prefab);
-                        //prefab.SetActive(false);
                     }
                 }
             }
-            //yield return null;
         }
 
         public List<RuntimeEffectFactorySO> GetBehaviorEffect()

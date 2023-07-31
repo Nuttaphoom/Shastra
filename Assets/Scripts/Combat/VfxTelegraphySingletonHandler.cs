@@ -6,9 +6,9 @@ using UnityEngine;
 
 namespace Vanaring_DepaDemo
 {
-    public class VfxPrefabHandler : MonoBehaviour
+    public class VfxTelegraphySingletonHandler : MonoBehaviour
     {
-        public static VfxPrefabHandler instance = null;
+        public static VfxTelegraphySingletonHandler instance = null;
         [SerializeField]
         private GameObject[] _vfxTelegraphPrefab;
 

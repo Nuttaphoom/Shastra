@@ -17,7 +17,7 @@ namespace Vanaring_DepaDemo
             if (! TryGetComponent(out _botBehaviorHandler))
                 throw new System.Exception("BotBehaviorHandler hasn't been assigned");
 
-            _botBehaviorHandler.CalculateNextBehavior(); 
+            StartCoroutine(_botBehaviorHandler.CalculateNextBehavior()); 
 
         }
         public override IEnumerator GetAction()
