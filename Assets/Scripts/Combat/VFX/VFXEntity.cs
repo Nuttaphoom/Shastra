@@ -1,13 +1,16 @@
 
 
+using System;
 using System.CodeDom;
 using System.Collections;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
 using Vanaring_DepaDemo;
 
 
-public class VFXEntity : MonoBehaviour
+[Serializable]
+public class VFXEntity  
 {
     [Header("Time before destroy this VFX (1 cycle)")]
     [SerializeField]
@@ -21,10 +24,14 @@ public class VFXEntity : MonoBehaviour
     [SerializeField]
     private float _callbackDelay = 0.0f ;
 
+    [SerializeField]
+    private GameObject _VFXAnimationPrefabs;
+
     public float TimeToLive => _ttl;
     public float SpawnDelay => _spawnDelay;  
     public float CallbackDelay => _callbackDelay; 
 
+    public GameObject VFXAnimationPrefabs => _VFXAnimationPrefabs; 
 }
 
 
@@ -33,7 +40,7 @@ public class VFXEntity : MonoBehaviour
 /// </summary>
 public class VFXCallbackHandler<T>  
 {
-    private VFXEntity _vfxPrefab;
+    private VFXEntity _vfxEntity ;
     private GameObject _target;
     private float _waitDuration = 0.0f; 
     private Vector3 _spawnPosition = Vector3.zero; 
@@ -41,11 +48,14 @@ public class VFXCallbackHandler<T>
     private VFXCallback _action; 
 
     public delegate IEnumerator VFXCallback(T obj);
-    public VFXCallbackHandler(GameObject target, VFXEntity vfxPrefab, Vector3 vfxSpawnPosition, float waitDuration, VFXCallback argc)
+    private GameObject _instantiatedVFX; 
+
+    public VFXCallbackHandler(GameObject target, VFXEntity vfxEntity, Vector3 vfxSpawnPosition, VFXCallback argc)
     {
-        _target = target;  
-        _vfxPrefab = vfxPrefab; 
-        _waitDuration = waitDuration ;
+        _target = target;
+        _vfxEntity = vfxEntity;
+        _instantiatedVFX = MonoBehaviour.Instantiate(_vfxEntity.VFXAnimationPrefabs);
+        _instantiatedVFX.transform.position = vfxSpawnPosition; 
          _action = argc ;
         _spawnPosition = vfxSpawnPosition;
     }
@@ -53,14 +63,17 @@ public class VFXCallbackHandler<T>
   
     public IEnumerator PlayVFX(T arugment)
     {
-        _vfxPrefab.gameObject.SetActive(false);
+        _instantiatedVFX.gameObject.SetActive(false);
 
-        yield return new WaitForSeconds(_vfxPrefab.SpawnDelay);
-        _vfxPrefab.gameObject.SetActive(true);
+        yield return new WaitForSeconds(_vfxEntity.SpawnDelay);
+        _instantiatedVFX.gameObject.SetActive(true);
 
-        yield return new WaitForSeconds(_vfxPrefab.CallbackDelay) ;
+        yield return new WaitForSeconds(_vfxEntity.CallbackDelay) ;
 
-        yield return _action(arugment); 
+        if (_action != null)
+            yield return _action(arugment); 
+
+        MonoBehaviour.Destroy(_instantiatedVFX.gameObject);
 
     }
 

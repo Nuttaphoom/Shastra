@@ -189,7 +189,7 @@ namespace Vanaring_DepaDemo
             foreach (CombatEntity target in targets)
             {
                 CombatEntity entity = target;
-                coroutines.Add(_combatEntityAnimationHandler.PlayVFXActionAnimation<string>(animationinfo.TargetVfxAnimationPrefab , entity, entity.VisualHurt, "Hurt"));
+                coroutines.Add(_combatEntityAnimationHandler.PlayVFXActionAnimation<string>(animationinfo.TargetVfxEntity , entity, entity.VisualHurt, "Hurt"));
 
             }
 

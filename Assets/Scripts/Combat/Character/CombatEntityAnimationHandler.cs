@@ -1,3 +1,4 @@
+using CustomYieldInstructions;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -24,7 +25,6 @@ namespace Vanaring_DepaDemo
 
         public Vector3 GetVFXSpawnPos()
         {
-            Debug.Log("OBJECT IS " + gameObject.name);
             if (_vfxPos == null || _vfxPos.position == null )
             {
                 throw new Exception("VFX Spawn Position of " + gameObject.name + "hasn't never been assigned");
@@ -48,25 +48,22 @@ namespace Vanaring_DepaDemo
         public IEnumerator PlayActionAnimation(ActionAnimationInfo actionAnimation )
         {
             //Self VFX
-            GameObject vfx = null ; 
-            if (actionAnimation.CasterVfxAnimationPrefab.gameObject != null)
-            {
-                 vfx = Instantiate(actionAnimation.CasterVfxAnimationPrefab.gameObject, _mesh.transform.position, Quaternion.identity);
-            }
-            //Play Animation 
-            yield return PlayTriggerAnimation(actionAnimation.SelfTrigerID);
+            List<IEnumerator> coroutines = new List<IEnumerator>(); 
+            VFXCallbackHandler<string> callbackHandler = new VFXCallbackHandler<string>(gameObject, actionAnimation.CasterVfxEntity, GetVFXSpawnPos(), null );
+            coroutines.Add (callbackHandler.PlayVFX(null));
 
-            if (vfx != null)
-                Destroy(vfx); 
+            //Play Animation 
+            coroutines.Add (PlayTriggerAnimation(actionAnimation.SelfTrigerID) ) ;
+
+            yield return new WaitAll(this, coroutines.ToArray() );
  
         }
 
-        public IEnumerator PlayVFXActionAnimation<T>(VFXEntity vfxBasePrefab, CombatEntity target, VFXCallbackHandler<T>.VFXCallback argc, T param  )
+        public IEnumerator PlayVFXActionAnimation<T>(VFXEntity vfxEntity, CombatEntity target, VFXCallbackHandler<T>.VFXCallback argc, T param  )
         {
-            VFXEntity vfx = Instantiate(vfxBasePrefab, target.CombatEntityAnimationHandler._vfxPos.position, Quaternion.identity);
             CombatEntity entity = target;
-            VFXCallbackHandler<T> vfxEntity = new VFXCallbackHandler<T>(target.gameObject, vfx,target.CombatEntityAnimationHandler.GetVFXSpawnPos(), vfxBasePrefab.GetComponent<ParticleSystem>().main.duration, argc  );
-            yield return (vfxEntity.PlayVFX(param));
+            VFXCallbackHandler<T> callbackHandler = new VFXCallbackHandler<T>(target.gameObject, vfxEntity , target.CombatEntityAnimationHandler.GetVFXSpawnPos(),  argc  );
+            yield return (callbackHandler.PlayVFX(param));
         }
 
 
