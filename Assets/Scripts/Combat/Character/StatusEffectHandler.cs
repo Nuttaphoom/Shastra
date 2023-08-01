@@ -26,7 +26,7 @@ namespace Vanaring_DepaDemo
         }
 
         //the effect should be factorize exactly before being applied 
-        public IEnumerator ApplyNewEffect(StatusRuntimeEffectFactorySO factory  )
+        public IEnumerator ApplyNewEffect(StatusRuntimeEffectFactorySO factory )
         {
             IEnumerator co = factory.Factorize(new List<CombatEntity>() { _appliedEntity } )  ;
 

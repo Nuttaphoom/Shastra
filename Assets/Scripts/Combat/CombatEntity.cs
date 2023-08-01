@@ -165,7 +165,7 @@ namespace Vanaring_DepaDemo
             //If done playing animation, visually destroy the character (animation) not game object
             if (IsDead)
             {
-                Debug.Log("Destroy visually"); 
+
             }
         }
 

@@ -9,6 +9,8 @@ using System.Runtime.CompilerServices;
 [CreateAssetMenu(fileName = "StatusEffectApplierFactorySO", menuName = "ScriptableObject/RuntimeEffect/StatusEffectApplierFactorySO")]
 public class StatusEffectApplierFactorySO : RuntimeEffectFactorySO
 {
+
+    
     [SerializeField]
     private List<StatusRuntimeEffectFactorySO> _effects;
     public override IEnumerator Factorize(List<CombatEntity> targets)
