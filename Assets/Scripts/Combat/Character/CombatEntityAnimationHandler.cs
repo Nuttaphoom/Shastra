@@ -47,9 +47,9 @@ namespace Vanaring_DepaDemo
  
         }
 
-        public IEnumerator PlayVFXActionAnimation<T>(ActionAnimationInfo actionAnimation, CombatEntity target, VFXEntity<T>.VFXCallback argc, T param  )
+        public IEnumerator PlayVFXActionAnimation<T>(GameObject vfxBasePrefab, CombatEntity target, VFXEntity<T>.VFXCallback argc, T param  )
         {
-            GameObject vfx = Instantiate(actionAnimation.TargetVfxAnimationPrefab, target.transform.position, Quaternion.identity);
+            GameObject vfx = Instantiate(vfxBasePrefab, target.transform.position, Quaternion.identity);
             CombatEntity entity = target;
             VFXEntity<T> vfxEntity = new VFXEntity<T>(target.gameObject, vfx, 3.0f, argc  );
             yield return (vfxEntity.PlayVFX(param));
