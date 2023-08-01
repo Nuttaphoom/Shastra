@@ -43,7 +43,6 @@ namespace Vanaring_DepaDemo
         {
             _runtimeCharacterStatsAccumulator = new RuntimeCharacterStatsAccumulator(_characterSheet) ;
             _statusEffectHandler = new StatusEffectHandler(this) ;
-            _combatEntityAnimationHandler = new CombatEntityAnimationHandler(this, _combatEntityAnimationHandler) ;
             _energyOverflowHandler = GetComponent<EnergyOverflowHandler>(); 
 
             if (! TryGetComponent(out _baseEntityBrain))
@@ -133,9 +132,11 @@ namespace Vanaring_DepaDemo
         public SpellCasterHandler SpellCaster => _spellCaster;
         public ItemUserHandler ItemUser => _itemUser;
 
+        public CombatEntityAnimationHandler CombatEntityAnimationHandler => _combatEntityAnimationHandler; 
+
         #endregion
 
-    #region InterfaceFunction 
+        #region InterfaceFunction 
 
         public void LogicHurt(int inputdmg)
         {
@@ -188,7 +189,7 @@ namespace Vanaring_DepaDemo
             foreach (CombatEntity target in targets)
             {
                 CombatEntity entity = target;
-                coroutines.Add(_combatEntityAnimationHandler.PlayVFXActionAnimation<string>(animationinfo.TargetVfxAnimationPrefab, entity, entity.VisualHurt, "Hurt"));
+                coroutines.Add(_combatEntityAnimationHandler.PlayVFXActionAnimation<string>(animationinfo.TargetVfxAnimationPrefab , entity, entity.VisualHurt, "Hurt"));
 
             }
 

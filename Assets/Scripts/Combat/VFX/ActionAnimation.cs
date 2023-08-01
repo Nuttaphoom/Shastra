@@ -18,12 +18,12 @@ namespace Vanaring_DepaDemo
         //public AnimationClip SkeletonAnimationClip => _skeletonAnimationClip ;
         [Header("Use for vfx ")] 
         [SerializeField]
-        private GameObject _casterVfxAnimationPrefab;
+        private VFXEntity _casterVfxAnimationPrefab;
         [SerializeField]
-        private GameObject _targetVfxAnimationPrefab;
+        private VFXEntity _targetVfxAnimationPrefab;
 
-        public GameObject CasterVfxAnimationPrefab => _casterVfxAnimationPrefab;
-        public GameObject TargetVfxAnimationPrefab => _targetVfxAnimationPrefab;
+        public VFXEntity CasterVfxAnimationPrefab => _casterVfxAnimationPrefab;
+        public VFXEntity TargetVfxAnimationPrefab => _targetVfxAnimationPrefab;
 
         public string SelfTrigerID ;
     

@@ -15,17 +15,28 @@ namespace Vanaring_DepaDemo
     [Serializable]
     public class CombatEntityAnimationHandler : MonoBehaviour
     {
-        private CombatEntity _combatEntity ;
 
         [SerializeField]
         private GameObject _mesh ;
 
-        private Animator _animator;  
-        public CombatEntityAnimationHandler(CombatEntity combatEntity, CombatEntityAnimationHandler copied) {
-            _combatEntity = combatEntity;
-            _mesh = copied._mesh; 
+        [SerializeField]
+        public Transform _vfxPos ; 
 
-            _animator = _mesh.GetComponent<Animator>() ;  
+        public Vector3 GetVFXSpawnPos()
+        {
+            Debug.Log("OBJECT IS " + gameObject.name);
+            if (_vfxPos == null || _vfxPos.position == null )
+            {
+                throw new Exception("VFX Spawn Position of " + gameObject.name + "hasn't never been assigned");
+            }
+            
+            return _vfxPos.position ;
+        }
+
+        private Animator _animator;
+        private void Awake()
+        {
+            _animator = _mesh.GetComponent<Animator>();
         }
 
         public IEnumerator PlayTriggerAnimation(string triggerName)
@@ -36,22 +47,25 @@ namespace Vanaring_DepaDemo
         }
         public IEnumerator PlayActionAnimation(ActionAnimationInfo actionAnimation )
         {
-
             //Self VFX
-            GameObject vfx = Instantiate(actionAnimation.CasterVfxAnimationPrefab, _mesh.transform.position, Quaternion.identity);
-
+            GameObject vfx = null ; 
+            if (actionAnimation.CasterVfxAnimationPrefab.gameObject != null)
+            {
+                 vfx = Instantiate(actionAnimation.CasterVfxAnimationPrefab.gameObject, _mesh.transform.position, Quaternion.identity);
+            }
             //Play Animation 
             yield return PlayTriggerAnimation(actionAnimation.SelfTrigerID);
 
-            Destroy(vfx); 
+            if (vfx != null)
+                Destroy(vfx); 
  
         }
 
-        public IEnumerator PlayVFXActionAnimation<T>(GameObject vfxBasePrefab, CombatEntity target, VFXEntity<T>.VFXCallback argc, T param  )
+        public IEnumerator PlayVFXActionAnimation<T>(VFXEntity vfxBasePrefab, CombatEntity target, VFXCallbackHandler<T>.VFXCallback argc, T param  )
         {
-            GameObject vfx = Instantiate(vfxBasePrefab, target.transform.position, Quaternion.identity);
+            VFXEntity vfx = Instantiate(vfxBasePrefab, target.CombatEntityAnimationHandler._vfxPos.position, Quaternion.identity);
             CombatEntity entity = target;
-            VFXEntity<T> vfxEntity = new VFXEntity<T>(target.gameObject, vfx, 3.0f, argc  );
+            VFXCallbackHandler<T> vfxEntity = new VFXCallbackHandler<T>(target.gameObject, vfx,target.CombatEntityAnimationHandler.GetVFXSpawnPos(), vfxBasePrefab.GetComponent<ParticleSystem>().main.duration, argc  );
             yield return (vfxEntity.PlayVFX(param));
         }
 
