@@ -6,13 +6,14 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Events;
 using Vanaring_DepaDemo;
+using static UnityEngine.Rendering.DebugUI;
 
 /// <summary>
 /// Used in CombatEntity class to handle casting, modify energy, and stuffs about spell 
 /// </summary>
 /// 
 [Serializable]
-public class SpellCasterHandler  
+public class SpellCasterHandler  : MonoBehaviour
 {
 
     [SerializeField]
@@ -23,28 +24,27 @@ public class SpellCasterHandler
 
     private UnityAction<RuntimeMangicalEnergy.EnergySide, int> OnModifyEnergy ;
 
-    private CombatEntity _combatEntity; 
+    private CombatEntity _combatEntity;
+
+    private void Awake()
+    {
+        _mangicalEnergy = new RuntimeMangicalEnergy();
+        _combatEntity = GetComponent<CombatEntity>();   
+    }
+
     #region Event Sub
     public void SubOnModifyEnergy(UnityAction<RuntimeMangicalEnergy.EnergySide, int> argc )
     {
         OnModifyEnergy += argc; 
     }
 
-    public void UnSubOnModifyEnergy(UnityAction<RuntimeMangicalEnergy.EnergySide, int> argc)
+    public void UnSubOnModifyEnergy( UnityAction<RuntimeMangicalEnergy.EnergySide, int> argc)
     {
         OnModifyEnergy -= argc;  
     }
     #endregion EndSub 
-
-
-    public SpellCasterHandler()
-    {
-        _mangicalEnergy = new RuntimeMangicalEnergy();
-    }
-
     public bool IsEnergySufficient(SpellAbilityRuntime spell)
     {
-        Debug.Log("require energy is " + spell.RequireEnergyAmount + " current contain " + GetEnergyAmount(spell.RequireEnergySide));
         return GetEnergyAmount(spell.RequireEnergySide) >= spell.RequireEnergyAmount  ; 
     }
     #region Modify Energy  
@@ -68,19 +68,35 @@ public class SpellCasterHandler
                 return true ;
         }
         return false;
+    }
+
+    public void ResetEnergy()
+    {
+        int lightEnergy = _mangicalEnergy.GetEnergy(RuntimeMangicalEnergy.EnergySide.LightEnergy);
+        int darkEnergy  = _mangicalEnergy.GetEnergy(RuntimeMangicalEnergy.EnergySide.DarkEnergy);
+
+        int dif = (int) MathF.Abs(50 - lightEnergy);
+        RuntimeMangicalEnergy.EnergySide modifiedSide = ( lightEnergy > darkEnergy ?
+         RuntimeMangicalEnergy.EnergySide.DarkEnergy : RuntimeMangicalEnergy.EnergySide.LightEnergy ) ; 
+
+        _mangicalEnergy.ModifyEnergy(dif, modifiedSide) ;
+        OnModifyEnergy?.Invoke(modifiedSide, dif) ;
 
     }
- 
-
-
     #endregion
 
+    #region Spell
+    public void CastSpell(SpellAbilityRuntime runtimeSpell)
+    {
+       StartCoroutine(TargetSelectionFlowControl.Instance.InitializeSpellTargetSelectionScheme(_combatEntity, runtimeSpell));
+    }
+    #endregion
 }
 
 public class RuntimeMangicalEnergy
 {
-    private RuntimeStat _darkEnergy = new RuntimeStat(100, 50);
-    private RuntimeStat _lightEnergy = new RuntimeStat(100, 50);
+    private RuntimeStat _darkEnergy = new RuntimeStat(100, 50)   ;
+    private RuntimeStat _lightEnergy = new RuntimeStat(100, 50)  ;
 
     public enum EnergySide
     {

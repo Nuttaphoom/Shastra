@@ -13,6 +13,8 @@ namespace Vanaring_DepaDemo
     {
         [SerializeField]
         private EnergyModifierData _data ;
+
+        public EnergyModifierData ModifierData => _data;
         public override IEnumerator Factorize(List<CombatEntity> targets)
         {
             EnergyModifierRuntimeEffect retEffect = new EnergyModifierRuntimeEffect(_data);

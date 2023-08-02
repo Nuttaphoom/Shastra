@@ -10,44 +10,54 @@ using System.Collections;
 
 namespace Vanaring_DepaDemo
 {
-    public class ItemSocketGUI : MonoBehaviour, ISocketGUI<SpellAbilitySO>
+    public class ItemSocketGUI : MonoBehaviour  
     {
 
-        public void HandleGUI(SpellAbilitySO item)
+        [SerializeField]
+        private Button _actionButton ;
+
+        [SerializeField]
+        private TextMeshProUGUI _textMeshProUGUI ;
+        [SerializeField]
+        private TextMeshProUGUI _textMeshProNum ;
+
+        private string _itemName;
+
+
+        [SerializeField]
+        private Image _skillImage;  
+
+        private ItemAbilityRuntime _item ;
+
+        private CombatEntity _caster;
+
+        private int _itemAmount;
+
+        public void Init(ItemAbilityRuntime item, CombatEntity combatEntity)
         {
-            //item
+            _item = item;
+            this._caster = combatEntity;
+            _actionButton.onClick.AddListener(ChooseItem) ;
+
+            _textMeshProUGUI.text = item.ItemName.ToString() ;
+            _itemName = item.ItemName.ToString();
+            _itemAmount = 1;
         }
 
-        //[SerializeField]
-        //private Button _actionButton ;
+        public void AddItem(int amount)
+        {
+            _itemAmount += amount;
+            _textMeshProNum.text = "x" + _itemAmount.ToString();
+        }
 
-        //[SerializeField]
-        //private TextMeshProUGUI _textMeshProUGUI ;
+        public bool IsSameItem(string amount)
+        {
+            return (_itemName == amount);
+        }
 
-        //[SerializeField]
-        //private Image _skillImage;  
-
-        //private SpellAbilitySO _spellSO;
-
-        //private CombatEntity _caster; 
-
-        //public void Init(SpellAbilitySO spell, CombatEntity combatEntity)
-        //{ 
-        //    _spellSO = spell;
-        //    this._caster = combatEntity;
-        //    _actionButton.onClick.AddListener(ChooseSpell ) ;
-
-        //    _textMeshProUGUI.text = spell.AbilityName.ToString() ; 
-        //}
-
-        //private void ChooseSpell()
-        //{
-        //    SpellAbilityRuntime runtimeSpell = _spellSO.Factorize();
-        //    if (_caster.SpellCaster.IsEnergySufficient(runtimeSpell))
-        //    {
-        //        StartCoroutine((TargetSelectionFlowControl.Instance.InitializeSpellTargetSelectionScheme
-        //           (_caster, runtimeSpell)));
-        //    }
-        //}
+        private void ChooseItem()
+        {
+            _caster.ItemUser.UseItem(_item);
+        }
     }
 }

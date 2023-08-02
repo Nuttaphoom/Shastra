@@ -1,5 +1,7 @@
 
-public abstract class RequireInitializationHandler<T , U , V> 
+using UnityEngine;
+
+public abstract class RequireInitializationHandler<T , U , V>  
 {
     private bool _initialize = false;  
     protected bool IsInit => _initialize;  

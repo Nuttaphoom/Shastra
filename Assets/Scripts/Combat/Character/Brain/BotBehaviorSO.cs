@@ -4,8 +4,6 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
 
-
-
 namespace  Vanaring_DepaDemo {
     [CreateAssetMenu(fileName = "BotBehaviorSO", menuName = "ScriptableObject/BotBehavior/BotBehaviorSO")]
     //Each behavior contain "action" aka RuntimeEffectFacotorySO
@@ -22,7 +20,6 @@ namespace  Vanaring_DepaDemo {
             foreach (RuntimeEffectFactorySO factory in _factories)
             {
                 yield return factory as RuntimeEffectFactorySO  ;
-                 
             }
         }
 
