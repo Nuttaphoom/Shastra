@@ -33,7 +33,15 @@ public class ItemUserHandler : MonoBehaviour //inventory
 
         FactorizeItemInInventory();
     }
-   
+
+    public void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.O))
+        {
+            ColorfulLogger.LogWithColor("00000000", Color.cyan);
+            _runtimeItems.RemoveAt(0);
+        }
+    }
 
     private void FactorizeItemInInventory()
     {
@@ -52,6 +60,7 @@ public class ItemUserHandler : MonoBehaviour //inventory
     private IEnumerator UseItemCoroutine(ItemAbilityRuntime runtimeItem)
     { 
         yield return TargetSelectionFlowControl.Instance.InitializeItemTargetSelectionScheme(_combatEntity, runtimeItem);
+        ColorfulLogger.LogWithColor("USE ITEM", Color.cyan);
         yield return null; 
     }
 
