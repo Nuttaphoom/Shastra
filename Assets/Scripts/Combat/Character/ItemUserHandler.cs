@@ -34,7 +34,10 @@ public class ItemUserHandler : MonoBehaviour //inventory
     private void Awake()
     {
         _combatEntity = GetComponent<CombatEntity>() ;
-
+    }
+    // TODO : Call FactorizeItemInInventory into Awake in correct order 
+    private void Start()
+    {
         FactorizeItemInInventory();
     }
 
@@ -65,8 +68,8 @@ public class ItemUserHandler : MonoBehaviour //inventory
     private IEnumerator UseItemCoroutine(ItemAbilityRuntime runtimeItem)
     {
         //ColorfulLogger.LogWithColor("USE ITEM", Color.cyan);
-        RemoveItem(runtimeItem);
-        _itemWindowManager.UpdateItemSocket(_runtimeItems, _runtimeItemsAmount);
+        //RemoveItem(runtimeItem);
+        //_itemWindowManager.UpdateItemSocket(_runtimeItems, _runtimeItemsAmount);
 
         yield return TargetSelectionFlowControl.Instance.InitializeItemTargetSelectionScheme(_combatEntity, runtimeItem);
         yield return null; 
@@ -91,5 +94,6 @@ public class ItemUserHandler : MonoBehaviour //inventory
             count++;
         }
 
+        _itemWindowManager.UpdateItemSocket(_runtimeItems, _runtimeItemsAmount);
     }
 }

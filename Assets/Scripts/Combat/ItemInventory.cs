@@ -8,11 +8,13 @@ namespace Vanaring_DepaDemo
 {
     public class ItemInventory : MonoBehaviour
     {
+        // TODO : Not singleton inventory
         public static ItemInventory instance = null;
 
         [Serializable]
         public struct ItemInventoryData
         {
+            // TODO : Combine itemData & amount into the struct
             [SerializeField]
             public ItemAbilityFactorySO itemData;
             [SerializeField]

@@ -61,6 +61,8 @@ namespace Vanaring_DepaDemo
             //    _GUIinventoryObject.Add(newSocketObject);
             //}
 
+            //TODO : Remove Only target item
+
             //Version 2 : Add multiple Item L 4 = x4
             for (int i = 0 ; i< _itemInventoryData.Count ; i++)
             {

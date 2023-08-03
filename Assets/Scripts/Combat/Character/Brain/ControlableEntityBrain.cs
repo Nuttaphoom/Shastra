@@ -51,7 +51,7 @@ namespace Vanaring_DepaDemo
                     _combateEntity.SpellCaster.ModifyEnergy(latestSpell.ModifiedEnergySide,latestSpell.ModifiedEnergyAmount) ;
                 }if (latestItem != null)
                 {
-                    //_combateEntity.ItemUser.RemoveItem(latestItem); 
+                    _combateEntity.ItemUser.RemoveItem(latestItem); 
                 }
 
                 latestSpell = null; 
