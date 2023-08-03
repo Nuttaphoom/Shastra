@@ -50,14 +50,22 @@ namespace Vanaring_DepaDemo
             _textMeshProNum.text = "x" + _itemAmount.ToString();
         }
 
-        public bool IsSameItem(string amount)
+        public void SetNumberOfItem(int amount)
         {
-            return (_itemName == amount);
+            _itemAmount = amount;
+            _textMeshProNum.text = "x" + _itemAmount.ToString();
+        }
+
+        public bool IsSameItem(string name)
+        {
+            return (_itemName == name);
         }
 
         private void ChooseItem()
         {
             _caster.ItemUser.UseItem(_item);
         }
+
+        public int ItemAmount => _itemAmount;
     }
 }
