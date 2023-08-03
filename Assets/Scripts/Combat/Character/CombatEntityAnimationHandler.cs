@@ -47,10 +47,14 @@ namespace Vanaring_DepaDemo
         }
         public IEnumerator PlayActionAnimation(ActionAnimationInfo actionAnimation )
         {
+            List<IEnumerator> coroutines = new List<IEnumerator>();
+
             //Self VFX
-            List<IEnumerator> coroutines = new List<IEnumerator>(); 
-            VFXCallbackHandler<string> callbackHandler = new VFXCallbackHandler<string>(gameObject, actionAnimation.CasterVfxEntity, GetVFXSpawnPos(), null );
-            coroutines.Add (callbackHandler.PlayVFX(null));
+            if (actionAnimation.CasterVfxEntity.IsValid() )
+            {
+                VFXCallbackHandler<string> callbackHandler = new VFXCallbackHandler<string>(gameObject, actionAnimation.CasterVfxEntity, GetVFXSpawnPos(), null);
+                coroutines.Add(callbackHandler.PlayVFX(null));
+            }
 
             //Play Animation 
             coroutines.Add (PlayTriggerAnimation(actionAnimation.SelfTrigerID) ) ;

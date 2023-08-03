@@ -32,7 +32,11 @@ namespace Vanaring_DepaDemo
         private string _fieldName ;
         [SerializeField]
         private string _fieldDescription ;
+
+        [SerializeField]
+        private Sprite _fieldImage; 
         public string FieldName => _fieldName; 
-        public string FieldDescription => _fieldDescription;     
+        public string FieldDescription => _fieldDescription; 
+        public Sprite FieldImage => _fieldImage; 
     } 
 }

@@ -31,7 +31,9 @@ public class VFXEntity
     public float SpawnDelay => _spawnDelay;  
     public float CallbackDelay => _callbackDelay; 
 
-    public GameObject VFXAnimationPrefabs => _VFXAnimationPrefabs; 
+    public GameObject VFXAnimationPrefabs => _VFXAnimationPrefabs;
+
+    public bool IsValid() => _VFXAnimationPrefabs != null;
 }
 
 
@@ -66,7 +68,9 @@ public class VFXCallbackHandler<T>
         _instantiatedVFX.gameObject.SetActive(false);
 
         yield return new WaitForSeconds(_vfxEntity.SpawnDelay);
+        
         _instantiatedVFX.gameObject.SetActive(true);
+        _instantiatedVFX.GetComponent<ParticleSystem>().Play(); 
 
         yield return new WaitForSeconds(_vfxEntity.CallbackDelay) ;
 

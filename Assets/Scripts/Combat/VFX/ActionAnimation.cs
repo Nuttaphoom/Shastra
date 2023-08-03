@@ -26,7 +26,7 @@ namespace Vanaring_DepaDemo
         public VFXEntity TargetVfxEntity => _targetVFXEntity ;
 
         public string SelfTrigerID ;
-    
+        public string TargetTrigerID; 
     
     }
 

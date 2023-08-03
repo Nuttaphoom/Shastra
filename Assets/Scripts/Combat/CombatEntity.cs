@@ -122,12 +122,13 @@ namespace Vanaring_DepaDemo
 
         public StatusEffectHandler GetStatusEffectHandler()
         {
-            
             return _statusEffectHandler ;
         }
+
+      
         #endregion
 
-    #region GETTER
+        #region GETTER
         public RuntimeCharacterStatsAccumulator StatsAccumulator => _runtimeCharacterStatsAccumulator;
         public SpellCasterHandler SpellCaster => _spellCaster;
         public ItemUserHandler ItemUser => _itemUser;
@@ -185,7 +186,9 @@ namespace Vanaring_DepaDemo
 
             List<IEnumerator> coroutines = new List<IEnumerator>() ;
 
-            //2.) play animation
+            //2 Visual 
+
+            //2.1.) creating vfx for coroutine for targets
             foreach (CombatEntity target in targets)
             {
                 CombatEntity entity = target;
@@ -193,9 +196,11 @@ namespace Vanaring_DepaDemo
 
             }
 
+            //2.2.) create action animation coroutine for self
             coroutines.Add(_combatEntityAnimationHandler.PlayActionAnimation(animationinfo));
 
             
+            //2.3.) running animation scheme
             yield return new WaitAll(this,coroutines.ToArray() );
         }
 

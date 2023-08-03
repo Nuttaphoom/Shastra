@@ -14,13 +14,11 @@ using UnityEngine.Events;
 
 namespace Vanaring_DepaDemo
 {
-
     public enum ECompetatorSide
     {
         Ally, 
         Hostile 
     }
-
 
     public class CombatReferee : MonoBehaviour
     {
@@ -53,6 +51,9 @@ namespace Vanaring_DepaDemo
         private List<CombatEntity> _activeEntities = new List<CombatEntity> ();
 
         private int _currentEntityIndex = 0; 
+        
+        //TODO -- REMOVE THIS, SO FUCKING UGLY
+        private bool _active = false ; 
 
         private void Awake()
         {
@@ -76,12 +77,11 @@ namespace Vanaring_DepaDemo
 
         private void Update()
         {
-            //TODO : Centralize the input 
-            if (Input.GetKeyDown(KeyCode.D))
+            if (Input.GetKeyDown(KeyCode.RightArrow))
             {
                 StartCoroutine(ChangeActiveEntityIndex(-1, true, false) ) ;
             }
-            else if (Input.GetKeyDown(KeyCode.A))
+            else if (Input.GetKeyDown(KeyCode.LeftArrow))
             {
                 StartCoroutine(ChangeActiveEntityIndex(-1, false, true));
             }
