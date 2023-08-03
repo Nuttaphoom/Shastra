@@ -140,6 +140,33 @@ namespace Vanaring_DepaDemo
                 }
             }
         }
+
+        /// <summary>
+        /// attacker can be null for direct dmg (no attacker) situation 
+        /// </summary>
+        /// <param name="attacker"></param>
+        /// <param name="subject"></param>
+        /// <returns></returns>
+        public IEnumerator ExecuteHurtStatusRuntimeEffectCoroutine(CombatEntity attacker, CombatEntity subject)
+        {
+            foreach (var key in _effects.Keys)
+            {
+                for (int i = 0; i < _effects[key].Count; i++)
+                {
+                    StatusRuntimeEffect statusEffect = _effects[key][i];
+
+                    yield return statusEffect.AfterHurtEffect(attacker,subject);
+
+                    if (statusEffect.IsExpired())
+                    {
+                        //TODO - Remove status effect visually
+                        _effects[key].RemoveAt(i);
+                        i--;
+                        continue;
+                    }
+                }
+            }
+        } 
         #region GETTER 
         public List<StatusRuntimeEffect> GetStatusRuntimeEffectWithEvokeKey(EEvokeKey evokeKey, bool updateTTLAfterGet = true)
         {

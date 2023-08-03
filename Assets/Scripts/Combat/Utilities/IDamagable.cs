@@ -24,8 +24,8 @@ namespace Vanaring_DepaDemo
     public interface IDamagable
     {
 
-        public void LogicHurt(int inputdmg);
-        public IEnumerator VisualHurt(string animationTrigger = "Hurt"); 
+        public void LogicHurt(CombatEntity attacker, int inputdmg);
+        public IEnumerator VisualHurt(CombatEntity attacker,string animationTrigger = "Hurt"); 
         
     }
 }

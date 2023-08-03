@@ -139,8 +139,9 @@ namespace Vanaring_DepaDemo
 
         #region InterfaceFunction 
 
-        public void LogicHurt(int inputdmg)
+        public void LogicHurt(CombatEntity attacker, int inputdmg)
         {
+
             float trueDmg = inputdmg;
 
             //Do some math here
@@ -156,20 +157,25 @@ namespace Vanaring_DepaDemo
             }
         }
 
-        public IEnumerator VisualHurt(string animationTrigger = "Hurt")
+        public IEnumerator VisualHurt(CombatEntity attacker, string animationTrigger)
         {
             //Display DMG Text here
 
             //Slow down time? 
             
-            yield return _combatEntityAnimationHandler.PlayTriggerAnimation(animationTrigger); 
-        
+            yield return _combatEntityAnimationHandler.PlayTriggerAnimation(animationTrigger);
+
+            yield return _statusEffectHandler.ExecuteHurtStatusRuntimeEffectCoroutine(attacker,this);
+
+
             //If done playing animation, visually destroy the character (animation) not game object
             if (IsDead)
             {
 
             }
         }
+
+ 
 
 
         //Receive animation info and play it accordingly 
@@ -181,7 +187,7 @@ namespace Vanaring_DepaDemo
             //1.) Do apply dmg 
             int inputDmg = (int) (multiplier * StatsAccumulator.GetATKAmount()) ;
             foreach (CombatEntity target in targets) {
-                    target.LogicHurt(inputDmg);
+                    target.LogicHurt(this,inputDmg);
             }
 
             List<IEnumerator> coroutines = new List<IEnumerator>() ;
@@ -192,7 +198,7 @@ namespace Vanaring_DepaDemo
             foreach (CombatEntity target in targets)
             {
                 CombatEntity entity = target;
-                coroutines.Add(_combatEntityAnimationHandler.PlayVFXActionAnimation<string>(animationinfo.TargetVfxEntity , entity, entity.VisualHurt, "Hurt"));
+                coroutines.Add(_combatEntityAnimationHandler.PlayVFXActionAnimation(animationinfo.TargetVfxEntity, entity, (param) => entity.VisualHurt(this,param), animationinfo.TargetTrigerID));
 
             }
 

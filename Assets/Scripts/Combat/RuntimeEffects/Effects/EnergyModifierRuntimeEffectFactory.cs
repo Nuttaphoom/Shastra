@@ -42,7 +42,6 @@ namespace Vanaring_DepaDemo
         }
         public override IEnumerator ExecuteRuntimeCoroutine(CombatEntity caster)
         {
-            Debug.Log("modify energy");
             foreach (var target in _targets)
             {
                 target.SpellCaster.ModifyEnergy(_data.Side, _data.Amount);
