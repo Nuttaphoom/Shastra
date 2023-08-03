@@ -49,15 +49,14 @@ public class TargetSelectionFlowControl : MonoBehaviour
         //maybe use IInputSomething to settle down this behavior
 
         if (_activlySelecting) {
-            if (Input.GetKeyDown(KeyCode.W))
+            if (Input.GetKeyDown(KeyCode.D))
             {
-                Debug.Log("W"); 
                 _currentSelectIndex = (_currentSelectIndex + 1) % _validTargets.Count;
             }
-            else if (Input.GetKeyDown(KeyCode.S))
+            else if (Input.GetKeyDown(KeyCode.A))
             {
-                Debug.Log("S");
                 _currentSelectIndex = (_currentSelectIndex - 1) < 0 ? _validTargets.Count - 1 : (_currentSelectIndex - 1);
+
             }
             else if (Input.GetKeyDown(KeyCode.Space))
             {
@@ -191,6 +190,13 @@ public class TargetSelectionFlowControl : MonoBehaviour
 
         foreach (CombatEntity target in CombatReferee.instance.GetCompetatorsBySide(eCompetatorSide))
             _validTargets.Add(target);
+
+        if (action.TargetSelect.TargetCasterItself) {
+            _validTargets.Clear();
+            _validTargets.Add(caster); 
+        }
+
+
     }
     private void ValidateData()
     {
@@ -214,53 +220,18 @@ public class TargetSelector
     private int _maxTargetSize = 1  ;
 
     public int MaxTarget => _maxTargetSize;
+
     [SerializeField]
     private TargetSide _targetSide = TargetSide.Self ;
 
-    public bool TargetOppose => (_targetSide == TargetSide.Oppose); 
+    [SerializeField] 
+    private bool _targetCaster = false ; 
+ 
+    
+
+    public bool TargetOppose => (_targetSide == TargetSide.Oppose);
+    public bool TargetCasterItself => _targetCaster; 
+
+
     //Used when the target selection is requires  
-    public IEnumerator TargetSelectionCoroutine(List<CombatEntity> assignedTarget)
-    {
-        yield return null; 
-
-        assignedTarget.Clear();
-       
-        while (assignedTarget.Count < _maxTargetSize)
-        {
-            CombatEntity detected;
-            if ((detected = TickTargetSelected()) != null)
-            {
-                assignedTarget.Add(detected);    
-            }
-
-            yield return null;
-        }
-
-    }
-
-    public CombatEntity TickTargetSelected()
-    {
-        //TODO :: Right now we get access from Input.getmousedown here
-        //Which is not correct since we want to centralize the input systme
-
-        CombatEntity ret = null ; 
-        if (Input.GetMouseButtonDown(0))
-        {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-            List<CombatEntity> hitTarget = new List<CombatEntity>();
-
-            foreach (var hit in Physics.SphereCastAll(ray, 10.0f, Mathf.Infinity))
-            {    
-                if (hit.collider.TryGetComponent(out ret))
-                {
-                    break;    
-                }
-            }
-        }
-
-        return ret ;
-    }
-
-    public bool IsRequireSelectionQuery => _maxTargetSize > 0; 
 }

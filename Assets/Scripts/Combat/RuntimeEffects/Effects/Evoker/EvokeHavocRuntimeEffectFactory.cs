@@ -38,7 +38,7 @@ namespace Vanaring_DepaDemo
             foreach (CombatEntity entity in _targets) {
                 List<StatusRuntimeEffect> havoc = entity.GetStatusEffectHandler().GetStatusRuntimeEffectWithEvokeKey(EEvokeKey.HAVOC, true);
                 double realDmg = Math.Pow(_baseMultiplier, havoc.Count) ;
-                entity.LogicHurt((int) realDmg); 
+                entity.LogicHurt(null,(int) realDmg); 
             }
 
             yield return null;

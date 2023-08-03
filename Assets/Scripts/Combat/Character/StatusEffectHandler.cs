@@ -11,7 +11,7 @@ namespace Vanaring_DepaDemo
 {
     public interface IStatusEffectable
     {
-        public StatusEffectHandler GetStatusEffectHandler(); 
+        public StatusEffectHandler GetStatusEffectHandler() ;
     }
 
     public class StatusEffectHandler
@@ -26,7 +26,7 @@ namespace Vanaring_DepaDemo
         }
 
         //the effect should be factorize exactly before being applied 
-        public IEnumerator ApplyNewEffect(StatusRuntimeEffectFactorySO factory  )
+        private IEnumerator LogicApplyNewEffect(StatusRuntimeEffectFactorySO factory )
         {
             IEnumerator co = factory.Factorize(new List<CombatEntity>() { _appliedEntity } )  ;
 
@@ -56,10 +56,16 @@ namespace Vanaring_DepaDemo
                         _effects[key].Add(co.Current as StatusRuntimeEffect);
                     }
 
-                    //TODO - Visually 
                 }
                 yield return new WaitForEndOfFrame() ; 
             }
+        }
+
+        public IEnumerator ApplyNewEffect(StatusRuntimeEffectFactorySO factory, ActionAnimationInfo actionAnimationInfo)
+        {
+            yield return LogicApplyNewEffect(factory) ;
+
+            yield return _appliedEntity.CombatEntityAnimationHandler.PlayVFXActionAnimation<string>(actionAnimationInfo.TargetVfxEntity,_appliedEntity, _appliedEntity.CombatEntityAnimationHandler.PlayTriggerAnimation , actionAnimationInfo.TargetTrigerID) ;
         }
 
 
@@ -134,6 +140,33 @@ namespace Vanaring_DepaDemo
                 }
             }
         }
+
+        /// <summary>
+        /// attacker can be null for direct dmg (no attacker) situation 
+        /// </summary>
+        /// <param name="attacker"></param>
+        /// <param name="subject"></param>
+        /// <returns></returns>
+        public IEnumerator ExecuteHurtStatusRuntimeEffectCoroutine(CombatEntity attacker, CombatEntity subject)
+        {
+            foreach (var key in _effects.Keys)
+            {
+                for (int i = 0; i < _effects[key].Count; i++)
+                {
+                    StatusRuntimeEffect statusEffect = _effects[key][i];
+
+                    yield return statusEffect.AfterHurtEffect(attacker,subject);
+
+                    if (statusEffect.IsExpired())
+                    {
+                        //TODO - Remove status effect visually
+                        _effects[key].RemoveAt(i);
+                        i--;
+                        continue;
+                    }
+                }
+            }
+        } 
         #region GETTER 
         public List<StatusRuntimeEffect> GetStatusRuntimeEffectWithEvokeKey(EEvokeKey evokeKey, bool updateTTLAfterGet = true)
         {

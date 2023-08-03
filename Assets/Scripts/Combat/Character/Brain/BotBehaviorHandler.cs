@@ -24,13 +24,13 @@ namespace Vanaring_DepaDemo
         [SerializeField]
         private GameObject _telegraphyPos;
 
-        private GameObject prefab;
-
         int _nextBehavior = 0;
         int _currentBehavior = 0;
+        
+        private GameObject telegraphyVFXPrefab = null;
 
         public IEnumerator CalculateNextBehavior()
-        {
+        {  
             //Debug.Log("CalculateNextBehavior");
             yield return null;
             _nextBehavior = Random.Range(0, _behaviorSocketSOs.GetBehaviorSize);
@@ -63,19 +63,25 @@ namespace Vanaring_DepaDemo
                             }
                         }
                         index += side * 3;
-                        if (prefab != null)
+                        if (telegraphyVFXPrefab != null)
                         {
-                            Destroy(prefab);
+                            Destroy(telegraphyVFXPrefab);
                         }
-                        prefab = Instantiate(VfxTelegraphySingletonHandler.instance.GetVfxTelegraphPrefab(index),
+                        telegraphyVFXPrefab = Instantiate(VfxTelegraphySingletonHandler.instance.GetVfxTelegraphPrefab(index),
                             _telegraphyPos.transform.position, _telegraphyPos.transform.rotation);
                         if (amount == 0)
                         {
-                            prefab.SetActive(false);
+                            telegraphyVFXPrefab.SetActive(false);
                         }
                         else
                         {
-                            prefab.SetActive(true);
+                            telegraphyVFXPrefab.SetActive(true);
+                        }
+                    }else
+                    {
+                        if (telegraphyVFXPrefab != null)
+                        {
+                            Destroy(telegraphyVFXPrefab);
                         }
                     }
                 }

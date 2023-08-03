@@ -1,3 +1,4 @@
+using CustomYieldInstructions;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -15,17 +16,27 @@ namespace Vanaring_DepaDemo
     [Serializable]
     public class CombatEntityAnimationHandler : MonoBehaviour
     {
-        private CombatEntity _combatEntity ;
 
         [SerializeField]
         private GameObject _mesh ;
 
-        private Animator _animator;  
-        public CombatEntityAnimationHandler(CombatEntity combatEntity, CombatEntityAnimationHandler copied) {
-            _combatEntity = combatEntity;
-            _mesh = copied._mesh; 
+        [SerializeField]
+        public Transform _vfxPos ; 
 
-            _animator = _mesh.GetComponent<Animator>() ;  
+        public Vector3 GetVFXSpawnPos()
+        {
+            if (_vfxPos == null || _vfxPos.position == null )
+            {
+                throw new Exception("VFX Spawn Position of " + gameObject.name + "hasn't never been assigned");
+            }
+            
+            return _vfxPos.position ;
+        }
+
+        private Animator _animator;
+        private void Awake()
+        {
+            _animator = _mesh.GetComponent<Animator>();
         }
 
         public IEnumerator PlayTriggerAnimation(string triggerName)
@@ -36,25 +47,27 @@ namespace Vanaring_DepaDemo
         }
         public IEnumerator PlayActionAnimation(ActionAnimationInfo actionAnimation )
         {
-            Debug.Log("PlayActionAnimation Start"); 
+            List<IEnumerator> coroutines = new List<IEnumerator>();
 
             //Self VFX
-            GameObject vfx = Instantiate(actionAnimation.CasterVfxAnimationPrefab, _mesh.transform.position, Quaternion.identity);
+            if (actionAnimation.CasterVfxEntity.IsValid() )
+            {
+                VFXCallbackHandler<string> callbackHandler = new VFXCallbackHandler<string>(gameObject, actionAnimation.CasterVfxEntity, GetVFXSpawnPos(), null);
+                coroutines.Add(callbackHandler.PlayVFX(null));
+            }
 
             //Play Animation 
-            yield return PlayTriggerAnimation(actionAnimation.SelfTrigerID);
+            coroutines.Add (PlayTriggerAnimation(actionAnimation.SelfTrigerID) ) ;
 
-            Debug.Log("PlayActionAnimation End");
-            Destroy(vfx); 
+            yield return new WaitAll(this, coroutines.ToArray() );
  
         }
 
-        public IEnumerator PlayVFXActionAnimation<T>(ActionAnimationInfo actionAnimation, CombatEntity target, VFXEntity<T>.VFXCallback argc, T param  )
+        public IEnumerator PlayVFXActionAnimation<T>(VFXEntity vfxEntity, CombatEntity target, VFXCallbackHandler<T>.VFXCallback argc, T param  )
         {
-            GameObject vfx = Instantiate(actionAnimation.TargetVfxAnimationPrefab, target.transform.position, Quaternion.identity);
             CombatEntity entity = target;
-            VFXEntity<T> vfxEntity = new VFXEntity<T>(target.gameObject, vfx, 3.0f, argc  );
-            yield return (vfxEntity.PlayVFX(param));
+            VFXCallbackHandler<T> callbackHandler = new VFXCallbackHandler<T>(target.gameObject, vfxEntity , target.CombatEntityAnimationHandler.GetVFXSpawnPos(),  argc  );
+            yield return (callbackHandler.PlayVFX(param));
         }
 
 

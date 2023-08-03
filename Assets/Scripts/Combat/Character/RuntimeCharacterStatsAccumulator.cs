@@ -39,17 +39,14 @@ namespace Vanaring_DepaDemo
 
         public void ModifyATKAmountByPercent(int percent)
         {
-            Debug.Log("increased ATK by percent " + percent);
 
 
             int currentValue = _characterStats[ECharacterStatType.ATK].GetStatValue() ; 
             int increasedAmount = (currentValue * percent ) / 100 ;
-            Debug.Log("increased ATK by   " + increasedAmount);
-            Debug.Log("before increase " + _characterStats[ECharacterStatType.ATK].GetStatValue());
+ 
 
             _characterStats[ECharacterStatType.ATK].ModifyValue(increasedAmount, true, true);
 
-            Debug.Log("after increase " + _characterStats[ECharacterStatType.ATK].GetStatValue());
 
         }
 

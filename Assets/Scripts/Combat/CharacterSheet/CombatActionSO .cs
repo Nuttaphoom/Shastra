@@ -10,21 +10,33 @@ namespace Vanaring_DepaDemo
 {
     [CreateAssetMenu(fileName= "Combat Ability" , menuName = "ScriptableObject/Combat/CombatAbility" )]
     public class CombatActionSO : ScriptableObject
-    {
+    { 
         [SerializeField]
-        protected string _abilityName;
+        protected DescriptionBaseField _description; 
 
-        [SerializeField]
-        protected string _desscription;
-        
         [SerializeField]
         private RuntimeEffectFactorySO _effect ;
 
         #region GETTER
-        public string AbilityName => _abilityName; 
-        public string Desscription => _desscription;
+        public string AbilityName => _description.FieldName; 
+        public string Desscription => _description.FieldDescription;
         public RuntimeEffectFactorySO EffectFactory => _effect;
 
         #endregion
     }
+
+    [Serializable]
+    public struct DescriptionBaseField
+    {
+        [SerializeField]
+        private string _fieldName ;
+        [SerializeField]
+        private string _fieldDescription ;
+
+        [SerializeField]
+        private Sprite _fieldImage; 
+        public string FieldName => _fieldName; 
+        public string FieldDescription => _fieldDescription; 
+        public Sprite FieldImage => _fieldImage; 
+    } 
 }

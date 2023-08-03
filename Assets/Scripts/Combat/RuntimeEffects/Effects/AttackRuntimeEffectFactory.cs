@@ -20,7 +20,6 @@ namespace Vanaring_DepaDemo
         [SerializeField]
         private ActionAnimationInfo _actionAnimation;
 
-
         public override IEnumerator Factorize(List<CombatEntity> targets)
         {
             AttackRuntimeEffect retEffect = new AttackRuntimeEffect(_damagScaling,realDmg, _actionAnimation );

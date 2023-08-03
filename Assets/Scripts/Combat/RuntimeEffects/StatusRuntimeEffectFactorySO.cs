@@ -45,6 +45,9 @@ namespace Vanaring_DepaDemo
     public abstract class StatusRuntimeEffectFactorySO : RuntimeEffectFactorySO
     {
         [SerializeField]
+        private DescriptionBaseField _statusEffectDescription ;
+
+        [SerializeField]
         [Header("Duration (turn unit) for this status effect")]
         protected int _TTL;
 
@@ -61,10 +64,14 @@ namespace Vanaring_DepaDemo
         protected StatusStackInfo _stackInfo   ;
 
 
+
         public StatusStackInfo StackInfo => _stackInfo ;
         public int TTL => _TTL;
         public bool InfiniteTTL => _infiniteTTL ;
         public EEvokeKey EvokeKey => _evokeKey;
+        public string StatusDescription => _statusEffectDescription.FieldDescription;
+        public string StatusName => _statusEffectDescription.FieldName;  
+
 
     }
 
@@ -78,6 +85,7 @@ namespace Vanaring_DepaDemo
         protected int _timeToLive = 0;
 
         protected EEvokeKey _evokeKey;
+        
         public StatusRuntimeEffect(StatusRuntimeEffectFactorySO effectFactory)
         {
             this._evokeKey = effectFactory.EvokeKey ; 
@@ -101,7 +109,7 @@ namespace Vanaring_DepaDemo
         /// </summary>
         /// <param name="caster"></param>
         /// <returns></returns>
-        public virtual IEnumerator BeforeHurtEffect(CombatEntity attacker, CombatEntity subject)
+        public virtual IEnumerator AfterHurtEffect(CombatEntity attacker, CombatEntity subject)
         {
             yield return null;
         }

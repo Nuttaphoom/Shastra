@@ -81,7 +81,6 @@ namespace Vanaring_DepaDemo
                 _combatGraphicalHandler = GetComponent<CombatGraphicalHandler>();
 
             _combatGraphicalHandler.EnableGraphicalElements();
-            Debug.Log(gameObject.name+ "take control");
             yield return null;
         }
 
