@@ -13,7 +13,7 @@ namespace Vanaring_DepaDemo
     {
         public override IEnumerator Factorize(List<CombatEntity> targets)
         {
-            HavocStatusEffectFactory retEffect = new HavocStatusEffectFactory(this);
+            WaitForActionStatusEffect retEffect = new WaitForActionStatusEffect(this);
             foreach (CombatEntity target in targets)
             {
                  retEffect.AssignTarget(target);
@@ -24,9 +24,9 @@ namespace Vanaring_DepaDemo
     }
 
 
-    public class HavocStatusEffectFactory : StatusRuntimeEffect
+    public class WaitForActionStatusEffect : StatusRuntimeEffect
     {
-        public HavocStatusEffectFactory(StatusRuntimeEffectFactorySO factory) : base(factory)   
+        public WaitForActionStatusEffect(StatusRuntimeEffectFactorySO factory) : base(factory)   
         {
 
         }

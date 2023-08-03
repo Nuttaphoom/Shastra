@@ -25,6 +25,8 @@ namespace Vanaring_DepaDemo
 
         public Vector3 GetVFXSpawnPos()
         {
+            
+
             if (_vfxPos == null || _vfxPos.position == null )
             {
                 throw new Exception("VFX Spawn Position of " + gameObject.name + "hasn't never been assigned");

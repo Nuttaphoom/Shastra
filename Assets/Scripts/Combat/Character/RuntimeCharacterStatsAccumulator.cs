@@ -28,6 +28,7 @@ namespace Vanaring_DepaDemo
             _characterStats.Add(ECharacterStatType.ATK, new RuntimeStat(VanaringMathConst.InfinityValue ,_entityStatsSO.GetATK)) ;
             _characterStats.Add(ECharacterStatType.Stunt, new RuntimeStat(1,0));
 
+
         }
 
         #region ATKStatsManipulationMethod  
