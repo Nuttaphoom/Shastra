@@ -49,15 +49,14 @@ public class TargetSelectionFlowControl : MonoBehaviour
         //maybe use IInputSomething to settle down this behavior
 
         if (_activlySelecting) {
-            if (Input.GetKeyDown(KeyCode.W))
+            if (Input.GetKeyDown(KeyCode.D))
             {
-                Debug.Log("W"); 
                 _currentSelectIndex = (_currentSelectIndex + 1) % _validTargets.Count;
             }
-            else if (Input.GetKeyDown(KeyCode.S))
+            else if (Input.GetKeyDown(KeyCode.A))
             {
-                Debug.Log("S");
                 _currentSelectIndex = (_currentSelectIndex - 1) < 0 ? _validTargets.Count - 1 : (_currentSelectIndex - 1);
+
             }
             else if (Input.GetKeyDown(KeyCode.Space))
             {
@@ -83,7 +82,6 @@ public class TargetSelectionFlowControl : MonoBehaviour
 
     public (RuntimeEffectFactorySO, List<CombatEntity>) GetLatestAction()
     {
-        Debug.Log("prepare action");
         if (PrepareAction()) {
             _activlySelecting = false;
             _latestSelectedSpell = null;

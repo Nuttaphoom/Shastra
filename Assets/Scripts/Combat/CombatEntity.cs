@@ -1,8 +1,12 @@
+using CustomYieldInstructions;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using Unity.VisualScripting;
 using UnityEngine;
+using static Cinemachine.CinemachineTargetGroup;
+using static UnityEngine.EventSystems.EventTrigger;
 using static UnityEngine.GraphicsBuffer;
 
 namespace Vanaring_DepaDemo
@@ -29,15 +33,18 @@ namespace Vanaring_DepaDemo
         [SerializeField]
         private CombatEntityAnimationHandler _combatEntityAnimationHandler ;
 
-        [SerializeField]
         private EnergyOverflowHandler _energyOverflowHandler ;
 
-        public void Init()
+        private bool _isDead = false;
+
+        public bool IsDead => _isDead; 
+
+        public void Awake()
         {
             _runtimeCharacterStatsAccumulator = new RuntimeCharacterStatsAccumulator(_characterSheet) ;
             _statusEffectHandler = new StatusEffectHandler(this) ;
-            _combatEntityAnimationHandler = new CombatEntityAnimationHandler(this, _combatEntityAnimationHandler) ;
-                
+            _energyOverflowHandler = GetComponent<EnergyOverflowHandler>(); 
+
             if (! TryGetComponent(out _baseEntityBrain))
             {
                 throw new Exception("BaseEntityBrain haven't been assigned"); 
@@ -110,54 +117,94 @@ namespace Vanaring_DepaDemo
  
         public bool ReadyForControl()
         {
-            return ! _runtimeCharacterStatsAccumulator.IsStunt();
+            return ! _runtimeCharacterStatsAccumulator.IsStunt() && ! IsDead  ;
         }
 
         public StatusEffectHandler GetStatusEffectHandler()
         {
             return _statusEffectHandler ;
         }
+
+      
         #endregion
 
-    #region GETTER
+        #region GETTER
         public RuntimeCharacterStatsAccumulator StatsAccumulator => _runtimeCharacterStatsAccumulator;
         public SpellCasterHandler SpellCaster => _spellCaster;
         public ItemUserHandler ItemUser => _itemUser;
 
+        public CombatEntityAnimationHandler CombatEntityAnimationHandler => _combatEntityAnimationHandler; 
+
         #endregion
 
-    #region InterfaceFunction 
+        #region InterfaceFunction 
 
         public void LogicHurt(int inputdmg)
-    {
-        float trueDmg = inputdmg;
+        {
+            float trueDmg = inputdmg;
 
-        //Do some math here
-        trueDmg =  -trueDmg;
+            //Do some math here
+            trueDmg =  -trueDmg;
 
-       _runtimeCharacterStatsAccumulator.ModifyHPStat(trueDmg);
+           _runtimeCharacterStatsAccumulator.ModifyHPStat(trueDmg);
 
-        ColorfulLogger.LogWithColor(gameObject.name + "is hit with " + trueDmg + " remaining HP : " + _runtimeCharacterStatsAccumulator.GetHPAmount(), Color.red); 
-    }
-
-    //Receive animation info and play it accordingly 
-    public IEnumerator Attack(List<CombatEntity> targets,float multiplier , ActionAnimationInfo animationinfo)
-    {
-        //Prepare for status effect  
-        yield return _statusEffectHandler.ExecuteAttackStatusRuntimeEffectCoroutine(); 
-
-        //1.) Do apply dmg 
-        int inputDmg = (int) (multiplier * StatsAccumulator.GetATKAmount()) ;
-        foreach (CombatEntity target in targets) {
-                target.LogicHurt(inputDmg);
+            ColorfulLogger.LogWithColor(gameObject.name + "is hit with " + trueDmg + " remaining HP : " + _runtimeCharacterStatsAccumulator.GetHPAmount(), Color.red); 
+       
+            if (_runtimeCharacterStatsAccumulator.GetHPAmount() <= 0)
+            {
+                _isDead = true; 
+            }
         }
 
-        //2.) play animation
-        yield return _combatEntityAnimationHandler.PlayActionAnimation(animationinfo, targets);
+        public IEnumerator VisualHurt(string animationTrigger = "Hurt")
+        {
+            //Display DMG Text here
 
-        //3.) visually update the remaining HP, or make it dead it nessesary 
-         
-    }
-    #endregion
+            //Slow down time? 
+            
+            yield return _combatEntityAnimationHandler.PlayTriggerAnimation(animationTrigger); 
+        
+            //If done playing animation, visually destroy the character (animation) not game object
+            if (IsDead)
+            {
+
+            }
+        }
+
+
+        //Receive animation info and play it accordingly 
+        public IEnumerator Attack(List<CombatEntity> targets,float multiplier , ActionAnimationInfo animationinfo)
+        {
+            //Prepare for status effect  
+            yield return _statusEffectHandler.ExecuteAttackStatusRuntimeEffectCoroutine(); 
+
+            //1.) Do apply dmg 
+            int inputDmg = (int) (multiplier * StatsAccumulator.GetATKAmount()) ;
+            foreach (CombatEntity target in targets) {
+                    target.LogicHurt(inputDmg);
+            }
+
+            List<IEnumerator> coroutines = new List<IEnumerator>() ;
+
+            //2 Visual 
+
+            //2.1.) creating vfx for coroutine for targets
+            foreach (CombatEntity target in targets)
+            {
+                CombatEntity entity = target;
+                coroutines.Add(_combatEntityAnimationHandler.PlayVFXActionAnimation<string>(animationinfo.TargetVfxEntity , entity, entity.VisualHurt, "Hurt"));
+
+            }
+
+            //2.2.) create action animation coroutine for self
+            coroutines.Add(_combatEntityAnimationHandler.PlayActionAnimation(animationinfo));
+
+            
+            //2.3.) running animation scheme
+            yield return new WaitAll(this,coroutines.ToArray() );
+        }
+
+        
+        #endregion
     }
 }

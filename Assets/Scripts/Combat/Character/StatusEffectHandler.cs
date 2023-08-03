@@ -11,7 +11,7 @@ namespace Vanaring_DepaDemo
 {
     public interface IStatusEffectable
     {
-        public StatusEffectHandler GetStatusEffectHandler(); 
+        public StatusEffectHandler GetStatusEffectHandler() ;
     }
 
     public class StatusEffectHandler
@@ -26,7 +26,7 @@ namespace Vanaring_DepaDemo
         }
 
         //the effect should be factorize exactly before being applied 
-        public IEnumerator ApplyNewEffect(StatusRuntimeEffectFactorySO factory  )
+        private IEnumerator LogicApplyNewEffect(StatusRuntimeEffectFactorySO factory )
         {
             IEnumerator co = factory.Factorize(new List<CombatEntity>() { _appliedEntity } )  ;
 
@@ -56,10 +56,16 @@ namespace Vanaring_DepaDemo
                         _effects[key].Add(co.Current as StatusRuntimeEffect);
                     }
 
-                    //TODO - Visually 
                 }
                 yield return new WaitForEndOfFrame() ; 
             }
+        }
+
+        public IEnumerator ApplyNewEffect(StatusRuntimeEffectFactorySO factory, ActionAnimationInfo actionAnimationInfo)
+        {
+            yield return LogicApplyNewEffect(factory) ;
+
+            yield return _appliedEntity.CombatEntityAnimationHandler.PlayVFXActionAnimation<string>(actionAnimationInfo.TargetVfxEntity,_appliedEntity, _appliedEntity.CombatEntityAnimationHandler.PlayTriggerAnimation , actionAnimationInfo.TargetTrigerID) ;
         }
 
 

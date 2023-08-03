@@ -13,9 +13,14 @@ namespace Vanaring_DepaDemo
     {
         [SerializeField]
         private EnergyModifierData _data ;
+
+        [SerializeField]
+        private ActionAnimationInfo _actionAnimation;
+
+        public EnergyModifierData ModifierData => _data;
         public override IEnumerator Factorize(List<CombatEntity> targets)
         {
-            EnergyModifierRuntimeEffect retEffect = new EnergyModifierRuntimeEffect(_data);
+            EnergyModifierRuntimeEffect retEffect = new EnergyModifierRuntimeEffect(_data, _actionAnimation);
             if (targets != null)
             {
                 foreach (CombatEntity target in targets)
@@ -28,13 +33,16 @@ namespace Vanaring_DepaDemo
 
     public class EnergyModifierRuntimeEffect : RuntimeEffect
     {
-        private EnergyModifierData _data; 
-        public EnergyModifierRuntimeEffect(EnergyModifierData data)
+        private EnergyModifierData _data;
+        private ActionAnimationInfo _actionAnimationInfo;
+        public EnergyModifierRuntimeEffect(EnergyModifierData data, ActionAnimationInfo actionAnimation)
         {
+            _actionAnimationInfo = actionAnimation; 
             _data = data;
         }
         public override IEnumerator ExecuteRuntimeCoroutine(CombatEntity caster)
         {
+            Debug.Log("modify energy");
             foreach (var target in _targets)
             {
                 target.SpellCaster.ModifyEnergy(_data.Side, _data.Amount);

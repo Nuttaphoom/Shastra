@@ -43,7 +43,6 @@ public class SpellCasterHandler  : MonoBehaviour
         OnModifyEnergy -= argc;  
     }
     #endregion EndSub 
-
     public bool IsEnergySufficient(SpellAbilityRuntime spell)
     {
         return GetEnergyAmount(spell.RequireEnergySide) >= spell.RequireEnergyAmount  ; 
@@ -84,13 +83,9 @@ public class SpellCasterHandler  : MonoBehaviour
         OnModifyEnergy?.Invoke(modifiedSide, dif) ;
 
     }
-
-
-
     #endregion
 
     #region Spell
-
     public void CastSpell(SpellAbilityRuntime runtimeSpell)
     {
        StartCoroutine(TargetSelectionFlowControl.Instance.InitializeSpellTargetSelectionScheme(_combatEntity, runtimeSpell));
@@ -100,8 +95,8 @@ public class SpellCasterHandler  : MonoBehaviour
 
 public class RuntimeMangicalEnergy
 {
-    private RuntimeStat _darkEnergy = new RuntimeStat(100, 50);
-    private RuntimeStat _lightEnergy = new RuntimeStat(100, 50);
+    private RuntimeStat _darkEnergy = new RuntimeStat(100, 50)   ;
+    private RuntimeStat _lightEnergy = new RuntimeStat(100, 50)  ;
 
     public enum EnergySide
     {

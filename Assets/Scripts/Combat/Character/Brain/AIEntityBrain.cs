@@ -17,7 +17,7 @@ namespace Vanaring_DepaDemo
             if (! TryGetComponent(out _botBehaviorHandler))
                 throw new System.Exception("BotBehaviorHandler hasn't been assigned");
 
-            _botBehaviorHandler.CalculateNextBehavior(); 
+            StartCoroutine(_botBehaviorHandler.CalculateNextBehavior()); 
 
         }
         public override IEnumerator GetAction()
@@ -53,6 +53,7 @@ namespace Vanaring_DepaDemo
 
         public override IEnumerator TurnLeave()
         {
+            Debug.Log("calcualte next behavior for " + gameObject.name); 
             //calculate next behavior 
             yield return _botBehaviorHandler.CalculateNextBehavior(); 
 

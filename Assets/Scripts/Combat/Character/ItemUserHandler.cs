@@ -18,7 +18,7 @@ public class ItemUserHandler : MonoBehaviour //inventory
 {
     [Header("right now me manullay assign Item factory for quick demo")]
     [SerializeField]
-    private List<ItemAbilityFactorySO> _itemAbilities = new List<ItemAbilityFactorySO>() ;
+    private List<ItemAbilityFactorySO> _itemInventory = new List<ItemAbilityFactorySO>() ;
     
     private  List<ItemAbilityRuntime> _runtimeItems = new List<ItemAbilityRuntime>() ;
 
@@ -33,12 +33,20 @@ public class ItemUserHandler : MonoBehaviour //inventory
 
         FactorizeItemInInventory();
     }
-   
+
+    public void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.O))
+        {
+            ColorfulLogger.LogWithColor("00000000", Color.cyan);
+            _runtimeItems.RemoveAt(0);
+        }
+    }
 
     private void FactorizeItemInInventory()
     {
         //TODO : Load inventory from somewhere instead of manually assign them
-        foreach (ItemAbilityFactorySO factory in _itemAbilities)
+        foreach (ItemAbilityFactorySO factory in _itemInventory)
         {
             _runtimeItems.Add(factory.FactorizeRuntimeItem());
         }
@@ -52,12 +60,13 @@ public class ItemUserHandler : MonoBehaviour //inventory
     private IEnumerator UseItemCoroutine(ItemAbilityRuntime runtimeItem)
     { 
         yield return TargetSelectionFlowControl.Instance.InitializeItemTargetSelectionScheme(_combatEntity, runtimeItem);
+        ColorfulLogger.LogWithColor("USE ITEM", Color.cyan);
         yield return null; 
     }
 
     public void RemoveItem(ItemAbilityRuntime item)
     {
         //TODO - visually remove item from ivnentory 
-        _runtimeItems.Remove(item) ;
+        //_runtimeItems.Remove(item) ;
     }
 }

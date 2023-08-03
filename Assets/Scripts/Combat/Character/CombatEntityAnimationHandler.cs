@@ -1,66 +1,75 @@
+using CustomYieldInstructions;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Resources;
 using System.Security.AccessControl;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
-
+using UnityEngine.Events;
 
 namespace Vanaring_DepaDemo
 {
     [Serializable]
     public class CombatEntityAnimationHandler : MonoBehaviour
     {
-        private CombatEntity _combatEntity ;
 
         [SerializeField]
         private GameObject _mesh ;
 
-        private Animator _animator;  
-        public CombatEntityAnimationHandler(CombatEntity combatEntity, CombatEntityAnimationHandler copied) {
-            _combatEntity = combatEntity;
-            _mesh = copied._mesh; 
+        [SerializeField]
+        public Transform _vfxPos ; 
 
-            _animator = _mesh.GetComponent<Animator>() ;  
-        }
-
-        public IEnumerator PlayActionAnimation(ActionAnimationInfo actionAnimation, List<CombatEntity> targets = null)
+        public Vector3 GetVFXSpawnPos()
         {
-            //AnimatorOverrideController overrideController = new AnimatorOverrideController(_animator.runtimeAnimatorController);
-
-            //overrideController.runtimeAnimatorController.animationClips[0] = null;  
-
-            //_animator.StopPlayback();
-
-            //_animator.Play(actionAnimation.SkeletonAnimationClip);  
-            _animator.SetTrigger(actionAnimation.TrigerID) ;
-
-            List<GameObject> vfxs = new List<GameObject>();
-            GameObject vfx = Instantiate(actionAnimation.CasterVfxAnimationPrefab, _mesh.transform.position, Quaternion.identity);
-            vfxs.Add(vfx);
-            if (targets != null)
+            if (_vfxPos == null || _vfxPos.position == null )
             {
-                foreach (CombatEntity combatEntity in targets)
-                {
-                    vfx = Instantiate(actionAnimation.TargetVfxAnimationPrefab, combatEntity.transform.position, Quaternion.identity);
-                    vfxs.Add(vfx);
-                }
+                throw new Exception("VFX Spawn Position of " + gameObject.name + "hasn't never been assigned");
             }
-
-            while (_animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1.0f)
-            {
-                yield return null ;  
-            }
-
-            yield return new WaitForSeconds(3.0f) ;
-
-            foreach (GameObject gameObject in vfxs)
-            {
-                gameObject.SetActive(false);
-            }
+            
+            return _vfxPos.position ;
         }
+
+        private Animator _animator;
+        private void Awake()
+        {
+            _animator = _mesh.GetComponent<Animator>();
+        }
+
+        public IEnumerator PlayTriggerAnimation(string triggerName)
+        {
+            _animator.SetTrigger(triggerName) ;
+
+            yield return new WaitForSeconds(3.0f);
+        }
+        public IEnumerator PlayActionAnimation(ActionAnimationInfo actionAnimation )
+        {
+            List<IEnumerator> coroutines = new List<IEnumerator>();
+
+            //Self VFX
+            if (actionAnimation.CasterVfxEntity.IsValid() )
+            {
+                VFXCallbackHandler<string> callbackHandler = new VFXCallbackHandler<string>(gameObject, actionAnimation.CasterVfxEntity, GetVFXSpawnPos(), null);
+                coroutines.Add(callbackHandler.PlayVFX(null));
+            }
+
+            //Play Animation 
+            coroutines.Add (PlayTriggerAnimation(actionAnimation.SelfTrigerID) ) ;
+
+            yield return new WaitAll(this, coroutines.ToArray() );
+ 
+        }
+
+        public IEnumerator PlayVFXActionAnimation<T>(VFXEntity vfxEntity, CombatEntity target, VFXCallbackHandler<T>.VFXCallback argc, T param  )
+        {
+            CombatEntity entity = target;
+            VFXCallbackHandler<T> callbackHandler = new VFXCallbackHandler<T>(target.gameObject, vfxEntity , target.CombatEntityAnimationHandler.GetVFXSpawnPos(),  argc  );
+            yield return (callbackHandler.PlayVFX(param));
+        }
+
+
     }
 }
