@@ -57,7 +57,6 @@ namespace Vanaring_DepaDemo
 
         private void OnEnergyModified(RuntimeMangicalEnergy.EnergySide side , int val)
         {
-            Debug.Log("OnEnergyModified in enerfhy bar scaler" ) ;
             if (side == RuntimeMangicalEnergy.EnergySide.LightEnergy)
             {
                 lightScaleIncrease(val);

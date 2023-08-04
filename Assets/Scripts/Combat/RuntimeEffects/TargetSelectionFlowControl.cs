@@ -213,7 +213,7 @@ public class TargetSelector
 {
     private enum TargetSide
     {
-        Self,Oppose
+        Self,Oppose, Both
     }
     [Header("Maximum target that can be assigned to")]
     [SerializeField]
