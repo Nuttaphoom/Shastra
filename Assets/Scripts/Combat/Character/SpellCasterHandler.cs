@@ -56,7 +56,7 @@ public class SpellCasterHandler  : MonoBehaviour
 
     public void ModifyEnergy(RuntimeMangicalEnergy.EnergySide side,int value)
     {
-        _mangicalEnergy.ModifyEnergy(value, side) ; 
+        _mangicalEnergy.ModifyEnergy(value, side) ;
         OnModifyEnergy?.Invoke(side, value) ; 
     }
 
@@ -81,8 +81,8 @@ public class SpellCasterHandler  : MonoBehaviour
 
         _mangicalEnergy.ModifyEnergy(dif, modifiedSide) ;
         OnModifyEnergy?.Invoke(modifiedSide, dif) ;
-
     }
+
     #endregion
 
     #region Spell

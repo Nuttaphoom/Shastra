@@ -63,9 +63,12 @@ namespace Vanaring_DepaDemo
 
         public IEnumerator ApplyNewEffect(StatusRuntimeEffectFactorySO factory, ActionAnimationInfo actionAnimationInfo)
         {
-            yield return LogicApplyNewEffect(factory) ;
+            yield return LogicApplyNewEffect(factory);
 
-            yield return _appliedEntity.CombatEntityAnimationHandler.PlayVFXActionAnimation<string>(actionAnimationInfo.TargetVfxEntity,_appliedEntity, _appliedEntity.CombatEntityAnimationHandler.PlayTriggerAnimation , actionAnimationInfo.TargetTrigerID) ;
+            if (actionAnimationInfo.TargetVfxEntity != null)
+            {
+                yield return _appliedEntity.CombatEntityAnimationHandler.PlayVFXActionAnimation<string>(actionAnimationInfo.TargetVfxEntity, _appliedEntity, _appliedEntity.CombatEntityAnimationHandler.PlayTriggerAnimation, actionAnimationInfo.TargetTrigerID);
+            }
         }
 
 

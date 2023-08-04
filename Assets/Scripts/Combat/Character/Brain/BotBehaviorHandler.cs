@@ -31,20 +31,11 @@ namespace Vanaring_DepaDemo
 
         public IEnumerator CalculateNextBehavior()
         {
-            yield return null;
             _nextBehavior = Random.Range(0, _behaviorSocketSOs.GetBehaviorSize);
 
-            //GetBehaviorEffect
-            IEnumerator coroutine = _behaviorSocketSOs.GetBehaviorEffect(_nextBehavior);
 
-            while (coroutine.MoveNext())
-            {
-                if (coroutine.Current != null && coroutine.Current.GetType().IsSubclassOf(typeof(RuntimeEffectFactorySO)))
-                {
-                    RuntimeEffectFactorySO spell = coroutine.Current as RuntimeEffectFactorySO;
-                    EnergyModifierRuntimeEffectBehavior(spell);
-                }
-            }
+            yield return null;
+
         }
 
         public List<RuntimeEffectFactorySO> GetBehaviorEffect()
@@ -62,10 +53,23 @@ namespace Vanaring_DepaDemo
             }
             return ret;
         }
-        //TODO - TEMP 
-        public int GetCurrentBehaviorIndex => _nextBehavior;
+        
+        public void StartTelegraphy ()
+        {
+            //GetBehaviorEffect
+            IEnumerator coroutine = _behaviorSocketSOs.GetBehaviorEffect(_nextBehavior);
 
-        private void EnergyModifierRuntimeEffectBehavior(RuntimeEffectFactorySO spell)
+            while (coroutine.MoveNext())
+            {
+                if (coroutine.Current != null && coroutine.Current.GetType().IsSubclassOf(typeof(RuntimeEffectFactorySO)))
+                {
+                    RuntimeEffectFactorySO spell = coroutine.Current as RuntimeEffectFactorySO;
+                    CreatingTelegraphyInstance(spell);
+                }
+            }
+        }
+
+        private void CreatingTelegraphyInstance(RuntimeEffectFactorySO spell)
         {
             EnergyModifierRuntimeEffectFactory EMspell = spell as EnergyModifierRuntimeEffectFactory;
             if (EMspell != null)

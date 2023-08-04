@@ -105,11 +105,16 @@ namespace Vanaring_DepaDemo
             }
         }
 
+
         public IEnumerator TakeControl()
         {
             yield return _baseEntityBrain.TakeControl(); 
         }
 
+        public IEnumerator TakeControlSoftLeave()
+        {
+            yield return _baseEntityBrain.TakeControlSoftLeave();
+        } 
         public IEnumerator LeaveControl()
         {
             yield return _baseEntityBrain.TakeControlLeave(); 

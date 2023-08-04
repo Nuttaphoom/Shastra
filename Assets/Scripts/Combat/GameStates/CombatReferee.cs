@@ -79,11 +79,11 @@ namespace Vanaring_DepaDemo
         {
             if (Input.GetKeyDown(KeyCode.RightArrow))
             {
-                StartCoroutine(ChangeActiveEntityIndex(-1, true, false) ) ;
+                StartCoroutine(ChangeActiveEntityIndex( true, false) ) ;
             }
             else if (Input.GetKeyDown(KeyCode.LeftArrow))
             {
-                StartCoroutine(ChangeActiveEntityIndex(-1, false, true));
+                StartCoroutine(ChangeActiveEntityIndex( false, true));
             }
         }
 
@@ -176,6 +176,12 @@ namespace Vanaring_DepaDemo
             }
             //While loop will keep being called until the turn is end
             while (_activeEntities.Count > 0) {
+                while (! _activeEntities[_currentEntityIndex].ReadyForControl())
+                {
+                    _activeEntities.RemoveAt(_currentEntityIndex);  
+                    StartCoroutine(ChangeActiveEntityIndex(true, false));
+                }
+
                 //Debug.Log("_activeEntities Count!!!!");
                 CombatEntity _entity = _activeEntities[_currentEntityIndex] ;
 
@@ -185,18 +191,25 @@ namespace Vanaring_DepaDemo
                 {
                     if (actionCoroutine.Current != null && actionCoroutine.Current.GetType().IsSubclassOf(typeof(RuntimeEffect)))
                     {
-                        yield return _entity.LeaveControl();
 
-                        //ExecuteAction 
-                        yield return ((actionCoroutine.Current as RuntimeEffect).ExecuteRuntimeCoroutine(_entity));
+                        yield return _entity.TakeControlSoftLeave();
+
+                        //Maybe it get overheat or some affect stunt it while controling 
+                        if (_entity.ReadyForControl()) { 
+                            //ExecuteAction 
+                            yield return ((actionCoroutine.Current as RuntimeEffect).ExecuteRuntimeCoroutine(_entity));
                         
-                        yield return ((actionCoroutine.Current as RuntimeEffect).OnExecuteRuntimeDone(_entity));
+                            yield return ((actionCoroutine.Current as RuntimeEffect).OnExecuteRuntimeDone(_entity));
+                        }else
+                        {
+                            yield return new WaitForSecondsRealtime(2.0f);
+                        }
                         //When the action is finish executed (like playing animation), end turn 
 
                         if (_activeEntities.Count > 1)
-                            yield return SwitchControl(_currentEntityIndex, (_currentEntityIndex + 1) % _activeEntities.Count,false) ;
+                            yield return SwitchControl(_currentEntityIndex, (_currentEntityIndex + 1) % _activeEntities.Count) ;
                         else
-                            yield return SwitchControl(_currentEntityIndex, _currentEntityIndex, false) ;
+                            yield return SwitchControl(_currentEntityIndex, _currentEntityIndex) ;
 
                         _activeEntities.RemoveAt(_currentEntityIndex);
 
@@ -262,30 +275,24 @@ namespace Vanaring_DepaDemo
         }
         
 
-        public IEnumerator SwitchControl(int prev, int next, bool callLeaveControl = true)
+        public IEnumerator SwitchControl(int prev, int next )
         {
-            if (callLeaveControl)
-                yield return _activeEntities[prev].LeaveControl();
+            yield return _activeEntities[prev].LeaveControl();
+
             if (prev != next) 
                 yield return _activeEntities[next].TakeControl();
         }
 
-        public IEnumerator ChangeActiveEntityIndex(int index = -1, bool increase = false, bool decrease = false)
+        public IEnumerator ChangeActiveEntityIndex( bool increase = false, bool decrease = false)
         {
             if (_activeEntities.Count > 0)
             {
-                int temp = _currentEntityIndex ;
-                if (index != -1)
-                {
-                    _currentEntityIndex = index;
-                }
-                else
-                {
-                    if (increase)
-                        _currentEntityIndex = (_currentEntityIndex + 1) % _activeEntities.Count;
-                    else if (decrease)
-                           _currentEntityIndex = _currentEntityIndex == 0 ? (_activeEntities.Count -1) : (_currentEntityIndex - 1) ;
-                }
+                int temp = _currentEntityIndex;
+                if (increase)
+                    _currentEntityIndex = (_currentEntityIndex + 1) % _activeEntities.Count;
+                else if (decrease)
+                    _currentEntityIndex = _currentEntityIndex == 0 ? (_activeEntities.Count -1) : (_currentEntityIndex - 1) ;
+                
 
                 if (temp != _currentEntityIndex )
                 {

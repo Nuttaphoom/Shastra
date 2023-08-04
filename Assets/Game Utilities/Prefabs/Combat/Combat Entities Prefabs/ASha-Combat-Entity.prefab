@@ -713,6 +713,38 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!1 &1015114493986690790
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8226600624937237091}
+  m_Layer: 0
+  m_Name: GUI
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8226600624937237091
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1015114493986690790}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 5406824363998679228}
+  m_Father: {fileID: 8516583608909913975}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1018735247809019822
 GameObject:
   m_ObjectHideFlags: 0
@@ -2782,6 +2814,7 @@ MonoBehaviour:
   _mainPanel: {fileID: 4338368960283559695}
   _spellPanel: {fileID: 2756125304813832991}
   _itemPanel: {fileID: 1184245378105056534}
+  _mainCanvas: {fileID: 1015114493986690790}
 --- !u!114 &3775299963121880759
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2849,7 +2882,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca89d3a2af4baff4187652a97560716d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _itemInventory: []
+  _itemWindowManager: {fileID: 2752418383246950089}
 --- !u!1 &2910855678684884830
 GameObject:
   m_ObjectHideFlags: 0
@@ -3654,8 +3687,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 5406824363998679228}
   - {fileID: 7848840106061774413}
+  - {fileID: 8226600624937237091}
   m_Father: {fileID: 3361023796537600007}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3685,7 +3718,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3911720497152511192}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.2837102, y: 0.2837102, z: 0.2837102}
   m_ConstrainProportionsScale: 0
@@ -3695,7 +3728,7 @@ RectTransform:
   - {fileID: 846868733052504095}
   - {fileID: 1184245378105056534}
   - {fileID: 8358413451572861830}
-  m_Father: {fileID: 8516583608909913975}
+  m_Father: {fileID: 8226600624937237091}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -4858,7 +4891,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _combatEntity: {fileID: 3631082374516079458}
-  _templatePrefab: {fileID: 4699170836258837598}
+  _templatePrefab: {fileID: 0}
   _socketVerticalLayout: {fileID: 3513085163611485048}
 --- !u!1 &5748904151428389641
 GameObject:

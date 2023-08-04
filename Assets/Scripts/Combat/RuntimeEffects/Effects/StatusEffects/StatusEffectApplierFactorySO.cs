@@ -56,7 +56,6 @@ public class StatusEffectApplierRuntimeEffect : RuntimeEffect
                 applyEffectCoroutine.Add((tar).GetStatusEffectHandler().ApplyNewEffect(eff, _actionAnimationInfo) ) ;
             }
         }
-
         applyEffectCoroutine.Add(caster.CombatEntityAnimationHandler.PlayActionAnimation(_actionAnimationInfo));
 
 
