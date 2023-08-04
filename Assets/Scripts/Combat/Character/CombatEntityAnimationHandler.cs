@@ -65,10 +65,10 @@ namespace Vanaring_DepaDemo
  
         }
 
-        public IEnumerator PlayVFXActionAnimation<T>(VFXEntity vfxEntity, CombatEntity target, VFXCallbackHandler<T>.VFXCallback argc, T param  )
+        public IEnumerator PlayVFXActionAnimation<T>(VFXEntity vfxEntity, VFXCallbackHandler<T>.VFXCallback argc, T param  )
         {
-            CombatEntity entity = target;
-            VFXCallbackHandler<T> callbackHandler = new VFXCallbackHandler<T>(target.gameObject, vfxEntity , target.CombatEntityAnimationHandler.GetVFXSpawnPos(),  argc  );
+
+            VFXCallbackHandler<T> callbackHandler = new VFXCallbackHandler<T>(this.gameObject, vfxEntity , GetVFXSpawnPos(),  argc  );
             yield return (callbackHandler.PlayVFX(param));
         }
 

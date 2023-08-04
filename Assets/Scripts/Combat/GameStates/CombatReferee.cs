@@ -176,13 +176,6 @@ namespace Vanaring_DepaDemo
             }
             //While loop will keep being called until the turn is end
             while (_activeEntities.Count > 0) {
-                while (! _activeEntities[_currentEntityIndex].ReadyForControl())
-                {
-                    _activeEntities.RemoveAt(_currentEntityIndex);  
-                    StartCoroutine(ChangeActiveEntityIndex(true, false));
-                }
-
-                //Debug.Log("_activeEntities Count!!!!");
                 CombatEntity _entity = _activeEntities[_currentEntityIndex] ;
 
                 IEnumerator actionCoroutine = _entity.GetAction() ;
@@ -212,6 +205,8 @@ namespace Vanaring_DepaDemo
                             yield return SwitchControl(_currentEntityIndex, _currentEntityIndex) ;
 
                         _activeEntities.RemoveAt(_currentEntityIndex);
+
+                        _currentEntityIndex = 0; 
 
                         for (int i = _competators.Count - 1; i >= 0; i--)
                         {

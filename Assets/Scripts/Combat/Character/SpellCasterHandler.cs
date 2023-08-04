@@ -57,6 +57,8 @@ public class SpellCasterHandler  : MonoBehaviour
     public void ModifyEnergy(RuntimeMangicalEnergy.EnergySide side,int value)
     {
         _mangicalEnergy.ModifyEnergy(value, side) ;
+        Debug.Log("energy modify at " + gameObject.name + "Light remain : " + _mangicalEnergy.GetEnergy(RuntimeMangicalEnergy.EnergySide.LightEnergy) );
+
         OnModifyEnergy?.Invoke(side, value) ; 
     }
 

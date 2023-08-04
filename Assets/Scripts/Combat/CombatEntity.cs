@@ -203,7 +203,7 @@ namespace Vanaring_DepaDemo
             foreach (CombatEntity target in targets)
             {
                 CombatEntity entity = target;
-                coroutines.Add(_combatEntityAnimationHandler.PlayVFXActionAnimation(animationinfo.TargetVfxEntity, entity, (param) => entity.VisualHurt(this,param), animationinfo.TargetTrigerID));
+                coroutines.Add(entity.CombatEntityAnimationHandler.PlayVFXActionAnimation(animationinfo.TargetVfxEntity, (param) => entity.VisualHurt(this,param), animationinfo.TargetTrigerID));
 
             }
 

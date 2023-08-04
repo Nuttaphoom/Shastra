@@ -6,6 +6,7 @@ using System.Collections;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.VFX;
 using Vanaring_DepaDemo;
 
 
@@ -70,8 +71,15 @@ public class VFXCallbackHandler<T>
         yield return new WaitForSeconds(_vfxEntity.SpawnDelay);
         
         _instantiatedVFX.gameObject.SetActive(true);
-        _instantiatedVFX.GetComponent<ParticleSystem>().Play(); 
-
+        if (_instantiatedVFX.GetComponent<ParticleSystem>() != null)
+        {
+            _instantiatedVFX.GetComponent<ParticleSystem>().Play();
+        }
+        else if (_instantiatedVFX.GetComponent<VisualEffect>() != null)
+        {
+            _instantiatedVFX.GetComponent<VisualEffect>().Play();
+        }
+        
         yield return new WaitForSeconds(_vfxEntity.CallbackDelay) ;
 
         if (_action != null)
