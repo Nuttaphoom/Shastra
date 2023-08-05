@@ -73,6 +73,10 @@ namespace Vanaring_DepaDemo
                 CompetatorDetailStruct c = new CompetatorDetailStruct(side, entity);
                 _competators.Add(c);
             }
+
+            // Call the GenerateEntityAttacher method with the lists
+            GameSceneSetUPManager.Instance.GenerateEntityAttacher(GetCompetatorsBySide(ECompetatorSide.Ally).Select(c => c.gameObject).ToList(), GetCompetatorsBySide(ECompetatorSide.Hostile).Select(c => c.gameObject).ToList());
+
         }
 
         private void Update()
@@ -274,8 +278,12 @@ namespace Vanaring_DepaDemo
         {
             yield return _activeEntities[prev].LeaveControl();
 
+            GameSceneSetUPManager.Instance.SelectCharacterCamera(next) ;
+
             if (prev != next) 
                 yield return _activeEntities[next].TakeControl();
+
+
         }
 
         public IEnumerator ChangeActiveEntityIndex( bool increase = false, bool decrease = false)

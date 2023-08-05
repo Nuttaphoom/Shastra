@@ -2,11 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
+using UnityEditorInternal;
+using Unity.VisualScripting;
 
 namespace Vanaring_DepaDemo
 {
     public class GameSceneSetUPManager : MonoBehaviour
     {
+        public static GameSceneSetUPManager Instance; 
         public enum CameraOffset { LEFT, MIDDLE, RIGHT };
         private bool IsTargetMode = false;
 
@@ -30,6 +33,13 @@ namespace Vanaring_DepaDemo
         [SerializeField]
         private TargetGUI _tgui;
 
+        private void Awake()
+        {
+            if (Instance != null)
+                Destroy(Instance.gameObject); 
+            
+            Instance = this;
+        }
         private void Update()
         {
             //just for debug
