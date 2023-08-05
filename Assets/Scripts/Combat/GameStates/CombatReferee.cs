@@ -62,7 +62,7 @@ namespace Vanaring_DepaDemo
 
         private void Start()
         {
-            AssignCompetators(FindObjectOfType<EntityLoader>().LoadData() , ECompetatorSide.Hostile);
+            SetUpNewCombatEncounter(); 
             StartCoroutine(CustomTick());
         }
 
@@ -106,6 +106,7 @@ namespace Vanaring_DepaDemo
         private void SetupNewRound()
         {
             _currentSide = (ECompetatorSide)(((int)_currentSide + 1) % 2)   ;
+             
             _activeEntities = GetCompetatorsBySide(_currentSide)            ;
         }
 
@@ -188,7 +189,7 @@ namespace Vanaring_DepaDemo
                 {
                     if (actionCoroutine.Current != null && actionCoroutine.Current.GetType().IsSubclassOf(typeof(RuntimeEffect)))
                     {
-
+                        ColorfulLogger.print(_entity + "take action " + actionCoroutine.Current);
                         yield return _entity.TakeControlSoftLeave();
 
                         //Maybe it get overheat or some affect stunt it while controling 
@@ -224,20 +225,20 @@ namespace Vanaring_DepaDemo
                             }
                         }
 
-                        if (EndGameConditionMeet())
-                        {
-                            AssignCompetators(FindObjectOfType<EntityLoader>().LoadData(), ECompetatorSide.Hostile);
-                        }
+                       
                     }
                     else
                         yield return actionCoroutine.Current;  
                 }
-
+                if (EndGameConditionMeet())
+                {
+                    goto End;
+                }
                 //If GetAction is null, we wait for end of frame
                 yield return new WaitForEndOfFrame() ; 
             }
 
-             
+            End: 
 
             foreach (CombatEntity entity in GetCompetatorsBySide(_currentSide))
             {
@@ -249,13 +250,24 @@ namespace Vanaring_DepaDemo
         }
 
         #endregion
-
-        #region GETTER 
         public bool IsCombatEnded()
         {
+            if (EndGameConditionMeet())
+            {
+                SetUpNewCombatEncounter();
+            }
             //TODO - Determine how the combat should end  
-            return false; 
+            return false;
         }
+
+        private void SetUpNewCombatEncounter()
+        {
+            AssignCompetators(FindObjectOfType<EntityLoader>().LoadData(), ECompetatorSide.Hostile);
+            _currentSide = ECompetatorSide.Ally;
+            _activeEntities = GetCompetatorsBySide(_currentSide);
+        } 
+        #region GETTER 
+
 
         public List<CombatEntity> GetCompetatorsBySide(ECompetatorSide ESide)
         {
@@ -278,8 +290,14 @@ namespace Vanaring_DepaDemo
         {
             yield return _activeEntities[prev].LeaveControl();
 
-            GameSceneSetUPManager.Instance.SelectCharacterCamera(next) ;
+            for (int i = 0; i < GetCompetatorsBySide(ECompetatorSide.Ally) .Count; i++)
+            {
+                if (GetCompetatorsBySide(ECompetatorSide.Ally)[i] == _activeEntities[next])
+                {
+                    GameSceneSetUPManager.Instance.SelectCharacterCamera(i);
+                }
 
+            }
             if (prev != next) 
                 yield return _activeEntities[next].TakeControl();
 

@@ -78,7 +78,7 @@ namespace Vanaring_DepaDemo
         {
             _deadVisualEffect.gameObject.SetActive(true); 
             _deadVisualEffect.Play();
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(0.7f);
             
             Destroy(_mesh.gameObject ) ;
         }
