@@ -186,13 +186,14 @@ namespace Vanaring_DepaDemo
 
 
         //Receive animation info and play it accordingly 
-        public IEnumerator Attack(List<CombatEntity> targets,float multiplier , ActionAnimationInfo animationinfo)
+        public IEnumerator Attack(List<CombatEntity> targets,EDamageScaling scaling , ActionAnimationInfo animationinfo)
         {
             //Prepare for status effect  
-            yield return _statusEffectHandler.ExecuteAttackStatusRuntimeEffectCoroutine(); 
+            yield return _statusEffectHandler.ExecuteAttackStatusRuntimeEffectCoroutine();
+
 
             //1.) Do apply dmg 
-            int inputDmg = (int) (multiplier * StatsAccumulator.GetATKAmount()) ;
+            int inputDmg = VanaringMathConst.GetATKWithScaling(scaling, StatsAccumulator.GetATKAmount());  
             foreach (CombatEntity target in targets) {
                     target.LogicHurt(this,inputDmg);
             }

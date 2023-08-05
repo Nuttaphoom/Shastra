@@ -30,9 +30,9 @@ public class StatusEffectApplierFactorySO : RuntimeEffectFactorySO
 public class StatusEffectApplierRuntimeEffect : RuntimeEffect
 {
     [SerializeField]
-    private List<StatusRuntimeEffectFactorySO> _effects;
+    protected List<StatusRuntimeEffectFactorySO> _effects;
 
-    private ActionAnimationInfo _actionAnimationInfo; 
+    protected ActionAnimationInfo _actionAnimationInfo; 
     public StatusEffectApplierRuntimeEffect(List<StatusRuntimeEffectFactorySO> effects, ActionAnimationInfo actionAnimationInfo)
     {
         _effects = effects;
