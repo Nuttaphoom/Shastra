@@ -168,18 +168,29 @@ namespace Vanaring_DepaDemo
 
             //Slow down time? 
 
+            List<IEnumerator> _coroutine = new List<IEnumerator>();
+            
             if (animationTrigger != "No Animation")
             {
-                yield return _combatEntityAnimationHandler.PlayTriggerAnimation(animationTrigger);
+                _coroutine.Add(_combatEntityAnimationHandler.PlayTriggerAnimation(animationTrigger)) ;
+                if (IsDead)
+                {
+                    _coroutine.Add(_combatEntityAnimationHandler.DestroyVisualMesh());
+                }
+                 
             }
-            yield return _statusEffectHandler.ExecuteHurtStatusRuntimeEffectCoroutine(attacker,this);
 
+            _coroutine.Add(_statusEffectHandler.ExecuteHurtStatusRuntimeEffectCoroutine(attacker, this));
+
+            yield return new WaitAll(this, _coroutine.ToArray() );
 
             //If done playing animation, visually destroy the character (animation) not game object
             if (IsDead)
             {
-
+                yield return _combatEntityAnimationHandler.DestroyVisualMesh();
             }
+
+
         }
 
  

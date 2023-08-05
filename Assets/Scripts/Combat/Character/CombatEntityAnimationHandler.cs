@@ -8,8 +8,10 @@ using System.Resources;
 using System.Security.AccessControl;
 using System.Text;
 using System.Threading.Tasks;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.VFX;
 
 namespace Vanaring_DepaDemo
 {
@@ -21,12 +23,13 @@ namespace Vanaring_DepaDemo
         private GameObject _mesh ;
 
         [SerializeField]
-        public Transform _vfxPos ; 
+        public Transform _vfxPos ;
+
+        [SerializeField]
+        public VisualEffect _deadVisualEffect; 
 
         public Vector3 GetVFXSpawnPos()
         {
-            
-
             if (_vfxPos == null || _vfxPos.position == null )
             {
                 throw new Exception("VFX Spawn Position of " + gameObject.name + "hasn't never been assigned");
@@ -69,6 +72,15 @@ namespace Vanaring_DepaDemo
         { 
             VFXCallbackHandler<T> callbackHandler = new VFXCallbackHandler<T>(this.gameObject, vfxEntity , GetVFXSpawnPos(),  argc  );
             yield return (callbackHandler.PlayVFX(param));
+        }
+
+        public IEnumerator DestroyVisualMesh()
+        {
+            _deadVisualEffect.gameObject.SetActive(true); 
+            _deadVisualEffect.Play();
+            yield return new WaitForSeconds(0.5f);
+            
+            Destroy(_mesh.gameObject ) ;
         }
 
 
