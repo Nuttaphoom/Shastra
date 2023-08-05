@@ -61,14 +61,15 @@ namespace Vanaring_DepaDemo
             }
         }
 
-        public IEnumerator ApplyNewEffect(StatusRuntimeEffectFactorySO factory, ActionAnimationInfo actionAnimationInfo)
+        public IEnumerator ApplyNewEffect(StatusRuntimeEffectFactorySO factory/*, ActionAnimationInfo actionAnimationInfo*/)
         {
+            Debug.Log("apply " + factory + "to " + _appliedEntity.name);
             yield return LogicApplyNewEffect(factory);
 
-            if (actionAnimationInfo.TargetVfxEntity != null)
-            {
-                yield return _appliedEntity.CombatEntityAnimationHandler.PlayVFXActionAnimation<string>(actionAnimationInfo.TargetVfxEntity, _appliedEntity.CombatEntityAnimationHandler.PlayTriggerAnimation, actionAnimationInfo.TargetTrigerID);
-            }
+            //if (actionAnimationInfo.TargetVfxEntity != null)
+            //{
+            //    yield return _appliedEntity.CombatEntityAnimationHandler.PlayVFXActionAnimation<string>(actionAnimationInfo.TargetVfxEntity, _appliedEntity.CombatEntityAnimationHandler.PlayTriggerAnimation, actionAnimationInfo.TargetTrigerID);
+            //}
         }
 
 

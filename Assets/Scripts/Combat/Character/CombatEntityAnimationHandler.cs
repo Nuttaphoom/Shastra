@@ -66,8 +66,7 @@ namespace Vanaring_DepaDemo
         }
 
         public IEnumerator PlayVFXActionAnimation<T>(VFXEntity vfxEntity, VFXCallbackHandler<T>.VFXCallback argc, T param  )
-        {
-
+        { 
             VFXCallbackHandler<T> callbackHandler = new VFXCallbackHandler<T>(this.gameObject, vfxEntity , GetVFXSpawnPos(),  argc  );
             yield return (callbackHandler.PlayVFX(param));
         }

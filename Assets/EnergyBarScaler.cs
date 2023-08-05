@@ -57,6 +57,7 @@ namespace Vanaring_DepaDemo
 
         private void OnEnergyModified(RuntimeMangicalEnergy.EnergySide side , int val)
         {
+            Debug.Log("visual modify energy in " + gameObject.name); 
             if (side == RuntimeMangicalEnergy.EnergySide.LightEnergy)
             {
                 lightScaleIncrease(val);

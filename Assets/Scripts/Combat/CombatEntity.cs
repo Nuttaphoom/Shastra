@@ -162,14 +162,16 @@ namespace Vanaring_DepaDemo
             }
         }
 
-        public IEnumerator VisualHurt(CombatEntity attacker, string animationTrigger)
+        public IEnumerator VisualHurt(CombatEntity attacker, string animationTrigger = "No Animation") 
         {
             //Display DMG Text here
 
             //Slow down time? 
-            
-            yield return _combatEntityAnimationHandler.PlayTriggerAnimation(animationTrigger);
 
+            if (animationTrigger != "No Animation")
+            {
+                yield return _combatEntityAnimationHandler.PlayTriggerAnimation(animationTrigger);
+            }
             yield return _statusEffectHandler.ExecuteHurtStatusRuntimeEffectCoroutine(attacker,this);
 
 

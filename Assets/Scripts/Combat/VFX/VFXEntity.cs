@@ -13,9 +13,9 @@ using Vanaring_DepaDemo;
 [Serializable]
 public class VFXEntity  
 {
-    [Header("Time before destroy this VFX (1 cycle)")]
+    [Header("Time before destroy this VFX after callback is called(1 cycle)")]
     [SerializeField]
-    private float _ttl = 0.0f;
+    private float _destroyAfterCallbackDelay = 0.0f;
 
     [Header("Delay before this VFX is spawn after creating the object")]
     [SerializeField]
@@ -28,7 +28,7 @@ public class VFXEntity
     [SerializeField]
     private GameObject _VFXAnimationPrefabs;
 
-    public float TimeToLive => _ttl;
+    public float DestroyDelay => _destroyAfterCallbackDelay;
     public float SpawnDelay => _spawnDelay;  
     public float CallbackDelay => _callbackDelay; 
 
@@ -83,9 +83,12 @@ public class VFXCallbackHandler<T>
         yield return new WaitForSeconds(_vfxEntity.CallbackDelay) ;
 
         if (_action != null)
-            yield return _action(arugment); 
+            yield return _action(arugment);
 
-        MonoBehaviour.Destroy(_instantiatedVFX.gameObject);
+        yield return new WaitForSeconds(_vfxEntity.DestroyDelay);
+
+        _instantiatedVFX.gameObject.SetActive(false);
+
 
     }
 
