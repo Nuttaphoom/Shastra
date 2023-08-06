@@ -57,7 +57,7 @@ public class VFXCallbackHandler<T>
     {
         _target = target;
         _vfxEntity = vfxEntity;
-        _instantiatedVFX = MonoBehaviour.Instantiate(_vfxEntity.VFXAnimationPrefabs);
+        _instantiatedVFX = MonoBehaviour.Instantiate(_vfxEntity.VFXAnimationPrefabs) ;
         _instantiatedVFX.transform.position = vfxSpawnPosition; 
          _action = argc ;
         _spawnPosition = vfxSpawnPosition;

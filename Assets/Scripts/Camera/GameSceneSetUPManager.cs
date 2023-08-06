@@ -49,7 +49,7 @@ namespace Vanaring_DepaDemo
             }
             if (Input.GetKeyDown(KeyCode.Alpha2))
             {
-                SelectEnemy(Random.Range(0, _enemyModelSetupList.Count));
+                SelectCameraTarget(Random.Range(0, _enemyModelSetupList.Count));
             }
             if (Input.GetKeyDown(KeyCode.Alpha3))
             {
@@ -77,6 +77,7 @@ namespace Vanaring_DepaDemo
             //Init Enemy Model
             for (int i = 0; i < _enemyModelSetupList.Count; i++)
             {
+                Debug.Log("enemy model setup list.count : " + i);
                 //Vector3 spawnPosition = startPositionEnemy + new Vector3(i * spacing, 0.5f, 10f);
                 //Vector3 targetPosition = enemyModelSetupList[i].transform.position + new Vector3(i * spacing, 2.5f, 10.5);
                 Vector3 targetPosition = _enemyModelSetupList[i].transform.position + new Vector3(0, 0, -1.2f);
@@ -204,12 +205,13 @@ namespace Vanaring_DepaDemo
             }
             CamList[playerIndex].gameObject.SetActive(true);
         }
-        public void SelectEnemy(int enemyindex)
+        public void SelectCameraTarget(int enemyindex)
         {
-            if (!IsTargetMode)
+            if (! IsTargetMode)
             {
                 return;
             }
+
             foreach (GameObject tgui in TargetGUIList)
             {
                 tgui.gameObject.SetActive(false);
@@ -219,20 +221,19 @@ namespace Vanaring_DepaDemo
 
         public void ToggleTargetMode()
         {
-            IsTargetMode = !IsTargetMode;
+            IsTargetMode = ! IsTargetMode;
             foreach (GameObject tgui in TargetGUIList)
             {
                 tgui.gameObject.SetActive(false);
             }
-            if (!IsTargetMode)
+            if (!  IsTargetMode)
             {
                 Debug.Log("Toggle Target Mode: Off");
                 return;
             }
             else
             {
-                Debug.Log("Toggle Target Mode: On");
-                SelectEnemy(Random.Range(0, _enemyModelSetupList.Count));
+                SelectCameraTarget(Random.Range(0, _enemyModelSetupList.Count));
             }
         }
         #endregion
