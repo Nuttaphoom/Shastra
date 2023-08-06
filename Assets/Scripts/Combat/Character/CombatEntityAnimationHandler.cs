@@ -57,7 +57,7 @@ namespace Vanaring_DepaDemo
             //Self VFX
             if (actionAnimation.CasterVfxEntity.IsValid() )
             {
-                VFXCallbackHandler<string> callbackHandler = new VFXCallbackHandler<string>(gameObject, actionAnimation.CasterVfxEntity, GetVFXSpawnPos(), null);
+                VFXCallbackHandler<string> callbackHandler = new VFXCallbackHandler<string>(GetComponent<CombatEntity>(), actionAnimation.CasterVfxEntity, GetVFXSpawnPos(), null);
                 coroutines.Add(callbackHandler.PlayVFX(null));
             }
 
@@ -70,7 +70,7 @@ namespace Vanaring_DepaDemo
 
         public IEnumerator PlayVFXActionAnimation<T>(VFXEntity vfxEntity, VFXCallbackHandler<T>.VFXCallback argc, T param  )
         { 
-            VFXCallbackHandler<T> callbackHandler = new VFXCallbackHandler<T>(this.gameObject, vfxEntity , GetVFXSpawnPos(),  argc  );
+            VFXCallbackHandler<T> callbackHandler = new VFXCallbackHandler<T>(GetComponent<CombatEntity>(), vfxEntity , GetVFXSpawnPos(),  argc  );
             yield return (callbackHandler.PlayVFX(param));
         }
 

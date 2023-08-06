@@ -1,8 +1,10 @@
 
 
+using CustomYieldInstructions;
 using System;
 using System.CodeDom;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
@@ -44,7 +46,7 @@ public class VFXEntity
 public class VFXCallbackHandler<T>  
 {
     private VFXEntity _vfxEntity ;
-    private GameObject _target;
+    private CombatEntity _target;
     private float _waitDuration = 0.0f; 
     private Vector3 _spawnPosition = Vector3.zero; 
 
@@ -53,7 +55,7 @@ public class VFXCallbackHandler<T>
     public delegate IEnumerator VFXCallback(T obj);
     private GameObject _instantiatedVFX; 
 
-    public VFXCallbackHandler(GameObject target, VFXEntity vfxEntity, Vector3 vfxSpawnPosition, VFXCallback argc)
+    public VFXCallbackHandler(CombatEntity target, VFXEntity vfxEntity, Vector3 vfxSpawnPosition, VFXCallback argc)
     {
         _target = target;
         _vfxEntity = vfxEntity;
@@ -82,13 +84,23 @@ public class VFXCallbackHandler<T>
         
         yield return new WaitForSeconds(_vfxEntity.CallbackDelay) ;
 
+        List<IEnumerator> coroutines = new List<IEnumerator>(); 
+
         if (_action != null)
-            yield return _action(arugment);
+            coroutines.Add(_action(arugment));
+            //yield return _action(arugment);
 
-        yield return new WaitForSeconds(_vfxEntity.DestroyDelay);
 
+        coroutines.Add(WaitAndDestroy(_vfxEntity.DestroyDelay));
+
+        yield return new WaitAll( _target  , coroutines.ToArray() );
+ 
+    }
+
+    private IEnumerator WaitAndDestroy(float time)
+    {
+        yield return new WaitForSeconds(time);
         _instantiatedVFX.gameObject.SetActive(false);
-
 
     }
 
