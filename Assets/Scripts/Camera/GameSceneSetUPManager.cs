@@ -77,7 +77,6 @@ namespace Vanaring_DepaDemo
             //Init Enemy Model
             for (int i = 0; i < _enemyModelSetupList.Count; i++)
             {
-                Debug.Log("enemy model setup list.count : " + i);
                 //Vector3 spawnPosition = startPositionEnemy + new Vector3(i * spacing, 0.5f, 10f);
                 //Vector3 targetPosition = enemyModelSetupList[i].transform.position + new Vector3(i * spacing, 2.5f, 10.5);
                 Vector3 targetPosition = _enemyModelSetupList[i].transform.position + new Vector3(0, 0, -1.2f);

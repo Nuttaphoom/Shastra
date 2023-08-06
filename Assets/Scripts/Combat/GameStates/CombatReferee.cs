@@ -182,14 +182,14 @@ namespace Vanaring_DepaDemo
             //While loop will keep being called until the turn is end
             while (_activeEntities.Count > 0) {
                 CombatEntity _entity = _activeEntities[_currentEntityIndex] ;
-
+                //Debug.Log("current entity is " + _entity); 
                 IEnumerator actionCoroutine = _entity.GetAction() ;
 
                 while (actionCoroutine.MoveNext())
                 {
+
                     if (actionCoroutine.Current != null && actionCoroutine.Current.GetType().IsSubclassOf(typeof(RuntimeEffect)))
                     {
-                        ColorfulLogger.print(_entity + "take action " + actionCoroutine.Current);
                         yield return _entity.TakeControlSoftLeave();
 
                         //Maybe it get overheat or some affect stunt it while controling 
@@ -205,13 +205,14 @@ namespace Vanaring_DepaDemo
                         //When the action is finish executed (like playing animation), end turn 
 
                         if (_activeEntities.Count > 1)
-                            yield return SwitchControl(_currentEntityIndex, (_currentEntityIndex + 1) % _activeEntities.Count) ;
+                            yield return SwitchControl(_currentEntityIndex, _currentEntityIndex == 0 ? 1 : 0) ;
                         else
                             yield return SwitchControl(_currentEntityIndex, _currentEntityIndex) ;
 
                         _activeEntities.RemoveAt(_currentEntityIndex);
 
-                        _currentEntityIndex = 0; 
+                        _currentEntityIndex = 0;
+
 
                         for (int i = _competators.Count - 1; i >= 0; i--)
                         {
@@ -225,7 +226,8 @@ namespace Vanaring_DepaDemo
                             }
                         }
 
-                       
+                        ColorfulLogger.print(_entity + "end action " + actionCoroutine.Current);
+
                     }
                     else
                         yield return actionCoroutine.Current;  
@@ -298,6 +300,8 @@ namespace Vanaring_DepaDemo
                 }
 
             }
+
+            Debug.Log("swtich control to " + _activeEntities[next]);
             if (prev != next) 
                 yield return _activeEntities[next].TakeControl();
 
