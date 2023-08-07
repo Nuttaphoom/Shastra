@@ -127,7 +127,6 @@ public class TargetSelectionFlowControl : MonoBehaviour, IInputReceiver
 
         while (_selectedTarget.Count < action.TargetSelect.MaxTarget)
         {
-
             _targetSelectionGUI.SelectTargetPointer(_validTargets[_currentSelectIndex]);
 
             if (_forceStop)
