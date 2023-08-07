@@ -1,15 +1,23 @@
 
 using UnityEngine;
 
-public abstract class RequireInitializationHandler<T , U , V>  
+namespace Vanaring_DepaDemo
 {
-    private bool _initialize = false;  
-    protected bool IsInit => _initialize;  
-    protected bool SetInit(bool init) => _initialize = init ;
-    public abstract void Initialize(T argc, U argv , V argg);
-
-    protected void ThrowInitException()
+    public abstract class RequireInitializationHandler<T, U, V>
     {
-        throw new System.Exception("RequireInitializationHandler hasn't been inited"); 
+        private bool _initialize = false;
+        protected bool IsInit => _initialize;
+        protected bool SetInit(bool init) => _initialize = init;
+        public abstract void Initialize(T argc, U argv, V argg);
+
+        protected void ThrowInitException()
+        {
+            CentralInputReceiver.Instance()._OnAttackEvent += UpdateHPBar; 
+            throw new System.Exception("RequireInitializationHandler hasn't been inited");
+        }
+
+        private void UpdateHPBar(int remainingHP) { 
+        //Dostuffs
+        } 
     }
 }
