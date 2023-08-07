@@ -24,7 +24,11 @@ namespace Vanaring_DepaDemo
             this._appliedEntity = appliedEntity ;
 
         }
+        private IEnumerator InstantiateStatusUI(StatusRuntimeEffectFactorySO factory)
+        {
 
+            yield return null;
+        }
         //the effect should be factorize exactly before being applied 
         private IEnumerator LogicApplyNewEffect(StatusRuntimeEffectFactorySO factory )
         {
