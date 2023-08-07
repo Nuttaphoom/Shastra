@@ -39,8 +39,6 @@ namespace Vanaring_DepaDemo
             return instance;
         }
 
- 
-
         private void TransmitInput(string str)
         {
             if (_receiverStack.Count > 0) {
@@ -48,16 +46,11 @@ namespace Vanaring_DepaDemo
             } 
         }
 
-         
-
-
-
         private KeyCode GetKeyCode(string key)
         {
             
             if (key.Count() > 1)
             {
-                Debug.Log("key is " + key); 
                 if (key == "space")
                 {
                     return KeyCode.Space;

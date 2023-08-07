@@ -177,17 +177,26 @@ namespace Vanaring_DepaDemo
                 _currentEntityIndex = 0;
                 yield return _activeEntities[_currentEntityIndex].TakeControl();
             }
+
             //While loop will keep being called until the turn is end
             while (_activeEntities.Count > 0)
             {
+                while (! _activeEntities[_currentEntityIndex].ReadyForControl())
+                {
+                    _activeEntities.RemoveAt(_currentEntityIndex) ;
+                    _currentEntityIndex = 0;
+                    if (_activeEntities.Count > 0)
+                        goto End; 
+                }
                 _state = CombatState.WaitingForAction;
                 CombatEntity _entity = _activeEntities[_currentEntityIndex];
+
+                Debug.Log("current is " + _entity.name);
                 //Debug.Log("current entity is " + _entity); 
                 IEnumerator actionCoroutine = _entity.GetAction();
 
                 while (actionCoroutine.MoveNext())
                 {
-
                     if (actionCoroutine.Current != null && actionCoroutine.Current.GetType().IsSubclassOf(typeof(RuntimeEffect)))
                     {
                         _state = CombatState.Action ;
@@ -230,7 +239,6 @@ namespace Vanaring_DepaDemo
                             }
                         }
 
-                        ColorfulLogger.print(_entity + "end action " + actionCoroutine.Current);
 
                     }
                     else

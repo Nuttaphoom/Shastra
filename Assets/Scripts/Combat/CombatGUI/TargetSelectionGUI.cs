@@ -28,6 +28,7 @@ public class TargetSelectionGUI  : RequireInitializationHandler<TargetSelectionF
 
     public void SelectTargetPointer ( CombatEntity combatEntity)
     {
+        
         if (!IsInit)
         {
             throw new Exception("TargetSelectionGUI never been Initialized"); 

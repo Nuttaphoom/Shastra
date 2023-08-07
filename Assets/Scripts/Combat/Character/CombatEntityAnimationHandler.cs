@@ -26,7 +26,10 @@ namespace Vanaring_DepaDemo
         public Transform _vfxPos ;
 
         [SerializeField]
-        public VisualEffect _deadVisualEffect; 
+        public VisualEffect _deadVisualEffect;
+
+        [SerializeField]
+        private string _deadAnimationTrigger = "NONE"; 
 
         public Vector3 GetVFXSpawnPos()
         {
@@ -76,11 +79,18 @@ namespace Vanaring_DepaDemo
 
         public IEnumerator DestroyVisualMesh()
         {
-            _deadVisualEffect.gameObject.SetActive(true); 
-            _deadVisualEffect.Play();
+            if (_deadVisualEffect)
+            {
+                _deadVisualEffect.gameObject.SetActive(true);
+                _deadVisualEffect.Play();
+            }
+
             yield return new WaitForSeconds(0.7f);
-            
-            Destroy(_mesh.gameObject ) ;
+
+            if (_deadAnimationTrigger == "NONE")
+                Destroy(_mesh.gameObject);
+            else
+                PlayTriggerAnimation(_deadAnimationTrigger);
         }
 
 
