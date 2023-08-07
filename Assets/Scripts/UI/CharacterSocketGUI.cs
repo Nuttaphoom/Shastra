@@ -17,11 +17,13 @@ namespace Vanaring_DepaDemo
         [SerializeField]
         private TextMeshProUGUI characterName;
         [SerializeField]
-        private TextMeshProUGUI lightNum;
+        private TextMeshProUGUI lightNumText;
         [SerializeField]
-        private TextMeshProUGUI darkNum;
+        private TextMeshProUGUI darkNumText;
+        [SerializeField]
+        private TextMeshProUGUI hpNumText;
 
-        private float hpVal = 100;
+        private float hpVal;
         private float maxHpVal = 100;
         private float maxManaVal = 100;
         private float lightVal = 50;
@@ -29,49 +31,52 @@ namespace Vanaring_DepaDemo
 
         private CombatEntity _caster;
 
-        public void Init(int hpVal, float manaVal, string name, CombatEntity combatEntity)
+        public void Init(float manaVal, string name, CombatEntity combatEntity)
         {
             _caster = combatEntity;
             characterName.text = name;
-            this.hpVal = _caster.StatsAccumulator.GetHPAmount();
+            this.maxHpVal = _caster.StatsAccumulator.GetHPAmount();
             //Debug.Log(_caster.StatsAccumulator.GetHPAmount());
             lightVal = manaVal;
             darkVal = maxManaVal - manaVal;
-            UpdateHPScaleBar();
-            UpdateManaScaleBar();
+            UpdateHPScaleGUI();
+            UpdateManaScaleGUI();
         }
         private void Update()
         {
             if (Input.GetKeyDown("e"))
             {
                 Debug.Log("E");
-                OnHPModify(10);
+                OnHPModify(Random.Range(10, 50));
             }
             if (Input.GetKeyDown("q"))
             {
                 Debug.Log("Q");
-                OnHPModify(100);
+                OnHPModify(Random.Range(55, 120));
             }
+            UpdateHPScaleGUI();
             //_caster.StatsAccumulator.GetHPAmount();
         }
         private void Awake()
         {
+            hpVal = Random.Range(1, 100);
             Debug.Log(hpVal);
             //lightVal = 50;
             //darkVal = 50;
             //hpVal = 100;
             //maxHpVal = 100;
         }
-        private void UpdateHPScaleBar()
+        private void UpdateHPScaleGUI()
         {
-            hpBar.fillAmount = hpVal / maxHpVal;
+            hpBar.fillAmount = _caster.StatsAccumulator.GetHPAmount() / maxHpVal;
+            hpNumText.text = _caster.StatsAccumulator.GetHPAmount() + "/" + maxHpVal.ToString();
         }
 
-        private void UpdateManaScaleBar()
+        private void UpdateManaScaleGUI()
         {
             manaBar.fillAmount = lightVal / maxManaVal;
-            lightNum.text = lightVal.ToString();
-            darkNum.text = darkVal.ToString();
+            lightNumText.text = lightVal.ToString();
+            darkNumText.text = darkVal.ToString();
         }
 
         public void OnHPModify(int currentHP)
@@ -85,13 +90,13 @@ namespace Vanaring_DepaDemo
             while (hpVal < currentHP)
             {
                 hpVal += 1;
-                UpdateHPScaleBar();
+                UpdateHPScaleGUI();
                 yield return new WaitForSeconds(0.01f);
             }
             while (hpVal > currentHP)
             {
                 hpVal -= 1;
-                UpdateHPScaleBar();
+                UpdateHPScaleGUI();
                 yield return new WaitForSeconds(0.01f);
             }
             yield return null;
