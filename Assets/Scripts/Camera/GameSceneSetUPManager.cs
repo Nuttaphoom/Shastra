@@ -2,135 +2,262 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
+using UnityEditorInternal;
+using Unity.VisualScripting;
 
 namespace Vanaring_DepaDemo
 {
     public class GameSceneSetUPManager : MonoBehaviour
     {
-        enum Direction { North, East, South, West };
-        public enum CharacterSelect
-        {
-            PLAYER0,
-            PLAYER1,
-            PLAYER2
-        };
-        
-        [SerializeField]
-        
-        public GameObject[] etest
-        {
-            get { return _etest; }
-            set { _etest = value; }
-        }
-        [Header("This Array should pass the models that want to load on scene.")]
-        public GameObject[] _etest;
+        public static GameSceneSetUPManager Instance; 
+        public enum CameraOffset { LEFT, MIDDLE, RIGHT };
+        private bool IsTargetMode = false;
 
-        public CharacterSelect myCharacterSelect;
-        public CinemachineVirtualCamera virtualCamera;
-        public GameObject centerMarker;
-        public Transform theCenter;
-        public Vector3 spawnPosition;
-        public Vector3 rotation = Vector3.zero;
+        //Pass List<GameObject>
+        [Header("List of character/enemy order from left to right")]
+        public List<GameObject> _enemyModelSetupList = new List<GameObject>();
+        public List<GameObject> _characterModelSetupList = new List<GameObject>();
+        
+        //Camera on each behavior
+        [Header("Camera Type")]
+        [SerializeField] private CinemachineVirtualCamera RvirtualCamera;
+        [SerializeField] private CinemachineVirtualCamera MvirtualCamera;
+        [SerializeField] private CinemachineVirtualCamera LvirtualCamera;
+        
+        //TempList
         private List<GameObject> playerModels = new List<GameObject>();
         private List<GameObject> enemyModels = new List<GameObject>();
+        private List<GameObject> TargetGUIList = new List<GameObject>();
+        private List<CinemachineVirtualCamera> CamList = new List<CinemachineVirtualCamera>();
 
-        private Transform lookingTarget;
+        [SerializeField]
+        private TargetGUI _tgui;
 
-        public GameObject enemyToGenerate;
-        public GameObject playerToGenerate;
-
-        //public GameObject[] etest;
-        //public GameObject[] ptest;
-
-        public int numberOfEnemy = 3;
-        public int numberOfPlayer = 3;
-        public float spacing = 3.0f;
-        void Start()
+        private void Awake()
         {
-            //lookingTarget = centerMarker.transform;
-            virtualCamera.LookAt = theCenter.transform;
-            virtualCamera.Follow = centerMarker.transform;
-            myCharacterSelect = CharacterSelect.PLAYER0;
-            //SpawnObjectAtPosition();
-            GenerateModel(virtualCamera, playerModels, enemyModels);
+            if (Instance != null)
+                Destroy(Instance.gameObject); 
+            
+            Instance = this;
         }
-        void Update()
+        private void Update()
         {
-            switch (myCharacterSelect)
+            //just for debug
+            if (Input.GetKeyDown(KeyCode.Alpha1))
             {
-                case CharacterSelect.PLAYER0:
-                    virtualCamera.Follow = playerModels[0].transform;
-                    break;
-                case CharacterSelect.PLAYER1:
-                    virtualCamera.Follow = playerModels[1].transform;
-                    break;
-                case CharacterSelect.PLAYER2:
-                    virtualCamera.Follow = playerModels[2].transform;
-                    break;
+                SelectCharacterCamera(Random.Range(0, _characterModelSetupList.Count));
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha2))
+            {
+                SelectCameraTarget(Random.Range(0, _enemyModelSetupList.Count));
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha3))
+            {
+                ToggleTargetMode();
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha4))
+            {
+                GenerateEntityAttacher(_characterModelSetupList, _enemyModelSetupList);
             }
         }
-        //void SpawnObjectAtPosition()
-        //{
-        //    if (centerMarker == null)
-        //    {
-        //        Debug.LogError("Prefab not assigned! Please assign a prefab to instantiate.");
-        //        return;
-        //    }
-        //    GameObject newObject = Instantiate(centerMarker, spawnPosition, Quaternion.identity);
-
-        //    newObject.transform.SetParent(transform);
-        //}
-
-        void GenerateModel(CinemachineVirtualCamera virtualCamera, List<GameObject> playerModels, List<GameObject> enemyModels)
+        #region GENERATOR
+        public void GenerateEntityAttacher(List<GameObject> _characterModelSetupList, List<GameObject> _enemyModelSetupList)
         {
-            if (enemyToGenerate == null || playerToGenerate == null)
+            GeneratePlayerAttacher(_characterModelSetupList);
+            GenerateEnemyAttacher(_enemyModelSetupList);
+        }
+        private void GenerateEnemyAttacher(List<GameObject> _enemyModelSetupList)
+        {
+            if(_enemyModelSetupList == null)
             {
                 return;
             }
-            float totalWidth_e = (numberOfEnemy - 1) * spacing;
-            float totalWidth_p = (numberOfEnemy - 1) * spacing;
-            Vector3 startPositionEnemy = transform.position - new Vector3(totalWidth_e * 0.5f, 0f, 0f);
-            Vector3 startPositionPlayer = transform.position - new Vector3(totalWidth_p * 0.5f, 0f, 0f);
-
-            for (int i = 0; i < numberOfEnemy; i++)
+            //float totalWidth_e = (_enemyModelSetupList.Count - 1) * spacing;
+            //Vector3 startPositionEnemy = transform.position - new Vector3(totalWidth_e * 0.5f, 0f, 0f);
+            //Init Enemy Model
+            for (int i = 0; i < _enemyModelSetupList.Count; i++)
             {
-                Vector3 spawnPosition = startPositionEnemy + new Vector3(i * spacing, 0.5f, 5f);
-                GameObject newObject = Instantiate(enemyToGenerate, spawnPosition, Quaternion.identity, transform);
-                newObject.transform.rotation = Quaternion.Euler(rotation);
-                newObject.name = "Enemy" + i;
-                enemyModels.Add(newObject);
-                if (i == 0)
-                {
-                    virtualCamera.LookAt = newObject.transform;
-                }
+                //Vector3 spawnPosition = startPositionEnemy + new Vector3(i * spacing, 0.5f, 10f);
+                //Vector3 targetPosition = enemyModelSetupList[i].transform.position + new Vector3(i * spacing, 2.5f, 10.5);
+                Vector3 targetPosition = _enemyModelSetupList[i].transform.position + new Vector3(0, 0, -1.2f);
+                //GameObject newPoint = Instantiate(enemyModelSetupList[i], spawnPosition, Quaternion.identity, transform);
+                GameObject newTarget = _tgui.Init(targetPosition, _enemyModelSetupList[i].transform);
+                //newPoint.transform.rotation = Quaternion.Euler(rotation);
+                //newPoint.name = "Enemy" + i;
+                //enemyPoints.Add(spawnPosition);
+                //enemyModels.Add(newPoint);
+                TargetGUIList.Add(newTarget);
             }
-
-            for (int j = 0; j < numberOfPlayer; j++)
+        }
+        private void GeneratePlayerAttacher(List<GameObject> _characterModelSetupList)
+        {
+            if (_characterModelSetupList == null)
             {
-                Vector3 spawnPosition = startPositionPlayer + new Vector3(j * spacing, 0.5f, -3.0f);
-                GameObject newObject = Instantiate(playerToGenerate, spawnPosition, Quaternion.identity, transform);
-                newObject.name = "Player" + j;
-                playerModels.Add(newObject);
+                return;
+            }
+            //float totalWidth_p = (_characterModelSetupList.Count - 1) * spacing;
+            //Vector3 startPositionPlayer = transform.position - new Vector3(totalWidth_p * 0.5f, 0f, 0f);
+            //Init PlayerCharacter Model
+            for (int j = 0; j < _characterModelSetupList.Count; j++)
+            {
+                //Vector3 spawnPosition = startPositionPlayer + new Vector3(j * spacing, 0.5f, -3.0f);
+                //GameObject newObject = Instantiate(_characterModelSetupList[j], spawnPosition, Quaternion.identity, transform);
+                //newObject.name = "Player" + j;
                 if (j == 0)
                 {
-                    virtualCamera.Follow = newObject.transform;
+                    GenerateVirtualCamera(_characterModelSetupList[j], CameraOffset.LEFT);
                 }
+                else if (j != _characterModelSetupList.Count - 1)
+                {
+                    GenerateVirtualCamera(_characterModelSetupList[j], CameraOffset.MIDDLE);
+                }
+                else
+                {
+                    GenerateVirtualCamera(_characterModelSetupList[j], CameraOffset.RIGHT);
+                }
+                //playerModels.Add(newObject);
             }
         }
-
-        void SetVCLookAt(Transform targetToLookAt)
+        public void ReloadEnemyModel()
         {
-            if (targetToLookAt == null)
+            if(enemyModels != null)
             {
-                ColorfulLogger.LogWithColor("No target can be found or forget to assign it.", Color.red);
+                foreach (GameObject obj in enemyModels)
+                {
+                    Destroy(obj);
+                }
+                enemyModels.Clear();
+            }
+            Debug.Log("Enemy reloaded");
+            GenerateEnemyAttacher(_enemyModelSetupList);
+        }
+        public void ReloadPlayerModel()
+        {
+            if(playerModels != null)
+            {
+                foreach (GameObject obj in playerModels)
+                {
+                    Destroy(obj);
+                }
+                playerModels.Clear();
+            }
+            Debug.Log("Player reloaded");
+            GeneratePlayerAttacher(_characterModelSetupList);
+        }
+        public void ReloadAllModelPoint()
+        {
+            ReloadEnemyModel();
+            ReloadPlayerModel();
+        }
+        public void GenerateVirtualCamera(GameObject follow, CameraOffset eCam)
+        {
+            if(follow == null)
+            {
+                Debug.Log("No follow object");
                 return;
             }
-            virtualCamera.LookAt = targetToLookAt;
+            switch (eCam)
+            {
+                case CameraOffset.LEFT:
+                    CinemachineVirtualCamera newVCleft = Instantiate(LvirtualCamera, gameObject.transform.position, Quaternion.identity, follow.transform);
+                    GameObject newAimPointleft = new GameObject("AimPoint");
+                    newAimPointleft.transform.SetParent(follow.transform);
+                    newAimPointleft.transform.position = new Vector3(follow.transform.position.x, follow.transform.position.y, follow.transform.position.z + 10);
+                    newVCleft.Follow = follow.transform;
+                    newVCleft.LookAt = newAimPointleft.transform;
+                    CamList.Add(newVCleft);
+                    break;
+                case CameraOffset.MIDDLE:
+                    CinemachineVirtualCamera newVCmiddle = Instantiate(MvirtualCamera, gameObject.transform.position, Quaternion.identity, follow.transform);
+                    GameObject newAimPointmiddle = new GameObject("AimPoint");
+                    newAimPointmiddle.transform.SetParent(follow.transform);
+                    newAimPointmiddle.transform.position = new Vector3(follow.transform.position.x, follow.transform.position.y, follow.transform.position.z + 10);
+                    newVCmiddle.Follow = follow.transform;
+                    newVCmiddle.LookAt = newAimPointmiddle.transform;
+                    CamList.Add(newVCmiddle);
+                    break;
+                case CameraOffset.RIGHT:
+                    CinemachineVirtualCamera newVCright = Instantiate(RvirtualCamera, gameObject.transform.position, Quaternion.identity, follow.transform);
+                    GameObject newAimPointright = new GameObject("AimPoint");
+                    newAimPointright.transform.SetParent(follow.transform);
+                    newAimPointright.transform.position = new Vector3(follow.transform.position.x, follow.transform.position.y, follow.transform.position.z + 10);
+                    newVCright.Follow = follow.transform;
+                    newVCright.LookAt = newAimPointright.transform;
+                    CamList.Add(newVCright);
+                    break;
+                default:
+                    break;
+            }
+        }
+        #endregion
+        #region MODE
+        public void SelectCharacterCamera(int playerIndex)
+        {
+            if(playerIndex > CamList.Count - 1)
+            {
+                Debug.Log("Out of max player index have!");
+                return;
+            }
+            foreach(CinemachineVirtualCamera vcam in CamList)
+            {
+                vcam.gameObject.SetActive(false);
+            }
+            CamList[playerIndex].gameObject.SetActive(true);
+        }
+        public void SelectCameraTarget(int enemyindex)
+        {
+            if (! IsTargetMode)
+            {
+                return;
+            }
+
+            foreach (GameObject tgui in TargetGUIList)
+            {
+                tgui.gameObject.SetActive(false);
+            }
+            TargetGUIList[enemyindex].gameObject.SetActive(true);
         }
 
-        //private void SetSelectCharacter(CharacterSelect myCharacterSelect, CharacterSelect _cs)
-        //{
-        //    myCharacterSelect = _cs;
-        //}
+        public void ToggleTargetMode()
+        {
+            IsTargetMode = ! IsTargetMode;
+            foreach (GameObject tgui in TargetGUIList)
+            {
+                tgui.gameObject.SetActive(false);
+            }
+            if (!  IsTargetMode)
+            {
+                Debug.Log("Toggle Target Mode: Off");
+                return;
+            }
+            else
+            {
+                SelectCameraTarget(Random.Range(0, _enemyModelSetupList.Count));
+            }
+        }
+        #endregion
+        #region GETSETTER
+        //[SerializeField]
+        public List<GameObject> EnemyModelSetupList
+        {
+            get { return _enemyModelSetupList; }
+            set { _enemyModelSetupList = value; }
+        }
+        [SerializeField]
+        public List<GameObject> CharacterModelSetupList
+        {
+            get { return _characterModelSetupList; }
+            set { _characterModelSetupList = value; }
+        }
+
+        public List<GameObject> GetPlayerModelPointList()
+        {
+            return playerModels;
+        }
+        public List<GameObject> GetEnemyModelPointList()
+        {
+            return enemyModels;
+        }
+        #endregion
     }
 }

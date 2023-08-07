@@ -6,6 +6,7 @@ using static UnityEngine.GraphicsBuffer;
 using Vanaring_DepaDemo;
 using System.Runtime.CompilerServices;
 using CustomYieldInstructions;
+using UnityEngine.VFX;
 
 [CreateAssetMenu(fileName = "StatusEffectApplierFactorySO", menuName = "ScriptableObject/RuntimeEffect/StatusEffectApplierFactorySO")]
 public class StatusEffectApplierFactorySO : RuntimeEffectFactorySO
@@ -29,9 +30,9 @@ public class StatusEffectApplierFactorySO : RuntimeEffectFactorySO
 public class StatusEffectApplierRuntimeEffect : RuntimeEffect
 {
     [SerializeField]
-    private List<StatusRuntimeEffectFactorySO> _effects;
+    protected List<StatusRuntimeEffectFactorySO> _effects;
 
-    private ActionAnimationInfo _actionAnimationInfo; 
+    protected ActionAnimationInfo _actionAnimationInfo; 
     public StatusEffectApplierRuntimeEffect(List<StatusRuntimeEffectFactorySO> effects, ActionAnimationInfo actionAnimationInfo)
     {
         _effects = effects;
@@ -39,7 +40,6 @@ public class StatusEffectApplierRuntimeEffect : RuntimeEffect
     }
 
 
-    //_cgs can be null =, be careful not assuming he got _cgs 
     public override IEnumerator ExecuteRuntimeCoroutine(CombatEntity caster)
     {
         List<IEnumerator> applyEffectCoroutine = new List<IEnumerator>(); 
@@ -52,10 +52,11 @@ public class StatusEffectApplierRuntimeEffect : RuntimeEffect
 
             foreach (StatusRuntimeEffectFactorySO effect in _effects)
             {
-                StatusRuntimeEffectFactorySO eff = effect; 
-                applyEffectCoroutine.Add((tar).GetStatusEffectHandler().ApplyNewEffect(eff, _actionAnimationInfo) ) ;
+                StatusRuntimeEffectFactorySO eff = effect;
+                applyEffectCoroutine.Add(tar.CombatEntityAnimationHandler.PlayVFXActionAnimation<StatusRuntimeEffectFactorySO>(_actionAnimationInfo.TargetVfxEntity, (param) => ApplyEffectCoroutine(param,tar), eff)) ; 
             }
         }
+
 
         applyEffectCoroutine.Add(caster.CombatEntityAnimationHandler.PlayActionAnimation(_actionAnimationInfo));
 
@@ -66,6 +67,11 @@ public class StatusEffectApplierRuntimeEffect : RuntimeEffect
         yield return null;
     }
 
-    
+    protected virtual IEnumerator ApplyEffectCoroutine(StatusRuntimeEffectFactorySO effect, CombatEntity target)
+    {
+        yield return target.GetStatusEffectHandler().ApplyNewEffect(effect) ;
+    }
+
+
 }
 

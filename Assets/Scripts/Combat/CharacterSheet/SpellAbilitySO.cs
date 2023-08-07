@@ -18,6 +18,10 @@ namespace Vanaring_DepaDemo
         [SerializeField]
         private EnergyModifierData _energyModifier;
 
+
+        public EnergyModifierData RequiredEnergy => _requiredEnergy;
+        public EnergyModifierData EnergyModifer => _energyModifier;
+
         public SpellAbilityRuntime Factorize()
         {
             return new SpellAbilityRuntime(_requiredEnergy,_energyModifier, EffectFactory); 

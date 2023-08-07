@@ -39,24 +39,27 @@ namespace Vanaring_DepaDemo
                 InitializeAction(latestAction.Item1, latestAction.Item2);
             }
 
-            yield return _action ;
-
             if (_action != null)
             {
                 //After return action, we check if we need to modify energy or not 
                 //TODO - Properly check if we should modify the energy 
                 if (latestSpell != null)
                 {
-                    Debug.LogWarning("TODO : Properly check if we should modify the energy or not in a separate class or scheme");
-                    _combateEntity.SpellCaster.ModifyEnergy(latestSpell.ModifiedEnergySide,latestSpell.ModifiedEnergyAmount) ;
-                }if (latestItem != null)
+                    _combateEntity.SpellCaster.ModifyEnergy(latestSpell.ModifiedEnergySide, latestSpell.ModifiedEnergyAmount);
+                }
+                if (latestItem != null)
                 {
-                    _combateEntity.ItemUser.RemoveItem(latestItem); 
+                    _combateEntity.ItemUser.RemoveItem(latestItem);
                 }
 
-                latestSpell = null; 
+                yield return _action;
+
+                latestSpell = null;
                 _action = null;
             }
+
+            
+            yield return null; 
 
             
         }
@@ -88,6 +91,13 @@ namespace Vanaring_DepaDemo
         {
             _combatGraphicalHandler.DisableGraphicalElements();
             yield return null;
+        }
+
+        public override IEnumerator TakeControlSoftLeave()
+        {
+            _combatGraphicalHandler.DisableMenuElements();
+
+            yield return null; 
         }
     }
 }

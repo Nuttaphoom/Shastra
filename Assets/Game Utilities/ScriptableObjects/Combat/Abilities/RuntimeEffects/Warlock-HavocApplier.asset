@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 717b07f8c2c298d4c8dcea074ebe43b7, type: 3}
+  m_Name: Warlock-HavocApplier
+  m_EditorClassIdentifier: 
+  _targetSelector:
+    _maxTargetSize: 1
+    _targetSide: 0
+    _targetCaster: 0
+  _actionAnimationInfo:
+    _casterVFXEntity:
+      _destroyAfterCallbackDelay: 2
+      _spawnDelay: 0
+      _callbackDelay: 0.5
+      _VFXAnimationPrefabs: {fileID: 5957440100851985461, guid: 958041c671c082b47a6184f35810a4a9, type: 3}
+    _targetVFXEntity:
+      _destroyAfterCallbackDelay: 2.58
+      _spawnDelay: 0.25
+      _callbackDelay: 0.5
+      _VFXAnimationPrefabs: {fileID: 5241134403359065108, guid: 23e2752f896a21c4c87784c2b2bf86b9, type: 3}
+    SelfTrigerID: 
+    TargetTrigerID: 
+  _effects:
+  - {fileID: 11400000, guid: 6f63d11721b72af42afa3b1ef563f9c9, type: 2}
+  dmg: 0

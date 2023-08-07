@@ -105,11 +105,16 @@ namespace Vanaring_DepaDemo
             }
         }
 
+
         public IEnumerator TakeControl()
         {
             yield return _baseEntityBrain.TakeControl(); 
         }
 
+        public IEnumerator TakeControlSoftLeave()
+        {
+            yield return _baseEntityBrain.TakeControlSoftLeave();
+        } 
         public IEnumerator LeaveControl()
         {
             yield return _baseEntityBrain.TakeControlLeave(); 
@@ -139,8 +144,9 @@ namespace Vanaring_DepaDemo
 
         #region InterfaceFunction 
 
-        public void LogicHurt(int inputdmg)
+        public void LogicHurt(CombatEntity attacker, int inputdmg)
         {
+
             float trueDmg = inputdmg;
 
             //Do some math here
@@ -156,32 +162,51 @@ namespace Vanaring_DepaDemo
             }
         }
 
-        public IEnumerator VisualHurt(string animationTrigger = "Hurt")
+        public IEnumerator VisualHurt(CombatEntity attacker, string animationTrigger = "No Animation") 
         {
             //Display DMG Text here
 
             //Slow down time? 
+
+            List<IEnumerator> _coroutine = new List<IEnumerator>();
             
-            yield return _combatEntityAnimationHandler.PlayTriggerAnimation(animationTrigger); 
-        
+            if (animationTrigger != "No Animation")
+            {
+                _coroutine.Add(_combatEntityAnimationHandler.PlayTriggerAnimation(animationTrigger)) ;
+                if (IsDead)
+                {
+                    _coroutine.Add(_combatEntityAnimationHandler.DestroyVisualMesh());
+                }
+                 
+            }
+
+            _coroutine.Add(_statusEffectHandler.ExecuteHurtStatusRuntimeEffectCoroutine(attacker, this));
+
+            yield return new WaitAll(this, _coroutine.ToArray() );
+
             //If done playing animation, visually destroy the character (animation) not game object
             if (IsDead)
             {
-
+                yield return _combatEntityAnimationHandler.DestroyVisualMesh();
             }
+
+
         }
+
+ 
 
 
         //Receive animation info and play it accordingly 
-        public IEnumerator Attack(List<CombatEntity> targets,float multiplier , ActionAnimationInfo animationinfo)
+        public IEnumerator Attack(List<CombatEntity> targets,EDamageScaling scaling , ActionAnimationInfo animationinfo)
         {
             //Prepare for status effect  
-            yield return _statusEffectHandler.ExecuteAttackStatusRuntimeEffectCoroutine(); 
+            yield return _statusEffectHandler.ExecuteAttackStatusRuntimeEffectCoroutine();
+
 
             //1.) Do apply dmg 
-            int inputDmg = (int) (multiplier * StatsAccumulator.GetATKAmount()) ;
+            int inputDmg = VanaringMathConst.GetATKWithScaling(scaling, StatsAccumulator.GetATKAmount());  
             foreach (CombatEntity target in targets) {
-                    target.LogicHurt(inputDmg);
+                    target.LogicHurt(this,inputDmg);
             }
 
             List<IEnumerator> coroutines = new List<IEnumerator>() ;
@@ -192,7 +217,7 @@ namespace Vanaring_DepaDemo
             foreach (CombatEntity target in targets)
             {
                 CombatEntity entity = target;
-                coroutines.Add(_combatEntityAnimationHandler.PlayVFXActionAnimation<string>(animationinfo.TargetVfxEntity , entity, entity.VisualHurt, "Hurt"));
+                coroutines.Add(entity.CombatEntityAnimationHandler.PlayVFXActionAnimation(animationinfo.TargetVfxEntity, (param) => entity.VisualHurt(this,param), animationinfo.TargetTrigerID));
 
             }
 

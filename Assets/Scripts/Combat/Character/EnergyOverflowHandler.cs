@@ -15,6 +15,7 @@ namespace Vanaring_DepaDemo
     {
         [SerializeField]
         private StatusEffectApplierFactorySO _statusEffectFactory ;
+ 
 
         private CombatEntity _combatEntity;
 
@@ -28,18 +29,27 @@ namespace Vanaring_DepaDemo
         public void OnModifyEnergy(RuntimeMangicalEnergy.EnergySide side, int amount)
         {
 
-            if ( _spellCasterHandler.IsEnergyOverheat() )  
+            if (_spellCasterHandler.IsEnergyOverheat())
             {
-                IEnumerator coroutine = _statusEffectFactory.Factorize(new List<CombatEntity>(){ _combatEntity}); 
+
+                IEnumerator coroutine = _statusEffectFactory.Factorize(new List<CombatEntity>() { _combatEntity });
                 while (coroutine.MoveNext())
                 {
-                    if (coroutine.Current != null && coroutine.Current.GetType().IsSubclassOf(typeof(RuntimeEffect)) ) {
-                        StartCoroutine((coroutine.Current as RuntimeEffect).ExecuteRuntimeCoroutine(_combatEntity)); 
+                    if (coroutine.Current != null && coroutine.Current.GetType().IsSubclassOf(typeof(RuntimeEffect)))
+                    {
+                        StartCoroutine((coroutine.Current as RuntimeEffect).ExecuteRuntimeCoroutine(_combatEntity));
                     }
                 }
 
-                _combatEntity.SpellCaster.ResetEnergy(); 
-            } 
+                _combatEntity.LogicHurt(null, 40);
+                if (! _combatEntity.IsDead)
+                {
+                    //We stunt this turn and the next turn 
+                    _combatEntity.StatsAccumulator.ApplyStunt(); 
+                   _combatEntity.VisualHurt(null, "Stunt");
+                    _combatEntity.SpellCaster.ResetEnergy();
+                }
+            }
         }
 
         private void Awake()

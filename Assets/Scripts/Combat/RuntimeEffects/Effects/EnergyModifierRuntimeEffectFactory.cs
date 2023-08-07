@@ -42,11 +42,22 @@ namespace Vanaring_DepaDemo
         }
         public override IEnumerator ExecuteRuntimeCoroutine(CombatEntity caster)
         {
-            Debug.Log("modify energy");
+
+            Debug.Log("start executing");
             foreach (var target in _targets)
             {
-                target.SpellCaster.ModifyEnergy(_data.Side, _data.Amount);
+                CombatEntity entity = target;
+                yield return (target.CombatEntityAnimationHandler.PlayVFXActionAnimation<CombatEntity>(_actionAnimationInfo.TargetVfxEntity, ModifyenergyCoroutine, entity)); 
             }
+
+            Debug.Log("done executing");
+
+
+        }
+
+        private IEnumerator ModifyenergyCoroutine(CombatEntity target)
+        {
+            target.SpellCaster.ModifyEnergy(_data.Side, _data.Amount);
             yield return null; 
         }
 

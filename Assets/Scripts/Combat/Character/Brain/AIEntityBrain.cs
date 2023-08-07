@@ -53,10 +53,7 @@ namespace Vanaring_DepaDemo
 
         public override IEnumerator TurnLeave()
         {
-            Debug.Log("calcualte next behavior for " + gameObject.name); 
-            //calculate next behavior 
-            yield return _botBehaviorHandler.CalculateNextBehavior(); 
-
+            _botBehaviorHandler.StartTelegraphy();
             yield return null; 
         }
 
@@ -68,6 +65,15 @@ namespace Vanaring_DepaDemo
         public override IEnumerator TakeControlLeave()
         {
             yield return null;
+        }
+
+        public override IEnumerator TakeControlSoftLeave()
+        {
+            Debug.Log("calcualte next behavior for " + gameObject.name);
+            //calculate next behavior 
+            yield return _botBehaviorHandler.CalculateNextBehavior();
+            yield return null; 
+            
         }
     }
 }

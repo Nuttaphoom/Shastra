@@ -13,6 +13,8 @@ namespace Vanaring_DepaDemo
 
         public abstract IEnumerator TurnEnter(); 
 
+
+        public abstract IEnumerator TakeControlSoftLeave();
         public abstract IEnumerator TurnLeave();
     }
 }

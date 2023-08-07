@@ -57,18 +57,7 @@ namespace Vanaring_DepaDemo
             if (caster == null)
                 throw new Exception("Caster can not be null");
 
-            float mul = 1;  
-            switch (_damagScaling)
-            {
-                case (EDamageScaling.Low):
-                    mul = 0.5f; break;
-                case (EDamageScaling.Medium):
-                    mul = 1.0f; break;
-                case (EDamageScaling.High):
-                    mul = 1.5f; break;  
-            }
-
-            yield return caster.Attack(_targets,mul, _actionAnimation ) ; 
+            yield return caster.Attack(_targets, _damagScaling, _actionAnimation ) ; 
             
         }
 

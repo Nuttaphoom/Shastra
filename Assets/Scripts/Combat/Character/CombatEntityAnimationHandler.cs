@@ -8,8 +8,10 @@ using System.Resources;
 using System.Security.AccessControl;
 using System.Text;
 using System.Threading.Tasks;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.VFX;
 
 namespace Vanaring_DepaDemo
 {
@@ -21,7 +23,10 @@ namespace Vanaring_DepaDemo
         private GameObject _mesh ;
 
         [SerializeField]
-        public Transform _vfxPos ; 
+        public Transform _vfxPos ;
+
+        [SerializeField]
+        public VisualEffect _deadVisualEffect; 
 
         public Vector3 GetVFXSpawnPos()
         {
@@ -52,7 +57,7 @@ namespace Vanaring_DepaDemo
             //Self VFX
             if (actionAnimation.CasterVfxEntity.IsValid() )
             {
-                VFXCallbackHandler<string> callbackHandler = new VFXCallbackHandler<string>(gameObject, actionAnimation.CasterVfxEntity, GetVFXSpawnPos(), null);
+                VFXCallbackHandler<string> callbackHandler = new VFXCallbackHandler<string>(GetComponent<CombatEntity>(), actionAnimation.CasterVfxEntity, GetVFXSpawnPos(), null);
                 coroutines.Add(callbackHandler.PlayVFX(null));
             }
 
@@ -63,11 +68,19 @@ namespace Vanaring_DepaDemo
  
         }
 
-        public IEnumerator PlayVFXActionAnimation<T>(VFXEntity vfxEntity, CombatEntity target, VFXCallbackHandler<T>.VFXCallback argc, T param  )
-        {
-            CombatEntity entity = target;
-            VFXCallbackHandler<T> callbackHandler = new VFXCallbackHandler<T>(target.gameObject, vfxEntity , target.CombatEntityAnimationHandler.GetVFXSpawnPos(),  argc  );
+        public IEnumerator PlayVFXActionAnimation<T>(VFXEntity vfxEntity, VFXCallbackHandler<T>.VFXCallback argc, T param  )
+        { 
+            VFXCallbackHandler<T> callbackHandler = new VFXCallbackHandler<T>(GetComponent<CombatEntity>(), vfxEntity , GetVFXSpawnPos(),  argc  );
             yield return (callbackHandler.PlayVFX(param));
+        }
+
+        public IEnumerator DestroyVisualMesh()
+        {
+            _deadVisualEffect.gameObject.SetActive(true); 
+            _deadVisualEffect.Play();
+            yield return new WaitForSeconds(0.7f);
+            
+            Destroy(_mesh.gameObject ) ;
         }
 
 

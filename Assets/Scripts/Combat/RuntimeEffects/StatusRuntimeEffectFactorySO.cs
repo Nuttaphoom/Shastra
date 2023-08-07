@@ -109,7 +109,7 @@ namespace Vanaring_DepaDemo
         /// </summary>
         /// <param name="caster"></param>
         /// <returns></returns>
-        public virtual IEnumerator BeforeHurtEffect(CombatEntity attacker, CombatEntity subject)
+        public virtual IEnumerator AfterHurtEffect(CombatEntity attacker, CombatEntity subject)
         {
             yield return null;
         }

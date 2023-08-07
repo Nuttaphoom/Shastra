@@ -16,8 +16,10 @@ namespace Vanaring_DepaDemo
         [SerializeField]
         private CombatEntityEventChannel OnTargetSelectionSchemeStart;
         [SerializeField] 
-        private CombatEntityEventChannel OnTargetSelectionSchemeEnd; 
+        private CombatEntityEventChannel OnTargetSelectionSchemeEnd;
 
+
+        [Header("Button to bind call back") ] 
         [SerializeField]
         private Button _itemButton;
         [SerializeField]
@@ -25,13 +27,16 @@ namespace Vanaring_DepaDemo
         [SerializeField]
         private Button _weaponButton;
 
+        [Header("Panel and Canvas object (menu)")]
         [SerializeField]
         private Transform _mainPanel;
-
         [SerializeField]
         private Transform _spellPanel;
         [SerializeField]
         private Transform _itemPanel;
+
+        [SerializeField]
+        private GameObject _mainCanvas; 
 
         private CombatEntity _combatEntity; 
 
@@ -39,6 +44,9 @@ namespace Vanaring_DepaDemo
         {
             if (_itemButton == null || _spellButton == null || _weaponButton == null)
                 throw new Exception("Buttons hasn't been correctly assigned");
+
+            if (_mainCanvas == null)
+                throw new Exception("Main Canvas hasn't been assigned"); 
 
             _combatEntity = GetComponent<CombatEntity>(); 
 
@@ -78,15 +86,24 @@ namespace Vanaring_DepaDemo
 
         }
 
+        public void DisableMenuElements()
+        {
+            _spellPanel.gameObject.SetActive(false);
+            _itemPanel.gameObject.SetActive(false);
+            _mainPanel.gameObject.SetActive(false);
+        }
+
         public void DisableGraphicalElements()
         {
             _mainPanel.gameObject.SetActive(false);
             _spellPanel.gameObject.SetActive(false);
             _itemPanel.gameObject.SetActive(false);
+            _mainCanvas.gameObject.SetActive(false);
         }
 
         public void EnableGraphicalElements()
         {
+            _mainCanvas.gameObject.SetActive(true); 
             _mainPanel.gameObject.SetActive(true) ;
             _spellPanel.gameObject.SetActive(false);
             _itemPanel.gameObject.SetActive(false);

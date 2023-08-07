@@ -57,6 +57,7 @@ namespace Vanaring_DepaDemo
 
         private void OnEnergyModified(RuntimeMangicalEnergy.EnergySide side , int val)
         {
+            Debug.Log("visual modify energy in " + gameObject.name); 
             if (side == RuntimeMangicalEnergy.EnergySide.LightEnergy)
             {
                 lightScaleIncrease(val);
@@ -94,10 +95,14 @@ namespace Vanaring_DepaDemo
         }
         public void lightScaleIncrease(int val)
         {
+            
             if(lightScale + val > 100)
             {
-                Debug.Log("Value can't be exceed 100!");
-                return;
+                //What ??? -- Arm
+                //Debug.Log("Value can't be exceed 100!");
+                //return;
+
+                val = (int) (100 - lightScale); 
             }
             lightScale += val;
             StartCoroutine(IEAnimateBarScale());
