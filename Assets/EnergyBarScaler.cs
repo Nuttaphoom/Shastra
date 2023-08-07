@@ -25,12 +25,12 @@ namespace Vanaring_DepaDemo
         
         private float darkScale = 50;
         
-        private float maxBarVal = 100.0f;
+        private float maxEnergyVal = 100.0f;
         [SerializeField] private Image lightImage;
 
         [Header("HPBarValue")]
-        private float hpScale;
-        private float maxHP = 100.0f;
+        private int hpVal;
+        private int maxHP;
         [SerializeField] private Image hpImage;
    
 
@@ -47,14 +47,16 @@ namespace Vanaring_DepaDemo
         private void OnEnable()
         {
             _owner.SpellCaster.SubOnModifyEnergy(OnEnergyModified);
+            //_owner.SpellCaster.SubOnModifyEnergy(OnEnergyModified);
 
         }
 
         private void OnDisable()
         {
             _owner.SpellCaster.UnSubOnModifyEnergy(OnEnergyModified);
+            //_owner.SpellCaster.SubOnModifyEnergy(OnEnergyModified);
         }
-
+        #region Energy
         private void OnEnergyModified(RuntimeMangicalEnergy.EnergySide side , int val)
         {
             Debug.Log("visual modify energy in " + gameObject.name); 
@@ -67,36 +69,18 @@ namespace Vanaring_DepaDemo
                 lightScaleDecrease(val);
             }
         }
-
         private void UpdateEnergyBarScaleGUI()
         {
-            lightImage.fillAmount = (int.Parse(lightNumText.text) / maxBarVal);
-        }
-
-        private void UpdateHPBarScaleGUI()
-        {
-            hpImage.fillAmount = (hpScale / maxHP);
-        }
-
-         
-        private void Update()
-        {
-            
+            lightImage.fillAmount = (int.Parse(lightNumText.text) / maxEnergyVal);
         }
         public void lightScaleIncrease(int val)
         {
-            
             if(lightScale + val > 100)
             {
-                //What ??? -- Arm
-                //Debug.Log("Value can't be exceed 100!");
-                //return;
-
                 val = (int) (100 - lightScale); 
             }
             lightScale += val;
-            StartCoroutine(IEAnimateBarScale());
-            //UpdateEnergyBarScaleGUI();
+            StartCoroutine(IEAnimateEnergyBarScale());
         }
         public void lightScaleDecrease(int val)
         {
@@ -106,27 +90,63 @@ namespace Vanaring_DepaDemo
                 return;
             }
             lightScale -= val;
-            StartCoroutine(IEAnimateBarScale());
-            //UpdateEnergyBarScaleGUI();
+            StartCoroutine(IEAnimateEnergyBarScale());
         }
-
-        private IEnumerator IEAnimateBarScale()
+        #endregion
+        #region HP
+        private void OnHPModified(int damage)
+        {
+            Debug.Log("visual modify HP in " + gameObject.name);
+            if (hpVal - damage < 0)
+            {
+                hpVal = 0;
+            }
+            else
+            {
+                hpVal -= damage;
+            }
+            IEAnimateHPBarScale();
+        }
+        private void UpdateHPBarScaleGUI()
+        {
+            int hptemp = maxHP == 0 ? (hpVal == 0?1:hpVal) : maxHP;
+            hpImage.fillAmount = (hpVal / hptemp);
+        }
+        #endregion
+        #region IEnumerator
+        private IEnumerator IEAnimateEnergyBarScale()
         {
             while (int.Parse(lightNumText.text) < lightScale)
             {
                 lightNumText.text = (int.Parse(lightNumText.text) + 1).ToString();
                 darkNumText.text = (int.Parse(darkNumText.text) - 1).ToString();
                 UpdateEnergyBarScaleGUI();
-                yield return new WaitForSeconds(0.1f);
+                yield return new WaitForSeconds(0.01f);
             }
             while (int.Parse(lightNumText.text) > lightScale)
             {
                 lightNumText.text = (int.Parse(lightNumText.text) - 1).ToString();
                 darkNumText.text = (int.Parse(darkNumText.text) + 1).ToString();
                 UpdateEnergyBarScaleGUI();
-                yield return new WaitForSeconds(0.1f);
+                yield return new WaitForSeconds(0.01f);
             }
             yield return null;
         }
+
+        private IEnumerator IEAnimateHPBarScale()
+        {
+            while (hpImage.fillAmount < hpVal/maxHP)
+            {
+                UpdateHPBarScaleGUI();
+                yield return new WaitForSeconds(0.01f);
+            }
+            while (hpImage.fillAmount > hpVal / maxHP)
+            {
+                UpdateHPBarScaleGUI();
+                yield return new WaitForSeconds(0.01f);
+            }
+            yield return null;
+        }
+        #endregion
     }
 }
