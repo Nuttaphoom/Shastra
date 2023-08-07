@@ -25,9 +25,9 @@ namespace Vanaring_DepaDemo
         private TextMeshProUGUI hpNumText;
 
 
-        private float hpVal;
-        private float maxHpVal;
-        private float maxManaVal = 100;
+        private int hpVal;
+        private int maxHpVal;
+        private float maxEnergyVal = 100;
         private float lightVal = 50;
         private float darkVal = 50;
 
@@ -37,50 +37,44 @@ namespace Vanaring_DepaDemo
         {
             if(_caster != null)
             {
-                _caster.SubOnDamageVisualEvent(UpdateHPScaleGUI);
+                _caster.SubOnDamageVisualEvent(OnHPModified);
             }
         }
 
         private void OnDisable()
         {
-            _caster.UnSubOnDamageVisualEvent(UpdateHPScaleGUI);
+            _caster.UnSubOnDamageVisualEvent(OnHPModified);
         }
 
         public void Init(float manaVal, string name, CombatEntity combatEntity)
         {
             _caster = combatEntity;
-            _caster.SubOnDamageVisualEvent(UpdateHPScaleGUI);
+            _caster.SubOnDamageVisualEvent(OnHPModified);
+
             characterName.text = name;
+            lightVal = manaVal;
+            darkVal = maxEnergyVal - manaVal;
+
             hpVal = _caster.StatsAccumulator.GetHPAmount();
             maxHpVal = _caster.StatsAccumulator.GetHPAmount();
-            lightVal = manaVal;
-            darkVal = maxManaVal - manaVal;
-            UpdateHPScaleGUI(0);
-            UpdateManaScaleGUI(0);
+            UpdateHPScaleGUI();
         }
-        private void Update()
+        private void UpdateHPScaleGUI()
         {
-            //if (Input.GetKeyDown("e"))
-            //{
-            //    Debug.Log("E");
-            //    OnHPModify(Random.Range(10, 50));
-            //}
-            //if (Input.GetKeyDown("q"))
-            //{
-            //    Debug.Log("Q");
-            //    OnHPModify(Random.Range(55, 120));
-            //}
-            //UpdateHPScaleGUI(0);
-            //_caster.StatsAccumulator.GetHPAmount();
+            hpBar.fillAmount = (float)hpVal / maxHpVal;
+            hpNumText.text = hpVal + "/" + maxHpVal.ToString();
         }
-        private void Awake()
+
+        private void UpdateEnergyScaleGUI(int modifyMana)
         {
-            //hpVal = Random.Range(1, 100);
+            manaBar.fillAmount = lightVal / maxEnergyVal;
+            lightNumText.text = lightVal.ToString();
+            darkNumText.text = darkVal.ToString();
         }
-        private void UpdateHPScaleGUI(int damage)
+
+        public void OnHPModified(int damage)
         {
-            Debug.Log("Update CharacterGUI: HP");
-            if(hpVal - damage < 0)
+            if (hpVal - damage < 0)
             {
                 hpVal = 0;
             }
@@ -88,40 +82,25 @@ namespace Vanaring_DepaDemo
             {
                 hpVal -= damage;
             }
-            hpBar.fillAmount = hpVal / maxHpVal;
-            hpNumText.text = hpVal + "/" + maxHpVal.ToString();
-        }
-
-        private void UpdateManaScaleGUI(int modifyMana)
-        {
-            manaBar.fillAmount = lightVal / maxManaVal;
-            lightNumText.text = lightVal.ToString();
-            darkNumText.text = darkVal.ToString();
-        }
-
-        public void OnHPModify(int currentHP)
-        {
             StopAllCoroutines();
-            StartCoroutine(IEAnimateHPBarScale(currentHP));
+            StartCoroutine(IEAnimateHPBarScale(hpVal));
         }
 
-        private IEnumerator IEAnimateHPBarScale(int currentHP)
+        private IEnumerator IEAnimateHPBarScale(int hpVal)
         {
-            while (hpVal < currentHP)
+            while (manaBar.fillAmount < (float)hpVal/maxHpVal)
             {
                 hpVal += 1;
-                UpdateHPScaleGUI(0);
+                UpdateHPScaleGUI();
                 yield return new WaitForSeconds(0.01f);
             }
-            while (hpVal > currentHP)
+            while ((float)hpVal / maxHpVal > hpVal)
             {
                 hpVal -= 1;
-                UpdateHPScaleGUI(0);
+                UpdateHPScaleGUI();
                 yield return new WaitForSeconds(0.01f);
             }
             yield return null;
         }
-
-        
     }
 }

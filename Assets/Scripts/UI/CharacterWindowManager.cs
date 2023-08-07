@@ -17,10 +17,10 @@ namespace Vanaring_DepaDemo
 
         private void Awake()
         {
-            if(_entities.transform.childCount == 0 || _combatEntity == null || _templatePrefab == null)
-            {
-                return;
-            }
+            //if(_entities.transform.childCount == 0 || _combatEntity == null || _templatePrefab == null)
+            //{
+            //    return;
+            //}
 
             for (int i = 0; i < _entities.transform.childCount; i++)
             {
