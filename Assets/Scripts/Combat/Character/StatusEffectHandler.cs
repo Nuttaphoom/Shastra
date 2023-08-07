@@ -39,8 +39,7 @@ namespace Vanaring_DepaDemo
             {
                 if (co.Current != null && co.Current.GetType().IsSubclassOf(typeof(RuntimeEffect) ))
                 {
-                    if (_effects.ContainsKey(key))
-                    {
+                    if (_effects.ContainsKey(key)) {
                         if (factory.StackInfo.Stackable)
                         {
                             _effects[key].Add(co.Current as StatusRuntimeEffect);

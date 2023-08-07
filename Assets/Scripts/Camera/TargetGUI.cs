@@ -8,6 +8,7 @@ namespace Vanaring_DepaDemo
     {
         [SerializeField]
         private GameObject targetGUI;
+
         public GameObject Init(Vector3 pos, Transform parent)
         {
             GameObject newTargetObj = Instantiate(targetGUI, pos, Quaternion.identity, parent);

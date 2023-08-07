@@ -301,6 +301,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   OnTargetSelectionSchemeStart: {fileID: 11400000, guid: 1e9050e9d3c378f448db94ea309439fc, type: 2}
   OnTargetSelectionSchemeEnd: {fileID: 11400000, guid: 92748f06eaa2f9149a5e17e38fedc1da, type: 2}
+  _targetSelectionGUI:
+    targetGUI: {fileID: 1989665005}
 --- !u!1001 &155123150
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -393,12 +395,24 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2677465862973700806, guid: d35174f7bb738684fa761fd31d829dd5, type: 3}
       propertyPath: _spellAbilities.Array.size
-      value: 1
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 2677465862973700806, guid: d35174f7bb738684fa761fd31d829dd5, type: 3}
       propertyPath: _spellAbilities.Array.data[0]
       value: 
       objectReference: {fileID: 11400000, guid: 407eca402f6c0cc469b05889af6d59a1, type: 2}
+    - target: {fileID: 2677465862973700806, guid: d35174f7bb738684fa761fd31d829dd5, type: 3}
+      propertyPath: _spellAbilities.Array.data[1]
+      value: 
+      objectReference: {fileID: 11400000, guid: befa9f3c30afe4a4391f777305738dd9, type: 2}
+    - target: {fileID: 2677465862973700806, guid: d35174f7bb738684fa761fd31d829dd5, type: 3}
+      propertyPath: _spellAbilities.Array.data[2]
+      value: 
+      objectReference: {fileID: 11400000, guid: fe39ecdc433f297448b1f7528abfdc85, type: 2}
+    - target: {fileID: 2677465862973700806, guid: d35174f7bb738684fa761fd31d829dd5, type: 3}
+      propertyPath: _spellAbilities.Array.data[3]
+      value: 
+      objectReference: {fileID: 11400000, guid: 976b5d739b7bd2843b5c47bc01b87302, type: 2}
     - target: {fileID: 3371032920268847679, guid: d35174f7bb738684fa761fd31d829dd5, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -1040,12 +1054,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8003345016368388544, guid: 3b7ec1c7136fbef47bc05818cac8c099, type: 3}
       propertyPath: _spellAbilities.Array.size
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8003345016368388544, guid: 3b7ec1c7136fbef47bc05818cac8c099, type: 3}
       propertyPath: _spellAbilities.Array.data[0]
       value: 
       objectReference: {fileID: 11400000, guid: aa58f05603ff6c649a0e06f84ac54e69, type: 2}
+    - target: {fileID: 8003345016368388544, guid: 3b7ec1c7136fbef47bc05818cac8c099, type: 3}
+      propertyPath: _spellAbilities.Array.data[1]
+      value: 
+      objectReference: {fileID: 11400000, guid: 6c97b3d943489af49b5fb001a8d3e56c, type: 2}
     - target: {fileID: 8218899131233882974, guid: 3b7ec1c7136fbef47bc05818cac8c099, type: 3}
       propertyPath: m_Name
       value: Warlock-Combat-Entity Variant
@@ -1803,7 +1821,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1380101985
 MonoBehaviour:
   m_ObjectHideFlags: 0

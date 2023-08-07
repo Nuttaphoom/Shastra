@@ -18,7 +18,10 @@ public class TargetSelectionFlowControl : MonoBehaviour
     private CombatEntityEventChannel OnTargetSelectionSchemeStart ;
 
     [SerializeField]
-    private CombatEntityEventChannel OnTargetSelectionSchemeEnd; 
+    private CombatEntityEventChannel OnTargetSelectionSchemeEnd ;
+
+    [SerializeField]
+    private TargetSelectionGUI _targetSelectionGUI;
 
     private  List<CombatEntity> _validTargets = new List<CombatEntity>();
     private List<CombatEntity> _selectedTarget = new List<CombatEntity>(); 
@@ -35,9 +38,12 @@ public class TargetSelectionFlowControl : MonoBehaviour
     private RuntimeEffectFactorySO _latestAction ;
 
     private bool _forceStop = false; 
+
+
     private void Awake()
     {
-        Instance = this; 
+        Instance = this;
+        _targetSelectionGUI.Initialize(this); 
     }
 
     private void Update()
@@ -152,8 +158,12 @@ public class TargetSelectionFlowControl : MonoBehaviour
         ValidateData();
         AssignPossibleTargets(caster, action);
 
+
         while (_selectedTarget.Count < action.TargetSelect.MaxTarget)
         {
+
+            _targetSelectionGUI.SelectTargetPointer(_validTargets[_currentSelectIndex]);
+
             if (_forceStop)
             {
                 _forceStop = false;
@@ -175,6 +185,7 @@ public class TargetSelectionFlowControl : MonoBehaviour
         _latestAction = action;
 
     End:
+        _targetSelectionGUI.EndSelectionScheme(); 
         OnTargetSelectionSchemeEnd.PlayEvent(caster);
 
         yield return null;
@@ -182,7 +193,6 @@ public class TargetSelectionFlowControl : MonoBehaviour
 
     private void AssignPossibleTargets(CombatEntity caster, RuntimeEffectFactorySO action)
     {
-
         ECompetatorSide eCompetatorSide = CombatReferee.instance.GetCharacterSide(caster);
 
         if (action.TargetSelect.TargetOppose)
