@@ -14,7 +14,7 @@ namespace Vanaring_DepaDemo
 {
     public class CentralInputReceiver 
     {
-        private readonly Dictionary<char, KeyCode> _keycodeCache = new Dictionary<char, KeyCode>();
+        private  Dictionary<char, KeyCode> _keycodeCache = new Dictionary<char, KeyCode>();
 
         private static CentralInputReceiver instance;
 
@@ -28,7 +28,11 @@ namespace Vanaring_DepaDemo
             _keycodeCache = new Dictionary<char, KeyCode>();
             _receiverStack = new Stack<IInputReceiver>(); 
         } 
-
+         ~CentralInputReceiver()
+        {
+            InputSystem.onAnyButtonPress
+                .Call(ctrl => Debug.Log("test")) ;
+        } 
         public static CentralInputReceiver Instance()
         {
             if (instance == null)
@@ -48,7 +52,6 @@ namespace Vanaring_DepaDemo
 
         private KeyCode GetKeyCode(string key)
         {
-            
             if (key.Count() > 1)
             {
                 if (key == "space")
@@ -75,6 +78,7 @@ namespace Vanaring_DepaDemo
 
         public void AddInputReceiverIntoStack(IInputReceiver receiver)
         {
+            Debug.Log("add " + receiver); 
             if (! _receiverStack.Contains(receiver))
             {
                 _receiverStack.Push(receiver); 
