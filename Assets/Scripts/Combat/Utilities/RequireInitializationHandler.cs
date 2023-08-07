@@ -12,7 +12,6 @@ namespace Vanaring_DepaDemo
 
         protected void ThrowInitException()
         {
-            CentralInputReceiver.Instance()._OnAttackEvent += UpdateHPBar; 
             throw new System.Exception("RequireInitializationHandler hasn't been inited");
         }
 

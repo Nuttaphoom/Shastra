@@ -4,65 +4,73 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics.Tracing;
-using System.Linq; 
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEditor.Experimental.GraphView;
 using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.Events;
+using static UnityEngine.UI.CanvasScaler;
 
 
 namespace Vanaring_DepaDemo
 {
     public enum ECompetatorSide
     {
-        Ally, 
-        Hostile 
+        Ally,
+        Hostile
     }
 
-    public class CombatReferee : MonoBehaviour
+    public class CombatReferee : MonoBehaviour, IInputReceiver
     {
-        public static CombatReferee instance = null ; 
+        private enum CombatState
+        {
+            Init,
+            WaitingForAction,
+            Action,
+        }
+        public static CombatReferee instance = null;
 
-        [Serializable] 
+        [Serializable]
         private struct CompetatorDetailStruct
         {
             [SerializeField]
-            private ECompetatorSide _side ;
-            [SerializeField] 
-            private CombatEntity _entity ;
+            private ECompetatorSide _side;
+            [SerializeField]
+            private CombatEntity _entity;
 
-            public ECompetatorSide Side => _side;  
+            public ECompetatorSide Side => _side;
             public CombatEntity Competator => _entity;
 
             public CompetatorDetailStruct(ECompetatorSide side, CombatEntity entity)
             {
-                _side = side; 
-                _entity = entity; 
+                _side = side;
+                _entity = entity;
             }
         }
 
         [SerializeField]
         [Header("For testing, we manually assign these competator (including enemy) ")]
 
-        List<CompetatorDetailStruct> _competators; 
+        List<CompetatorDetailStruct> _competators;
 
-        private ECompetatorSide _currentSide = ECompetatorSide.Hostile ; // Assign this to the opposite of the actual turn we want to start with 
-        private List<CombatEntity> _activeEntities = new List<CombatEntity> ();
+        private ECompetatorSide _currentSide = ECompetatorSide.Hostile; // Assign this to the opposite of the actual turn we want to start with 
+        private List<CombatEntity> _activeEntities = new List<CombatEntity>();
+        private int _currentEntityIndex = 0;
 
-        private int _currentEntityIndex = 0; 
-        
-        //TODO -- REMOVE THIS, SO FUCKING UGLY
-        private bool _active = false ; 
+        private CombatState _state = CombatState.Init ; 
 
         private void Awake()
         {
-            instance = this; 
+            _state = CombatState.Init ;
+            instance = this;
         }
 
         private void Start()
         {
-            SetUpNewCombatEncounter(); 
+            CentralInputReceiver.Instance().AddInputReceiverIntoStack(this);
+
+            SetUpNewCombatEncounter();
             StartCoroutine(CustomTick());
         }
 
@@ -79,18 +87,6 @@ namespace Vanaring_DepaDemo
 
         }
 
-        private void Update()
-        {
-            if (Input.GetKeyDown(KeyCode.RightArrow))
-            {
-                StartCoroutine(ChangeActiveEntityIndex( true, false) ) ;
-            }
-            else if (Input.GetKeyDown(KeyCode.LeftArrow))
-            {
-                StartCoroutine(ChangeActiveEntityIndex( false, true));
-            }
-        }
-
         private IEnumerator CustomTick()
         {
             while (!IsCombatEnded())
@@ -98,16 +94,16 @@ namespace Vanaring_DepaDemo
                 if (_activeEntities.Count <= 0)
                 {
                     SetupNewRound();
-                }                
+                }
 
-                yield return AdvanceTurn() ;
+                yield return AdvanceTurn();
             }
         }
         private void SetupNewRound()
         {
-            _currentSide = (ECompetatorSide)(((int)_currentSide + 1) % 2)   ;
-             
-            _activeEntities = GetCompetatorsBySide(_currentSide)            ;
+            _currentSide = (ECompetatorSide)(((int)_currentSide + 1) % 2);
+
+            _activeEntities = GetCompetatorsBySide(_currentSide);
         }
 
         private bool EndGameConditionMeet()
@@ -115,44 +111,46 @@ namespace Vanaring_DepaDemo
             //Check for enemy first 
             int allyAlive = 0;
             int hostileAlive = 0;
-            foreach (var entity in _competators )
+            foreach (var entity in _competators)
             {
                 if (entity.Competator.IsDead == false)
                 {
                     if (entity.Side == ECompetatorSide.Ally)
                     {
-                        allyAlive++; 
-                    }else if (entity.Side == ECompetatorSide.Hostile)
+                        allyAlive++;
+                    }
+                    else if (entity.Side == ECompetatorSide.Hostile)
                     {
-                        hostileAlive++; 
+                        hostileAlive++;
                     }
                 }
             }
 
             if (hostileAlive == 0)
             {
-                return true; 
-            }else if (allyAlive == 0)
+                return true;
+            }
+            else if (allyAlive == 0)
             {
                 return true;
             }
 
-            return false ;
-        } 
+            return false;
+        }
 
         #region TurnModifer 
         private IEnumerator AdvanceTurn()
         {
             //Starting new turn 
-            ColorfulLogger.LogWithColor("START TURN IN " + _currentSide, Color.blue); 
+            ColorfulLogger.LogWithColor("START TURN IN " + _currentSide, Color.blue);
 
             //Call Enter Turn of the entity, this included running status effect 
             foreach (CombatEntity entity in _activeEntities)
             {
-               IEnumerator coroutine =  entity.TurnEnter() ; 
-               while (coroutine.MoveNext())
+                IEnumerator coroutine = entity.TurnEnter();
+                while (coroutine.MoveNext())
                 {
-                    yield return coroutine.Current; 
+                    yield return coroutine.Current;
                 }
             }
 
@@ -163,15 +161,15 @@ namespace Vanaring_DepaDemo
                 if (!_activeEntities[i].ReadyForControl())
                 {
                     Debug.Log(_activeEntities[i].name + "is not ready for control");
-                    temp.Add(i); 
-                   // _activeEntities.RemoveAt(i);
-                     
+                    temp.Add(i);
+                    // _activeEntities.RemoveAt(i);
+
                 }
             }
 
             for (int i = temp.Count - 1; i >= 0; i--)
             {
-                _activeEntities.RemoveAt(temp[i]); 
+                _activeEntities.RemoveAt(temp[i]);
             }
 
             if (_activeEntities.Count > 0)
@@ -180,34 +178,40 @@ namespace Vanaring_DepaDemo
                 yield return _activeEntities[_currentEntityIndex].TakeControl();
             }
             //While loop will keep being called until the turn is end
-            while (_activeEntities.Count > 0) {
-                CombatEntity _entity = _activeEntities[_currentEntityIndex] ;
+            while (_activeEntities.Count > 0)
+            {
+                _state = CombatState.WaitingForAction;
+                CombatEntity _entity = _activeEntities[_currentEntityIndex];
                 //Debug.Log("current entity is " + _entity); 
-                IEnumerator actionCoroutine = _entity.GetAction() ;
+                IEnumerator actionCoroutine = _entity.GetAction();
 
                 while (actionCoroutine.MoveNext())
                 {
 
                     if (actionCoroutine.Current != null && actionCoroutine.Current.GetType().IsSubclassOf(typeof(RuntimeEffect)))
                     {
+                        _state = CombatState.Action ;
+
                         yield return _entity.TakeControlSoftLeave();
 
                         //Maybe it get overheat or some affect stunt it while controling 
-                        if (_entity.ReadyForControl()) { 
+                        if (_entity.ReadyForControl())
+                        {
                             //ExecuteAction 
                             yield return ((actionCoroutine.Current as RuntimeEffect).ExecuteRuntimeCoroutine(_entity));
-                        
+
                             yield return ((actionCoroutine.Current as RuntimeEffect).OnExecuteRuntimeDone(_entity));
-                        }else
+                        }
+                        else
                         {
                             yield return new WaitForSecondsRealtime(2.0f);
                         }
                         //When the action is finish executed (like playing animation), end turn 
 
                         if (_activeEntities.Count > 1)
-                            yield return SwitchControl(_currentEntityIndex, _currentEntityIndex == 0 ? 1 : 0) ;
+                            yield return SwitchControl(_currentEntityIndex, _currentEntityIndex == 0 ? 1 : 0);
                         else
-                            yield return SwitchControl(_currentEntityIndex, _currentEntityIndex) ;
+                            yield return SwitchControl(_currentEntityIndex, _currentEntityIndex);
 
                         _activeEntities.RemoveAt(_currentEntityIndex);
 
@@ -230,22 +234,22 @@ namespace Vanaring_DepaDemo
 
                     }
                     else
-                        yield return actionCoroutine.Current;  
+                        yield return actionCoroutine.Current;
                 }
                 if (EndGameConditionMeet())
                 {
                     goto End;
                 }
                 //If GetAction is null, we wait for end of frame
-                yield return new WaitForEndOfFrame() ; 
+                yield return new WaitForEndOfFrame();
             }
 
-            End: 
+        End:
 
             foreach (CombatEntity entity in GetCompetatorsBySide(_currentSide))
             {
                 //Debug.Log("leave turn!!!!");
-                yield return entity.TurnLeave() ;
+                yield return entity.TurnLeave();
             }
 
             //Endding this turn 
@@ -267,32 +271,34 @@ namespace Vanaring_DepaDemo
             AssignCompetators(FindObjectOfType<EntityLoader>().LoadData(), ECompetatorSide.Hostile);
             _currentSide = ECompetatorSide.Ally;
             _activeEntities = GetCompetatorsBySide(_currentSide);
-        } 
+        }
         #region GETTER 
 
 
         public List<CombatEntity> GetCompetatorsBySide(ECompetatorSide ESide)
         {
-            return _competators.Where(v => v.Side == ESide).Select(v => v.Competator).ToList(); 
+            return _competators.Where(v => v.Side == ESide).Select(v => v.Competator).ToList();
         }
 
         public ECompetatorSide GetCharacterSide(CombatEntity entity)
         {
-            foreach (var competator in _competators) {
-                if (competator.Competator == entity ) {
-                    return competator.Side; 
+            foreach (var competator in _competators)
+            {
+                if (competator.Competator == entity)
+                {
+                    return competator.Side;
                 }
             }
 
-            throw new Exception("Given entity is not registered in CombatReferee"); 
+            throw new Exception("Given entity is not registered in CombatReferee");
         }
-        
 
-        public IEnumerator SwitchControl(int prev, int next )
+
+        public IEnumerator SwitchControl(int prev, int next)
         {
             yield return _activeEntities[prev].LeaveControl();
 
-            for (int i = 0; i < GetCompetatorsBySide(ECompetatorSide.Ally) .Count; i++)
+            for (int i = 0; i < GetCompetatorsBySide(ECompetatorSide.Ally).Count; i++)
             {
                 if (GetCompetatorsBySide(ECompetatorSide.Ally)[i] == _activeEntities[next])
                 {
@@ -302,13 +308,13 @@ namespace Vanaring_DepaDemo
             }
 
             Debug.Log("swtich control to " + _activeEntities[next]);
-            if (prev != next) 
+            if (prev != next)
                 yield return _activeEntities[next].TakeControl();
 
 
         }
 
-        public IEnumerator ChangeActiveEntityIndex( bool increase = false, bool decrease = false)
+        public IEnumerator ChangeActiveEntityIndex(bool increase = false, bool decrease = false)
         {
             if (_activeEntities.Count > 0)
             {
@@ -316,20 +322,36 @@ namespace Vanaring_DepaDemo
                 if (increase)
                     _currentEntityIndex = (_currentEntityIndex + 1) % _activeEntities.Count;
                 else if (decrease)
-                    _currentEntityIndex = _currentEntityIndex == 0 ? (_activeEntities.Count -1) : (_currentEntityIndex - 1) ;
-                
+                    _currentEntityIndex = _currentEntityIndex == 0 ? (_activeEntities.Count - 1) : (_currentEntityIndex - 1);
 
-                if (temp != _currentEntityIndex )
+
+                if (temp != _currentEntityIndex)
                 {
-                    yield return SwitchControl(temp,_currentEntityIndex); 
+                    yield return SwitchControl(temp, _currentEntityIndex);
                 }
-            }else
+            }
+            else
             {
                 _currentEntityIndex = 0;
             }
 
         }
-        
+
+        public void ReceiveKeys(KeyCode key)
+        {
+            if (_state == CombatState.WaitingForAction)
+            {
+                if (key == (KeyCode.D))
+                {
+                    StartCoroutine(ChangeActiveEntityIndex(true, false));
+                }
+                else if (key == (KeyCode.A))
+                {
+                    StartCoroutine(ChangeActiveEntityIndex(false, true));
+                }
+            }
+        }
+
         #endregion
 
     }

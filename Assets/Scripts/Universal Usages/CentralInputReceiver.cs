@@ -1,12 +1,14 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.Remoting.Messaging;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Utilities;
+using UnityEngine.TextCore.Text;
 
 namespace Vanaring_DepaDemo
 {
@@ -16,16 +18,56 @@ namespace Vanaring_DepaDemo
 
         private static CentralInputReceiver instance;
 
-        private static Stack<IInputReceiver> _receiverStack ;
-        private static IInputReceiver _currentReceiver;
+        private static Stack<IInputReceiver> _receiverStack = new Stack<IInputReceiver>()  ;
 
-        public void TickUpdate()
+        public CentralInputReceiver()
         {
             InputSystem.onAnyButtonPress
-            .CallOnce(ctrl => Debug.Log(ctrl.name[0]) );
-        }
-        private KeyCode GetKeyCode(char character)
+                 .Call(ctrl => TransmitInput(ctrl.name));
+
+            _keycodeCache = new Dictionary<char, KeyCode>();
+            _receiverStack = new Stack<IInputReceiver>(); 
+        } 
+
+        public static CentralInputReceiver Instance()
         {
+            if (instance == null)
+            {
+                instance = new CentralInputReceiver();
+            }
+
+            return instance;
+        }
+
+ 
+
+        private void TransmitInput(string str)
+        {
+            if (_receiverStack.Count > 0) {
+                _receiverStack.Peek().ReceiveKeys(GetKeyCode(str));
+            } 
+        }
+
+         
+
+
+
+        private KeyCode GetKeyCode(string key)
+        {
+            
+            if (key.Count() > 1)
+            {
+                Debug.Log("key is " + key); 
+                if (key == "space")
+                {
+                    return KeyCode.Space;
+                }else if (key == "escape")
+                {
+                    return KeyCode.Escape;
+                }
+            }
+
+            char character = key[0];
             // Get from cache if it was taken before to prevent unnecessary enum parse
             KeyCode code;
             if (_keycodeCache.TryGetValue(character, out code)) return code;
@@ -35,22 +77,12 @@ namespace Vanaring_DepaDemo
             code = (KeyCode)Enum.Parse(typeof(KeyCode), alphaValue.ToString());
             _keycodeCache.Add(character, code);
 
-           
             return code;
         }
-        public static CentralInputReceiver Instance()
-        {
-            if (instance == null) { 
-                instance = new CentralInputReceiver(); 
-            }
-
-            return instance ; 
-        }
- 
 
         public void AddInputReceiverIntoStack(IInputReceiver receiver)
         {
-            if (_receiverStack.Contains(receiver))
+            if (! _receiverStack.Contains(receiver))
             {
                 _receiverStack.Push(receiver); 
             }
@@ -70,6 +102,6 @@ namespace Vanaring_DepaDemo
 
     public interface IInputReceiver
     {
-        public void ReceiveKeys(string key);
+        public void ReceiveKeys(KeyCode key);
     }
 }
