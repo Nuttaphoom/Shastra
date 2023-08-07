@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UnityEngine.Events;
 
 namespace Vanaring_DepaDemo 
 {
@@ -23,9 +24,14 @@ namespace Vanaring_DepaDemo
     }
     public interface IDamagable
     {
-
         public void LogicHurt(CombatEntity attacker, int inputdmg);
-        public IEnumerator VisualHurt(CombatEntity attacker,string animationTrigger = "Hurt"); 
-        
+        public IEnumerator VisualHurt(CombatEntity attacker,string animationTrigger = "Hurt");
+
+
+        public void SubOnDamageVisualEvent(UnityAction<int> argc) ;
+
+
+        public void UnSubOnDamageVisualEvent(UnityAction<int> argc);
+
     }
 }

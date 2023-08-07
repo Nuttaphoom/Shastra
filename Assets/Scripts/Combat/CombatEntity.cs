@@ -2,9 +2,11 @@ using CustomYieldInstructions;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing.Printing;
 using System.Runtime.InteropServices;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Events;
 using static Cinemachine.CinemachineTargetGroup;
 using static UnityEngine.EventSystems.EventTrigger;
 using static UnityEngine.GraphicsBuffer;
@@ -35,10 +37,11 @@ namespace Vanaring_DepaDemo
 
         private EnergyOverflowHandler _energyOverflowHandler ;
 
+        private UnityAction<int> _OnUpdateVisualDMG;
+
         private bool _isDead = false;
 
-        public bool IsDead => _isDead; 
-
+        public bool IsDead => _isDead;
         public void Awake()
         {
             _runtimeCharacterStatsAccumulator = new RuntimeCharacterStatsAccumulator(_characterSheet) ;
@@ -61,7 +64,7 @@ namespace Vanaring_DepaDemo
             }
         }
 
-    #region Turn Handler Methods 
+        #region Turn Handler Methods 
         public IEnumerator TurnEnter()
         {
             if (_baseEntityBrain == null)
@@ -138,7 +141,7 @@ namespace Vanaring_DepaDemo
         public SpellCasterHandler SpellCaster => _spellCaster;
         public ItemUserHandler ItemUser => _itemUser;
 
-        public CombatEntityAnimationHandler CombatEntityAnimationHandler => _combatEntityAnimationHandler; 
+        public CombatEntityAnimationHandler CombatEntityAnimationHandler => _combatEntityAnimationHandler;
 
         #endregion
 
@@ -181,6 +184,8 @@ namespace Vanaring_DepaDemo
             }
 
             _coroutine.Add(_statusEffectHandler.ExecuteHurtStatusRuntimeEffectCoroutine(attacker, this));
+
+            _OnUpdateVisualDMG?.Invoke(0);
 
             yield return new WaitAll(this, _coroutine.ToArray() );
 
@@ -229,7 +234,17 @@ namespace Vanaring_DepaDemo
             yield return new WaitAll(this,coroutines.ToArray() );
         }
 
-        
+        public void SubOnDamageVisualEvent(UnityAction<int> argc)
+        {
+            _OnUpdateVisualDMG += argc; 
+        }
+
+        public void UnSubOnDamageVisualEvent(UnityAction<int> argc)
+        {
+            _OnUpdateVisualDMG -= argc; 
+        }
+
+
         #endregion
     }
 }

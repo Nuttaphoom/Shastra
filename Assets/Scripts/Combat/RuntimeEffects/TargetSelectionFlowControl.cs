@@ -11,7 +11,7 @@ using UnityEngine.Rendering.VirtualTexturing;
 using Vanaring_DepaDemo;
  
 
-public class TargetSelectionFlowControl : MonoBehaviour
+public class TargetSelectionFlowControl : MonoBehaviour, IInputReceiver
 {
     [Header("Broadcast to ")]
     [SerializeField]
@@ -44,38 +44,6 @@ public class TargetSelectionFlowControl : MonoBehaviour
     {
         Instance = this;
         _targetSelectionGUI.Initialize(this); 
-    }
-
-    private void Update()
-    {
-        //TODO NOTED THAT
-        // THIS WAY IS FREAKING UGLY
-        //WE SHOULD CENTRALIZE THE INPUT 
-        // MainInputSystem => TopOfTheRequireInputStack (stack of element that require input) and UpdateSelection should be at the top of the stack
-        //maybe use IInputSomething to settle down this behavior
-
-        if (_activlySelecting) {
-            if (Input.GetKeyDown(KeyCode.D))
-            {
-                _currentSelectIndex = (_currentSelectIndex + 1) % _validTargets.Count;
-            }
-            else if (Input.GetKeyDown(KeyCode.A))
-            {
-                _currentSelectIndex = (_currentSelectIndex - 1) < 0 ? _validTargets.Count - 1 : (_currentSelectIndex - 1);
-
-            }
-            else if (Input.GetKeyDown(KeyCode.Space))
-            {
-                _selectedTarget.Add(_validTargets[_currentSelectIndex]);
-                _validTargets.RemoveAt(_currentSelectIndex);
-                if (_validTargets.Count != 0)
-                    _currentSelectIndex = _currentSelectIndex % _validTargets.Count;
-                
-            }else if (Input.GetKeyDown(KeyCode.Escape))
-            {
-                ForceStop(); 
-            }
-        } 
     }
 
     private void ForceStop()
@@ -115,10 +83,6 @@ public class TargetSelectionFlowControl : MonoBehaviour
     }
 
     #region Static Methods 
-   
-
-
-
 
     public IEnumerator InitializeSpellTargetSelectionScheme(CombatEntity caster, SpellAbilityRuntime spell, bool randomTarget = false)
     {
@@ -147,6 +111,8 @@ public class TargetSelectionFlowControl : MonoBehaviour
     {
         if (_activlySelecting)
             throw new Exception("Try to active selection scheme while it is already active");
+
+        CentralInputReceiver.Instance().AddInputReceiverIntoStack(this);
 
         OnTargetSelectionSchemeStart.PlayEvent(caster);
 
@@ -188,6 +154,8 @@ public class TargetSelectionFlowControl : MonoBehaviour
         _targetSelectionGUI.EndSelectionScheme(); 
         OnTargetSelectionSchemeEnd.PlayEvent(caster);
 
+        CentralInputReceiver.Instance().RemoveInputReceiverIntoStack() ;
+
         yield return null;
     }
 
@@ -213,6 +181,34 @@ public class TargetSelectionFlowControl : MonoBehaviour
         _validTargets = new List<CombatEntity>();
         _selectedTarget = new List<CombatEntity>();
         _currentSelectIndex = 0;
+    }
+
+    public void ReceiveKeys(KeyCode key)
+    {
+        if (_activlySelecting)
+        {
+            if (key == (KeyCode.D))
+            {
+                _currentSelectIndex = (_currentSelectIndex + 1) % _validTargets.Count;
+            }
+            else if (key == (KeyCode.A))
+            {
+                _currentSelectIndex = (_currentSelectIndex - 1) < 0 ? _validTargets.Count - 1 : (_currentSelectIndex - 1);
+
+            }
+            else if (key == (KeyCode.Space))
+            {
+                _selectedTarget.Add(_validTargets[_currentSelectIndex]);
+                _validTargets.RemoveAt(_currentSelectIndex);
+                if (_validTargets.Count != 0)
+                    _currentSelectIndex = _currentSelectIndex % _validTargets.Count;
+
+            }
+            else if (key == (KeyCode.Escape))
+            {
+                ForceStop();
+            }
+        }
     }
     #endregion
 }

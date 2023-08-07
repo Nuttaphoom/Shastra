@@ -81,17 +81,7 @@ namespace Vanaring_DepaDemo
          
         private void Update()
         {
-            //test
-            //if (Input.GetKeyDown("e"))
-            //{
-            //    lightScaleIncrease(10);
-            //    Debug.Log(lightScale);
-            //}
-            //if (Input.GetKeyDown("q"))
-            //{
-            //    lightScaleDecrease(10);
-            //    Debug.Log(lightScale);
-            //}
+            
         }
         public void lightScaleIncrease(int val)
         {

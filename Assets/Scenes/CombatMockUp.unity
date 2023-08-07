@@ -880,6 +880,38 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 4542120029399929912, guid: f239afacdcb66554183cfaf4785f0f35, type: 3}
   m_PrefabInstance: {fileID: 1507730074}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &511563023
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 511563024}
+  m_Layer: 0
+  m_Name: -----UniversalUseages
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &511563024
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 511563023}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1661154892}
+  m_Father: {fileID: 1989031522}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &546446554
 GameObject:
   m_ObjectHideFlags: 0
@@ -1054,7 +1086,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8003345016368388544, guid: 3b7ec1c7136fbef47bc05818cac8c099, type: 3}
       propertyPath: _spellAbilities.Array.size
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 8003345016368388544, guid: 3b7ec1c7136fbef47bc05818cac8c099, type: 3}
       propertyPath: _spellAbilities.Array.data[0]
@@ -1064,6 +1096,10 @@ PrefabInstance:
       propertyPath: _spellAbilities.Array.data[1]
       value: 
       objectReference: {fileID: 11400000, guid: 6c97b3d943489af49b5fb001a8d3e56c, type: 2}
+    - target: {fileID: 8003345016368388544, guid: 3b7ec1c7136fbef47bc05818cac8c099, type: 3}
+      propertyPath: _spellAbilities.Array.data[2]
+      value: 
+      objectReference: {fileID: 11400000, guid: 6fc9379dfd8edf243ba2dd207108a562, type: 2}
     - target: {fileID: 8218899131233882974, guid: 3b7ec1c7136fbef47bc05818cac8c099, type: 3}
       propertyPath: m_Name
       value: Warlock-Combat-Entity Variant
@@ -2481,6 +2517,50 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 42dc4be32dfc8704caf426a20f87ae9b, type: 3}
   m_PrefabInstance: {fileID: 1637510667}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1661154891
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1661154892}
+  - component: {fileID: 1661154893}
+  m_Layer: 0
+  m_Name: -----UpdateCaller
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1661154892
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1661154891}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 511563024}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1661154893
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1661154891}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0fcf8c082c410604f8982c8c91061ce4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1754532369
 GameObject:
   m_ObjectHideFlags: 0
@@ -3096,6 +3176,7 @@ Transform:
   - {fileID: 1223788285}
   - {fileID: 820319827}
   - {fileID: 617331098}
+  - {fileID: 511563024}
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
