@@ -14,21 +14,28 @@ namespace Vanaring_DepaDemo
         public StatusEffectHandler GetStatusEffectHandler() ;
     }
 
-    public class StatusEffectHandler
+    [Serializable]
+    public class StatusEffectHandler 
     {
+        [SerializeField]
         private CombatEntity _appliedEntity ;
-        Dictionary<string, List<StatusRuntimeEffect>> _effects = new Dictionary<string, List<StatusRuntimeEffect>>(); 
+        Dictionary<string, List<StatusRuntimeEffect>> _effects = new Dictionary<string, List<StatusRuntimeEffect>>();
 
-        public StatusEffectHandler(CombatEntity appliedEntity)
+        [SerializeField]
+        private StatusWindowManager _statusWindowManager;
+
+        private void InstantiateStatusUI(StatusRuntimeEffectFactorySO factory)
         {
-            this._appliedEntity = appliedEntity ;
-
+            foreach (KeyValuePair<string, List<StatusRuntimeEffect>> entry in _effects)
+            {
+                if (entry.Value != null)
+                {
+                    //_statusWindowManager.InstantiateStatusUI(entry.Value[0]);
+                    _statusWindowManager.InstantiateStatusUI(entry.Value[0]);
+                }
+            }
         }
-        private IEnumerator InstantiateStatusUI(StatusRuntimeEffectFactorySO factory)
-        {
-
-            yield return null;
-        }
+    
         //the effect should be factorize exactly before being applied 
         private IEnumerator LogicApplyNewEffect(StatusRuntimeEffectFactorySO factory )
         {
@@ -68,6 +75,8 @@ namespace Vanaring_DepaDemo
         {
             Debug.Log("apply " + factory + "to " + _appliedEntity.name);
             yield return LogicApplyNewEffect(factory);
+            //create Status UI
+            InstantiateStatusUI(factory);
 
             //if (actionAnimationInfo.TargetVfxEntity != null)
             //{
