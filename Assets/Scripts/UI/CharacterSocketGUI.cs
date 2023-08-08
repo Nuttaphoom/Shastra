@@ -31,32 +31,32 @@ namespace Vanaring_DepaDemo
         private float lightVal = 50;
         private float darkVal = 50;
 
-        private CombatEntity _caster;
+        private CombatEntity _combatEntity;
 
         private void OnEnable()
         {
-            if(_caster != null)
+            if(_combatEntity != null)
             {
-                _caster.SubOnDamageVisualEvent(OnHPModified);
+                _combatEntity.SubOnDamageVisualEvent(OnHPModified);
             }
         }
 
         private void OnDisable()
         {
-            _caster.UnSubOnDamageVisualEvent(OnHPModified);
+            _combatEntity.UnSubOnDamageVisualEvent(OnHPModified);
         }
 
         public void Init(float manaVal, string name, CombatEntity combatEntity)
         {
-            _caster = combatEntity;
-            _caster.SubOnDamageVisualEvent(OnHPModified);
+            _combatEntity = combatEntity;
+            _combatEntity.SubOnDamageVisualEvent(OnHPModified);
 
             characterName.text = name;
             lightVal = manaVal;
             darkVal = maxEnergyVal - manaVal;
 
-            hpVal = _caster.StatsAccumulator.GetHPAmount();
-            maxHpVal = _caster.StatsAccumulator.GetHPAmount();
+            hpVal = _combatEntity.StatsAccumulator.GetHPAmount();
+            maxHpVal = _combatEntity.StatsAccumulator.GetHPAmount();
             UpdateHPScaleGUI();
         }
         private void UpdateHPScaleGUI()
@@ -74,14 +74,15 @@ namespace Vanaring_DepaDemo
 
         public void OnHPModified(int damage)
         {
-            if (hpVal - damage < 0)
-            {
-                hpVal = 0;
-            }
-            else
-            {
-                hpVal -= damage;
-            }
+            hpVal = _combatEntity.StatsAccumulator.GetHPAmount();
+            //if (hpVal - damage < 0)
+            //{
+            //    hpVal = 0;
+            //}
+            //else
+            //{
+            //    hpVal -= damage;
+            //}
             StopAllCoroutines();
             StartCoroutine(IEAnimateHPBarScale(hpVal));
         }
