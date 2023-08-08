@@ -17,11 +17,10 @@ namespace Vanaring_DepaDemo
 
         private void Awake()
         {
-            //if(_entities.transform.childCount == 0 || _combatEntity == null || _templatePrefab == null)
-            //{
-            //    return;
-            //}
 
+        }
+        private void Start()
+        {
             for (int i = 0; i < _entities.transform.childCount; i++)
             {
                 CharacterSocketGUI newSocket = Instantiate(_templatePrefab, _templatePrefab.transform.position, _templatePrefab.transform.rotation);

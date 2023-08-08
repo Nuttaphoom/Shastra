@@ -29,24 +29,37 @@ namespace Vanaring_DepaDemo
         [SerializeField] private Image lightImage;
 
         [Header("HPBarValue")]
-        private int hpVal;
-        private int maxHP;
+        private float hpVal;
+        private float maxHP;
         [SerializeField] private Image hpImage;
-   
 
         private void Awake()
         {
             lightScale = 50;
             darkScale = 50;
-            UpdateEnergyBarScaleGUI();
-            UpdateHPBarScaleGUI();
+            //UpdateEnergyBarScaleGUI();
+            
             lightNumText.text = lightScale.ToString();
             darkNumText.text = darkScale.ToString();
+        }
+        private void Start()
+        {
+            
+            if (_owner != null)
+            {
+                hpVal = _owner.StatsAccumulator.GetHPAmount();
+                maxHP = _owner.StatsAccumulator.GetHPAmount();
+            }
+            //Debug.Log(hpVal + "/" + maxHP);
+            //hpImage.fillAmount = (hpVal / maxHP);
+            
+            UpdateHPBarScaleGUI();
         }
 
         private void OnEnable()
         {
             _owner.SpellCaster.SubOnModifyEnergy(OnEnergyModified);
+            _owner.SubOnDamageVisualEvent(OnHPModified);
             //_owner.SpellCaster.SubOnModifyEnergy(OnEnergyModified);
 
         }
@@ -54,6 +67,7 @@ namespace Vanaring_DepaDemo
         private void OnDisable()
         {
             _owner.SpellCaster.UnSubOnModifyEnergy(OnEnergyModified);
+            _owner.UnSubOnDamageVisualEvent(OnHPModified);
             //_owner.SpellCaster.SubOnModifyEnergy(OnEnergyModified);
         }
         #region Energy
@@ -97,19 +111,17 @@ namespace Vanaring_DepaDemo
         private void OnHPModified(int damage)
         {
             Debug.Log("visual modify HP in " + gameObject.name);
-            if (hpVal - damage < 0)
-            {
-                hpVal = 0;
-            }
-            else
-            {
-                hpVal -= damage;
-            }
-            IEAnimateHPBarScale();
+            hpVal = _owner.StatsAccumulator.GetHPAmount();
+            float hptemp = maxHP == 0 ? (hpVal == 0 ? 1 : hpVal) : maxHP;
+
+            hpImage.fillAmount = (hpVal / hptemp);
+            //IEAnimateHPBarScale();
         }
         private void UpdateHPBarScaleGUI()
         {
-            int hptemp = maxHP == 0 ? (hpVal == 0?1:hpVal) : maxHP;
+            float hptemp = maxHP == 0 ? (hpVal == 0?1:hpVal) : maxHP;
+            //Debug.Log(hpVal / hptemp);
+            
             hpImage.fillAmount = (hpVal / hptemp);
         }
         #endregion

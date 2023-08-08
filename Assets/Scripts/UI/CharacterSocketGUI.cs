@@ -75,14 +75,6 @@ namespace Vanaring_DepaDemo
         public void OnHPModified(int damage)
         {
             hpVal = _combatEntity.StatsAccumulator.GetHPAmount();
-            //if (hpVal - damage < 0)
-            //{
-            //    hpVal = 0;
-            //}
-            //else
-            //{
-            //    hpVal -= damage;
-            //}
             StopAllCoroutines();
             StartCoroutine(IEAnimateHPBarScale(hpVal));
         }
