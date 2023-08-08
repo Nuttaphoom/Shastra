@@ -62,7 +62,6 @@ namespace Vanaring_DepaDemo
 
         public IEnumerator ApplyNewEffect(StatusRuntimeEffectFactorySO factory/*, ActionAnimationInfo actionAnimationInfo*/)
         {
-            Debug.Log("apply " + factory + "to " + _appliedEntity.name);
             yield return LogicApplyNewEffect(factory);
 
             //if (actionAnimationInfo.TargetVfxEntity != null)

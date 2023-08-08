@@ -158,6 +158,7 @@ public class TargetSelectionFlowControl : MonoBehaviour, IInputReceiver
         yield return null;
     }
 
+    //TODO : Assign possible target should have more detail, like "dead or not dead" , "got some status effect or not
     private void AssignPossibleTargets(CombatEntity caster, RuntimeEffectFactorySO action)
     {
         ECompetatorSide eCompetatorSide = CombatReferee.instance.GetCharacterSide(caster);
@@ -168,13 +169,31 @@ public class TargetSelectionFlowControl : MonoBehaviour, IInputReceiver
         foreach (CombatEntity target in CombatReferee.instance.GetCompetatorsBySide(eCompetatorSide))
             _validTargets.Add(target);
 
-        if (action.TargetSelect.TargetCasterItself) {
-            _validTargets.Clear();
-            _validTargets.Add(caster); 
+        if (action.TargetSelect.TargetBoth)
+        {
+            eCompetatorSide = (ECompetatorSide)(((int)eCompetatorSide + 1) % 2);
+
+            foreach (CombatEntity target in CombatReferee.instance.GetCompetatorsBySide(eCompetatorSide))
+                _validTargets.Add(target);
         }
 
+        if (action.TargetSelect.TargetCasterItself)
+        {
+            _validTargets.Clear();
+            _validTargets.Add(caster);
+        }
 
+        //If no need for dead target, remove them
+        for (int i = 0;i < _validTargets.Count; i++)
+        {
+            if (_validTargets[i].IsDead)
+            {
+                _validTargets.RemoveAt(i);
+                i--; 
+            }
+        }
     }
+
     private void ValidateData()
     {
         _validTargets = new List<CombatEntity>();
@@ -188,11 +207,11 @@ public class TargetSelectionFlowControl : MonoBehaviour, IInputReceiver
         {
             if (key == (KeyCode.D))
             {
-                _currentSelectIndex = (_currentSelectIndex + 1) % _validTargets.Count;
+                _currentSelectIndex = (_currentSelectIndex + 1) > (_validTargets.Count - 1) ? _currentSelectIndex : (_currentSelectIndex + 1) ;
             }
             else if (key == (KeyCode.A))
             {
-                _currentSelectIndex = (_currentSelectIndex - 1) < 0 ? _validTargets.Count - 1 : (_currentSelectIndex - 1);
+                _currentSelectIndex = (_currentSelectIndex - 1) < 0 ? 0 : (_currentSelectIndex - 1);
 
             }
             else if (key == (KeyCode.Space))
@@ -235,7 +254,9 @@ public class TargetSelector
     
 
     public bool TargetOppose => (_targetSide == TargetSide.Oppose);
-    public bool TargetCasterItself => _targetCaster; 
+    public bool TargetCasterItself => _targetCaster;
+
+    public bool TargetBoth => (_targetSide == TargetSide.Both);
 
 
     //Used when the target selection is requires  

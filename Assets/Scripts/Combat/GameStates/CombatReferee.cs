@@ -191,8 +191,6 @@ namespace Vanaring_DepaDemo
                 _state = CombatState.WaitingForAction;
                 CombatEntity _entity = _activeEntities[_currentEntityIndex];
 
-                Debug.Log("current is " + _entity.name);
-                //Debug.Log("current entity is " + _entity); 
                 IEnumerator actionCoroutine = _entity.GetAction();
 
                 while (actionCoroutine.MoveNext())
@@ -235,7 +233,8 @@ namespace Vanaring_DepaDemo
                                 {
                                     _activeEntities.Remove(_competators[i].Competator);
                                 }
-                                _competators.RemoveAt(i);
+                                //No need to remove from the main list if it was player's
+                                //_competators.RemoveAt(i);
                             }
                         }
 
@@ -315,7 +314,6 @@ namespace Vanaring_DepaDemo
 
             }
 
-            Debug.Log("swtich control to " + _activeEntities[next]);
             if (prev != next)
                 yield return _activeEntities[next].TakeControl();
 
