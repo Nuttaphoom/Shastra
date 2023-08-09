@@ -134,9 +134,13 @@ namespace Vanaring_DepaDemo
             return (_evokeKey == evokeKey) ;
         }
 
+        #region GETTER
+        public bool IsInfiniteTTL => _infiniteTTL;
+        public int TimeToLive => _timeToLive;
         public DescriptionBaseField GetStatusEffectDescription()
         {
             return _statusEffectDescription;
         }
+        #endregion
     }
 }

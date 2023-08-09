@@ -17,7 +17,10 @@ namespace Vanaring_DepaDemo
         private TextMeshProUGUI _statusName;
 
         [SerializeField]
-        private TextMeshProUGUI _statusDescription ;
+        private TextMeshProUGUI _statusDescription;
+
+        [SerializeField]
+        private TextMeshProUGUI _statusDurationUI;
 
         [SerializeField]
         private Image _statusImageIcon;
@@ -37,9 +40,21 @@ namespace Vanaring_DepaDemo
             _statusName.text = temp.FieldName;
             _statusDescription.text = temp.FieldDescription;
             _statusImageIcon.sprite = temp.FieldImage;
+            if (!description.IsInfiniteTTL)
+            {
+                _statusDurationUI.text = description.TimeToLive.ToString();
+            }
+            else
+            {
+                _statusDurationUI.text = "";
+            }
 
             _statusRuntime = description;
             this._caster = combatEntity;
+        }
+        public void AddGameObjectWindow(GameObject window)
+        {
+            _descriptionWindow = window;
         }
 
         public void OnPointerEnter(PointerEventData eventData)
