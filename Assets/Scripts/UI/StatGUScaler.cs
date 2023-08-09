@@ -10,8 +10,7 @@ using Unity.Jobs;
 
 namespace Vanaring_DepaDemo
 {
-    
-    public class EnergyBarScaler : MonoBehaviour
+    public class StatGUIScaler : MonoBehaviour
     {
         [SerializeField]
         private CombatEntity _owner  ;
@@ -37,10 +36,11 @@ namespace Vanaring_DepaDemo
         {
             lightScale = 50;
             darkScale = 50;
-            //UpdateEnergyBarScaleGUI();
-            
-            lightNumText.text = lightScale.ToString();
-            darkNumText.text = darkScale.ToString();
+            if(lightNumText!=null && darkNumText != null)
+            {
+                lightNumText.text = lightScale.ToString();
+                darkNumText.text = darkScale.ToString();
+            }
         }
         private void Start()
         {
