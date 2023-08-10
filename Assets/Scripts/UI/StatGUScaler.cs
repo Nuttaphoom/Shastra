@@ -115,20 +115,22 @@ namespace Vanaring_DepaDemo
             Debug.Log("visual modify HP in " + gameObject.name);
             hpVal = _owner.StatsAccumulator.GetHPAmount();
             float hptemp = maxHP == 0 ? (hpVal == 0 ? 1 : hpVal) : maxHP;
-
-            hpImage.fillAmount = (hpVal / hptemp);
-            if(hpVal <= 0 && gui != null)
-            {
-                gui.SetActive(false);
-            }
-            //IEAnimateHPBarScale();
+            float hptempe = hpImage.fillAmount;
+            //hpImage.fillAmount = (hpVal / hptemp);
+            
+            StartCoroutine(IEAnimateHPBarScale(hptemp));
         }
         private void UpdateHPBarScaleGUI()
         {
-            float hptemp = maxHP == 0 ? (hpVal == 0?1:hpVal) : maxHP;
-            //Debug.Log(hpVal / hptemp);
-            
-            hpImage.fillAmount = (hpVal / hptemp);
+            //float hptemp = maxHP == 0 ? (hpVal == 0?1:hpVal) : maxHP;
+            ////Debug.Log(hpVal / hptemp);
+
+            //hpImage.fillAmount = (hpVal / hptemp);
+            hpImage.fillAmount -= 0.01f;
+            if (hpImage.fillAmount <= 0 && gui != null)
+            {
+                gui.SetActive(false);
+            }
         }
         #endregion
         #region IEnumerator
@@ -151,14 +153,14 @@ namespace Vanaring_DepaDemo
             yield return null;
         }
 
-        private IEnumerator IEAnimateHPBarScale()
+        private IEnumerator IEAnimateHPBarScale(float maxHP)
         {
             while (hpImage.fillAmount < hpVal/maxHP)
             {
                 UpdateHPBarScaleGUI();
                 yield return new WaitForSeconds(0.01f);
             }
-            while (hpImage.fillAmount > hpVal / maxHP)
+            while (hpImage.fillAmount > hpVal/maxHP)
             {
                 UpdateHPBarScaleGUI();
                 yield return new WaitForSeconds(0.01f);
