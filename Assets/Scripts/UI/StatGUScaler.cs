@@ -31,6 +31,7 @@ namespace Vanaring_DepaDemo
         private float hpVal;
         private float maxHP;
         [SerializeField] private Image hpImage;
+        [SerializeField] private GameObject gui;
 
         private void Awake()
         {
@@ -116,6 +117,10 @@ namespace Vanaring_DepaDemo
             float hptemp = maxHP == 0 ? (hpVal == 0 ? 1 : hpVal) : maxHP;
 
             hpImage.fillAmount = (hpVal / hptemp);
+            if(hpVal <= 0 && gui != null)
+            {
+                gui.SetActive(false);
+            }
             //IEAnimateHPBarScale();
         }
         private void UpdateHPBarScaleGUI()
