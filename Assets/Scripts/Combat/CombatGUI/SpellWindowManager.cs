@@ -13,7 +13,9 @@ namespace Vanaring_DepaDemo
         private SpellSocketGUI _templatePrefab;
 
         [SerializeField]
-        private Transform _socketVerticalLayout; 
+        private Transform _socketVerticalLayout;
+
+        private Transform[] SocketEntrySlots;
 
         // Start is called before the first frame update
         void Awake()
