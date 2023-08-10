@@ -45,9 +45,12 @@ namespace Vanaring_DepaDemo
                 if (! _combatEntity.IsDead)
                 {
                     //We stunt this turn and the next turn 
-                    _combatEntity.StatsAccumulator.ApplyStunt(); 
-                   _combatEntity.VisualHurt(null, "Stunt");
-                    _combatEntity.SpellCaster.ResetEnergy();
+                    _combatEntity.StatsAccumulator.ApplyStunt();
+                    StartCoroutine(_combatEntity.VisualHurt(null, "Stunt") ) ;
+                     _combatEntity.SpellCaster.ResetEnergy();
+                }else
+                {
+                    StartCoroutine(_combatEntity.VisualHurt(null, "Hurt"));
                 }
             }
         }
