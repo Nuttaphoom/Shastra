@@ -179,8 +179,7 @@ namespace Vanaring_DepaDemo
                 if (IsDead)
                 {
                     _coroutine.Add(_combatEntityAnimationHandler.DestroyVisualMesh());
-                }
-                 
+                }    
             }
 
             _coroutine.Add(_statusEffectHandler.ExecuteHurtStatusRuntimeEffectCoroutine(attacker, this));
@@ -194,6 +193,8 @@ namespace Vanaring_DepaDemo
             {
                 yield return _combatEntityAnimationHandler.DestroyVisualMesh();
             }
+
+            
 
 
         }

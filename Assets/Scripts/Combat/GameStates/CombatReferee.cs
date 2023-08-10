@@ -175,7 +175,7 @@ namespace Vanaring_DepaDemo
             if (_activeEntities.Count > 0)
             {
                 _currentEntityIndex = 0;
-                yield return _activeEntities[_currentEntityIndex].TakeControl();
+                yield return SwitchControl(-1, _currentEntityIndex);
             }
 
             //While loop will keep being called until the turn is end
@@ -303,7 +303,8 @@ namespace Vanaring_DepaDemo
 
         public IEnumerator SwitchControl(int prev, int next)
         {
-            yield return _activeEntities[prev].LeaveControl();
+            if (prev != -1)
+                yield return _activeEntities[prev].LeaveControl();
 
             for (int i = 0; i < GetCompetatorsBySide(ECompetatorSide.Ally).Count; i++)
             {
