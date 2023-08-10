@@ -70,8 +70,8 @@ namespace Vanaring_DepaDemo
         public bool InfiniteTTL => _infiniteTTL ;
         public EEvokeKey EvokeKey => _evokeKey;
         public string StatusDescription => _statusEffectDescription.FieldDescription;
-        public string StatusName => _statusEffectDescription.FieldName;  
-
+        public string StatusName => _statusEffectDescription.FieldName;
+        public Sprite StatusImage => _statusEffectDescription.FieldImage;
 
     }
 
@@ -85,12 +85,16 @@ namespace Vanaring_DepaDemo
         protected int _timeToLive = 0;
 
         protected EEvokeKey _evokeKey;
-        
+
+        protected DescriptionBaseField _statusEffectDescription;
+
         public StatusRuntimeEffect(StatusRuntimeEffectFactorySO effectFactory)
         {
             this._evokeKey = effectFactory.EvokeKey ; 
             this._infiniteTTL = effectFactory.InfiniteTTL ;
             this._timeToLive = effectFactory.TTL ;
+            this._statusEffectDescription = new DescriptionBaseField(effectFactory.StatusName,
+                effectFactory.StatusDescription, effectFactory.StatusImage);
         }
 
         /// <summary>
@@ -129,5 +133,14 @@ namespace Vanaring_DepaDemo
         {
             return (_evokeKey == evokeKey) ;
         }
+
+        #region GETTER
+        public bool IsInfiniteTTL => _infiniteTTL;
+        public int TimeToLive => _timeToLive;
+        public DescriptionBaseField GetStatusEffectDescription()
+        {
+            return _statusEffectDescription;
+        }
+        #endregion
     }
 }

@@ -28,6 +28,7 @@ namespace Vanaring_DepaDemo
         [SerializeField]
         private ItemUserHandler _itemUser;
 
+        [SerializeField]
         private StatusEffectHandler _statusEffectHandler ;  
         
         private RuntimeCharacterStatsAccumulator _runtimeCharacterStatsAccumulator ;
@@ -45,7 +46,6 @@ namespace Vanaring_DepaDemo
         public void Awake()
         {
             _runtimeCharacterStatsAccumulator = new RuntimeCharacterStatsAccumulator(_characterSheet) ;
-            _statusEffectHandler = new StatusEffectHandler(this) ;
             _energyOverflowHandler = GetComponent<EnergyOverflowHandler>(); 
 
             if (! TryGetComponent(out _baseEntityBrain))
