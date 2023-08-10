@@ -84,6 +84,7 @@ public class VFXCallbackHandler<T>
         
         yield return new WaitForSeconds(_vfxEntity.CallbackDelay) ;
 
+
         List<IEnumerator> coroutines = new List<IEnumerator>(); 
 
         if (_action != null)
@@ -94,8 +95,8 @@ public class VFXCallbackHandler<T>
         coroutines.Add(WaitAndDestroy(_vfxEntity.DestroyDelay));
 
         yield return new WaitAll( _target  , coroutines.ToArray() );
- 
-    }
+
+     }
 
     private IEnumerator WaitAndDestroy(float time)
     {

@@ -49,9 +49,19 @@ namespace Vanaring_DepaDemo
 
         public IEnumerator PlayTriggerAnimation(string triggerName)
         {
-            _animator.SetTrigger(triggerName) ;
+            _animator.SetTrigger(triggerName);
 
-            yield return new WaitForSeconds(3.0f);
+            // Get the hash of the animation state
+            int animationHash = Animator.StringToHash(triggerName);
+            AnimationClip[] clips = _animator.runtimeAnimatorController.animationClips;
+
+            yield return new WaitForEndOfFrame();
+
+
+            yield return new WaitForSeconds(_animator.GetCurrentAnimatorStateInfo(0).length );
+
+
+
         }
         public IEnumerator PlayActionAnimation(ActionAnimationInfo actionAnimation )
         {

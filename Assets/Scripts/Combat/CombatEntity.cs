@@ -194,8 +194,8 @@ namespace Vanaring_DepaDemo
                 yield return _combatEntityAnimationHandler.DestroyVisualMesh();
             }
 
-            
 
+            yield return null;
 
         }
 
@@ -233,6 +233,8 @@ namespace Vanaring_DepaDemo
             
             //2.3.) running animation scheme
             yield return new WaitAll(this,coroutines.ToArray() );
+
+
         }
 
         public void SubOnDamageVisualEvent(UnityAction<int> argc)

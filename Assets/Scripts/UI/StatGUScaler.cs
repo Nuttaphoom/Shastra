@@ -75,7 +75,6 @@ namespace Vanaring_DepaDemo
         #region Energy
         private void OnEnergyModified(RuntimeMangicalEnergy.EnergySide side , int val)
         {
-            Debug.Log("visual modify energy in " + gameObject.name); 
             if (side == RuntimeMangicalEnergy.EnergySide.LightEnergy)
             {
                 lightScaleIncrease(val);
@@ -112,7 +111,6 @@ namespace Vanaring_DepaDemo
         #region HP
         private void OnHPModified(int damage)
         {
-            Debug.Log("visual modify HP in " + gameObject.name);
             hpVal = _owner.StatsAccumulator.GetHPAmount();
             float hptemp = maxHP == 0 ? (hpVal == 0 ? 1 : hpVal) : maxHP;
             float hptempe = hpImage.fillAmount;

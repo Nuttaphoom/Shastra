@@ -42,6 +42,7 @@ namespace Vanaring_DepaDemo
                 }
 
                 _combatEntity.LogicHurt(null, 40);
+                Debug.Log("overheat");
                 if (! _combatEntity.IsDead)
                 {
                     //We stunt this turn and the next turn 
