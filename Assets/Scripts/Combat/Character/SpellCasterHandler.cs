@@ -15,7 +15,6 @@ using static UnityEngine.Rendering.DebugUI;
 [Serializable]
 public class SpellCasterHandler  : MonoBehaviour
 {
-
     [SerializeField]
     private List<SpellAbilitySO> _spellAbilities = new List<SpellAbilitySO>() ;
     public List<SpellAbilitySO> SpellAbilities => _spellAbilities ;

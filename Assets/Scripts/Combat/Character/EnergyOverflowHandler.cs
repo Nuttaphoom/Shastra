@@ -50,7 +50,7 @@ namespace Vanaring_DepaDemo
                      _combatEntity.SpellCaster.ResetEnergy();
                 }else
                 {
-                    StartCoroutine(_combatEntity.VisualHurt(null, "Hurt"));
+                    StartCoroutine(_combatEntity.VisualHurt(null, "Die"));
                 }
             }
         }
