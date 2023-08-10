@@ -47,6 +47,7 @@ namespace Vanaring_DepaDemo
             
             if (_owner != null)
             {
+                //hpVal = 70;
                 hpVal = _owner.StatsAccumulator.GetHPAmount();
                 maxHP = _owner.StatsAccumulator.GetHPAmount();
             }
