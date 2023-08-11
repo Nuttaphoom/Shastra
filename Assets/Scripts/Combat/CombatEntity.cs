@@ -38,7 +38,7 @@ namespace Vanaring_DepaDemo
 
         private EnergyOverflowHandler _energyOverflowHandler ;
 
-        private UnityAction<int> _OnUpdateVisualDMG;
+
 
         private bool _isDead = false;
 
@@ -146,7 +146,8 @@ namespace Vanaring_DepaDemo
         #endregion
 
         #region InterfaceFunction 
-
+        private UnityAction<int> _OnUpdateVisualDMG;
+        private UnityAction<int> _OnUpdateVisualDMGEnd;
         public void LogicHurt(CombatEntity attacker, int inputdmg)
         {
 
@@ -194,6 +195,7 @@ namespace Vanaring_DepaDemo
                 yield return _combatEntityAnimationHandler.DestroyVisualMesh();
             }
 
+            _OnUpdateVisualDMGEnd?.Invoke(0);
 
             yield return null;
 
@@ -245,6 +247,16 @@ namespace Vanaring_DepaDemo
         public void UnSubOnDamageVisualEvent(UnityAction<int> argc)
         {
             _OnUpdateVisualDMG -= argc; 
+        }
+
+        public void SubOnDamageVisualEventEnd(UnityAction<int> argc)
+        {
+            _OnUpdateVisualDMGEnd += argc;
+        }
+
+        public void UnSubOnDamageVisualEventEnd(UnityAction<int> argc)
+        {
+            _OnUpdateVisualDMGEnd -= argc;
         }
 
 

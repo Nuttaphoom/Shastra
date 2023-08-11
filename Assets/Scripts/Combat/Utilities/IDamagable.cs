@@ -28,10 +28,10 @@ namespace Vanaring_DepaDemo
         public IEnumerator VisualHurt(CombatEntity attacker,string animationTrigger = "Hurt");
 
 
-        public void SubOnDamageVisualEvent(UnityAction<int> argc) ;
-
-
+        public void SubOnDamageVisualEvent(UnityAction<int> argc);
         public void UnSubOnDamageVisualEvent(UnityAction<int> argc);
 
+        public void SubOnDamageVisualEventEnd(UnityAction<int> argc);
+        public void UnSubOnDamageVisualEventEnd(UnityAction<int> argc);
     }
 }

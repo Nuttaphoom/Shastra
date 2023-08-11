@@ -203,6 +203,7 @@ namespace Vanaring_DepaDemo
 
                     if (actionCoroutine.Current != null && actionCoroutine.Current.GetType().IsSubclassOf(typeof(RuntimeEffect)))
                     {
+                        ColorfulLogger.LogWithColor("start action", Color.black); 
                         _state = CombatState.Action ;
 
                         yield return _entity.TakeControlSoftLeave();
