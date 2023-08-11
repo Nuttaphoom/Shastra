@@ -55,16 +55,16 @@ namespace Vanaring_DepaDemo
             int animationHash = Animator.StringToHash(triggerName);
             AnimationClip[] clips = _animator.runtimeAnimatorController.animationClips;
 
-            yield return new WaitForEndOfFrame();
+            //yield return new WaitForEndOfFrame();
 
+            //yield return new WaitForSeconds(_animator.GetCurrentAnimatorStateInfo(0).length );
 
-            yield return new WaitForSeconds(_animator.GetCurrentAnimatorStateInfo(0).length );
-
-
-
+            yield return new WaitForSeconds(3.0f);
         }
         public IEnumerator PlayActionAnimation(ActionAnimationInfo actionAnimation )
         {
+            Debug.Log("play action animation");
+
             List<IEnumerator> coroutines = new List<IEnumerator>();
 
             //Self VFX
@@ -78,13 +78,18 @@ namespace Vanaring_DepaDemo
             coroutines.Add (PlayTriggerAnimation(actionAnimation.SelfTrigerID) ) ;
 
             yield return new WaitAll(this, coroutines.ToArray() );
- 
+            Debug.Log("finish play action animation");
+
         }
 
         public IEnumerator PlayVFXActionAnimation<T>(VFXEntity vfxEntity, VFXCallbackHandler<T>.VFXCallback argc, T param  )
-        { 
+        {
+            Debug.Log("play vfx action animation");
             VFXCallbackHandler<T> callbackHandler = new VFXCallbackHandler<T>(GetComponent<CombatEntity>(), vfxEntity , GetVFXSpawnPos(),  argc  );
             yield return (callbackHandler.PlayVFX(param));
+
+            Debug.Log("finish play vfx action animation");
+
         }
 
         public IEnumerator DestroyVisualMesh()

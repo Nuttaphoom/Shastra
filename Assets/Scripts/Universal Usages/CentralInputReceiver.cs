@@ -78,7 +78,6 @@ namespace Vanaring_DepaDemo
 
         public void AddInputReceiverIntoStack(IInputReceiver receiver)
         {
-            Debug.Log("add " + receiver); 
             if (! _receiverStack.Contains(receiver))
             {
                 _receiverStack.Push(receiver); 

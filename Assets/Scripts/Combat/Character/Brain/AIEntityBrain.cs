@@ -69,10 +69,9 @@ namespace Vanaring_DepaDemo
 
         public override IEnumerator TakeControlSoftLeave()
         {
-            Debug.Log("calcualte next behavior for " + gameObject.name);
             //calculate next behavior 
             yield return _botBehaviorHandler.CalculateNextBehavior();
-            yield return null; 
+         
             
         }
     }

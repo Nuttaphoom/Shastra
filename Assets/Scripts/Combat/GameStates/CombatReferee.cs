@@ -178,15 +178,20 @@ namespace Vanaring_DepaDemo
                 yield return SwitchControl(-1, _currentEntityIndex);
             }
 
+
+            foreach (var v in _activeEntities)
+            {
+                Debug.Log("Active start is " + v.name); 
+            }
             //While loop will keep being called until the turn is end
             while (_activeEntities.Count > 0)
             {
-                while (! _activeEntities[_currentEntityIndex].ReadyForControl())
+                while (!_activeEntities[_currentEntityIndex].ReadyForControl())
                 {
-                    _activeEntities.RemoveAt(_currentEntityIndex) ;
+                    _activeEntities.RemoveAt(_currentEntityIndex);
                     _currentEntityIndex = 0;
-                    if (_activeEntities.Count > 0)
-                        goto End; 
+                    if (_activeEntities.Count <= 0)
+                        goto End;
                 }
                 _state = CombatState.WaitingForAction;
                 CombatEntity _entity = _activeEntities[_currentEntityIndex];
@@ -195,6 +200,7 @@ namespace Vanaring_DepaDemo
 
                 while (actionCoroutine.MoveNext())
                 {
+
                     if (actionCoroutine.Current != null && actionCoroutine.Current.GetType().IsSubclassOf(typeof(RuntimeEffect)))
                     {
                         _state = CombatState.Action ;
@@ -214,16 +220,19 @@ namespace Vanaring_DepaDemo
                             yield return new WaitForSecondsRealtime(2.0f);
                         }
                         //When the action is finish executed (like playing animation), end turn 
-
-                        if (_activeEntities.Count > 1)
-                            yield return SwitchControl(_currentEntityIndex, _currentEntityIndex == 0 ? 1 : 0);
-                        else
-                            yield return SwitchControl(_currentEntityIndex, _currentEntityIndex);
+ 
+                        // entity's leave turn 
+                        yield return SwitchControl(_currentEntityIndex, _currentEntityIndex);
 
                         _activeEntities.RemoveAt(_currentEntityIndex);
 
                         _currentEntityIndex = 0;
 
+                        if (_activeEntities.Count > 0) 
+                            yield return SwitchControl(-1, _currentEntityIndex);
+
+
+                        ColorfulLogger.LogWithColor("almost end of action", Color.black);
 
                         for (int i = _competators.Count - 1; i >= 0; i--)
                         {
@@ -237,7 +246,7 @@ namespace Vanaring_DepaDemo
                                 //_competators.RemoveAt(i);
                             }
                         }
-
+                        ColorfulLogger.LogWithColor("End of action", Color.black);
 
                     }
                     else
@@ -252,12 +261,11 @@ namespace Vanaring_DepaDemo
             }
 
         End:
-
             foreach (CombatEntity entity in GetCompetatorsBySide(_currentSide))
             {
-                //Debug.Log("leave turn!!!!");
                 yield return entity.TurnLeave();
             }
+            ColorfulLogger.LogWithColor("END TURN IN " + _currentSide, Color.blue);
 
             //Endding this turn 
         }
@@ -306,18 +314,21 @@ namespace Vanaring_DepaDemo
             if (prev != -1)
                 yield return _activeEntities[prev].LeaveControl();
 
-            for (int i = 0; i < GetCompetatorsBySide(ECompetatorSide.Ally).Count; i++)
-            {
-                if (GetCompetatorsBySide(ECompetatorSide.Ally)[i] == _activeEntities[next])
-                {
-                    GameSceneSetUPManager.Instance.SelectCharacterCamera(i);
-                }
 
-            }
 
             if (prev != next)
-                yield return _activeEntities[next].TakeControl();
+            {
+                for (int i = 0; i < GetCompetatorsBySide(ECompetatorSide.Ally).Count; i++)
+                {
+                    if (GetCompetatorsBySide(ECompetatorSide.Ally)[i] == _activeEntities[next])
+                    {
+                        GameSceneSetUPManager.Instance.SelectCharacterCamera(i);
+                    }
 
+                }
+
+                yield return _activeEntities[next].TakeControl();
+            }
 
         }
 
