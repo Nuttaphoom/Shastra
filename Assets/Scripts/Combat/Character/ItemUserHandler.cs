@@ -41,14 +41,6 @@ public class ItemUserHandler : MonoBehaviour //inventory
         FactorizeItemInInventory();
     }
 
-    public void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.O))
-        {
-            _runtimeItems.RemoveAt(0);
-        }
-    }
-
     private void FactorizeItemInInventory()
     {
         //TODO : Load inventory from somewhere instead of manually assign them

@@ -88,6 +88,8 @@ namespace Vanaring_DepaDemo
 
         protected DescriptionBaseField _statusEffectDescription;
 
+        protected StatusStackInfo _stackInfo;
+
         public StatusRuntimeEffect(StatusRuntimeEffectFactorySO effectFactory)
         {
             this._evokeKey = effectFactory.EvokeKey ; 
@@ -95,6 +97,7 @@ namespace Vanaring_DepaDemo
             this._timeToLive = effectFactory.TTL ;
             this._statusEffectDescription = new DescriptionBaseField(effectFactory.StatusName,
                 effectFactory.StatusDescription, effectFactory.StatusImage);
+            this._stackInfo = effectFactory.StackInfo;
         }
 
         /// <summary>
@@ -137,6 +140,7 @@ namespace Vanaring_DepaDemo
         #region GETTER
         public bool IsInfiniteTTL => _infiniteTTL;
         public int TimeToLive => _timeToLive;
+        public StatusStackInfo StackInfo => _stackInfo;
         public DescriptionBaseField GetStatusEffectDescription()
         {
             return _statusEffectDescription;

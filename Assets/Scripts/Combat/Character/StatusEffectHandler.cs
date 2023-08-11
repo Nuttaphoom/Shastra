@@ -30,7 +30,7 @@ namespace Vanaring_DepaDemo
             {
                 if (entry.Value != null)
                 {
-                    _statusWindowManager.InstantiateStatusUI(entry.Value[0]);
+                    _statusWindowManager.InstantiateStatusUI(entry.Value[0], entry.Value.Count);
                 }
             }
         }
