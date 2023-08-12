@@ -1,9 +1,11 @@
+using CustomYieldInstructions;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.Experimental.GlobalIllumination;
+using static UnityEngine.EventSystems.EventTrigger;
 
 
 namespace Vanaring_DepaDemo
@@ -62,11 +64,43 @@ namespace Vanaring_DepaDemo
             if (caster == null)
                 throw new Exception("Caster can not be null");
 
-            yield return caster.Attack(_targets, _damagScaling, _actionAnimation);
+            //foreach (CombatEntity target in _targets)
+            //{
+            //    target.SpellCaster.ModifyEnergy(_data.Side, _data.Amount);
+            //}
 
-            foreach (CombatEntity target in _targets) {
-                target.SpellCaster.ModifyEnergy(_data.Side,_data.Amount) ;
+ 
+
+            yield return caster.LogicAttack(_targets, _damagScaling);
+
+            //2 Visual 
+            List<IEnumerator> coroutines = new List<IEnumerator>();
+
+            //2.1.) creating vfx for coroutine for targets
+            foreach (CombatEntity target in _targets)
+            {
+                CombatEntity entity = target;
+                coroutines.Add(entity.CombatEntityAnimationHandler.PlayVFXActionAnimation<string>(_actionAnimation.TargetVfxEntity, (string s) => AttackModify(caster,entity), _actionAnimation.TargetTrigerID));
             }
+
+            //2.2.) create action animation coroutine for self
+            coroutines.Add(caster.CombatEntityAnimationHandler.PlayActionAnimation(_actionAnimation));
+
+            //2.3.) running animation scheme
+            yield return new WaitAll(caster, coroutines.ToArray());
+
+        }
+
+        private IEnumerator AttackModify(CombatEntity caster , CombatEntity target)
+        {
+            List<IEnumerator> coroutines = new List<IEnumerator>();
+
+            coroutines.Add(target.VisualHurt(caster, _actionAnimation.TargetTrigerID) ) ;
+            coroutines.Add(target.GetStatusEffectHandler().ExecuteAfterAttackStatusRuntimeEffectCoroutine(target));
+
+            target.SpellCaster.ModifyEnergy(_data.Side, _data.Amount);
+
+            yield return new WaitAll(caster, coroutines.ToArray());
 
         }
 

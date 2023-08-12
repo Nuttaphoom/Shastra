@@ -19,7 +19,7 @@ namespace Vanaring_DepaDemo
 
     public interface IAttackter
     {
-        public IEnumerator Attack(List<CombatEntity> targets, EDamageScaling multiplier, ActionAnimationInfo animationinfo);
+        public IEnumerator LogicAttack(List<CombatEntity> targets, EDamageScaling multiplier);
 
     }
     public interface IDamagable

@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace Vanaring_DepaDemo
 {
@@ -83,6 +84,7 @@ namespace Vanaring_DepaDemo
         }
 
 
+        #region ExecuteStatus Effects
         public IEnumerator ExecuteStatusRuntimeEffectCoroutine()
         {
             foreach (var key in _effects.Keys)
@@ -95,16 +97,9 @@ namespace Vanaring_DepaDemo
                     yield return statusEffect.OnExecuteRuntimeDone(_appliedEntity);
 
                     statusEffect.UpdateTTLCondition();
-
-                    if (statusEffect.IsExpired())
-                    {
-                        //TODO - Remove status effect visually
-                        _effects[key].RemoveAt(i);
-                        i--;
-                        continue;
-                    }
                 }
             }
+
         }
 
         public IEnumerator ExecuteStatusRuntimeEffectCoroutineWithEvokeKey(EEvokeKey evokeKey)
@@ -123,15 +118,10 @@ namespace Vanaring_DepaDemo
 
                     statusEffect.UpdateTTLCondition();
 
-                    if (statusEffect.IsExpired())
-                    {
-                        //TODO - Remove status effect visually
-                        _effects[key].RemoveAt(i);
-                        i--;
-                        continue;
-                    }
                 }
             }
+
+
         }
 
         public IEnumerator ExecuteAttackStatusRuntimeEffectCoroutine()
@@ -143,16 +133,10 @@ namespace Vanaring_DepaDemo
                     StatusRuntimeEffect statusEffect = _effects[key][i];
 
                     yield return statusEffect.BeforeAttackEffect(_appliedEntity);
-
-                    if (statusEffect.IsExpired())
-                    {
-                        //TODO - Remove status effect visually
-                        _effects[key].RemoveAt(i);
-                        i--;
-                        continue;
-                    }
                 }
             }
+
+
         }
 
         /// <summary>
@@ -171,17 +155,16 @@ namespace Vanaring_DepaDemo
 
                     yield return statusEffect.AfterAttackEffect(_appliedEntity,subject);
 
-                    if (statusEffect.IsExpired())
-                    {
-                        //TODO - Remove status effect visually
-                        _effects[key].RemoveAt(i);
-                        i--;
-                        continue;
-                    }
                 }
             }
-        } 
-        #region GETTER 
+
+
+        }
+
+        #endregion
+
+
+        #region GETTER
         public List<StatusRuntimeEffect> GetStatusRuntimeEffectWithEvokeKey(EEvokeKey evokeKey, bool updateTTLAfterGet = true)
         {
             List<StatusRuntimeEffect> ret = new List<StatusRuntimeEffect>();
@@ -199,17 +182,31 @@ namespace Vanaring_DepaDemo
                     if (updateTTLAfterGet)
                         statusEffect.UpdateTTLCondition();
 
-                    if (statusEffect.IsExpired())
+                }
+            }
+
+            
+            return ret;
+        }
+
+        public IEnumerator RunStatusEffectExpiredScheme()
+        {
+            foreach (var key in _effects.Keys)
+            {
+                for (int i = 0; i < _effects[key].Count; i++)
+                {
+                    StatusRuntimeEffect statusEffect = _effects[key][i];
+
+                    if (statusEffect.IsExpired() )
                     {
                         //TODO - Remove status effect visually
+                        yield return statusEffect.OnStatusEffecExpire(_appliedEntity);
                         _effects[key].RemoveAt(i);
                         i--;
                         continue;
                     }
                 }
             }
-
-            return ret;
         }
 
         #endregion

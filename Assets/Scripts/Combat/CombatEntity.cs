@@ -90,8 +90,10 @@ namespace Vanaring_DepaDemo
             if (_baseEntityBrain == null)
                 throw new Exception("Base Entity Brain of " + gameObject.name + " hasn't been assgined");
 
-            yield return _runtimeCharacterStatsAccumulator.ResetTemporaryIncreasedValue(); 
-           
+            yield return _runtimeCharacterStatsAccumulator.ResetTemporaryIncreasedValue();
+
+            yield return _statusEffectHandler.RunStatusEffectExpiredScheme(); 
+
             yield return _baseEntityBrain.TurnLeave();
         }
 
@@ -210,7 +212,7 @@ namespace Vanaring_DepaDemo
 
 
         //Receive animation info and play it accordingly 
-        public IEnumerator Attack(List<CombatEntity> targets,EDamageScaling scaling , ActionAnimationInfo animationinfo)
+        public IEnumerator LogicAttack(List<CombatEntity> targets,EDamageScaling scaling)
         {
             //Prepare for status effect  
             yield return _statusEffectHandler.ExecuteAttackStatusRuntimeEffectCoroutine();
@@ -222,28 +224,11 @@ namespace Vanaring_DepaDemo
                     target.LogicHurt(this,inputDmg);
             }
 
-            List<IEnumerator> coroutines = new List<IEnumerator>() ;
 
-            //2 Visual 
-
-            //2.1.) creating vfx for coroutine for targets
-            foreach (CombatEntity target in targets)
-            {
-                CombatEntity entity = target;
-                coroutines.Add(entity.CombatEntityAnimationHandler.PlayVFXActionAnimation(animationinfo.TargetVfxEntity, (param) => entity.VisualHurt(this,param), animationinfo.TargetTrigerID));
-                coroutines.Add(_statusEffectHandler.ExecuteAfterAttackStatusRuntimeEffectCoroutine(target));
-            }
-
-            //2.2.) create action animation coroutine for self
-            coroutines.Add(_combatEntityAnimationHandler.PlayActionAnimation(animationinfo));
-
-            //2.3.) running animation scheme
-            yield return new WaitAll(this,coroutines.ToArray() );
-
+            //2.) the VisualAttack should be called somewhere else or the hp bar wouldn't be updated
             
-
-
         }
+  
 
         public void SubOnDamageVisualEvent(UnityAction<int> argc)
         {

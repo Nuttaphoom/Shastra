@@ -1,3 +1,4 @@
+using CustomYieldInstructions;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -52,14 +53,32 @@ namespace Vanaring_DepaDemo
             foreach (CombatEntity entity in _targets)
             {
                 List<StatusRuntimeEffect> havoc = entity.GetStatusEffectHandler().GetStatusRuntimeEffectWithEvokeKey(EEvokeKey.HAVOC, true);
-                  
-                entity.SpellCaster.ModifyEnergy(_energyModifierData.Side, _energyModifierData.Amount * havoc.Count); 
+
+                entity.SpellCaster.ModifyEnergy(_energyModifierData.Side, _energyModifierData.Amount * havoc.Count);
+
             }
-            yield return caster.Attack(_targets, EDamageScaling.High, _actionAnimationInfo);
+
+            yield return caster.LogicAttack(_targets, EDamageScaling.High) ;
+
+            //2 Visual 
+            List<IEnumerator> coroutines = new List<IEnumerator>();
+
+            //2.1.) creating vfx for coroutine for targets
+            foreach (CombatEntity target in _targets)
+            {
+                CombatEntity entity = target;
+                coroutines.Add(entity.CombatEntityAnimationHandler.PlayVFXActionAnimation<string>(_actionAnimationInfo.TargetVfxEntity, (string s) => entity.VisualHurt(caster, s), _actionAnimationInfo.TargetTrigerID));
+                coroutines.Add(entity.GetStatusEffectHandler().ExecuteAfterAttackStatusRuntimeEffectCoroutine(target));
+            }
+
+            //2.2.) create action animation coroutine for self
+            coroutines.Add(caster.CombatEntityAnimationHandler.PlayActionAnimation(_actionAnimationInfo));
+
+            //2.3.) running animation scheme
+            yield return new WaitAll(caster, coroutines.ToArray());
 
 
-
-            yield return null;
+ 
         }
     }
 }

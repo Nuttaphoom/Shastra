@@ -137,9 +137,9 @@ namespace Vanaring_DepaDemo
             return (_evokeKey == evokeKey) ;
         }
 
-        public virtual void OnStatusEffecExpire()
+        public virtual IEnumerator OnStatusEffecExpire(CombatEntity caster) 
         {
-
+            yield return null; 
         }
 
         #region GETTER

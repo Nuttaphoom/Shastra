@@ -62,6 +62,7 @@ namespace Vanaring_DepaDemo
             _combatEntity.SubOnDamageVisualEventEnd(OnVisualHurtUpdateEnd); 
             OnTargetSelectionSchemeStart.SubEvent(OnTargetSelectionStart_DisableUI) ;
             OnTargetSelectionSchemeEnd.SubEvent(OnTargetSelectionEnd_EnableUI);
+            _combatEntity.SpellCaster.SubOnModifyEnergy(OnEnergyUpdate);
         }
 
         private void OnDisable()
@@ -140,6 +141,13 @@ namespace Vanaring_DepaDemo
         {
             if (_mainCanvas.activeSelf)
                 _mainCanvas.gameObject.SetActive(false);
+        }
+
+        private void OnEnergyUpdate(RuntimeMangicalEnergy.EnergySide side, int amount)
+        {
+
+            OnUpdateEntityStats();
+
         }
 
         #endregion

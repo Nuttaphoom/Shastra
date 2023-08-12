@@ -71,7 +71,7 @@ namespace Vanaring_DepaDemo
             if (actionAnimation.CasterVfxEntity.IsValid() )
             {
                 VFXCallbackHandler<string> callbackHandler = new VFXCallbackHandler<string>(GetComponent<CombatEntity>(), actionAnimation.CasterVfxEntity, GetVFXSpawnPos(), null);
-                coroutines.Add(callbackHandler.PlayVFX(null));
+                coroutines.Add(callbackHandler.PlayVFX(actionAnimation.TargetTrigerID)) ;
             }
 
             //Play Animation 
@@ -82,11 +82,11 @@ namespace Vanaring_DepaDemo
 
         }
 
-        public IEnumerator PlayVFXActionAnimation<T>(VFXEntity vfxEntity, VFXCallbackHandler<T>.VFXCallback argc, T param  )
+        public IEnumerator PlayVFXActionAnimation<T>(VFXEntity vfxEntity,  VFXCallbackHandler<T>.VFXCallback  argc  , T pam)
         {
             Debug.Log("play vfx action animation");
             VFXCallbackHandler<T> callbackHandler = new VFXCallbackHandler<T>(GetComponent<CombatEntity>(), vfxEntity , GetVFXSpawnPos(),  argc  );
-            yield return (callbackHandler.PlayVFX(param));
+            yield return (callbackHandler.PlayVFX(pam));
 
             Debug.Log("finish play vfx action animation");
 

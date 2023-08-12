@@ -52,7 +52,12 @@ namespace Vanaring_DepaDemo
             yield return null;
         }
 
-        
+        public override IEnumerator OnStatusEffecExpire(CombatEntity caster)
+        {
+            yield return caster.CombatEntityAnimationHandler.PlayTriggerAnimation("StuntRelieve");
+        }
+
+
     } 
 
 

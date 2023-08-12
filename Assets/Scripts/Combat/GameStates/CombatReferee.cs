@@ -186,11 +186,21 @@ namespace Vanaring_DepaDemo
             {
                 while (!_activeEntities[_currentEntityIndex].ReadyForControl())
                 {
-                    _activeEntities.RemoveAt(_currentEntityIndex);
-                    _currentEntityIndex = 0;
-                    if (_activeEntities.Count <= 0)
+                    Debug.Log(_activeEntities[_currentEntityIndex] + " can't control now");
+
+                    yield return SwitchControl(_currentEntityIndex, _currentEntityIndex);
+
+
+                    if (_activeEntities.Count <= 1)
                         goto End;
+
+
+                    _currentEntityIndex = 0;
+                    _activeEntities.RemoveAt(_currentEntityIndex);
+                    yield return SwitchControl(-1, _currentEntityIndex);
+
                 }
+
                 _state = CombatState.WaitingForAction;
                 CombatEntity _entity = _activeEntities[_currentEntityIndex];
 
