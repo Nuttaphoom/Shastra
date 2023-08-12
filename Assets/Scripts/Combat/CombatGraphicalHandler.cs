@@ -86,6 +86,7 @@ namespace Vanaring_DepaDemo
             _spellPanel.gameObject.SetActive(true) ;
             _itemPanel.gameObject.SetActive(false);
 
+
         }
 
         private void DisplayWeaponPanel()
@@ -98,6 +99,8 @@ namespace Vanaring_DepaDemo
             _spellPanel.gameObject.SetActive(false);
             _itemPanel.gameObject.SetActive(false);
             _mainPanel.gameObject.SetActive(false);
+
+
         }
 
         public void DisableGraphicalElements()
@@ -145,9 +148,7 @@ namespace Vanaring_DepaDemo
 
         private void OnEnergyUpdate(RuntimeMangicalEnergy.EnergySide side, int amount)
         {
-
             OnUpdateEntityStats();
-
         }
 
         #endregion

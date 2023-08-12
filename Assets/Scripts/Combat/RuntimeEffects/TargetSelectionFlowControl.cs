@@ -153,7 +153,7 @@ public class TargetSelectionFlowControl : MonoBehaviour, IInputReceiver
         _targetSelectionGUI.EndSelectionScheme(); 
         OnTargetSelectionSchemeEnd.PlayEvent(caster);
 
-        CentralInputReceiver.Instance().RemoveInputReceiverIntoStack() ;
+        CentralInputReceiver.Instance().RemoveInputReceiverIntoStack(this) ;
 
         yield return null;
     }

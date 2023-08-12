@@ -323,8 +323,6 @@ namespace Vanaring_DepaDemo
             if (prev != -1)
                 yield return _activeEntities[prev].LeaveControl();
 
-
-
             if (prev != next)
             {
                 for (int i = 0; i < GetCompetatorsBySide(ECompetatorSide.Ally).Count; i++)

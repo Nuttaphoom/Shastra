@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Vanaring_DepaDemo
 {
-    public class SpellWindowManager : MonoBehaviour
+    public class SpellWindowManager : MonoBehaviour, IInputReceiver 
     {
         [SerializeField]
         private CombatEntity _combatEntity;  
@@ -18,6 +18,8 @@ namespace Vanaring_DepaDemo
         [SerializeField]
         private Transform[] _spellSocketGUITransformPos;
 
+        private CombatGraphicalHandler _graphicalHandler; 
+
         private int startIndex = 0;
         private int endIndex = 2;
 
@@ -26,21 +28,18 @@ namespace Vanaring_DepaDemo
         {
 
             LoadSpellSocketGUI(startIndex, endIndex);
-            //int i = 0;
-            //foreach (SpellAbilitySO spellAbility in _combatEntity.SpellCaster.SpellAbilities)
-            //{
-            //    if(i < 3)
-            //    {
-            //        SpellSocketGUI newSocket = Instantiate(_templatePrefab, _spellParent.transform);
-            //        newSocket.transform.position = _spellSocketGUITransformPos[i].transform.position ;
-            //        newSocket.transform.localScale = _templatePrefab.transform.localScale;
-            //        newSocket.Init(spellAbility, _combatEntity);
-            //        i++;
-            //    }
-                
-            //}
-            
+            _graphicalHandler = _combatEntity.GetComponent<CombatGraphicalHandler>();
             _templatePrefab.gameObject.SetActive(false);  
+        }
+
+        private void OnEnable()
+        {
+            TakeInputControl();
+        }
+
+        private void OnDisable()
+        {
+            ReleaseInputControl(); 
         }
 
         private void LoadSpellSocketGUI(int start, int end)
@@ -98,14 +97,14 @@ namespace Vanaring_DepaDemo
         // Update is called once per frame
         void Update()
         {
-            if (Input.GetKeyDown(KeyCode.Alpha1))
-            {
-                LoadUpperSocketItem();
-            }
-            if (Input.GetKeyDown(KeyCode.Alpha2))
-            {
-                LoadLowerSocketItem();
-            }
+            //if (Input.GetKeyDown(KeyCode.Alpha1))
+            //{
+            //    LoadUpperSocketItem();
+            //}
+            //if (Input.GetKeyDown(KeyCode.Alpha2))
+            //{
+            //    LoadLowerSocketItem();
+            //}
             if (Input.GetKeyDown(KeyCode.Alpha3))
             {
                 ClearSpellSocketGUI();
@@ -115,6 +114,37 @@ namespace Vanaring_DepaDemo
                 LoadSpellSocketGUI(startIndex, endIndex);
             }
 
+        }
+
+        public void TakeInputControl()
+        {
+            Debug.Log("take control");
+
+            CentralInputReceiver.Instance().AddInputReceiverIntoStack(this);
+        }
+
+        public void ReleaseInputControl()
+        {
+            Debug.Log("disable control");
+
+            CentralInputReceiver.Instance().RemoveInputReceiverIntoStack(this);
+        }
+
+        public void ReceiveKeys(KeyCode key)
+        {
+            if (key == KeyCode.W)
+            {
+                LoadUpperSocketItem() ;
+            }
+            else if (key == KeyCode.S)
+            {
+                LoadLowerSocketItem() ;
+            }else if (key == KeyCode.Escape)
+            {
+                _graphicalHandler.EnableGraphicalElements(); 
+
+
+            }
         }
     }
 }
