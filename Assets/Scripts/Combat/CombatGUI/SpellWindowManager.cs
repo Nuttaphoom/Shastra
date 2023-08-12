@@ -24,23 +24,17 @@ namespace Vanaring_DepaDemo
         // Start is called before the first frame update
         void Awake()
         {
-
-            LoadSpellSocketGUI(startIndex, endIndex);
-            //int i = 0;
-            //foreach (SpellAbilitySO spellAbility in _combatEntity.SpellCaster.SpellAbilities)
-            //{
-            //    if(i < 3)
-            //    {
-            //        SpellSocketGUI newSocket = Instantiate(_templatePrefab, _spellParent.transform);
-            //        newSocket.transform.position = _spellSocketGUITransformPos[i].transform.position ;
-            //        newSocket.transform.localScale = _templatePrefab.transform.localScale;
-            //        newSocket.Init(spellAbility, _combatEntity);
-            //        i++;
-            //    }
-                
-            //}
             
-            _templatePrefab.gameObject.SetActive(false);  
+        }
+
+        private void Start()
+        {
+            
+        }
+
+        private void OnEnable()
+        {
+            StartCoroutine(StartAfterAnim());
         }
 
         private void LoadSpellSocketGUI(int start, int end)
@@ -115,6 +109,14 @@ namespace Vanaring_DepaDemo
                 LoadSpellSocketGUI(startIndex, endIndex);
             }
 
+        }
+
+        private IEnumerator StartAfterAnim()
+        {
+            ClearSpellSocketGUI();
+            yield return new WaitForSeconds(0.66f);
+            LoadSpellSocketGUI(startIndex, endIndex);
+            _templatePrefab.gameObject.SetActive(false);
         }
     }
 }
