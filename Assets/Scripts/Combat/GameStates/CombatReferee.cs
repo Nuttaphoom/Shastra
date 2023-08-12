@@ -155,6 +155,7 @@ namespace Vanaring_DepaDemo
             }
 
             List<int> temp = new List<int>();
+
             //Remove control for character that is not ready 
             for (int i = 0; i < _activeEntities.Count; i++)
             {
@@ -163,10 +164,8 @@ namespace Vanaring_DepaDemo
                     Debug.Log(_activeEntities[i].name + "is not ready for control");
                     temp.Add(i);
                     // _activeEntities.RemoveAt(i);
-
                 }
             }
-
             for (int i = temp.Count - 1; i >= 0; i--)
             {
                 _activeEntities.RemoveAt(temp[i]);
@@ -177,7 +176,6 @@ namespace Vanaring_DepaDemo
                 _currentEntityIndex = 0;
                 yield return SwitchControl(-1, _currentEntityIndex);
             }
-
 
             foreach (var v in _activeEntities)
             {

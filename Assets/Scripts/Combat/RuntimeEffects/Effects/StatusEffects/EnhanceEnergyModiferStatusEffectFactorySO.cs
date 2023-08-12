@@ -45,11 +45,11 @@ namespace Vanaring_DepaDemo
 
         //_cgs can be null =, be careful not assuming he got _cgs 
 
-        public override IEnumerator AfterHurtEffect(CombatEntity attacker, CombatEntity subject)
+        public override IEnumerator AfterAttackEffect(CombatEntity attacker, CombatEntity subject)
         {
             subject.SpellCaster.ModifyEnergy(_data.Side, _data.Amount);
             _timeToLive = 0;
-            yield return null;
+            yield return new WaitForSeconds(0.5f) ;
         }
 
         public override IEnumerator ExecuteRuntimeCoroutine(CombatEntity caster)

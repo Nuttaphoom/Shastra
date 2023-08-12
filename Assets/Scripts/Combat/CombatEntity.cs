@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Drawing.Printing;
 using System.Runtime.InteropServices;
 using Unity.VisualScripting;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.Events;
 using static Cinemachine.CinemachineTargetGroup;
@@ -76,6 +77,12 @@ namespace Vanaring_DepaDemo
             yield return (_statusEffectHandler.ExecuteStatusRuntimeEffectCoroutine()) ;
 
             yield return _baseEntityBrain.TurnEnter(); 
+
+            //If the entity is clear for control, make it idle 
+            if (ReadyForControl())
+            {
+                _combatEntityAnimationHandler.PlayTriggerAnimation("Idle"); 
+            } 
         }
 
         public  IEnumerator TurnLeave()
@@ -183,8 +190,6 @@ namespace Vanaring_DepaDemo
                 }    
             }
 
-            _coroutine.Add(_statusEffectHandler.ExecuteHurtStatusRuntimeEffectCoroutine(attacker, this));
-
             _OnUpdateVisualDMG?.Invoke(0);
 
             yield return new WaitAll(this, _coroutine.ToArray() );
@@ -226,15 +231,16 @@ namespace Vanaring_DepaDemo
             {
                 CombatEntity entity = target;
                 coroutines.Add(entity.CombatEntityAnimationHandler.PlayVFXActionAnimation(animationinfo.TargetVfxEntity, (param) => entity.VisualHurt(this,param), animationinfo.TargetTrigerID));
-
+                coroutines.Add(_statusEffectHandler.ExecuteAfterAttackStatusRuntimeEffectCoroutine(target));
             }
 
             //2.2.) create action animation coroutine for self
             coroutines.Add(_combatEntityAnimationHandler.PlayActionAnimation(animationinfo));
 
-            
             //2.3.) running animation scheme
             yield return new WaitAll(this,coroutines.ToArray() );
+
+            
 
 
         }

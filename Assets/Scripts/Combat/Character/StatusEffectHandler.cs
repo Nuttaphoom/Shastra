@@ -161,7 +161,7 @@ namespace Vanaring_DepaDemo
         /// <param name="attacker"></param>
         /// <param name="subject"></param>
         /// <returns></returns>
-        public IEnumerator ExecuteHurtStatusRuntimeEffectCoroutine(CombatEntity attacker, CombatEntity subject)
+        public IEnumerator ExecuteAfterAttackStatusRuntimeEffectCoroutine(CombatEntity subject)
         {
             foreach (var key in _effects.Keys)
             {
@@ -169,7 +169,7 @@ namespace Vanaring_DepaDemo
                 {
                     StatusRuntimeEffect statusEffect = _effects[key][i];
 
-                    yield return statusEffect.AfterHurtEffect(attacker,subject);
+                    yield return statusEffect.AfterAttackEffect(_appliedEntity,subject);
 
                     if (statusEffect.IsExpired())
                     {
