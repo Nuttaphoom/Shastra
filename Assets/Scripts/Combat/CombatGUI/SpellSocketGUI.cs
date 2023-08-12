@@ -26,10 +26,24 @@ namespace Vanaring_DepaDemo
         private Button _actionButton ;
 
         [SerializeField]
-        private TextMeshProUGUI _textMeshProUGUI ;
+        private TextMeshProUGUI _textMeshProUGUI;
 
         [SerializeField]
-        private Image _skillImage;  
+        private Image _skillImage;
+
+        [SerializeField]
+        private TextMeshProUGUI _descriptionText;
+
+        [SerializeField]
+        private Image _spellEnergyCostType;
+
+        [SerializeField]
+        private TextMeshProUGUI _spellCost;
+
+        [SerializeField]
+        private Sprite _lightImage;
+        [SerializeField]
+        private Sprite _darkImage;
 
         private SpellAbilitySO _spellSO;
 
@@ -41,7 +55,18 @@ namespace Vanaring_DepaDemo
             this._caster = combatEntity;
             _actionButton.onClick.AddListener(ChooseSpell ) ;
 
-            _textMeshProUGUI.text = spell.AbilityName.ToString() ; 
+            _textMeshProUGUI.text = spell.AbilityName.ToString() ;
+            _descriptionText.text = spell.Desscription.ToString();
+            _spellCost.text = spell.RequiredEnergy.Amount.ToString();
+            if(spell.RequiredEnergy.Side == RuntimeMangicalEnergy.EnergySide.LightEnergy)
+            {
+                _spellEnergyCostType.sprite = _lightImage;
+            }
+            else
+            {
+                _spellEnergyCostType.sprite = _darkImage;
+            }
+            
         }
 
         private void ChooseSpell()
