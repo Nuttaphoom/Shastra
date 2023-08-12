@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CustomYieldInstructions;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
@@ -57,8 +58,26 @@ namespace Vanaring_DepaDemo
             if (caster == null)
                 throw new Exception("Caster can not be null");
 
-            yield return caster.Attack(_targets, _damagScaling, _actionAnimation ) ; 
-            
+
+            yield return caster.LogicAttack(_targets, _damagScaling ) ;
+
+            //2 Visual 
+            List<IEnumerator> coroutines = new List<IEnumerator>();
+
+            //2.1.) creating vfx for coroutine for targets
+            foreach (CombatEntity target in _targets)
+            {
+                CombatEntity entity = target;
+                coroutines.Add(entity.CombatEntityAnimationHandler.PlayVFXActionAnimation<string>(_actionAnimation.TargetVfxEntity, (string s) => entity.VisualHurt(caster, s), _actionAnimation.TargetTrigerID));
+                coroutines.Add(entity.GetStatusEffectHandler().ExecuteAfterAttackStatusRuntimeEffectCoroutine(target));
+            }
+
+            //2.2.) create action animation coroutine for self
+            coroutines.Add(caster.CombatEntityAnimationHandler.PlayActionAnimation(_actionAnimation));
+
+            //2.3.) running animation scheme
+            yield return new WaitAll(caster, coroutines.ToArray());
+
         }
 
          

@@ -13,13 +13,9 @@ namespace Vanaring_DepaDemo
         private StatusSocketGUI _templatePrefab;
 
         [SerializeField]
-        private Transform _socketIconLayout;
-
-        [SerializeField]
-        private Transform _socketWindowLayout;
+        private Transform[] _setOfStatusUIPosition;
 
         //magic number :D
-        Vector3 statusOffset = new Vector3 (0.03f,-0.06f,0.0f);
         List<StatusRuntimeEffect> currentStatusEffects;
 
         public void Awake()
@@ -28,16 +24,21 @@ namespace Vanaring_DepaDemo
             currentStatusEffects = new List<StatusRuntimeEffect>();
         }
 
-        public void InstantiateStatusUI(StatusRuntimeEffect statusEffect)
+        public void InstantiateStatusUI(StatusRuntimeEffect statusEffect, int stackcount)
         {
             StatusSocketGUI newSocket = Instantiate(_templatePrefab, _templatePrefab.transform.position, _templatePrefab.transform.rotation);
-            newSocket.transform.parent = _socketIconLayout.transform;
-            newSocket.gameObject.transform.position += statusOffset * currentStatusEffects.Count;
+            int count = currentStatusEffects.Count;
+            if (count >= _setOfStatusUIPosition.Length)
+            {
+                count = 0;
+            }
+            newSocket.transform.parent = _setOfStatusUIPosition[count].transform;
             newSocket.transform.localScale = _templatePrefab.transform.localScale;
 
             currentStatusEffects.Add(statusEffect);
 
             newSocket.Init(statusEffect, _combatEntity);
+            newSocket.ChangeBuffStack(statusEffect, stackcount);
             newSocket.gameObject.SetActive(true);
         }
     }

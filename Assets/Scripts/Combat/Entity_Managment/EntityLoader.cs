@@ -25,7 +25,9 @@ public class EntityLoader : MonoBehaviour
             Transform t = _spawnPosition[index];
             CombatEntity newEntity = GameObject.Instantiate(entity) ;
             newEntity.transform.position = t.position;
-            newEntity.transform.forward = t.forward ; 
+            newEntity.transform.forward = t.forward ;
+
+            newEntity.name = newEntity.name + index; 
 
             ret.Add(newEntity);
             

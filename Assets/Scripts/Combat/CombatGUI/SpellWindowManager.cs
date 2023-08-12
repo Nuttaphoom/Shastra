@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Vanaring_DepaDemo
 {
-    public class SpellWindowManager : MonoBehaviour
+    public class SpellWindowManager : MonoBehaviour, IInputReceiver 
     {
         [SerializeField]
         private CombatEntity _combatEntity;  
@@ -18,23 +18,28 @@ namespace Vanaring_DepaDemo
         [SerializeField]
         private Transform[] _spellSocketGUITransformPos;
 
+        private CombatGraphicalHandler _graphicalHandler; 
+
         private int startIndex = 0;
         private int endIndex = 2;
 
         // Start is called before the first frame update
         void Awake()
         {
-            
-        }
 
-        private void Start()
-        {
-            
+            LoadSpellSocketGUI(startIndex, endIndex);
+            _graphicalHandler = _combatEntity.GetComponent<CombatGraphicalHandler>();
+            _templatePrefab.gameObject.SetActive(false);  
         }
 
         private void OnEnable()
         {
-            StartCoroutine(StartAfterAnim());
+            TakeInputControl();
+        }
+
+        private void OnDisable()
+        {
+            ReleaseInputControl(); 
         }
 
         private void LoadSpellSocketGUI(int start, int end)
@@ -92,14 +97,14 @@ namespace Vanaring_DepaDemo
         // Update is called once per frame
         void Update()
         {
-            if (Input.GetKeyDown(KeyCode.Alpha1))
-            {
-                LoadUpperSocketItem();
-            }
-            if (Input.GetKeyDown(KeyCode.Alpha2))
-            {
-                LoadLowerSocketItem();
-            }
+            //if (Input.GetKeyDown(KeyCode.Alpha1))
+            //{
+            //    LoadUpperSocketItem();
+            //}
+            //if (Input.GetKeyDown(KeyCode.Alpha2))
+            //{
+            //    LoadLowerSocketItem();
+            //}
             if (Input.GetKeyDown(KeyCode.Alpha3))
             {
                 ClearSpellSocketGUI();
@@ -111,12 +116,35 @@ namespace Vanaring_DepaDemo
 
         }
 
-        private IEnumerator StartAfterAnim()
+        public void TakeInputControl()
         {
-            ClearSpellSocketGUI();
-            yield return new WaitForSeconds(0.66f);
-            LoadSpellSocketGUI(startIndex, endIndex);
-            _templatePrefab.gameObject.SetActive(false);
+            Debug.Log("take control");
+
+            CentralInputReceiver.Instance().AddInputReceiverIntoStack(this);
+        }
+
+        public void ReleaseInputControl()
+        {
+            Debug.Log("disable control");
+
+            CentralInputReceiver.Instance().RemoveInputReceiverIntoStack(this);
+        }
+
+        public void ReceiveKeys(KeyCode key)
+        {
+            if (key == KeyCode.W)
+            {
+                LoadUpperSocketItem() ;
+            }
+            else if (key == KeyCode.S)
+            {
+                LoadLowerSocketItem() ;
+            }else if (key == KeyCode.Escape)
+            {
+                _graphicalHandler.EnableGraphicalElements(); 
+
+
+            }
         }
     }
 }

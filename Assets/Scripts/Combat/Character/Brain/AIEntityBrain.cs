@@ -22,7 +22,7 @@ namespace Vanaring_DepaDemo
         }
         public override IEnumerator GetAction()
         {
-            yield return new WaitForSeconds(1.5f); 
+            Debug.Log("AI entity get action");
             foreach (RuntimeEffectFactorySO eff in _botBehaviorHandler.GetBehaviorEffect())
             {
                 yield return TargetSelectionFlowControl.Instance.InitializeTargetSelectionScheme(_combateEntity, eff, true) ;
@@ -39,9 +39,12 @@ namespace Vanaring_DepaDemo
                     if (coroutine.Current != null && coroutine.Current.GetType().IsSubclassOf(typeof(RuntimeEffect)))
                     {
                         yield return  coroutine.Current as RuntimeEffect;
+                        Debug.Log("AI return get action");
+
                     }
                 }
             }
+
         }
 
 
@@ -53,7 +56,6 @@ namespace Vanaring_DepaDemo
 
         public override IEnumerator TurnLeave()
         {
-            _botBehaviorHandler.StartTelegraphy();
             yield return null; 
         }
 
@@ -69,10 +71,9 @@ namespace Vanaring_DepaDemo
 
         public override IEnumerator TakeControlSoftLeave()
         {
-            Debug.Log("calcualte next behavior for " + gameObject.name);
             //calculate next behavior 
             yield return _botBehaviorHandler.CalculateNextBehavior();
-            yield return null; 
+         
             
         }
     }

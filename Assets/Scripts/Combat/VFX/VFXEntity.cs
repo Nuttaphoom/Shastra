@@ -89,9 +89,7 @@ public class VFXCallbackHandler<T>
 
         if (_action != null)
             coroutines.Add(_action(arugment));
-            //yield return _action(arugment);
-
-
+            
         coroutines.Add(WaitAndDestroy(_vfxEntity.DestroyDelay));
 
         yield return new WaitAll( _target  , coroutines.ToArray() );

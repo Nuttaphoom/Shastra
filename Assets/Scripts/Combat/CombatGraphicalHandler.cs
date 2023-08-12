@@ -48,7 +48,8 @@ namespace Vanaring_DepaDemo
             if (_mainCanvas == null)
                 throw new Exception("Main Canvas hasn't been assigned"); 
 
-            _combatEntity = GetComponent<CombatEntity>(); 
+            _combatEntity = GetComponent<CombatEntity>();
+
 
             _itemButton.onClick.AddListener(() => { DisplayItemPanel(); });
             _spellButton.onClick.AddListener(() => { DisplaySpellPanel(); });
@@ -57,14 +58,20 @@ namespace Vanaring_DepaDemo
 
         private void OnEnable()
         {
+            _combatEntity.SubOnDamageVisualEvent(OnVisualHurtUpdate);
+            _combatEntity.SubOnDamageVisualEventEnd(OnVisualHurtUpdateEnd); 
             OnTargetSelectionSchemeStart.SubEvent(OnTargetSelectionStart_DisableUI) ;
             OnTargetSelectionSchemeEnd.SubEvent(OnTargetSelectionEnd_EnableUI);
+            _combatEntity.SpellCaster.SubOnModifyEnergy(OnEnergyUpdate);
         }
 
         private void OnDisable()
         {
             OnTargetSelectionSchemeStart.UnSubEvent(OnTargetSelectionStart_DisableUI);
-            OnTargetSelectionSchemeEnd.UnSubEvent(OnTargetSelectionEnd_EnableUI);
+            OnTargetSelectionSchemeEnd.UnSubEvent(OnTargetSelectionEnd_EnableUI); 
+            _combatEntity.UnSubOnDamageVisualEvent(OnVisualHurtUpdate);
+            _combatEntity.UnSubOnDamageVisualEventEnd(OnVisualHurtUpdateEnd);
+
         }
 
         private void DisplayItemPanel()
@@ -79,6 +86,7 @@ namespace Vanaring_DepaDemo
             _spellPanel.gameObject.SetActive(true) ;
             _itemPanel.gameObject.SetActive(false);
 
+
         }
 
         private void DisplayWeaponPanel()
@@ -91,6 +99,8 @@ namespace Vanaring_DepaDemo
             _spellPanel.gameObject.SetActive(false);
             _itemPanel.gameObject.SetActive(false);
             _mainPanel.gameObject.SetActive(false);
+
+
         }
 
         public void DisableGraphicalElements()
@@ -125,7 +135,30 @@ namespace Vanaring_DepaDemo
             } 
         }
 
+        private void OnVisualHurtUpdate(int i )
+        {
+            OnUpdateEntityStats(); 
+        }
+
+        private void OnVisualHurtUpdateEnd(int i)
+        {
+            if (_mainCanvas.activeSelf)
+                _mainCanvas.gameObject.SetActive(false);
+        }
+
+        private void OnEnergyUpdate(RuntimeMangicalEnergy.EnergySide side, int amount)
+        {
+            OnUpdateEntityStats();
+        }
+
         #endregion
+
+        private void OnUpdateEntityStats()
+        {
+            if(!_mainCanvas.activeSelf)
+                _mainCanvas.gameObject.SetActive(true);
+        }
+
 
 
     }

@@ -46,6 +46,7 @@ namespace Vanaring_DepaDemo
         private void TransmitInput(string str)
         {
             if (_receiverStack.Count > 0) {
+                Debug.Log("send input to " + _receiverStack.Peek()); 
                 _receiverStack.Peek().ReceiveKeys(GetKeyCode(str));
             } 
         }
@@ -78,16 +79,36 @@ namespace Vanaring_DepaDemo
 
         public void AddInputReceiverIntoStack(IInputReceiver receiver)
         {
-            Debug.Log("add " + receiver); 
             if (! _receiverStack.Contains(receiver))
             {
                 _receiverStack.Push(receiver); 
             }
         }
 
-        public void RemoveInputReceiverIntoStack()
+        public void RemoveInputReceiverIntoStack(IInputReceiver receiver)
         {
-            _receiverStack.Pop(); 
+            if (receiver != null)
+            {
+                Stack<IInputReceiver> tempStack = new Stack<IInputReceiver>();
+
+                while (_receiverStack.Count > 0)
+                {
+                    IInputReceiver element = _receiverStack.Pop();
+                    if (element != receiver)
+                    {
+                        tempStack.Push(element);
+                    }
+                }
+
+                while (tempStack.Count > 0)
+                {
+                    _receiverStack.Push(tempStack.Pop());
+                }
+            }
+            else if (_receiverStack.Count > 0)
+            {
+                _receiverStack.Pop();
+            }
         }
 
         public void ClearStack()

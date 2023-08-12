@@ -9,25 +9,28 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eefc16755f61fe44493f6053ec92e156, type: 3}
-  m_Name: StunSelfApplier
+  m_Script: {fileID: 11500000, guid: cb5bbf16513e76f4a9bce041988e4a8c, type: 3}
+  m_Name: StrayGhost_normalATK,ModifyDark
   m_EditorClassIdentifier: 
   _targetSelector:
     _maxTargetSize: 1
-    _targetSide: 0
+    _targetSide: 1
     _targetCaster: 0
-  _actionAnimationInfo:
+  _damagScaling: 1
+  realDmg: -1
+  _energyModifierData:
+    _side: 1
+    _amount: 20
+  _actionAnimation:
     _casterVFXEntity:
       _destroyAfterCallbackDelay: 0
       _spawnDelay: 0
       _callbackDelay: 0
       _VFXAnimationPrefabs: {fileID: 0}
     _targetVFXEntity:
-      _destroyAfterCallbackDelay: 0
-      _spawnDelay: 0
-      _callbackDelay: 0
-      _VFXAnimationPrefabs: {fileID: 5241134403359065108, guid: 23e2752f896a21c4c87784c2b2bf86b9, type: 3}
-    SelfTrigerID: 
-    TargetTrigerID: 
-  _effects:
-  - {fileID: 11400000, guid: 6a32581ec699a4d4f8960826850b1926, type: 2}
+      _destroyAfterCallbackDelay: 0.2
+      _spawnDelay: 1
+      _callbackDelay: 0.55
+      _VFXAnimationPrefabs: {fileID: 3662480906409611008, guid: a89376a6e8a91d84993f44d1cf8e4d92, type: 3}
+    SelfTrigerID: AttackOne
+    TargetTrigerID: Hurt

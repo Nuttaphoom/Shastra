@@ -49,6 +49,7 @@ MonoBehaviour:
   darkNumText: {fileID: 8716462608550035166}
   lightImage: {fileID: 5622961798734311391}
   hpImage: {fileID: 8127641876461949143}
+  gui: {fileID: 0}
 --- !u!1001 &1780330262620971669
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -93,6 +94,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -0.22
       objectReference: {fileID: 0}
+    - target: {fileID: 2733341415709263257, guid: 940865647d46c7642be8bee3d21669f5, type: 3}
+      propertyPath: _spellPanel
+      value: 
+      objectReference: {fileID: 2411822595721470719}
     - target: {fileID: 2863685632506951341, guid: 940865647d46c7642be8bee3d21669f5, type: 3}
       propertyPath: m_Name
       value: Attacker-Combat-Entity Variant
@@ -156,6 +161,10 @@ PrefabInstance:
     - target: {fileID: 3361023796537600007, guid: 940865647d46c7642be8bee3d21669f5, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3631082374516079458, guid: 940865647d46c7642be8bee3d21669f5, type: 3}
+      propertyPath: _statusEffectHandler._appliedEntity
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 4191863946011409453, guid: 940865647d46c7642be8bee3d21669f5, type: 3}
       propertyPath: m_AnchorMax.y
@@ -332,6 +341,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!224 &2411822595721470719 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 4165129470981406826, guid: 940865647d46c7642be8bee3d21669f5, type: 3}
+  m_PrefabInstance: {fileID: 1780330262620971669}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &3085303151428950519 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3631082374516079458, guid: 940865647d46c7642be8bee3d21669f5, type: 3}

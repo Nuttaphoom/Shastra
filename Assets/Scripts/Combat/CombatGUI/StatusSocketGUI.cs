@@ -23,6 +23,9 @@ namespace Vanaring_DepaDemo
         private TextMeshProUGUI _statusDurationUI;
 
         [SerializeField]
+        private TextMeshProUGUI _statusStackUI;
+
+        [SerializeField]
         private Image _statusImageIcon;
 
         [SerializeField]
@@ -40,6 +43,14 @@ namespace Vanaring_DepaDemo
             _statusName.text = temp.FieldName;
             _statusDescription.text = temp.FieldDescription;
             _statusImageIcon.sprite = temp.FieldImage;
+            if (!description.StackInfo.Stackable)
+            {
+                _statusStackUI.text = "";
+            }
+            else
+            {
+                _statusStackUI.text = "x" + 1;
+            }
             if (!description.IsInfiniteTTL)
             {
                 _statusDurationUI.text = description.TimeToLive.ToString();
@@ -51,6 +62,17 @@ namespace Vanaring_DepaDemo
 
             _statusRuntime = description;
             this._caster = combatEntity;
+        }
+        public void ChangeBuffStack(StatusRuntimeEffect status, int stackcount)
+        {
+            if (!status.StackInfo.Stackable)
+            {
+                _statusStackUI.text = "";
+            }
+            else
+            {
+                _statusStackUI.text = "x" + stackcount;
+            }
         }
         public void AddGameObjectWindow(GameObject window)
         {

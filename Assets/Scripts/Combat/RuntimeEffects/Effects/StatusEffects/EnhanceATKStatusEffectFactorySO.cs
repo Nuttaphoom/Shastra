@@ -51,7 +51,7 @@ namespace Vanaring_DepaDemo
             caster.StatsAccumulator.ModifyATKAmount(_realIncreasedAmount);
             caster.StatsAccumulator.ModifyATKAmountByPercent(_modifiedPercent);
 
-            _timeToLive = 0; 
+            _timeToLive = 0;
 
             yield return null;
         }

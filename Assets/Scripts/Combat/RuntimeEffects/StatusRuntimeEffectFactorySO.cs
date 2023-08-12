@@ -88,6 +88,8 @@ namespace Vanaring_DepaDemo
 
         protected DescriptionBaseField _statusEffectDescription;
 
+        protected StatusStackInfo _stackInfo;
+
         public StatusRuntimeEffect(StatusRuntimeEffectFactorySO effectFactory)
         {
             this._evokeKey = effectFactory.EvokeKey ; 
@@ -95,6 +97,7 @@ namespace Vanaring_DepaDemo
             this._timeToLive = effectFactory.TTL ;
             this._statusEffectDescription = new DescriptionBaseField(effectFactory.StatusName,
                 effectFactory.StatusDescription, effectFactory.StatusImage);
+            this._stackInfo = effectFactory.StackInfo;
         }
 
         /// <summary>
@@ -113,7 +116,7 @@ namespace Vanaring_DepaDemo
         /// </summary>
         /// <param name="caster"></param>
         /// <returns></returns>
-        public virtual IEnumerator AfterHurtEffect(CombatEntity attacker, CombatEntity subject)
+        public virtual IEnumerator AfterAttackEffect(CombatEntity attacker, CombatEntity subject)
         {
             yield return null;
         }
@@ -134,9 +137,15 @@ namespace Vanaring_DepaDemo
             return (_evokeKey == evokeKey) ;
         }
 
+        public virtual IEnumerator OnStatusEffecExpire(CombatEntity caster) 
+        {
+            yield return null; 
+        }
+
         #region GETTER
         public bool IsInfiniteTTL => _infiniteTTL;
         public int TimeToLive => _timeToLive;
+        public StatusStackInfo StackInfo => _stackInfo;
         public DescriptionBaseField GetStatusEffectDescription()
         {
             return _statusEffectDescription;

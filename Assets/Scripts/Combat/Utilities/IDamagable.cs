@@ -19,7 +19,7 @@ namespace Vanaring_DepaDemo
 
     public interface IAttackter
     {
-        public IEnumerator Attack(List<CombatEntity> targets, EDamageScaling multiplier, ActionAnimationInfo animationinfo);
+        public IEnumerator LogicAttack(List<CombatEntity> targets, EDamageScaling multiplier);
 
     }
     public interface IDamagable
@@ -28,10 +28,10 @@ namespace Vanaring_DepaDemo
         public IEnumerator VisualHurt(CombatEntity attacker,string animationTrigger = "Hurt");
 
 
-        public void SubOnDamageVisualEvent(UnityAction<int> argc) ;
-
-
+        public void SubOnDamageVisualEvent(UnityAction<int> argc);
         public void UnSubOnDamageVisualEvent(UnityAction<int> argc);
 
+        public void SubOnDamageVisualEventEnd(UnityAction<int> argc);
+        public void UnSubOnDamageVisualEventEnd(UnityAction<int> argc);
     }
 }
