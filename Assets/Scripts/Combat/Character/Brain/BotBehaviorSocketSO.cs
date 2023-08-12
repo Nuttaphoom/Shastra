@@ -15,6 +15,8 @@ namespace Vanaring_DepaDemo {
         [SerializeField]
         private List<BotBehaviorSO> _botBehaviorSO;
 
+
+
         public IEnumerator GetBehaviorEffect(int index)
         {
             IEnumerator coroutine =  _botBehaviorSO[index].GetBehaviorEffect();
@@ -30,6 +32,7 @@ namespace Vanaring_DepaDemo {
 
         #region GETTER
         public int GetBehaviorSize => _botBehaviorSO.Count;
+        public EnergyModifierData GetTargetModiferData(int index) => _botBehaviorSO[index].TargetModiferData ;  
         #endregion
     }
 }

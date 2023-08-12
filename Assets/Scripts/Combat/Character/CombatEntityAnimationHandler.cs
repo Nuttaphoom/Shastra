@@ -103,7 +103,7 @@ namespace Vanaring_DepaDemo
             yield return new WaitForSeconds(0.7f);
 
             if (_deadAnimationTrigger == "NONE")
-                Destroy(_mesh.gameObject);
+                transform.Translate(new Vector2(10000000, 1000000));
             else
                 PlayTriggerAnimation(_deadAnimationTrigger);
         }

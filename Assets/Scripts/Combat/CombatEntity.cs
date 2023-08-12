@@ -185,11 +185,12 @@ namespace Vanaring_DepaDemo
             
             if (animationTrigger != "No Animation")
             {
-                _coroutine.Add(_combatEntityAnimationHandler.PlayTriggerAnimation(animationTrigger)) ;
                 if (IsDead)
                 {
                     _coroutine.Add(_combatEntityAnimationHandler.DestroyVisualMesh());
-                }    
+                } 
+                _coroutine.Add(_combatEntityAnimationHandler.PlayTriggerAnimation(animationTrigger));
+                 
             }
 
             _OnUpdateVisualDMG?.Invoke(0);

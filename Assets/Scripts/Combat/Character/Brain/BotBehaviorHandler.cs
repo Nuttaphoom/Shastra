@@ -32,6 +32,7 @@ namespace Vanaring_DepaDemo
         public IEnumerator CalculateNextBehavior()
         {
             _nextBehavior = Random.Range(0, _behaviorSocketSOs.GetBehaviorSize);
+            StartTelegraphy();
 
 
             yield return null;
@@ -57,24 +58,27 @@ namespace Vanaring_DepaDemo
         public void StartTelegraphy ()
         {
             //GetBehaviorEffect
-            IEnumerator coroutine = _behaviorSocketSOs.GetBehaviorEffect(_nextBehavior);
+            //IEnumerator coroutine = _behaviorSocketSOs.GetBehaviorEffect(_nextBehavior);
 
-            while (coroutine.MoveNext())
-            {
-                if (coroutine.Current != null && coroutine.Current.GetType().IsSubclassOf(typeof(RuntimeEffectFactorySO)))
-                {
-                    RuntimeEffectFactorySO spell = coroutine.Current as RuntimeEffectFactorySO;
-                    CreatingTelegraphyInstance(spell);
-                }
-            }
+            //while (coroutine.MoveNext())
+            //{
+            //    if (coroutine.Current != null && coroutine.Current.GetType().IsSubclassOf(typeof(RuntimeEffectFactorySO)))
+            //    {
+            //        RuntimeEffectFactorySO spell = coroutine.Current as RuntimeEffectFactorySO;
+            //        CreatingTelegraphyInstance(spell);
+            //    }
+            //}
+
+            CreatingTelegraphyInstance(_behaviorSocketSOs); 
         }
 
-        private void CreatingTelegraphyInstance(RuntimeEffectFactorySO spell)
+        private void CreatingTelegraphyInstance(BotBehaviorSocketSO spell)
         {
-            EnergyModifierRuntimeEffectFactory EMspell = spell as EnergyModifierRuntimeEffectFactory;
-            if (EMspell != null)
+             EnergyModifierData modifier =  spell.GetTargetModiferData(_currentBehavior) ;  
+
+            if (modifier.Amount > 0)
             {
-                EnergyModifierData modifier = EMspell.ModifierData;
+                Debug.Log("creating telegragpy");
                 int side = (int)modifier.Side; //0 -light, 1 -dark
                 int amount = modifier.Amount;
                 //magic number :D
@@ -95,8 +99,12 @@ namespace Vanaring_DepaDemo
                 {
                     Destroy(prefab);
                 }
+
+                Debug.Log("index is " + index); 
                 prefab = Instantiate(VfxTelegraphySingletonHandler.instance.GetVfxTelegraphPrefab(index),
-                    _telegraphyPos.transform.position, _telegraphyPos.transform.rotation);
+                    _telegraphyPos.transform );
+
+                prefab.transform.position = _telegraphyPos.transform.position; 
                 if (amount == 0)
                 {
                     prefab.SetActive(false);
@@ -104,6 +112,13 @@ namespace Vanaring_DepaDemo
                 else
                 {
                     prefab.SetActive(true);
+                }
+            }
+            else
+            {
+                if (prefab != null)
+                {
+                    Destroy(prefab); 
                 }
             }
         }

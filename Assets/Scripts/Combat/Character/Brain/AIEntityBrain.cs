@@ -56,7 +56,6 @@ namespace Vanaring_DepaDemo
 
         public override IEnumerator TurnLeave()
         {
-            _botBehaviorHandler.StartTelegraphy();
             yield return null; 
         }
 
