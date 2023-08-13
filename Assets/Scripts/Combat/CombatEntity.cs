@@ -76,12 +76,6 @@ namespace Vanaring_DepaDemo
             yield return (_statusEffectHandler.ExecuteStatusRuntimeEffectCoroutine()) ;
 
             yield return _baseEntityBrain.TurnEnter(); 
-
-            //If the entity is clear for control, make it idle 
-            if (ReadyForControl())
-            {
-                _combatEntityAnimationHandler.PlayTriggerAnimation("Idle"); 
-            } 
         }
 
         public  IEnumerator TurnLeave()
@@ -89,10 +83,8 @@ namespace Vanaring_DepaDemo
             if (_baseEntityBrain == null)
                 throw new Exception("Base Entity Brain of " + gameObject.name + " hasn't been assgined");
 
-            yield return _runtimeCharacterStatsAccumulator.ResetTemporaryIncreasedValue();
-
-            yield return _statusEffectHandler.RunStatusEffectExpiredScheme(); 
-
+            yield return _runtimeCharacterStatsAccumulator.ResetTemporaryIncreasedValue(); 
+           
             yield return _baseEntityBrain.TurnLeave();
         }
 
@@ -166,7 +158,8 @@ namespace Vanaring_DepaDemo
 
            _runtimeCharacterStatsAccumulator.ModifyHPStat(trueDmg);
 
-            ColorfulLogger.LogWithColor(gameObject.name + "is hit with " + trueDmg + " remaining HP : " + _runtimeCharacterStatsAccumulator.GetHPAmount(), Color.red); 
+            ColorfulLogger.LogWithColor(gameObject.name + "is hit with " + trueDmg + " remaining HP : "
+                + _runtimeCharacterStatsAccumulator.GetHPAmount(), Color.red); 
        
             if (_runtimeCharacterStatsAccumulator.GetHPAmount() <= 0)
             {
@@ -184,13 +177,14 @@ namespace Vanaring_DepaDemo
             
             if (animationTrigger != "No Animation")
             {
+                _coroutine.Add(_combatEntityAnimationHandler.PlayTriggerAnimation(animationTrigger)) ;
                 if (IsDead)
                 {
                     _coroutine.Add(_combatEntityAnimationHandler.DestroyVisualMesh());
-                } 
-                _coroutine.Add(_combatEntityAnimationHandler.PlayTriggerAnimation(animationTrigger));
-                 
+                }    
             }
+
+            _coroutine.Add(_statusEffectHandler.ExecuteHurtStatusRuntimeEffectCoroutine(attacker, this));
 
             _OnUpdateVisualDMG?.Invoke(0);
 
@@ -208,8 +202,11 @@ namespace Vanaring_DepaDemo
 
         }
 
+ 
+
+
         //Receive animation info and play it accordingly 
-        public IEnumerator LogicAttack(List<CombatEntity> targets,EDamageScaling scaling)
+        public IEnumerator Attack(List<CombatEntity> targets,EDamageScaling scaling , ActionAnimationInfo animationinfo)
         {
             //Prepare for status effect  
             yield return _statusEffectHandler.ExecuteAttackStatusRuntimeEffectCoroutine();
@@ -221,11 +218,29 @@ namespace Vanaring_DepaDemo
                     target.LogicHurt(this,inputDmg);
             }
 
+            List<IEnumerator> coroutines = new List<IEnumerator>() ;
 
-            //2.) the VisualAttack should be called somewhere else or the hp bar wouldn't be updated
+            //2 Visual 
+
+            //2.1.) creating vfx for coroutine for targets
+            foreach (CombatEntity target in targets)
+            {
+                CombatEntity entity = target;
+                coroutines.Add(entity.CombatEntityAnimationHandler.PlayVFXActionAnimation(animationinfo.TargetVfxEntity,
+                    (param) => entity.VisualHurt(this,param), animationinfo.TargetTrigerID));
+
+
+            }
+
+            //2.2.) create action animation coroutine for self
+            coroutines.Add(_combatEntityAnimationHandler.PlayActionAnimation(animationinfo));
+
             
+            //2.3.) running animation scheme
+            yield return new WaitAll(this,coroutines.ToArray() );
+
+
         }
-  
 
         public void SubOnDamageVisualEvent(UnityAction<int> argc)
         {
