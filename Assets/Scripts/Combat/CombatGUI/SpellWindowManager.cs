@@ -118,14 +118,12 @@ namespace Vanaring_DepaDemo
 
         public void TakeInputControl()
         {
-            Debug.Log("take control");
 
             CentralInputReceiver.Instance().AddInputReceiverIntoStack(this);
         }
 
         public void ReleaseInputControl()
         {
-            Debug.Log("disable control");
 
             CentralInputReceiver.Instance().RemoveInputReceiverIntoStack(this);
         }

@@ -47,6 +47,7 @@ namespace Vanaring_DepaDemo
 
         public override IEnumerator AfterAttackEffect(CombatEntity attacker, CombatEntity subject)
         {
+             
             subject.SpellCaster.ModifyEnergy(_data.Side, _data.Amount);
             _timeToLive = 0;
             yield return new WaitForSeconds(0.5f) ;

@@ -68,7 +68,6 @@ namespace Vanaring_DepaDemo
             {
                 CombatEntity entity = target;
                 coroutines.Add(entity.CombatEntityAnimationHandler.PlayVFXActionAnimation<string>(_actionAnimationInfo.TargetVfxEntity, (string s) => entity.VisualHurt(caster, s), _actionAnimationInfo.TargetTrigerID));
-                coroutines.Add(entity.GetStatusEffectHandler().ExecuteAfterAttackStatusRuntimeEffectCoroutine(target));
             }
 
             //2.2.) create action animation coroutine for self
@@ -78,7 +77,17 @@ namespace Vanaring_DepaDemo
             yield return new WaitAll(caster, coroutines.ToArray());
 
 
- 
+            coroutines.Clear(); 
+
+            //2.1.) creating vfx for coroutine for targets
+            foreach (CombatEntity target in _targets)
+            {
+                CombatEntity entity = target;
+                coroutines.Add(caster.GetStatusEffectHandler().ExecuteAfterAttackStatusRuntimeEffectCoroutine(target));
+            }
+
+            yield return new WaitAll(caster, coroutines.ToArray());
+
         }
     }
 }

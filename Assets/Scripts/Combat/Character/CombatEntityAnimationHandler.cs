@@ -63,7 +63,6 @@ namespace Vanaring_DepaDemo
         }
         public IEnumerator PlayActionAnimation(ActionAnimationInfo actionAnimation )
         {
-            Debug.Log("play action animation");
 
             List<IEnumerator> coroutines = new List<IEnumerator>();
 
@@ -78,17 +77,14 @@ namespace Vanaring_DepaDemo
             coroutines.Add (PlayTriggerAnimation(actionAnimation.SelfTrigerID) ) ;
 
             yield return new WaitAll(this, coroutines.ToArray() );
-            Debug.Log("finish play action animation");
 
         }
 
         public IEnumerator PlayVFXActionAnimation<T>(VFXEntity vfxEntity,  VFXCallbackHandler<T>.VFXCallback  argc  , T pam)
         {
-            Debug.Log("play vfx action animation");
             VFXCallbackHandler<T> callbackHandler = new VFXCallbackHandler<T>(GetComponent<CombatEntity>(), vfxEntity , GetVFXSpawnPos(),  argc  );
             yield return (callbackHandler.PlayVFX(pam));
 
-            Debug.Log("finish play vfx action animation");
 
         }
 
@@ -103,9 +99,16 @@ namespace Vanaring_DepaDemo
             yield return new WaitForSeconds(0.7f);
 
             if (_deadAnimationTrigger == "NONE")
-                transform.Translate(new Vector2(10000000, 1000000));
+            {
+                _mesh.transform.Translate(new Vector2(10000000, 1000000));
+            }
             else
                 PlayTriggerAnimation(_deadAnimationTrigger);
+
+            yield return new WaitForSeconds(1.0f);
+
+            Destroy(_deadVisualEffect); 
+            
         }
 
 

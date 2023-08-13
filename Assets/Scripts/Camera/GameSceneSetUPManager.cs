@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
-using UnityEditorInternal;
 using Unity.VisualScripting;
 
 namespace Vanaring_DepaDemo

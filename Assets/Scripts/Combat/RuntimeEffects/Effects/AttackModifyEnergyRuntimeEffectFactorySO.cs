@@ -93,14 +93,17 @@ namespace Vanaring_DepaDemo
 
         private IEnumerator AttackModify(CombatEntity caster , CombatEntity target)
         {
+            Debug.Log("start modify energy in attackmodify");
             List<IEnumerator> coroutines = new List<IEnumerator>();
 
             coroutines.Add(target.VisualHurt(caster, _actionAnimation.TargetTrigerID) ) ;
-            coroutines.Add(target.GetStatusEffectHandler().ExecuteAfterAttackStatusRuntimeEffectCoroutine(target));
 
             target.SpellCaster.ModifyEnergy(_data.Side, _data.Amount);
 
-            yield return new WaitAll(caster, coroutines.ToArray());
+            yield return new WaitAll(caster, coroutines.ToArray()); 
+
+            yield return caster.GetStatusEffectHandler().ExecuteAfterAttackStatusRuntimeEffectCoroutine(target) ;
+
 
         }
 

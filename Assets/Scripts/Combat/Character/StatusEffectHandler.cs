@@ -141,6 +141,7 @@ namespace Vanaring_DepaDemo
 
         /// <summary>
         /// attacker can be null for direct dmg (no attacker) situation 
+        /// mostly call with attacker side
         /// </summary>
         /// <param name="attacker"></param>
         /// <param name="subject"></param>
@@ -152,13 +153,9 @@ namespace Vanaring_DepaDemo
                 for (int i = 0; i < _effects[key].Count; i++)
                 {
                     StatusRuntimeEffect statusEffect = _effects[key][i];
-
                     yield return statusEffect.AfterAttackEffect(_appliedEntity,subject);
-
                 }
             }
-
-
         }
 
         #endregion
