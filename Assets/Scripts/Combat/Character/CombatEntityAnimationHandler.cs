@@ -96,7 +96,7 @@ namespace Vanaring_DepaDemo
                 _deadVisualEffect.Play();
             }
 
-            yield return new WaitForSeconds(0.7f);
+            yield return new WaitForSeconds(0.6f);
 
             if (_deadAnimationTrigger == "NONE")
             {
@@ -105,7 +105,7 @@ namespace Vanaring_DepaDemo
             else
                 PlayTriggerAnimation(_deadAnimationTrigger);
 
-            yield return new WaitForSeconds(1.0f);
+            yield return new WaitForSeconds(1.5f);
 
             Destroy(_deadVisualEffect); 
             
