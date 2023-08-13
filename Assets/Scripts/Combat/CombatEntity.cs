@@ -209,9 +209,6 @@ namespace Vanaring_DepaDemo
 
         }
 
- 
-
-
         //Receive animation info and play it accordingly 
         public IEnumerator LogicAttack(List<CombatEntity> targets,EDamageScaling scaling)
         {

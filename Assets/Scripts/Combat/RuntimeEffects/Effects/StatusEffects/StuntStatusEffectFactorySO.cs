@@ -11,10 +11,9 @@ namespace Vanaring_DepaDemo
     [CreateAssetMenu(fileName = "StuntStatusEffectFactorySO", menuName = "ScriptableObject/RuntimeEffect/StatusEffect/StuntStatusEffectFactorySO")]
     public class StuntStatusEffectFactorySO : StatusRuntimeEffectFactorySO
     {
-
         public override IEnumerator Factorize(List<CombatEntity> targets)
         {
-            StuntStatusEffect retEffect = new StuntStatusEffect(this);
+            StuntStatusEffect retEffect = new StuntStatusEffect(this  );
             foreach (CombatEntity target in targets)
             {
                  retEffect.AssignTarget(target);
@@ -43,7 +42,6 @@ namespace Vanaring_DepaDemo
 
                 if (target is CombatEntity)
                 {
-                    Debug.Log("apply stunt to " + target.name);
                     target.StatsAccumulator.ApplyStunt(); 
                 }
 
@@ -54,6 +52,7 @@ namespace Vanaring_DepaDemo
 
         public override IEnumerator OnStatusEffecExpire(CombatEntity caster)
         {
+            caster.GetComponent<EnergyOverflowHandler>().ResetOverflow(); 
             yield return caster.CombatEntityAnimationHandler.PlayTriggerAnimation("StuntRelieve");
         }
 

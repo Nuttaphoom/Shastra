@@ -2650,6 +2650,37 @@ Transform:
   m_Father: {fileID: 7185510321441225888}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2174454328464101284
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8201113305349320694}
+  m_Layer: 0
+  m_Name: AboveHead_VFXPOS
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8201113305349320694
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2174454328464101284}
+  m_LocalRotation: {x: -0.52730453, y: 0.47111562, z: 0.52730453, w: 0.47111562}
+  m_LocalPosition: {x: -0.13749105, y: -0.05287672, z: 0.011999879}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3459799101173403752}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2181187434998689274
 GameObject:
   m_ObjectHideFlags: 0
@@ -3814,6 +3845,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _statusEffectFactory: {fileID: 11400000, guid: 711b3fdb8207def469538edd1bc5e13b, type: 2}
+  _star_circle_stunVFX: {fileID: 1896424223492851964, guid: 668a03f329378ea4ca20210476625358, type: 3}
+  _actionAnimationInfo:
+    _casterVFXEntity:
+      _destroyAfterCallbackDelay: 3
+      _spawnDelay: 0
+      _callbackDelay: 0.3
+      _VFXAnimationPrefabs: {fileID: 8915030676219092205, guid: 37d90a750342bcb439585406def08f4d, type: 3}
+    _targetVFXEntity:
+      _destroyAfterCallbackDelay: 0
+      _spawnDelay: 0
+      _callbackDelay: 0
+      _VFXAnimationPrefabs: {fileID: 0}
+    SelfTrigerID: Stunt
+    TargetTrigerID: Stunt
+  _above_head_transform: {fileID: 8201113305349320694}
 --- !u!114 &4225265115102379059
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5200,7 +5246,8 @@ Transform:
   m_LocalPosition: {x: -0.29946518, y: -1.0658141e-16, z: 4.562109e-17}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 8201113305349320694}
   m_Father: {fileID: 7481311326057104729}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
