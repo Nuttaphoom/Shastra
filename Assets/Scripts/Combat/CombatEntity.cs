@@ -158,7 +158,8 @@ namespace Vanaring_DepaDemo
 
            _runtimeCharacterStatsAccumulator.ModifyHPStat(trueDmg);
 
-            ColorfulLogger.LogWithColor(gameObject.name + "is hit with " + trueDmg + " remaining HP : " + _runtimeCharacterStatsAccumulator.GetHPAmount(), Color.red); 
+            ColorfulLogger.LogWithColor(gameObject.name + "is hit with " + trueDmg + " remaining HP : "
+                + _runtimeCharacterStatsAccumulator.GetHPAmount(), Color.red); 
        
             if (_runtimeCharacterStatsAccumulator.GetHPAmount() <= 0)
             {
@@ -225,7 +226,9 @@ namespace Vanaring_DepaDemo
             foreach (CombatEntity target in targets)
             {
                 CombatEntity entity = target;
-                coroutines.Add(entity.CombatEntityAnimationHandler.PlayVFXActionAnimation(animationinfo.TargetVfxEntity, (param) => entity.VisualHurt(this,param), animationinfo.TargetTrigerID));
+                coroutines.Add(entity.CombatEntityAnimationHandler.PlayVFXActionAnimation(animationinfo.TargetVfxEntity,
+                    (param) => entity.VisualHurt(this,param), animationinfo.TargetTrigerID));
+
 
             }
 
