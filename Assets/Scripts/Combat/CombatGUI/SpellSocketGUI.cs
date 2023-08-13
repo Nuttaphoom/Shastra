@@ -22,6 +22,7 @@ namespace Vanaring_DepaDemo
 
         }
 
+        [Header("Main Skill Information")]
         [SerializeField]
         private Button _actionButton ;
 
@@ -30,9 +31,6 @@ namespace Vanaring_DepaDemo
 
         [SerializeField]
         private Image _skillImage;
-
-        [SerializeField]
-        private TextMeshProUGUI _descriptionText;
 
         [SerializeField]
         private Image _spellEnergyCostType;
@@ -45,6 +43,14 @@ namespace Vanaring_DepaDemo
         [SerializeField]
         private Sprite _darkImage;
 
+        [Header("Description Window")]
+        [SerializeField] private TextMeshProUGUI _spellNameTextDes;
+        [SerializeField] private TextMeshProUGUI _descriptionText;
+        [SerializeField] private TextMeshProUGUI _requireEnergyCost;
+        [SerializeField] private TextMeshProUGUI _modifiedEnergyCost;
+        [SerializeField] private Image _reqEnergyTypeDesImg;
+        [SerializeField] private Image _modEnergyTypeDesImg;
+
         private SpellAbilitySO _spellSO;
 
         private CombatEntity _caster; 
@@ -53,20 +59,34 @@ namespace Vanaring_DepaDemo
         { 
             _spellSO = spell;
             this._caster = combatEntity;
-            _actionButton.onClick.AddListener(ChooseSpell ) ;
+            _actionButton.onClick.AddListener(ChooseSpell);
 
-            _textMeshProUGUI.text = spell.AbilityName.ToString() ;
+            _textMeshProUGUI.text = spell.AbilityName.ToString();
+            _spellNameTextDes.text = spell.AbilityName.ToString();
             _descriptionText.text = spell.Desscription.ToString();
             _spellCost.text = spell.RequiredEnergy.Amount.ToString();
-            if(spell.RequiredEnergy.Side == RuntimeMangicalEnergy.EnergySide.LightEnergy)
+            _requireEnergyCost.text = "> " + spell.RequiredEnergy.Amount.ToString();
+            _modifiedEnergyCost.text = "+ " + spell.EnergyModifer.Amount.ToString();
+
+            if (spell.RequiredEnergy.Side == RuntimeMangicalEnergy.EnergySide.LightEnergy)
             {
                 _spellEnergyCostType.sprite = _lightImage;
+                _reqEnergyTypeDesImg.sprite = _lightImage;
             }
             else
             {
                 _spellEnergyCostType.sprite = _darkImage;
+                _reqEnergyTypeDesImg.sprite = _darkImage;
             }
             
+            if(spell.EnergyModifer.Side == RuntimeMangicalEnergy.EnergySide.LightEnergy)
+            {
+                _modEnergyTypeDesImg.sprite = _lightImage;
+            }
+            else
+            {
+                _modEnergyTypeDesImg.sprite = _darkImage;
+            }
         }
 
         private void ChooseSpell()

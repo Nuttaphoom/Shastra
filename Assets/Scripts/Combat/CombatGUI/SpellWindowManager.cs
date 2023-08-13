@@ -55,6 +55,7 @@ namespace Vanaring_DepaDemo
                     newSocket.transform.localScale = _templatePrefab.transform.localScale;
                     newSocket.Init(spellAbility, _combatEntity);
                     newSocket.gameObject.SetActive(true);
+                    newSocket.transform.SetAsFirstSibling();
                     tmpSlotIndex++;
                 }
                 tmpNum++;
