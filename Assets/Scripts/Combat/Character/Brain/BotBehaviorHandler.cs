@@ -100,7 +100,6 @@ namespace Vanaring_DepaDemo
                     Destroy(prefab);
                 }
 
-                Debug.Log("index is " + index); 
                 prefab = Instantiate(VfxTelegraphySingletonHandler.instance.GetVfxTelegraphPrefab(index),
                     _telegraphyPos.transform );
 
