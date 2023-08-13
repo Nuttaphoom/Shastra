@@ -24,10 +24,13 @@ namespace Vanaring_DepaDemo
 
         public VFXEntity CasterVfxEntity => _casterVFXEntity ;
         public VFXEntity TargetVfxEntity => _targetVFXEntity ;
+        public bool IsProjectile => _isProjectile;
 
         public string SelfTrigerID ;
-        public string TargetTrigerID; 
-    
+        public string TargetTrigerID;
+        [SerializeField]
+        private bool _isProjectile = false;
+
     }
 
  
