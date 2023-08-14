@@ -112,10 +112,10 @@ namespace Vanaring_DepaDemo
         private void OnHPModified(int damage)
         {
             hpVal = _owner.StatsAccumulator.GetHPAmount();
-            float hptemp = maxHP == 0 ? (hpVal == 0 ? 1 : hpVal) : maxHP;
-            float hptempe = hpImage.fillAmount;
-            //hpImage.fillAmount = (hpVal / hptemp);
-            
+            float hptemp = maxHP == 0 ? (hpVal == 0 ? 1 : hpVal) : maxHP ;
+
+            Debug.Log("on hp modify : hptemp : " + hptemp);
+
             StartCoroutine(IEAnimateHPBarScale(hptemp));
         }
         private void UpdateHPBarScaleGUI()
@@ -153,16 +153,25 @@ namespace Vanaring_DepaDemo
 
         private IEnumerator IEAnimateHPBarScale(float maxHP)
         {
-            while (hpImage.fillAmount < hpVal/maxHP)
+            float dest = (hpVal / maxHP); 
+            while (Mathf.Abs(hpImage.fillAmount - dest ) > 0.01f )
             {
                 UpdateHPBarScaleGUI();
                 yield return new WaitForSeconds(0.01f);
             }
-            while (hpImage.fillAmount > hpVal/maxHP)
-            {
-                UpdateHPBarScaleGUI();
-                yield return new WaitForSeconds(0.01f);
-            }
+
+         
+            //// 1 < 1 
+            //while (hpImage.fillAmount < hpVal/maxHP)
+            //{
+            //    Debug.Log("" + hpImage.fillAmount + " vs " + (hpVal / maxHP));
+                
+            //}
+            //while (hpImage.fillAmount > hpVal/maxHP)
+            //{
+            //    UpdateHPBarScaleGUI();
+            //    yield return new WaitForSeconds(0.01f);
+            //}
             yield return null;
         }
         #endregion

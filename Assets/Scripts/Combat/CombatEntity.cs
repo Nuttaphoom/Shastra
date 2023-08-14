@@ -39,12 +39,16 @@ namespace Vanaring_DepaDemo
         private EnergyOverflowHandler _energyOverflowHandler;
 
 
+        [SerializeField]
+        private DamageOutputPopupHandler _dmgOutputPopHanlder; 
+
 
         private bool _isDead = false;
 
         public bool IsDead => _isDead;
         public void Awake()
         {
+            _dmgOutputPopHanlder = new DamageOutputPopupHandler(_dmgOutputPopHanlder, this); 
             _runtimeCharacterStatsAccumulator = new RuntimeCharacterStatsAccumulator(_characterSheet);
             _energyOverflowHandler = GetComponent<EnergyOverflowHandler>();
 
@@ -158,7 +162,6 @@ namespace Vanaring_DepaDemo
         private UnityAction<int> _OnUpdateVisualDMGEnd;
         public void LogicHurt(CombatEntity attacker, int inputdmg)
         {
-
             float trueDmg = inputdmg;
 
             //Do some math here
@@ -168,17 +171,18 @@ namespace Vanaring_DepaDemo
 
             ColorfulLogger.LogWithColor(gameObject.name + "is hit with " + trueDmg + " remaining HP : " + _runtimeCharacterStatsAccumulator.GetHPAmount(), Color.red);
 
+            _dmgOutputPopHanlder.AccumulateDMG(inputdmg); 
+
             if (_runtimeCharacterStatsAccumulator.GetHPAmount() <= 0)
             {
                 _isDead = true;
             }
+
+
         }
         public void LogicHeal(float amount)
         {
-            Debug.Log("HP before Heal : " + StatsAccumulator.GetHPAmount());
-
             StatsAccumulator.ModifyHPStat(amount);
-            Debug.Log("HP after Heal : " + StatsAccumulator.GetHPAmount());  
         }
 
         public IEnumerator VisualHeal(string animationTrigger = "No Animation")
@@ -190,7 +194,7 @@ namespace Vanaring_DepaDemo
             _OnUpdateVisualDMGEnd?.Invoke(0);
 
         }
-        public IEnumerator VisualHurt(CombatEntity attacker, string animationTrigger = "No Animation")
+        public IEnumerator VisualHurt(CombatEntity attacker , string animationTrigger = "No Animation" )
         {
             //Display DMG Text here
 

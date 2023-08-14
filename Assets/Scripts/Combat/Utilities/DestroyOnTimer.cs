@@ -10,6 +10,7 @@ namespace Vanaring_DepaDemo
     public class DestroyOnTimer : MonoBehaviour
     {
         [SerializeField]
+        [Header("In second")] 
         private float _ttl = 0;
 
         private void Awake()
@@ -28,7 +29,7 @@ namespace Vanaring_DepaDemo
             }
             if (_ttl <= 0)
             {
-                Destroy(gameObject); 
+                Destroy(gameObject) ; 
             }
 
         }

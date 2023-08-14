@@ -25,7 +25,7 @@ namespace Vanaring_DepaDemo
     public interface IDamagable
     {
         public void LogicHurt(CombatEntity attacker, int inputdmg);
-        public IEnumerator VisualHurt(CombatEntity attacker,string animationTrigger = "Hurt");
+        public IEnumerator VisualHurt(CombatEntity attacker, string animationTrigger = "Hurt");
 
 
         public void SubOnDamageVisualEvent(UnityAction<int> argc);

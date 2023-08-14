@@ -83,7 +83,7 @@ public class HavocApplierRuntimeEffect : StatusEffectApplierRuntimeEffect
         List<IEnumerator> coroutines = new List<IEnumerator>();
 
         coroutines.Add(target.GetStatusEffectHandler().ApplyNewEffect(effect) ) ;
-        coroutines.Add(target.VisualHurt(null,_actionAnimationInfo.TargetTrigerID ))  ; 
+        coroutines.Add(target.VisualHurt(null,_actionAnimationInfo.TargetTrigerID))  ; 
 
 
         yield return new WaitAll(target,coroutines.ToArray()) ; 
