@@ -28,7 +28,7 @@ namespace Vanaring_DepaDemo
         {
             foreach (KeyValuePair<string, List<StatusRuntimeEffect>> entry in effects)
             {
-                if (entry.Value != null)
+                if (entry.Value != null && entry.Value.Count != 0)
                 {
                     StatusSocketGUI newSocket = Instantiate(_templatePrefab, _templatePrefab.transform.position, _templatePrefab.transform.rotation);
                     int count = currentStatusObject.Count;
@@ -50,7 +50,10 @@ namespace Vanaring_DepaDemo
 
         public void ClearCurrentStatus()
         {
-            currentStatusObject.Clear();
+            foreach (GameObject eSocketObj in currentStatusObject)
+            {
+                Destroy(eSocketObj);
+            }
         }
     }
 }
