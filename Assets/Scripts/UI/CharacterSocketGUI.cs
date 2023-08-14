@@ -33,28 +33,38 @@ namespace Vanaring_DepaDemo
 
         private CombatEntity _combatEntity;
 
+        private void Awake()
+        {
+            lightVal = 50;
+            darkVal = 50;
+            if (lightNumText != null && darkNumText != null)
+            {
+                lightNumText.text = lightVal.ToString();
+                darkNumText.text = darkVal.ToString();
+            }
+        }
         private void OnEnable()
         {
             if(_combatEntity != null)
             {
                 _combatEntity.SubOnDamageVisualEvent(OnHPModified);
+                _combatEntity.SpellCaster.SubOnModifyEnergy(OnEnergyModified);
             }
         }
 
         private void OnDisable()
         {
             _combatEntity.UnSubOnDamageVisualEvent(OnHPModified);
+            _combatEntity.SpellCaster.UnSubOnModifyEnergy(OnEnergyModified);
         }
 
         public void Init(float manaVal, string name, CombatEntity combatEntity)
         {
             _combatEntity = combatEntity;
             _combatEntity.SubOnDamageVisualEvent(OnHPModified);
+            _combatEntity.SpellCaster.SubOnModifyEnergy(OnEnergyModified);
 
             characterName.text = name;
-            lightVal = manaVal;
-            darkVal = maxEnergyVal - manaVal;
-
             hpVal = _combatEntity.StatsAccumulator.GetHPAmount();
             maxHpVal = _combatEntity.StatsAccumulator.GetHPAmount();
             UpdateHPScaleGUI();
@@ -65,18 +75,71 @@ namespace Vanaring_DepaDemo
             hpNumText.text = hpVal + "/" + maxHpVal.ToString();
         }
 
-        private void UpdateEnergyScaleGUI(int modifyMana)
+        private void UpdateEnergyScaleGUI()
         {
-            manaBar.fillAmount = lightVal / maxEnergyVal;
-            lightNumText.text = lightVal.ToString();
-            darkNumText.text = darkVal.ToString();
+            manaBar.fillAmount = (int.Parse(lightNumText.text) / maxEnergyVal);
         }
 
-        public void OnHPModified(int damage)
+        private void OnHPModified(int damage)
         {
+            //Debug.Log("hammmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm");
             hpVal = _combatEntity.StatsAccumulator.GetHPAmount();
             StopAllCoroutines();
             StartCoroutine(IEAnimateHPBarScale(hpVal));
+        }
+
+        private void OnEnergyModified(RuntimeMangicalEnergy.EnergySide side, int val)
+        {
+            //Debug.Log("mammmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm");
+            if (side == RuntimeMangicalEnergy.EnergySide.LightEnergy)
+            {
+                Debug.Log("INCREASEEEEEEEEEEEEEEE");
+                lightScaleIncrease(val);
+            }
+            else
+            {
+                Debug.Log("DECREASEEEEEEEEEEEEEEE");
+                lightScaleDecrease(val);
+            }
+        }
+
+        public void lightScaleIncrease(int val)
+        {
+            if (lightVal + val > 100)
+            {
+                val = (int)(100 - lightVal);
+            }
+            lightVal += val;
+            StartCoroutine(IEAnimateEnergyBarScale());
+        }
+        public void lightScaleDecrease(int val)
+        {
+            if (lightVal - val < 0)
+            {
+                Debug.Log("Value can't be lower than 0!");
+                return;
+            }
+            lightVal -= val;
+            StartCoroutine(IEAnimateEnergyBarScale());
+        }
+
+        private IEnumerator IEAnimateEnergyBarScale()
+        {
+            while (int.Parse(lightNumText.text) < lightVal)
+            {
+                lightNumText.text = (int.Parse(lightNumText.text) + 1).ToString();
+                darkNumText.text = (int.Parse(darkNumText.text) - 1).ToString();
+                UpdateEnergyScaleGUI();
+                yield return new WaitForSeconds(0.01f);
+            }
+            while (int.Parse(lightNumText.text) > lightVal)
+            {
+                lightNumText.text = (int.Parse(lightNumText.text) - 1).ToString();
+                darkNumText.text = (int.Parse(darkNumText.text) + 1).ToString();
+                UpdateEnergyScaleGUI();
+                yield return new WaitForSeconds(0.01f);
+            }
+            yield return null;
         }
 
         private IEnumerator IEAnimateHPBarScale(int hpVal)
