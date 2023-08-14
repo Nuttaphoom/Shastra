@@ -69,7 +69,8 @@ namespace Vanaring_DepaDemo
             //Self VFX
             if (actionAnimation.CasterVfxEntity.IsValid() )
             {
-                VFXCallbackHandler<string> callbackHandler = new VFXCallbackHandler<string>(GetComponent<CombatEntity>(), actionAnimation.CasterVfxEntity, GetVFXSpawnPos(), null);
+                VFXCallbackHandler<string> callbackHandler = new VFXCallbackHandler<string>(GetComponent<CombatEntity>(),
+                    actionAnimation.CasterVfxEntity, GetVFXSpawnPos(), null);
                 coroutines.Add(callbackHandler.PlayVFX(actionAnimation.TargetTrigerID)) ;
             }
 
@@ -82,10 +83,16 @@ namespace Vanaring_DepaDemo
 
         public IEnumerator PlayVFXActionAnimation<T>(VFXEntity vfxEntity,  VFXCallbackHandler<T>.VFXCallback  argc  , T pam)
         {
-            VFXCallbackHandler<T> callbackHandler = new VFXCallbackHandler<T>(GetComponent<CombatEntity>(), vfxEntity , GetVFXSpawnPos(),  argc  );
+            VFXCallbackHandler<T> callbackHandler = new VFXCallbackHandler<T>(GetComponent<CombatEntity>(),
+                vfxEntity , GetVFXSpawnPos(),  argc  );
             yield return (callbackHandler.PlayVFX(pam));
+        }
+        public IEnumerator PlayVFXActionAnimation<T>(VFXEntity vfxEntity, VFXCallbackHandler<T>.VFXCallback argc, T pam, Vector3 casterpos, Vector3 targetpos)
+        {
+            VFXCallbackHandler<T> callbackHandler = new VFXCallbackHandler<T>(GetComponent<CombatEntity>(),
+                vfxEntity, GetVFXSpawnPos(), argc);
 
-
+            yield return (callbackHandler.PlayVFX(pam, casterpos, targetpos));
         }
 
         public IEnumerator DestroyVisualMesh()
@@ -107,7 +114,7 @@ namespace Vanaring_DepaDemo
 
             yield return new WaitForSeconds(1.5f);
 
-            Destroy(_deadVisualEffect); 
+            Destroy(_deadVisualEffect.gameObject); 
             
         }
 
