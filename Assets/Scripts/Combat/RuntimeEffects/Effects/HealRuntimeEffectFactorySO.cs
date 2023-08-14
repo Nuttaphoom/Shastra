@@ -14,12 +14,15 @@ namespace Vanaring_DepaDemo
     public class HealRuntimeEffectFactorySO : RuntimeEffectFactorySO
     {
         [SerializeField]
+        ActionAnimationInfo _actionAnimationInfo;
+
+        [SerializeField]
         private float _hp = 0 ;
  
 
         public override IEnumerator Factorize(List<CombatEntity> targets)
         {
-            HealRuntimeEffect retEffect = new HealRuntimeEffect(_actionAnimation, _hp);
+            HealRuntimeEffect retEffect = new HealRuntimeEffect(_actionAnimationInfo, _hp);
             if (targets != null)
             {
                 foreach (CombatEntity target in targets)
@@ -46,25 +49,38 @@ namespace Vanaring_DepaDemo
 
             //Command caster to attack enemy 
             if (caster == null)
-                throw new Exception("Caster can not be null"); 
-
-        }
-
-        private IEnumerator AttackModify(CombatEntity caster, CombatEntity target)
-        {
-            Debug.Log("start modify energy in attackmodify");
+                throw new Exception("Caster can not be null");
+ 
+  
             List<IEnumerator> coroutines = new List<IEnumerator>();
 
-            coroutines.Add(target.VisualHurt(caster, _actionAnimation.TargetTrigerID));
+            //creating vfx for coroutine for targets
+            foreach (CombatEntity target in _targets)
+            {
+                CombatEntity entity = target;
+                entity.LogicHeal(_hp); 
+                if (!_actionAnimationInfo.IsProjectile)
+                {
+                    coroutines.Add(entity.CombatEntityAnimationHandler.PlayVFXActionAnimation<string>(
+                        _actionAnimationInfo.TargetVfxEntity, (string s) => entity.VisualHeal(s) ,
+                        _actionAnimationInfo.TargetTrigerID)) ;
+                }
+                else
+                {
+                    coroutines.Add(caster.CombatEntityAnimationHandler.PlayVFXActionAnimation<string>(
+                        _actionAnimationInfo.TargetVfxEntity, (string s) => entity.VisualHeal(s),
+                        _actionAnimationInfo.TargetTrigerID, caster.gameObject.transform.position, entity.gameObject.transform.position));
+                }
+            }
 
-            target.SpellCaster.ModifyEnergy(_data.Side, _data.Amount);
+            //create action animation coroutine for self
+            coroutines.Add(caster.CombatEntityAnimationHandler.PlayActionAnimation(_actionAnimationInfo));
 
             yield return new WaitAll(caster, coroutines.ToArray());
 
-            yield return caster.GetStatusEffectHandler().ExecuteAfterAttackStatusRuntimeEffectCoroutine(target);
-
-
         }
+
+
 
 
 

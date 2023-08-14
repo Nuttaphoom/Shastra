@@ -63,7 +63,6 @@ namespace Vanaring_DepaDemo
         }
         public IEnumerator PlayActionAnimation(ActionAnimationInfo actionAnimation )
         {
-
             List<IEnumerator> coroutines = new List<IEnumerator>();
 
             //Self VFX

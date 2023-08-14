@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 761b0127b82671a4785f30085504c41b, type: 3}
+  m_Name: HealInventory
+  m_EditorClassIdentifier: 
+  _targetSelector:
+    _maxTargetSize: 1
+    _targetSide: 2
+    _targetCaster: 0
+  _actionAnimationInfo:
+    _casterVFXEntity:
+      _destroyAfterCallbackDelay: 0
+      _spawnDelay: 0
+      _callbackDelay: 0
+      _VFXAnimationPrefabs: {fileID: 0}
+    _targetVFXEntity:
+      _destroyAfterCallbackDelay: 3
+      _spawnDelay: 0
+      _callbackDelay: 1
+      _VFXAnimationPrefabs: {fileID: 8432623215915248235, guid: 8ec4189eadaa24644acf69ed2c7eac39, type: 3}
+    SelfTrigerID: Buff
+    TargetTrigerID: 
+    _isProjectile: 0
+  _hp: 100

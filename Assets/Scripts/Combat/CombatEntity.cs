@@ -173,7 +173,23 @@ namespace Vanaring_DepaDemo
                 _isDead = true;
             }
         }
+        public void LogicHeal(float amount)
+        {
+            Debug.Log("HP before Heal : " + StatsAccumulator.GetHPAmount());
 
+            StatsAccumulator.ModifyHPStat(amount);
+            Debug.Log("HP after Heal : " + StatsAccumulator.GetHPAmount());  
+        }
+
+        public IEnumerator VisualHeal(string animationTrigger = "No Animation")
+        {
+            _OnUpdateVisualDMG?.Invoke(0);
+
+            yield return null;
+
+            _OnUpdateVisualDMGEnd?.Invoke(0);
+
+        }
         public IEnumerator VisualHurt(CombatEntity attacker, string animationTrigger = "No Animation")
         {
             //Display DMG Text here

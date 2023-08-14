@@ -74,6 +74,7 @@ namespace Vanaring_DepaDemo
 
         public void OnHPModified(int damage)
         {
+            Debug.Log("update sockget GUI");
             hpVal = _combatEntity.StatsAccumulator.GetHPAmount();
             StopAllCoroutines();
             StartCoroutine(IEAnimateHPBarScale(hpVal));
