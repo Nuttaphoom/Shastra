@@ -47,27 +47,43 @@ namespace Vanaring_DepaDemo
         }
 
         //value can be negative 
-        public void ModifyValue(int value, bool temp = true, bool peakUpdate = false )
+        public int ModifyValue(int value, bool temp = true, bool peakUpdate = false )
         {
+            int ret = value;
+
             if (temp)
             {
                 _increasedValue += value;
                 if (_increasedValue + _defaultValue > _peakValue)
+                {
+                    ret = _peakValue - (_increasedValue - value) ;
+
                     _increasedValue = _peakValue - _defaultValue;
-                if (_increasedValue < 0)
+                }
+
+                if (_increasedValue < 0) 
                     _increasedValue = 0;
+
             }
             else
             {
+
+
                 _defaultValue += value ;
                 if (peakUpdate)
                     _peakValue += value;
 
                 if (_defaultValue < 0)
                     _defaultValue = 0;
+
                 else if (_defaultValue > _peakValue)
+                {
+                    ret =  _peakValue - (_defaultValue - value) ;
                     _defaultValue = _peakValue;
+                }
             }
+            Debug.Log("ret = " + ret); 
+            return ret; 
                
         }
 

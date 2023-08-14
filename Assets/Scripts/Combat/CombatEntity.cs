@@ -180,9 +180,11 @@ namespace Vanaring_DepaDemo
 
 
         }
-        public void LogicHeal(float amount)
-        {
-            StatsAccumulator.ModifyHPStat(amount);
+        public void LogicHeal(int amount)
+        {    
+            int increasedAmoubnt = StatsAccumulator.ModifyHPStat(amount);
+            _dmgOutputPopHanlder.AccumulateHP(increasedAmoubnt);
+
         }
 
         public IEnumerator VisualHeal(string animationTrigger = "No Animation")

@@ -17,7 +17,7 @@ namespace Vanaring_DepaDemo
         ActionAnimationInfo _actionAnimationInfo;
 
         [SerializeField]
-        private float _hp = 0 ;
+        private int _hp = 0 ;
  
 
         public override IEnumerator Factorize(List<CombatEntity> targets)
@@ -36,8 +36,8 @@ namespace Vanaring_DepaDemo
     public class HealRuntimeEffect : RuntimeEffect
     {
         ActionAnimationInfo _actionAnimationInfo ; 
-        private float _hp = 0; 
-        public HealRuntimeEffect(ActionAnimationInfo actionAnimation , float hp )
+        private int _hp = 0; 
+        public HealRuntimeEffect(ActionAnimationInfo actionAnimation , int hp )
         {
             _actionAnimationInfo = actionAnimation;
             _hp = hp; 
