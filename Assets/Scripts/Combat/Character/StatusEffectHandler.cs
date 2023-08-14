@@ -25,17 +25,12 @@ namespace Vanaring_DepaDemo
         [SerializeField]
         private StatusWindowManager _statusWindowManager;
 
-        private void InstantiateStatusUI(StatusRuntimeEffectFactorySO factory)
+        private void InstantiateStatusUI()
         {
-            foreach (KeyValuePair<string, List<StatusRuntimeEffect>> entry in _effects)
-            {
-                if (entry.Value != null)
-                {
-                    _statusWindowManager.InstantiateStatusUI(entry.Value[0], entry.Value.Count);
-                }
-            }
+            _statusWindowManager.ClearCurrentStatus();
+            _statusWindowManager.InstantiateStatusUI(_effects);
         }
-    
+
         //the effect should be factorize exactly before being applied 
         private IEnumerator LogicApplyNewEffect(StatusRuntimeEffectFactorySO factory )
         {
@@ -75,7 +70,7 @@ namespace Vanaring_DepaDemo
         {
             yield return LogicApplyNewEffect(factory);
             //create Status UI
-            InstantiateStatusUI(factory);
+            InstantiateStatusUI();
 
             //if (actionAnimationInfo.TargetVfxEntity != null)
             //{
@@ -97,6 +92,11 @@ namespace Vanaring_DepaDemo
                     yield return statusEffect.OnExecuteRuntimeDone(_appliedEntity);
 
                     statusEffect.UpdateTTLCondition();
+
+                    if (statusEffect.IsExpired())
+                    {
+                        InstantiateStatusUI();
+                    }
                 }
             }
 
