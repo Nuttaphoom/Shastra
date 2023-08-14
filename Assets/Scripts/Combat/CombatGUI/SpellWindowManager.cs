@@ -106,14 +106,14 @@ namespace Vanaring_DepaDemo
             //{
             //    LoadLowerSocketItem();
             //}
-            if (Input.GetKeyDown(KeyCode.Alpha3))
-            {
-                ClearSpellSocketGUI();
-            }
-            if (Input.GetKeyDown(KeyCode.Alpha4))
-            {
-                LoadSpellSocketGUI(startIndex, endIndex);
-            }
+            //if (Input.GetKeyDown(KeyCode.Alpha3))
+            //{
+            //    ClearSpellSocketGUI();
+            //}
+            //if (Input.GetKeyDown(KeyCode.Alpha4))
+            //{
+            //    LoadSpellSocketGUI(startIndex, endIndex);
+            //}
 
         }
 

@@ -18,7 +18,7 @@ namespace Vanaring_DepaDemo
         public TextMeshProUGUI lightNumText;
         public TextMeshProUGUI darkNumText;
 
-        [Header("EnergyBarValue")]
+        [Header("Energy bar value")]
         
         private float lightScale = 50 ;
         
@@ -27,7 +27,7 @@ namespace Vanaring_DepaDemo
         private float maxEnergyVal = 100.0f;
         [SerializeField] private Image lightImage;
 
-        [Header("HPBarValue")]
+        [Header("HP bar value")]
         private float hpVal;
         private float maxHP;
         [SerializeField] private Image hpImage;
@@ -45,16 +45,11 @@ namespace Vanaring_DepaDemo
         }
         private void Start()
         {
-            
             if (_owner != null)
             {
-                //hpVal = 70;
                 hpVal = _owner.StatsAccumulator.GetHPAmount();
                 maxHP = _owner.StatsAccumulator.GetHPAmount();
             }
-            //Debug.Log(hpVal + "/" + maxHP);
-            //hpImage.fillAmount = (hpVal / maxHP);
-            
             UpdateHPBarScaleGUI();
         }
 
@@ -62,15 +57,12 @@ namespace Vanaring_DepaDemo
         {
             _owner.SpellCaster.SubOnModifyEnergy(OnEnergyModified);
             _owner.SubOnDamageVisualEvent(OnHPModified);
-            //_owner.SpellCaster.SubOnModifyEnergy(OnEnergyModified);
-
         }
 
         private void OnDisable()
         {
             _owner.SpellCaster.UnSubOnModifyEnergy(OnEnergyModified);
             _owner.UnSubOnDamageVisualEvent(OnHPModified);
-            //_owner.SpellCaster.SubOnModifyEnergy(OnEnergyModified);
         }
         #region Energy
         private void OnEnergyModified(RuntimeMangicalEnergy.EnergySide side , int val)
@@ -112,18 +104,13 @@ namespace Vanaring_DepaDemo
         private void OnHPModified(int damage)
         {
             hpVal = _owner.StatsAccumulator.GetHPAmount();
-            float hptemp = maxHP == 0 ? (hpVal == 0 ? 1 : hpVal) : maxHP ;
-
-            Debug.Log("on hp modify : hptemp : " + hptemp);
-
+            float hptemp = maxHP == 0 ? (hpVal == 0 ? 1 : hpVal) : maxHP;
+            float hptempe = hpImage.fillAmount;
+            
             StartCoroutine(IEAnimateHPBarScale(hptemp));
         }
         private void UpdateHPBarScaleGUI()
         {
-            //float hptemp = maxHP == 0 ? (hpVal == 0?1:hpVal) : maxHP;
-            ////Debug.Log(hpVal / hptemp);
-
-            //hpImage.fillAmount = (hpVal / hptemp);
             hpImage.fillAmount -= 0.01f;
             if (hpImage.fillAmount <= 0 && gui != null)
             {
@@ -153,25 +140,18 @@ namespace Vanaring_DepaDemo
 
         private IEnumerator IEAnimateHPBarScale(float maxHP)
         {
-            float dest = (hpVal / maxHP); 
-            while (Mathf.Abs(hpImage.fillAmount - dest ) > 0.01f )
+            float tickRate = 0.5f / ((Mathf.Abs((hpVal / maxHP) - hpImage.fillAmount))*100);
+            //Debug.Log((hpVal / maxHP) + "-" + hpImage.fillAmount + "=" + tickRate);
+            while (hpImage.fillAmount < hpVal/maxHP)
             {
                 UpdateHPBarScaleGUI();
-                yield return new WaitForSeconds(0.01f);
+                yield return new WaitForSeconds(tickRate);
             }
-
-         
-            //// 1 < 1 
-            //while (hpImage.fillAmount < hpVal/maxHP)
-            //{
-            //    Debug.Log("" + hpImage.fillAmount + " vs " + (hpVal / maxHP));
-                
-            //}
-            //while (hpImage.fillAmount > hpVal/maxHP)
-            //{
-            //    UpdateHPBarScaleGUI();
-            //    yield return new WaitForSeconds(0.01f);
-            //}
+            while (hpImage.fillAmount > hpVal/maxHP)
+            {
+                UpdateHPBarScaleGUI();
+                yield return new WaitForSeconds(tickRate);
+            }
             yield return null;
         }
         #endregion
