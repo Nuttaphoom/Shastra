@@ -52,6 +52,9 @@ namespace Vanaring_DepaDemo
 
         List<CompetatorDetailStruct> _competators;
 
+        [SerializeField]
+        private GameOverScreen _gameoverscreen;
+
         private ECompetatorSide _currentSide = ECompetatorSide.Hostile; // Assign this to the opposite of the actual turn we want to start with 
         private List<CombatEntity> _activeEntities = new List<CombatEntity>();
         private int _currentEntityIndex = 0;
@@ -261,6 +264,7 @@ namespace Vanaring_DepaDemo
                 }
                 if (EndGameConditionMeet())
                 {
+                    _gameoverscreen.ActiveGameOverScreen(true);
                     goto End;
                 }
                 //If GetAction is null, we wait for end of frame
@@ -293,6 +297,7 @@ namespace Vanaring_DepaDemo
             AssignCompetators(FindObjectOfType<EntityLoader>().LoadData(), ECompetatorSide.Hostile);
             _currentSide = ECompetatorSide.Ally;
             _activeEntities = GetCompetatorsBySide(_currentSide);
+    
         }
         #region GETTER 
 
