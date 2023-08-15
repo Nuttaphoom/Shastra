@@ -321,6 +321,7 @@ namespace Vanaring_DepaDemo
             if (prev != -1)
                 yield return _activeEntities[prev].LeaveControl();
 
+
             if (prev != next)
             {
                 for (int i = 0; i < GetCompetatorsBySide(ECompetatorSide.Ally).Count; i++)
@@ -333,11 +334,19 @@ namespace Vanaring_DepaDemo
                 }
 
                 yield return _activeEntities[next].TakeControl();
+
+
             }
+
 
         }
 
-        public IEnumerator ChangeActiveEntityIndex(bool increase = false, bool decrease = false)
+        public void ChangeActiveEntityIndex(bool increase = false, bool decrease = false)
+        {
+            StartCoroutine(ChangeActiveEntityIndexCoroutine(increase,decrease));
+        }
+
+        public IEnumerator ChangeActiveEntityIndexCoroutine(bool increase = false, bool decrease = false)
         {
             if (_activeEntities.Count > 0)
             {
@@ -350,6 +359,7 @@ namespace Vanaring_DepaDemo
 
                 if (temp != _currentEntityIndex)
                 {
+
                     yield return SwitchControl(temp, _currentEntityIndex);
                 }
             }
@@ -358,21 +368,23 @@ namespace Vanaring_DepaDemo
                 _currentEntityIndex = 0;
             }
 
+ 
+
         }
 
         public void ReceiveKeys(KeyCode key)
         {
-            if (_state == CombatState.WaitingForAction)
-            {
-                if (key == (KeyCode.D))
-                {
-                    StartCoroutine(ChangeActiveEntityIndex(true, false));
-                }
-                else if (key == (KeyCode.A))
-                {
-                    StartCoroutine(ChangeActiveEntityIndex(false, true));
-                }
-            }
+            //if (_state == CombatState.WaitingForAction)
+            //{
+            //    if (key == (KeyCode.D))
+            //    {
+            //        StartCoroutine(ChangeActiveEntityIndex(true, false));
+            //    }
+            //    else if (key == (KeyCode.A))
+            //    {
+            //        StartCoroutine(ChangeActiveEntityIndex(false, true));
+            //    }
+            //}
         }
 
         #endregion

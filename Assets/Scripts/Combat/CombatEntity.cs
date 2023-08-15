@@ -132,7 +132,10 @@ namespace Vanaring_DepaDemo
         }
         public IEnumerator LeaveControl()
         {
+            Debug.Log("leave contorl");
             yield return _baseEntityBrain.TakeControlLeave();
+            Debug.Log("end leave control");
+            yield return null; 
         }
 
         public bool ReadyForControl()

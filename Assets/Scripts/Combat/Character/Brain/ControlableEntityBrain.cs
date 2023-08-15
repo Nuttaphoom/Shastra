@@ -83,13 +83,13 @@ namespace Vanaring_DepaDemo
             if (_combatGraphicalHandler == null)
                 _combatGraphicalHandler = GetComponent<CombatGraphicalHandler>();
 
-            _combatGraphicalHandler.EnableGraphicalElements();
+            _combatGraphicalHandler.TakeControl();
             yield return null;
         }
 
         public override IEnumerator TakeControlLeave()
         {
-            _combatGraphicalHandler.DisableGraphicalElements();
+            _combatGraphicalHandler.TakeControlLeave();
             yield return null;
         }
 
