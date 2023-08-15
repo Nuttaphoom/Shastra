@@ -87,9 +87,23 @@ namespace Vanaring_DepaDemo
 
         private IEnumerator VisualStunApplier(string s)
         {
-            _combatEntity.StatsAccumulator.ApplyStunt();
+
+            StartCoroutine(RunnintOverheatVisualEffect()); 
+            _combatEntity.StatsAccumulator.ApplyStunt() ; 
             yield return (_combatEntity.VisualHurt(null, "Stunt"));
-        } 
+
+
+        }
+
+        private IEnumerator RunnintOverheatVisualEffect()
+        {
+            yield return new WaitForSecondsRealtime(0.2f); 
+            Time.timeScale = 0.25f;
+
+            yield return new WaitForSecondsRealtime(0.5f);
+
+            Time.timeScale = 1.0f; 
+        }
 
         private void Awake()
         {

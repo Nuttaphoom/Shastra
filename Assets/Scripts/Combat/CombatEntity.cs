@@ -198,9 +198,6 @@ namespace Vanaring_DepaDemo
         }
         public IEnumerator VisualHurt(CombatEntity attacker , string animationTrigger = "No Animation" )
         {
-            //Display DMG Text here
-
-            //Slow down time? 
             bool _callingDeadScheme = false;
 
             List<IEnumerator> _coroutine = new List<IEnumerator>();
