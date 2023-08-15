@@ -112,8 +112,9 @@ namespace Vanaring_DepaDemo
                 PlayTriggerAnimation(_deadAnimationTrigger);
 
             yield return new WaitForSeconds(1.5f);
-
-            Destroy(_deadVisualEffect.gameObject) ; 
+             
+            Destroy(_deadVisualEffect.gameObject) ;
+            //Destroy(gameObject); 
             
         }
 
