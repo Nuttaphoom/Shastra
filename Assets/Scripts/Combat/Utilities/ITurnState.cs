@@ -18,7 +18,7 @@ namespace Vanaring_DepaDemo
 
 
         /// <summary>
-        /// Should be call after each action called to modify used data (like status effect) 
+        /// Should be call after each action called to modify used data (like status effect) (every entities are call at the same time) 
         /// </summary>
         /// <returns></returns>
         public abstract IEnumerator TurnLeave();
