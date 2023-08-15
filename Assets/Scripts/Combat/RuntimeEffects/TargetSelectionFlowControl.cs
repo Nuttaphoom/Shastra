@@ -103,7 +103,7 @@ public class TargetSelectionFlowControl : MonoBehaviour, IInputReceiver
     #endregion
 
     #region Private
-    public IEnumerator InitializeTargetSelectionScheme(CombatEntity caster, RuntimeEffectFactorySO action, bool randomTarget = false)
+    public IEnumerator InitializeTargetSelectionScheme(CombatEntity caster, RuntimeEffectFactorySO action, bool randomTarget = false )
     {
         if (_activlySelecting)
             throw new Exception("Try to active selection scheme while it is already active");
@@ -118,8 +118,8 @@ public class TargetSelectionFlowControl : MonoBehaviour, IInputReceiver
         _latestAction = null;
 
         ValidateData();
+        
         AssignPossibleTargets(caster, action);
-
 
         while (_selectedTarget.Count < action.TargetSelect.MaxTarget)
         {

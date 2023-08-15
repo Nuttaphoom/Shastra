@@ -132,7 +132,10 @@ namespace Vanaring_DepaDemo
         }
         public IEnumerator LeaveControl()
         {
+            Debug.Log("leave contorl");
             yield return _baseEntityBrain.TakeControlLeave();
+            Debug.Log("end leave control");
+            yield return null; 
         }
 
         public bool ReadyForControl()
@@ -198,9 +201,7 @@ namespace Vanaring_DepaDemo
         }
         public IEnumerator VisualHurt(CombatEntity attacker , string animationTrigger = "No Animation" )
         {
-            //Display DMG Text here
-
-            //Slow down time? 
+            bool _callingDeadScheme = false;
 
             List<IEnumerator> _coroutine = new List<IEnumerator>();
 
@@ -209,6 +210,7 @@ namespace Vanaring_DepaDemo
                 if (IsDead)
                 {
                     _coroutine.Add(_combatEntityAnimationHandler.DestroyVisualMesh());
+                    _callingDeadScheme = true;
                 }
                 _coroutine.Add(_combatEntityAnimationHandler.PlayTriggerAnimation(animationTrigger));
 
@@ -219,7 +221,7 @@ namespace Vanaring_DepaDemo
             yield return new WaitAll(this, _coroutine.ToArray());
 
             //If done playing animation, visually destroy the character (animation) not game object
-            if (IsDead)
+            if (IsDead && ! _callingDeadScheme)
             {
                 yield return _combatEntityAnimationHandler.DestroyVisualMesh();
             }

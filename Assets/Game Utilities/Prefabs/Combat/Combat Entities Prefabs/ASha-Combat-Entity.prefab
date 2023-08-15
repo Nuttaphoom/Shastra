@@ -941,6 +941,60 @@ Transform:
   m_Father: {fileID: 2159720148425567799}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1169257125069628753
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3311570827134004288}
+  - component: {fileID: 169194948566689175}
+  m_Layer: 0
+  m_Name: '**MainWindowManager'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &3311570827134004288
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1169257125069628753}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1839264023614919500}
+  m_Father: {fileID: 5406824363998679228}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &169194948566689175
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1169257125069628753}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2791c742874aa7a4c9cab1b670020240, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _combatGraphicalHandler: {fileID: 2733341415709263257}
+  _itemButton: {fileID: 7342847336402076526}
+  _spellButton: {fileID: 8093717086344109085}
+  _weaponButton: {fileID: 6627142040523212312}
 --- !u!1 &1185774560665239979
 GameObject:
   m_ObjectHideFlags: 0
@@ -2981,13 +3035,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   OnTargetSelectionSchemeStart: {fileID: 11400000, guid: 1e9050e9d3c378f448db94ea309439fc, type: 2}
   OnTargetSelectionSchemeEnd: {fileID: 11400000, guid: 92748f06eaa2f9149a5e17e38fedc1da, type: 2}
-  _itemButton: {fileID: 7342847336402076526}
-  _spellButton: {fileID: 8093717086344109085}
-  _weaponButton: {fileID: 6627142040523212312}
   _mainPanel: {fileID: 1839264023614919500}
   _spellPanel: {fileID: 8085337253353885301}
   _itemPanel: {fileID: 5692326943327022544}
   _mainCanvas: {fileID: 1015114493986690790}
+  _combatEntity: {fileID: 3631082374516079458}
+  _mainWindowManager: {fileID: 169194948566689175}
 --- !u!114 &3775299963121880759
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4121,7 +4174,7 @@ RectTransform:
   - {fileID: 4165129470981406826}
   - {fileID: 8085337253353885301}
   - {fileID: 5692326943327022544}
-  - {fileID: 1839264023614919500}
+  - {fileID: 3311570827134004288}
   m_Father: {fileID: 8226600624937237091}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -5468,11 +5521,11 @@ Transform:
   m_GameObject: {fileID: 5592570701718386852}
   m_LocalRotation: {x: -0, y: -0.0055598025, z: -0, w: 0.99998456}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 3.5247228, y: 3.5247233, z: 3.5247228}
+  m_LocalScale: {x: 3.524722, y: 3.5247233, z: 3.524722}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7335097581938548607}
-  m_Father: {fileID: 5406824363998679228}
+  m_Father: {fileID: 3311570827134004288}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: -0.637, z: 0}
 --- !u!95 &6657806213563350794
@@ -7409,7 +7462,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 6004218319511703668}
   - {fileID: 5338921008051095405}

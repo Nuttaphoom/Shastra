@@ -22,7 +22,9 @@ namespace Vanaring_DepaDemo
 
         private int startIndex = 0;
         private int endIndex = 2;
+        private int _currentIndex = 0;
 
+        private List<SpellSocketGUI> _spellSockets = new List<SpellSocketGUI>(); 
         // Start is called before the first frame update
         void Awake()
         {
@@ -46,11 +48,13 @@ namespace Vanaring_DepaDemo
         {
             int tmpNum = 0;
             int tmpSlotIndex = 0;
+            _spellSockets = new List<SpellSocketGUI>(); 
             foreach (SpellAbilitySO spellAbility in _combatEntity.SpellCaster.SpellAbilities)
             {
                 if (tmpNum >= start && tmpNum <= end)
                 {
                     SpellSocketGUI newSocket = Instantiate(_templatePrefab, _spellParent.transform);
+                    _spellSockets.Add(newSocket); 
                     newSocket.transform.position = _spellSocketGUITransformPos[tmpSlotIndex].transform.position;
                     newSocket.transform.localScale = _templatePrefab.transform.localScale;
                     newSocket.Init(spellAbility, _combatEntity);
@@ -62,7 +66,7 @@ namespace Vanaring_DepaDemo
             }
         }
 
-        private void LoadLowerSocketItem()
+        private bool LoadLowerSocketItem()
         {
             if(endIndex < _combatEntity.SpellCaster.SpellAbilities.Count - 1)
             {
@@ -70,10 +74,12 @@ namespace Vanaring_DepaDemo
                 startIndex++;
                 endIndex++;
                 LoadSpellSocketGUI(startIndex, endIndex);
+                return true;
             }
+            return false;
         }
 
-        private void LoadUpperSocketItem()
+        private bool LoadUpperSocketItem()
         {
             if(startIndex > 0)
             {
@@ -81,7 +87,9 @@ namespace Vanaring_DepaDemo
                 startIndex--;
                 endIndex--;
                 LoadSpellSocketGUI(startIndex, endIndex);
+                return true;
             }
+            return false;
         }
 
         private void ClearSpellSocketGUI()
@@ -95,13 +103,37 @@ namespace Vanaring_DepaDemo
             }
         }
 
+        // Update is called once per frame
+        void Update()
+        {
+            //if (Input.GetKeyDown(KeyCode.Alpha1))
+            //{
+            //    LoadUpperSocketItem();
+            //}
+            //if (Input.GetKeyDown(KeyCode.Alpha2))
+            //{
+            //    LoadLowerSocketItem();
+            //}
+            //if (Input.GetKeyDown(KeyCode.Alpha3))
+            //{
+            //    ClearSpellSocketGUI();
+            //}
+            //if (Input.GetKeyDown(KeyCode.Alpha4))
+            //{
+            //    LoadSpellSocketGUI(startIndex, endIndex);
+            //}
+
+        }
+
         public void TakeInputControl()
         {
+
             CentralInputReceiver.Instance().AddInputReceiverIntoStack(this);
         }
 
         public void ReleaseInputControl()
         {
+
             CentralInputReceiver.Instance().RemoveInputReceiverIntoStack(this);
         }
 
@@ -109,16 +141,37 @@ namespace Vanaring_DepaDemo
         {
             if (key == KeyCode.W)
             {
-                LoadUpperSocketItem() ;
+                _currentIndex -= 1;
+                if (_currentIndex < 0)
+                {
+                    LoadUpperSocketItem();
+
+                    _currentIndex = 0;
+                }
+
+                
             }
             else if (key == KeyCode.S)
             {
-                LoadLowerSocketItem() ;
-            }
-            else if (key == KeyCode.Escape)
+                _currentIndex += 1;
+
+                if (_currentIndex > _spellSockets.Count - 1 )
+                {
+                    LoadLowerSocketItem();
+                    _currentIndex -= 1; 
+
+                }
+                 
+
+            }else if (key == KeyCode.Escape)
             {
                 _graphicalHandler.EnableGraphicalElements(); 
+            }else if (key == KeyCode.Space)
+            {
+                _spellSockets[_currentIndex].CallButtonCallback(); 
             }
+
+           
         }
     }
 }
