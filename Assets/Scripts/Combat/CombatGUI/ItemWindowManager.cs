@@ -23,17 +23,19 @@ namespace Vanaring_DepaDemo
 
         private List<GameObject> _GUIinventoryObject;
         private List<ItemSocketGUI> _GUIinventory;
-        private void Update()
+
+        private CombatGraphicalHandler _graphicalHandler;
+        private void OnEnable()
         {
-            if (Input.GetKeyDown(KeyCode.Alpha3))
-            {
-                ResetGUIinventory();
-            }
-            if (Input.GetKeyDown(KeyCode.Alpha4))
-            {
-                UpdateItemSocket(_combatEntity.ItemUser.Items, _combatEntity.ItemUser.ItemsAmount);
-            }
+            //UpdateItemSocket(_combatEntity.ItemUser.Items, _combatEntity.ItemUser.ItemsAmount);
+            //TakeInputControl();
         }
+
+        private void OnDisable()
+        {
+            //ReleaseInputControl();
+        }
+
         // Start is called before the first frame update
         void Awake()
         {
@@ -41,6 +43,12 @@ namespace Vanaring_DepaDemo
             _GUIinventory = new List<ItemSocketGUI>();
             _itemInventoryData = new List<ItemAbilityRuntime>();
             _itemInventoryAmount = new List<int>();
+            
+            _templatePrefab.gameObject.SetActive(false);
+        }
+
+        private void Start()
+        {
             UpdateItemSocket(_combatEntity.ItemUser.Items, _combatEntity.ItemUser.ItemsAmount);
         }
 
@@ -54,6 +62,7 @@ namespace Vanaring_DepaDemo
         }
         public void UpdateItemSocket(List<ItemAbilityRuntime> updatedItemdata, List<int> updatedItemAmount)
         {
+            Debug.Log("Update");
             ResetGUIinventory();
             _itemInventoryData = updatedItemdata;
             _itemInventoryAmount = updatedItemAmount;
@@ -93,9 +102,6 @@ namespace Vanaring_DepaDemo
                 _GUIinventory.Add(newSocket);
                 _GUIinventoryObject.Add(newSocketObject);
             }
-
-            _templatePrefab.gameObject.SetActive(false);
-
         }
 
         private bool ItemIsContained(ItemAbilityRuntime itemAbility)
@@ -111,6 +117,55 @@ namespace Vanaring_DepaDemo
                 }
             }
             return found;
+        }
+        
+
+        private void LoadLowerSocketItem()
+        {
+            //if (endIndex < _combatEntity.SpellCaster.SpellAbilities.Count - 1)
+            //{
+            //    ResetGUIinventory();
+            //    startIndex++;
+            //    endIndex++;
+            //    LoadSpellSocketGUI(startIndex, endIndex);
+            //}
+        }
+
+        private void LoadUpperSocketItem()
+        {
+            //if (startIndex > 0)
+            //{
+            //    ResetGUIinventory();
+            //    startIndex--;
+            //    endIndex--;
+            //    LoadSpellSocketGUI(startIndex, endIndex);
+            //}
+        }
+
+        //public void TakeInputControl()
+        //{
+        //    CentralInputReceiver.Instance().AddInputReceiverIntoStack(this);
+        //}
+
+        //public void ReleaseInputControl()
+        //{
+        //    CentralInputReceiver.Instance().RemoveInputReceiverIntoStack(this);
+        //}
+
+        public void ReceiveKeys(KeyCode key)
+        {
+            if (key == KeyCode.W)
+            {
+                //LoadUpperSocketItem();
+            }
+            else if (key == KeyCode.S)
+            {
+                //LoadLowerSocketItem();
+            }
+            else if (key == KeyCode.Escape)
+            {
+                _graphicalHandler.EnableGraphicalElements();
+            }
         }
     }
 }

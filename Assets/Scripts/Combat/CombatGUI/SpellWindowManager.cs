@@ -95,37 +95,13 @@ namespace Vanaring_DepaDemo
             }
         }
 
-        // Update is called once per frame
-        void Update()
-        {
-            //if (Input.GetKeyDown(KeyCode.Alpha1))
-            //{
-            //    LoadUpperSocketItem();
-            //}
-            //if (Input.GetKeyDown(KeyCode.Alpha2))
-            //{
-            //    LoadLowerSocketItem();
-            //}
-            //if (Input.GetKeyDown(KeyCode.Alpha3))
-            //{
-            //    ClearSpellSocketGUI();
-            //}
-            //if (Input.GetKeyDown(KeyCode.Alpha4))
-            //{
-            //    LoadSpellSocketGUI(startIndex, endIndex);
-            //}
-
-        }
-
         public void TakeInputControl()
         {
-
             CentralInputReceiver.Instance().AddInputReceiverIntoStack(this);
         }
 
         public void ReleaseInputControl()
         {
-
             CentralInputReceiver.Instance().RemoveInputReceiverIntoStack(this);
         }
 
@@ -138,11 +114,10 @@ namespace Vanaring_DepaDemo
             else if (key == KeyCode.S)
             {
                 LoadLowerSocketItem() ;
-            }else if (key == KeyCode.Escape)
+            }
+            else if (key == KeyCode.Escape)
             {
                 _graphicalHandler.EnableGraphicalElements(); 
-
-
             }
         }
     }
