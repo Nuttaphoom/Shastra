@@ -53,7 +53,9 @@ namespace Vanaring_DepaDemo
             foreach (CombatEntity entity in _targets)
             {
                 List<StatusRuntimeEffect> havoc = entity.GetStatusEffectHandler().GetStatusRuntimeEffectWithEvokeKey(EEvokeKey.HAVOC, true);
-
+                foreach (var v in havoc)
+                    v.ForceExpire();
+                
                 entity.SpellCaster.ModifyEnergy(_energyModifierData.Side, _energyModifierData.Amount * havoc.Count);
 
             }

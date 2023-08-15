@@ -121,6 +121,8 @@ namespace Vanaring_DepaDemo
         }
 
 
+
+
         public IEnumerator TakeControl()
         {
             yield return _baseEntityBrain.TakeControl();
@@ -270,6 +272,13 @@ namespace Vanaring_DepaDemo
         public void UnSubOnDamageVisualEventEnd(UnityAction<int> argc)
         {
             _OnUpdateVisualDMGEnd -= argc;
+        }
+
+        public IEnumerator AfterGetAction()
+        {
+            Debug.Log("After getaction is called");
+            yield return GetStatusEffectHandler().RunStatusEffectExpiredScheme();
+            yield return _baseEntityBrain.AfterGetAction() ;
         }
 
 
