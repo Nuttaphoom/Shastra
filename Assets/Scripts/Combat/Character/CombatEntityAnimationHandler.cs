@@ -113,7 +113,7 @@ namespace Vanaring_DepaDemo
 
             yield return new WaitForSeconds(1.5f);
 
-            Destroy(_deadVisualEffect.gameObject); 
+            Destroy(_deadVisualEffect); 
             
         }
 
