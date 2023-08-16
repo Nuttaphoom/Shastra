@@ -6,13 +6,15 @@ using Unity.VisualScripting;
 
 namespace Vanaring_DepaDemo
 {
-    public class GameSceneSetUPManager : MonoBehaviour
+    public class CameraSetUPManager : MonoBehaviour
     {
-        public static GameSceneSetUPManager Instance; 
+        public enum CameraBlendMode { EASE_INOUT, CUT}
+        public static CameraSetUPManager Instance; 
         public enum CameraOffset { LEFT, MIDDLE, RIGHT };
         private bool IsTargetMode = false;
 
-        //Pass List<GameObject>
+        private CinemachineVirtualCamera _actionCamera;
+
         [Header("List of character/enemy order from left to right")]
         public List<GameObject> _enemyModelSetupList = new List<GameObject>();
         public List<GameObject> _characterModelSetupList = new List<GameObject>();
@@ -32,6 +34,8 @@ namespace Vanaring_DepaDemo
         [SerializeField]
         private TargetGUI _tgui;
 
+        public GameObject tempEntity;
+        public GameObject tempEntity1;
         private void Awake()
         {
             if (Instance != null)
@@ -39,7 +43,66 @@ namespace Vanaring_DepaDemo
             
             Instance = this;
         }
-    
+
+        private void Start()
+        {
+            //StartCoroutine(AttackActionCamera());
+        }
+        public void SetBlendMode(CameraBlendMode mode, float blendDuration)
+        {
+            CinemachineBrain cinemachineBrain = Camera.main.GetComponent<CinemachineBrain>();
+
+            if (cinemachineBrain != null)
+            {
+                if(mode == CameraBlendMode.EASE_INOUT)
+                {
+                    cinemachineBrain.m_DefaultBlend.m_Style = CinemachineBlendDefinition.Style.EaseInOut;
+                    cinemachineBrain.m_DefaultBlend.m_Time = blendDuration;
+                }
+                else
+                {
+                    cinemachineBrain.m_DefaultBlend.m_Style = CinemachineBlendDefinition.Style.Cut;
+                }
+            }
+            else
+            {
+                Debug.LogWarning("CinemachineBrain component not found on this GameObject.");
+            }
+        }
+        public void SetupAttackActionVirtualCamera(GameObject entity)
+        {
+            DeactivateAllVirtualCameras();
+            entity.GetComponent<CombatEntityAnimationHandler>().ActionCamera.gameObject.SetActive(true);
+        }
+
+        private void DeactivateAllVirtualCameras()
+        {
+            CinemachineVirtualCamera[] virtualCameras = FindObjectsOfType<CinemachineVirtualCamera>();
+
+            foreach (CinemachineVirtualCamera camera in virtualCameras)
+            {
+                camera.gameObject.SetActive(false);
+            }
+        }
+
+        private void SetEntityActionVirtualCamera(GameObject entity)
+        {
+             _actionCamera = entity.GetComponent<CombatEntityAnimationHandler>().ActionCamera;
+        }
+        private IEnumerator AttackActionCamera()
+        {
+            Debug.Log("ATCKKKKKKKKKKKKKKKKKK");
+            while (true)
+            {
+                SetupAttackActionVirtualCamera(tempEntity);
+                Debug.Log("1");
+                yield return new WaitForSeconds(1.0f);
+                SetupAttackActionVirtualCamera(tempEntity1);
+                Debug.Log("2");
+                yield return new WaitForSeconds(1.0f);
+            }
+        }
+
         #region GENERATOR
         public void GenerateEntityAttacher(List<GameObject> _characterModelSetupList, List<GameObject> _enemyModelSetupList)
         {

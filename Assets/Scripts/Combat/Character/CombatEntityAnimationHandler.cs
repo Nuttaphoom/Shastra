@@ -12,13 +12,13 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.VFX;
+using Cinemachine;
 
 namespace Vanaring_DepaDemo
 {
     [Serializable]
     public class CombatEntityAnimationHandler : MonoBehaviour
     {
-
         [SerializeField]
         private GameObject _mesh ;
 
@@ -29,7 +29,16 @@ namespace Vanaring_DepaDemo
         public VisualEffect _deadVisualEffect;
 
         [SerializeField]
-        private string _deadAnimationTrigger = "NONE"; 
+        private string _deadAnimationTrigger = "NONE";
+
+        [SerializeField]
+        private CinemachineVirtualCamera _actionCamera;
+
+        public CinemachineVirtualCamera ActionCamera
+        {
+            get { return _actionCamera; }
+            set { _actionCamera = value; }
+        }
 
         public Vector3 GetVFXSpawnPos()
         {
