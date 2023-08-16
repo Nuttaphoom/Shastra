@@ -56,7 +56,7 @@ namespace Vanaring_DepaDemo
                 foreach (var v in havoc)
                     v.ForceExpire();
                 
-                entity.SpellCaster.ModifyEnergy(_energyModifierData.Side, _energyModifierData.Amount * havoc.Count);
+                entity.SpellCaster.ModifyEnergy(caster, _energyModifierData.Side, _energyModifierData.Amount * havoc.Count);
 
             }
 

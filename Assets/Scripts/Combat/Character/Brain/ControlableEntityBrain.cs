@@ -45,7 +45,7 @@ namespace Vanaring_DepaDemo
                 //TODO - Properly check if we should modify the energy 
                 if (latestSpell != null)
                 {
-                    _combateEntity.SpellCaster.ModifyEnergy(latestSpell.ModifiedEnergySide, latestSpell.ModifiedEnergyAmount);
+                    _combateEntity.SpellCaster.ModifyEnergy(_combateEntity,latestSpell.ModifiedEnergySide, latestSpell.ModifiedEnergyAmount);
                 }
                 if (latestItem != null)
                 {
@@ -102,7 +102,7 @@ namespace Vanaring_DepaDemo
 
         public override IEnumerator AfterGetAction()
         {
-            yield return null; 
+            yield return null;
         }
     }
 }

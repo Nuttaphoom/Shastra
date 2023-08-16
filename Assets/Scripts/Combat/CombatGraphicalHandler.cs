@@ -152,7 +152,7 @@ namespace Vanaring_DepaDemo
                 _mainCanvas.gameObject.SetActive(false);
         }
 
-        private void OnEnergyUpdate(RuntimeMangicalEnergy.EnergySide side, int amount)
+        private void OnEnergyUpdate(CombatEntity caster, RuntimeMangicalEnergy.EnergySide side, int amount)
         {
             OnUpdateEntityStats();
          }

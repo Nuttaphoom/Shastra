@@ -65,7 +65,7 @@ namespace Vanaring_DepaDemo
             _owner.UnSubOnDamageVisualEvent(OnHPModified);
         }
         #region Energy
-        private void OnEnergyModified(RuntimeMangicalEnergy.EnergySide side , int val)
+        private void OnEnergyModified(CombatEntity caster, RuntimeMangicalEnergy.EnergySide side , int val)
         {
             if (side == RuntimeMangicalEnergy.EnergySide.LightEnergy)
             {

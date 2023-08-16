@@ -98,7 +98,7 @@ namespace Vanaring_DepaDemo
 
             coroutines.Add(target.VisualHurt(caster, _actionAnimation.TargetTrigerID) ) ;
 
-            target.SpellCaster.ModifyEnergy(_data.Side, _data.Amount);
+            target.SpellCaster.ModifyEnergy(caster,_data.Side, _data.Amount);
 
             yield return new WaitAll(caster, coroutines.ToArray()); 
 
