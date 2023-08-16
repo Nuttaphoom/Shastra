@@ -1,4 +1,5 @@
 ﻿
+using JetBrains.Annotations;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -206,7 +207,6 @@ namespace Vanaring_DepaDemo
 
                 while (actionCoroutine.MoveNext())
                 {
-
                     if (actionCoroutine.Current != null && actionCoroutine.Current.GetType().IsSubclassOf(typeof(RuntimeEffect)))
                     {
                         ColorfulLogger.LogWithColor("start action", Color.black); 
@@ -226,8 +226,15 @@ namespace Vanaring_DepaDemo
                         {
                             yield return new WaitForSecondsRealtime(2.0f);
                         }
+
                         //When the action is finish executed (like playing animation), end turn 
- 
+
+                        foreach (var e in GetCompetatorsBySide(ECompetatorSide.Ally))
+                            yield return e.AfterGetAction();
+
+                        foreach (var e in GetCompetatorsBySide(ECompetatorSide.Hostile))
+                            yield return e.AfterGetAction();
+
                         // entity's leave turn 
                         yield return SwitchControl(_currentEntityIndex, _currentEntityIndex);
 
@@ -266,7 +273,7 @@ namespace Vanaring_DepaDemo
                 //If GetAction is null, we wait for end of frame
                 yield return new WaitForEndOfFrame();
             }
-
+        
         End:
             foreach (CombatEntity entity in GetCompetatorsBySide(_currentSide))
             {
