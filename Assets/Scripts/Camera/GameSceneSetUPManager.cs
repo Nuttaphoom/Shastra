@@ -39,26 +39,7 @@ namespace Vanaring_DepaDemo
             
             Instance = this;
         }
-        private void Update()
-        {
-            ////just for debug
-            //if (Input.GetKeyDown(KeyCode.Alpha1))
-            //{
-            //    SelectCharacterCamera(Random.Range(0, _characterModelSetupList.Count));
-            //}
-            //if (Input.GetKeyDown(KeyCode.Alpha2))
-            //{
-            //    SelectCameraTarget(Random.Range(0, _enemyModelSetupList.Count));
-            //}
-            //if (Input.GetKeyDown(KeyCode.Alpha3))
-            //{
-            //    ToggleTargetMode();
-            //}
-            //if (Input.GetKeyDown(KeyCode.Alpha4))
-            //{
-            //    GenerateEntityAttacher(_characterModelSetupList, _enemyModelSetupList);
-            //}
-        }
+    
         #region GENERATOR
         public void GenerateEntityAttacher(List<GameObject> _characterModelSetupList, List<GameObject> _enemyModelSetupList)
         {
