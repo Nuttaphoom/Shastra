@@ -1,4 +1,5 @@
 ﻿
+using JetBrains.Annotations;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -209,7 +210,6 @@ namespace Vanaring_DepaDemo
 
                 while (actionCoroutine.MoveNext())
                 {
-
                     if (actionCoroutine.Current != null && actionCoroutine.Current.GetType().IsSubclassOf(typeof(RuntimeEffect)))
                     {
                         ColorfulLogger.LogWithColor("start action", Color.black); 
@@ -229,8 +229,15 @@ namespace Vanaring_DepaDemo
                         {
                             yield return new WaitForSecondsRealtime(2.0f);
                         }
+
                         //When the action is finish executed (like playing animation), end turn 
- 
+
+                        foreach (var e in GetCompetatorsBySide(ECompetatorSide.Ally))
+                            yield return e.AfterGetAction();
+
+                        foreach (var e in GetCompetatorsBySide(ECompetatorSide.Hostile))
+                            yield return e.AfterGetAction();
+
                         // entity's leave turn 
                         yield return SwitchControl(_currentEntityIndex, _currentEntityIndex);
 
@@ -270,7 +277,7 @@ namespace Vanaring_DepaDemo
                 //If GetAction is null, we wait for end of frame
                 yield return new WaitForEndOfFrame();
             }
-
+        
         End:
             foreach (CombatEntity entity in GetCompetatorsBySide(_currentSide))
             {
@@ -326,6 +333,7 @@ namespace Vanaring_DepaDemo
             if (prev != -1)
                 yield return _activeEntities[prev].LeaveControl();
 
+
             if (prev != next)
             {
                 for (int i = 0; i < GetCompetatorsBySide(ECompetatorSide.Ally).Count; i++)
@@ -338,11 +346,19 @@ namespace Vanaring_DepaDemo
                 }
 
                 yield return _activeEntities[next].TakeControl();
+
+
             }
+
 
         }
 
-        public IEnumerator ChangeActiveEntityIndex(bool increase = false, bool decrease = false)
+        public void ChangeActiveEntityIndex(bool increase = false, bool decrease = false)
+        {
+            StartCoroutine(ChangeActiveEntityIndexCoroutine(increase,decrease));
+        }
+
+        public IEnumerator ChangeActiveEntityIndexCoroutine(bool increase = false, bool decrease = false)
         {
             if (_activeEntities.Count > 0)
             {
@@ -355,6 +371,7 @@ namespace Vanaring_DepaDemo
 
                 if (temp != _currentEntityIndex)
                 {
+
                     yield return SwitchControl(temp, _currentEntityIndex);
                 }
             }
@@ -363,21 +380,23 @@ namespace Vanaring_DepaDemo
                 _currentEntityIndex = 0;
             }
 
+ 
+
         }
 
         public void ReceiveKeys(KeyCode key)
         {
-            if (_state == CombatState.WaitingForAction)
-            {
-                if (key == (KeyCode.D))
-                {
-                    StartCoroutine(ChangeActiveEntityIndex(true, false));
-                }
-                else if (key == (KeyCode.A))
-                {
-                    StartCoroutine(ChangeActiveEntityIndex(false, true));
-                }
-            }
+            //if (_state == CombatState.WaitingForAction)
+            //{
+            //    if (key == (KeyCode.D))
+            //    {
+            //        StartCoroutine(ChangeActiveEntityIndex(true, false));
+            //    }
+            //    else if (key == (KeyCode.A))
+            //    {
+            //        StartCoroutine(ChangeActiveEntityIndex(false, true));
+            //    }
+            //}
         }
 
         #endregion

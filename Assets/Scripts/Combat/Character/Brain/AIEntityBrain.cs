@@ -76,5 +76,10 @@ namespace Vanaring_DepaDemo
          
             
         }
+
+        public override IEnumerator AfterGetAction()
+        {
+            yield return null; 
+        }
     }
 }

@@ -97,5 +97,10 @@ namespace Vanaring_DepaDemo
                 _caster.SpellCaster.CastSpell(runtimeSpell)  ; 
             }
         }
+
+        public void CallButtonCallback()
+        {
+            _actionButton.onClick?.Invoke(); 
+        }
     }
 }

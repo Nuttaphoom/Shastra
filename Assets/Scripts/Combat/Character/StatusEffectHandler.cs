@@ -25,17 +25,16 @@ namespace Vanaring_DepaDemo
         [SerializeField]
         private StatusWindowManager _statusWindowManager;
 
-        private void InstantiateStatusUI(StatusRuntimeEffectFactorySO factory)
+        private void UpdateStatusUI()
         {
+            _statusWindowManager.ClearCurrentStatus();
             foreach (KeyValuePair<string, List<StatusRuntimeEffect>> entry in _effects)
             {
-                if (entry.Value != null)
-                {
-                    _statusWindowManager.InstantiateStatusUI(entry.Value[0], entry.Value.Count);
-                }
+                Debug.Log(_appliedEntity.gameObject.name + " have Buff : " + entry.Value.Count);
             }
+            _statusWindowManager.InstantiateStatusUI(_effects);
         }
-    
+
         //the effect should be factorize exactly before being applied 
         private IEnumerator LogicApplyNewEffect(StatusRuntimeEffectFactorySO factory )
         {
@@ -75,12 +74,8 @@ namespace Vanaring_DepaDemo
         {
             yield return LogicApplyNewEffect(factory);
             //create Status UI
-            InstantiateStatusUI(factory);
+            UpdateStatusUI();
 
-            //if (actionAnimationInfo.TargetVfxEntity != null)
-            //{
-            //    yield return _appliedEntity.CombatEntityAnimationHandler.PlayVFXActionAnimation<string>(actionAnimationInfo.TargetVfxEntity, _appliedEntity.CombatEntityAnimationHandler.PlayTriggerAnimation, actionAnimationInfo.TargetTrigerID);
-            //}
         }
 
 
@@ -161,6 +156,27 @@ namespace Vanaring_DepaDemo
         #endregion
 
 
+        public IEnumerator RunStatusEffectExpiredScheme()
+        {
+            foreach (var key in _effects.Keys)
+            {
+                for (int i = 0; i < _effects[key].Count; i++)
+                {
+                    StatusRuntimeEffect statusEffect = _effects[key][i];
+
+                    if (statusEffect.IsExpired())
+                    {
+                        //TODO - Remove status effect visually
+                        yield return statusEffect.OnStatusEffecExpire(_appliedEntity);
+                        _effects[key].RemoveAt(i);
+                        i--;
+                        continue;
+                    }
+                }
+            }
+            UpdateStatusUI();
+        }
+
         #region GETTER
         public List<StatusRuntimeEffect> GetStatusRuntimeEffectWithEvokeKey(EEvokeKey evokeKey, bool updateTTLAfterGet = true)
         {
@@ -184,26 +200,6 @@ namespace Vanaring_DepaDemo
 
             
             return ret;
-        }
-
-        public IEnumerator RunStatusEffectExpiredScheme()
-        {
-            foreach (var key in _effects.Keys)
-            {
-                for (int i = 0; i < _effects[key].Count; i++)
-                {
-                    StatusRuntimeEffect statusEffect = _effects[key][i];
-
-                    if (statusEffect.IsExpired() )
-                    {
-                        //TODO - Remove status effect visually
-                        yield return statusEffect.OnStatusEffecExpire(_appliedEntity);
-                        _effects[key].RemoveAt(i);
-                        i--;
-                        continue;
-                    }
-                }
-            }
         }
 
         #endregion

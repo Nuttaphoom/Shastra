@@ -9,7 +9,6 @@ using Vanaring_DepaDemo;
 
 namespace Vanaring_DepaDemo
 {
-    [RequireComponent(typeof(CombatEntity))]
     public class CombatGraphicalHandler : MonoBehaviour
     {
         [Header("Listen to ")]
@@ -19,13 +18,7 @@ namespace Vanaring_DepaDemo
         private CombatEntityEventChannel OnTargetSelectionSchemeEnd;
 
 
-        [Header("Button to bind call back") ] 
-        [SerializeField]
-        private Button _itemButton;
-        [SerializeField]
-        private Button _spellButton;
-        [SerializeField]
-        private Button _weaponButton;
+ 
 
         [Header("Panel and Canvas object (menu)")]
         [SerializeField]
@@ -36,24 +29,25 @@ namespace Vanaring_DepaDemo
         private Transform _itemPanel;
 
         [SerializeField]
-        private GameObject _mainCanvas; 
+        private GameObject _mainCanvas;
 
-        private CombatEntity _combatEntity; 
+        [SerializeField]
+        private CombatEntity _combatEntity;
+
+        [SerializeField]
+        private MainWindowManager _mainWindowManager; 
 
         private void Awake()
         {
-            if (_itemButton == null || _spellButton == null || _weaponButton == null)
-                throw new Exception("Buttons hasn't been correctly assigned");
+  
 
             if (_mainCanvas == null)
-                throw new Exception("Main Canvas hasn't been assigned"); 
+                throw new Exception("Main Canvas hasn't been assigned");
 
-            _combatEntity = GetComponent<CombatEntity>();
-
-
-            _itemButton.onClick.AddListener(() => { DisplayItemPanel(); });
-            _spellButton.onClick.AddListener(() => { DisplaySpellPanel(); });
-            _weaponButton.onClick.AddListener(() => { DisplayWeaponPanel(); });
+            if (_combatEntity.GetComponent<CombatEntity>() == null)
+                throw new Exception("Combat Entiy hasn't been assigned");
+              
+ 
         }
 
         private void OnEnable()
@@ -74,13 +68,13 @@ namespace Vanaring_DepaDemo
 
         }
 
-        private void DisplayItemPanel()
+        public void DisplayItemPanel()
         {
             _mainPanel.gameObject.SetActive(false);
             _itemPanel.gameObject.SetActive(true);
         }
 
-        private void DisplaySpellPanel()
+        public void DisplaySpellPanel()
         {
             _mainPanel.gameObject.SetActive(false);
             _spellPanel.gameObject.SetActive(true) ;
@@ -89,7 +83,7 @@ namespace Vanaring_DepaDemo
 
         }
 
-        private void DisplayWeaponPanel()
+        public void DisplayWeaponPanel()
         {
 
         }
@@ -117,6 +111,18 @@ namespace Vanaring_DepaDemo
             _mainPanel.gameObject.SetActive(true) ;
             _spellPanel.gameObject.SetActive(false);
             _itemPanel.gameObject.SetActive(false);
+        }
+
+        public void TakeControl()
+        {
+            EnableGraphicalElements();
+            _mainWindowManager.TakeInputControl(); 
+        }
+
+        public void TakeControlLeave()
+        {
+            DisableGraphicalElements() ;
+            _mainWindowManager.ReleaseInputControl();
         }
 
         #region EventListener
@@ -149,7 +155,7 @@ namespace Vanaring_DepaDemo
         private void OnEnergyUpdate(RuntimeMangicalEnergy.EnergySide side, int amount)
         {
             OnUpdateEntityStats();
-        }
+         }
 
         #endregion
 
