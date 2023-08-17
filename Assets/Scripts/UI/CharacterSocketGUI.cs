@@ -24,6 +24,8 @@ namespace Vanaring_DepaDemo
         [SerializeField]
         private TextMeshProUGUI hpNumText;
 
+        [SerializeField]
+        private StatusWindowManager _statusWindow;
 
         private int hpVal;
         private int maxHpVal;
@@ -68,6 +70,8 @@ namespace Vanaring_DepaDemo
             hpVal = _combatEntity.StatsAccumulator.GetHPAmount();
             maxHpVal = _combatEntity.StatsAccumulator.GetHPAmount();
             UpdateHPScaleGUI();
+
+            _statusWindow.SetCombatEntity(combatEntity);
         }
         private void UpdateHPScaleGUI()
         {

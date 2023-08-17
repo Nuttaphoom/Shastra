@@ -15,6 +15,9 @@ namespace Vanaring_DepaDemo
         [SerializeField]
         private Transform[] _setOfStatusUIPosition;
 
+        [SerializeField]
+        private Transform _layout;
+
         //magic number :D
         private List<GameObject> currentStatusObject;
 
@@ -22,10 +25,16 @@ namespace Vanaring_DepaDemo
         {
             _templatePrefab.gameObject.SetActive(false);
             currentStatusObject = new List<GameObject>();
+            if (_combatEntity != null)
+            {
+                _combatEntity.GetStatusEffectHandler().SubOnStatusVisualEvent(UpdateStatusUI);
+            }
         }
 
         public void InstantiateStatusUI(Dictionary<string, List<StatusRuntimeEffect>> effects)
         {
+            Debug.Log("InstantiateStatusUI InstantiateStatusUI InstantiateStatusUI InstantiateStatusUI");
+
             foreach (KeyValuePair<string, List<StatusRuntimeEffect>> entry in effects)
             {
                 if (entry.Value != null && entry.Value.Count != 0)
@@ -36,8 +45,9 @@ namespace Vanaring_DepaDemo
                     {
                         count = 0;
                     }
-                    newSocket.transform.parent = _setOfStatusUIPosition[count].transform;
-                    newSocket.transform.localScale = _templatePrefab.transform.localScale;
+
+                    newSocket.transform.parent = _layout.transform;
+                    newSocket.transform.localScale = _setOfStatusUIPosition[count].transform.localScale;
 
                     currentStatusObject.Add(newSocket.gameObject);
 
@@ -50,10 +60,24 @@ namespace Vanaring_DepaDemo
 
         public void ClearCurrentStatus()
         {
+            Debug.Log("ClearCurrentStatus ClearCurrentStatus ClearCurrentStatus ClearCurrentStatus");
             foreach (GameObject eSocketObj in currentStatusObject)
             {
                 Destroy(eSocketObj);
             }
+        }
+
+        public void SetCombatEntity(CombatEntity entity)
+        {
+            _combatEntity = entity;
+
+            _combatEntity.GetStatusEffectHandler().SubOnStatusVisualEvent(UpdateStatusUI);
+        }
+
+        public void UpdateStatusUI(Dictionary<string, List<StatusRuntimeEffect>> effects)
+        {
+            this.ClearCurrentStatus();
+            this.InstantiateStatusUI(effects);
         }
     }
 }
