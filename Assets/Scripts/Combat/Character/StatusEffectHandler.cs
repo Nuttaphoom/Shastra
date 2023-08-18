@@ -24,6 +24,8 @@ namespace Vanaring_DepaDemo
         private CombatEntity _appliedEntity;
         Dictionary<string, List<StatusRuntimeEffect>> _effects = new Dictionary<string, List<StatusRuntimeEffect>>();
 
+        public Dictionary<string, List<StatusRuntimeEffect>> Effects => _effects;
+
         //[SerializeField]
         //private StatusWindowManager _statusWindowManager;
 

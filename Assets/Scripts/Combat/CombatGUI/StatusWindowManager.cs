@@ -33,8 +33,6 @@ namespace Vanaring_DepaDemo
 
         public void InstantiateStatusUI(Dictionary<string, List<StatusRuntimeEffect>> effects)
         {
-            Debug.Log("InstantiateStatusUI InstantiateStatusUI InstantiateStatusUI InstantiateStatusUI");
-
             foreach (KeyValuePair<string, List<StatusRuntimeEffect>> entry in effects)
             {
                 if (entry.Value != null && entry.Value.Count != 0)
@@ -60,7 +58,6 @@ namespace Vanaring_DepaDemo
 
         public void ClearCurrentStatus()
         {
-            Debug.Log("ClearCurrentStatus ClearCurrentStatus ClearCurrentStatus ClearCurrentStatus");
             foreach (GameObject eSocketObj in currentStatusObject)
             {
                 Destroy(eSocketObj);
