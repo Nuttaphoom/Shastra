@@ -73,6 +73,7 @@ namespace Vanaring_DepaDemo
             {
                 if (coroutine.Current != null && coroutine.Current is RuntimeEffect)
                 {
+                    Debug.Log("assign action");
                     _action = (RuntimeEffect)coroutine.Current;
                 } 
             }
@@ -83,8 +84,7 @@ namespace Vanaring_DepaDemo
             if (_combatGraphicalHandler == null)
                 _combatGraphicalHandler = GetComponent<CombatGraphicalHandler>();
 
-            _combatGraphicalHandler.TakeControl();
-            yield return null;
+            yield return _combatGraphicalHandler.TakeControl();
         }
 
         public override IEnumerator TakeControlLeave()

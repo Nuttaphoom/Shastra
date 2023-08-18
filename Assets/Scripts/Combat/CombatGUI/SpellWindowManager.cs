@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Vanaring_DepaDemo
 {
-    public class SpellWindowManager : MonoBehaviour, IInputReceiver 
+    public class SpellWindowManager : HierarchyUIWindow, IInputReceiver 
     {
         [SerializeField]
         private CombatEntity _combatEntity;  
@@ -24,8 +24,10 @@ namespace Vanaring_DepaDemo
         private int endIndex = 2;
         private int _currentIndex = 0;
 
-        private List<SpellSocketGUI> _spellSockets = new List<SpellSocketGUI>(); 
+        private List<SpellSocketGUI> _spellSockets = new List<SpellSocketGUI>();
         // Start is called before the first frame update
+
+        private CombatGraphicalHandler _combatGraphicalHandler ; 
         void Awake()
         {
 
@@ -34,15 +36,7 @@ namespace Vanaring_DepaDemo
             _templatePrefab.gameObject.SetActive(false);  
         }
 
-        private void OnEnable()
-        {
-            TakeInputControl();
-        }
-
-        private void OnDisable()
-        {
-            ReleaseInputControl(); 
-        }
+      
 
         private void LoadSpellSocketGUI(int start, int end)
         {
@@ -125,20 +119,12 @@ namespace Vanaring_DepaDemo
 
         }
 
-        public void TakeInputControl()
-        {
-
-            CentralInputReceiver.Instance().AddInputReceiverIntoStack(this);
-        }
-
-        public void ReleaseInputControl()
-        {
-
-            CentralInputReceiver.Instance().RemoveInputReceiverIntoStack(this);
-        }
+      
 
         public void ReceiveKeys(KeyCode key)
         {
+            Debug.Log("spell window on receiver key");
+
             if (key == KeyCode.W)
             {
                 _currentIndex -= 1;
@@ -165,13 +151,30 @@ namespace Vanaring_DepaDemo
 
             }else if (key == KeyCode.Escape)
             {
-                _graphicalHandler.EnableGraphicalElements(); 
-            }else if (key == KeyCode.Space)
+                this._combatGraphicalHandler.DisplayMainMenu(); 
+            }
+            else if (key == KeyCode.Space)
             {
                 _spellSockets[_currentIndex].CallButtonCallback(); 
             }
 
            
+        }
+
+        public override void OnWindowDisplay(CombatGraphicalHandler graophicalHandler)
+        {
+
+            this._combatGraphicalHandler = graophicalHandler;
+            CentralInputReceiver.Instance().AddInputReceiverIntoStack(this);
+            SetGraphicMenuActive(true); 
+        }
+
+        public override void OnWindowOverlayed()
+        {
+
+            CentralInputReceiver.Instance().RemoveInputReceiverIntoStack(this);
+
+            SetGraphicMenuActive(false); 
         }
     }
 }

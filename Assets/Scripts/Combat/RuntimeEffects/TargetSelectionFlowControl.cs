@@ -39,25 +39,32 @@ public class TargetSelectionFlowControl : MonoBehaviour, IInputReceiver
     private void Awake()
     {
         Instance = this;
-        _targetSelectionGUI.Initialize(this); 
+        _targetSelectionGUI.Initialize(transform); 
     }
 
-    private void ForceStop()
+    public void ForceStop()
     {
-        _activlySelecting = false ;
-        _latestAction = null ;
-        _forceStop = true ;
-        _latestSelectedSpell = null; 
+        if (_activlySelecting)
+        {
+            _activlySelecting = false;
+            _latestAction = null;
+            _forceStop = true;
+            _latestSelectedSpell = null;
+            _latestSelectedItem = null; 
+        }
     }
 
     public (RuntimeEffectFactorySO, List<CombatEntity>) GetLatestAction()
     {
+        var tempAction = _latestAction; 
         if (PrepareAction()) {
             _activlySelecting = false;
             _latestSelectedSpell = null;
-            _latestSelectedItem = null; 
+            _latestSelectedItem = null;
+            _latestAction = null; 
+
         }
-        return (_latestAction, _selectedTarget);
+        return (tempAction, _selectedTarget);
     }
 
     //TODO : Properly separate Spell action so that we don't need to return the spell like this
@@ -103,6 +110,41 @@ public class TargetSelectionFlowControl : MonoBehaviour, IInputReceiver
     #endregion
 
     #region Private
+    public IEnumerator InitializeTargetSelectionSchemeWithoutSelect(List<CombatEntity> _targets)
+    {
+        if (_activlySelecting)
+            throw new Exception("Try to active selection scheme while it is already active");
+
+        _activlySelecting = true;
+        ValidateData();
+
+        foreach (var v in _targets)
+        {
+            _validTargets.Add(v); 
+        }
+
+        while (true)
+        {
+            if (_forceStop)
+            {
+                _forceStop = false;
+                ColorfulLogger.LogWithColor("Cancel Target Selection", Color.green);
+                goto End;
+            }
+
+            _targetSelectionGUI.SelectTargetPointer(_validTargets[_currentSelectIndex]);
+
+            yield return null; 
+
+            yield return _validTargets[_currentSelectIndex];
+
+        }
+
+    End: 
+        _targetSelectionGUI.EndSelectionScheme();
+        _activlySelecting = false;
+    }
+
     public IEnumerator InitializeTargetSelectionScheme(CombatEntity caster, RuntimeEffectFactorySO action, bool randomTarget = false )
     {
         if (_activlySelecting)
