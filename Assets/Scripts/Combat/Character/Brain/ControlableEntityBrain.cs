@@ -45,7 +45,7 @@ namespace Vanaring_DepaDemo
                 //TODO - Properly check if we should modify the energy 
                 if (latestSpell != null)
                 {
-                    _combateEntity.SpellCaster.ModifyEnergy(latestSpell.ModifiedEnergySide, latestSpell.ModifiedEnergyAmount);
+                    _combateEntity.SpellCaster.ModifyEnergy(_combateEntity,latestSpell.ModifiedEnergySide, latestSpell.ModifiedEnergyAmount);
                 }
                 if (latestItem != null)
                 {
@@ -73,6 +73,7 @@ namespace Vanaring_DepaDemo
             {
                 if (coroutine.Current != null && coroutine.Current is RuntimeEffect)
                 {
+                    Debug.Log("assign action");
                     _action = (RuntimeEffect)coroutine.Current;
                 } 
             }
@@ -83,8 +84,7 @@ namespace Vanaring_DepaDemo
             if (_combatGraphicalHandler == null)
                 _combatGraphicalHandler = GetComponent<CombatGraphicalHandler>();
 
-            _combatGraphicalHandler.TakeControl();
-            yield return null;
+            yield return _combatGraphicalHandler.TakeControl();
         }
 
         public override IEnumerator TakeControlLeave()
@@ -102,7 +102,7 @@ namespace Vanaring_DepaDemo
 
         public override IEnumerator AfterGetAction()
         {
-            yield return null; 
+            yield return null;
         }
     }
 }

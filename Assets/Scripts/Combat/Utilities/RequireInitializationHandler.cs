@@ -14,9 +14,5 @@ namespace Vanaring_DepaDemo
         {
             throw new System.Exception("RequireInitializationHandler hasn't been inited");
         }
-
-        private void UpdateHPBar(int remainingHP) { 
-        //Dostuffs
-        } 
     }
 }

@@ -134,9 +134,7 @@ namespace Vanaring_DepaDemo
         }
         public IEnumerator LeaveControl()
         {
-            Debug.Log("leave contorl");
             yield return _baseEntityBrain.TakeControlLeave();
-            Debug.Log("end leave control");
             yield return null; 
         }
 
@@ -276,7 +274,6 @@ namespace Vanaring_DepaDemo
 
         public IEnumerator AfterGetAction()
         {
-            Debug.Log("After getaction is called");
             yield return GetStatusEffectHandler().RunStatusEffectExpiredScheme();
             yield return _baseEntityBrain.AfterGetAction() ;
         }

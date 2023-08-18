@@ -342,10 +342,7 @@ namespace Vanaring_DepaDemo
 
                 yield return _activeEntities[next].TakeControl();
 
-
             }
-
-
         }
 
         public void ChangeActiveEntityIndex(bool increase = false, bool decrease = false)

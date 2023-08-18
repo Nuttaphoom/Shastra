@@ -10,7 +10,7 @@ using Vanaring_DepaDemo;
 
 namespace Vanaring_DepaDemo
 {
-    public class MainWindowManager : MonoBehaviour, IInputReceiver
+    public class MainWindowManager : HierarchyUIWindow, IInputReceiver
     {
         [SerializeField]
         private CombatGraphicalHandler _combatGraphicalHandler;
@@ -25,10 +25,17 @@ namespace Vanaring_DepaDemo
 
         private int _currentSelectedWindow = 0;
 
-        private List<Button> _buttons; 
+        private List<Button> _buttons;
+
+        [SerializeField]
+        private TargetSelectionGUI _targetSelectionGUI;
+
+        private Coroutine _targetingCoroutine = null;
 
         private void Awake()
         {
+            _targetSelectionGUI.Initialize(transform) ; 
+            
             _buttons = new List<Button>();
             if (_itemButton == null || _spellButton == null || _weaponButton == null)
                 throw new Exception("Buttons hasn't been correctly assigned");
@@ -49,13 +56,22 @@ namespace Vanaring_DepaDemo
 
         public void TakeInputControl()
         {
+
             _currentSelectedWindow = 0;
             CentralInputReceiver.Instance().AddInputReceiverIntoStack(this);
+
+            
+
         }
 
         public void ReleaseInputControl()
         {
+
             CentralInputReceiver.Instance().RemoveInputReceiverIntoStack(this);
+            TargetSelectionFlowControl.Instance.ForceStop();
+
+
+
         }
 
         public void ReceiveKeys(KeyCode key)
@@ -78,17 +94,25 @@ namespace Vanaring_DepaDemo
             else if (key == KeyCode.Space)
             {
                 _buttons[_currentSelectedWindow].onClick?.Invoke();
-
             }
-            else if (key == (KeyCode.D))
+            else if (key == (KeyCode.Q))
             {
+                TargetSelectionFlowControl.Instance.ForceStop();
 
                 CombatReferee.instance.ChangeActiveEntityIndex(true, false) ;
             }
-            else if (key == (KeyCode.A))
+            else if (key == (KeyCode.E))
             {
+                TargetSelectionFlowControl.Instance.ForceStop();
 
                 CombatReferee.instance.ChangeActiveEntityIndex(false, true);
+            }
+            else if (key == (KeyCode.D))
+            {
+                TargetSelectionFlowControl.Instance.ReceiveKeys(KeyCode.D);
+            }else if (key == (KeyCode.A))
+            {
+                TargetSelectionFlowControl.Instance.ReceiveKeys(KeyCode.A);
             }
 
 
@@ -99,9 +123,33 @@ namespace Vanaring_DepaDemo
             }
         }
 
+        private IEnumerator TargettingTarget()
+        {
+            IEnumerator coroutine = (TargetSelectionFlowControl.Instance.InitializeTargetSelectionSchemeWithoutSelect(CombatReferee.instance.GetCompetatorsBySide(ECompetatorSide.Hostile)));
+            while (coroutine.MoveNext())
+            {
+                if (coroutine.Current != null && coroutine.Current.GetType().IsSubclassOf(typeof(CombatEntity)))
+                {
+                    //POTAE DO SOMETHING HERE
+                }
+                yield return null;
+            }
+        } 
+        public override void OnWindowDisplay(CombatGraphicalHandler graophicalHandler)
+        {
+            CentralInputReceiver.Instance().AddInputReceiverIntoStack(this);
+            _targetingCoroutine = StartCoroutine(TargettingTarget());
+            SetGraphicMenuActive(true);
 
+        }
 
+        public override void OnWindowOverlayed()
+        {
+            TargetSelectionFlowControl.Instance.ForceStop();
+            CentralInputReceiver.Instance().RemoveInputReceiverIntoStack(this);
 
+            SetGraphicMenuActive(false);
+        }
     }
 }
 

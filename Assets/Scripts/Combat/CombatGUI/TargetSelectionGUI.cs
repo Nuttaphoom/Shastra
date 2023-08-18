@@ -6,7 +6,7 @@ using UnityEngine;
 using Vanaring_DepaDemo;
 
 [Serializable]
-public class TargetSelectionGUI  : RequireInitializationHandler<TargetSelectionFlowControl,Null,Null>
+public class TargetSelectionGUI  : RequireInitializationHandler<Transform,Null,Null>
 {
     [SerializeField]
     private TargetGUI targetGUI;
@@ -16,11 +16,11 @@ public class TargetSelectionGUI  : RequireInitializationHandler<TargetSelectionF
 
     private List<GameObject> _poolTargetGUI = new List<GameObject>(); 
 
-    TargetSelectionFlowControl _currentFlowControl;
+    Transform _parent ;
 
-    public override void Initialize(TargetSelectionFlowControl argc, Null argv = null, Null argg = null)
+    public override void Initialize(Transform argc, Null argv = null, Null argg = null)
     {
-        _currentFlowControl = argc;
+        _parent = argc;
         SetInit(true) ; 
     }
 
@@ -46,7 +46,7 @@ public class TargetSelectionGUI  : RequireInitializationHandler<TargetSelectionF
                 _poolTargetGUI.RemoveAt(0); 
             } else
             {
-                _instantiatedTargetGUI.Add(combatEntity, targetGUI.Init(combatEntity.CombatEntityAnimationHandler.GetVFXSpawnPos(), _currentFlowControl.transform));
+                _instantiatedTargetGUI.Add(combatEntity, targetGUI.Init(combatEntity.CombatEntityAnimationHandler.GetVFXSpawnPos(), _parent));
             }
         }
 

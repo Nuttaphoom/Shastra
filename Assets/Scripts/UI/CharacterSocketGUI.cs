@@ -88,7 +88,7 @@ namespace Vanaring_DepaDemo
             StartCoroutine(IEAnimateHPBarScale(hpVal));
         }
 
-        private void OnEnergyModified(RuntimeMangicalEnergy.EnergySide side, int val)
+        private void OnEnergyModified(CombatEntity caster, RuntimeMangicalEnergy.EnergySide side, int val)
         {
             //Debug.Log("mammmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm");
             if (side == RuntimeMangicalEnergy.EnergySide.LightEnergy)

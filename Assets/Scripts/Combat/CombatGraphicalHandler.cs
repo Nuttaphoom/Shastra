@@ -18,15 +18,16 @@ namespace Vanaring_DepaDemo
         private CombatEntityEventChannel OnTargetSelectionSchemeEnd;
 
 
- 
 
         [Header("Panel and Canvas object (menu)")]
         [SerializeField]
-        private Transform _mainPanel;
+        private SpellWindowManager _spellWindowManager;
         [SerializeField]
-        private Transform _spellPanel;
+        private ItemWindowManager _itemWindowManager;
         [SerializeField]
-        private Transform _itemPanel;
+        private MainWindowManager _mainWindowManager;
+
+        private EntityWindowManager _entityWindowManager; 
 
         [SerializeField]
         private GameObject _mainCanvas;
@@ -34,25 +35,22 @@ namespace Vanaring_DepaDemo
         [SerializeField]
         private CombatEntity _combatEntity;
 
-        [SerializeField]
-        private MainWindowManager _mainWindowManager; 
+
 
         private void Awake()
         {
-  
-
             if (_mainCanvas == null)
                 throw new Exception("Main Canvas hasn't been assigned");
 
             if (_combatEntity.GetComponent<CombatEntity>() == null)
                 throw new Exception("Combat Entiy hasn't been assigned");
-              
- 
+
+            _entityWindowManager = new EntityWindowManager(); 
         }
 
         private void OnEnable()
         {
-            _combatEntity.SubOnDamageVisualEvent(OnVisualHurtUpdate);
+            _combatEntity.SubOnDamageVisualEvent(OnUpdateEntityStats);
             _combatEntity.SubOnDamageVisualEventEnd(OnVisualHurtUpdateEnd); 
             OnTargetSelectionSchemeStart.SubEvent(OnTargetSelectionStart_DisableUI) ;
             OnTargetSelectionSchemeEnd.SubEvent(OnTargetSelectionEnd_EnableUI);
@@ -63,24 +61,18 @@ namespace Vanaring_DepaDemo
         {
             OnTargetSelectionSchemeStart.UnSubEvent(OnTargetSelectionStart_DisableUI);
             OnTargetSelectionSchemeEnd.UnSubEvent(OnTargetSelectionEnd_EnableUI); 
-            _combatEntity.UnSubOnDamageVisualEvent(OnVisualHurtUpdate);
+            _combatEntity.UnSubOnDamageVisualEvent(OnUpdateEntityStats);
             _combatEntity.UnSubOnDamageVisualEventEnd(OnVisualHurtUpdateEnd);
-
         }
 
         public void DisplayItemPanel()
         {
-            _mainPanel.gameObject.SetActive(false);
-            _itemPanel.gameObject.SetActive(true);
+            _entityWindowManager.PushInNewWindow(_itemWindowManager); 
         }
 
         public void DisplaySpellPanel()
         {
-            _mainPanel.gameObject.SetActive(false);
-            _spellPanel.gameObject.SetActive(true) ;
-            _itemPanel.gameObject.SetActive(false);
-
-
+            _entityWindowManager.PushInNewWindow(_spellWindowManager);
         }
 
         public void DisplayWeaponPanel()
@@ -90,60 +82,56 @@ namespace Vanaring_DepaDemo
 
         public void DisableMenuElements()
         {
-            _spellPanel.gameObject.SetActive(false);
-            _itemPanel.gameObject.SetActive(false);
-            _mainPanel.gameObject.SetActive(false);
-
-
+            _entityWindowManager.ClearStack(); 
+            //_spellPanel.gameObject.SetActive(false);
+            //_itemPanel.gameObject.SetActive(false);
+            //_mainPanel.gameObject.SetActive(false);
         }
 
-        public void DisableGraphicalElements()
+        public void DisplayMainMenu()
         {
-            _mainPanel.gameObject.SetActive(false);
-            _spellPanel.gameObject.SetActive(false);
-            _itemPanel.gameObject.SetActive(false);
-            _mainCanvas.gameObject.SetActive(false);
+            Debug.Log("display main menu");
+            _entityWindowManager.ClearStack();
+
+            _entityWindowManager.PushInNewWindow(_mainWindowManager);
         }
 
-        public void EnableGraphicalElements()
+        public IEnumerator TakeControl()
         {
-            _mainCanvas.gameObject.SetActive(true); 
-            _mainPanel.gameObject.SetActive(true) ;
-            _spellPanel.gameObject.SetActive(false);
-            _itemPanel.gameObject.SetActive(false);
-        }
+            _entityWindowManager.ClearStack();
 
-        public void TakeControl()
-        {
-            EnableGraphicalElements();
-            _mainWindowManager.TakeInputControl(); 
+            _entityWindowManager.SetNewEntity(this);
+            DisplayMainMenu(); 
+
+             _mainWindowManager.TakeInputControl();
+
+            yield return null; 
         }
 
         public void TakeControlLeave()
         {
-            DisableGraphicalElements() ;
+            DisableMenuElements() ;
             _mainWindowManager.ReleaseInputControl();
         }
 
         #region EventListener
         private void OnTargetSelectionStart_DisableUI(CombatEntity _combatEntity)
         {
-            _mainPanel.gameObject.SetActive(false);
-            _spellPanel.gameObject.SetActive(false);
-            _itemPanel.gameObject.SetActive(false);
+            DisableMenuElements(); 
+            //_mainPanel.gameObject.SetActive(false);
+            //_spellPanel.gameObject.SetActive(false);
+            //_itemPanel.gameObject.SetActive(false);
         }
 
         private void OnTargetSelectionEnd_EnableUI(CombatEntity combatEntity)
         {
-            if (_combatEntity == combatEntity)
-            {
-                _mainPanel.gameObject.SetActive(true);
-            } 
-        }
+           // _entityWindowManager.PushInNewWindow(_mainWindowManager);
 
-        private void OnVisualHurtUpdate(int i )
-        {
-            OnUpdateEntityStats(); 
+
+            //if (_combatEntity == combatEntity)
+            //{
+            //    _mainPanel.gameObject.SetActive(true);
+            //} 
         }
 
         private void OnVisualHurtUpdateEnd(int i)
@@ -152,14 +140,14 @@ namespace Vanaring_DepaDemo
                 _mainCanvas.gameObject.SetActive(false);
         }
 
-        private void OnEnergyUpdate(RuntimeMangicalEnergy.EnergySide side, int amount)
+        private void OnEnergyUpdate(CombatEntity caster, RuntimeMangicalEnergy.EnergySide side, int amount)
         {
-            OnUpdateEntityStats();
+            OnUpdateEntityStats(0);
          }
 
         #endregion
 
-        private void OnUpdateEntityStats()
+        private void OnUpdateEntityStats(int i)
         {
             if(!_mainCanvas.activeSelf)
                 _mainCanvas.gameObject.SetActive(true);

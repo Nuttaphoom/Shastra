@@ -35,6 +35,7 @@ namespace Vanaring_DepaDemo
     {
         private EnergyModifierData _data;
         private ActionAnimationInfo _actionAnimationInfo;
+        private CombatEntity _caster; 
         public EnergyModifierRuntimeEffect(EnergyModifierData data, ActionAnimationInfo actionAnimation)
         {
             _actionAnimationInfo = actionAnimation; 
@@ -42,6 +43,7 @@ namespace Vanaring_DepaDemo
         }
         public override IEnumerator ExecuteRuntimeCoroutine(CombatEntity caster)
         {
+            _caster = caster;
             foreach (var target in _targets)
             {
                 CombatEntity entity = target;
@@ -51,7 +53,7 @@ namespace Vanaring_DepaDemo
 
         private IEnumerator ModifyenergyCoroutine(CombatEntity target)
         {
-            target.SpellCaster.ModifyEnergy(_data.Side, _data.Amount);
+            target.SpellCaster.ModifyEnergy(_caster, _data.Side, _data.Amount);
             yield return null; 
         }
 

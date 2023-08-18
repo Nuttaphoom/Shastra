@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Vanaring_DepaDemo
 {
-    public class ItemWindowManager : MonoBehaviour
+    public class ItemWindowManager : HierarchyUIWindow
     {
         [SerializeField]
         private CombatEntity _combatEntity;
@@ -25,16 +25,7 @@ namespace Vanaring_DepaDemo
         private List<ItemSocketGUI> _GUIinventory;
 
         private CombatGraphicalHandler _graphicalHandler;
-        private void OnEnable()
-        {
-            //UpdateItemSocket(_combatEntity.ItemUser.Items, _combatEntity.ItemUser.ItemsAmount);
-            //TakeInputControl();
-        }
-
-        private void OnDisable()
-        {
-            //ReleaseInputControl();
-        }
+        
 
         // Start is called before the first frame update
         void Awake()
@@ -162,10 +153,17 @@ namespace Vanaring_DepaDemo
             {
                 //LoadLowerSocketItem();
             }
-            else if (key == KeyCode.Escape)
-            {
-                _graphicalHandler.EnableGraphicalElements();
-            }
+             
+        }
+
+        public override void OnWindowDisplay(CombatGraphicalHandler graophicalHandler)
+        {
+            SetGraphicMenuActive(true);
+        }
+
+        public override void OnWindowOverlayed()
+        {
+            SetGraphicMenuActive(false); 
         }
     }
 }
