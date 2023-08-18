@@ -25,8 +25,6 @@ namespace Vanaring_DepaDemo
 
         private List<Button> _buttons;
 
- 
-
         private Coroutine _targetingCoroutine = null;
 
         private void Awake()

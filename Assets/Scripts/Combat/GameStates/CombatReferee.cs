@@ -1,4 +1,4 @@
-﻿
+﻿    
 using JetBrains.Annotations;
 using System;
 using System.Collections;
@@ -184,15 +184,13 @@ namespace Vanaring_DepaDemo
             while (_activeEntities.Count > 0)
             {
                 while (!_activeEntities[_currentEntityIndex].ReadyForControl())
-                {
+                {                     
                     Debug.Log(_activeEntities[_currentEntityIndex] + " can't control now");
 
                     yield return SwitchControl(_currentEntityIndex, _currentEntityIndex);
 
-
                     if (_activeEntities.Count <= 1)
                         goto End;
-
 
                     _currentEntityIndex = 0;
                     _activeEntities.RemoveAt(_currentEntityIndex);
@@ -245,9 +243,6 @@ namespace Vanaring_DepaDemo
                         if (_activeEntities.Count > 0) 
                             yield return SwitchControl(-1, _currentEntityIndex);
 
-
-                        ColorfulLogger.LogWithColor("almost end of action", Color.black);
-
                         for (int i = _competators.Count - 1; i >= 0; i--)
                         {
                             if (_competators[i].Competator.IsDead)
@@ -260,7 +255,6 @@ namespace Vanaring_DepaDemo
                                 //_competators.RemoveAt(i);
                             }
                         }
-                        ColorfulLogger.LogWithColor("End of action", Color.black);
 
                     }
                     else

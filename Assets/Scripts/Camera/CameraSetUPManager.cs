@@ -85,8 +85,8 @@ namespace Vanaring_DepaDemo
             }
         }
 
-        private void SetEntityActionVirtualCamera(GameObject entity)
-        {
+        public void SetEntityActionVirtualCamera(GameObject entity)
+        { 
              _actionCamera = entity.GetComponent<CombatEntityAnimationHandler>().ActionCamera;
         }
         private IEnumerator AttackActionCamera()

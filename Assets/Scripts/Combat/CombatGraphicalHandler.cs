@@ -88,7 +88,6 @@ namespace Vanaring_DepaDemo
 
         public void DisplayMainMenu()
         {
-            Debug.Log("display main menu");
             _entityWindowManager.ClearStack();
 
             _entityWindowManager.PushInNewWindow(_mainWindowManager);
@@ -96,8 +95,6 @@ namespace Vanaring_DepaDemo
 
         public IEnumerator TakeControl()
         {
-            _entityWindowManager.ClearStack();
-
             _entityWindowManager.SetNewEntity(this);
             DisplayMainMenu(); 
 
@@ -140,8 +137,7 @@ namespace Vanaring_DepaDemo
 
         private void OnVisualHurtUpdateEnd(int i)
         {
-            if (_mainCanvas.activeSelf)
-                _mainCanvas.gameObject.SetActive(false);
+           
         }
 
         private void OnEnergyUpdate(CombatEntity caster, RuntimeMangicalEnergy.EnergySide side, int amount)
