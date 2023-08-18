@@ -25,9 +25,10 @@ namespace Vanaring_DepaDemo
         private int _currentIndex = 0;
 
         private List<SpellSocketGUI> _spellSockets = new List<SpellSocketGUI>();
+        
         // Start is called before the first frame update
-
         private CombatGraphicalHandler _combatGraphicalHandler ; 
+
         void Awake()
         {
 
@@ -157,13 +158,10 @@ namespace Vanaring_DepaDemo
             {
                 _spellSockets[_currentIndex].CallButtonCallback(); 
             }
-
-           
         }
 
         public override void OnWindowDisplay(CombatGraphicalHandler graophicalHandler)
         {
-
             this._combatGraphicalHandler = graophicalHandler;
             CentralInputReceiver.Instance().AddInputReceiverIntoStack(this);
             SetGraphicMenuActive(true); 

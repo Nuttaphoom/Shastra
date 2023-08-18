@@ -35,8 +35,6 @@ namespace Vanaring_DepaDemo
         [SerializeField]
         private CombatEntity _combatEntity;
 
-
-
         private void Awake()
         {
             if (_mainCanvas == null)
@@ -125,8 +123,14 @@ namespace Vanaring_DepaDemo
 
         private void OnTargetSelectionEnd_EnableUI(CombatEntity combatEntity)
         {
-           // _entityWindowManager.PushInNewWindow(_mainWindowManager);
+            if (combatEntity != _combatEntity)
+                return;
 
+            if (!TargetSelectionFlowControl.Instance.PrepareAction())
+            {
+                Debug.Log("Push new window");
+                _entityWindowManager.PushInNewWindow(_mainWindowManager);
+            }
 
             //if (_combatEntity == combatEntity)
             //{
