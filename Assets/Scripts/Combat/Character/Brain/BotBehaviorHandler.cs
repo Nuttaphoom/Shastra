@@ -78,7 +78,6 @@ namespace Vanaring_DepaDemo
 
             if (modifier.Amount > 0)
             {
-                Debug.Log("creating telegragpy");
                 int side = (int)modifier.Side; //0 -light, 1 -dark
                 int amount = modifier.Amount;
                 //magic number :D

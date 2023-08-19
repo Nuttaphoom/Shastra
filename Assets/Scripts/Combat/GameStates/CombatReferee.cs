@@ -1,4 +1,4 @@
-﻿
+﻿    
 using JetBrains.Annotations;
 using System;
 using System.Collections;
@@ -52,6 +52,9 @@ namespace Vanaring_DepaDemo
         [Header("For testing, we manually assign these competator (including enemy) ")]
 
         List<CompetatorDetailStruct> _competators;
+
+        [SerializeField]
+        private GameOverScreen _gameoverscreen;
 
         private ECompetatorSide _currentSide = ECompetatorSide.Hostile; // Assign this to the opposite of the actual turn we want to start with 
         private List<CombatEntity> _activeEntities = new List<CombatEntity>();
@@ -176,23 +179,17 @@ namespace Vanaring_DepaDemo
                 yield return SwitchControl(-1, _currentEntityIndex);
             }
 
-            foreach (var v in _activeEntities)
-            {
-                Debug.Log("Active start is " + v.name); 
-            }
             //While loop will keep being called until the turn is end
             while (_activeEntities.Count > 0)
             {
                 while (!_activeEntities[_currentEntityIndex].ReadyForControl())
-                {
+                {                     
                     Debug.Log(_activeEntities[_currentEntityIndex] + " can't control now");
 
                     yield return SwitchControl(_currentEntityIndex, _currentEntityIndex);
 
-
                     if (_activeEntities.Count <= 1)
                         goto End;
-
 
                     _currentEntityIndex = 0;
                     _activeEntities.RemoveAt(_currentEntityIndex);
@@ -245,9 +242,6 @@ namespace Vanaring_DepaDemo
                         if (_activeEntities.Count > 0) 
                             yield return SwitchControl(-1, _currentEntityIndex);
 
-
-                        ColorfulLogger.LogWithColor("almost end of action", Color.black);
-
                         for (int i = _competators.Count - 1; i >= 0; i--)
                         {
                             if (_competators[i].Competator.IsDead)
@@ -260,7 +254,6 @@ namespace Vanaring_DepaDemo
                                 //_competators.RemoveAt(i);
                             }
                         }
-                        ColorfulLogger.LogWithColor("End of action", Color.black);
 
                     }
                     else
@@ -268,6 +261,7 @@ namespace Vanaring_DepaDemo
                 }
                 if (EndGameConditionMeet())
                 {
+                    _gameoverscreen.ActiveGameOverScreen(true);
                     goto End;
                 }
                 //If GetAction is null, we wait for end of frame
@@ -300,6 +294,7 @@ namespace Vanaring_DepaDemo
             AssignCompetators(FindObjectOfType<EntityLoader>().LoadData(), ECompetatorSide.Hostile);
             _currentSide = ECompetatorSide.Ally;
             _activeEntities = GetCompetatorsBySide(_currentSide);
+    
         }
         #region GETTER 
 

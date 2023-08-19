@@ -12,8 +12,6 @@ namespace Vanaring_DepaDemo
 {
     public class MainWindowManager : HierarchyUIWindow, IInputReceiver
     {
-        [SerializeField]
-        private CombatGraphicalHandler _combatGraphicalHandler;
 
         [Header("Button to bind call back")]
         [SerializeField]
@@ -27,21 +25,16 @@ namespace Vanaring_DepaDemo
 
         private List<Button> _buttons;
 
-        [SerializeField]
-        private TargetSelectionGUI _targetSelectionGUI;
-
         private Coroutine _targetingCoroutine = null;
 
         private void Awake()
         {
-            _targetSelectionGUI.Initialize(transform) ; 
+ 
             
             _buttons = new List<Button>();
             if (_itemButton == null || _spellButton == null || _weaponButton == null)
                 throw new Exception("Buttons hasn't been correctly assigned");
-
-            if (_combatGraphicalHandler == null)
-                throw new Exception("Combat Graphical Handler hasn't been assgined");
+ 
 
             _itemButton.onClick.AddListener(() => { _combatGraphicalHandler.DisplayItemPanel(); });
             _spellButton.onClick.AddListener(() => { _combatGraphicalHandler.DisplaySpellPanel(); });
@@ -115,8 +108,6 @@ namespace Vanaring_DepaDemo
                 TargetSelectionFlowControl.Instance.ReceiveKeys(KeyCode.A);
             }
 
-
-
             if (tempWindow != _currentSelectedWindow)
             {
 
@@ -128,13 +119,19 @@ namespace Vanaring_DepaDemo
             IEnumerator coroutine = (TargetSelectionFlowControl.Instance.InitializeTargetSelectionSchemeWithoutSelect(CombatReferee.instance.GetCompetatorsBySide(ECompetatorSide.Hostile)));
             while (coroutine.MoveNext())
             {
-                if (coroutine.Current != null && coroutine.Current.GetType().IsSubclassOf(typeof(CombatEntity)))
+                if (coroutine.Current == null)
+                    continue; 
+
+                if (  coroutine.Current is (CombatEntity) )
                 {
+                    TargetInfoWindowManager.instance.ShowCombatEntityInfoUI(coroutine.Current as CombatEntity) ;
                     //POTAE DO SOMETHING HERE
                 }
                 yield return null;
             }
-        } 
+
+            TargetInfoWindowManager.instance.HideCombatEntityInfoUI() ;
+        }
         public override void OnWindowDisplay(CombatGraphicalHandler graophicalHandler)
         {
             CentralInputReceiver.Instance().AddInputReceiverIntoStack(this);

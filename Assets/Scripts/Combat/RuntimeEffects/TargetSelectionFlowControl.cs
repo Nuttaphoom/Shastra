@@ -78,8 +78,6 @@ public class TargetSelectionFlowControl : MonoBehaviour, IInputReceiver
         return _latestSelectedItem ; 
     }
 
-
-
     public bool PrepareAction()
     {
         return _activlySelecting && _latestAction != null ; 

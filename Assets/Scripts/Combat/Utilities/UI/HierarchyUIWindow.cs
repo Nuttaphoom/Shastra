@@ -16,6 +16,7 @@ namespace Vanaring_DepaDemo {
             _graphicElement.gameObject.SetActive(b);
         }
 
+        [SerializeField]
         protected CombatGraphicalHandler _combatGraphicalHandler; 
         public abstract void OnWindowDisplay(CombatGraphicalHandler combatGraphicalHandler);
         public abstract void OnWindowOverlayed();
