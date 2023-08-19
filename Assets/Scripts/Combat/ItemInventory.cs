@@ -29,7 +29,8 @@ namespace Vanaring_DepaDemo
 
         #region GETTER
 
-        public List<ItemAbilityFactorySO> GetItemInventoryAbility => _itemInventoryAbility;
+        public List<ItemAbilityFactorySO> GetItemInventoryAbility => _itemInventoryAbility; 
+        
         public List<int> GetItemInventoryAmount => _itemInventoryAmount;
         public List<ItemInventoryData> GetItemInventory()
         {

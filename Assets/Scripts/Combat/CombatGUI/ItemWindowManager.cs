@@ -24,8 +24,7 @@ namespace Vanaring_DepaDemo
         private List<GameObject> _GUIinventoryObject;
         private List<ItemSocketGUI> _GUIinventory;
 
-        private CombatGraphicalHandler _graphicalHandler;
-        
+         
 
         // Start is called before the first frame update
         void Awake()
@@ -38,10 +37,6 @@ namespace Vanaring_DepaDemo
             _templatePrefab.gameObject.SetActive(false);
         }
 
-        private void Start()
-        {
-            UpdateItemSocket(_combatEntity.ItemUser.Items, _combatEntity.ItemUser.ItemsAmount);
-        }
 
         public void ResetGUIinventory()
         {
@@ -144,13 +139,14 @@ namespace Vanaring_DepaDemo
 
         public void ReceiveKeys(KeyCode key)
         {
+            Debug.Log("item key is " + key); 
             if (key == KeyCode.W)
             {
-                //LoadUpperSocketItem();
+                LoadUpperSocketItem();
             }
             else if (key == KeyCode.S)
             {
-                //LoadLowerSocketItem();
+                LoadLowerSocketItem();
             }
              
         }

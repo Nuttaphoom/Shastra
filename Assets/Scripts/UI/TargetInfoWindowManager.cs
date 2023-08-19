@@ -65,14 +65,8 @@ namespace Vanaring_DepaDemo
             StackNum.text = "   Stack : -1";
         }
 
-        private void Update()
-        {
-             
-        }
-
         public void ShowCombatEntityInfoUI(CombatEntity entities)
         {
-            Debug.Log("show combat entity info ui");
             InfoUISetup(entities);
             _infoWindow.SetActive(true);
         }

@@ -62,10 +62,7 @@ namespace Vanaring_DepaDemo
                 throw new Exception("SpellCaster haven't been assigned (should never use 'GetComponent' for SpellCaster as it would be too slow') ");
             }
 
-            if (_itemUser == null)
-            {
-                throw new Exception("ItemUser haven't been assigned (should never use 'GetComponent' for SpellCaster as it would be too slow') ");
-            }
+ 
         }
 
         #region Turn Handler Methods 
