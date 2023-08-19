@@ -133,6 +133,8 @@ namespace Vanaring_DepaDemo
 
         public void ReceiveKeys(KeyCode key)
         {
+            _itemSocketGUI[_currentIndex].UnHighlightedButton();
+
             if (key == KeyCode.W)
             {
                 _currentIndex -= 1;
@@ -163,11 +165,15 @@ namespace Vanaring_DepaDemo
                 this._combatGraphicalHandler.DisplayMainMenu();
             }
 
+            _itemSocketGUI[_currentIndex].HightlightedButton();
+
+
         }
 
         public override void OnWindowDisplay(CombatGraphicalHandler graophicalHandler)
         {
             CentralInputReceiver.Instance().AddInputReceiverIntoStack(this);
+            _itemSocketGUI[_currentIndex].HightlightedButton();
 
             _combatGraphicalHandler = graophicalHandler; 
             SetGraphicMenuActive(true);
@@ -176,6 +182,7 @@ namespace Vanaring_DepaDemo
         public override void OnWindowOverlayed()
         {
             CentralInputReceiver.Instance().RemoveInputReceiverIntoStack(this);
+            _itemSocketGUI[_currentIndex].UnHighlightedButton();
 
             SetGraphicMenuActive(false); 
         }
