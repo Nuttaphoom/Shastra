@@ -15,6 +15,9 @@ namespace Vanaring_DepaDemo
         [SerializeField]
         private Transform[] _setOfStatusUIPosition;
 
+        [SerializeField]
+        private Transform _layout;
+
         //magic number :D
         private List<GameObject> currentStatusObject;
 
@@ -22,6 +25,10 @@ namespace Vanaring_DepaDemo
         {
             _templatePrefab.gameObject.SetActive(false);
             currentStatusObject = new List<GameObject>();
+            if (_combatEntity != null)
+            {
+                _combatEntity.GetStatusEffectHandler().SubOnStatusVisualEvent(UpdateStatusUI);
+            }
         }
 
         public void InstantiateStatusUI(Dictionary<string, List<StatusRuntimeEffect>> effects)
@@ -36,8 +43,9 @@ namespace Vanaring_DepaDemo
                     {
                         count = 0;
                     }
-                    newSocket.transform.parent = _setOfStatusUIPosition[count].transform;
-                    newSocket.transform.localScale = _templatePrefab.transform.localScale;
+
+                    newSocket.transform.parent = _layout.transform;
+                    newSocket.transform.localScale = _setOfStatusUIPosition[count].transform.localScale;
 
                     currentStatusObject.Add(newSocket.gameObject);
 
@@ -54,6 +62,19 @@ namespace Vanaring_DepaDemo
             {
                 Destroy(eSocketObj);
             }
+        }
+
+        public void SetCombatEntity(CombatEntity entity)
+        {
+            _combatEntity = entity;
+
+            _combatEntity.GetStatusEffectHandler().SubOnStatusVisualEvent(UpdateStatusUI);
+        }
+
+        public void UpdateStatusUI(Dictionary<string, List<StatusRuntimeEffect>> effects)
+        {
+            this.ClearCurrentStatus();
+            this.InstantiateStatusUI(effects);
         }
     }
 }

@@ -7,6 +7,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Events;
+using static UnityEngine.EventSystems.EventTrigger;
 
 namespace Vanaring_DepaDemo
 {
@@ -16,34 +18,41 @@ namespace Vanaring_DepaDemo
     }
 
     [Serializable]
-    public class StatusEffectHandler 
+    public class StatusEffectHandler
     {
         [SerializeField]
-        private CombatEntity _appliedEntity ;
+        private CombatEntity _appliedEntity;
         Dictionary<string, List<StatusRuntimeEffect>> _effects = new Dictionary<string, List<StatusRuntimeEffect>>();
 
-        [SerializeField]
-        private StatusWindowManager _statusWindowManager;
+        public Dictionary<string, List<StatusRuntimeEffect>> Effects => _effects;
 
-        private void UpdateStatusUI()
+        //[SerializeField]
+        //private StatusWindowManager _statusWindowManager;
+
+        private UnityAction<Dictionary<string, List<StatusRuntimeEffect>>> _OnUpdateStatus;
+
+        //private StatusWindowManager _statusWindowTopleft;
+
+        public void UpdateStatusUI()
         {
-            _statusWindowManager.ClearCurrentStatus();
-            foreach (KeyValuePair<string, List<StatusRuntimeEffect>> entry in _effects)
-            {
-                Debug.Log(_appliedEntity.gameObject.name + " have Buff : " + entry.Value.Count);
-            }
-            _statusWindowManager.InstantiateStatusUI(_effects);
+            _OnUpdateStatus?.Invoke(_effects);
+            //_statusWindowManager.ClearCurrentStatus();
+            //foreach (KeyValuePair<string, List<StatusRuntimeEffect>> entry in _effects)
+            //{
+            //    Debug.Log(_appliedEntity.gameObject.name + " have Buff : " + entry.Value.Count);
+            //}
+            //_statusWindowManager.InstantiateStatusUI(_effects);
         }
 
         //the effect should be factorize exactly before being applied 
-        private IEnumerator LogicApplyNewEffect(StatusRuntimeEffectFactorySO factory )
+        private IEnumerator LogicApplyNewEffect(StatusRuntimeEffectFactorySO factory)
         {
-            IEnumerator co = factory.Factorize(new List<CombatEntity>() { _appliedEntity } )  ;
+            IEnumerator co = factory.Factorize(new List<CombatEntity>() { _appliedEntity });
 
-            string key = factory.StackInfo.StackID() ;  
+            string key = factory.StackInfo.StackID();
             while (co.MoveNext())
             {
-                if (co.Current != null && co.Current.GetType().IsSubclassOf(typeof(RuntimeEffect) ))
+                if (co.Current != null && co.Current.GetType().IsSubclassOf(typeof(RuntimeEffect)))
                 {
                     if (_effects.ContainsKey(key)) {
                         if (factory.StackInfo.Stackable)
@@ -54,19 +63,19 @@ namespace Vanaring_DepaDemo
                         {
                             while (_effects[key].Count > 0)
                                 _effects[key].RemoveAt(0);
-                            
+
                             _effects[key].Add(co.Current as StatusRuntimeEffect);
                         }
                     }
                     else
                     {
 
-                        _effects.Add(key, new List<StatusRuntimeEffect>() );
+                        _effects.Add(key, new List<StatusRuntimeEffect>());
                         _effects[key].Add(co.Current as StatusRuntimeEffect);
                     }
 
                 }
-                yield return new WaitForEndOfFrame() ; 
+                yield return new WaitForEndOfFrame();
             }
         }
 
@@ -105,8 +114,8 @@ namespace Vanaring_DepaDemo
                 {
                     StatusRuntimeEffect statusEffect = _effects[key][i];
 
-                    if (! statusEffect.IsCorrectEvokeKey(evokeKey))
-                        break ; 
+                    if (!statusEffect.IsCorrectEvokeKey(evokeKey))
+                        break;
 
                     yield return statusEffect.ExecuteRuntimeCoroutine(_appliedEntity);
                     yield return statusEffect.OnExecuteRuntimeDone(_appliedEntity);
@@ -148,7 +157,7 @@ namespace Vanaring_DepaDemo
                 for (int i = 0; i < _effects[key].Count; i++)
                 {
                     StatusRuntimeEffect statusEffect = _effects[key][i];
-                    yield return statusEffect.AfterAttackEffect(_appliedEntity,subject);
+                    yield return statusEffect.AfterAttackEffect(_appliedEntity, subject);
                 }
             }
         }
@@ -175,6 +184,15 @@ namespace Vanaring_DepaDemo
                 }
             }
             UpdateStatusUI();
+        }
+
+        public void SubOnStatusVisualEvent(UnityAction<Dictionary<string, List<StatusRuntimeEffect>>> argc)
+        {
+            _OnUpdateStatus += argc;
+        }
+        public void UnSubOnStatusVisualEvent(UnityAction<Dictionary<string, List<StatusRuntimeEffect>>> argc)
+        {
+            _OnUpdateStatus -= argc;
         }
 
         #region GETTER
