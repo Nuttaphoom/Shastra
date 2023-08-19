@@ -42,6 +42,10 @@ namespace Vanaring_DepaDemo
         private Sprite _lightImage;
         [SerializeField]
         private Sprite _darkImage;
+        [SerializeField]
+        private Sprite _selectedButton;
+        [SerializeField]
+        private Sprite _normalButton;
 
         [Header("Description Window")]
         [SerializeField] private TextMeshProUGUI _spellNameTextDes;
@@ -88,6 +92,16 @@ namespace Vanaring_DepaDemo
                 _modEnergyTypeDesImg.sprite = _darkImage;
             }
         }
+
+        //public void ActiveSelectedButtonState()
+        //{
+        //    _actionButton.spriteState = SpriteState.highlightSp;
+        //}
+
+        //public void DeactiveSelectedButtonState()
+        //{
+
+        //}
 
         private void ChooseSpell()
         {
