@@ -24,8 +24,7 @@ namespace Vanaring_DepaDemo
         private List<GameObject> _GUIinventoryObject;
         private List<ItemSocketGUI> _GUIinventory;
 
-        private CombatGraphicalHandler _graphicalHandler;
-        
+         
 
         // Start is called before the first frame update
         void Awake()
@@ -38,10 +37,6 @@ namespace Vanaring_DepaDemo
             _templatePrefab.gameObject.SetActive(false);
         }
 
-        private void Start()
-        {
-            UpdateItemSocket(_combatEntity.ItemUser.Items, _combatEntity.ItemUser.ItemsAmount);
-        }
 
         public void ResetGUIinventory()
         {
@@ -132,36 +127,37 @@ namespace Vanaring_DepaDemo
             //}
         }
 
-        public void TakeInputControl()
-        {
-            CentralInputReceiver.Instance().AddInputReceiverIntoStack(this);
-        }
-
-        public void ReleaseInputControl()
-        {
-            CentralInputReceiver.Instance().RemoveInputReceiverIntoStack(this);
-        }
+        
 
         public void ReceiveKeys(KeyCode key)
         {
             if (key == KeyCode.W)
             {
-                //LoadUpperSocketItem();
+                LoadUpperSocketItem();
             }
             else if (key == KeyCode.S)
             {
-                //LoadLowerSocketItem();
+                LoadLowerSocketItem();
             }
-             
+            else if (key == KeyCode.Escape)
+            {
+                this._combatGraphicalHandler.DisplayMainMenu();
+            }
+
         }
 
         public override void OnWindowDisplay(CombatGraphicalHandler graophicalHandler)
         {
+            CentralInputReceiver.Instance().AddInputReceiverIntoStack(this);
+
+            _combatGraphicalHandler = graophicalHandler; 
             SetGraphicMenuActive(true);
         }
 
         public override void OnWindowOverlayed()
         {
+            CentralInputReceiver.Instance().RemoveInputReceiverIntoStack(this);
+
             SetGraphicMenuActive(false); 
         }
     }
