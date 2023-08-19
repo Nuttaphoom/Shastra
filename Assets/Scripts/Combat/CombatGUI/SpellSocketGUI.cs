@@ -7,6 +7,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.Collections;
+using UnityEngine.EventSystems;
+using UnityEngine.Rendering;
 
 namespace Vanaring_DepaDemo
 {
@@ -57,10 +59,12 @@ namespace Vanaring_DepaDemo
 
         private SpellAbilitySO _spellSO;
 
-        private CombatEntity _caster; 
+        private CombatEntity _caster;
 
+        private Color _hightlightedColor = Color.yellow;
+        private Color _defaultColor; 
         public void Init(SpellAbilitySO spell, CombatEntity combatEntity)
-        { 
+        {
             _spellSO = spell;
             this._caster = combatEntity;
             _actionButton.onClick.AddListener(ChooseSpell);
@@ -91,6 +95,8 @@ namespace Vanaring_DepaDemo
             {
                 _modEnergyTypeDesImg.sprite = _darkImage;
             }
+
+            _defaultColor = _actionButton.GetComponent<Image>().color; 
         }
 
         //public void ActiveSelectedButtonState()
@@ -114,7 +120,18 @@ namespace Vanaring_DepaDemo
 
         public void CallButtonCallback()
         {
-            _actionButton.onClick?.Invoke(); 
+         
+             _actionButton.onClick?.Invoke(); 
+        }
+
+        public void HightlightedButton()
+        {
+            _actionButton.GetComponent<Image>().color = _hightlightedColor ; 
+        }
+
+        public void UnHighlightedButton()
+        {
+            _actionButton.GetComponent<Image>().color = _defaultColor;
         }
     }
 }

@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -188,6 +189,8 @@ namespace Vanaring_DepaDemo
         {
             Debug.Log("spell window on receiver key");
 
+            _spellSockets[_currentIndex].UnHighlightedButton();
+
             if (key == KeyCode.W)
             {
                 _currentIndex -= 1;
@@ -223,6 +226,8 @@ namespace Vanaring_DepaDemo
             {
                 _spellSockets[_currentIndex].CallButtonCallback(); 
             }
+
+            _spellSockets[_currentIndex].HightlightedButton(); 
         }
 
         //private void SelectingSpellSocketDisplay() {
@@ -231,6 +236,8 @@ namespace Vanaring_DepaDemo
 
         public override void OnWindowDisplay(CombatGraphicalHandler graophicalHandler)
         {
+            _spellSockets[_currentIndex].HightlightedButton();
+
             this._combatGraphicalHandler = graophicalHandler;
             CentralInputReceiver.Instance().AddInputReceiverIntoStack(this);
             SetGraphicMenuActive(true); 
@@ -238,6 +245,9 @@ namespace Vanaring_DepaDemo
 
         public override void OnWindowOverlayed()
         {
+            for (int i  = 0;  i< _spellSockets.Count; i++)  
+                _spellSockets[i].UnHighlightedButton();
+
 
             CentralInputReceiver.Instance().RemoveInputReceiverIntoStack(this);
 

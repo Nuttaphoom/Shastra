@@ -33,6 +33,10 @@ namespace Vanaring_DepaDemo
 
         private int _itemAmount;
 
+        private Color _hightlightedColor = Color.yellow;
+        private Color _defaultColor;
+
+
         public void Init(ItemAbilityRuntime item, CombatEntity combatEntity)
         {
             _item = item;
@@ -71,5 +75,15 @@ namespace Vanaring_DepaDemo
             _actionButton.onClick?.Invoke();
         }
         public int ItemAmount => _itemAmount;
+
+        public void HightlightedButton()
+        {
+            _actionButton.GetComponent<Image>().color = _hightlightedColor;
+        }
+
+        public void UnHighlightedButton()
+        {
+            _actionButton.GetComponent<Image>().color = _defaultColor; 
+        }
     }
 }

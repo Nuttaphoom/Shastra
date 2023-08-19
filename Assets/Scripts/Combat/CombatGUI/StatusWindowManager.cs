@@ -55,7 +55,6 @@ namespace Vanaring_DepaDemo
                 }
             }
         }
-
         public void ClearCurrentStatus()
         {
             foreach (GameObject eSocketObj in currentStatusObject)
