@@ -8,7 +8,6 @@ namespace Vanaring_DepaDemo
 {
     public class TargetInfoWindowManager : MonoBehaviour
     {
-        [SerializeField]
         CombatEntity _combatEntity;
 
         StatusRuntimeEffect _currentStatusEffect;
@@ -68,14 +67,12 @@ namespace Vanaring_DepaDemo
 
         private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.O))
-            {
-                ShowCombatEntityInfoUI(_combatEntity);
-            }
+             
         }
 
         public void ShowCombatEntityInfoUI(CombatEntity entities)
         {
+            Debug.Log("show combat entity info ui");
             InfoUISetup(entities);
             _infoWindow.SetActive(true);
         }

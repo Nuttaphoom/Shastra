@@ -179,10 +179,6 @@ namespace Vanaring_DepaDemo
                 yield return SwitchControl(-1, _currentEntityIndex);
             }
 
-            foreach (var v in _activeEntities)
-            {
-                Debug.Log("Active start is " + v.name); 
-            }
             //While loop will keep being called until the turn is end
             while (_activeEntities.Count > 0)
             {

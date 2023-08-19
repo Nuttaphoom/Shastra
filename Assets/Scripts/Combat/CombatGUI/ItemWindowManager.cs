@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Vanaring_DepaDemo
 {
-    public class ItemWindowManager : HierarchyUIWindow
+    public class ItemWindowManager : HierarchyUIWindow, IInputReceiver
     {
         [SerializeField]
         private CombatEntity _combatEntity;
@@ -53,7 +53,6 @@ namespace Vanaring_DepaDemo
         }
         public void UpdateItemSocket(List<ItemAbilityRuntime> updatedItemdata, List<int> updatedItemAmount)
         {
-            Debug.Log("Update");
             ResetGUIinventory();
             _itemInventoryData = updatedItemdata;
             _itemInventoryAmount = updatedItemAmount;
@@ -133,15 +132,15 @@ namespace Vanaring_DepaDemo
             //}
         }
 
-        //public void TakeInputControl()
-        //{
-        //    CentralInputReceiver.Instance().AddInputReceiverIntoStack(this);
-        //}
+        public void TakeInputControl()
+        {
+            CentralInputReceiver.Instance().AddInputReceiverIntoStack(this);
+        }
 
-        //public void ReleaseInputControl()
-        //{
-        //    CentralInputReceiver.Instance().RemoveInputReceiverIntoStack(this);
-        //}
+        public void ReleaseInputControl()
+        {
+            CentralInputReceiver.Instance().RemoveInputReceiverIntoStack(this);
+        }
 
         public void ReceiveKeys(KeyCode key)
         {

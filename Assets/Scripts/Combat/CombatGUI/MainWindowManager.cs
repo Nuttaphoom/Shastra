@@ -119,13 +119,19 @@ namespace Vanaring_DepaDemo
             IEnumerator coroutine = (TargetSelectionFlowControl.Instance.InitializeTargetSelectionSchemeWithoutSelect(CombatReferee.instance.GetCompetatorsBySide(ECompetatorSide.Hostile)));
             while (coroutine.MoveNext())
             {
-                if (coroutine.Current != null && coroutine.Current.GetType().IsSubclassOf(typeof(CombatEntity)))
+                if (coroutine.Current == null)
+                    continue; 
+
+                if (  coroutine.Current is (CombatEntity) )
                 {
+                    TargetInfoWindowManager.instance.ShowCombatEntityInfoUI(coroutine.Current as CombatEntity) ;
                     //POTAE DO SOMETHING HERE
                 }
                 yield return null;
             }
-        } 
+
+            TargetInfoWindowManager.instance.HideCombatEntityInfoUI() ;
+        }
         public override void OnWindowDisplay(CombatGraphicalHandler graophicalHandler)
         {
             CentralInputReceiver.Instance().AddInputReceiverIntoStack(this);
