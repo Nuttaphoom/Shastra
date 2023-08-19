@@ -24,7 +24,8 @@ namespace Vanaring_DepaDemo
         [SerializeField] private CinemachineVirtualCamera RvirtualCamera;
         [SerializeField] private CinemachineVirtualCamera MvirtualCamera;
         [SerializeField] private CinemachineVirtualCamera LvirtualCamera;
-        
+        [SerializeField] private CinemachineVirtualCamera targetVirtualCamera;
+
         //TempList
         private List<GameObject> playerModels = new List<GameObject>();
         private List<GameObject> enemyModels = new List<GameObject>();
@@ -46,7 +47,12 @@ namespace Vanaring_DepaDemo
 
         private void Start()
         {
+            
             //StartCoroutine(AttackActionCamera());
+        }
+        private void Update()
+        {
+            //SetupTargetModeVirtualCamera(tempEntity);
         }
         public void SetBlendMode(CameraBlendMode mode, float blendDuration)
         {
@@ -73,6 +79,17 @@ namespace Vanaring_DepaDemo
         {
             DeactivateAllVirtualCameras();
             entity.GetComponent<CombatEntityAnimationHandler>().ActionCamera.gameObject.SetActive(true);
+        }
+
+        public void ActiveTargetModeVirtualCamera()
+        {
+            DeactivateAllVirtualCameras();
+            targetVirtualCamera.gameObject.SetActive(true);
+        }
+
+        public void SetupTargatModeLookAt(GameObject entity)
+        {
+            targetVirtualCamera.LookAt = entity.transform;
         }
 
         private void DeactivateAllVirtualCameras()
