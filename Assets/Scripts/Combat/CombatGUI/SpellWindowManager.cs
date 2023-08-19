@@ -55,21 +55,28 @@ namespace Vanaring_DepaDemo
             }
             _upArrow.gameObject.SetActive(false);
             _downArrow.gameObject.SetActive(false);
-
-            if (startIndex == 0 && endIndex == 2)
+            if(_combatEntity.SpellCaster.SpellAbilities.Count <= 3)
             {
                 _upArrow.gameObject.SetActive(false);
-                _downArrow.gameObject.SetActive(true);
-            }
-            else if (_combatEntity.SpellCaster.SpellAbilities.Count-1 != endIndex)
-            {
-                _upArrow.gameObject.SetActive(true);
-                _downArrow.gameObject.SetActive(true);
-            }
-            else if(endIndex == _combatEntity.SpellCaster.SpellAbilities.Count - 1)
-            {
-                _upArrow.gameObject.SetActive(true);
                 _downArrow.gameObject.SetActive(false);
+            }
+            else
+            {
+                if (startIndex == 0 && endIndex == 2)
+                {
+                    _upArrow.gameObject.SetActive(false);
+                    _downArrow.gameObject.SetActive(true);
+                }
+                else if (_combatEntity.SpellCaster.SpellAbilities.Count - 1 != endIndex)
+                {
+                    _upArrow.gameObject.SetActive(true);
+                    _downArrow.gameObject.SetActive(true);
+                }
+                else if (endIndex == _combatEntity.SpellCaster.SpellAbilities.Count - 1)
+                {
+                    _upArrow.gameObject.SetActive(true);
+                    _downArrow.gameObject.SetActive(false);
+                }
             }
         }
 
