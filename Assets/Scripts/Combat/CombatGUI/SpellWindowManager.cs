@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Vanaring_DepaDemo
 {
@@ -18,14 +19,23 @@ namespace Vanaring_DepaDemo
         [SerializeField]
         private Transform[] _spellSocketGUITransformPos;
 
-        private CombatGraphicalHandler _graphicalHandler; 
+        [SerializeField]
+        private Transform _pageIndexParent;
+
+        [SerializeField]
+        private GameObject _pageIndexTemplate;
+
+        private CombatGraphicalHandler _graphicalHandler;
+
+        private int currentPageIndex = 0;
 
         private int startIndex = 0;
         private int endIndex = 2;
         private int _currentIndex = 0;
 
         private List<SpellSocketGUI> _spellSockets = new List<SpellSocketGUI>();
-        
+        private List<GameObject> _pageIndexs = new List<GameObject>();
+
         // Start is called before the first frame update
         private CombatGraphicalHandler _combatGraphicalHandler ; 
 
@@ -34,10 +44,50 @@ namespace Vanaring_DepaDemo
 
             LoadSpellSocketGUI(startIndex, endIndex);
             _graphicalHandler = _combatEntity.GetComponent<CombatGraphicalHandler>();
-            _templatePrefab.gameObject.SetActive(false);  
+            _templatePrefab.gameObject.SetActive(false);
+            GeneratePageIndex();
         }
 
-      
+
+        private void GeneratePageIndex()
+        {
+            currentPageIndex = 0;
+            _pageIndexs = new List<GameObject>();
+            for (int i = 0; i < _combatEntity.SpellCaster.SpellAbilities.Count/3; i++)
+            {
+                GameObject newPageIndex = Instantiate(_pageIndexTemplate, _pageIndexParent.transform);
+                _pageIndexs.Add(newPageIndex);
+                newPageIndex.transform.localScale = _pageIndexTemplate.transform.localScale;
+                ChangeOpacity(newPageIndex.gameObject.GetComponent<Image>(), 0.2f);
+            }
+            ChangeOpacity(_pageIndexs[currentPageIndex].gameObject.GetComponent<Image>(), 1.0f);
+        }
+        private void ChangeOpacity(Image image, float opacity)
+        {
+            Color imageColor = image.color;
+            imageColor.a = opacity;
+            image.color = imageColor;
+        }
+
+        private void NextPageIndex()
+        {
+            currentPageIndex++;
+            foreach (GameObject pi in _pageIndexs)
+            {
+                ChangeOpacity(pi.gameObject.GetComponent<Image>(), 0.2f);
+            }
+            ChangeOpacity(_pageIndexs[currentPageIndex].gameObject.GetComponent<Image>(), 1.0f);
+        }
+
+        private void PreviousPageIndex()
+        {
+            currentPageIndex--;
+            foreach (GameObject pi in _pageIndexs)
+            {
+                ChangeOpacity(pi.gameObject.GetComponent<Image>(), 0.2f);
+            }
+            ChangeOpacity(_pageIndexs[currentPageIndex].gameObject.GetComponent<Image>(), 1.0f);
+        }
 
         private void LoadSpellSocketGUI(int start, int end)
         {
