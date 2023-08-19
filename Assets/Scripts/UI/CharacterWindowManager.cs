@@ -15,6 +15,8 @@ namespace Vanaring_DepaDemo
         [SerializeField]
         private GameObject _entities;
 
+        private List<CharacterSocketGUI> characterSocketList = new List<CharacterSocketGUI>();
+
         private void Awake()
         {
 
@@ -28,6 +30,16 @@ namespace Vanaring_DepaDemo
                 newSocket.transform.parent = _socketVerticalLayout.transform;
                 newSocket.transform.localScale = _templatePrefab.transform.localScale;
                 newSocket.Init(Random.Range(0, 100), _entities.transform.GetChild(i).name, _cet);
+                characterSocketList.Add(newSocket);
+                newSocket.transform.SetAsFirstSibling();
+            }
+        }
+
+        public void ActiveStatusAllCharacterSocketGUI()
+        {
+            foreach (CharacterSocketGUI csg in characterSocketList)
+            {
+                csg.ToggleTurnStatusDisplay();
             }
         }
     }

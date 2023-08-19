@@ -31,6 +31,7 @@ namespace Vanaring_DepaDemo
         private float hpVal;
         private float maxHP;
         [SerializeField] private Image hpImage;
+        [SerializeField] private Image secondhpImage;
         [SerializeField] private GameObject gui;
 
         private void Awake()
@@ -105,14 +106,14 @@ namespace Vanaring_DepaDemo
         {
             hpVal = _owner.StatsAccumulator.GetHPAmount();
             float hptemp = maxHP == 0 ? (hpVal == 0 ? 1 : hpVal) : maxHP;
-            float hptempe = hpImage.fillAmount;
-            
+
+            hpImage.fillAmount = hpVal / hptemp;
             StartCoroutine(IEAnimateHPBarScale(hptemp));
         }
         private void UpdateHPBarScaleGUI()
         {
-            hpImage.fillAmount -= 0.01f;
-            if (hpImage.fillAmount <= 0 && gui != null)
+            secondhpImage.fillAmount -= 0.01f;
+            if (secondhpImage.fillAmount <= 0 && gui != null)
             {
                 gui.SetActive(false);
             }
@@ -140,14 +141,15 @@ namespace Vanaring_DepaDemo
 
         private IEnumerator IEAnimateHPBarScale(float maxHP)
         {
-            float tickRate = 0.5f / ((Mathf.Abs((hpVal / maxHP) - hpImage.fillAmount))*100);
+            float tickRate = 0.5f / ((Mathf.Abs((hpVal / maxHP) - secondhpImage.fillAmount))*100);
             //Debug.Log((hpVal / maxHP) + "-" + hpImage.fillAmount + "=" + tickRate);
-            while (hpImage.fillAmount < hpVal/maxHP)
+            yield return new WaitForSeconds(0.5f);
+            while (secondhpImage.fillAmount < hpVal/maxHP)
             {
                 UpdateHPBarScaleGUI();
                 yield return new WaitForSeconds(tickRate);
             }
-            while (hpImage.fillAmount > hpVal/maxHP)
+            while (secondhpImage.fillAmount > hpVal/maxHP)
             {
                 UpdateHPBarScaleGUI();
                 yield return new WaitForSeconds(tickRate);

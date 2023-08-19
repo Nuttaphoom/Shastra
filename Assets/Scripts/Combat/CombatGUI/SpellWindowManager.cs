@@ -200,7 +200,7 @@ namespace Vanaring_DepaDemo
 
                     _currentIndex = 0;
                 }
-                Debug.Log(_currentIndex);
+                //Debug.Log(_currentIndex);
 
 
             }
@@ -214,7 +214,7 @@ namespace Vanaring_DepaDemo
                     _currentIndex -= 1; 
 
                 }
-                Debug.Log(_currentIndex);
+                //Debug.Log(_currentIndex);
 
 
             }
