@@ -340,9 +340,15 @@ namespace Vanaring_DepaDemo
             }
         }
 
-        public void ChangeActiveEntityIndex(bool increase = false, bool decrease = false)
+        public bool ChangeActiveEntityIndex(bool increase = false, bool decrease = false)
         {
-            StartCoroutine(ChangeActiveEntityIndexCoroutine(increase,decrease));
+            if (_activeEntities.Count > 1)
+            {
+                StartCoroutine(ChangeActiveEntityIndexCoroutine(increase, decrease));
+                return true; 
+            } 
+                return false;
+             
         }
 
         public IEnumerator ChangeActiveEntityIndexCoroutine(bool increase = false, bool decrease = false)

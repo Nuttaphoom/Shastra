@@ -66,6 +66,10 @@ namespace Vanaring_DepaDemo
             _caster.ItemUser.UseItem(_item);
         }
 
+        public void CallButtonCallback()
+        {
+            _actionButton.onClick?.Invoke();
+        }
         public int ItemAmount => _itemAmount;
     }
 }

@@ -90,15 +90,14 @@ namespace Vanaring_DepaDemo
             }
             else if (key == (KeyCode.Q))
             {
-                TargetSelectionFlowControl.Instance.ForceStop();
+                if (CombatReferee.instance.ChangeActiveEntityIndex(true, false))
+                    TargetSelectionFlowControl.Instance.ForceStop();
 
-                CombatReferee.instance.ChangeActiveEntityIndex(true, false) ;
             }
             else if (key == (KeyCode.E))
             {
-                TargetSelectionFlowControl.Instance.ForceStop();
-
-                CombatReferee.instance.ChangeActiveEntityIndex(false, true);
+                if (CombatReferee.instance.ChangeActiveEntityIndex(false, true))
+                    TargetSelectionFlowControl.Instance.ForceStop();
             }
             else if (key == (KeyCode.D))
             {
@@ -116,15 +115,30 @@ namespace Vanaring_DepaDemo
 
         private IEnumerator TargettingTarget()
         {
-            IEnumerator coroutine = (TargetSelectionFlowControl.Instance.InitializeTargetSelectionSchemeWithoutSelect(CombatReferee.instance.GetCompetatorsBySide(ECompetatorSide.Hostile)));
+            CombatEntity selectedEntity = null ;
+            List<CombatEntity> entities = CombatReferee.instance.GetCompetatorsBySide(ECompetatorSide.Hostile); 
+            for (int i = 0;  i < entities.Count; i++)
+            {
+                if (entities[i].IsDead)
+                {
+                    entities.RemoveAt(i);
+                    i--; 
+                } 
+            }
+            IEnumerator coroutine = (TargetSelectionFlowControl.Instance.InitializeTargetSelectionSchemeWithoutSelect(entities));
             while (coroutine.MoveNext())
             {
-                if (coroutine.Current == null)
-                    continue; 
-
-                if (  coroutine.Current is (CombatEntity) )
+                if (coroutine.Current != null)
                 {
-                    TargetInfoWindowManager.instance.ShowCombatEntityInfoUI(coroutine.Current as CombatEntity) ;
+                    if (coroutine.Current is (CombatEntity))
+                    {
+                        if (selectedEntity != coroutine.Current as CombatEntity)
+                        {
+
+                            selectedEntity = coroutine.Current as CombatEntity;
+                            TargetInfoWindowManager.instance.ShowCombatEntityInfoUI(selectedEntity);
+                        }
+                    }
                 }
                 yield return null;
             }
