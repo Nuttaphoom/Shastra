@@ -127,19 +127,10 @@ namespace Vanaring_DepaDemo
             //}
         }
 
-        public void TakeInputControl()
-        {
-            CentralInputReceiver.Instance().AddInputReceiverIntoStack(this);
-        }
-
-        public void ReleaseInputControl()
-        {
-            CentralInputReceiver.Instance().RemoveInputReceiverIntoStack(this);
-        }
+        
 
         public void ReceiveKeys(KeyCode key)
         {
-            Debug.Log("item key is " + key); 
             if (key == KeyCode.W)
             {
                 LoadUpperSocketItem();
@@ -148,16 +139,25 @@ namespace Vanaring_DepaDemo
             {
                 LoadLowerSocketItem();
             }
-             
+            else if (key == KeyCode.Escape)
+            {
+                this._combatGraphicalHandler.DisplayMainMenu();
+            }
+
         }
 
         public override void OnWindowDisplay(CombatGraphicalHandler graophicalHandler)
         {
+            CentralInputReceiver.Instance().AddInputReceiverIntoStack(this);
+
+            _combatGraphicalHandler = graophicalHandler; 
             SetGraphicMenuActive(true);
         }
 
         public override void OnWindowOverlayed()
         {
+            CentralInputReceiver.Instance().RemoveInputReceiverIntoStack(this);
+
             SetGraphicMenuActive(false); 
         }
     }

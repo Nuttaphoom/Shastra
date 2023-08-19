@@ -125,7 +125,6 @@ namespace Vanaring_DepaDemo
                 if (  coroutine.Current is (CombatEntity) )
                 {
                     TargetInfoWindowManager.instance.ShowCombatEntityInfoUI(coroutine.Current as CombatEntity) ;
-                    //POTAE DO SOMETHING HERE
                 }
                 yield return null;
             }

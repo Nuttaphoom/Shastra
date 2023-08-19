@@ -26,8 +26,7 @@ namespace Vanaring_DepaDemo
 
         private List<SpellSocketGUI> _spellSockets = new List<SpellSocketGUI>();
         
-        // Start is called before the first frame update
-        private CombatGraphicalHandler _combatGraphicalHandler ; 
+   
 
         void Awake()
         {
