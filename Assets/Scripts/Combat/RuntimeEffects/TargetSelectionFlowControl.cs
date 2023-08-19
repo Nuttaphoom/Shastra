@@ -149,6 +149,9 @@ public class TargetSelectionFlowControl : MonoBehaviour, IInputReceiver
             throw new Exception("Try to active selection scheme while it is already active");
 
         CentralInputReceiver.Instance().AddInputReceiverIntoStack(this);
+
+        CameraSetUPManager.Instance.ActiveTargetModeVirtualCamera();
+
        
         OnTargetSelectionSchemeStart.PlayEvent(caster);
 
@@ -160,9 +163,12 @@ public class TargetSelectionFlowControl : MonoBehaviour, IInputReceiver
         ValidateData();
         
         AssignPossibleTargets(caster, action);
+        CameraSetUPManager.Instance.SetBlendMode(CameraSetUPManager.CameraBlendMode.EASE_INOUT, 0.5f);
 
         while (_selectedTarget.Count < action.TargetSelect.MaxTarget)
         {
+            CameraSetUPManager.Instance.SetupTargatModeLookAt(_validTargets[_currentSelectIndex].gameObject);
+
             _targetSelectionGUI.SelectTargetPointer(_validTargets[_currentSelectIndex]);
 
             if (_forceStop)
