@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting.Antlr3.Runtime.Tree;
 using UnityEngine;
 
 namespace Vanaring_DepaDemo
@@ -172,6 +173,10 @@ namespace Vanaring_DepaDemo
 
         public override void OnWindowDisplay(CombatGraphicalHandler graophicalHandler)
         {
+            for (int i = 0; i < _itemSocketGUI.Count; i++)
+                _itemSocketGUI[i].UnHighlightedButton();
+
+            _currentIndex = 0; 
             CentralInputReceiver.Instance().AddInputReceiverIntoStack(this);
             _itemSocketGUI[_currentIndex].HightlightedButton();
 
@@ -181,8 +186,9 @@ namespace Vanaring_DepaDemo
 
         public override void OnWindowOverlayed()
         {
-            CentralInputReceiver.Instance().RemoveInputReceiverIntoStack(this);
-            _itemSocketGUI[_currentIndex].UnHighlightedButton();
+            CentralInputReceiver.Instance().RemoveInputReceiverIntoStack(this) ;
+            for (int i = 0;  i < _itemSocketGUI.Count; i++) 
+                _itemSocketGUI[i].UnHighlightedButton();
 
             SetGraphicMenuActive(false); 
         }

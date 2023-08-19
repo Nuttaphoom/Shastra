@@ -236,6 +236,10 @@ namespace Vanaring_DepaDemo
 
         public override void OnWindowDisplay(CombatGraphicalHandler graophicalHandler)
         {
+            for (int i = 0; i < _spellSockets.Count; i++)
+                _spellSockets[i].UnHighlightedButton();
+
+            _currentIndex = 0; 
             _spellSockets[_currentIndex].HightlightedButton();
 
             this._combatGraphicalHandler = graophicalHandler;
