@@ -36,10 +36,12 @@ namespace Vanaring_DepaDemo
         private Color _hightlightedColor = Color.yellow;
         private Color _defaultColor;
 
-
+        private bool _init = false; 
         public void Init(ItemAbilityRuntime item, CombatEntity combatEntity)
         {
+            _init  = true; 
             _item = item;
+            Debug.Log("combatentity is " + combatEntity.gameObject);
             this._caster = combatEntity;
             _actionButton.onClick.AddListener(ChooseItem) ;
 
@@ -67,6 +69,20 @@ namespace Vanaring_DepaDemo
 
         private void ChooseItem()
         {
+            if (_init)
+            {
+                Debug.Log("is  init");
+            }
+            if (_caster == null)
+            {
+                Debug.Log("cast is null");
+            } if ( _caster.ItemUser == null)
+            {
+                Debug.Log("caster itemuser is null"); 
+            }if (_item == null)
+            {
+                Debug.Log("item is null");
+            }
             _caster.ItemUser.UseItem(_item);
         }
 

@@ -44,7 +44,7 @@ public class SpellCasterHandler  : MonoBehaviour
     #endregion EndSub 
     public bool IsEnergySufficient(SpellAbilityRuntime spell)
     {
-        return GetEnergyAmount(spell.RequireEnergySide) >= spell.RequireEnergyAmount  ; 
+        return GetEnergyAmount(spell.RequireEnergySide) > spell.RequireEnergyAmount  ; 
     }
     #region Modify Energy  
 

@@ -119,14 +119,20 @@ namespace Vanaring_DepaDemo
             if (_deadAnimationTrigger == "NONE")
             {
                 _mesh.transform.Translate(new Vector2(10000000, 1000000));
+                yield return new WaitForSeconds(2.5f);
+                if (_deadVisualEffect)
+                {
+                    Destroy(_deadVisualEffect.gameObject);
+                }
+
             }
             else
-                PlayTriggerAnimation(_deadAnimationTrigger);
+            {
+                Debug.Log("deadTriger is  : " + _deadAnimationTrigger);
+                yield return PlayTriggerAnimation(_deadAnimationTrigger);
+            }
 
-            yield return new WaitForSeconds(2.5f);
-             
-            Destroy(_deadVisualEffect.gameObject) ;
-
+            
             //Destroy(gameObject); 
         }
 

@@ -9,16 +9,27 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4b32bddd7cdd7fe4d8debf176d667e75, type: 3}
-  m_Name: Monk-GiveLight_RuntimeEffect
+  m_Script: {fileID: 11500000, guid: 144ad1e340efac340b93a5ac8a145a35, type: 3}
+  m_Name: ASha-EnhanceEnergyModiferStatusEffectFactorySO Dark
   m_EditorClassIdentifier: 
   _targetSelector:
     _maxTargetSize: 1
-    _targetSide: 2
+    _targetSide: 0
     _targetCaster: 0
+  _statusEffectDescription:
+    _fieldName: 
+    _fieldDescription: 
+    _fieldImage: {fileID: 0}
+  _TTL: 100
+  _infiniteTTL: 1
+  _evokeKey: 0
+  _stackInfo:
+    stackID: EnhanceEnergyModiferStatusEffect
+    _stackable: 0
+    _overwriten: 1
   _data:
     _side: 0
-    _amount: 20
+    _amount: 40
   _actionAnimation:
     _casterVFXEntity:
       _destroyAfterCallbackDelay: 0
@@ -26,10 +37,9 @@ MonoBehaviour:
       _callbackDelay: 0
       _VFXAnimationPrefabs: {fileID: 0}
     _targetVFXEntity:
-      _destroyAfterCallbackDelay: 2
-      _spawnDelay: 0.5
-      _callbackDelay: 1
-      _VFXAnimationPrefabs: {fileID: 8432623215915248235, guid: 8ec4189eadaa24644acf69ed2c7eac39, type: 3}
-    SelfTrigerID: Buff
+      _destroyAfterCallbackDelay: 0
+      _spawnDelay: 0
+      _callbackDelay: 0
+      _VFXAnimationPrefabs: {fileID: 0}
+    SelfTrigerID: 
     TargetTrigerID: 
-    _isProjectile: 0
