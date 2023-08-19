@@ -1753,8 +1753,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -103.30652, y: 48.352}
-  m_SizeDelta: {x: 206.6128, y: 96.7042}
+  m_AnchoredPosition: {x: -173.76826, y: 46.0197}
+  m_SizeDelta: {x: 347.5364, y: 92.0396}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &723587431
 MonoBehaviour:
@@ -1997,6 +1997,7 @@ MonoBehaviour:
   RvirtualCamera: {fileID: 4795458262290916363, guid: 5c66df574d9ed8a439300cf66472959a, type: 3}
   MvirtualCamera: {fileID: 4924872835875594083, guid: e222156c5e493ef44a8f3a6d82c3e2e3, type: 3}
   LvirtualCamera: {fileID: 5767690655094526629, guid: ef5d86ea90b92844c9c42cfe1a6a8692, type: 3}
+  targetVirtualCamera: {fileID: 0}
   _tgui: {fileID: 1989665005}
   tempEntity: {fileID: 0}
   tempEntity1: {fileID: 0}
@@ -2343,8 +2344,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -103.30652, y: 159.3}
-  m_SizeDelta: {x: 206.6128, y: 96.7042}
+  m_AnchoredPosition: {x: -173.76826, y: 151.61603}
+  m_SizeDelta: {x: 347.5364, y: 92.0396}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &982778624
 MonoBehaviour:
@@ -2837,7 +2838,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 60
+  field of view: 60.000004
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -2862,8 +2863,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1212108954}
-  m_LocalRotation: {x: 0.09844149, y: 0.019890895, z: -0.0019680434, w: 0.9949421}
-  m_LocalPosition: {x: 0.37199998, y: 1.3479999, z: -2.369172}
+  m_LocalRotation: {x: -0.031088144, y: -0.21830946, z: -0.006958292, w: 0.9753595}
+  m_LocalPosition: {x: 4.46, y: 1.3, z: -3.132}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3453,8 +3454,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec67dc968f16cd04295732bb97c29003, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _bgmAudioSource: {fileID: 8300000, guid: 4485e0887dddd0f4197e7807b355ca5a, type: 3}
-  _audioScaling: 0.2
+  _bgmAudioSource: {fileID: 8300000, guid: 66f211cc475353843a88e17c7fae8b37, type: 3}
+  _audioScaling: 0.4
 --- !u!4 &1380101986
 Transform:
   m_ObjectHideFlags: 0
@@ -4675,6 +4676,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2012436587}
     m_Modifications:
+    - target: {fileID: 1319888018266126095, guid: f239afacdcb66554183cfaf4785f0f35, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2021394854930901697, guid: f239afacdcb66554183cfaf4785f0f35, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -4815,6 +4820,14 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9175319780603371850, guid: f239afacdcb66554183cfaf4785f0f35, type: 3}
+      propertyPath: _spellAbilities.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 9175319780603371850, guid: f239afacdcb66554183cfaf4785f0f35, type: 3}
+      propertyPath: _spellAbilities.Array.data[3]
+      value: 
+      objectReference: {fileID: 11400000, guid: 2790587ab22178e458b17aeea68ab0ef, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

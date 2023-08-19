@@ -149,7 +149,7 @@ public class TargetSelectionFlowControl : MonoBehaviour, IInputReceiver
             throw new Exception("Try to active selection scheme while it is already active");
 
         CentralInputReceiver.Instance().AddInputReceiverIntoStack(this);
-
+       
         OnTargetSelectionSchemeStart.PlayEvent(caster);
 
         ColorfulLogger.LogWithColor("Initialize Target Selection", Color.green);
