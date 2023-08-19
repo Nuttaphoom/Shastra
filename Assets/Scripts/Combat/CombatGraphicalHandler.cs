@@ -27,18 +27,18 @@ namespace Vanaring_DepaDemo
         [SerializeField]
         private MainWindowManager _mainWindowManager;
 
-        private EntityWindowManager _entityWindowManager; 
+        private EntityWindowManager _entityWindowManager;
 
         [SerializeField]
-        private GameObject _mainCanvas;
+        private Transform _quickHPBar; 
 
         [SerializeField]
         private CombatEntity _combatEntity;
 
         private void Awake()
         {
-            if (_mainCanvas == null)
-                throw new Exception("Main Canvas hasn't been assigned");
+            if (_quickHPBar == null)
+                throw new Exception("Quick HP bar Canvas hasn't been assigned");
 
             if (_combatEntity.GetComponent<CombatEntity>() == null)
                 throw new Exception("Combat Entiy hasn't been assigned");
@@ -95,6 +95,7 @@ namespace Vanaring_DepaDemo
 
         public IEnumerator TakeControl()
         {
+            EnableQuickMenuBar(true); 
             _entityWindowManager.SetNewEntity(this);
             DisplayMainMenu(); 
 
@@ -105,7 +106,9 @@ namespace Vanaring_DepaDemo
 
         public void TakeControlLeave()
         {
+            EnableQuickMenuBar(false); 
             DisableMenuElements() ;
+           
             _mainWindowManager.ReleaseInputControl();
         }
 
@@ -125,7 +128,6 @@ namespace Vanaring_DepaDemo
 
             if (!TargetSelectionFlowControl.Instance.PrepareAction())
             {
-                Debug.Log("Push new window");
                 _entityWindowManager.PushInNewWindow(_mainWindowManager);
             }
 
@@ -137,7 +139,7 @@ namespace Vanaring_DepaDemo
 
         private void OnVisualHurtUpdateEnd(int i)
         {
-           
+            EnableQuickMenuBar(false); 
         }
 
         private void OnEnergyUpdate(CombatEntity caster, RuntimeMangicalEnergy.EnergySide side, int amount)
@@ -149,8 +151,13 @@ namespace Vanaring_DepaDemo
 
         private void OnUpdateEntityStats(int i)
         {
-            if(!_mainCanvas.activeSelf)
-                _mainCanvas.gameObject.SetActive(true);
+            if (!_quickHPBar.gameObject.activeSelf)
+                EnableQuickMenuBar(true); 
+        }
+
+        private void EnableQuickMenuBar(bool b)
+        {
+            _quickHPBar.gameObject.SetActive(b); 
         }
 
 

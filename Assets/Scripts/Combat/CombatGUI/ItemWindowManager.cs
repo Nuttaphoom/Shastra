@@ -24,7 +24,8 @@ namespace Vanaring_DepaDemo
         private List<GameObject> _GUIinventoryObject;
         private List<ItemSocketGUI> _GUIinventory;
 
-         
+        private int _currentIndex = 0;
+        private List<ItemSocketGUI> _itemSocketGUI = new List<ItemSocketGUI>(); 
 
         // Start is called before the first frame update
         void Awake()
@@ -52,6 +53,7 @@ namespace Vanaring_DepaDemo
             _itemInventoryData = updatedItemdata;
             _itemInventoryAmount = updatedItemAmount;
 
+            _itemSocketGUI = new List<ItemSocketGUI>(); 
             #region
             //Version 1 : Add multiple Item L L L L = x4
             //foreach (ItemAbilityRuntime itemAbility in _itemInventoryData)
@@ -83,7 +85,7 @@ namespace Vanaring_DepaDemo
                 ItemSocketGUI newSocket = newSocketObject.GetComponent<ItemSocketGUI>();
                 newSocket.Init(_itemInventoryData[i], _combatEntity);
                 newSocket.SetNumberOfItem(_itemInventoryAmount[i]);
-
+                _itemSocketGUI.Add(newSocket); 
                 _GUIinventory.Add(newSocket);
                 _GUIinventoryObject.Add(newSocketObject);
             }
@@ -133,11 +135,28 @@ namespace Vanaring_DepaDemo
         {
             if (key == KeyCode.W)
             {
-                LoadUpperSocketItem();
+                _currentIndex -= 1;
+                if (_currentIndex < 0)
+                {
+                    LoadUpperSocketItem();
+
+                    _currentIndex = 0;
+                }
             }
             else if (key == KeyCode.S)
             {
-                LoadLowerSocketItem();
+                _currentIndex += 1;
+
+                if (_currentIndex > _itemSocketGUI.Count - 1)
+                {
+                    LoadLowerSocketItem();
+                    _currentIndex -= 1;
+
+                }
+            }
+            else if (key == KeyCode.Space)
+            {
+                _itemSocketGUI[_currentIndex].CallButtonCallback();
             }
             else if (key == KeyCode.Escape)
             {
