@@ -46,6 +46,7 @@ namespace Vanaring_DepaDemo
         private float maxEnergyVal = 100;
         private float lightVal = 50;
         private float darkVal = 50;
+        private CharacterSheetSO _characterSheetSO;
 
         private CombatEntity _combatEntity;
 
@@ -81,6 +82,7 @@ namespace Vanaring_DepaDemo
             _combatEntity.SubOnDamageVisualEvent(OnHPModified);
             _combatEntity.SpellCaster.SubOnModifyEnergy(OnEnergyModified);
 
+            _characterSheetSO
             isCanTurn = false;
             isSelected = false;
             _turnStatusImage.gameObject.SetActive(false);
