@@ -97,12 +97,10 @@ namespace Vanaring_DepaDemo
             //Debug.Log("mammmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm");
             if (side == RuntimeMangicalEnergy.EnergySide.LightEnergy)
             {
-                Debug.Log("INCREASEEEEEEEEEEEEEEE");
                 lightScaleIncrease(val);
             }
             else
             {
-                Debug.Log("DECREASEEEEEEEEEEEEEEE");
                 lightScaleDecrease(val);
             }
         }

@@ -58,6 +58,8 @@ namespace Vanaring_DepaDemo
 
         public IEnumerator PlayTriggerAnimation(string triggerName)
         {
+            Debug.Log("Player trigger animation at " + gameObject.name); 
+
             CameraSetUPManager.Instance.SetupAttackActionVirtualCamera(gameObject);
             CameraSetUPManager.Instance.SetBlendMode(CameraSetUPManager.CameraBlendMode.CUT, 0.0f);
 

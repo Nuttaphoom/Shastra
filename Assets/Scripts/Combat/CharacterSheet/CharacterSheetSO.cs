@@ -82,7 +82,6 @@ namespace Vanaring_DepaDemo
                     _defaultValue = _peakValue;
                 }
             }
-            Debug.Log("ret = " + ret); 
             return ret; 
                
         }

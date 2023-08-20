@@ -150,7 +150,6 @@ public class TargetSelectionFlowControl : MonoBehaviour, IInputReceiver
 
         CentralInputReceiver.Instance().AddInputReceiverIntoStack(this);
 
-        CameraSetUPManager.Instance.ActiveTargetModeVirtualCamera();
 
        
         OnTargetSelectionSchemeStart.PlayEvent(caster);
@@ -163,14 +162,19 @@ public class TargetSelectionFlowControl : MonoBehaviour, IInputReceiver
         ValidateData();
         
         AssignPossibleTargets(caster, action);
-        CameraSetUPManager.Instance.SetBlendMode(CameraSetUPManager.CameraBlendMode.EASE_INOUT, 0.5f);
-
+        CameraSetUPManager.Instance.CaptureVMCamera();
+        if (! randomTarget)
+        {
+            CameraSetUPManager.Instance.ActiveTargetModeVirtualCamera();
+            CameraSetUPManager.Instance.SetBlendMode(CameraSetUPManager.CameraBlendMode.EASE_INOUT, 0.5f);
+        }
         while (_selectedTarget.Count < action.TargetSelect.MaxTarget)
         {
-            CameraSetUPManager.Instance.SetupTargatModeLookAt(_validTargets[_currentSelectIndex].gameObject);
-
-            _targetSelectionGUI.SelectTargetPointer(_validTargets[_currentSelectIndex]);
-
+            if (!randomTarget)
+            {
+                CameraSetUPManager.Instance.SetupTargatModeLookAt(_validTargets[_currentSelectIndex].gameObject);
+               _targetSelectionGUI.SelectTargetPointer(_validTargets[_currentSelectIndex]);
+            }
             if (_forceStop)
             {
                 _forceStop = false;
@@ -194,6 +198,7 @@ public class TargetSelectionFlowControl : MonoBehaviour, IInputReceiver
     End:
         _targetSelectionGUI.EndSelectionScheme(); 
         OnTargetSelectionSchemeEnd.PlayEvent(caster);
+        CameraSetUPManager.Instance.RestoreVMCameraState(); 
 
         CentralInputReceiver.Instance().RemoveInputReceiverIntoStack(this) ;
 

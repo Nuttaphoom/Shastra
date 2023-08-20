@@ -41,7 +41,6 @@ namespace Vanaring_DepaDemo
         {
             _init  = true; 
             _item = item;
-            Debug.Log("combatentity is " + combatEntity.gameObject);
             this._caster = combatEntity;
             _actionButton.onClick.AddListener(ChooseItem) ;
 
