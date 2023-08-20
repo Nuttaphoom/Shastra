@@ -97,6 +97,7 @@ namespace Vanaring_DepaDemo
         {
             VFXCallbackHandler<T> callbackHandler = new VFXCallbackHandler<T>(GetComponent<CombatEntity>(),
                 vfxEntity , GetVFXSpawnPos(),  argc  );
+
             yield return (callbackHandler.PlayVFX(pam));
         }
         public IEnumerator PlayVFXActionAnimation<T>(VFXEntity vfxEntity, VFXCallbackHandler<T>.VFXCallback argc, T pam, Vector3 casterpos, Vector3 targetpos)

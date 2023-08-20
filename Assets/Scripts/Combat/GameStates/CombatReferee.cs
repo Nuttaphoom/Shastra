@@ -71,7 +71,6 @@ namespace Vanaring_DepaDemo
         private void Start()
         {
             CentralInputReceiver.Instance().AddInputReceiverIntoStack(this);
-
             SetUpNewCombatEncounter();
             StartCoroutine(CustomTick());
         }
@@ -106,6 +105,8 @@ namespace Vanaring_DepaDemo
             _currentSide = (ECompetatorSide)(((int)_currentSide + 1) % 2);
 
             _activeEntities = GetCompetatorsBySide(_currentSide);
+            _currentEntityIndex = 0; 
+
         }
 
         private bool EndGameConditionMeet()
@@ -301,7 +302,9 @@ namespace Vanaring_DepaDemo
             AssignCompetators(FindObjectOfType<EntityLoader>().LoadData(), ECompetatorSide.Hostile);
             _currentSide = ECompetatorSide.Ally;
             _activeEntities = GetCompetatorsBySide(_currentSide);
-    
+
+            _currentEntityIndex = 0;
+
         }
         #region GETTER 
 
@@ -328,11 +331,19 @@ namespace Vanaring_DepaDemo
         public IEnumerator SwitchControl(int prev, int next)
         {
             if (prev != -1)
+            {
+                FindObjectOfType<CharacterWindowManager>().DeSetActiveEntityGUI(_activeEntities[prev]);
                 yield return _activeEntities[prev].LeaveControl();
+
+            }
+
 
 
             if (prev != next)
             {
+                FindObjectOfType<CharacterWindowManager>().SetActiveEntityGUI(_activeEntities[next]);
+
+
                 for (int i = 0; i < GetCompetatorsBySide(ECompetatorSide.Ally).Count; i++)
                 {
                     if (GetCompetatorsBySide(ECompetatorSide.Ally)[i] == _activeEntities[next])
@@ -371,7 +382,6 @@ namespace Vanaring_DepaDemo
 
                 if (temp != _currentEntityIndex)
                 {
-
                     yield return SwitchControl(temp, _currentEntityIndex);
                 }
             }
