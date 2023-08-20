@@ -152,6 +152,7 @@ namespace Vanaring_DepaDemo
         public RuntimeCharacterStatsAccumulator StatsAccumulator => _runtimeCharacterStatsAccumulator;
         public SpellCasterHandler SpellCaster => _spellCaster;
         public ItemUserHandler ItemUser => _itemUser;
+        public CharacterSheetSO CharacterSheet => _characterSheet; 
 
         public CombatEntityAnimationHandler CombatEntityAnimationHandler => _combatEntityAnimationHandler;
 
