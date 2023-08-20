@@ -81,5 +81,12 @@ namespace Vanaring_DepaDemo
         {
             yield return null; 
         }
+
+        public override IEnumerator OnDeadVisualClear()
+        {
+            _botBehaviorHandler.DestroyTelegraphyVFX();
+
+            yield return null;
+        }
     }
 }

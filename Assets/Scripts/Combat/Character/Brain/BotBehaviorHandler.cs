@@ -94,10 +94,8 @@ namespace Vanaring_DepaDemo
                     }
                 }
                 index += side * 3;
-                if (prefab != null)
-                {
-                    Destroy(prefab);
-                }
+
+                DestroyTelegraphyVFX(); 
 
                 prefab = Instantiate(VfxTelegraphySingletonHandler.instance.GetVfxTelegraphPrefab(index),
                     _telegraphyPos.transform );
@@ -118,6 +116,14 @@ namespace Vanaring_DepaDemo
                 {
                     Destroy(prefab); 
                 }
+            }
+        }
+
+        public void DestroyTelegraphyVFX()
+        {
+            if (prefab != null)
+            {
+                Destroy(prefab);
             }
         }
     }

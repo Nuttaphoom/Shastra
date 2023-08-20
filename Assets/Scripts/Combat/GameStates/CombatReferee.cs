@@ -227,10 +227,16 @@ namespace Vanaring_DepaDemo
                         //When the action is finish executed (like playing animation), end turn 
 
                         foreach (var e in GetCompetatorsBySide(ECompetatorSide.Ally))
-                            yield return e.AfterGetAction();
+                        {
+                            if (! e.IsDead)
+                                yield return e.AfterGetAction();
+                        }
 
                         foreach (var e in GetCompetatorsBySide(ECompetatorSide.Hostile))
-                            yield return e.AfterGetAction();
+                        {
+                            if (! e.IsDead)
+                                yield return e.AfterGetAction();
+                        }
 
                         // entity's leave turn 
                         yield return SwitchControl(_currentEntityIndex, _currentEntityIndex);
@@ -271,7 +277,8 @@ namespace Vanaring_DepaDemo
         End:
             foreach (CombatEntity entity in GetCompetatorsBySide(_currentSide))
             {
-                yield return entity.TurnLeave();
+                if (! entity.IsDead)
+                    yield return entity.TurnLeave();
             }
             ColorfulLogger.LogWithColor("END TURN IN " + _currentSide, Color.blue);
 
