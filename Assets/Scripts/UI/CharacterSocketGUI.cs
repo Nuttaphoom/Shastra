@@ -82,7 +82,8 @@ namespace Vanaring_DepaDemo
             _combatEntity.SubOnDamageVisualEvent(OnHPModified);
             _combatEntity.SpellCaster.SubOnModifyEnergy(OnEnergyModified);
 
-            _characterSheetSO
+            _characterSheetSO = _combatEntity.CharacterSheet;
+            characterImg.sprite = _characterSheetSO.GetCharacterIcon;
             isCanTurn = false;
             isSelected = false;
             _turnStatusImage.gameObject.SetActive(false);

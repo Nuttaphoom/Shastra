@@ -16,6 +16,7 @@ namespace Vanaring_DepaDemo
         private GameObject _entities;
 
         private List<CharacterSocketGUI> characterSocketList = new List<CharacterSocketGUI>();
+        private List<CombatEntity> combatEntityList = new List<CombatEntity>();
 
         private void Awake()
         {
@@ -31,15 +32,38 @@ namespace Vanaring_DepaDemo
                 newSocket.transform.localScale = _templatePrefab.transform.localScale;
                 newSocket.Init(Random.Range(0, 100), _entities.transform.GetChild(i).name, _cet);
                 characterSocketList.Add(newSocket);
+                combatEntityList.Add(_cet);
                 newSocket.transform.SetAsFirstSibling();
             }
         }
 
-        public void ActiveStatusAllCharacterSocketGUI()
+        public void ActiveNowStatusAllGUI()
         {
             foreach (CharacterSocketGUI csg in characterSocketList)
             {
                 csg.ToggleTurnStatusDisplay();
+            }
+        }
+
+        public void ActiveTurnStatusAtEntity(CombatEntity entity) 
+        {
+            for (int i = 0; i < combatEntityList.Count-1; i++)
+            {
+                if (combatEntityList[i] == entity)
+                {
+                    characterSocketList[i].ToggleTurnStatusDisplay();
+                }
+            }
+        }
+
+        public void ActiveHighlightGUIAtEntity(CombatEntity entity)
+        {
+            for (int i = 0; i < combatEntityList.Count - 1; i++)
+            {
+                if (combatEntityList[i] == entity)
+                {
+                    characterSocketList[i].ToggleOnTurnHighlightDisplay();
+                }
             }
         }
     }
