@@ -152,6 +152,7 @@ namespace Vanaring_DepaDemo
         public RuntimeCharacterStatsAccumulator StatsAccumulator => _runtimeCharacterStatsAccumulator;
         public SpellCasterHandler SpellCaster => _spellCaster;
         public ItemUserHandler ItemUser => _itemUser;
+        public CharacterSheetSO CharacterSheet => _characterSheet; 
 
         public CombatEntityAnimationHandler CombatEntityAnimationHandler => _combatEntityAnimationHandler;
 
@@ -206,7 +207,7 @@ namespace Vanaring_DepaDemo
             {
                 if (IsDead)
                 {
-                    _coroutine.Add(_combatEntityAnimationHandler.DestroyVisualMesh());
+                    _coroutine.Add(DeadVisualClear());
                     _callingDeadScheme = true;
                 }
                 _coroutine.Add(_combatEntityAnimationHandler.PlayTriggerAnimation(animationTrigger));
@@ -220,7 +221,7 @@ namespace Vanaring_DepaDemo
             //If done playing animation, visually destroy the character (animation) not game object
             if (IsDead && ! _callingDeadScheme)
             {
-                yield return _combatEntityAnimationHandler.DestroyVisualMesh();
+                yield return DeadVisualClear();
             }
 
             _OnUpdateVisualDMGEnd?.Invoke(0);
@@ -273,6 +274,15 @@ namespace Vanaring_DepaDemo
         {
             yield return GetStatusEffectHandler().RunStatusEffectExpiredScheme();
             yield return _baseEntityBrain.AfterGetAction() ;
+        }
+
+        public IEnumerator DeadVisualClear()
+        {
+            yield return _combatEntityAnimationHandler.DestroyVisualMesh();
+
+            yield return _baseEntityBrain.OnDeadVisualClear(); 
+
+
         }
 
 

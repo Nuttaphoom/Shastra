@@ -104,5 +104,10 @@ namespace Vanaring_DepaDemo
         {
             yield return null;
         }
+
+        public override IEnumerator OnDeadVisualClear()
+        {
+            yield return null; 
+        }
     }
 }

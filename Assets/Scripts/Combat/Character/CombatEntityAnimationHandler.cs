@@ -128,12 +128,11 @@ namespace Vanaring_DepaDemo
             }
             else
             {
-                Debug.Log("deadTriger is  : " + _deadAnimationTrigger);
                 yield return PlayTriggerAnimation(_deadAnimationTrigger);
             }
 
             
-            //Destroy(gameObject); 
+             
         }
 
    

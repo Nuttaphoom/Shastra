@@ -79,10 +79,12 @@ namespace Vanaring_DepaDemo
 
         public void ResetOverflow()
         {
-            Destroy(_starVFX_Instantied.gameObject);
-            _starVFX_Instantied = null;
+            if (_starVFX_Instantied != null)
+            {
+                Destroy(_starVFX_Instantied.gameObject);
+                _starVFX_Instantied = null;
+            }
             _combatEntity.SpellCaster.ResetEnergy();
-
         }
 
         private IEnumerator VisualStunApplier(string s)
