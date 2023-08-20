@@ -44,12 +44,18 @@ namespace Vanaring_DepaDemo
         }
         public override IEnumerator ExecuteRuntimeCoroutine(CombatEntity caster)
         {
+            List<IEnumerator> iEnumerators = new List<IEnumerator>();
             _caster = caster;
+
+            iEnumerators.Add(_caster.CombatEntityAnimationHandler.PlayTriggerAnimation(_actionAnimationInfo.SelfTrigerID));
+
             foreach (var target in _targets)
             {
                 CombatEntity entity = target;
-                yield return (target.CombatEntityAnimationHandler.PlayVFXActionAnimation<CombatEntity>(_actionAnimationInfo.TargetVfxEntity, ModifyenergyCoroutine, entity)); 
+                iEnumerators.Add (target.CombatEntityAnimationHandler.PlayVFXActionAnimation<CombatEntity>(_actionAnimationInfo.TargetVfxEntity, ModifyenergyCoroutine, entity)); 
             }
+
+            yield return new WaitAll(_caster,iEnumerators.ToArray() ) ;
         }
 
         private IEnumerator ModifyenergyCoroutine(CombatEntity target)
@@ -57,9 +63,8 @@ namespace Vanaring_DepaDemo
             target.SpellCaster.ModifyEnergy(_caster, _data.Side, _data.Amount);
             List<IEnumerator> iEnumerators = new List<IEnumerator>();
             iEnumerators.Add(target.CombatEntityAnimationHandler.PlayTriggerAnimation(_actionAnimationInfo.TargetTrigerID));
-            iEnumerators.Add(_caster.CombatEntityAnimationHandler.PlayTriggerAnimation(_actionAnimationInfo.SelfTrigerID));
 
-            yield return new WaitAll(_caster,iEnumerators.ToArray());
+            yield return new WaitAll(_caster, iEnumerators.ToArray());
         }
 
 
