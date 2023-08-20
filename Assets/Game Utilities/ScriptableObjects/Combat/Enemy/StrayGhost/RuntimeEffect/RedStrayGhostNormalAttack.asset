@@ -9,23 +9,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cb5bbf16513e76f4a9bce041988e4a8c, type: 3}
-  m_Name: StrayGhost_normalATK,ModifyLight
+  m_Script: {fileID: 11500000, guid: b4345a72bd310d84b978ddc273954ab6, type: 3}
+  m_Name: RedStrayGhostNormalAttack
   m_EditorClassIdentifier: 
   _targetSelector:
     _maxTargetSize: 1
     _targetSide: 1
     _targetCaster: 0
-  _damagScaling: 1
+  _damagScaling: 2
   realDmg: -1
-  _energyModifierData:
-    _side: 0
-    _amount: 20
   _actionAnimation:
     _casterVFXEntity:
       _destroyAfterCallbackDelay: 0
       _spawnDelay: 0
-      _callbackDelay: 0
+      _callbackDelay: 1
       _VFXAnimationPrefabs: {fileID: 0}
     _targetVFXEntity:
       _destroyAfterCallbackDelay: 0.2

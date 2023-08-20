@@ -9,28 +9,27 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cb5bbf16513e76f4a9bce041988e4a8c, type: 3}
-  m_Name: StrayGhost_normalATK,ModifyDark
+  m_Script: {fileID: 11500000, guid: 4b32bddd7cdd7fe4d8debf176d667e75, type: 3}
+  m_Name: StrayGhost-GiveLight_RuntimeEffect
   m_EditorClassIdentifier: 
   _targetSelector:
     _maxTargetSize: 1
     _targetSide: 1
     _targetCaster: 0
-  _damagScaling: 1
-  realDmg: -1
-  _energyModifierData:
-    _side: 1
+  _data:
+    _side: 0
     _amount: 20
   _actionAnimation:
     _casterVFXEntity:
       _destroyAfterCallbackDelay: 0
       _spawnDelay: 0
       _callbackDelay: 0
-      _VFXAnimationPrefabs: {fileID: 0}
+      _VFXAnimationPrefabs: {fileID: 6403048864308812924, guid: b1d564960826a724bb22f4bd3e7617b4, type: 3}
     _targetVFXEntity:
-      _destroyAfterCallbackDelay: 0.2
-      _spawnDelay: 1
-      _callbackDelay: 0.55
-      _VFXAnimationPrefabs: {fileID: 3662480906409611008, guid: a89376a6e8a91d84993f44d1cf8e4d92, type: 3}
-    SelfTrigerID: AttackOne
-    TargetTrigerID: Hurt
+      _destroyAfterCallbackDelay: 2
+      _spawnDelay: 0.5
+      _callbackDelay: 1
+      _VFXAnimationPrefabs: {fileID: 8432623215915248235, guid: 8ec4189eadaa24644acf69ed2c7eac39, type: 3}
+    SelfTrigerID: Idle
+    TargetTrigerID: Idle
+    _isProjectile: 0

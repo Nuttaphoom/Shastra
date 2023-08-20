@@ -1,3 +1,4 @@
+using CustomYieldInstructions;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -54,7 +55,11 @@ namespace Vanaring_DepaDemo
         private IEnumerator ModifyenergyCoroutine(CombatEntity target)
         {
             target.SpellCaster.ModifyEnergy(_caster, _data.Side, _data.Amount);
-            yield return null; 
+            List<IEnumerator> iEnumerators = new List<IEnumerator>();
+            iEnumerators.Add(target.CombatEntityAnimationHandler.PlayTriggerAnimation(_actionAnimationInfo.TargetTrigerID));
+            iEnumerators.Add(_caster.CombatEntityAnimationHandler.PlayTriggerAnimation(_actionAnimationInfo.SelfTrigerID));
+
+            yield return new WaitAll(_caster,iEnumerators.ToArray());
         }
 
 

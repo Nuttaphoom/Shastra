@@ -39,20 +39,26 @@ namespace Vanaring_DepaDemo
 
         }
 
-        public List<RuntimeEffectFactorySO> GetBehaviorEffect()
+        public BotBehaviorSO.ActionData GetBehaviorEffect()
         {
             _currentBehavior = _nextBehavior;
-            List<RuntimeEffectFactorySO> ret = new List<RuntimeEffectFactorySO>();
+            List<BotBehaviorSO.ActionData> ret = new List<BotBehaviorSO.ActionData>();
             IEnumerator coroutine = _behaviorSocketSOs.GetBehaviorEffect(_currentBehavior);
 
             while (coroutine.MoveNext())
             {
-                if (coroutine.Current != null && coroutine.Current.GetType().IsSubclassOf(typeof(RuntimeEffectFactorySO)))
+                Debug.Log("move next"); 
+                Debug.Log(coroutine.GetType() ) ;
+                if (coroutine.Current != null && coroutine.Current is BotBehaviorSO.ActionData )
                 {
-                    ret.Add(coroutine.Current as RuntimeEffectFactorySO); 
+                    return ((BotBehaviorSO.ActionData)coroutine.Current);
                 }
+
             }
-            return ret;
+            Debug.Log("done move next"); 
+            throw new System.Exception("GetBehaviorEffect don't return BotBehaviorSO.ActionData");
+
+
         }
         
         public void StartTelegraphy ()
@@ -74,7 +80,7 @@ namespace Vanaring_DepaDemo
 
         private void CreatingTelegraphyInstance(BotBehaviorSocketSO spell)
         {
-             EnergyModifierData modifier =  spell.GetTargetModiferData(_currentBehavior) ;  
+             EnergyModifierData modifier =  spell.GetEnergyCost(_currentBehavior) ;  
 
             if (modifier.Amount > 0)
             {

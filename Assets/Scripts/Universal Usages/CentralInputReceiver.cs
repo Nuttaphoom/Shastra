@@ -80,8 +80,6 @@ namespace Vanaring_DepaDemo
         {
             if (! _receiverStack.Contains(receiver))
             {
-                Debug.Log("receiver is " + receiver);
-
                 _receiverStack.Push(receiver); 
             }
         }

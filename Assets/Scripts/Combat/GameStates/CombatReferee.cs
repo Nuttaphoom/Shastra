@@ -267,7 +267,7 @@ namespace Vanaring_DepaDemo
                 }
                 if (EndGameConditionMeet())
                 {
-                    _gameoverscreen.ActiveGameOverScreen(true);
+                    //_gameoverscreen.ActiveGameOverScreen(true);
                     goto End;
                 }
                 //If GetAction is null, we wait for end of frame

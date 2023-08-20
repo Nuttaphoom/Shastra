@@ -73,7 +73,6 @@ namespace Vanaring_DepaDemo
             {
                 if (coroutine.Current != null && coroutine.Current is RuntimeEffect)
                 {
-                    Debug.Log("assign action");
                     _action = (RuntimeEffect)coroutine.Current;
                 } 
             }

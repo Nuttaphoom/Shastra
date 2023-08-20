@@ -9,27 +9,27 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d1d19b9edf1a4d24cb125935c75f0c42, type: 3}
-  m_Name: Warlock-EvokeHavocLightRuntimeEffectFactory
+  m_Script: {fileID: 11500000, guid: 4b32bddd7cdd7fe4d8debf176d667e75, type: 3}
+  m_Name: StrayGhost-GiveDark_RuntimeEffect
   m_EditorClassIdentifier: 
   _targetSelector:
     _maxTargetSize: 1
     _targetSide: 1
     _targetCaster: 0
-  _energyModifierData:
-    _side: 0
+  _data:
+    _side: 1
     _amount: 20
-  _actionAnimationInfo:
+  _actionAnimation:
     _casterVFXEntity:
       _destroyAfterCallbackDelay: 0
       _spawnDelay: 0
       _callbackDelay: 0
-      _VFXAnimationPrefabs: {fileID: 0}
+      _VFXAnimationPrefabs: {fileID: 6403048864308812924, guid: b1d564960826a724bb22f4bd3e7617b4, type: 3}
     _targetVFXEntity:
       _destroyAfterCallbackDelay: 2
       _spawnDelay: 0.5
       _callbackDelay: 1
-      _VFXAnimationPrefabs: {fileID: 7295528881983228470, guid: 052867f54502f454aa81b665cc5f06f4, type: 3}
-    SelfTrigerID: Buff
-    TargetTrigerID: Hurt
+      _VFXAnimationPrefabs: {fileID: 5957440100851985461, guid: 958041c671c082b47a6184f35810a4a9, type: 3}
+    SelfTrigerID: Idle
+    TargetTrigerID: Idle
     _isProjectile: 0

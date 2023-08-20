@@ -88,10 +88,8 @@ namespace Vanaring_DepaDemo
 
         private void createStatusUI()
         {
-            Debug.Log("create status UI start"); 
             foreach (KeyValuePair<string, List<StatusRuntimeEffect>> entry in _combatEntity.GetStatusEffectHandler().Effects)
             {
-                Debug.Log("create status UI loop");
                 if (entry.Value != null && entry.Value.Count != 0)
                 {
                     TargetStatusIconUI newIcon = Instantiate(_IconSample, _IconSample.transform.position, _IconSample.transform.rotation);

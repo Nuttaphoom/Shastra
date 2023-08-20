@@ -37,6 +37,8 @@ namespace Vanaring_DepaDemo
 
         public GameObject tempEntity;
         public GameObject tempEntity1;
+
+        private GameObject _savedVMCamera = null; 
         private void Awake()
         {
             if (Instance != null)
@@ -102,22 +104,15 @@ namespace Vanaring_DepaDemo
             }
         }
 
-        public void SetEntityActionVirtualCamera(GameObject entity)
-        { 
-             _actionCamera = entity.GetComponent<CombatEntityAnimationHandler>().ActionCamera;
-        }
-        private IEnumerator AttackActionCamera()
+        public void CaptureVMCamera()
         {
-            Debug.Log("ATCKKKKKKKKKKKKKKKKKK");
-            while (true)
-            {
-                SetupAttackActionVirtualCamera(tempEntity);
-                Debug.Log("1");
-                yield return new WaitForSeconds(1.0f);
-                SetupAttackActionVirtualCamera(tempEntity1);
-                Debug.Log("2");
-                yield return new WaitForSeconds(1.0f);
-            }
+            _savedVMCamera = Camera.main.GetComponent<CinemachineBrain>().ActiveVirtualCamera.VirtualCameraGameObject ;   
+        }
+  
+        public void RestoreVMCameraState()
+        {
+            Camera.main.GetComponent<CinemachineBrain>().ActiveVirtualCamera.VirtualCameraGameObject.SetActive(false); 
+            _savedVMCamera.gameObject.SetActive(true);
         }
 
         #region GENERATOR
@@ -264,37 +259,9 @@ namespace Vanaring_DepaDemo
             }
             CamList[playerIndex].gameObject.SetActive(true);
         }
-        public void SelectCameraTarget(int enemyindex)
-        {
-            if (! IsTargetMode)
-            {
-                return;
-            }
+ 
 
-            foreach (GameObject tgui in TargetGUIList)
-            {
-                tgui.gameObject.SetActive(false);
-            }
-            TargetGUIList[enemyindex].gameObject.SetActive(true);
-        }
-
-        public void ToggleTargetMode()
-        {
-            IsTargetMode = ! IsTargetMode;
-            foreach (GameObject tgui in TargetGUIList)
-            {
-                tgui.gameObject.SetActive(false);
-            }
-            if (!  IsTargetMode)
-            {
-                Debug.Log("Toggle Target Mode: Off");
-                return;
-            }
-            else
-            {
-                SelectCameraTarget(Random.Range(0, _enemyModelSetupList.Count));
-            }
-        }
+  
         #endregion
         #region GETSETTER
         //[SerializeField]
