@@ -96,30 +96,16 @@ namespace Vanaring_DepaDemo
             _statusWindow.SetCombatEntity(combatEntity);
         }
         #region TurnStatus
-        public void ToggleTurnStatusDisplay()
+        public void ToggleTurnStatusDisplay(bool b)
         {
-            isCanTurn = !isCanTurn;
-            if (isCanTurn)
-            {
-                _turnStatusImage.gameObject.SetActive(true);
-            }
-            else
-            {
-                _turnStatusImage.gameObject.SetActive(false);
-            }
+             
+                _turnStatusImage.gameObject.SetActive(b);
+            
         }
         #endregion
-        public void ToggleOnTurnHighlightDisplay()
+        public void ToggleOnTurnHighlightDisplay(bool b)
         {
-            isSelected = !isSelected;
-            if (isSelected)
-            {
-                _highlightTurn.gameObject.SetActive(true);
-            }
-            else
-            {
-                _highlightTurn.gameObject.SetActive(false);
-            }
+            _highlightTurn.gameObject.SetActive(b);            
         }
 
 

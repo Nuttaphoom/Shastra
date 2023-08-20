@@ -58,8 +58,6 @@ namespace Vanaring_DepaDemo
 
         public IEnumerator PlayTriggerAnimation(string triggerName)
         {
-            Debug.Log("Player trigger animation at " + gameObject.name); 
-
             CameraSetUPManager.Instance.SetupAttackActionVirtualCamera(gameObject);
             CameraSetUPManager.Instance.SetBlendMode(CameraSetUPManager.CameraBlendMode.CUT, 0.0f);
 
@@ -84,6 +82,7 @@ namespace Vanaring_DepaDemo
             {
                 VFXCallbackHandler<string> callbackHandler = new VFXCallbackHandler<string>(GetComponent<CombatEntity>(),
                     actionAnimation.CasterVfxEntity, GetVFXSpawnPos(), null);
+
                 coroutines.Add(callbackHandler.PlayVFX(actionAnimation.TargetTrigerID)) ;
             }
 
@@ -98,6 +97,7 @@ namespace Vanaring_DepaDemo
         {
             VFXCallbackHandler<T> callbackHandler = new VFXCallbackHandler<T>(GetComponent<CombatEntity>(),
                 vfxEntity , GetVFXSpawnPos(),  argc  );
+
             yield return (callbackHandler.PlayVFX(pam));
         }
         public IEnumerator PlayVFXActionAnimation<T>(VFXEntity vfxEntity, VFXCallbackHandler<T>.VFXCallback argc, T pam, Vector3 casterpos, Vector3 targetpos)

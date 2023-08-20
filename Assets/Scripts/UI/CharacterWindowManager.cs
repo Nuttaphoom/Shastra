@@ -18,11 +18,8 @@ namespace Vanaring_DepaDemo
         private List<CharacterSocketGUI> characterSocketList = new List<CharacterSocketGUI>();
         private List<CombatEntity> combatEntityList = new List<CombatEntity>();
 
+   
         private void Awake()
-        {
-
-        }
-        private void Start()
         {
             for (int i = 0; i < _entities.transform.childCount; i++)
             {
@@ -37,32 +34,28 @@ namespace Vanaring_DepaDemo
             }
         }
 
-        public void ActiveNowStatusAllGUI()
-        {
-            foreach (CharacterSocketGUI csg in characterSocketList)
-            {
-                csg.ToggleTurnStatusDisplay();
-            }
-        }
+     
 
-        public void ActiveTurnStatusAtEntity(CombatEntity entity) 
+        public void SetActiveEntityGUI(CombatEntity entity)
         {
-            for (int i = 0; i < combatEntityList.Count-1; i++)
+            for (int i = 0; i < combatEntityList.Count ; i++)
             {
                 if (combatEntityList[i] == entity)
                 {
-                    characterSocketList[i].ToggleTurnStatusDisplay();
+                    characterSocketList[i].ToggleOnTurnHighlightDisplay(true);
+                    characterSocketList[i].ToggleTurnStatusDisplay(true);
                 }
             }
         }
 
-        public void ActiveHighlightGUIAtEntity(CombatEntity entity)
+        public void DeSetActiveEntityGUI(CombatEntity entity)
         {
-            for (int i = 0; i < combatEntityList.Count - 1; i++)
+            for (int i = 0; i < combatEntityList.Count  ; i++)
             {
                 if (combatEntityList[i] == entity)
                 {
-                    characterSocketList[i].ToggleOnTurnHighlightDisplay();
+                    characterSocketList[i].ToggleOnTurnHighlightDisplay(false);
+                    characterSocketList[i].ToggleTurnStatusDisplay(false);
                 }
             }
         }
