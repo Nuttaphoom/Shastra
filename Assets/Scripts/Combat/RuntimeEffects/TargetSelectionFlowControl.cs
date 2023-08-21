@@ -168,22 +168,32 @@ public class TargetSelectionFlowControl : MonoBehaviour, IInputReceiver
 
         while (_selectedTarget.Count < action.TargetSelect.MaxTarget)
         {
+            CombatEntity selected = _validTargets[_currentSelectIndex]; 
+            if (selected.TryGetComponent(out CombatGraphicalHandler cgh))
+            {
+                cgh.EnableQuickMenuBar(true);
+            }
+            
             if (!randomTarget )
             {
-                if (casterSide  == CombatReferee.instance.GetCharacterSide(_validTargets[_currentSelectIndex] )   )
+                if (casterSide  == CombatReferee.instance.GetCharacterSide(selected)   )
                 {
                     CameraSetUPManager.Instance.ActiveTargetModeVirtualCamera();
                 }
                 else
                     CameraSetUPManager.Instance.RestoreVMCameraState();
 
-                CameraSetUPManager.Instance.SetupTargatModeLookAt(_validTargets[_currentSelectIndex].gameObject);
-                _targetSelectionGUI.SelectTargetPointer(_validTargets[_currentSelectIndex]);
+                CameraSetUPManager.Instance.SetupTargatModeLookAt(selected.gameObject);
+                _targetSelectionGUI.SelectTargetPointer(selected);
             }
             
             if (_forceStop)
             {
                 _forceStop = false;
+                if (cgh != null)
+                {
+                    cgh.EnableQuickMenuBar(false);
+                }
                 goto End;
             }
             if (randomTarget)
@@ -191,10 +201,18 @@ public class TargetSelectionFlowControl : MonoBehaviour, IInputReceiver
                 _currentSelectIndex = UnityEngine.Random.Range(0, _validTargets.Count);
                 _selectedTarget.Add(_validTargets[_currentSelectIndex]);
                 _validTargets.RemoveAt(_currentSelectIndex);
-
+                if (cgh != null)
+                {
+                    cgh.EnableQuickMenuBar(false);
+                }
                 continue;
             }
             yield return new WaitForEndOfFrame();
+
+            if (cgh != null)
+            {
+                cgh.EnableQuickMenuBar(false);
+            }
         }
 
         _latestAction = action;

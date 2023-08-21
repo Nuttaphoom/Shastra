@@ -889,6 +889,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Support-Combat-Entity Variant
       objectReference: {fileID: 0}
+    - target: {fileID: 5520608638592625962, guid: d35174f7bb738684fa761fd31d829dd5, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5591477379221643201, guid: d35174f7bb738684fa761fd31d829dd5, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -2585,10 +2589,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 5447836453559360700, guid: 3b7ec1c7136fbef47bc05818cac8c099, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1366402107}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3b7ec1c7136fbef47bc05818cac8c099, type: 3}
 --- !u!4 &747697962 stripped
 Transform:
@@ -2785,6 +2786,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d754f547dd36f647a7484395d3ee952, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cinemachineBrain: {fileID: 0}
   _enemyModelSetupList:
   - {fileID: 655300852}
   - {fileID: 0}
@@ -2797,8 +2799,6 @@ MonoBehaviour:
   LvirtualCamera: {fileID: 5767690655094526629, guid: ef5d86ea90b92844c9c42cfe1a6a8692, type: 3}
   targetVirtualCamera: {fileID: 1992771076}
   _tgui: {fileID: 1989665005}
-  tempEntity: {fileID: 0}
-  tempEntity1: {fileID: 0}
 --- !u!1 &796287471
 GameObject:
   m_ObjectHideFlags: 0
@@ -4307,32 +4307,6 @@ Light:
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
   m_ShadowAngle: 0
---- !u!1 &1366402104 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5447836453559360700, guid: 3b7ec1c7136fbef47bc05818cac8c099, type: 3}
-  m_PrefabInstance: {fileID: 747697961}
-  m_PrefabAsset: {fileID: 0}
---- !u!95 &1366402107
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1366402104}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 85b0ba74f97a5d247ab282341d22eb21, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &1380101984
 GameObject:
   m_ObjectHideFlags: 0
