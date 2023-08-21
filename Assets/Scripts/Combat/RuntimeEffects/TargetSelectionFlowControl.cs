@@ -150,8 +150,6 @@ public class TargetSelectionFlowControl : MonoBehaviour, IInputReceiver
 
         CentralInputReceiver.Instance().AddInputReceiverIntoStack(this);
 
-
-       
         OnTargetSelectionSchemeStart.PlayEvent(caster);
 
         ColorfulLogger.LogWithColor("Initialize Target Selection", Color.green);
@@ -162,30 +160,37 @@ public class TargetSelectionFlowControl : MonoBehaviour, IInputReceiver
         ValidateData();
         
         AssignPossibleTargets(caster, action);
+
         CameraSetUPManager.Instance.CaptureVMCamera();
-        if (! randomTarget)
-        {
-            CameraSetUPManager.Instance.ActiveTargetModeVirtualCamera();
-            CameraSetUPManager.Instance.SetBlendMode(CameraSetUPManager.CameraBlendMode.EASE_INOUT, 0.5f);
-        }
+
+        CameraSetUPManager.Instance.SetBlendMode(CameraSetUPManager.CameraBlendMode.EASE_INOUT, 0.5f);
+
         while (_selectedTarget.Count < action.TargetSelect.MaxTarget)
         {
-            if (!randomTarget)
+            if (!randomTarget )
             {
+                if (CombatReferee.instance.GetCharacterSide(caster) == CombatReferee.instance.GetCharacterSide(_validTargets[_currentSelectIndex]))
+                {
+                    Debug.Log("current selected target is " + _validTargets[_currentSelectIndex]);
+
+                    CameraSetUPManager.Instance.ActiveTargetModeVirtualCamera();
+                }
+                else
+                    CameraSetUPManager.Instance.RestoreVMCameraState();
+
                 CameraSetUPManager.Instance.SetupTargatModeLookAt(_validTargets[_currentSelectIndex].gameObject);
-               _targetSelectionGUI.SelectTargetPointer(_validTargets[_currentSelectIndex]);
+                _targetSelectionGUI.SelectTargetPointer(_validTargets[_currentSelectIndex]);
             }
+            
             if (_forceStop)
             {
                 _forceStop = false;
-                ColorfulLogger.LogWithColor("Cancel Target Selection", Color.green);
                 goto End;
             }
             if (randomTarget)
             {
                 _currentSelectIndex = UnityEngine.Random.Range(0, _validTargets.Count);
                 _selectedTarget.Add(_validTargets[_currentSelectIndex]);
-                ColorfulLogger.LogWithColor("AI Action target is " + _validTargets[_currentSelectIndex], Color.yellow);
                 _validTargets.RemoveAt(_currentSelectIndex);
 
                 continue;

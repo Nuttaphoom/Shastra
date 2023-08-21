@@ -85,13 +85,16 @@ namespace Vanaring_DepaDemo
 
         public void ActiveTargetModeVirtualCamera()
         {
-            DeactivateAllVirtualCameras();
-            targetVirtualCamera.gameObject.SetActive(true);
+            
+                DeactivateAllVirtualCameras();
+                targetVirtualCamera.gameObject.SetActive(true);
+             
         }
 
         public void SetupTargatModeLookAt(GameObject entity)
         {
-            targetVirtualCamera.LookAt = entity.transform;
+            if (targetVirtualCamera.LookAt != entity.transform) 
+                targetVirtualCamera.LookAt = entity.transform;
         }
 
         private void DeactivateAllVirtualCameras()
