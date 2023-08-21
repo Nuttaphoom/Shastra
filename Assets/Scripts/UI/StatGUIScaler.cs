@@ -147,7 +147,11 @@ namespace Vanaring_DepaDemo
         private IEnumerator IEAnimateHPBarScale(float maxHP)
         {
             float tickRate = 0.5f / ((Mathf.Abs((hpVal / maxHP) - secondhpImage.fillAmount))*100);
-            //Debug.Log((hpVal / maxHP) + "-" + hpImage.fillAmount + "=" + tickRate);
+
+            Debug.Log("hpVal : " + hpVal);
+            Debug.Log("hpVal / max hp : " + hpVal / maxHP);
+
+
             yield return new WaitForSeconds(0.5f);
             while (secondhpImage.fillAmount < hpVal/maxHP)
             {
@@ -165,7 +169,9 @@ namespace Vanaring_DepaDemo
                 Destroy(_guiObj);
                 Destroy(gameObject);
             }
-            yield return null;
+
+ 
+             yield return null;
         }
         #endregion
     }

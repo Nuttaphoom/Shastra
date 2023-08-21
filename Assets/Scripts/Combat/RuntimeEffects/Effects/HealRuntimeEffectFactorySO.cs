@@ -51,8 +51,8 @@ namespace Vanaring_DepaDemo
             if (caster == null)
                 throw new Exception("Caster can not be null");
  
-  
             List<IEnumerator> coroutines = new List<IEnumerator>();
+
 
             //creating vfx for coroutine for targets
             foreach (CombatEntity target in _targets)

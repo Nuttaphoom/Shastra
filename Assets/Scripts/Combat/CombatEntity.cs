@@ -192,7 +192,7 @@ namespace Vanaring_DepaDemo
         {
             _OnUpdateVisualDMG?.Invoke(0);
 
-            yield return null;
+            yield return new WaitForSeconds(2.0f); 
 
             _OnUpdateVisualDMGEnd?.Invoke(0);
 
