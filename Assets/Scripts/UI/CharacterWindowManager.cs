@@ -19,7 +19,7 @@ namespace Vanaring_DepaDemo
         private List<CombatEntity> combatEntityList = new List<CombatEntity>();
 
    
-        private void Awake()
+        private void Start()
         {
             for (int i = 0; i < _entities.transform.childCount; i++)
             {
