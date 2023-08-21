@@ -187,7 +187,6 @@ namespace Vanaring_DepaDemo
 
         public void ReceiveKeys(KeyCode key)
         {
-            Debug.Log("spell window on receiver key");
 
             _spellSockets[_currentIndex].UnHighlightedButton();
 
