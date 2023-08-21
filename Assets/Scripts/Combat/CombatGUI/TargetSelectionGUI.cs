@@ -26,7 +26,6 @@ public class TargetSelectionGUI  : RequireInitializationHandler<Transform,Null,N
 
     public void SelectTargetPointer ( CombatEntity combatEntity)
     {
-        
         if (!IsInit)
         {
             throw new Exception("TargetSelectionGUI never been Initialized"); 
@@ -34,7 +33,8 @@ public class TargetSelectionGUI  : RequireInitializationHandler<Transform,Null,N
 
         foreach (var key in _instantiatedTargetGUI.Keys )
         {
-            _instantiatedTargetGUI[key].SetActive(false);
+            if (key != combatEntity) 
+                _instantiatedTargetGUI[key].SetActive(false);
         }
 
       

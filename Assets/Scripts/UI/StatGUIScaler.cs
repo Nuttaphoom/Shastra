@@ -7,6 +7,7 @@ using System.ComponentModel;
 using UnityEditor;
 using Unity.Collections;
 using Unity.Jobs;
+using DG.Tweening;
 
 namespace Vanaring_DepaDemo
 {
@@ -14,6 +15,9 @@ namespace Vanaring_DepaDemo
     {
         [SerializeField]
         private CombatEntity _owner  ;
+
+        [SerializeField]
+        private GameObject _guiObj; 
 
         public TextMeshProUGUI lightNumText;
         public TextMeshProUGUI darkNumText;
@@ -106,7 +110,6 @@ namespace Vanaring_DepaDemo
         {
             hpVal = _owner.StatsAccumulator.GetHPAmount();
 
-            Debug.Log("hpVAlCur" + hpVal);
             float hptemp = maxHP == 0 ? (hpVal == 0 ? 1 : hpVal) : maxHP;
 
             hpImage.fillAmount = hpVal / hptemp;
@@ -155,6 +158,12 @@ namespace Vanaring_DepaDemo
             {
                 secondhpImage.fillAmount -= 0.01f;
                 yield return new WaitForSeconds(tickRate);
+            }
+
+            if (hpVal <= 0)
+            {
+                Destroy(_guiObj);
+                Destroy(gameObject);
             }
             yield return null;
         }
