@@ -91,7 +91,6 @@ namespace Vanaring_DepaDemo
         protected StatusStackInfo _stackInfo;
 
         
-
         public StatusRuntimeEffect(StatusRuntimeEffectFactorySO effectFactory)
         {
             this._evokeKey = effectFactory.EvokeKey ; 
