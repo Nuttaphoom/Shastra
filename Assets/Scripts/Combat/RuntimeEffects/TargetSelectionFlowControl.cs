@@ -145,13 +145,12 @@ public class TargetSelectionFlowControl : MonoBehaviour, IInputReceiver
 
     public IEnumerator InitializeTargetSelectionScheme(CombatEntity caster, RuntimeEffectFactorySO action, bool randomTarget = false )
     {
+        ECompetatorSide casterSide = CombatReferee.instance.GetCharacterSide(caster);
         if (_activlySelecting)
             throw new Exception("Try to active selection scheme while it is already active");
 
         CentralInputReceiver.Instance().AddInputReceiverIntoStack(this);
 
-
-       
         OnTargetSelectionSchemeStart.PlayEvent(caster);
 
         ColorfulLogger.LogWithColor("Initialize Target Selection", Color.green);
@@ -162,30 +161,35 @@ public class TargetSelectionFlowControl : MonoBehaviour, IInputReceiver
         ValidateData();
         
         AssignPossibleTargets(caster, action);
+
         CameraSetUPManager.Instance.CaptureVMCamera();
-        if (! randomTarget)
-        {
-            CameraSetUPManager.Instance.ActiveTargetModeVirtualCamera();
-            CameraSetUPManager.Instance.SetBlendMode(CameraSetUPManager.CameraBlendMode.EASE_INOUT, 0.5f);
-        }
+
+        CameraSetUPManager.Instance.SetBlendMode(CameraSetUPManager.CameraBlendMode.EASE_INOUT, 0.5f);
+
         while (_selectedTarget.Count < action.TargetSelect.MaxTarget)
         {
-            if (!randomTarget)
+            if (!randomTarget )
             {
+                if (casterSide  == CombatReferee.instance.GetCharacterSide(_validTargets[_currentSelectIndex] )   )
+                {
+                    CameraSetUPManager.Instance.ActiveTargetModeVirtualCamera();
+                }
+                else
+                    CameraSetUPManager.Instance.RestoreVMCameraState();
+
                 CameraSetUPManager.Instance.SetupTargatModeLookAt(_validTargets[_currentSelectIndex].gameObject);
-               _targetSelectionGUI.SelectTargetPointer(_validTargets[_currentSelectIndex]);
+                _targetSelectionGUI.SelectTargetPointer(_validTargets[_currentSelectIndex]);
             }
+            
             if (_forceStop)
             {
                 _forceStop = false;
-                ColorfulLogger.LogWithColor("Cancel Target Selection", Color.green);
                 goto End;
             }
             if (randomTarget)
             {
                 _currentSelectIndex = UnityEngine.Random.Range(0, _validTargets.Count);
                 _selectedTarget.Add(_validTargets[_currentSelectIndex]);
-                ColorfulLogger.LogWithColor("AI Action target is " + _validTargets[_currentSelectIndex], Color.yellow);
                 _validTargets.RemoveAt(_currentSelectIndex);
 
                 continue;
@@ -254,7 +258,8 @@ public class TargetSelectionFlowControl : MonoBehaviour, IInputReceiver
         {
             if (key == (KeyCode.D))
             {
-                _currentSelectIndex = (_currentSelectIndex + 1) > (_validTargets.Count - 1) ? _currentSelectIndex : (_currentSelectIndex + 1) ;
+                _currentSelectIndex = (_currentSelectIndex + 1) > (_validTargets.Count - 1) ? _currentSelectIndex : (_currentSelectIndex + 1);
+
             }
             else if (key == (KeyCode.A))
             {

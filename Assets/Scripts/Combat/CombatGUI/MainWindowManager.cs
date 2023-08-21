@@ -1,8 +1,10 @@
-﻿using System;
+﻿using DG.Tweening;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing.Design;
 using System.Runtime.InteropServices;
+using TMPro.EditorUtilities;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
@@ -27,8 +29,11 @@ namespace Vanaring_DepaDemo
 
         private Coroutine _targetingCoroutine = null;
 
-        private Color _hightlightedColor = Color.yellow;
+        private Color _hightlightedColor = Color.yellow ;
         private Color _defaultColor;
+
+        private List<Vector3> _defaultLocalScale;
+        private float modifiedSize = 1.25f ; 
 
         private void Awake()
         {
@@ -41,9 +46,17 @@ namespace Vanaring_DepaDemo
             _spellButton.onClick.AddListener(() => { _combatGraphicalHandler.DisplaySpellPanel(); });
             _weaponButton.onClick.AddListener(() => { _combatGraphicalHandler.DisplayWeaponPanel(); });
             _defaultColor = _spellButton.GetComponent<Image>().color;
+
             _buttons.Add(_spellButton);
             _buttons.Add(_itemButton);
             _buttons.Add(_weaponButton);
+
+
+            _defaultLocalScale = new List<Vector3>(); 
+            for (int i = 0;  i < _buttons.Count; i++)
+            {
+                _defaultLocalScale.Add(_buttons[i].transform.localScale) ;
+            }
         }
 
       
@@ -92,13 +105,13 @@ namespace Vanaring_DepaDemo
             }
             else if (key == (KeyCode.Q))
             {
-                if (CombatReferee.instance.ChangeActiveEntityIndex(true, false))
+                if (CombatReferee.instance.ChangeActiveEntityIndex(false, true))
                     TargetSelectionFlowControl.Instance.ForceStop();
 
             }
             else if (key == (KeyCode.E))
             {
-                if (CombatReferee.instance.ChangeActiveEntityIndex(false, true))
+                if (CombatReferee.instance.ChangeActiveEntityIndex(true, false))
                     TargetSelectionFlowControl.Instance.ForceStop();
             }
             else if (key == (KeyCode.D))
@@ -181,12 +194,15 @@ namespace Vanaring_DepaDemo
 
         private void HightLightButton(int index)
         {
-            _buttons[index].GetComponent<Image>().color = _hightlightedColor;
+            _buttons[index].transform.DOScale(_defaultLocalScale[index] * modifiedSize, 0.1f); 
+            //_buttons[index].GetComponent<Image>().color = _hightlightedColor;
         }
 
         private void UnhightlightButton(int index)
         {
-            _buttons[index].GetComponent<Image>().color = _defaultColor; 
+            _buttons[index].transform.DOScale(_defaultLocalScale[index], 0.1f);
+
+            //_buttons[index].GetComponent<Image>().color = _defaultColor; 
         }
     }
 }
