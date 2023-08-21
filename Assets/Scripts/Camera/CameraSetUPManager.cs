@@ -57,23 +57,48 @@ namespace Vanaring_DepaDemo
             
             Instance = this;
         }
-
+        private void Start()
+        {
+            isShaking = false;
+        }
         private void Update()
         {
-
+            //Debug.Log(Camera.main.GetComponent<CinemachineBrain>().ActiveVirtualCamera.VirtualCameraGameObject.GetComponent<CinemachineVirtualCamera>());
+            //if (isShaking)
+            //{
+            //    shakeTimer -= Time.deltaTime;
+            //    if (shakeTimer <= 0.0f)
+            //    {
+            //        var noise = shakedVirtualCamera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
+            //        noise.m_AmplitudeGain = 0.0f;
+            //        noise.m_FrequencyGain = 0.0f;
+            //        isShaking = false;
+            //    }
+            //}
         }
 
         public void ShakeCamera(CinemachineVirtualCamera shakedVirtualCamera)
         {
-            if (!isShaking)
+            if (shakedVirtualCamera.isActiveAndEnabled)
             {
-                isShaking = true;
-                shakeTimer = shakeDuration;
-                var noise = shakedVirtualCamera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
-                noise.m_AmplitudeGain = shakeAmplitude;
-                noise.m_FrequencyGain = shakeFrequency;
-                StartCoroutine(shakeVirtualCamera(shakedVirtualCamera));
+                shakedVirtualCamera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>().m_AmplitudeGain = 2.0f;
             }
+            else
+            {
+                Debug.LogError("No camera can be found");
+            }
+            //shakedVirtualCamera.GetComponent<CameraShake>().Shake();
+            //this.shakedVirtualCamera = shakedVirtualCamera;
+            //if (!isShaking)
+            //{
+            //    Debug.Log("shakeee");
+            //    isShaking = true;
+            //    shakeTimer = shakeDuration;
+            //    CinemachineBasicMultiChannelPerlin noise = shakedVirtualCamera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
+            //    noise.m_AmplitudeGain = 1.2f;
+            //    noise.m_FrequencyGain = 2.0f;
+            //    //StartCoroutine(shakeVirtualCamera(shakedVirtualCamera));
+            //}
         }
 
         private IEnumerator shakeVirtualCamera(CinemachineVirtualCamera shakedVirtualCamera)
