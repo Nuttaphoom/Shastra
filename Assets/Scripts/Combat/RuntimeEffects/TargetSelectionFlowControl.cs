@@ -145,6 +145,7 @@ public class TargetSelectionFlowControl : MonoBehaviour, IInputReceiver
 
     public IEnumerator InitializeTargetSelectionScheme(CombatEntity caster, RuntimeEffectFactorySO action, bool randomTarget = false )
     {
+        ECompetatorSide casterSide = CombatReferee.instance.GetCharacterSide(caster);
         if (_activlySelecting)
             throw new Exception("Try to active selection scheme while it is already active");
 
@@ -169,10 +170,8 @@ public class TargetSelectionFlowControl : MonoBehaviour, IInputReceiver
         {
             if (!randomTarget )
             {
-                if (CombatReferee.instance.GetCharacterSide(caster) == CombatReferee.instance.GetCharacterSide(_validTargets[_currentSelectIndex]))
+                if (casterSide  == CombatReferee.instance.GetCharacterSide(_validTargets[_currentSelectIndex] )   )
                 {
-                    Debug.Log("current selected target is " + _validTargets[_currentSelectIndex]);
-
                     CameraSetUPManager.Instance.ActiveTargetModeVirtualCamera();
                 }
                 else
@@ -259,7 +258,8 @@ public class TargetSelectionFlowControl : MonoBehaviour, IInputReceiver
         {
             if (key == (KeyCode.D))
             {
-                _currentSelectIndex = (_currentSelectIndex + 1) > (_validTargets.Count - 1) ? _currentSelectIndex : (_currentSelectIndex + 1) ;
+                _currentSelectIndex = (_currentSelectIndex + 1) > (_validTargets.Count - 1) ? _currentSelectIndex : (_currentSelectIndex + 1);
+
             }
             else if (key == (KeyCode.A))
             {

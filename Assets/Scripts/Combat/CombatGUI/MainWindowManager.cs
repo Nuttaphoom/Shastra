@@ -92,13 +92,13 @@ namespace Vanaring_DepaDemo
             }
             else if (key == (KeyCode.Q))
             {
-                if (CombatReferee.instance.ChangeActiveEntityIndex(true, false))
+                if (CombatReferee.instance.ChangeActiveEntityIndex(false, true))
                     TargetSelectionFlowControl.Instance.ForceStop();
 
             }
             else if (key == (KeyCode.E))
             {
-                if (CombatReferee.instance.ChangeActiveEntityIndex(false, true))
+                if (CombatReferee.instance.ChangeActiveEntityIndex(true, false))
                     TargetSelectionFlowControl.Instance.ForceStop();
             }
             else if (key == (KeyCode.D))
