@@ -151,12 +151,17 @@ namespace Vanaring_DepaDemo
 
         private void OnUpdateEntityStats(int i)
         {
+            Debug.Log("update entity stats"); 
             if (!_quickHPBar.gameObject.activeSelf)
                 EnableQuickMenuBar(true); 
         }
 
         private void EnableQuickMenuBar(bool b)
         {
+            if (b == false)
+            {
+                Debug.Log("close HP bAR"); 
+            }
             _quickHPBar.gameObject.SetActive(b); 
         }
 
