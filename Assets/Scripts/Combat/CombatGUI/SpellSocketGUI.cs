@@ -111,9 +111,9 @@ namespace Vanaring_DepaDemo
 
         private void ChooseSpell()
         {
-            SpellAbilityRuntime runtimeSpell = _spellSO.Factorize();
-            if (_caster.SpellCaster.IsEnergySufficient(runtimeSpell))
+            if (IsEnergySufficeientToUseThisSpell())
             {
+                SpellAbilityRuntime runtimeSpell = _spellSO.Factorize();
                 _caster.SpellCaster.CastSpell(runtimeSpell)  ; 
             }
         }
@@ -132,6 +132,17 @@ namespace Vanaring_DepaDemo
         public void UnHighlightedButton()
         {
             _actionButton.GetComponent<Image>().color = _defaultColor;
+        }
+
+        public void DisableHighlightedButton()
+        {
+            _actionButton.GetComponent<Image>().color = Color.gray ;
+        }
+        public bool IsEnergySufficeientToUseThisSpell()
+        {
+            SpellAbilityRuntime runtimeSpell = _spellSO.Factorize();
+          
+            return _caster.SpellCaster.IsEnergySufficient(runtimeSpell); 
         }
     }
 }

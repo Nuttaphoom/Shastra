@@ -42,7 +42,6 @@ namespace Vanaring_DepaDemo
 
         void Awake()
         {
-
             LoadSpellSocketGUI(startIndex, endIndex);
             _graphicalHandler = _combatEntity.GetComponent<CombatGraphicalHandler>();
             _templatePrefab.gameObject.SetActive(false);
@@ -153,6 +152,7 @@ namespace Vanaring_DepaDemo
                 endIndex++;
                 LoadSpellSocketGUI(startIndex, endIndex);
                 GenerateArrow();
+                EnableDisableSpellSocket(); 
                 //NextPageIndex();
                 return true;
             }
@@ -169,6 +169,8 @@ namespace Vanaring_DepaDemo
                 LoadSpellSocketGUI(startIndex, endIndex);
                 GenerateArrow();
                 //PreviousPageIndex();
+
+                EnableDisableSpellSocket();
                 return true;
             }
             return false;
@@ -187,36 +189,37 @@ namespace Vanaring_DepaDemo
 
         public void ReceiveKeys(KeyCode key)
         {
-
             _spellSockets[_currentIndex].UnHighlightedButton();
 
             if (key == KeyCode.W)
             {
-                _currentIndex -= 1;
-                if (_currentIndex < 0)
+                do
                 {
-                    LoadUpperSocketItem();
-
-                    _currentIndex = 0;
-                }
-                //Debug.Log(_currentIndex);
-
-
+                    _currentIndex -= 1;
+                    if (_currentIndex < 0)
+                    {
+                        LoadUpperSocketItem();
+                        _currentIndex = 0;
+                    }
+                } while (! _spellSockets[_currentIndex].IsEnergySufficeientToUseThisSpell());
             }
             else if (key == KeyCode.S)
             {
-                _currentIndex += 1;
-
-                if (_currentIndex > _spellSockets.Count - 1 )
+                do
                 {
-                    LoadLowerSocketItem();
-                    _currentIndex -= 1; 
+                     _currentIndex += 1;
+                    if (_currentIndex > _spellSockets.Count - 1 )
+                    {
+                        LoadLowerSocketItem();
+                        _currentIndex -= 1; 
 
-                }
-                //Debug.Log(_currentIndex);
+                    }
+                } while (!_spellSockets[_currentIndex].IsEnergySufficeientToUseThisSpell()) ;
+
+            //Debug.Log(_currentIndex);
 
 
-            }
+        }
             else if (key == KeyCode.Escape)
             {
                 this._combatGraphicalHandler.DisplayMainMenu(); 
@@ -238,6 +241,8 @@ namespace Vanaring_DepaDemo
             for (int i = 0; i < _spellSockets.Count; i++)
                 _spellSockets[i].UnHighlightedButton();
 
+            EnableDisableSpellSocket(); 
+
             _currentIndex = 0; 
             _spellSockets[_currentIndex].HightlightedButton();
 
@@ -251,10 +256,19 @@ namespace Vanaring_DepaDemo
             for (int i  = 0;  i< _spellSockets.Count; i++)  
                 _spellSockets[i].UnHighlightedButton();
 
-
             CentralInputReceiver.Instance().RemoveInputReceiverIntoStack(this);
-
             SetGraphicMenuActive(false); 
+        }
+
+        private void EnableDisableSpellSocket()
+        {
+            for (int i = 0; i < _spellSockets.Count; i++)
+            {
+                if (! _spellSockets[i].IsEnergySufficeientToUseThisSpell())
+                {
+                    _spellSockets[i].DisableHighlightedButton();
+                } 
+            } 
         }
     }
 }
