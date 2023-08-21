@@ -115,7 +115,8 @@ namespace Vanaring_DepaDemo
         #region EventListener
         private void OnTargetSelectionStart_DisableUI(CombatEntity _combatEntity)
         {
-            DisableMenuElements(); 
+            DisableMenuElements();
+            EnableQuickMenuBar(false);
             //_mainPanel.gameObject.SetActive(false);
             //_spellPanel.gameObject.SetActive(false);
             //_itemPanel.gameObject.SetActive(false);
@@ -128,6 +129,8 @@ namespace Vanaring_DepaDemo
 
             if (!TargetSelectionFlowControl.Instance.PrepareAction())
             {
+                EnableQuickMenuBar(true);
+
                 _entityWindowManager.PushInNewWindow(_mainWindowManager);
             }
 
@@ -156,7 +159,7 @@ namespace Vanaring_DepaDemo
                 EnableQuickMenuBar(true); 
         }
 
-        private void EnableQuickMenuBar(bool b)
+        public void EnableQuickMenuBar(bool b)
         {
             if (b == false)
             {

@@ -1,3 +1,4 @@
+using Cinemachine;
 using CustomYieldInstructions;
 using System;
 using System.Collections;
@@ -199,6 +200,7 @@ namespace Vanaring_DepaDemo
         }
         public IEnumerator VisualHurt(CombatEntity attacker , string animationTrigger = "No Animation" )
         {
+            //CameraSetUPManager.Instance.ShakeCamera(Camera.main.GetComponent<CinemachineBrain>().ActiveVirtualCamera.VirtualCameraGameObject.GetComponent<CinemachineVirtualCamera>());
             bool _callingDeadScheme = false;
 
             List<IEnumerator> _coroutine = new List<IEnumerator>();
