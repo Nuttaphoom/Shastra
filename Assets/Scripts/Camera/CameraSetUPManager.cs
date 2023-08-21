@@ -44,7 +44,7 @@ namespace Vanaring_DepaDemo
 
         [Header("Shaking Camera Properties")]
         private CinemachineVirtualCamera shakedVirtualCamera;
-        private float shakeDuration = 0.3f;
+        private float shakeDuration = 3.0f;
         private float shakeAmplitude = 1.2f;
         private float shakeFrequency = 2.0f;
         private float shakeTimer = 0.0f;
