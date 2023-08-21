@@ -33,16 +33,17 @@ namespace Vanaring_DepaDemo
 
         public void InstantiateStatusUI(Dictionary<string, List<StatusRuntimeEffect>> effects)
         {
+            int count = 0;
             foreach (KeyValuePair<string, List<StatusRuntimeEffect>> entry in effects)
             {
                 if (entry.Value != null && entry.Value.Count != 0)
                 {
                     StatusSocketGUI newSocket = Instantiate(_templatePrefab, _templatePrefab.transform.position, _templatePrefab.transform.rotation);
-                    int count = currentStatusObject.Count;
                     if (count >= _setOfStatusUIPosition.Length)
                     {
                         count = 0;
                     }
+                    count++;
 
                     newSocket.transform.parent = _layout.transform;
                     newSocket.transform.localScale = _setOfStatusUIPosition[count].transform.localScale;
