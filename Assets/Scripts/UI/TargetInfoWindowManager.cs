@@ -13,6 +13,8 @@ namespace Vanaring_DepaDemo
         StatusRuntimeEffect _currentStatusEffect;
 
         [SerializeField]
+        private Animator _animator;
+        [SerializeField]
         private GameObject _uiRotator;
 
         [Header("Target Infomation UI")]
@@ -81,8 +83,9 @@ namespace Vanaring_DepaDemo
             ClearClonedUI();
             InfoUISetup(entities);
             _infoWindow.SetActive(true);
-            //magic number :D
-            StartCoroutine(UIRotateIn(0.005f,50, 90.0f));
+
+            _animator.SetTrigger("OnPlay");
+
         }
         public void HideCombatEntityInfoUI()
         {
@@ -182,17 +185,17 @@ namespace Vanaring_DepaDemo
             }
         }
 
-        private IEnumerator UIRotateIn(float maxtime, int frame, float angle)
-        {
-            float currRotation = angle;
-            _uiRotator.transform.localRotation = Quaternion.Euler(0, 0, currRotation);
-            for (int i = 0; i< frame; i++)
-            {
-                currRotation -= (angle) / frame;
-                _uiRotator.transform.localRotation = Quaternion.Euler(0, 0, currRotation);
-                yield return new WaitForSeconds(maxtime / frame);
-            }
-        }
+        //private IEnumerator UIRotateIn(float maxtime, int frame, float angle)
+        //{
+        //    float currRotation = angle;
+        //    _uiRotator.transform.localRotation = Quaternion.Euler(0, 0, currRotation);
+        //    for (int i = 0; i< frame; i++)
+        //    {
+        //        currRotation -= (angle) / frame;
+        //        _uiRotator.transform.localRotation = Quaternion.Euler(0, 0, currRotation);
+        //        yield return new WaitForSeconds(maxtime / frame);
+        //    }
+        //}
 
     }
 }
