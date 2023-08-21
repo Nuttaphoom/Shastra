@@ -105,6 +105,8 @@ namespace Vanaring_DepaDemo
         private void OnHPModified(int damage)
         {
             hpVal = _owner.StatsAccumulator.GetHPAmount();
+
+            Debug.Log("hpVAlCur" + hpVal);
             float hptemp = maxHP == 0 ? (hpVal == 0 ? 1 : hpVal) : maxHP;
 
             hpImage.fillAmount = hpVal / hptemp;
@@ -115,7 +117,7 @@ namespace Vanaring_DepaDemo
             secondhpImage.fillAmount -= 0.01f;
             if (secondhpImage.fillAmount <= 0 && gui != null)
             {
-                gui.SetActive(false);
+                //gui.SetActive(false);
             }
         }
         #endregion
@@ -146,12 +148,12 @@ namespace Vanaring_DepaDemo
             yield return new WaitForSeconds(0.5f);
             while (secondhpImage.fillAmount < hpVal/maxHP)
             {
-                UpdateHPBarScaleGUI();
+                secondhpImage.fillAmount += 0.01f;
                 yield return new WaitForSeconds(tickRate);
             }
             while (secondhpImage.fillAmount > hpVal/maxHP)
             {
-                UpdateHPBarScaleGUI();
+                secondhpImage.fillAmount -= 0.01f;
                 yield return new WaitForSeconds(tickRate);
             }
             yield return null;

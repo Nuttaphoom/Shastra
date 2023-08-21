@@ -20,6 +20,8 @@ namespace Vanaring_DepaDemo
         [SerializeField]
         private Image hpBar;
         [SerializeField]
+        private Image secondHpBar;
+        [SerializeField]
         private Image manaBar;
         [SerializeField]
         private TextMeshProUGUI characterName;
@@ -47,6 +49,7 @@ namespace Vanaring_DepaDemo
         private float lightVal = 50;
         private float darkVal = 50;
         private CharacterSheetSO _characterSheetSO;
+        private Animator animator;
 
         private CombatEntity _combatEntity;
 
@@ -91,9 +94,12 @@ namespace Vanaring_DepaDemo
             characterName.text = name;
             hpVal = _combatEntity.StatsAccumulator.GetHPAmount();
             maxHpVal = _combatEntity.StatsAccumulator.GetHPAmount();
+            secondHpBar.fillAmount = (float)hpVal / maxHpVal;
             UpdateHPScaleGUI();
+            animator = GetComponent<Animator>();
 
             _statusWindow.SetCombatEntity(combatEntity);
+            
         }
         #region TurnStatus
         public void ToggleTurnStatusDisplay(bool b)
@@ -113,7 +119,7 @@ namespace Vanaring_DepaDemo
         private void UpdateHPScaleGUI()
         {
             hpBar.fillAmount = (float)hpVal / maxHpVal;
-            hpNumText.text = hpVal + "/" + maxHpVal.ToString();
+            hpNumText.text = hpVal.ToString() + "/" + maxHpVal.ToString();
         }
 
         private void UpdateEnergyScaleGUI()
@@ -123,9 +129,13 @@ namespace Vanaring_DepaDemo
 
         private void OnHPModified(int damage)
         {
+            animator.Play("CharacterIconGotHit");
             hpVal = _combatEntity.StatsAccumulator.GetHPAmount();
+            float hptemp = maxHpVal == 0 ? (hpVal == 0 ? 1 : hpVal) : maxHpVal;
+            UpdateHPScaleGUI();
+
             StopAllCoroutines();
-            StartCoroutine(IEAnimateHPBarScale(hpVal));
+            StartCoroutine(IEAnimateHPBarScale(hptemp));
         }
 
         private void OnEnergyModified(CombatEntity caster, RuntimeMangicalEnergy.EnergySide side, int val)
@@ -179,19 +189,33 @@ namespace Vanaring_DepaDemo
             yield return null;
         }
 
-        private IEnumerator IEAnimateHPBarScale(int hpVal)
+        private IEnumerator IEAnimateHPBarScale(float maxHP)
         {
-            while (manaBar.fillAmount < (float)hpVal/maxHpVal)
+            //float tickRate = 0.5f / ((Mathf.Abs((hpVal / maxHP) - secondhpImage.fillAmount)) * 100);
+            //while (hpBar.fillAmount < (float)hpVal/maxHpVal)
+            //{
+            //    hpVal += 1;
+            //    UpdateHPScaleGUI();
+            //    yield return new WaitForSeconds(0.01f);
+            //}
+            //while ((float)hpVal / maxHpVal > hpBar.fillAmount)
+            //{
+            //    hpVal -= 1;
+            //    UpdateHPScaleGUI();
+            //    yield return new WaitForSeconds(0.01f);
+            //}
+            float tickRate = 0.5f / ((Mathf.Abs((hpVal / maxHP) - secondHpBar.fillAmount)) * 100);
+            //Debug.Log((hpVal / maxHP) + "-" + hpImage.fillAmount + "=" + tickRate);
+            yield return new WaitForSeconds(0.5f);
+            while (secondHpBar.fillAmount < hpVal / maxHP)
             {
-                hpVal += 1;
-                UpdateHPScaleGUI();
-                yield return new WaitForSeconds(0.01f);
+                secondHpBar.fillAmount += 0.01f;
+                yield return new WaitForSeconds(tickRate);
             }
-            while ((float)hpVal / maxHpVal > hpVal)
+            while (secondHpBar.fillAmount > hpVal / maxHP)
             {
-                hpVal -= 1;
-                UpdateHPScaleGUI();
-                yield return new WaitForSeconds(0.01f);
+                secondHpBar.fillAmount -= 0.01f;
+                yield return new WaitForSeconds(tickRate);
             }
             yield return null;
         }
