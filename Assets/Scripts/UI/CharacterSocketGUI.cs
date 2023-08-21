@@ -15,14 +15,34 @@ namespace Vanaring_DepaDemo
             STUN,
             DEAD
         }
+
+        [Header("Image")]
         [SerializeField]
         private Image characterImg;
+        [SerializeField]
+        private Image _highlightTurn;
+        [SerializeField]
+        private Image _turnStatusImage;
+
+        [Header("BarScaler")]
         [SerializeField]
         private Image hpBar;
         [SerializeField]
         private Image secondHpBar;
         [SerializeField]
-        private Image manaBar;
+        private Image lightBar;
+        [SerializeField]
+        private Image secondLightBar;
+        [SerializeField]
+        private Image darkBar;
+        [SerializeField]
+        private Image secondDarkBar;
+        [SerializeField]
+        private GameObject darkGroup;
+        [SerializeField]
+        private GameObject lightGroup;
+
+        [Header("TextMeshPro")]
         [SerializeField]
         private TextMeshProUGUI characterName;
         [SerializeField]
@@ -32,25 +52,24 @@ namespace Vanaring_DepaDemo
         [SerializeField]
         private TextMeshProUGUI hpNumText;
 
+        [Header("Components")]
         [SerializeField]
         private StatusWindowManager _statusWindow;
-
         [SerializeField]
-        private Image _highlightTurn;
+        private Animator animator;
 
-        [SerializeField]
-        private Image _turnStatusImage;
         private bool isCanTurn;
         private bool isSelected;
 
         private int hpVal;
         private int maxHpVal;
+
         private float maxEnergyVal = 100;
         private float lightVal = 50;
         private float darkVal = 50;
         private CharacterSheetSO _characterSheetSO;
-        [SerializeField]
-        private Animator animator;
+
+        
 
         private CombatEntity _combatEntity;
 
@@ -80,7 +99,7 @@ namespace Vanaring_DepaDemo
             _combatEntity.SpellCaster.UnSubOnModifyEnergy(OnEnergyModified);
         }
 
-        public void Init(float manaVal, string name, CombatEntity combatEntity)
+        public void Init(CombatEntity combatEntity)
         {
             _combatEntity = combatEntity;
             _combatEntity.SubOnDamageVisualEvent(OnHPModified);
@@ -92,7 +111,7 @@ namespace Vanaring_DepaDemo
             isSelected = false;
             _turnStatusImage.gameObject.SetActive(false);
             _highlightTurn.gameObject.SetActive(false);
-            characterName.text = name;
+            characterName.text = _characterSheetSO.CharacterName;
             hpVal = _combatEntity.StatsAccumulator.GetHPAmount();
             maxHpVal = _combatEntity.StatsAccumulator.GetHPAmount();
             secondHpBar.fillAmount = (float)hpVal / maxHpVal;
@@ -120,13 +139,14 @@ namespace Vanaring_DepaDemo
         private void UpdateHPScaleGUI()
         {
             hpBar.fillAmount = (float)hpVal / maxHpVal;
-            hpNumText.text = hpVal.ToString() + "/" + maxHpVal.ToString();
+            hpNumText.text = "HP " + hpVal.ToString() + "/" + maxHpVal.ToString();
             //animator.Play("CharacterIconGotHit");
         }
 
         private void UpdateEnergyScaleGUI()
         {
-            manaBar.fillAmount = (int.Parse(lightNumText.text) / maxEnergyVal);
+            lightBar.fillAmount = (int.Parse(lightNumText.text) / maxEnergyVal);
+            darkBar.fillAmount = (maxEnergyVal/100) - lightBar.fillAmount;
         }
 
         private void OnHPModified(int damage)
@@ -144,15 +164,17 @@ namespace Vanaring_DepaDemo
         {
             if (side == RuntimeMangicalEnergy.EnergySide.LightEnergy)
             {
-                lightScaleIncrease(val);
+                //Increase Light
+                LightScaleIncrease(val);
             }
             else
             {
-                lightScaleDecrease(val);
+                //Increase Dark
+                DarkScaleIncrease(val);
             }
         }
 
-        public void lightScaleIncrease(int val)
+        public void LightScaleIncrease(int val)
         {
             if (lightVal + val > 100)
             {
@@ -161,7 +183,7 @@ namespace Vanaring_DepaDemo
             lightVal += val;
             StartCoroutine(IEAnimateEnergyBarScale());
         }
-        public void lightScaleDecrease(int val)
+        public void DarkScaleIncrease(int val)
         {
             if (lightVal - val < 0)
             {
