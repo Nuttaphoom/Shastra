@@ -15,6 +15,8 @@ namespace Vanaring_DepaDemo
 
         private CinemachineVirtualCamera _actionCamera;
 
+        [SerializeField] private CinemachineBrain cinemachineBrain;
+
         [Header("List of character/enemy order from left to right")]
         public List<GameObject> _enemyModelSetupList = new List<GameObject>();
         public List<GameObject> _characterModelSetupList = new List<GameObject>();
@@ -35,10 +37,19 @@ namespace Vanaring_DepaDemo
         [SerializeField]
         private TargetGUI _tgui;
 
-        public GameObject tempEntity;
-        public GameObject tempEntity1;
+        //public GameObject tempEntity;
+        //public GameObject tempEntity1;
 
-        private GameObject _savedVMCamera = null; 
+        private GameObject _savedVMCamera = null;
+
+        [Header("Shaking Camera Properties")]
+        private CinemachineVirtualCamera shakedVirtualCamera;
+        private float shakeDuration = 0.3f;
+        private float shakeAmplitude = 1.2f;
+        private float shakeFrequency = 2.0f;
+        private float shakeTimer = 0.0f;
+        private bool isShaking = false;
+
         private void Awake()
         {
             if (Instance != null)
@@ -47,15 +58,38 @@ namespace Vanaring_DepaDemo
             Instance = this;
         }
 
-        private void Start()
-        {
-            
-            //StartCoroutine(AttackActionCamera());
-        }
         private void Update()
         {
-            //SetupTargetModeVirtualCamera(tempEntity);
+
         }
+
+        public void ShakeCamera(CinemachineVirtualCamera shakedVirtualCamera)
+        {
+            if (!isShaking)
+            {
+                isShaking = true;
+                shakeTimer = shakeDuration;
+                var noise = shakedVirtualCamera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
+                noise.m_AmplitudeGain = shakeAmplitude;
+                noise.m_FrequencyGain = shakeFrequency;
+                StartCoroutine(shakeVirtualCamera(shakedVirtualCamera));
+            }
+        }
+
+        private IEnumerator shakeVirtualCamera(CinemachineVirtualCamera shakedVirtualCamera)
+        {
+            while (shakeTimer > 0.0f && isShaking)
+            {
+                shakeTimer -= Time.deltaTime;
+                yield return null;
+            }
+
+            var noise = shakedVirtualCamera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
+            noise.m_AmplitudeGain = 0.0f;
+            noise.m_FrequencyGain = 0.0f;
+            isShaking = false;
+        }
+
         public void SetBlendMode(CameraBlendMode mode, float blendDuration)
         {
             CinemachineBrain cinemachineBrain = Camera.main.GetComponent<CinemachineBrain>();
@@ -77,6 +111,7 @@ namespace Vanaring_DepaDemo
                 Debug.LogWarning("CinemachineBrain component not found on this GameObject.");
             }
         }
+        
         public void SetupAttackActionVirtualCamera(GameObject entity)
         {
             DeactivateAllVirtualCameras();
