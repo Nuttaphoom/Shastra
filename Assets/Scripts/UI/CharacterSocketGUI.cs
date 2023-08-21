@@ -49,6 +49,7 @@ namespace Vanaring_DepaDemo
         private float lightVal = 50;
         private float darkVal = 50;
         private CharacterSheetSO _characterSheetSO;
+        [SerializeField]
         private Animator animator;
 
         private CombatEntity _combatEntity;
@@ -120,6 +121,7 @@ namespace Vanaring_DepaDemo
         {
             hpBar.fillAmount = (float)hpVal / maxHpVal;
             hpNumText.text = hpVal.ToString() + "/" + maxHpVal.ToString();
+            //animator.Play("CharacterIconGotHit");
         }
 
         private void UpdateEnergyScaleGUI()
@@ -129,7 +131,7 @@ namespace Vanaring_DepaDemo
 
         private void OnHPModified(int damage)
         {
-            animator.Play("CharacterIconGotHit");
+            
             hpVal = _combatEntity.StatsAccumulator.GetHPAmount();
             float hptemp = maxHpVal == 0 ? (hpVal == 0 ? 1 : hpVal) : maxHpVal;
             UpdateHPScaleGUI();
@@ -209,12 +211,28 @@ namespace Vanaring_DepaDemo
             yield return new WaitForSeconds(0.5f);
             while (secondHpBar.fillAmount < hpVal / maxHP)
             {
-                secondHpBar.fillAmount += 0.01f;
+                if (secondHpBar.fillAmount < 1.0f)
+                {
+                    secondHpBar.fillAmount += 0.01f;
+                }
+                else if(secondHpBar.fillAmount >= 1.0f)
+                {
+                    secondHpBar.fillAmount = 1.0f;
+                }
+                
                 yield return new WaitForSeconds(tickRate);
             }
             while (secondHpBar.fillAmount > hpVal / maxHP)
             {
-                secondHpBar.fillAmount -= 0.01f;
+                if (secondHpBar.fillAmount > 0.0f)
+                {
+                    secondHpBar.fillAmount -= 0.01f;
+                }
+                else if (secondHpBar.fillAmount <= 0.0f)
+                {
+                    secondHpBar.fillAmount = 0.0f;
+                }
+                
                 yield return new WaitForSeconds(tickRate);
             }
             yield return null;

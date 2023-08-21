@@ -51,7 +51,7 @@ namespace Vanaring_DepaDemo
                 hpVal = _owner.StatsAccumulator.GetHPAmount();
                 maxHP = _owner.StatsAccumulator.GetHPAmount();
             }
-            UpdateHPBarScaleGUI();
+            //UpdateHPBarScaleGUI();
         }
 
         private void OnEnable()
@@ -114,7 +114,7 @@ namespace Vanaring_DepaDemo
         }
         private void UpdateHPBarScaleGUI()
         {
-            secondhpImage.fillAmount -= 0.01f;
+            //secondhpImage.fillAmount -= 0.01f;
             if (secondhpImage.fillAmount <= 0 && gui != null)
             {
                 //gui.SetActive(false);
