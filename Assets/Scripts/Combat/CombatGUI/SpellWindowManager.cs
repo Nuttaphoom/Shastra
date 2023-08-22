@@ -273,7 +273,7 @@ namespace Vanaring_DepaDemo
 
 
             }
-            else if (key == KeyCode.Escape)
+            else if (key == KeyCode.Q)
             {
                 this._combatGraphicalHandler.DisplayMainMenu(); 
             }

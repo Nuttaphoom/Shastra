@@ -55,12 +55,14 @@ namespace Vanaring_DepaDemo
             if (key.Count() > 1)
             {
                 if (key == "space")
-                {
                     return KeyCode.Space;
-                }else if (key == "escape")
-                {
+                else if (key == "escape")
                     return KeyCode.Escape;
-                }
+                else if (key == "rightArrow")
+                    return KeyCode.RightArrow;
+                else if (key == "leftArrow")
+                    return KeyCode.LeftArrow;
+
             }
 
             char character = key[0];
