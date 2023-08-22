@@ -42,10 +42,34 @@ namespace Vanaring_DepaDemo
             {
                 if (combatEntityList[i] == entity)
                 {
-                    characterSocketList[i].ToggleOnTurnHighlightDisplay(true);
                     characterSocketList[i].ToggleTurnStatusDisplay(true);
                 }
             }
+        }
+
+        public void SetHighlightActiveEntity(CombatEntity entity)
+        {
+            for (int i = 0; i < combatEntityList.Count; i++)
+            {
+                if (combatEntityList[i] == entity)
+                {
+                    characterSocketList[i].ToggleOnTurnHighlightDisplay(true);
+                    return;
+                }
+            }
+        }
+
+        public void SetUnHighlightActiveEntity(CombatEntity entity)
+        {
+            for (int i = 0; i < combatEntityList.Count; i++)
+            {
+                if (combatEntityList[i] == entity)
+                {
+                    characterSocketList[i].ToggleOnTurnHighlightDisplay(false);
+                    return; 
+                }
+            }
+
         }
 
         public void DeSetActiveEntityGUI(CombatEntity entity)
@@ -54,7 +78,6 @@ namespace Vanaring_DepaDemo
             {
                 if (combatEntityList[i] == entity)
                 {
-                    characterSocketList[i].ToggleOnTurnHighlightDisplay(false);
                     characterSocketList[i].ToggleTurnStatusDisplay(false);
                 }
             }
