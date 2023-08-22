@@ -178,25 +178,25 @@ namespace Vanaring_DepaDemo
 
         public void LightScaleIncrease(int val)
         {
-            //lightGroup.transform.SetAsLastSibling();
+            lightGroup.transform.SetAsLastSibling();
             if (lightVal + val > 100)
             {
                 val = (int)(100 - lightVal);
             }
             lightVal += val;
-            //secondLightBar.fillAmount = lightVal / maxEnergyVal;
+            secondLightBar.fillAmount = lightVal / maxEnergyVal;
             StartCoroutine(IEAnimateEnergyBarScale());
         }
         public void DarkScaleIncrease(int val)
         {
-            //darkGroup.transform.SetAsLastSibling();
+            darkGroup.transform.SetAsLastSibling();
             if (lightVal - val < 0)
             {
                 Debug.Log("Value can't be lower than 0!");
                 return;
             }
             lightVal -= val;
-            //secondDarkBar.fillAmount = (float)(100-lightVal) / maxEnergyVal;
+            secondDarkBar.fillAmount = (float)(100-lightVal) / maxEnergyVal;
             StartCoroutine(IEAnimateEnergyBarScale());
         }
 
