@@ -10,7 +10,7 @@ namespace Vanaring_DepaDemo
     [CreateAssetMenu(fileName = "Item Ability", menuName = "ScriptableObject/Combat/ItemAbility")]
     public class ItemAbilityFactorySO : CombatActionSO
     {
-         
+        public Sprite ItemSprite  => this.AbilityImage;
 
         //[Header("===Require Energy amount before casting===")]
         //[SerializeField]
@@ -50,8 +50,8 @@ namespace Vanaring_DepaDemo
         public RuntimeEffectFactorySO EffectFactory { get { return _effectFactory; } }
         public string ItemName => _factory.AbilityName;
         public string ItemDescrption => _factory.Desscription;
-        
-        
+
+        public Sprite ItemSprite => _factory.ItemSprite;
 
     }
 

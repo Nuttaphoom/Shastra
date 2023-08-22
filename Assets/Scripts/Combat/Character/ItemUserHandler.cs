@@ -39,13 +39,18 @@ public class ItemUserHandler : MonoBehaviour //inventory
     private void Start()
     {
         FactorizeItemInInventory();
+        if (_itemWindowManager == null)
+        {
+            Debug.Log("item window manager is null");
+        }
+        _itemWindowManager.UpdateItemSocket(Items, ItemsAmount); 
     }
 
     private void FactorizeItemInInventory()
     {
         //TODO : Load inventory from somewhere instead of manually assign them
-        _itemInventory = ItemInventory.instance.GetItemInventoryAbility;
-        _runtimeItemsAmount = ItemInventory.instance.GetItemInventoryAmount;
+        _itemInventory = ItemInventory.instance.GetItemInventoryAbility   ;
+        _runtimeItemsAmount = ItemInventory.instance.GetItemInventoryAmount ;
         foreach (ItemAbilityFactorySO factory in _itemInventory)
         {
             _runtimeItems.Add(factory.FactorizeRuntimeItem());

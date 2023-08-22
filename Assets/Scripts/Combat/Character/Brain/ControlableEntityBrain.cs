@@ -45,7 +45,7 @@ namespace Vanaring_DepaDemo
                 //TODO - Properly check if we should modify the energy 
                 if (latestSpell != null)
                 {
-                    _combateEntity.SpellCaster.ModifyEnergy(latestSpell.ModifiedEnergySide, latestSpell.ModifiedEnergyAmount);
+                    _combateEntity.SpellCaster.ModifyEnergy(_combateEntity,latestSpell.ModifiedEnergySide, latestSpell.ModifiedEnergyAmount);
                 }
                 if (latestItem != null)
                 {
@@ -83,13 +83,12 @@ namespace Vanaring_DepaDemo
             if (_combatGraphicalHandler == null)
                 _combatGraphicalHandler = GetComponent<CombatGraphicalHandler>();
 
-            _combatGraphicalHandler.EnableGraphicalElements();
-            yield return null;
+            yield return _combatGraphicalHandler.TakeControl();
         }
 
         public override IEnumerator TakeControlLeave()
         {
-            _combatGraphicalHandler.DisableGraphicalElements();
+            _combatGraphicalHandler.TakeControlLeave();
             yield return null;
         }
 
@@ -97,6 +96,16 @@ namespace Vanaring_DepaDemo
         {
             _combatGraphicalHandler.DisableMenuElements();
 
+            yield return null; 
+        }
+
+        public override IEnumerator AfterGetAction()
+        {
+            yield return null;
+        }
+
+        public override IEnumerator OnDeadVisualClear()
+        {
             yield return null; 
         }
     }

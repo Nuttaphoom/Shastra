@@ -15,31 +15,66 @@ namespace Vanaring_DepaDemo
         [SerializeField]
         private Transform[] _setOfStatusUIPosition;
 
+        [SerializeField]
+        private Transform _layout;
+
         //magic number :D
-        List<StatusRuntimeEffect> currentStatusEffects;
+        private List<GameObject> currentStatusObject;
 
         public void Awake()
         {
             _templatePrefab.gameObject.SetActive(false);
-            currentStatusEffects = new List<StatusRuntimeEffect>();
+            currentStatusObject = new List<GameObject>();
+            if (_combatEntity != null)
+            {
+                _combatEntity.GetStatusEffectHandler().SubOnStatusVisualEvent(UpdateStatusUI);
+            }
         }
 
-        public void InstantiateStatusUI(StatusRuntimeEffect statusEffect, int stackcount)
+        public void InstantiateStatusUI(Dictionary<string, List<StatusRuntimeEffect>> effects)
         {
-            StatusSocketGUI newSocket = Instantiate(_templatePrefab, _templatePrefab.transform.position, _templatePrefab.transform.rotation);
-            int count = currentStatusEffects.Count;
-            if (count >= _setOfStatusUIPosition.Length)
+            int count = 0;
+            foreach (KeyValuePair<string, List<StatusRuntimeEffect>> entry in effects)
             {
-                count = 0;
+                if (entry.Value != null && entry.Value.Count != 0)
+                {
+                    StatusSocketGUI newSocket = Instantiate(_templatePrefab, _templatePrefab.transform.position, _templatePrefab.transform.rotation);
+                    if (count >= _setOfStatusUIPosition.Length)
+                    {
+                        count = 0;
+                    }
+                    count++;
+
+                    newSocket.transform.parent = _layout.transform;
+                    newSocket.transform.localScale = _setOfStatusUIPosition[count].transform.localScale;
+
+                    currentStatusObject.Add(newSocket.gameObject);
+
+                    newSocket.Init(entry.Value[0], _combatEntity);
+                    newSocket.ChangeBuffStack(entry.Value[0], entry.Value.Count);
+                    newSocket.gameObject.SetActive(true);
+                }
             }
-            newSocket.transform.parent = _setOfStatusUIPosition[count].transform;
-            newSocket.transform.localScale = _templatePrefab.transform.localScale;
+        }
+        public void ClearCurrentStatus()
+        {
+            foreach (GameObject eSocketObj in currentStatusObject)
+            {
+                Destroy(eSocketObj);
+            }
+        }
 
-            currentStatusEffects.Add(statusEffect);
+        public void SetCombatEntity(CombatEntity entity)
+        {
+            _combatEntity = entity;
 
-            newSocket.Init(statusEffect, _combatEntity);
-            newSocket.ChangeBuffStack(statusEffect, stackcount);
-            newSocket.gameObject.SetActive(true);
+            _combatEntity.GetStatusEffectHandler().SubOnStatusVisualEvent(UpdateStatusUI);
+        }
+
+        public void UpdateStatusUI(Dictionary<string, List<StatusRuntimeEffect>> effects)
+        {
+            this.ClearCurrentStatus();
+            this.InstantiateStatusUI(effects);
         }
     }
 }

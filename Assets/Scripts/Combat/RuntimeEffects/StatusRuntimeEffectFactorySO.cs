@@ -90,6 +90,7 @@ namespace Vanaring_DepaDemo
 
         protected StatusStackInfo _stackInfo;
 
+        
         public StatusRuntimeEffect(StatusRuntimeEffectFactorySO effectFactory)
         {
             this._evokeKey = effectFactory.EvokeKey ; 
@@ -126,6 +127,10 @@ namespace Vanaring_DepaDemo
             return _timeToLive <= 0.0f;
         }
 
+        public void ForceExpire()
+        {
+            _timeToLive = 0; 
+        }
         public virtual void UpdateTTLCondition()
         {
             if (!_infiniteTTL)

@@ -21,7 +21,7 @@ public class SpellCasterHandler  : MonoBehaviour
 
     private RuntimeMangicalEnergy _mangicalEnergy ;
 
-    private UnityAction<RuntimeMangicalEnergy.EnergySide, int> OnModifyEnergy ;
+    private UnityAction<CombatEntity,RuntimeMangicalEnergy.EnergySide, int> OnModifyEnergy ;
 
     private CombatEntity _combatEntity;
 
@@ -32,19 +32,19 @@ public class SpellCasterHandler  : MonoBehaviour
     }
 
     #region Event Sub
-    public void SubOnModifyEnergy(UnityAction<RuntimeMangicalEnergy.EnergySide, int> argc )
+    public void SubOnModifyEnergy(UnityAction<CombatEntity, RuntimeMangicalEnergy.EnergySide, int> argc )
     {
         OnModifyEnergy += argc; 
     }
 
-    public void UnSubOnModifyEnergy( UnityAction<RuntimeMangicalEnergy.EnergySide, int> argc)
+    public void UnSubOnModifyEnergy( UnityAction<CombatEntity, RuntimeMangicalEnergy.EnergySide, int> argc)
     {
         OnModifyEnergy -= argc;  
     }
     #endregion EndSub 
     public bool IsEnergySufficient(SpellAbilityRuntime spell)
     {
-        return GetEnergyAmount(spell.RequireEnergySide) >= spell.RequireEnergyAmount  ; 
+        return GetEnergyAmount(spell.RequireEnergySide) > spell.RequireEnergyAmount  ; 
     }
     #region Modify Energy  
 
@@ -53,10 +53,10 @@ public class SpellCasterHandler  : MonoBehaviour
         return _mangicalEnergy.GetEnergy(side);
     }
 
-    public void ModifyEnergy(RuntimeMangicalEnergy.EnergySide side,int value)
+    public void ModifyEnergy(CombatEntity caster, RuntimeMangicalEnergy.EnergySide side,int value)
     {
         _mangicalEnergy.ModifyEnergy(value, side) ;
-        OnModifyEnergy?.Invoke(side, value) ; 
+        OnModifyEnergy?.Invoke(caster,side, value) ; 
     }
 
     public bool IsEnergyOverheat()
@@ -79,7 +79,7 @@ public class SpellCasterHandler  : MonoBehaviour
          RuntimeMangicalEnergy.EnergySide.DarkEnergy : RuntimeMangicalEnergy.EnergySide.LightEnergy ) ; 
 
         _mangicalEnergy.ModifyEnergy(dif, modifiedSide) ;
-        OnModifyEnergy?.Invoke(modifiedSide, dif) ;
+        OnModifyEnergy?.Invoke(null,modifiedSide, dif) ;
     }
 
     #endregion

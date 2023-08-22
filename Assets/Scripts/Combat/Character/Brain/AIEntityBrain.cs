@@ -11,6 +11,8 @@ namespace Vanaring_DepaDemo
     {
         BotBehaviorHandler _botBehaviorHandler;
 
+        [SerializeField] 
+        private CombatEntity _combatEntity; 
         protected override void Awake()
         {
             base.Awake(); 
@@ -22,14 +24,20 @@ namespace Vanaring_DepaDemo
         }
         public override IEnumerator GetAction()
         {
-            Debug.Log("AI entity get action");
-            foreach (RuntimeEffectFactorySO eff in _botBehaviorHandler.GetBehaviorEffect())
-            {
+            BotBehaviorSO.ActionData actionData = _botBehaviorHandler.GetBehaviorEffect();
+            if (_combateEntity == null)
+                Debug.Log("combta entity is null"); 
+ 
+            _combatEntity.SpellCaster.ModifyEnergy(_combateEntity, actionData.EnergyCost.Side, actionData.EnergyCost.Amount);
+
+            yield return new WaitForSeconds(1.0f);
+
+            foreach (RuntimeEffectFactorySO eff in actionData.Effects) {  
+
                 yield return TargetSelectionFlowControl.Instance.InitializeTargetSelectionScheme(_combateEntity, eff, true) ;
                 RuntimeEffectFactorySO factory ;
                 List<CombatEntity> selectedTarget ;
-                
-               
+   
                 (factory, selectedTarget) = TargetSelectionFlowControl.Instance.GetLatestAction();
                      
                 IEnumerator coroutine =   factory.Factorize(selectedTarget);
@@ -38,13 +46,10 @@ namespace Vanaring_DepaDemo
                 {
                     if (coroutine.Current != null && coroutine.Current.GetType().IsSubclassOf(typeof(RuntimeEffect)))
                     {
-                        yield return  coroutine.Current as RuntimeEffect;
-                        Debug.Log("AI return get action");
-
+                        yield return coroutine.Current as RuntimeEffect;
                     }
                 }
             }
-
         }
 
 
@@ -75,6 +80,18 @@ namespace Vanaring_DepaDemo
             yield return _botBehaviorHandler.CalculateNextBehavior();
          
             
+        }
+
+        public override IEnumerator AfterGetAction()
+        {
+            yield return null; 
+        }
+
+        public override IEnumerator OnDeadVisualClear()
+        {
+            _botBehaviorHandler.DestroyTelegraphyVFX();
+
+            yield return null;
         }
     }
 }

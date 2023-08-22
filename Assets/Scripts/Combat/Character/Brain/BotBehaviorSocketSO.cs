@@ -15,24 +15,21 @@ namespace Vanaring_DepaDemo {
         [SerializeField]
         private List<BotBehaviorSO> _botBehaviorSO;
 
-
-
         public IEnumerator GetBehaviorEffect(int index)
         {
             IEnumerator coroutine =  _botBehaviorSO[index].GetBehaviorEffect();
-            while (coroutine.MoveNext() ) {
 
-                if ( coroutine.Current.GetType().IsSubclassOf(typeof(RuntimeEffectFactorySO)))
+            while (coroutine.MoveNext() ) {
+                if ( coroutine.Current != null &&  coroutine.Current is (BotBehaviorSO.ActionData))
                 {
-                    yield return coroutine.Current as RuntimeEffectFactorySO ; 
+                    yield return (BotBehaviorSO.ActionData) coroutine.Current ;
                 }
             }
-             
         }
 
         #region GETTER
         public int GetBehaviorSize => _botBehaviorSO.Count;
-        public EnergyModifierData GetTargetModiferData(int index) => _botBehaviorSO[index].TargetModiferData ;  
+        public EnergyModifierData GetEnergyCost(int index) => _botBehaviorSO[index].ActionEnergyCost ;  
         #endregion
     }
 }

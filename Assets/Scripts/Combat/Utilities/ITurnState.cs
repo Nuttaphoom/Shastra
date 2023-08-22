@@ -11,10 +11,16 @@ namespace Vanaring_DepaDemo
     {
         public abstract IEnumerator GetAction();
 
-        public abstract IEnumerator TurnEnter(); 
+        public abstract IEnumerator TurnEnter();
 
-
+        public abstract IEnumerator AfterGetAction(); 
         public abstract IEnumerator TakeControlSoftLeave();
+
+
+        /// <summary>
+        /// Should be call after each action called to modify used data (like status effect) (every entities are call at the same time)     
+        /// </summary>
+        /// <returns></returns>
         public abstract IEnumerator TurnLeave();
     }
 }

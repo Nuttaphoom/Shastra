@@ -7,6 +7,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.Collections;
+using UnityEngine.EventSystems;
+using UnityEngine.Rendering;
 
 namespace Vanaring_DepaDemo
 {
@@ -42,6 +44,10 @@ namespace Vanaring_DepaDemo
         private Sprite _lightImage;
         [SerializeField]
         private Sprite _darkImage;
+        [SerializeField]
+        private Sprite _selectedButton;
+        [SerializeField]
+        private Sprite _normalButton;
 
         [Header("Description Window")]
         [SerializeField] private TextMeshProUGUI _spellNameTextDes;
@@ -53,10 +59,12 @@ namespace Vanaring_DepaDemo
 
         private SpellAbilitySO _spellSO;
 
-        private CombatEntity _caster; 
+        private CombatEntity _caster;
 
+        private Color _hightlightedColor = Color.yellow;
+        private Color _defaultColor; 
         public void Init(SpellAbilitySO spell, CombatEntity combatEntity)
-        { 
+        {
             _spellSO = spell;
             this._caster = combatEntity;
             _actionButton.onClick.AddListener(ChooseSpell);
@@ -67,6 +75,7 @@ namespace Vanaring_DepaDemo
             _spellCost.text = spell.RequiredEnergy.Amount.ToString();
             _requireEnergyCost.text = "> " + spell.RequiredEnergy.Amount.ToString();
             _modifiedEnergyCost.text = "+ " + spell.EnergyModifer.Amount.ToString();
+            _skillImage.sprite = spell.AbilityImage;
 
             if (spell.RequiredEnergy.Side == RuntimeMangicalEnergy.EnergySide.LightEnergy)
             {
@@ -87,15 +96,54 @@ namespace Vanaring_DepaDemo
             {
                 _modEnergyTypeDesImg.sprite = _darkImage;
             }
+
+            _defaultColor = _actionButton.GetComponent<Image>().color; 
         }
+
+        //public void ActiveSelectedButtonState()
+        //{
+        //    _actionButton.spriteState = SpriteState.highlightSp;
+        //}
+
+        //public void DeactiveSelectedButtonState()
+        //{
+
+        //}
 
         private void ChooseSpell()
         {
-            SpellAbilityRuntime runtimeSpell = _spellSO.Factorize();
-            if (_caster.SpellCaster.IsEnergySufficient(runtimeSpell))
+            if (IsEnergySufficeientToUseThisSpell())
             {
+                SpellAbilityRuntime runtimeSpell = _spellSO.Factorize();
                 _caster.SpellCaster.CastSpell(runtimeSpell)  ; 
             }
+        }
+
+        public void CallButtonCallback()
+        {
+         
+             _actionButton.onClick?.Invoke(); 
+        }
+
+        public void HightlightedButton()
+        {
+            _actionButton.GetComponent<Image>().color = _hightlightedColor ; 
+        }
+
+        public void UnHighlightedButton()
+        {
+            _actionButton.GetComponent<Image>().color = _defaultColor;
+        }
+
+        public void DisableHighlightedButton()
+        {
+            _actionButton.GetComponent<Image>().color = Color.gray ;
+        }
+        public bool IsEnergySufficeientToUseThisSpell()
+        {
+            SpellAbilityRuntime runtimeSpell = _spellSO.Factorize();
+          
+            return _caster.SpellCaster.IsEnergySufficient(runtimeSpell); 
         }
     }
 }

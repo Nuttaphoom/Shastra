@@ -50,43 +50,51 @@ namespace Vanaring_DepaDemo
                 throw new Exception("Caster can not be null");
 
 
+            int havocCount = 0 ;  
             foreach (CombatEntity entity in _targets)
             {
                 List<StatusRuntimeEffect> havoc = entity.GetStatusEffectHandler().GetStatusRuntimeEffectWithEvokeKey(EEvokeKey.HAVOC, true);
-
-                entity.SpellCaster.ModifyEnergy(_energyModifierData.Side, _energyModifierData.Amount * havoc.Count);
+                foreach (var v in havoc)
+                    v.ForceExpire();
+                havocCount = havoc.Count; 
+                entity.SpellCaster.ModifyEnergy(caster, _energyModifierData.Side, _energyModifierData.Amount * havoc.Count);
 
             }
 
-            yield return caster.LogicAttack(_targets, EDamageScaling.High) ;
-
-            //2 Visual 
             List<IEnumerator> coroutines = new List<IEnumerator>();
-
-            //2.1.) creating vfx for coroutine for targets
-            foreach (CombatEntity target in _targets)
-            {
-                CombatEntity entity = target;
-                coroutines.Add(entity.CombatEntityAnimationHandler.PlayVFXActionAnimation<string>(_actionAnimationInfo.TargetVfxEntity, (string s) => entity.VisualHurt(caster, s), _actionAnimationInfo.TargetTrigerID));
-            }
-
-            //2.2.) create action animation coroutine for self
             coroutines.Add(caster.CombatEntityAnimationHandler.PlayActionAnimation(_actionAnimationInfo));
 
-            //2.3.) running animation scheme
-            yield return new WaitAll(caster, coroutines.ToArray());
-
-
-            coroutines.Clear(); 
-
-            //2.1.) creating vfx for coroutine for targets
-            foreach (CombatEntity target in _targets)
+            if (havocCount > 0)
             {
-                CombatEntity entity = target;
-                coroutines.Add(caster.GetStatusEffectHandler().ExecuteAfterAttackStatusRuntimeEffectCoroutine(target));
-            }
+                yield return caster.LogicAttack(_targets, EDamageScaling.High);
 
+                //2 Visual 
+
+                //2.1.) creating vfx for coroutine for targets
+                foreach (CombatEntity target in _targets)
+                {
+                    CombatEntity entity = target;
+                    coroutines.Add(entity.CombatEntityAnimationHandler.PlayVFXActionAnimation<string>(_actionAnimationInfo.TargetVfxEntity, (string s) => entity.VisualHurt(caster, s), _actionAnimationInfo.TargetTrigerID));
+                }
+
+                 
+
+                //2.3.) running animation scheme
+                yield return new WaitAll(caster, coroutines.ToArray());
+
+
+                coroutines.Clear(); 
+
+                //2.1.) creating vfx for coroutine for targets
+                foreach (CombatEntity target in _targets)
+                {
+                    CombatEntity entity = target;
+                    coroutines.Add(caster.GetStatusEffectHandler().ExecuteAfterAttackStatusRuntimeEffectCoroutine(target));
+                }
+            }
             yield return new WaitAll(caster, coroutines.ToArray());
+
+
 
         }
     }

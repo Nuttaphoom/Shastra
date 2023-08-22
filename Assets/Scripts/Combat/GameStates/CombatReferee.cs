@@ -1,4 +1,5 @@
-﻿
+﻿    
+using JetBrains.Annotations;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -52,6 +53,9 @@ namespace Vanaring_DepaDemo
 
         List<CompetatorDetailStruct> _competators;
 
+        [SerializeField]
+        private GameOverScreen _gameoverscreen;
+
         private ECompetatorSide _currentSide = ECompetatorSide.Hostile; // Assign this to the opposite of the actual turn we want to start with 
         private List<CombatEntity> _activeEntities = new List<CombatEntity>();
         private int _currentEntityIndex = 0;
@@ -67,7 +71,6 @@ namespace Vanaring_DepaDemo
         private void Start()
         {
             CentralInputReceiver.Instance().AddInputReceiverIntoStack(this);
-
             SetUpNewCombatEncounter();
             StartCoroutine(CustomTick());
         }
@@ -81,7 +84,7 @@ namespace Vanaring_DepaDemo
             }
 
             // Call the GenerateEntityAttacher method with the lists
-            GameSceneSetUPManager.Instance.GenerateEntityAttacher(GetCompetatorsBySide(ECompetatorSide.Ally).Select(c => c.gameObject).ToList(), GetCompetatorsBySide(ECompetatorSide.Hostile).Select(c => c.gameObject).ToList());
+            CameraSetUPManager.Instance.GenerateEntityAttacher(GetCompetatorsBySide(ECompetatorSide.Ally).Select(c => c.gameObject).ToList(), GetCompetatorsBySide(ECompetatorSide.Hostile).Select(c => c.gameObject).ToList());
 
         }
 
@@ -102,6 +105,8 @@ namespace Vanaring_DepaDemo
             _currentSide = (ECompetatorSide)(((int)_currentSide + 1) % 2);
 
             _activeEntities = GetCompetatorsBySide(_currentSide);
+            _currentEntityIndex = 0; 
+
         }
 
         private bool EndGameConditionMeet()
@@ -175,23 +180,17 @@ namespace Vanaring_DepaDemo
                 yield return SwitchControl(-1, _currentEntityIndex);
             }
 
-            foreach (var v in _activeEntities)
-            {
-                Debug.Log("Active start is " + v.name); 
-            }
             //While loop will keep being called until the turn is end
             while (_activeEntities.Count > 0)
             {
                 while (!_activeEntities[_currentEntityIndex].ReadyForControl())
-                {
+                {                     
                     Debug.Log(_activeEntities[_currentEntityIndex] + " can't control now");
 
                     yield return SwitchControl(_currentEntityIndex, _currentEntityIndex);
 
-
                     if (_activeEntities.Count <= 1)
                         goto End;
-
 
                     _currentEntityIndex = 0;
                     _activeEntities.RemoveAt(_currentEntityIndex);
@@ -206,7 +205,6 @@ namespace Vanaring_DepaDemo
 
                 while (actionCoroutine.MoveNext())
                 {
-
                     if (actionCoroutine.Current != null && actionCoroutine.Current.GetType().IsSubclassOf(typeof(RuntimeEffect)))
                     {
                         ColorfulLogger.LogWithColor("start action", Color.black); 
@@ -226,8 +224,21 @@ namespace Vanaring_DepaDemo
                         {
                             yield return new WaitForSecondsRealtime(2.0f);
                         }
+
                         //When the action is finish executed (like playing animation), end turn 
- 
+
+                        foreach (var e in GetCompetatorsBySide(ECompetatorSide.Ally))
+                        {
+                            if (! e.IsDead)
+                                yield return e.AfterGetAction();
+                        }
+
+                        foreach (var e in GetCompetatorsBySide(ECompetatorSide.Hostile))
+                        {
+                            if (! e.IsDead)
+                                yield return e.AfterGetAction();
+                        }
+
                         // entity's leave turn 
                         yield return SwitchControl(_currentEntityIndex, _currentEntityIndex);
 
@@ -237,9 +248,6 @@ namespace Vanaring_DepaDemo
 
                         if (_activeEntities.Count > 0) 
                             yield return SwitchControl(-1, _currentEntityIndex);
-
-
-                        ColorfulLogger.LogWithColor("almost end of action", Color.black);
 
                         for (int i = _competators.Count - 1; i >= 0; i--)
                         {
@@ -253,7 +261,6 @@ namespace Vanaring_DepaDemo
                                 //_competators.RemoveAt(i);
                             }
                         }
-                        ColorfulLogger.LogWithColor("End of action", Color.black);
 
                     }
                     else
@@ -261,16 +268,18 @@ namespace Vanaring_DepaDemo
                 }
                 if (EndGameConditionMeet())
                 {
+                    //_gameoverscreen.ActiveGameOverScreen(true);
                     goto End;
                 }
                 //If GetAction is null, we wait for end of frame
                 yield return new WaitForEndOfFrame();
             }
-
+        
         End:
             foreach (CombatEntity entity in GetCompetatorsBySide(_currentSide))
             {
-                yield return entity.TurnLeave();
+                if (! entity.IsDead)
+                    yield return entity.TurnLeave();
             }
             ColorfulLogger.LogWithColor("END TURN IN " + _currentSide, Color.blue);
 
@@ -293,6 +302,9 @@ namespace Vanaring_DepaDemo
             AssignCompetators(FindObjectOfType<EntityLoader>().LoadData(), ECompetatorSide.Hostile);
             _currentSide = ECompetatorSide.Ally;
             _activeEntities = GetCompetatorsBySide(_currentSide);
+
+            _currentEntityIndex = 0;
+
         }
         #region GETTER 
 
@@ -319,25 +331,45 @@ namespace Vanaring_DepaDemo
         public IEnumerator SwitchControl(int prev, int next)
         {
             if (prev != -1)
+            {
+                FindObjectOfType<CharacterWindowManager>().DeSetActiveEntityGUI(_activeEntities[prev]);
                 yield return _activeEntities[prev].LeaveControl();
+
+            }
+
+
 
             if (prev != next)
             {
+                FindObjectOfType<CharacterWindowManager>().SetActiveEntityGUI(_activeEntities[next]);
+
+
                 for (int i = 0; i < GetCompetatorsBySide(ECompetatorSide.Ally).Count; i++)
                 {
                     if (GetCompetatorsBySide(ECompetatorSide.Ally)[i] == _activeEntities[next])
                     {
-                        GameSceneSetUPManager.Instance.SelectCharacterCamera(i);
+                        CameraSetUPManager.Instance.SelectCharacterCamera(i);
                     }
 
                 }
 
                 yield return _activeEntities[next].TakeControl();
-            }
 
+            }
         }
 
-        public IEnumerator ChangeActiveEntityIndex(bool increase = false, bool decrease = false)
+        public bool ChangeActiveEntityIndex(bool increase = false, bool decrease = false)
+        {
+            if (_activeEntities.Count > 1)
+            {
+                StartCoroutine(ChangeActiveEntityIndexCoroutine(increase, decrease));
+                return true; 
+            } 
+                return false;
+             
+        }
+
+        public IEnumerator ChangeActiveEntityIndexCoroutine(bool increase = false, bool decrease = false)
         {
             if (_activeEntities.Count > 0)
             {
@@ -358,21 +390,23 @@ namespace Vanaring_DepaDemo
                 _currentEntityIndex = 0;
             }
 
+ 
+
         }
 
         public void ReceiveKeys(KeyCode key)
         {
-            if (_state == CombatState.WaitingForAction)
-            {
-                if (key == (KeyCode.D))
-                {
-                    StartCoroutine(ChangeActiveEntityIndex(true, false));
-                }
-                else if (key == (KeyCode.A))
-                {
-                    StartCoroutine(ChangeActiveEntityIndex(false, true));
-                }
-            }
+            //if (_state == CombatState.WaitingForAction)
+            //{
+            //    if (key == (KeyCode.D))
+            //    {
+            //        StartCoroutine(ChangeActiveEntityIndex(true, false));
+            //    }
+            //    else if (key == (KeyCode.A))
+            //    {
+            //        StartCoroutine(ChangeActiveEntityIndex(false, true));
+            //    }
+            //}
         }
 
         #endregion

@@ -68,7 +68,18 @@ namespace Vanaring_DepaDemo
             foreach (CombatEntity target in _targets)
             {
                 CombatEntity entity = target;
-                coroutines.Add(entity.CombatEntityAnimationHandler.PlayVFXActionAnimation<string>(_actionAnimation.TargetVfxEntity, (string s) => entity.VisualHurt(caster, s), _actionAnimation.TargetTrigerID));
+                if (!_actionAnimation.IsProjectile)
+                {
+                    coroutines.Add(entity.CombatEntityAnimationHandler.PlayVFXActionAnimation<string>(
+                        _actionAnimation.TargetVfxEntity, (string s) => entity.VisualHurt(caster, s), 
+                        _actionAnimation.TargetTrigerID));
+                }
+                else
+                {
+                    coroutines.Add(caster.CombatEntityAnimationHandler.PlayVFXActionAnimation<string>(
+                        _actionAnimation.TargetVfxEntity, (string s) => entity.VisualHurt(caster, s),
+                        _actionAnimation.TargetTrigerID, caster.gameObject.transform.position, entity.gameObject.transform.position));
+                }
             }
 
             //2.2.) create action animation coroutine for self
@@ -89,6 +100,8 @@ namespace Vanaring_DepaDemo
 
 
         }
+
+       
 
 
 

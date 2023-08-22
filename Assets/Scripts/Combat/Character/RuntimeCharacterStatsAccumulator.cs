@@ -58,9 +58,9 @@ namespace Vanaring_DepaDemo
         #endregion
 
         #region HPStatsManipulationmethod
-        public void ModifyHPStat(float amt)
+        public int ModifyHPStat(float amt)
         {
-            _characterStats[ECharacterStatType.HP].ModifyValue((int)amt,false);
+            return _characterStats[ECharacterStatType.HP].ModifyValue((int)amt,false);
         }
 
         public int GetHPAmount()

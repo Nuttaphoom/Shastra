@@ -39,25 +39,32 @@ public class TargetSelectionFlowControl : MonoBehaviour, IInputReceiver
     private void Awake()
     {
         Instance = this;
-        _targetSelectionGUI.Initialize(this); 
+        _targetSelectionGUI.Initialize(transform); 
     }
 
-    private void ForceStop()
+    public void ForceStop()
     {
-        _activlySelecting = false ;
-        _latestAction = null ;
-        _forceStop = true ;
-        _latestSelectedSpell = null; 
+        if (_activlySelecting)
+        {
+            _activlySelecting = false;
+            _latestAction = null;
+            _forceStop = true;
+            _latestSelectedSpell = null;
+            _latestSelectedItem = null; 
+        }
     }
 
     public (RuntimeEffectFactorySO, List<CombatEntity>) GetLatestAction()
     {
+        var tempAction = _latestAction; 
         if (PrepareAction()) {
             _activlySelecting = false;
             _latestSelectedSpell = null;
-            _latestSelectedItem = null; 
+            _latestSelectedItem = null;
+            _latestAction = null; 
+
         }
-        return (_latestAction, _selectedTarget);
+        return (tempAction, _selectedTarget);
     }
 
     //TODO : Properly separate Spell action so that we don't need to return the spell like this
@@ -70,8 +77,6 @@ public class TargetSelectionFlowControl : MonoBehaviour, IInputReceiver
     {
         return _latestSelectedItem ; 
     }
-
-
 
     public bool PrepareAction()
     {
@@ -103,8 +108,44 @@ public class TargetSelectionFlowControl : MonoBehaviour, IInputReceiver
     #endregion
 
     #region Private
-    public IEnumerator InitializeTargetSelectionScheme(CombatEntity caster, RuntimeEffectFactorySO action, bool randomTarget = false)
+    public IEnumerator InitializeTargetSelectionSchemeWithoutSelect(List<CombatEntity> _targets)
     {
+        if (_activlySelecting)
+            throw new Exception("Try to active selection scheme while it is already active");
+
+        _activlySelecting = true;
+        ValidateData();
+
+        foreach (var v in _targets)
+        {
+            _validTargets.Add(v); 
+        }
+
+        while (true)
+        {
+            if (_forceStop)
+            {
+                _forceStop = false;
+                ColorfulLogger.LogWithColor("Cancel Target Selection", Color.green);
+                goto End;
+            }
+
+            _targetSelectionGUI.SelectTargetPointer(_validTargets[_currentSelectIndex]);
+
+            yield return null; 
+
+            yield return _validTargets[_currentSelectIndex];
+
+        }
+
+    End: 
+        _targetSelectionGUI.EndSelectionScheme();
+        _activlySelecting = false;
+    }
+
+    public IEnumerator InitializeTargetSelectionScheme(CombatEntity caster, RuntimeEffectFactorySO action, bool randomTarget = false )
+    {
+        ECompetatorSide casterSide = CombatReferee.instance.GetCharacterSide(caster);
         if (_activlySelecting)
             throw new Exception("Try to active selection scheme while it is already active");
 
@@ -118,29 +159,60 @@ public class TargetSelectionFlowControl : MonoBehaviour, IInputReceiver
         _latestAction = null;
 
         ValidateData();
+        
         AssignPossibleTargets(caster, action);
 
+        CameraSetUPManager.Instance.CaptureVMCamera();
+
+        CameraSetUPManager.Instance.SetBlendMode(CameraSetUPManager.CameraBlendMode.EASE_INOUT, 0.5f);
 
         while (_selectedTarget.Count < action.TargetSelect.MaxTarget)
         {
-            _targetSelectionGUI.SelectTargetPointer(_validTargets[_currentSelectIndex]);
+            CombatEntity selected = _validTargets[_currentSelectIndex]; 
+            if (selected.TryGetComponent(out CombatGraphicalHandler cgh))
+            {
+                cgh.EnableQuickMenuBar(true);
+            }
+            
+            if (!randomTarget )
+            {
+                if (casterSide  == CombatReferee.instance.GetCharacterSide(selected)   )
+                {
+                    CameraSetUPManager.Instance.ActiveTargetModeVirtualCamera();
+                }
+                else
+                    CameraSetUPManager.Instance.RestoreVMCameraState();
 
+                CameraSetUPManager.Instance.SetupTargatModeLookAt(selected.gameObject);
+                _targetSelectionGUI.SelectTargetPointer(selected);
+            }
+            
             if (_forceStop)
             {
                 _forceStop = false;
-                ColorfulLogger.LogWithColor("Cancel Target Selection", Color.green);
+                if (cgh != null)
+                {
+                    cgh.EnableQuickMenuBar(false);
+                }
                 goto End;
             }
             if (randomTarget)
             {
                 _currentSelectIndex = UnityEngine.Random.Range(0, _validTargets.Count);
                 _selectedTarget.Add(_validTargets[_currentSelectIndex]);
-                ColorfulLogger.LogWithColor("AI Action target is " + _validTargets[_currentSelectIndex], Color.yellow);
                 _validTargets.RemoveAt(_currentSelectIndex);
-
+                if (cgh != null)
+                {
+                    cgh.EnableQuickMenuBar(false);
+                }
                 continue;
             }
             yield return new WaitForEndOfFrame();
+
+            if (cgh != null)
+            {
+                cgh.EnableQuickMenuBar(false);
+            }
         }
 
         _latestAction = action;
@@ -148,6 +220,7 @@ public class TargetSelectionFlowControl : MonoBehaviour, IInputReceiver
     End:
         _targetSelectionGUI.EndSelectionScheme(); 
         OnTargetSelectionSchemeEnd.PlayEvent(caster);
+        CameraSetUPManager.Instance.RestoreVMCameraState(); 
 
         CentralInputReceiver.Instance().RemoveInputReceiverIntoStack(this) ;
 
@@ -203,7 +276,8 @@ public class TargetSelectionFlowControl : MonoBehaviour, IInputReceiver
         {
             if (key == (KeyCode.D))
             {
-                _currentSelectIndex = (_currentSelectIndex + 1) > (_validTargets.Count - 1) ? _currentSelectIndex : (_currentSelectIndex + 1) ;
+                _currentSelectIndex = (_currentSelectIndex + 1) > (_validTargets.Count - 1) ? _currentSelectIndex : (_currentSelectIndex + 1);
+
             }
             else if (key == (KeyCode.A))
             {

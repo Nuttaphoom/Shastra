@@ -20,6 +20,7 @@ namespace Vanaring_DepaDemo
         #region GETTER
         public string AbilityName => _description.FieldName; 
         public string Desscription => _description.FieldDescription;
+        public Sprite AbilityImage => _description.FieldImage;
         public RuntimeEffectFactorySO EffectFactory => _effect;
 
         #endregion

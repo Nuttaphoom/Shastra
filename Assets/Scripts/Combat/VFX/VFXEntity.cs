@@ -32,7 +32,7 @@ public class VFXEntity
 
     public float DestroyDelay => _destroyAfterCallbackDelay;
     public float SpawnDelay => _spawnDelay;  
-    public float CallbackDelay => _callbackDelay; 
+    public float CallbackDelay => _callbackDelay;
 
     public GameObject VFXAnimationPrefabs => _VFXAnimationPrefabs;
 
@@ -84,7 +84,6 @@ public class VFXCallbackHandler<T>
         
         yield return new WaitForSeconds(_vfxEntity.CallbackDelay) ;
 
-
         List<IEnumerator> coroutines = new List<IEnumerator>(); 
 
         if (_action != null)
@@ -96,11 +95,67 @@ public class VFXCallbackHandler<T>
 
      }
 
+    public IEnumerator PlayVFX(T arugment, Vector3 casterpos, Vector3 targetpos)
+    {
+        StartMovingProjectile(casterpos, targetpos, _vfxEntity.SpawnDelay + _vfxEntity.CallbackDelay);
+
+        yield return new WaitForSeconds(_vfxEntity.SpawnDelay);
+
+        if (_instantiatedVFX.GetComponent<ParticleSystem>() != null)
+        {
+            _instantiatedVFX.GetComponent<ParticleSystem>().Play();
+        }
+        else if (_instantiatedVFX.GetComponent<VisualEffect>() != null)
+        {
+            _instantiatedVFX.GetComponent<VisualEffect>().Play();
+        }
+
+        yield return new WaitForSeconds(_vfxEntity.CallbackDelay);
+
+        _instantiatedVFX.gameObject.SetActive(false);
+
+        List<IEnumerator> coroutines = new List<IEnumerator>();
+
+        if (_action != null)
+            coroutines.Add(_action(arugment));
+
+        coroutines.Add(WaitAndDestroy(_vfxEntity.DestroyDelay));
+
+        yield return new WaitAll(_target, coroutines.ToArray());
+
+    }
+
     private IEnumerator WaitAndDestroy(float time)
     {
         yield return new WaitForSeconds(time);
         _instantiatedVFX.gameObject.SetActive(false);
 
+    }
+
+    private IEnumerator MovingProjectile(Vector3 startpos, Vector3 targetpos, float maxtime)
+    {
+        Vector3 direction = targetpos - startpos;
+        //float speed = (direction.magnitude)/* / (maxtime)*/;
+        float speed = 1.0f;
+        //SphereCollider sc = gameObject.AddComponent(typeof(SphereCollider)) as SphereCollider;
+        Rigidbody rb = _instantiatedVFX.AddComponent(typeof(Rigidbody)) as Rigidbody;
+        rb.useGravity = false;
+
+        rb.velocity = new Vector3(speed * direction.normalized.x, speed * direction.normalized.y, speed * direction.normalized.z);
+        //_instantiatedVFX.transform.position += new Vector3(speed * direction.normalized.x, speed * direction.normalized.y, speed * direction.normalized.z);
+        yield return new WaitForSeconds(maxtime);
+        _instantiatedVFX.gameObject.SetActive(false);
+    }
+
+    public void StartMovingProjectile(Vector3 startpos, Vector3 targetpos, float maxtime)
+    {
+        _instantiatedVFX.gameObject.SetActive(true);
+        Vector3 direction = targetpos - startpos;
+        float speed = (direction.magnitude)/ (maxtime);
+        //float speed = 0.0f;
+        Rigidbody rb = _instantiatedVFX.AddComponent(typeof(Rigidbody)) as Rigidbody;
+        rb.useGravity = false;
+        rb.velocity = new Vector3(speed * direction.normalized.x, speed * direction.normalized.y, speed * direction.normalized.z);
     }
 
 }

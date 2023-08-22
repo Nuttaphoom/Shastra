@@ -40,7 +40,7 @@ namespace Vanaring_DepaDemo
 
 
         #region Method 
-        public void OnModifyEnergy(RuntimeMangicalEnergy.EnergySide side, int amount)
+        public void OnModifyEnergy(CombatEntity caster, RuntimeMangicalEnergy.EnergySide side, int amount)
         {
             if (_starVFX_Instantied != null)
                 return;
@@ -48,11 +48,11 @@ namespace Vanaring_DepaDemo
 
             if (_spellCasterHandler.IsEnergyOverheat())
             {
-                Overheat();
+                Overheat(caster);
             }
         }
 
-        public void Overheat()
+        public void Overheat(CombatEntity caster)
         {
             IEnumerator coroutine = _statusEffectFactory.Factorize(new List<CombatEntity>() { _combatEntity });
             while (coroutine.MoveNext())
@@ -63,7 +63,7 @@ namespace Vanaring_DepaDemo
                 }
             }
 
-            _combatEntity.LogicHurt(null, 40);
+            _combatEntity.LogicHurt(null, caster.StatsAccumulator.GetATKAmount());
             if (!_combatEntity.IsDead)
             {
                 //We stunt this turn and the next turn 
@@ -79,17 +79,33 @@ namespace Vanaring_DepaDemo
 
         public void ResetOverflow()
         {
-            Destroy(_starVFX_Instantied.gameObject);
-            _starVFX_Instantied = null;
+            if (_starVFX_Instantied != null)
+            {
+                Destroy(_starVFX_Instantied.gameObject);
+                _starVFX_Instantied = null;
+            }
             _combatEntity.SpellCaster.ResetEnergy();
-
         }
 
         private IEnumerator VisualStunApplier(string s)
         {
-            _combatEntity.StatsAccumulator.ApplyStunt();
+
+            StartCoroutine(RunnintOverheatVisualEffect()); 
+            _combatEntity.StatsAccumulator.ApplyStunt() ; 
             yield return (_combatEntity.VisualHurt(null, "Stunt"));
-        } 
+
+
+        }
+
+        private IEnumerator RunnintOverheatVisualEffect()
+        {
+            yield return new WaitForSecondsRealtime(0.2f); 
+            Time.timeScale = 0.25f;
+
+            yield return new WaitForSecondsRealtime(0.5f);
+
+            Time.timeScale = 1.0f; 
+        }
 
         private void Awake()
         {

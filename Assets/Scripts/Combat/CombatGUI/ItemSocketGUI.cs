@@ -19,6 +19,10 @@ namespace Vanaring_DepaDemo
         [SerializeField]
         private TextMeshProUGUI _textMeshProUGUI ;
         [SerializeField]
+        private TextMeshProUGUI _itemDescription;
+        [SerializeField]
+        private Image _itemIcon;
+        [SerializeField]
         private TextMeshProUGUI _textMeshProNum ;
 
         private string _itemName;
@@ -33,13 +37,20 @@ namespace Vanaring_DepaDemo
 
         private int _itemAmount;
 
+        private Color _hightlightedColor = Color.yellow;
+        private Color _defaultColor;
+
+        private bool _init = false; 
         public void Init(ItemAbilityRuntime item, CombatEntity combatEntity)
         {
+            _init  = true; 
             _item = item;
             this._caster = combatEntity;
             _actionButton.onClick.AddListener(ChooseItem) ;
 
             _textMeshProUGUI.text = item.ItemName.ToString() ;
+            _itemDescription.text = item.ItemDescrption.ToString();
+            _itemIcon.sprite = item.ItemSprite;
             _itemName = item.ItemName.ToString();
             _itemAmount = 1;
         }
@@ -63,9 +74,37 @@ namespace Vanaring_DepaDemo
 
         private void ChooseItem()
         {
+            if (_init)
+            {
+                Debug.Log("is  init");
+            }
+            if (_caster == null)
+            {
+                Debug.Log("cast is null");
+            } if ( _caster.ItemUser == null)
+            {
+                Debug.Log("caster itemuser is null"); 
+            }if (_item == null)
+            {
+                Debug.Log("item is null");
+            }
             _caster.ItemUser.UseItem(_item);
         }
 
+        public void CallButtonCallback()
+        {
+            _actionButton.onClick?.Invoke();
+        }
         public int ItemAmount => _itemAmount;
+
+        public void HightlightedButton()
+        {
+            _actionButton.GetComponent<Image>().color = _hightlightedColor;
+        }
+
+        public void UnHighlightedButton()
+        {
+            _actionButton.GetComponent<Image>().color = _defaultColor; 
+        }
     }
 }

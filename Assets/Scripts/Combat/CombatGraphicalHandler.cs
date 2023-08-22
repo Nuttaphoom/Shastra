@@ -9,7 +9,6 @@ using Vanaring_DepaDemo;
 
 namespace Vanaring_DepaDemo
 {
-    [RequireComponent(typeof(CombatEntity))]
     public class CombatGraphicalHandler : MonoBehaviour
     {
         [Header("Listen to ")]
@@ -19,46 +18,37 @@ namespace Vanaring_DepaDemo
         private CombatEntityEventChannel OnTargetSelectionSchemeEnd;
 
 
-        [Header("Button to bind call back") ] 
-        [SerializeField]
-        private Button _itemButton;
-        [SerializeField]
-        private Button _spellButton;
-        [SerializeField]
-        private Button _weaponButton;
 
         [Header("Panel and Canvas object (menu)")]
         [SerializeField]
-        private Transform _mainPanel;
+        private SpellWindowManager _spellWindowManager;
         [SerializeField]
-        private Transform _spellPanel;
+        private ItemWindowManager _itemWindowManager;
         [SerializeField]
-        private Transform _itemPanel;
+        private MainWindowManager _mainWindowManager;
+
+        private EntityWindowManager _entityWindowManager;
 
         [SerializeField]
-        private GameObject _mainCanvas; 
+        private Transform _quickHPBar; 
 
-        private CombatEntity _combatEntity; 
+        [SerializeField]
+        private CombatEntity _combatEntity;
 
         private void Awake()
         {
-            if (_itemButton == null || _spellButton == null || _weaponButton == null)
-                throw new Exception("Buttons hasn't been correctly assigned");
+            if (_quickHPBar == null)
+                throw new Exception("Quick HP bar Canvas hasn't been assigned");
 
-            if (_mainCanvas == null)
-                throw new Exception("Main Canvas hasn't been assigned"); 
+            if (_combatEntity.GetComponent<CombatEntity>() == null)
+                throw new Exception("Combat Entiy hasn't been assigned");
 
-            _combatEntity = GetComponent<CombatEntity>();
-
-
-            _itemButton.onClick.AddListener(() => { DisplayItemPanel(); });
-            _spellButton.onClick.AddListener(() => { DisplaySpellPanel(); });
-            _weaponButton.onClick.AddListener(() => { DisplayWeaponPanel(); });
+            _entityWindowManager = new EntityWindowManager(); 
         }
 
         private void OnEnable()
         {
-            _combatEntity.SubOnDamageVisualEvent(OnVisualHurtUpdate);
+            _combatEntity.SubOnDamageVisualEvent(OnUpdateEntityStats);
             _combatEntity.SubOnDamageVisualEventEnd(OnVisualHurtUpdateEnd); 
             OnTargetSelectionSchemeStart.SubEvent(OnTargetSelectionStart_DisableUI) ;
             OnTargetSelectionSchemeEnd.SubEvent(OnTargetSelectionEnd_EnableUI);
@@ -69,94 +59,113 @@ namespace Vanaring_DepaDemo
         {
             OnTargetSelectionSchemeStart.UnSubEvent(OnTargetSelectionStart_DisableUI);
             OnTargetSelectionSchemeEnd.UnSubEvent(OnTargetSelectionEnd_EnableUI); 
-            _combatEntity.UnSubOnDamageVisualEvent(OnVisualHurtUpdate);
+            _combatEntity.UnSubOnDamageVisualEvent(OnUpdateEntityStats);
             _combatEntity.UnSubOnDamageVisualEventEnd(OnVisualHurtUpdateEnd);
-
         }
 
-        private void DisplayItemPanel()
+        public void DisplayItemPanel()
         {
-            _mainPanel.gameObject.SetActive(false);
-            _itemPanel.gameObject.SetActive(true);
+            _entityWindowManager.PushInNewWindow(_itemWindowManager); 
         }
 
-        private void DisplaySpellPanel()
+        public void DisplaySpellPanel()
         {
-            _mainPanel.gameObject.SetActive(false);
-            _spellPanel.gameObject.SetActive(true) ;
-            _itemPanel.gameObject.SetActive(false);
-
-
+            _entityWindowManager.PushInNewWindow(_spellWindowManager);
         }
 
-        private void DisplayWeaponPanel()
+        public void DisplayWeaponPanel()
         {
 
         }
 
         public void DisableMenuElements()
         {
-            _spellPanel.gameObject.SetActive(false);
-            _itemPanel.gameObject.SetActive(false);
-            _mainPanel.gameObject.SetActive(false);
-
-
+            _entityWindowManager.ClearStack(); 
+            //_spellPanel.gameObject.SetActive(false);
+            //_itemPanel.gameObject.SetActive(false);
+            //_mainPanel.gameObject.SetActive(false);
         }
 
-        public void DisableGraphicalElements()
+        public void DisplayMainMenu()
         {
-            _mainPanel.gameObject.SetActive(false);
-            _spellPanel.gameObject.SetActive(false);
-            _itemPanel.gameObject.SetActive(false);
-            _mainCanvas.gameObject.SetActive(false);
+            _entityWindowManager.ClearStack();
+
+            _entityWindowManager.PushInNewWindow(_mainWindowManager);
         }
 
-        public void EnableGraphicalElements()
+        public IEnumerator TakeControl()
         {
-            _mainCanvas.gameObject.SetActive(true); 
-            _mainPanel.gameObject.SetActive(true) ;
-            _spellPanel.gameObject.SetActive(false);
-            _itemPanel.gameObject.SetActive(false);
+            EnableQuickMenuBar(true); 
+            _entityWindowManager.SetNewEntity(this);
+            DisplayMainMenu(); 
+
+             _mainWindowManager.TakeInputControl();
+
+            yield return null; 
+        }
+
+        public void TakeControlLeave()
+        {
+            EnableQuickMenuBar(false); 
+            DisableMenuElements() ;
+           
+            _mainWindowManager.ReleaseInputControl();
         }
 
         #region EventListener
         private void OnTargetSelectionStart_DisableUI(CombatEntity _combatEntity)
         {
-            _mainPanel.gameObject.SetActive(false);
-            _spellPanel.gameObject.SetActive(false);
-            _itemPanel.gameObject.SetActive(false);
+            DisableMenuElements();
+            EnableQuickMenuBar(false);
+            //_mainPanel.gameObject.SetActive(false);
+            //_spellPanel.gameObject.SetActive(false);
+            //_itemPanel.gameObject.SetActive(false);
         }
 
         private void OnTargetSelectionEnd_EnableUI(CombatEntity combatEntity)
         {
-            if (_combatEntity == combatEntity)
-            {
-                _mainPanel.gameObject.SetActive(true);
-            } 
-        }
+            if (combatEntity != _combatEntity)
+                return;
 
-        private void OnVisualHurtUpdate(int i )
-        {
-            OnUpdateEntityStats(); 
+            if (!TargetSelectionFlowControl.Instance.PrepareAction())
+            {
+                EnableQuickMenuBar(true);
+
+                _entityWindowManager.PushInNewWindow(_mainWindowManager);
+            }
+
+            //if (_combatEntity == combatEntity)
+            //{
+            //    _mainPanel.gameObject.SetActive(true);
+            //} 
         }
 
         private void OnVisualHurtUpdateEnd(int i)
         {
-            if (_mainCanvas.activeSelf)
-                _mainCanvas.gameObject.SetActive(false);
+            EnableQuickMenuBar(false); 
         }
 
-        private void OnEnergyUpdate(RuntimeMangicalEnergy.EnergySide side, int amount)
+        private void OnEnergyUpdate(CombatEntity caster, RuntimeMangicalEnergy.EnergySide side, int amount)
         {
-            OnUpdateEntityStats();
-        }
+            OnUpdateEntityStats(0);
+         }
 
         #endregion
 
-        private void OnUpdateEntityStats()
+        private void OnUpdateEntityStats(int i)
         {
-            if(!_mainCanvas.activeSelf)
-                _mainCanvas.gameObject.SetActive(true);
+            Debug.Log("update entity stats"); 
+            if (!_quickHPBar.gameObject.activeSelf)
+                EnableQuickMenuBar(true); 
+        }
+
+        public void EnableQuickMenuBar(bool b)
+        {
+            if (b == false)
+            {
+                Debug.Log("close HP bAR"); 
+            }
+            _quickHPBar.gameObject.SetActive(b); 
         }
 
 
