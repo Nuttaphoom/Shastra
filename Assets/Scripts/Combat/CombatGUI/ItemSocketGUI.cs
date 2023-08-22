@@ -19,6 +19,10 @@ namespace Vanaring_DepaDemo
         [SerializeField]
         private TextMeshProUGUI _textMeshProUGUI ;
         [SerializeField]
+        private TextMeshProUGUI _itemDescription;
+        [SerializeField]
+        private Image _itemIcon;
+        [SerializeField]
         private TextMeshProUGUI _textMeshProNum ;
 
         private string _itemName;
@@ -45,6 +49,8 @@ namespace Vanaring_DepaDemo
             _actionButton.onClick.AddListener(ChooseItem) ;
 
             _textMeshProUGUI.text = item.ItemName.ToString() ;
+            _itemDescription.text = item.ItemDescrption.ToString();
+            _itemIcon.sprite = item.ItemSprite;
             _itemName = item.ItemName.ToString();
             _itemAmount = 1;
         }
