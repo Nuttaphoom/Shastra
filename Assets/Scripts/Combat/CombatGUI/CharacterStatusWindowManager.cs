@@ -76,7 +76,7 @@ namespace Vanaring_DepaDemo
             {
                 if (entry.Value != null && entry.Value.Count != 0)
                 {
-                    Debug.Log("Created" + entry.Value[0].GetStatusEffectDescription().FieldName);
+                    //Debug.Log("Created" + entry.Value[0].GetStatusEffectDescription().FieldName);
                     CharacterStatusSocketGUI newIcon = Instantiate(_IconSample, _IconSample.transform.position, _IconSample.transform.rotation);
                     if (count >= _IconPos.Length)
                     {

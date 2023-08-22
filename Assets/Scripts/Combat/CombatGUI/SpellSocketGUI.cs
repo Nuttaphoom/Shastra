@@ -75,6 +75,7 @@ namespace Vanaring_DepaDemo
             _spellCost.text = spell.RequiredEnergy.Amount.ToString();
             _requireEnergyCost.text = "> " + spell.RequiredEnergy.Amount.ToString();
             _modifiedEnergyCost.text = "+ " + spell.EnergyModifer.Amount.ToString();
+            _skillImage.sprite = spell.AbilityImage;
 
             if (spell.RequiredEnergy.Side == RuntimeMangicalEnergy.EnergySide.LightEnergy)
             {
