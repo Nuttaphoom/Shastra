@@ -66,15 +66,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3981799082134451107, guid: 940865647d46c7642be8bee3d21669f5, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.09844149
+      value: 0.08767048
       objectReference: {fileID: 0}
     - target: {fileID: 3981799082134451107, guid: 940865647d46c7642be8bee3d21669f5, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.01989089
+      value: -0.21304049
       objectReference: {fileID: 0}
     - target: {fileID: 3981799082134451107, guid: 940865647d46c7642be8bee3d21669f5, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.001968043
+      value: 0.019197367
       objectReference: {fileID: 0}
     - target: {fileID: 4225265115102379059, guid: 940865647d46c7642be8bee3d21669f5, type: 3}
       propertyPath: _spellAbilities.Array.data[1]
@@ -91,7 +91,19 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1197681158812000641, guid: 940865647d46c7642be8bee3d21669f5, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7161640556398134082}
+    - targetCorrespondingSourceObject: {fileID: 2974310446957706648, guid: 940865647d46c7642be8bee3d21669f5, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 144702492264817751}
+    - targetCorrespondingSourceObject: {fileID: 9080072420276539080, guid: 940865647d46c7642be8bee3d21669f5, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1154602799338915377}
+    - targetCorrespondingSourceObject: {fileID: 1366571122264609481, guid: 940865647d46c7642be8bee3d21669f5, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 9071673353392611694}
   m_SourcePrefab: {fileID: 100100000, guid: 940865647d46c7642be8bee3d21669f5, type: 3}
 --- !u!114 &3605336498722603797 stripped
 MonoBehaviour:
@@ -104,6 +116,156 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7163ad7fe8f8204098b97a9cf12e2b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &4320224471498347441 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9080072420276539080, guid: 940865647d46c7642be8bee3d21669f5, type: 3}
+  m_PrefabInstance: {fileID: 5041322963223993721}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1154602799338915377
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4320224471498347441}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 0
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1877863524747151873, guid: 2dd82efbef2d9ff418036b83488b3b64, type: 3}
+          m_TargetAssemblyTypeName: Vanaring_DepaDemo.UISFXHandler, Assembly-CSharp
+          m_MethodName: PlayUISound
+          m_Mode: 5
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: Hover
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 4
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1877863524747151873, guid: 2dd82efbef2d9ff418036b83488b3b64, type: 3}
+          m_TargetAssemblyTypeName: Vanaring_DepaDemo.UISFXHandler, Assembly-CSharp
+          m_MethodName: PlayUISound
+          m_Mode: 5
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: Select
+            m_BoolArgument: 0
+          m_CallState: 2
+--- !u!1 &6154560512326024440 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1197681158812000641, guid: 940865647d46c7642be8bee3d21669f5, type: 3}
+  m_PrefabInstance: {fileID: 5041322963223993721}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &7161640556398134082
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6154560512326024440}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 0
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1877863524747151873, guid: 2dd82efbef2d9ff418036b83488b3b64, type: 3}
+          m_TargetAssemblyTypeName: Vanaring_DepaDemo.UISFXHandler, Assembly-CSharp
+          m_MethodName: PlayUISound
+          m_Mode: 5
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: Hover
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 4
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1877863524747151873, guid: 2dd82efbef2d9ff418036b83488b3b64, type: 3}
+          m_TargetAssemblyTypeName: Vanaring_DepaDemo.UISFXHandler, Assembly-CSharp
+          m_MethodName: PlayUISound
+          m_Mode: 5
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: Select
+            m_BoolArgument: 0
+          m_CallState: 2
+--- !u!1 &6269408393562148784 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1366571122264609481, guid: 940865647d46c7642be8bee3d21669f5, type: 3}
+  m_PrefabInstance: {fileID: 5041322963223993721}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &9071673353392611694
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6269408393562148784}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 0
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1877863524747151873, guid: 2dd82efbef2d9ff418036b83488b3b64, type: 3}
+          m_TargetAssemblyTypeName: Vanaring_DepaDemo.UISFXHandler, Assembly-CSharp
+          m_MethodName: PlayUISound
+          m_Mode: 5
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: Hover
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 4
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1877863524747151873, guid: 2dd82efbef2d9ff418036b83488b3b64, type: 3}
+          m_TargetAssemblyTypeName: Vanaring_DepaDemo.UISFXHandler, Assembly-CSharp
+          m_MethodName: PlayUISound
+          m_Mode: 5
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: Select
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!114 &7576944319936746439 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3229316436958777022, guid: 940865647d46c7642be8bee3d21669f5, type: 3}
@@ -115,3 +277,53 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45e653bab7fb20e499bda25e1b646fea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &7831969834657767649 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2974310446957706648, guid: 940865647d46c7642be8bee3d21669f5, type: 3}
+  m_PrefabInstance: {fileID: 5041322963223993721}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &144702492264817751
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7831969834657767649}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 0
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1877863524747151873, guid: 2dd82efbef2d9ff418036b83488b3b64, type: 3}
+          m_TargetAssemblyTypeName: Vanaring_DepaDemo.UISFXHandler, Assembly-CSharp
+          m_MethodName: PlayUISound
+          m_Mode: 5
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: Hover
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 4
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1877863524747151873, guid: 2dd82efbef2d9ff418036b83488b3b64, type: 3}
+          m_TargetAssemblyTypeName: Vanaring_DepaDemo.UISFXHandler, Assembly-CSharp
+          m_MethodName: PlayUISound
+          m_Mode: 5
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: Select
+            m_BoolArgument: 0
+          m_CallState: 2
