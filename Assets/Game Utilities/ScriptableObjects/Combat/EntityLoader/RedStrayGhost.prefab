@@ -441,7 +441,7 @@ MonoBehaviour:
   m_PivotOffset: {x: 0, y: 0, z: 0}
   m_AmplitudeGain: 0
   m_FrequencyGain: 0
-  mNoiseOffsets: {x: 0, y: 0, z: 0}
+  mNoiseOffsets: {x: -988.655, y: -988.0679, z: -7.163391}
 --- !u!1 &1557656703452520680
 GameObject:
   m_ObjectHideFlags: 0
@@ -696,6 +696,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 88de1f16aefa11b4bb85d387c6dc26c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isTargetGUI: 0
 --- !u!1 &1584805972441571587
 GameObject:
   m_ObjectHideFlags: 0
@@ -955,6 +956,37 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!1 &2081220649623118665
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1038185495043463834}
+  m_Layer: 0
+  m_Name: GUIPos
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1038185495043463834
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2081220649623118665}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0.5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6372633111618651101}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2163454748765553113
 GameObject:
   m_ObjectHideFlags: 0
@@ -2628,6 +2660,7 @@ Transform:
   - {fileID: 6565108561272482399}
   - {fileID: 2354495851153702402}
   - {fileID: 76209274940009860}
+  - {fileID: 1038185495043463834}
   - {fileID: 3630659267085053076}
   - {fileID: 6149788965397286023}
   m_Father: {fileID: 0}
@@ -2695,6 +2728,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _mesh: {fileID: 5562899598919635206}
   _vfxPos: {fileID: 76209274940009860}
+  _guiPos: {fileID: 1038185495043463834}
   _deadVisualEffect: {fileID: 4711644452343999164}
   _deadAnimationTrigger: NONE
   _actionCamera: {fileID: 3545977087659770277}
@@ -3192,9 +3226,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 95bc3bc5fa1d2764398a9c4c65cfa219, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shakeDuration: 0.3
-  shakeAmplitude: 1.2
-  shakeFrequency: 2
 --- !u!1001 &4751871997930744919
 PrefabInstance:
   m_ObjectHideFlags: 0

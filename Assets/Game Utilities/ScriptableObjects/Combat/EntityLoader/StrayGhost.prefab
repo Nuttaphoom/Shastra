@@ -1063,6 +1063,37 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!1 &3732042191176675396
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6538828595972744590}
+  m_Layer: 0
+  m_Name: GUIPos
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6538828595972744590
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3732042191176675396}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0.5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6372633111618651101}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4034344693179397056
 GameObject:
   m_ObjectHideFlags: 0
@@ -1413,6 +1444,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 88de1f16aefa11b4bb85d387c6dc26c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isTargetGUI: 0
 --- !u!1 &4997755888622972618
 GameObject:
   m_ObjectHideFlags: 0
@@ -2086,7 +2118,7 @@ MonoBehaviour:
   m_PivotOffset: {x: 0, y: 0, z: 0}
   m_AmplitudeGain: 0
   m_FrequencyGain: 0
-  mNoiseOffsets: {x: 0, y: 0, z: 0}
+  mNoiseOffsets: {x: -570.5652, y: -150.92883, z: -947.7811}
 --- !u!1 &6724427251332862175
 GameObject:
   m_ObjectHideFlags: 0
@@ -2510,6 +2542,7 @@ Transform:
   - {fileID: 6565108561272482399}
   - {fileID: 2354495851153702402}
   - {fileID: 76209274940009860}
+  - {fileID: 6538828595972744590}
   - {fileID: 8204133663740547151}
   - {fileID: 7533895279403792357}
   m_Father: {fileID: 0}
@@ -2577,6 +2610,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _mesh: {fileID: 1380964054971269540}
   _vfxPos: {fileID: 76209274940009860}
+  _guiPos: {fileID: 6538828595972744590}
   _deadVisualEffect: {fileID: 1482325246012760531}
   _deadAnimationTrigger: NONE
   _actionCamera: {fileID: 5579481330147216879}
