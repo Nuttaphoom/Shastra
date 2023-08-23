@@ -124,11 +124,9 @@ namespace Vanaring_DepaDemo
 
         }
         #region TurnStatus
-            public void ToggleTurnStatusDisplay(bool b)
+        public void ToggleTurnStatusDisplay(bool b)
         {
-             
-                _turnStatusImage.gameObject.SetActive(b);
-            
+            _turnStatusImage.gameObject.SetActive(b);
         }
         #endregion
         public void ToggleOnTurnHighlightDisplay(bool b)
@@ -136,6 +134,15 @@ namespace Vanaring_DepaDemo
             _highlightTurn.gameObject.SetActive(b);            
         }
 
+        public void ToggleExpandSizeUI()
+        {
+            gameObject.transform.localScale = new Vector3(1.2f, 1.2f, 1.2f);
+        }
+
+        public void ToggleShrinkSizeGUI()
+        {
+            gameObject.transform.localScale = new Vector3(0.9f, 0.9f, 0.9f);
+        }
 
         #region STAT
         private void UpdateHPScaleGUI()

@@ -34,8 +34,8 @@ namespace Vanaring_DepaDemo
             }
         }
 
-     
 
+        #region InTurnSet
         public void SetActiveEntityGUI(CombatEntity entity)
         {
             for (int i = 0; i < combatEntityList.Count ; i++)
@@ -43,10 +43,25 @@ namespace Vanaring_DepaDemo
                 if (combatEntityList[i] == entity)
                 {
                     characterSocketList[i].ToggleTurnStatusDisplay(true);
+                    characterSocketList[i].ToggleExpandSizeUI();
                 }
             }
         }
 
+        public void DeSetActiveEntityGUI(CombatEntity entity)
+        {
+            for (int i = 0; i < combatEntityList.Count; i++)
+            {
+                if (combatEntityList[i] == entity)
+                {
+                    characterSocketList[i].ToggleTurnStatusDisplay(false);
+                    characterSocketList[i].ToggleShrinkSizeGUI();
+                }
+            }
+        }
+        #endregion
+
+        #region HighlightSet
         public void SetHighlightActiveEntity(CombatEntity entity)
         {
             for (int i = 0; i < combatEntityList.Count; i++)
@@ -71,16 +86,32 @@ namespace Vanaring_DepaDemo
             }
 
         }
+        #endregion
 
-        public void DeSetActiveEntityGUI(CombatEntity entity)
+        #region SizingSet
+        public void SetSizeExpandGUI(CombatEntity entity)
         {
-            for (int i = 0; i < combatEntityList.Count  ; i++)
+            for (int i = 0; i < combatEntityList.Count; i++)
             {
                 if (combatEntityList[i] == entity)
                 {
-                    characterSocketList[i].ToggleTurnStatusDisplay(false);
+                    characterSocketList[i].ToggleExpandSizeUI();
+                    return;
                 }
             }
         }
+
+        public void SetSizeShrinkGUI(CombatEntity entity)
+        {
+            for (int i = 0; i < combatEntityList.Count; i++)
+            {
+                if (combatEntityList[i] == entity)
+                {
+                    characterSocketList[i].ToggleShrinkSizeGUI();
+                    return;
+                }
+            }
+        }
+        #endregion
     }
 }

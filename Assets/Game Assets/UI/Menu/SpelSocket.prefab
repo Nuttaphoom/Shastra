@@ -323,8 +323,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 5.803, y: -0.418}
-  m_SizeDelta: {x: 0.95, y: 0.909}
+  m_AnchoredPosition: {x: 5.7528, y: -0.466}
+  m_SizeDelta: {x: 0.8788, y: 0.8409}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &702855621399267329
 CanvasRenderer:
@@ -499,6 +499,82 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!1 &2822012201975651097
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4400583927072741480}
+  - component: {fileID: 6367944216381384903}
+  - component: {fileID: 813836506119110500}
+  m_Layer: 0
+  m_Name: FaderImage
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!224 &4400583927072741480
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2822012201975651097}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5040616461349188524}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0.0686, y: -0.0302}
+  m_SizeDelta: {x: 0.1371, y: 0.0603}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &6367944216381384903
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2822012201975651097}
+  m_CullTransparentMesh: 1
+--- !u!114 &813836506119110500
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2822012201975651097}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0, g: 0, b: 0, a: 0.7372549}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: 6c182033014dcd04c817ffd475f4e191, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
 --- !u!1 &2974161845213673364
 GameObject:
   m_ObjectHideFlags: 0
@@ -1165,8 +1241,8 @@ MonoBehaviour:
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
-    m_HighlightedSprite: {fileID: 21300000, guid: ab89c3922fe13a5498704d0f7a2c5d8e, type: 3}
-    m_PressedSprite: {fileID: 21300000, guid: ab89c3922fe13a5498704d0f7a2c5d8e, type: 3}
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
     m_SelectedSprite: {fileID: 0}
     m_DisabledSprite: {fileID: 0}
   m_AnimationTriggers:
@@ -1260,6 +1336,7 @@ RectTransform:
   - {fileID: 9064114750475036531}
   - {fileID: 5966434367403405795}
   - {fileID: 3968492080393231843}
+  - {fileID: 4400583927072741480}
   m_Father: {fileID: 0}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1285,10 +1362,11 @@ MonoBehaviour:
   _skillImage: {fileID: 595391670175505898}
   _spellEnergyCostType: {fileID: 994937679081251574}
   _spellCost: {fileID: 4746994051485661418}
+  _highlightButtonImg: {fileID: 21300000, guid: ab89c3922fe13a5498704d0f7a2c5d8e, type: 3}
+  _defaultButtonImg: {fileID: 21300000, guid: 6c182033014dcd04c817ffd475f4e191, type: 3}
   _lightImage: {fileID: 21300000, guid: 03e046b996ac8b4448055f6f9ca362e4, type: 3}
   _darkImage: {fileID: 21300000, guid: 95361ed028a7dfe49bdd3342b677204f, type: 3}
-  _selectedButton: {fileID: 0}
-  _normalButton: {fileID: 0}
+  _fadeBlack: {fileID: 813836506119110500}
   _spellNameTextDes: {fileID: 7133513249572015334}
   _descriptionText: {fileID: 5213575255701239951}
   _requireEnergyCost: {fileID: 8810189124018932257}
@@ -1510,7 +1588,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: awdawdawdawdawdawdawdawdawdawdawdawdawd
+  m_text: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. '
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

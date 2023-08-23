@@ -26,6 +26,9 @@ namespace Vanaring_DepaDemo
         public Transform _vfxPos ;
 
         [SerializeField]
+        public Transform _guiPos;
+
+        [SerializeField]
         public VisualEffect _deadVisualEffect;
 
         [SerializeField]
@@ -48,6 +51,16 @@ namespace Vanaring_DepaDemo
             }
             
             return _vfxPos.position ;
+        }
+
+        public Vector3 GetGUISpawnPos()
+        {
+            if (_guiPos == null || _guiPos.position == null)
+            {
+                throw new Exception("GUI Spawn Position of " + gameObject.name + "hasn't never been assigned");
+            }
+
+            return _guiPos.position;
         }
 
         private Animator _animator;

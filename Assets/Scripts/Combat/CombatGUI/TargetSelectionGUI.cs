@@ -46,13 +46,13 @@ public class TargetSelectionGUI  : RequireInitializationHandler<Transform,Null,N
                 _poolTargetGUI.RemoveAt(0); 
             } else
             {
-                _instantiatedTargetGUI.Add(combatEntity, targetGUI.Init(combatEntity.CombatEntityAnimationHandler.GetVFXSpawnPos(), _parent));
+                _instantiatedTargetGUI.Add(combatEntity, targetGUI.Init(combatEntity.CombatEntityAnimationHandler.GetGUISpawnPos(), _parent));
             }
         }
 
         if (!_instantiatedTargetGUI[combatEntity].activeSelf)
         {
-            _instantiatedTargetGUI[combatEntity].transform.position = combatEntity.CombatEntityAnimationHandler.GetVFXSpawnPos(); 
+            _instantiatedTargetGUI[combatEntity].transform.position = combatEntity.CombatEntityAnimationHandler.GetGUISpawnPos(); 
             _instantiatedTargetGUI[combatEntity].SetActive(true);
         }
     }
