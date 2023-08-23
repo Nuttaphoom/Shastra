@@ -176,6 +176,10 @@ namespace Vanaring_DepaDemo
 
             if (_activeEntities.Count > 0)
             {
+                for (int i = 0; i < _activeEntities.Count; i++)
+                {
+                    FindObjectOfType<CharacterWindowManager>().SetHighlightActiveEntity(_activeEntities[i]);
+                }
                 _currentEntityIndex = 0;
                 yield return SwitchControl(-1, _currentEntityIndex);
             }
@@ -207,7 +211,7 @@ namespace Vanaring_DepaDemo
                 {
                     if (actionCoroutine.Current != null && actionCoroutine.Current.GetType().IsSubclassOf(typeof(RuntimeEffect)))
                     {
-                        ColorfulLogger.LogWithColor("start action", Color.black); 
+
                         _state = CombatState.Action ;
 
                         yield return _entity.TakeControlSoftLeave();
@@ -241,6 +245,8 @@ namespace Vanaring_DepaDemo
 
                         // entity's leave turn 
                         yield return SwitchControl(_currentEntityIndex, _currentEntityIndex);
+
+                        FindObjectOfType<CharacterWindowManager>().SetUnHighlightActiveEntity(_entity);
 
                         _activeEntities.RemoveAt(_currentEntityIndex);
 
@@ -337,8 +343,6 @@ namespace Vanaring_DepaDemo
 
             }
 
-
-
             if (prev != next)
             {
                 FindObjectOfType<CharacterWindowManager>().SetActiveEntityGUI(_activeEntities[next]);
@@ -374,16 +378,14 @@ namespace Vanaring_DepaDemo
             if (_activeEntities.Count > 0)
             {
                 int temp = _currentEntityIndex;
+
                 if (increase)
                     _currentEntityIndex = (_currentEntityIndex + 1) % _activeEntities.Count;
                 else if (decrease)
                     _currentEntityIndex = _currentEntityIndex == 0 ? (_activeEntities.Count - 1) : (_currentEntityIndex - 1);
 
-
                 if (temp != _currentEntityIndex)
-                {
-                    yield return SwitchControl(temp, _currentEntityIndex);
-                }
+                    yield return SwitchControl(temp, _currentEntityIndex);  
             }
             else
             {

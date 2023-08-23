@@ -61,7 +61,7 @@ namespace Vanaring_DepaDemo
 
         public override IEnumerator TurnLeave()
         {
-            yield return null; 
+            yield return _botBehaviorHandler.CalculateNextBehavior();
         }
 
         public override IEnumerator TakeControl()
@@ -77,7 +77,7 @@ namespace Vanaring_DepaDemo
         public override IEnumerator TakeControlSoftLeave()
         {
             //calculate next behavior 
-            yield return _botBehaviorHandler.CalculateNextBehavior();
+            yield return null;
          
             
         }

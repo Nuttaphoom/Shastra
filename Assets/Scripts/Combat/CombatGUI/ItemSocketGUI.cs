@@ -12,10 +12,9 @@ namespace Vanaring_DepaDemo
 {
     public class ItemSocketGUI : MonoBehaviour  
     {
-
+        [Header("Button")]
         [SerializeField]
         private Button _actionButton ;
-
         [SerializeField]
         private TextMeshProUGUI _textMeshProUGUI ;
         [SerializeField]
@@ -24,6 +23,12 @@ namespace Vanaring_DepaDemo
         private Image _itemIcon;
         [SerializeField]
         private TextMeshProUGUI _textMeshProNum ;
+
+        [Header("Button")]
+        [SerializeField]
+        private Sprite _highlightButtonImg;
+        [SerializeField]
+        private Sprite _defaultButtonImg;
 
         private string _itemName;
 
@@ -99,12 +104,12 @@ namespace Vanaring_DepaDemo
 
         public void HightlightedButton()
         {
-            _actionButton.GetComponent<Image>().color = _hightlightedColor;
+            _actionButton.GetComponent<Image>().sprite = _highlightButtonImg;
         }
 
         public void UnHighlightedButton()
         {
-            _actionButton.GetComponent<Image>().color = _defaultColor; 
+            _actionButton.GetComponent<Image>().sprite = _defaultButtonImg; 
         }
     }
 }

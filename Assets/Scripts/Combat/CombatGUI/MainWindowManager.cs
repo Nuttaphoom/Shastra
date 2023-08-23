@@ -102,21 +102,21 @@ namespace Vanaring_DepaDemo
             {
                 _buttons[_currentSelectedWindow].onClick?.Invoke();
             }
-            else if (key == (KeyCode.Q))
+            else if (key == (KeyCode.A))
             {
                 if (CombatReferee.instance.ChangeActiveEntityIndex(false, true))
                     TargetSelectionFlowControl.Instance.ForceStop();
 
             }
-            else if (key == (KeyCode.E))
+            else if (key == (KeyCode.D))
             {
                 if (CombatReferee.instance.ChangeActiveEntityIndex(true, false))
                     TargetSelectionFlowControl.Instance.ForceStop();
             }
-            else if (key == (KeyCode.D))
+            else if (key == (KeyCode.RightArrow))
             {
                 TargetSelectionFlowControl.Instance.ReceiveKeys(KeyCode.D);
-            }else if (key == (KeyCode.A))
+            }else if (key == (KeyCode.LeftArrow))
             {
                 TargetSelectionFlowControl.Instance.ReceiveKeys(KeyCode.A);
             }

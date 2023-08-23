@@ -161,7 +161,7 @@ namespace Vanaring_DepaDemo
             {
                 _itemSocketGUI[_currentIndex].CallButtonCallback();
             }
-            else if (key == KeyCode.Escape)
+            else if (key == KeyCode.Q)
             {
                 this._combatGraphicalHandler.DisplayMainMenu();
             }

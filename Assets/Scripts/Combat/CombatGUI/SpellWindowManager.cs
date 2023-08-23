@@ -187,40 +187,93 @@ namespace Vanaring_DepaDemo
             }
         }
 
+        private void ChangeSelectedIndex(bool up)
+        {
+            bool runout = false;
+            int attemp = 0;
+
+            int currentTemp = _currentIndex ; 
+
+
+            if (up)
+            {
+                do
+                {
+                    _currentIndex -= 1;
+
+                    if (_currentIndex < 0)
+                    {
+                        attemp++;
+
+                        if (! LoadUpperSocketItem() )
+                        {
+                            while (attemp > 1)
+                            {
+                                attemp -= 1;
+                                LoadLowerSocketItem();
+                            }
+                            _currentIndex = currentTemp;
+
+                            break; 
+                        }
+                        _currentIndex = 0;
+                    }
+
+                   
+                } while (!_spellSockets[_currentIndex].IsEnergySufficeientToUseThisSpell());
+            }
+
+            else
+            {
+                do
+                {
+                    _currentIndex += 1; 
+
+                    if (_currentIndex > _spellSockets.Count - 1)
+                    {
+                        attemp++;
+
+                        if (!LoadLowerSocketItem())
+                        {
+
+                            while (attemp > 1)
+                            {
+                                attemp -= 1; 
+                                LoadUpperSocketItem();
+                            }
+                            _currentIndex = currentTemp;
+
+                            break;
+                        }
+                        ;
+                        _currentIndex -= 1;
+
+                    }
+
+                    
+                } while (!_spellSockets[_currentIndex].IsEnergySufficeientToUseThisSpell());
+            }
+
+            Debug.Log("ret currentIndex is = " + _currentIndex); 
+
+
+        } 
         public void ReceiveKeys(KeyCode key)
         {
             _spellSockets[_currentIndex].UnHighlightedButton();
 
             if (key == KeyCode.W)
             {
-                do
-                {
-                    _currentIndex -= 1;
-                    if (_currentIndex < 0)
-                    {
-                        LoadUpperSocketItem();
-                        _currentIndex = 0;
-                    }
-                } while (! _spellSockets[_currentIndex].IsEnergySufficeientToUseThisSpell());
+                ChangeSelectedIndex(true);
             }
             else if (key == KeyCode.S)
             {
-                do
-                {
-                     _currentIndex += 1;
-                    if (_currentIndex > _spellSockets.Count - 1 )
-                    {
-                        LoadLowerSocketItem();
-                        _currentIndex -= 1; 
-
-                    }
-                } while (!_spellSockets[_currentIndex].IsEnergySufficeientToUseThisSpell()) ;
-
-            //Debug.Log(_currentIndex);
+                ChangeSelectedIndex(false);
+                //Debug.Log(_currentIndex);
 
 
-        }
-            else if (key == KeyCode.Escape)
+            }
+            else if (key == KeyCode.Q)
             {
                 this._combatGraphicalHandler.DisplayMainMenu(); 
             }
@@ -244,6 +297,12 @@ namespace Vanaring_DepaDemo
             EnableDisableSpellSocket(); 
 
             _currentIndex = 0; 
+            
+            if (! _spellSockets[_currentIndex].IsEnergySufficeientToUseThisSpell())
+            {
+                ChangeSelectedIndex(false);
+            }
+             
             _spellSockets[_currentIndex].HightlightedButton();
 
             this._combatGraphicalHandler = graophicalHandler;

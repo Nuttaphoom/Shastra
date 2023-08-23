@@ -77,29 +77,7 @@ namespace Vanaring_DepaDemo
             //}
         }
 
-        public void ShakeCamera(CinemachineVirtualCamera shakedVirtualCamera)
-        {
-            if (shakedVirtualCamera.isActiveAndEnabled)
-            {
-                shakedVirtualCamera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>().m_AmplitudeGain = 2.0f;
-            }
-            else
-            {
-                Debug.LogError("No camera can be found");
-            }
-            //shakedVirtualCamera.GetComponent<CameraShake>().Shake();
-            //this.shakedVirtualCamera = shakedVirtualCamera;
-            //if (!isShaking)
-            //{
-            //    Debug.Log("shakeee");
-            //    isShaking = true;
-            //    shakeTimer = shakeDuration;
-            //    CinemachineBasicMultiChannelPerlin noise = shakedVirtualCamera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
-            //    noise.m_AmplitudeGain = 1.2f;
-            //    noise.m_FrequencyGain = 2.0f;
-            //    //StartCoroutine(shakeVirtualCamera(shakedVirtualCamera));
-            //}
-        }
+        
 
         private IEnumerator shakeVirtualCamera(CinemachineVirtualCamera shakedVirtualCamera)
         {

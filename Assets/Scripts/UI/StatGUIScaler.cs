@@ -13,6 +13,13 @@ namespace Vanaring_DepaDemo
 {
     public class StatGUIScaler : MonoBehaviour
     {
+        public enum ModifiedEnergy
+        {
+            NONE,
+            LIGHT,
+            DARK
+        }
+
         [SerializeField]
         private CombatEntity _owner  ;
 
@@ -38,6 +45,12 @@ namespace Vanaring_DepaDemo
         [SerializeField] private Image secondhpImage;
         [SerializeField] private GameObject gui;
 
+        [Header("Modified Sprite Feedback")]
+        [SerializeField] private Image modifiedEnergyImg;
+        [SerializeField] private Sprite modLight;
+        [SerializeField] private Sprite modDark;
+        [SerializeField] private Sprite modDefault;
+
         private void Awake()
         {
             lightScale = 50;
@@ -56,6 +69,7 @@ namespace Vanaring_DepaDemo
                 maxHP = _owner.StatsAccumulator.GetHPAmount();
             }
             //UpdateHPBarScaleGUI();
+            //SetEnergyModified(ModifiedEnergy.NONE);
         }
 
         private void OnEnable()
@@ -69,6 +83,27 @@ namespace Vanaring_DepaDemo
             _owner.SpellCaster.UnSubOnModifyEnergy(OnEnergyModified);
             _owner.UnSubOnDamageVisualEvent(OnHPModified);
         }
+
+        public void SetEnergyModified(ModifiedEnergy modifiedEnergy)
+        {
+            if(modifiedEnergyImg == null)
+            {
+                return;
+            }
+            switch (modifiedEnergy)
+            {
+                case ModifiedEnergy.NONE:
+                    modifiedEnergyImg.sprite = modDefault;
+                    break;
+                case ModifiedEnergy.LIGHT:
+                    modifiedEnergyImg.sprite = modLight;
+                    break;
+                case ModifiedEnergy.DARK:
+                    modifiedEnergyImg.sprite = modDark;
+                    break;
+            }
+        }
+
         #region Energy
         private void OnEnergyModified(CombatEntity caster, RuntimeMangicalEnergy.EnergySide side , int val)
         {

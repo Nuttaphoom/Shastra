@@ -24,6 +24,9 @@ namespace Vanaring_DepaDemo
         [SerializeField]
         private GameObject _telegraphyPos;
 
+        [SerializeField]
+        private StatGUIScaler _statGUIScaler;
+
         private GameObject prefab;
 
         int _nextBehavior = 0;
@@ -80,10 +83,10 @@ namespace Vanaring_DepaDemo
 
         private void CreatingTelegraphyInstance(BotBehaviorSocketSO spell)
         {
-             EnergyModifierData modifier =  spell.GetEnergyCost(_currentBehavior) ;  
-
+            EnergyModifierData modifier =  spell.GetEnergyCost(_currentBehavior) ;
             if (modifier.Amount > 0)
             {
+                //Debug.Log("Create Telegraphy");
                 int side = (int)modifier.Side; //0 -light, 1 -dark
                 int amount = modifier.Amount;
                 //magic number :D
@@ -101,19 +104,28 @@ namespace Vanaring_DepaDemo
                 }
                 index += side * 3;
 
-                DestroyTelegraphyVFX(); 
+                DestroyTelegraphyVFX();
 
-                prefab = Instantiate(VfxTelegraphySingletonHandler.instance.GetVfxTelegraphPrefab(index),
-                    _telegraphyPos.transform );
-
-                prefab.transform.position = _telegraphyPos.transform.position; 
-                if (amount == 0)
+                if (index >= 0 && index <= 2)
                 {
-                    prefab.SetActive(false);
+                    _statGUIScaler.SetEnergyModified(StatGUIScaler.ModifiedEnergy.LIGHT);
                 }
                 else
                 {
-                    prefab.SetActive(true);
+                    _statGUIScaler.SetEnergyModified(StatGUIScaler.ModifiedEnergy.DARK);
+                }
+                //prefab = Instantiate(VfxTelegraphySingletonHandler.instance.GetVfxTelegraphPrefab(index),
+                //_telegraphyPos.transform);
+                
+                //prefab.transform.position = _telegraphyPos.transform.position;
+                if (amount == 0)
+                {
+                    _statGUIScaler.SetEnergyModified(StatGUIScaler.ModifiedEnergy.NONE);
+                    //prefab.SetActive(false);
+                }
+                else
+                {
+                    //prefab.SetActive(true);
                 }
             }
             else

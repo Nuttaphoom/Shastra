@@ -52,7 +52,9 @@ namespace Vanaring_DepaDemo
             foreach (var target in _targets)
             {
                 CombatEntity entity = target;
-                iEnumerators.Add (target.CombatEntityAnimationHandler.PlayVFXActionAnimation<CombatEntity>(_actionAnimationInfo.TargetVfxEntity, ModifyenergyCoroutine, entity)); 
+                iEnumerators.Add (target.CombatEntityAnimationHandler.PlayVFXActionAnimation<CombatEntity>(_actionAnimationInfo.TargetVfxEntity, ModifyenergyCoroutine, entity));
+                iEnumerators.Add(_caster.CombatEntityAnimationHandler.PlayVFXActionAnimation<CombatEntity>(_actionAnimationInfo.CasterVfxEntity, null, entity));
+
             }
 
             yield return new WaitAll(_caster,iEnumerators.ToArray() ) ;

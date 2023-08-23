@@ -40,14 +40,17 @@ namespace Vanaring_DepaDemo
         [SerializeField]
         private TextMeshProUGUI _spellCost;
 
+        [Header("Button")]
+        [SerializeField]
+        private Sprite _highlightButtonImg;
+        [SerializeField]
+        private Sprite _defaultButtonImg;
+
         [SerializeField]
         private Sprite _lightImage;
         [SerializeField]
         private Sprite _darkImage;
-        [SerializeField]
-        private Sprite _selectedButton;
-        [SerializeField]
-        private Sprite _normalButton;
+        [SerializeField] private Image _fadeBlack;
 
         [Header("Description Window")]
         [SerializeField] private TextMeshProUGUI _spellNameTextDes;
@@ -56,6 +59,7 @@ namespace Vanaring_DepaDemo
         [SerializeField] private TextMeshProUGUI _modifiedEnergyCost;
         [SerializeField] private Image _reqEnergyTypeDesImg;
         [SerializeField] private Image _modEnergyTypeDesImg;
+
 
         private SpellAbilitySO _spellSO;
 
@@ -76,6 +80,7 @@ namespace Vanaring_DepaDemo
             _requireEnergyCost.text = "> " + spell.RequiredEnergy.Amount.ToString();
             _modifiedEnergyCost.text = "+ " + spell.EnergyModifer.Amount.ToString();
             _skillImage.sprite = spell.AbilityImage;
+            _fadeBlack.gameObject.SetActive(false); ;
 
             if (spell.RequiredEnergy.Side == RuntimeMangicalEnergy.EnergySide.LightEnergy)
             {
@@ -110,6 +115,8 @@ namespace Vanaring_DepaDemo
 
         //}
 
+        //public void 
+
         private void ChooseSpell()
         {
             if (IsEnergySufficeientToUseThisSpell())
@@ -127,16 +134,18 @@ namespace Vanaring_DepaDemo
 
         public void HightlightedButton()
         {
-            _actionButton.GetComponent<Image>().color = _hightlightedColor ; 
+            _actionButton.GetComponent<Image>().sprite = _highlightButtonImg; 
         }
 
         public void UnHighlightedButton()
         {
-            _actionButton.GetComponent<Image>().color = _defaultColor;
+            _fadeBlack.gameObject.SetActive(false);
+            _actionButton.GetComponent<Image>().sprite = _defaultButtonImg;
         }
 
         public void DisableHighlightedButton()
         {
+            _fadeBlack.gameObject.SetActive(true);
             _actionButton.GetComponent<Image>().color = Color.gray ;
         }
         public bool IsEnergySufficeientToUseThisSpell()
