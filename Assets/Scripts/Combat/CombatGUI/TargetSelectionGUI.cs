@@ -64,7 +64,7 @@ public class TargetSelectionGUI  : RequireInitializationHandler<Transform,Null,N
             _instantiatedTargetGUI[combatEntity].SetActive(true);
             //Is Active? is yes move, If not nothing;
             Vector3 circleTranform = combatEntity.CombatEntityAnimationHandler.GetGUISpawnPos();
-            instantiatedVFXCircle.transform.position = new Vector3(circleTranform.x, -3.0f, circleTranform.z);
+            instantiatedVFXCircle.transform.position = new Vector3(circleTranform.x, 0.03f, circleTranform.z);
             instantiatedVFXCircle.SetActive(true);
         }
     }
