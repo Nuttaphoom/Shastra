@@ -36,10 +36,7 @@ namespace Vanaring_DepaDemo
         {
             _nextBehavior = Random.Range(0, _behaviorSocketSOs.GetBehaviorSize);
             StartTelegraphy();
-
-
             yield return null;
-
         }
 
         public BotBehaviorSO.ActionData GetBehaviorEffect()
@@ -83,7 +80,7 @@ namespace Vanaring_DepaDemo
 
         private void CreatingTelegraphyInstance(BotBehaviorSocketSO spell)
         {
-            EnergyModifierData modifier =  spell.GetEnergyCost(_currentBehavior) ;
+            EnergyModifierData modifier =  spell.GetEnergyCost(_nextBehavior) ;
             if (modifier.Amount > 0)
             {
                 //Debug.Log("Create Telegraphy");
@@ -114,18 +111,18 @@ namespace Vanaring_DepaDemo
                 {
                     _statGUIScaler.SetEnergyModified(StatGUIScaler.ModifiedEnergy.DARK);
                 }
-                //prefab = Instantiate(VfxTelegraphySingletonHandler.instance.GetVfxTelegraphPrefab(index),
-                //_telegraphyPos.transform);
-                
-                //prefab.transform.position = _telegraphyPos.transform.position;
+                prefab = Instantiate(VfxTelegraphySingletonHandler.instance.GetVfxTelegraphPrefab(index),
+                _telegraphyPos.transform);
+
+                prefab.transform.position = _telegraphyPos.transform.position;
                 if (amount == 0)
                 {
                     _statGUIScaler.SetEnergyModified(StatGUIScaler.ModifiedEnergy.NONE);
-                    //prefab.SetActive(false);
+                    prefab.SetActive(false);
                 }
                 else
                 {
-                    //prefab.SetActive(true);
+                    prefab.SetActive(true);
                 }
             }
             else
