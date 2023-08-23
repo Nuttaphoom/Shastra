@@ -321,6 +321,10 @@ MonoBehaviour:
   hpImage: {fileID: 8504026089502450452}
   secondhpImage: {fileID: 6812668103650676597}
   gui: {fileID: 7412996683858396780}
+  modifiedEnergyImg: {fileID: 7578795658588721501}
+  modLight: {fileID: 21300000, guid: 03e046b996ac8b4448055f6f9ca362e4, type: 3}
+  modDark: {fileID: 21300000, guid: 95361ed028a7dfe49bdd3342b677204f, type: 3}
+  modDefault: {fileID: 21300000, guid: 5beb14e006c773940ae15abb3e7dfdf6, type: 3}
 --- !u!1 &2283282784725540142
 GameObject:
   m_ObjectHideFlags: 0
@@ -799,6 +803,7 @@ Transform:
   - {fileID: 7381080058492813409}
   - {fileID: 1847611137606360354}
   - {fileID: 8875099568094650890}
+  - {fileID: 3873825693329938734}
   - {fileID: 8367802344939585654}
   - {fileID: 4472232798119853410}
   - {fileID: 1609911820099190047}
@@ -2464,6 +2469,104 @@ MonoBehaviour:
   _statusImageIcon: {fileID: 484149853056568433}
   _statusImage: {fileID: 8974653328121521551}
   _descriptionWindow: {fileID: 7291451958034307352}
+--- !u!1 &7755678540930108312
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3873825693329938734}
+  - component: {fileID: 8238678932815163791}
+  - component: {fileID: 7578795658588721501}
+  - component: {fileID: 1200210949182859180}
+  m_Layer: 0
+  m_Name: ModifySignal
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &3873825693329938734
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7755678540930108312}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.39001063, y: 0.39001063, z: 0.39001063}
+  m_ConstrainProportionsScale: 1
+  m_Children: []
+  m_Father: {fileID: 8098283433318789454}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0.04, y: 6}
+  m_SizeDelta: {x: 8.7842, y: 2.0211}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &8238678932815163791
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7755678540930108312}
+  m_CullTransparentMesh: 1
+--- !u!114 &7578795658588721501
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7755678540930108312}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: 5beb14e006c773940ae15abb3e7dfdf6, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 1
+  m_FillCenter: 1
+  m_FillMethod: 0
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!95 &1200210949182859180
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7755678540930108312}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 7092cbabb54dfc44798a4dd063b99e19, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &7933681541045818645
 GameObject:
   m_ObjectHideFlags: 0
@@ -2583,6 +2686,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _behaviorSocketSOs: {fileID: 11400000, guid: 2c7f246954daa1f4b9d1ef389a5f80a9, type: 2}
   _telegraphyPos: {fileID: 5030779872240135818}
+  _statGUIScaler: {fileID: 2018818514978266700}
 --- !u!114 &3721130482917610571
 MonoBehaviour:
   m_ObjectHideFlags: 0

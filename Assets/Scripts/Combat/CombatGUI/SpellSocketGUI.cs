@@ -40,14 +40,16 @@ namespace Vanaring_DepaDemo
         [SerializeField]
         private TextMeshProUGUI _spellCost;
 
+        [Header("Button")]
+        [SerializeField]
+        private Sprite _highlightButtonImg;
+        [SerializeField]
+        private Sprite _defaultButtonImg;
+
         [SerializeField]
         private Sprite _lightImage;
         [SerializeField]
         private Sprite _darkImage;
-        [SerializeField]
-        private Sprite _selectedButton;
-        [SerializeField]
-        private Sprite _normalButton;
         [SerializeField] private Image _fadeBlack;
 
         [Header("Description Window")]
@@ -132,13 +134,13 @@ namespace Vanaring_DepaDemo
 
         public void HightlightedButton()
         {
-            _actionButton.GetComponent<Image>().color = _hightlightedColor ; 
+            _actionButton.GetComponent<Image>().sprite = _highlightButtonImg; 
         }
 
         public void UnHighlightedButton()
         {
             _fadeBlack.gameObject.SetActive(false);
-            _actionButton.GetComponent<Image>().color = _defaultColor;
+            _actionButton.GetComponent<Image>().sprite = _defaultButtonImg;
         }
 
         public void DisableHighlightedButton()
