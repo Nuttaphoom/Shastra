@@ -1144,6 +1144,7 @@ GameObject:
   - component: {fileID: 4755189411559166606}
   - component: {fileID: 2244372934349401536}
   - component: {fileID: 2835574582019042605}
+  - component: {fileID: 2368082173361188675}
   m_Layer: 0
   m_Name: ActionButton
   m_TagString: Untagged
@@ -1255,6 +1256,51 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &2368082173361188675
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5042229551330453740}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 0
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1877863524747151873, guid: 2dd82efbef2d9ff418036b83488b3b64, type: 3}
+          m_TargetAssemblyTypeName: Vanaring_DepaDemo.UISFXHandler, Assembly-CSharp
+          m_MethodName: PlayUISound
+          m_Mode: 5
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: Hover
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 4
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1877863524747151873, guid: 2dd82efbef2d9ff418036b83488b3b64, type: 3}
+          m_TargetAssemblyTypeName: Vanaring_DepaDemo.UISFXHandler, Assembly-CSharp
+          m_MethodName: PlayUISound
+          m_Mode: 5
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: Select
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &5539531455243801290
 GameObject:
   m_ObjectHideFlags: 0
