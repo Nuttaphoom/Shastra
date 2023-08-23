@@ -14,12 +14,17 @@ public class TargetSelectionGUI  : RequireInitializationHandler<Transform,Null,N
     [SerializeField]
     private Dictionary<CombatEntity, GameObject> _instantiatedTargetGUI = new Dictionary<CombatEntity, GameObject>(); 
 
-    private List<GameObject> _poolTargetGUI = new List<GameObject>(); 
+    private List<GameObject> _poolTargetGUI = new List<GameObject>();
+
+    [SerializeField]
+    private GameObject _vfxPrefabTemplate;
+    private GameObject instantiatedVFXCircle;
 
     Transform _parent ;
 
     public override void Initialize(Transform argc, Null argv = null, Null argg = null)
     {
+        instantiatedVFXCircle = MonoBehaviour.Instantiate(_vfxPrefabTemplate, _vfxPrefabTemplate.transform.position, Quaternion.identity);
         _parent = argc;
         SetInit(true) ; 
     }
@@ -31,13 +36,14 @@ public class TargetSelectionGUI  : RequireInitializationHandler<Transform,Null,N
             throw new Exception("TargetSelectionGUI never been Initialized"); 
         }
 
+        //disable all targetGUI
         foreach (var key in _instantiatedTargetGUI.Keys )
         {
             if (key != combatEntity) 
                 _instantiatedTargetGUI[key].SetActive(false);
         }
 
-      
+        //Check IsOnSameTarget
         if (!_instantiatedTargetGUI.ContainsKey(combatEntity))
         {
             if (_poolTargetGUI.Count > 0)
@@ -47,6 +53,8 @@ public class TargetSelectionGUI  : RequireInitializationHandler<Transform,Null,N
             } else
             {
                 _instantiatedTargetGUI.Add(combatEntity, targetGUI.Init(combatEntity.CombatEntityAnimationHandler.GetGUISpawnPos(), _parent));
+                Vector3 circleTranform = combatEntity.CombatEntityAnimationHandler.GetGUISpawnPos();
+                instantiatedVFXCircle.transform.position = new Vector3(circleTranform.x, circleTranform.y - 1.7f, circleTranform.z);
             }
         }
 
@@ -54,6 +62,10 @@ public class TargetSelectionGUI  : RequireInitializationHandler<Transform,Null,N
         {
             _instantiatedTargetGUI[combatEntity].transform.position = combatEntity.CombatEntityAnimationHandler.GetGUISpawnPos(); 
             _instantiatedTargetGUI[combatEntity].SetActive(true);
+            //Is Active? is yes move, If not nothing;
+            Vector3 circleTranform = combatEntity.CombatEntityAnimationHandler.GetGUISpawnPos();
+            instantiatedVFXCircle.transform.position = new Vector3(circleTranform.x, -3.0f, circleTranform.z);
+            instantiatedVFXCircle.SetActive(true);
         }
     }
 
