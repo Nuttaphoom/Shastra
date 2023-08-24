@@ -76,7 +76,8 @@ public class TargetSelectionGUI  : RequireInitializationHandler<Transform,Null,N
             if (! _poolTargetGUI.Contains(_instantiatedTargetGUI[key]))
                 _poolTargetGUI.Add(_instantiatedTargetGUI[key]);
 
-            _instantiatedTargetGUI[key].SetActive(false); 
+            _instantiatedTargetGUI[key].SetActive(false);
+            instantiatedVFXCircle.SetActive(false);
         } 
 
 
