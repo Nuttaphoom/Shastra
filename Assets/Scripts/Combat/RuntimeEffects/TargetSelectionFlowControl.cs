@@ -19,6 +19,10 @@ public class TargetSelectionFlowControl : MonoBehaviour, IInputReceiver
     [SerializeField]
     private TargetSelectionGUI _targetSelectionGUI;
 
+    [Header("Indicator")]
+    [SerializeField]
+    ButtonIndicatorWindow _buttonIndicatorWindow;
+
     private  List<CombatEntity> _validTargets = new List<CombatEntity>();
     private List<CombatEntity> _selectedTarget = new List<CombatEntity>(); 
 
@@ -50,7 +54,8 @@ public class TargetSelectionFlowControl : MonoBehaviour, IInputReceiver
             _latestAction = null;
             _forceStop = true;
             _latestSelectedSpell = null;
-            _latestSelectedItem = null; 
+            _latestSelectedItem = null;
+            
         }
     }
 
@@ -165,6 +170,8 @@ public class TargetSelectionFlowControl : MonoBehaviour, IInputReceiver
         CameraSetUPManager.Instance.CaptureVMCamera();
 
         CameraSetUPManager.Instance.SetBlendMode(CameraSetUPManager.CameraBlendMode.EASE_INOUT, 0.5f);
+
+        _buttonIndicatorWindow.SetIndicatorButtonShow(ButtonIndicatorWindow.IndicatorButtonShow.TARGET, true);
 
         while (_selectedTarget.Count < action.TargetSelect.MaxTarget)
         {
@@ -286,6 +293,8 @@ public class TargetSelectionFlowControl : MonoBehaviour, IInputReceiver
             }
             else if (key == (KeyCode.Space))
             {
+                _buttonIndicatorWindow.SetIndicatorButtonShow(ButtonIndicatorWindow.IndicatorButtonShow.MAIN, false);
+                _buttonIndicatorWindow.ClosePanel();
                 _selectedTarget.Add(_validTargets[_currentSelectIndex]);
                 _validTargets.RemoveAt(_currentSelectIndex);
                 if (_validTargets.Count != 0)
@@ -295,6 +304,7 @@ public class TargetSelectionFlowControl : MonoBehaviour, IInputReceiver
             else if (key == (KeyCode.Escape))
             {
                 ForceStop();
+                _buttonIndicatorWindow.SetIndicatorButtonShow(ButtonIndicatorWindow.IndicatorButtonShow.MAIN, true);
             }
         }
     }
