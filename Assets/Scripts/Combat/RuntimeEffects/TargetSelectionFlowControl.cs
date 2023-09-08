@@ -301,7 +301,7 @@ public class TargetSelectionFlowControl : MonoBehaviour, IInputReceiver
                     _currentSelectIndex = _currentSelectIndex % _validTargets.Count;
 
             }
-            else if (key == (KeyCode.Escape))
+            else if (key == (KeyCode.Q))
             {
                 ForceStop();
                 _buttonIndicatorWindow.SetIndicatorButtonShow(ButtonIndicatorWindow.IndicatorButtonShow.MAIN, true);

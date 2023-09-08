@@ -91,6 +91,11 @@ public class ItemUserHandler : MonoBehaviour //inventory
             count++;
         }
 
-        _itemWindowManager.UpdateItemSocket(_runtimeItems, _runtimeItemsAmount);
+        //TODO : fix this 
+
+        foreach (ItemWindowManager windowManager in FindObjectsOfType<ItemWindowManager>())
+        {
+            windowManager.UpdateItemSocket(_runtimeItems, _runtimeItemsAmount);
+        }
     }
 }
