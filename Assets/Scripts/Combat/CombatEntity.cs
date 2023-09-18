@@ -12,7 +12,7 @@ using static Cinemachine.CinemachineTargetGroup;
 using static UnityEngine.EventSystems.EventTrigger;
 using static UnityEngine.GraphicsBuffer;
 
-namespace Vanaring_DepaDemo
+namespace Vanaring
 {
     [RequireComponent(typeof(BaseEntityBrain))]
     public class CombatEntity : MonoBehaviour, IStatusEffectable, ITurnState, IDamagable, IAttackter

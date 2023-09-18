@@ -1,5 +1,5 @@
 
-namespace Vanaring_DepaDemo
+namespace Vanaring 
 {
    public static class VanaringMathConst
     {

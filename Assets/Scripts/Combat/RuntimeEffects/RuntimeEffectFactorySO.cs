@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.Experimental.GlobalIllumination;
 
 
-namespace Vanaring_DepaDemo
+namespace Vanaring 
 {
     public abstract class RuntimeEffectFactorySO : ScriptableObject
     {

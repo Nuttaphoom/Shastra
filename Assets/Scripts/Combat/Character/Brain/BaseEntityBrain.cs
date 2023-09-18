@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 
-namespace Vanaring_DepaDemo {
+namespace Vanaring{
 
     [RequireComponent(typeof(CombatEntity))]
     public abstract class BaseEntityBrain : MonoBehaviour, ITurnState

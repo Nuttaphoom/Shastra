@@ -8,7 +8,7 @@ using UnityEngine.UI;
 using TMPro;
 using System.Collections;
 
-namespace Vanaring_DepaDemo
+namespace Vanaring 
 {
     public class WeaponSocketGUI : MonoBehaviour, ISocketGUI<SpellAbilitySO>
     {

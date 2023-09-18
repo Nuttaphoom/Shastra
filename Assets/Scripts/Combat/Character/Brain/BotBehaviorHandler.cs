@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.VFX;
 
-namespace Vanaring_DepaDemo
+namespace Vanaring 
 {
     //Store a behavior socket that contain multiople behaviorSO
     class BotBehaviorHandler : MonoBehaviour

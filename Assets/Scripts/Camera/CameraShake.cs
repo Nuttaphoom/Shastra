@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
 
-namespace Vanaring_DepaDemo
+namespace Vanaring 
 {
     public class CameraShake : MonoBehaviour
     {

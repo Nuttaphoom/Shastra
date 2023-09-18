@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-namespace Vanaring_DepaDemo 
+namespace Vanaring 
 {
     [CreateAssetMenu(fileName= "Combat Ability" , menuName = "ScriptableObject/Combat/CombatAbility" )]
     public class CombatActionSO : ScriptableObject

@@ -9,7 +9,7 @@ using TMPro;
 using System.Collections;
 using UnityEngine.EventSystems;
 
-namespace Vanaring_DepaDemo
+namespace Vanaring 
 {
     public class CharacterStatusSocketGUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {

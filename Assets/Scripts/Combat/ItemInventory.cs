@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Vanaring_DepaDemo
+namespace Vanaring 
 {
     public class ItemInventory : MonoBehaviour
     {

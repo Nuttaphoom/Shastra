@@ -10,7 +10,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Utilities;
 using UnityEngine.TextCore.Text;
 
-namespace Vanaring_DepaDemo
+namespace Vanaring 
 {
     public class CentralInputReceiver 
     {

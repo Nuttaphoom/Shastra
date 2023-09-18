@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Playables;
 
-namespace Vanaring_DepaDemo
+namespace Vanaring 
 {
     public class TimelineManager : MonoBehaviour
     {

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Vanaring_DepaDemo
+namespace Vanaring 
 {
     public class SpellWindowManager : HierarchyUIWindow, IInputReceiver 
     {

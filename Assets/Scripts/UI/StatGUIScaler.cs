@@ -9,7 +9,7 @@ using Unity.Collections;
 using Unity.Jobs;
 using DG.Tweening;
 
-namespace Vanaring_DepaDemo
+namespace Vanaring 
 {
     public class StatGUIScaler : MonoBehaviour
     {

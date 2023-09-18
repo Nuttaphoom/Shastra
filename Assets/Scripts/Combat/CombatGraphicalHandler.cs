@@ -5,9 +5,9 @@ using System.Runtime.InteropServices;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
-using Vanaring_DepaDemo;
+ 
 
-namespace Vanaring_DepaDemo
+namespace Vanaring 
 {
     public class CombatGraphicalHandler : MonoBehaviour
     {

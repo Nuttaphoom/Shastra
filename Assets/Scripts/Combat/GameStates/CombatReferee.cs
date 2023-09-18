@@ -12,7 +12,7 @@ using UnityEngine.Events;
 using static UnityEngine.UI.CanvasScaler;
 
 
-namespace Vanaring_DepaDemo
+namespace Vanaring
 {
     public enum ECompetatorSide
     {
@@ -85,7 +85,6 @@ namespace Vanaring_DepaDemo
 
             // Call the GenerateEntityAttacher method with the lists
             CameraSetUPManager.Instance.GenerateEntityAttacher(GetCompetatorsBySide(ECompetatorSide.Ally).Select(c => c.gameObject).ToList(), GetCompetatorsBySide(ECompetatorSide.Hostile).Select(c => c.gameObject).ToList());
-
         }
 
         private IEnumerator CustomTick()

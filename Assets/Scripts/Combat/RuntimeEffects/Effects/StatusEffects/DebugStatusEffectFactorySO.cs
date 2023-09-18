@@ -5,7 +5,7 @@ using UnityEngine;
 using static UnityEngine.GraphicsBuffer;
 
 
-namespace Vanaring_DepaDemo
+namespace Vanaring 
 {
 
     [CreateAssetMenu(fileName = "DebugStatusEffectFactorySO", menuName = "ScriptableObject/RuntimeEffect/DebugStatusEffectFactory/DebugStatusEffectFactorySO")]

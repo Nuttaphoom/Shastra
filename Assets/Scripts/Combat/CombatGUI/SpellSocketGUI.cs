@@ -10,7 +10,7 @@ using System.Collections;
 using UnityEngine.EventSystems;
 using UnityEngine.Rendering;
 
-namespace Vanaring_DepaDemo
+namespace Vanaring 
 {
     interface ISocketGUI<T>
     {

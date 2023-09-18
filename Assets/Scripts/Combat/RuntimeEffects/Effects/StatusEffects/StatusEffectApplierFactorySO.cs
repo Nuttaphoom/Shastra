@@ -3,75 +3,78 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using static UnityEngine.GraphicsBuffer;
-using Vanaring_DepaDemo;
+ 
 using System.Runtime.CompilerServices;
 using CustomYieldInstructions;
 using UnityEngine.VFX;
 
-[CreateAssetMenu(fileName = "StatusEffectApplierFactorySO", menuName = "ScriptableObject/RuntimeEffect/StatusEffectApplierFactorySO")]
-public class StatusEffectApplierFactorySO : RuntimeEffectFactorySO
+namespace Vanaring
 {
-    [SerializeField]
-    ActionAnimationInfo _actionAnimationInfo; 
-
-    [SerializeField]
-    private List<StatusRuntimeEffectFactorySO> _effects;
-    public override IEnumerator Factorize(List<CombatEntity> targets)
+    [CreateAssetMenu(fileName = "StatusEffectApplierFactorySO", menuName = "ScriptableObject/RuntimeEffect/StatusEffectApplierFactorySO")]
+    public class StatusEffectApplierFactorySO : RuntimeEffectFactorySO
     {
-        StatusEffectApplierRuntimeEffect retEffect = new StatusEffectApplierRuntimeEffect(_effects, _actionAnimationInfo) ; 
-        foreach (CombatEntity target in targets)
-            retEffect.AssignTarget(target);
+        [SerializeField]
+        ActionAnimationInfo _actionAnimationInfo;
 
-        yield return retEffect   ;
-    }
-}
-
-
-public class StatusEffectApplierRuntimeEffect : RuntimeEffect
-{
-    [SerializeField]
-    protected List<StatusRuntimeEffectFactorySO> _effects;
-
-    protected ActionAnimationInfo _actionAnimationInfo; 
-    public StatusEffectApplierRuntimeEffect(List<StatusRuntimeEffectFactorySO> effects, ActionAnimationInfo actionAnimationInfo)
-    {
-        _effects = effects;
-        _actionAnimationInfo = actionAnimationInfo;  
-    }
-
-
-    public override IEnumerator ExecuteRuntimeCoroutine(CombatEntity caster)
-    {
-        List<IEnumerator> applyEffectCoroutine = new List<IEnumerator>(); 
-        foreach (CombatEntity target in _targets)
+        [SerializeField]
+        private List<StatusRuntimeEffectFactorySO> _effects;
+        public override IEnumerator Factorize(List<CombatEntity> targets)
         {
-            CombatEntity tar = target; 
+            StatusEffectApplierRuntimeEffect retEffect = new StatusEffectApplierRuntimeEffect(_effects, _actionAnimationInfo);
+            foreach (CombatEntity target in targets)
+                retEffect.AssignTarget(target);
 
-            if (target is not IStatusEffectable)
-                throw new System.Exception("Assigned target is not IStatusEffectable");
+            yield return retEffect;
+        }
+    }
 
-            foreach (StatusRuntimeEffectFactorySO effect in _effects)
-            {
-                StatusRuntimeEffectFactorySO eff = effect;
-                applyEffectCoroutine.Add(tar.CombatEntityAnimationHandler.PlayVFXActionAnimation<StatusRuntimeEffectFactorySO>(_actionAnimationInfo.TargetVfxEntity, (param) => ApplyEffectCoroutine(param,tar), eff)) ; 
-            }
+
+    public class StatusEffectApplierRuntimeEffect : RuntimeEffect
+    {
+        [SerializeField]
+        protected List<StatusRuntimeEffectFactorySO> _effects;
+
+        protected ActionAnimationInfo _actionAnimationInfo;
+        public StatusEffectApplierRuntimeEffect(List<StatusRuntimeEffectFactorySO> effects, ActionAnimationInfo actionAnimationInfo)
+        {
+            _effects = effects;
+            _actionAnimationInfo = actionAnimationInfo;
         }
 
 
-        applyEffectCoroutine.Add(caster.CombatEntityAnimationHandler.PlayActionAnimation(_actionAnimationInfo));
+        public override IEnumerator ExecuteRuntimeCoroutine(CombatEntity caster)
+        {
+            List<IEnumerator> applyEffectCoroutine = new List<IEnumerator>();
+            foreach (CombatEntity target in _targets)
+            {
+                CombatEntity tar = target;
+
+                if (target is not IStatusEffectable)
+                    throw new System.Exception("Assigned target is not IStatusEffectable");
+
+                foreach (StatusRuntimeEffectFactorySO effect in _effects)
+                {
+                    StatusRuntimeEffectFactorySO eff = effect;
+                    applyEffectCoroutine.Add(tar.CombatEntityAnimationHandler.PlayVFXActionAnimation<StatusRuntimeEffectFactorySO>(_actionAnimationInfo.TargetVfxEntity, (param) => ApplyEffectCoroutine(param, tar), eff));
+                }
+            }
 
 
-        yield return new WaitAll(caster, applyEffectCoroutine.ToArray()); 
+            applyEffectCoroutine.Add(caster.CombatEntityAnimationHandler.PlayActionAnimation(_actionAnimationInfo));
 
-        
-        yield return null;
+
+            yield return new WaitAll(caster, applyEffectCoroutine.ToArray());
+
+
+            yield return null;
+        }
+
+        protected virtual IEnumerator ApplyEffectCoroutine(StatusRuntimeEffectFactorySO effect, CombatEntity target)
+        {
+            yield return target.GetStatusEffectHandler().ApplyNewEffect(effect);
+        }
+
+
     }
-
-    protected virtual IEnumerator ApplyEffectCoroutine(StatusRuntimeEffectFactorySO effect, CombatEntity target)
-    {
-        yield return target.GetStatusEffectHandler().ApplyNewEffect(effect) ;
-    }
-
 
 }
-

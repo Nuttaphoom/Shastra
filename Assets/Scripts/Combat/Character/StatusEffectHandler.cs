@@ -10,7 +10,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.Events;
 using static UnityEngine.EventSystems.EventTrigger;
 
-namespace Vanaring_DepaDemo
+namespace Vanaring 
 {
     public interface IStatusEffectable
     {
