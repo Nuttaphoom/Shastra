@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing.Printing;
+using System.Numerics;
 using System.Runtime.InteropServices;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -43,10 +44,15 @@ namespace Vanaring
         [SerializeField]
         private DamageOutputPopupHandler _dmgOutputPopHanlder; 
 
-
         private bool _isDead = false;
+        private bool _isExhausted = false; 
 
         public bool IsDead => _isDead;
+
+        public bool IsExhausted => _isExhausted; 
+
+        protected Queue<RuntimeEffect> _actionQueue ; 
+
         public void Awake()
         {
             _dmgOutputPopHanlder = new DamageOutputPopupHandler(_dmgOutputPopHanlder, this); 
@@ -69,6 +75,7 @@ namespace Vanaring
         #region Turn Handler Methods 
         public IEnumerator TurnEnter()
         {
+            Debug.Log("On Turn Enter in " + gameObject.name) ; 
             if (_baseEntityBrain == null)
                 throw new Exception("Base Entity Brain of " + gameObject.name + " hasn't been assgined");
 
@@ -111,16 +118,23 @@ namespace Vanaring
                 if (coroutine.Current != null && coroutine.Current is RuntimeEffect)
                 {
                     //Need to cast to RuntimeEffect before returning            
-                    yield return (RuntimeEffect)coroutine.Current;
+                    _actionQueue.Enqueue( (RuntimeEffect)coroutine.Current) ; 
                 }
                 else
                     yield return coroutine.Current;
             }
         }
 
+        public RuntimeEffect GetActionRuntimeEffect()
+        {
+            if (_actionQueue == null)
+                _actionQueue = new Queue<RuntimeEffect>();
 
+            if (_actionQueue.Count == 0)
+                return null;
 
-
+            return _actionQueue.Dequeue(); 
+        }
         public IEnumerator TakeControl()
         {
             yield return _baseEntityBrain.TakeControl();
@@ -138,7 +152,7 @@ namespace Vanaring
 
         public bool ReadyForControl()
         {
-            return !_runtimeCharacterStatsAccumulator.IsStunt() && !IsDead;
+            return !_runtimeCharacterStatsAccumulator.IsStunt() && ! IsDead && ! IsExhausted ;
         }
 
         public StatusEffectHandler GetStatusEffectHandler()
@@ -146,6 +160,18 @@ namespace Vanaring
             return _statusEffectHandler;
         }
 
+        /// <summary>
+        /// Invoked before this character perform any action
+        /// </summary>
+        public IEnumerator OnPerformAction(RuntimeEffect action)
+        {
+            _isExhausted = true;
+
+            yield return action.ExecuteRuntimeCoroutine(this);
+
+            yield return action.OnExecuteRuntimeDone(this);
+
+        }
 
         #endregion
 

@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing.Design;
 using System.Runtime.InteropServices;
 using UnityEditor;
@@ -104,12 +105,15 @@ namespace Vanaring
             }
             else if (key == (KeyCode.A))
             {
+                //throw new NotImplementedException();
                 if (CombatReferee.instance.ChangeActiveEntityIndex(false, true))
                     TargetSelectionFlowControl.Instance.ForceStop();
 
             }
             else if (key == (KeyCode.D))
             {
+                //throw new NotImplementedException();
+
                 if (CombatReferee.instance.ChangeActiveEntityIndex(true, false))
                     TargetSelectionFlowControl.Instance.ForceStop();
             }

@@ -152,7 +152,9 @@ namespace Vanaring
 
         public IEnumerator InitializeTargetSelectionScheme(CombatEntity caster, RuntimeEffectFactorySO action, bool randomTarget = false)
         {
-            ECompetatorSide casterSide = CombatReferee.instance.GetCharacterSide(caster);
+            //throw new NotImplementedException("Caster Side need better way to be determined");
+
+            ECompetatorSide casterSide = ECompetatorSide.Ally;  //CombatReferee.instance.GetCharacterSide(caster);
             if (_activlySelecting)
                 throw new Exception("Try to active selection scheme while it is already active");
 
@@ -185,12 +187,12 @@ namespace Vanaring
 
                 if (!randomTarget)
                 {
-                    if (casterSide == CombatReferee.instance.GetCharacterSide(selected))
-                    {
-                        CameraSetUPManager.Instance.ActiveTargetModeVirtualCamera();
-                    }
-                    else
-                        CameraSetUPManager.Instance.RestoreVMCameraState();
+                    //if (casterSide == CombatReferee.instance.GetCharacterSide(selected))
+                    //{
+                    //    CameraSetUPManager.Instance.ActiveTargetModeVirtualCamera();
+                    //}
+                    //else
+                    //    CameraSetUPManager.Instance.RestoreVMCameraState();
 
                     CameraSetUPManager.Instance.SetupTargatModeLookAt(selected.gameObject);
                     _targetSelectionGUI.SelectTargetPointer(selected);
@@ -239,7 +241,9 @@ namespace Vanaring
         //TODO : Assign possible target should have more detail, like "dead or not dead" , "got some status effect or not
         private void AssignPossibleTargets(CombatEntity caster, RuntimeEffectFactorySO action)
         {
-            ECompetatorSide eCompetatorSide = CombatReferee.instance.GetCharacterSide(caster);
+            //throw new NotImplementedException("character Side need better way to be determined");
+
+            ECompetatorSide eCompetatorSide = ECompetatorSide.Ally;  // CombatReferee.instance.GetCharacterSide(caster);
 
             if (action.TargetSelect.TargetOppose)
                 eCompetatorSide = (ECompetatorSide)(((int)eCompetatorSide + 1) % 2);
