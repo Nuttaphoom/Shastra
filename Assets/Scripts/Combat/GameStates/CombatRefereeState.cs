@@ -20,14 +20,21 @@ namespace Vanaring
         #region Public_Methods 
         public IEnumerator AdvanceRound()
         {
+            Debug.Log("Enter Round");
             yield return new RoundEnterState(this).Execute();
 
             while (_referee.GetCurrentActiveEntities().Count > 0)
             {
+                Debug.Log("wait for action for " + _referee.GetCurrentActor() );
                 yield return AdvanceTurn();
+                Debug.Log("done behave action");
+                yield return _referee.OnCharacterPerformAction(); 
+            
             }
-        }
 
+            Debug.Log("Leave Round");
+            yield return new RoundEndState(this).Execute();
+        }
 
         /// <summary>
         /// AdvanceTurn is mostly used for PerformingAction Loop
@@ -163,6 +170,35 @@ namespace Vanaring
         }
     }
 
+    public class RoundEndState : CombatRefereeState
+    {
+        public RoundEndState(CombatRefereeStateHandler handler) : base(handler)
+        {
+
+        }
+        public override IEnumerator Execute()
+        {
+            yield return StateEnter();
+
+            yield return StateExit();
+        }
+
+        protected override IEnumerator StateEnter()
+        {
+            List<CombatEntity> team = _stateHandler.Referee.GetCurrentTeam();
+
+            //1.) Call Enter Turn of the entity, this included running status effect 
+            foreach (CombatEntity entity in team)
+            {
+                yield return entity.TurnLeave() ;
+            }
+        }
+
+        protected override IEnumerator StateExit()
+        {
+            yield return null;
+        }
+    }
 
     #endregion
 

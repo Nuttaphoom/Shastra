@@ -183,10 +183,6 @@ namespace Vanaring
         {
             float tickRate = 0.5f / ((Mathf.Abs((hpVal / maxHP) - secondhpImage.fillAmount))*100);
 
-            Debug.Log("hpVal : " + hpVal);
-            Debug.Log("hpVal / max hp : " + hpVal / maxHP);
-
-
             yield return new WaitForSeconds(0.5f);
             while (secondhpImage.fillAmount < hpVal/maxHP)
             {

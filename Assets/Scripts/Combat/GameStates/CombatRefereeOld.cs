@@ -1,4 +1,4 @@
-﻿    
+﻿
 //using JetBrains.Annotations;
 //using System;
 //using System.Collections;
@@ -20,7 +20,7 @@
 //        Hostile
 //    }
 
-//    public class CombatReferee  : MonoBehaviour, IInputReceiver
+//    public class CombatReferee : MonoBehaviour, IInputReceiver
 //    {
 //        private enum CombatState
 //        {
@@ -28,7 +28,7 @@
 //            WaitingForAction,
 //            Action,
 //        }
-//        public static CombatReferee  instance = null;
+//        public static CombatReferee instance = null;
 
 //        [Serializable]
 //        private struct CompetatorDetailStruct
@@ -60,11 +60,11 @@
 //        private List<CombatEntity> _activeEntities = new List<CombatEntity>();
 //        private int _currentEntityIndex = 0;
 
-//        private CombatState _state = CombatState.Init ; 
+//        private CombatState _state = CombatState.Init;
 
 //        private void Awake()
 //        {
-//            _state = CombatState.Init ;
+//            _state = CombatState.Init;
 //            instance = this;
 //        }
 
@@ -95,7 +95,7 @@
 //                {
 //                    SetupNewRound();
 //                }
-                 
+
 //                yield return AdvanceTurn();
 //            }
 //        }
@@ -105,7 +105,7 @@
 //            _currentSide = (ECompetatorSide)(((int)_currentSide + 1) % 2);
 
 //            _activeEntities = GetCompetatorsBySide(_currentSide);
-//            _currentEntityIndex = 0; 
+//            _currentEntityIndex = 0;
 //        }
 
 //        private bool EndGameConditionMeet()
@@ -187,7 +187,7 @@
 //            while (_activeEntities.Count > 0)
 //            {
 //                while (!_activeEntities[_currentEntityIndex].ReadyForControl())
-//                {                     
+//                {
 //                    Debug.Log(_activeEntities[_currentEntityIndex] + " can't control now");
 
 //                    yield return SwitchControl(_currentEntityIndex, _currentEntityIndex);
@@ -211,7 +211,7 @@
 //                    if (actionCoroutine.Current != null && actionCoroutine.Current.GetType().IsSubclassOf(typeof(RuntimeEffect)))
 //                    {
 
-//                        _state = CombatState.Action ;
+//                        _state = CombatState.Action;
 
 //                        yield return _entity.TakeControlSoftLeave();
 
@@ -232,13 +232,13 @@
 
 //                        foreach (var e in GetCompetatorsBySide(ECompetatorSide.Ally))
 //                        {
-//                            if (! e.IsDead)
+//                            if (!e.IsDead)
 //                                yield return e.AfterGetAction();
 //                        }
 
 //                        foreach (var e in GetCompetatorsBySide(ECompetatorSide.Hostile))
 //                        {
-//                            if (! e.IsDead)
+//                            if (!e.IsDead)
 //                                yield return e.AfterGetAction();
 //                        }
 
@@ -251,7 +251,7 @@
 
 //                        _currentEntityIndex = 0;
 
-//                        if (_activeEntities.Count > 0) 
+//                        if (_activeEntities.Count > 0)
 //                            yield return SwitchControl(-1, _currentEntityIndex);
 
 //                        for (int i = _competators.Count - 1; i >= 0; i--)
@@ -279,11 +279,11 @@
 //                //If GetAction is null, we wait for end of frame
 //                yield return new WaitForEndOfFrame();
 //            }
-        
+
 //        End:
 //            foreach (CombatEntity entity in GetCompetatorsBySide(_currentSide))
 //            {
-//                if (! entity.IsDead)
+//                if (!entity.IsDead)
 //                    yield return entity.TurnLeave();
 //            }
 //            ColorfulLogger.LogWithColor("END TURN IN " + _currentSide, Color.blue);
@@ -367,10 +367,10 @@
 //            if (_activeEntities.Count > 1)
 //            {
 //                StartCoroutine(ChangeActiveEntityIndexCoroutine(increase, decrease));
-//                return true; 
-//            } 
-//                return false;
-             
+//                return true;
+//            }
+//            return false;
+
 //        }
 
 //        public IEnumerator ChangeActiveEntityIndexCoroutine(bool increase = false, bool decrease = false)
@@ -385,14 +385,14 @@
 //                    _currentEntityIndex = _currentEntityIndex == 0 ? (_activeEntities.Count - 1) : (_currentEntityIndex - 1);
 
 //                if (temp != _currentEntityIndex)
-//                    yield return SwitchControl(temp, _currentEntityIndex);  
+//                    yield return SwitchControl(temp, _currentEntityIndex);
 //            }
 //            else
 //            {
 //                _currentEntityIndex = 0;
 //            }
 
- 
+
 
 //        }
 

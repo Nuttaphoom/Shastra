@@ -35,7 +35,7 @@ namespace Vanaring
         public IEnumerator CalculateNextBehavior()
         {
             _nextBehavior = Random.Range(0, _behaviorSocketSOs.GetBehaviorSize);
-            StartTelegraphy();
+            //StartTelegraphy();
             yield return null;
         }
 

@@ -51,7 +51,7 @@ namespace Vanaring
 
         public bool IsExhausted => _isExhausted; 
 
-        protected Queue<RuntimeEffect> _actionQueue ; 
+        protected Queue<RuntimeEffect> _actionQueue = new Queue<RuntimeEffect>() ; 
 
         public void Awake()
         {
@@ -75,7 +75,6 @@ namespace Vanaring
         #region Turn Handler Methods 
         public IEnumerator TurnEnter()
         {
-            Debug.Log("On Turn Enter in " + gameObject.name) ; 
             if (_baseEntityBrain == null)
                 throw new Exception("Base Entity Brain of " + gameObject.name + " hasn't been assgined");
 
@@ -97,6 +96,8 @@ namespace Vanaring
         {
             if (_baseEntityBrain == null)
                 throw new Exception("Base Entity Brain of " + gameObject.name + " hasn't been assgined");
+
+            _isExhausted = false; 
 
             yield return _runtimeCharacterStatsAccumulator.ResetTemporaryIncreasedValue();
 

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing.Design;
 using System.Runtime.InteropServices;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
@@ -33,7 +34,9 @@ namespace Vanaring
         private Color _defaultColor;
 
         private List<Vector3> _defaultLocalScale;
-        private float modifiedSize = 1.25f ; 
+        private float modifiedSize = 1.25f ;
+
+        CircularArray<int> test ; 
 
         private void Awake()
         {
@@ -105,8 +108,7 @@ namespace Vanaring
             }
             else if (key == (KeyCode.A))
             {
-                //throw new NotImplementedException();
-                if (CombatReferee.instance.ChangeActiveEntityIndex(false, true))
+                if (CombatReferee.instance.ChangeActiveEntityIndex(true))
                     TargetSelectionFlowControl.Instance.ForceStop();
 
             }
@@ -114,7 +116,7 @@ namespace Vanaring
             {
                 //throw new NotImplementedException();
 
-                if (CombatReferee.instance.ChangeActiveEntityIndex(true, false))
+                if (CombatReferee.instance.ChangeActiveEntityIndex(false))
                     TargetSelectionFlowControl.Instance.ForceStop();
             }
             else if (key == (KeyCode.RightArrow))

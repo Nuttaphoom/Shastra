@@ -154,7 +154,7 @@ namespace Vanaring
         {
             //throw new NotImplementedException("Caster Side need better way to be determined");
 
-            ECompetatorSide casterSide = ECompetatorSide.Ally;  //CombatReferee.instance.GetCharacterSide(caster);
+            ECompetatorSide casterSide = CombatReferee.instance.GetCompetatorSide(caster) ;  //CombatReferee.instance.GetCharacterSide(caster);
             if (_activlySelecting)
                 throw new Exception("Try to active selection scheme while it is already active");
 
@@ -241,9 +241,8 @@ namespace Vanaring
         //TODO : Assign possible target should have more detail, like "dead or not dead" , "got some status effect or not
         private void AssignPossibleTargets(CombatEntity caster, RuntimeEffectFactorySO action)
         {
-            //throw new NotImplementedException("character Side need better way to be determined");
-
-            ECompetatorSide eCompetatorSide = ECompetatorSide.Ally;  // CombatReferee.instance.GetCharacterSide(caster);
+            ECompetatorSide eCompetatorSide = CombatReferee.instance.GetCompetatorSide(caster);  //CombatReferee.instance.GetCharacterSide(caster);
+            ;  // CombatReferee.instance.GetCharacterSide(caster);
 
             if (action.TargetSelect.TargetOppose)
                 eCompetatorSide = (ECompetatorSide)(((int)eCompetatorSide + 1) % 2);
