@@ -8,7 +8,7 @@ using UnityEngine.Experimental.GlobalIllumination;
 using static UnityEngine.EventSystems.EventTrigger;
 
 
-namespace Vanaring_DepaDemo
+namespace Vanaring 
 {
     [CreateAssetMenu(fileName = "AttackModifyEnergyRuntimeEffectFactorySO", menuName = "ScriptableObject/RuntimeEffect/AttackModifyEnergyRuntimeEffectFactorySO")]
     public class AttackModifyEnergyRuntimeEffectFactorySO : RuntimeEffectFactorySO

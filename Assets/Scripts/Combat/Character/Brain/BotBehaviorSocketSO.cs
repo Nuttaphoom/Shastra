@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.Events;
 
 
-namespace Vanaring_DepaDemo {
+namespace Vanaring  {
 
     [CreateAssetMenu(fileName = "BotBehaviorSocketSO", menuName = "ScriptableObject/BotBehavior/BehaviorSocket/Socket")]
     //Once behavior socket contains multiple behavior

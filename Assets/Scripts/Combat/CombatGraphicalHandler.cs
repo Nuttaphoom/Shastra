@@ -5,9 +5,9 @@ using System.Runtime.InteropServices;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
-using Vanaring_DepaDemo;
+ 
 
-namespace Vanaring_DepaDemo
+namespace Vanaring 
 {
     public class CombatGraphicalHandler : MonoBehaviour
     {
@@ -34,6 +34,10 @@ namespace Vanaring_DepaDemo
 
         [SerializeField]
         private CombatEntity _combatEntity;
+
+        [Header("Indicator")]
+        [SerializeField]
+        ButtonIndicatorWindow _buttonIndicatorWindow;
 
         private void Awake()
         {
@@ -65,12 +69,14 @@ namespace Vanaring_DepaDemo
 
         public void DisplayItemPanel()
         {
-            _entityWindowManager.PushInNewWindow(_itemWindowManager); 
+            _entityWindowManager.PushInNewWindow(_itemWindowManager);
+            _buttonIndicatorWindow.SetIndicatorButtonShow(ButtonIndicatorWindow.IndicatorButtonShow.LIST, true);
         }
 
         public void DisplaySpellPanel()
         {
             _entityWindowManager.PushInNewWindow(_spellWindowManager);
+            _buttonIndicatorWindow.SetIndicatorButtonShow(ButtonIndicatorWindow.IndicatorButtonShow.LIST, true);
         }
 
         public void DisplayWeaponPanel()
@@ -80,7 +86,8 @@ namespace Vanaring_DepaDemo
 
         public void DisableMenuElements()
         {
-            _entityWindowManager.ClearStack(); 
+            _entityWindowManager.ClearStack();
+            
             //_spellPanel.gameObject.SetActive(false);
             //_itemPanel.gameObject.SetActive(false);
             //_mainPanel.gameObject.SetActive(false);
@@ -91,6 +98,7 @@ namespace Vanaring_DepaDemo
             _entityWindowManager.ClearStack();
 
             _entityWindowManager.PushInNewWindow(_mainWindowManager);
+            _buttonIndicatorWindow.SetIndicatorButtonShow(ButtonIndicatorWindow.IndicatorButtonShow.MAIN, true);
         }
 
         public IEnumerator TakeControl()

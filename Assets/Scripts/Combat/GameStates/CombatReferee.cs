@@ -1,4 +1,4 @@
-﻿    
+
 using JetBrains.Annotations;
 using System;
 using System.Collections;
@@ -12,7 +12,7 @@ using UnityEngine.Events;
 using static UnityEngine.UI.CanvasScaler;
 
 
-namespace Vanaring_DepaDemo
+namespace Vanaring
 {
     public enum ECompetatorSide
     {
@@ -20,16 +20,9 @@ namespace Vanaring_DepaDemo
         Hostile
     }
 
-    public class CombatReferee : MonoBehaviour, IInputReceiver
+    public class CombatReferee : MonoBehaviour
     {
-        private enum CombatState
-        {
-            Init,
-            WaitingForAction,
-            Action,
-        }
         public static CombatReferee instance = null;
-
         [Serializable]
         private struct CompetatorDetailStruct
         {
@@ -37,10 +30,8 @@ namespace Vanaring_DepaDemo
             private ECompetatorSide _side;
             [SerializeField]
             private CombatEntity _entity;
-
             public ECompetatorSide Side => _side;
             public CombatEntity Competator => _entity;
-
             public CompetatorDetailStruct(ECompetatorSide side, CombatEntity entity)
             {
                 _side = side;
@@ -53,29 +44,33 @@ namespace Vanaring_DepaDemo
 
         List<CompetatorDetailStruct> _competators;
 
-        [SerializeField]
-        private GameOverScreen _gameoverscreen;
+        private ECompetatorSide _currentSide  ; // Assign this to the opposite of the actual turn we want to start with 
 
-        private ECompetatorSide _currentSide = ECompetatorSide.Hostile; // Assign this to the opposite of the actual turn we want to start with 
-        private List<CombatEntity> _activeEntities = new List<CombatEntity>();
-        private int _currentEntityIndex = 0;
-
-        private CombatState _state = CombatState.Init ; 
+        //The active entities will always be the one at index 0
+        private CircularArray<CombatEntity> _activeCombatEntities ; 
+        private CombatRefereeStateHandler _combatRefereeStateHandler;
 
         private void Awake()
         {
-            _state = CombatState.Init ;
             instance = this;
-        }
+            _currentSide = ECompetatorSide.Ally;
 
+            _activeCombatEntities = new CircularArray<CombatEntity>(new List<CombatEntity>() );
+            _combatRefereeStateHandler = new CombatRefereeStateHandler(this);
+        }
         private void Start()
         {
-            CentralInputReceiver.Instance().AddInputReceiverIntoStack(this);
             SetUpNewCombatEncounter();
+
             StartCoroutine(CustomTick());
         }
 
-        public void AssignCompetators(List<CombatEntity> entites, ECompetatorSide side)
+        #region SettingUpRound
+        private void SetUpNewCombatEncounter()
+        {
+            AssignCompetators(FindObjectOfType<EntityLoader>().LoadData(), ECompetatorSide.Hostile);
+        }
+        private void AssignCompetators(List<CombatEntity> entites, ECompetatorSide side)
         {
             foreach (var entity in entites)
             {
@@ -85,242 +80,153 @@ namespace Vanaring_DepaDemo
 
             // Call the GenerateEntityAttacher method with the lists
             CameraSetUPManager.Instance.GenerateEntityAttacher(GetCompetatorsBySide(ECompetatorSide.Ally).Select(c => c.gameObject).ToList(), GetCompetatorsBySide(ECompetatorSide.Hostile).Select(c => c.gameObject).ToList());
-
         }
-
-        private IEnumerator CustomTick()
+        public IEnumerator PrepareRefereeForNewRound()
         {
-            while (!IsCombatEnded())
-            {
-                if (_activeEntities.Count <= 0)
-                {
-                    SetupNewRound();
-                }
+            //_currentSide = ECompetatorSide.Ally;
+            //_currentEntityIndex = 0;
 
-                yield return AdvanceTurn();
-            }
-        }
-        private void SetupNewRound()
-        {
-            _currentSide = (ECompetatorSide)(((int)_currentSide + 1) % 2);
-
-            _activeEntities = GetCompetatorsBySide(_currentSide);
-            _currentEntityIndex = 0; 
-
-        }
-
-        private bool EndGameConditionMeet()
-        {
-            //Check for enemy first 
-            int allyAlive = 0;
-            int hostileAlive = 0;
-            foreach (var entity in _competators)
-            {
-                if (entity.Competator.IsDead == false)
-                {
-                    if (entity.Side == ECompetatorSide.Ally)
-                    {
-                        allyAlive++;
-                    }
-                    else if (entity.Side == ECompetatorSide.Hostile)
-                    {
-                        hostileAlive++;
-                    }
-                }
-            }
-
-            if (hostileAlive == 0)
-            {
-                return true;
-            }
-            else if (allyAlive == 0)
-            {
-                return true;
-            }
-
-            return false;
-        }
-
-        #region TurnModifer 
-        private IEnumerator AdvanceTurn()
-        {
-            //Starting new turn 
-            ColorfulLogger.LogWithColor("START TURN IN " + _currentSide, Color.blue);
-
-            //Call Enter Turn of the entity, this included running status effect 
-            foreach (CombatEntity entity in _activeEntities)
-            {
-                IEnumerator coroutine = entity.TurnEnter();
-                while (coroutine.MoveNext())
-                {
-                    yield return coroutine.Current;
-                }
-            }
-
-            List<int> temp = new List<int>();
-
-            //Remove control for character that is not ready 
-            for (int i = 0; i < _activeEntities.Count; i++)
-            {
-                if (!_activeEntities[i].ReadyForControl())
-                {
-                    Debug.Log(_activeEntities[i].name + "is not ready for control");
-                    temp.Add(i);
-                    // _activeEntities.RemoveAt(i);
-                }
-            }
-            for (int i = temp.Count - 1; i >= 0; i--)
-            {
-                _activeEntities.RemoveAt(temp[i]);
-            }
-
-            if (_activeEntities.Count > 0)
-            {
-                for (int i = 0; i < _activeEntities.Count; i++)
-                {
-                    FindObjectOfType<CharacterWindowManager>().SetHighlightActiveEntity(_activeEntities[i]);
-                }
-                _currentEntityIndex = 0;
-                yield return SwitchControl(-1, _currentEntityIndex);
-            }
-
-            //While loop will keep being called until the turn is end
-            while (_activeEntities.Count > 0)
-            {
-                while (!_activeEntities[_currentEntityIndex].ReadyForControl())
-                {                     
-                    Debug.Log(_activeEntities[_currentEntityIndex] + " can't control now");
-
-                    yield return SwitchControl(_currentEntityIndex, _currentEntityIndex);
-
-                    if (_activeEntities.Count <= 1)
-                        goto End;
-
-                    _currentEntityIndex = 0;
-                    _activeEntities.RemoveAt(_currentEntityIndex);
-                    yield return SwitchControl(-1, _currentEntityIndex);
-
-                }
-
-                _state = CombatState.WaitingForAction;
-                CombatEntity _entity = _activeEntities[_currentEntityIndex];
-
-                IEnumerator actionCoroutine = _entity.GetAction();
-
-                while (actionCoroutine.MoveNext())
-                {
-                    if (actionCoroutine.Current != null && actionCoroutine.Current.GetType().IsSubclassOf(typeof(RuntimeEffect)))
-                    {
-
-                        _state = CombatState.Action ;
-
-                        yield return _entity.TakeControlSoftLeave();
-
-                        //Maybe it get overheat or some affect stunt it while controling 
-                        if (_entity.ReadyForControl())
-                        {
-                            //ExecuteAction 
-                            yield return ((actionCoroutine.Current as RuntimeEffect).ExecuteRuntimeCoroutine(_entity));
-
-                            yield return ((actionCoroutine.Current as RuntimeEffect).OnExecuteRuntimeDone(_entity));
-                        }
-                        else
-                        {
-                            yield return new WaitForSecondsRealtime(2.0f);
-                        }
-
-                        //When the action is finish executed (like playing animation), end turn 
-
-                        foreach (var e in GetCompetatorsBySide(ECompetatorSide.Ally))
-                        {
-                            if (! e.IsDead)
-                                yield return e.AfterGetAction();
-                        }
-
-                        foreach (var e in GetCompetatorsBySide(ECompetatorSide.Hostile))
-                        {
-                            if (! e.IsDead)
-                                yield return e.AfterGetAction();
-                        }
-
-                        // entity's leave turn 
-                        yield return SwitchControl(_currentEntityIndex, _currentEntityIndex);
-
-                        FindObjectOfType<CharacterWindowManager>().SetUnHighlightActiveEntity(_entity);
-
-                        _activeEntities.RemoveAt(_currentEntityIndex);
-
-                        _currentEntityIndex = 0;
-
-                        if (_activeEntities.Count > 0) 
-                            yield return SwitchControl(-1, _currentEntityIndex);
-
-                        for (int i = _competators.Count - 1; i >= 0; i--)
-                        {
-                            if (_competators[i].Competator.IsDead)
-                            {
-                                if (_competators[i].Side == _currentSide)
-                                {
-                                    _activeEntities.Remove(_competators[i].Competator);
-                                }
-                                //No need to remove from the main list if it was player's
-                                //_competators.RemoveAt(i);
-                            }
-                        }
-
-                    }
-                    else
-                        yield return actionCoroutine.Current;
-                }
-                if (EndGameConditionMeet())
-                {
-                    //_gameoverscreen.ActiveGameOverScreen(true);
-                    goto End;
-                }
-                //If GetAction is null, we wait for end of frame
-                yield return new WaitForEndOfFrame();
-            }
-        
-        End:
-            foreach (CombatEntity entity in GetCompetatorsBySide(_currentSide))
-            {
-                if (! entity.IsDead)
-                    yield return entity.TurnLeave();
-            }
-            ColorfulLogger.LogWithColor("END TURN IN " + _currentSide, Color.blue);
-
-            //Endding this turn 
+            SetActiveActors(); 
+            yield return SwitchControl(null,GetCurrentActor());
         }
 
         #endregion
-        public bool IsCombatEnded()
+
+        private IEnumerator CustomTick()
         {
-            if (EndGameConditionMeet())
+            while (true)
             {
-                SetUpNewCombatEncounter();
+                yield return _combatRefereeStateHandler.AdvanceRound();
+
+                _currentSide = (ECompetatorSide)(((int)_currentSide + 1) % 2);
+
+                //TODO : Determine end game condition
+                bool GameIsEnd = false;
+                if (GameIsEnd)
+                    break;
+
+                yield return new WaitForEndOfFrame();
             }
-            //TODO - Determine how the combat should end  
+        }
+
+        private IEnumerator SwitchControl(CombatEntity prevEntity, CombatEntity newEntity)
+        {
+            if (prevEntity != null)
+            {
+                FindObjectOfType<CharacterWindowManager>().DeSetActiveEntityGUI(prevEntity);
+                yield return prevEntity.LeaveControl();
+            }
+
+            if (prevEntity != newEntity && newEntity != null)
+            {
+                FindObjectOfType<CharacterWindowManager>().SetActiveEntityGUI(newEntity);
+
+                for (int i = 0; i < GetCompetatorsBySide(ECompetatorSide.Ally).Count; i++)
+                {
+                    if (GetCompetatorsBySide(ECompetatorSide.Ally)[i] == newEntity)
+                    {
+                        CameraSetUPManager.Instance.SelectCharacterCamera(i);
+                    }
+                }
+                
+                yield return newEntity.TakeControl();
+
+            }
+        }
+
+        public bool ChangeActiveEntityIndex(bool forward)
+        {
+            if (GetCurrentActiveEntities().Count > 1)
+            {
+                StartCoroutine(ChangeActiveEntityIndexCoroutine(forward));
+                return true;
+            }
             return false;
         }
 
-        private void SetUpNewCombatEncounter()
+        private IEnumerator ChangeActiveEntityIndexCoroutine(bool forward)
         {
-            AssignCompetators(FindObjectOfType<EntityLoader>().LoadData(), ECompetatorSide.Hostile);
-            _currentSide = ECompetatorSide.Ally;
-            _activeEntities = GetCompetatorsBySide(_currentSide);
 
-            _currentEntityIndex = 0;
+            CombatEntity prevActor = GetCurrentActor();
 
+            _activeCombatEntities.Progress(forward);
+
+
+            //Changes was made
+            if (prevActor != GetCurrentActor())
+            {
+                yield return SwitchControl(prevActor,GetCurrentActor()); 
+            }
+
+            yield return null; 
+             
         }
+
+        public IEnumerator OnCharacterPerformAction()
+        {
+            CombatEntity _combatEntity = GetCurrentActor(); 
+            SetActiveActors();
+            yield return SwitchControl(_combatEntity, GetCurrentActor()); 
+        }
+
+        /// <summary>
+        /// this function should be called everytime an action is finished performed
+        /// </summary>
+        private void SetActiveActors()
+        {
+            var team = GetCurrentTeam();
+
+            foreach (var v in team)
+            {
+                Debug.Log(v); 
+            }
+
+            _activeCombatEntities.Reset();
+
+            for (int i =0; i < team.Count; i++)
+            {
+                if (! team[i].ReadyForControl())
+                {
+                    team.RemoveAt(i);
+                    i--;
+                    continue;  
+                }
+
+                _activeCombatEntities.Add(team[i]); 
+            }
+
+        } 
+
         #region GETTER 
+        public List<CombatEntity> GetCurrentActiveEntities()
+        {
+            if (_activeCombatEntities == null)
+                throw new Exception("_activeCombatEntities is null"); 
+            
+            return _activeCombatEntities.GetDataAsList()  ; 
+        }
+        
+        public List<CombatEntity> GetCurrentTeam()
+        {
+            return GetCompetatorsBySide(_currentSide);
+        }
 
-
+        //Good 
         public List<CombatEntity> GetCompetatorsBySide(ECompetatorSide ESide)
         {
             return _competators.Where(v => v.Side == ESide).Select(v => v.Competator).ToList();
         }
 
-        public ECompetatorSide GetCharacterSide(CombatEntity entity)
+        public CombatEntity GetCurrentActor()
+        {
+            if (_activeCombatEntities.Count() == 0)
+                return null; 
+
+            return _activeCombatEntities[0]; 
+        }
+
+
+        public ECompetatorSide GetCompetatorSide(CombatEntity entity)
         {
             foreach (var competator in _competators)
             {
@@ -332,85 +238,6 @@ namespace Vanaring_DepaDemo
 
             throw new Exception("Given entity is not registered in CombatReferee");
         }
-
-
-        public IEnumerator SwitchControl(int prev, int next)
-        {
-            if (prev != -1)
-            {
-                FindObjectOfType<CharacterWindowManager>().DeSetActiveEntityGUI(_activeEntities[prev]);
-                yield return _activeEntities[prev].LeaveControl();
-
-            }
-
-            if (prev != next)
-            {
-                FindObjectOfType<CharacterWindowManager>().SetActiveEntityGUI(_activeEntities[next]);
-
-
-                for (int i = 0; i < GetCompetatorsBySide(ECompetatorSide.Ally).Count; i++)
-                {
-                    if (GetCompetatorsBySide(ECompetatorSide.Ally)[i] == _activeEntities[next])
-                    {
-                        CameraSetUPManager.Instance.SelectCharacterCamera(i);
-                    }
-
-                }
-
-                yield return _activeEntities[next].TakeControl();
-
-            }
-        }
-
-        public bool ChangeActiveEntityIndex(bool increase = false, bool decrease = false)
-        {
-            if (_activeEntities.Count > 1)
-            {
-                StartCoroutine(ChangeActiveEntityIndexCoroutine(increase, decrease));
-                return true; 
-            } 
-                return false;
-             
-        }
-
-        public IEnumerator ChangeActiveEntityIndexCoroutine(bool increase = false, bool decrease = false)
-        {
-            if (_activeEntities.Count > 0)
-            {
-                int temp = _currentEntityIndex;
-
-                if (increase)
-                    _currentEntityIndex = (_currentEntityIndex + 1) % _activeEntities.Count;
-                else if (decrease)
-                    _currentEntityIndex = _currentEntityIndex == 0 ? (_activeEntities.Count - 1) : (_currentEntityIndex - 1);
-
-                if (temp != _currentEntityIndex)
-                    yield return SwitchControl(temp, _currentEntityIndex);  
-            }
-            else
-            {
-                _currentEntityIndex = 0;
-            }
-
- 
-
-        }
-
-        public void ReceiveKeys(KeyCode key)
-        {
-            //if (_state == CombatState.WaitingForAction)
-            //{
-            //    if (key == (KeyCode.D))
-            //    {
-            //        StartCoroutine(ChangeActiveEntityIndex(true, false));
-            //    }
-            //    else if (key == (KeyCode.A))
-            //    {
-            //        StartCoroutine(ChangeActiveEntityIndex(false, true));
-            //    }
-            //}
-        }
-
         #endregion
 
     }

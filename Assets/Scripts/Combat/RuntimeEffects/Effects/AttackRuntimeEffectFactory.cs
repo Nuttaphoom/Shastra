@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEngine.Experimental.GlobalIllumination;
 
 
-namespace Vanaring_DepaDemo
+namespace Vanaring
 {
     [CreateAssetMenu(fileName = "AttackRuntimeEffectFactory", menuName = "ScriptableObject/RuntimeEffect/AttackRuntimeEffectFactory")]
     public class AttackRuntimeEffectFactory : RuntimeEffectFactorySO
@@ -48,6 +48,7 @@ namespace Vanaring_DepaDemo
         }
         public override IEnumerator ExecuteRuntimeCoroutine(CombatEntity caster)
         {
+             
             //Deal Dmg directly to enemy ignoring the caster 
             if (_realDmg > 0)
             {

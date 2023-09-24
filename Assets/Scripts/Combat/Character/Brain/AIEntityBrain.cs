@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
  
-namespace Vanaring_DepaDemo
+namespace Vanaring 
 {
     [RequireComponent(typeof(BotBehaviorHandler))]
 

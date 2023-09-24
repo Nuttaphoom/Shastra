@@ -7,7 +7,7 @@ using System.Diagnostics.Eventing.Reader;
 using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEditor;
 
-namespace Vanaring_DepaDemo
+namespace Vanaring 
 {
     public enum EEvokeKey
     {

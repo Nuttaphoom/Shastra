@@ -14,7 +14,7 @@ using UnityEngine.Events;
 using UnityEngine.VFX;
 using Cinemachine;
 
-namespace Vanaring_DepaDemo
+namespace Vanaring 
 {
     [Serializable]
     public class CombatEntityAnimationHandler : MonoBehaviour

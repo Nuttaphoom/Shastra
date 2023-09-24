@@ -5,7 +5,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace  Vanaring_DepaDemo {
+namespace  Vanaring  {
     [CreateAssetMenu(fileName = "BotBehaviorSO", menuName = "ScriptableObject/BotBehavior/BotBehaviorSO")]
     //Each behavior contain "action" aka RuntimeEffectFacotorySO
     class BotBehaviorSO : ScriptableObject

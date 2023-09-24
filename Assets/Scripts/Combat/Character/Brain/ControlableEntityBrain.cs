@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Transactions;
 using UnityEngine;
 
-namespace Vanaring_DepaDemo
+namespace Vanaring 
 {
 
     public class ControlableEntityBrain : BaseEntityBrain 

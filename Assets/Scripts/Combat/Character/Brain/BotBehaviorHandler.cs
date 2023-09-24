@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.VFX;
 
-namespace Vanaring_DepaDemo
+namespace Vanaring 
 {
     //Store a behavior socket that contain multiople behaviorSO
     class BotBehaviorHandler : MonoBehaviour
@@ -35,7 +35,7 @@ namespace Vanaring_DepaDemo
         public IEnumerator CalculateNextBehavior()
         {
             _nextBehavior = Random.Range(0, _behaviorSocketSOs.GetBehaviorSize);
-            StartTelegraphy();
+            //StartTelegraphy();
             yield return null;
         }
 

@@ -3,7 +3,7 @@
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace Vanaring_DepaDemo
+namespace Vanaring 
 {
     public abstract class EventChannel<T, U, V> : DescriptionScriptableObject
     {

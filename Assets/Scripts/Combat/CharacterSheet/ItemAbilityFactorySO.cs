@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 
-namespace Vanaring_DepaDemo
+namespace Vanaring 
 { 
     [CreateAssetMenu(fileName = "Item Ability", menuName = "ScriptableObject/Combat/ItemAbility")]
     public class ItemAbilityFactorySO : CombatActionSO

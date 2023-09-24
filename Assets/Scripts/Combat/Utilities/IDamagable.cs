@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine.Events;
 
-namespace Vanaring_DepaDemo 
+namespace Vanaring
 {
     public enum EDamageScaling
     {

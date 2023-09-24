@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing.Printing;
+using System.Numerics;
 using System.Runtime.InteropServices;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -12,7 +13,7 @@ using static Cinemachine.CinemachineTargetGroup;
 using static UnityEngine.EventSystems.EventTrigger;
 using static UnityEngine.GraphicsBuffer;
 
-namespace Vanaring_DepaDemo
+namespace Vanaring
 {
     [RequireComponent(typeof(BaseEntityBrain))]
     public class CombatEntity : MonoBehaviour, IStatusEffectable, ITurnState, IDamagable, IAttackter
@@ -43,10 +44,15 @@ namespace Vanaring_DepaDemo
         [SerializeField]
         private DamageOutputPopupHandler _dmgOutputPopHanlder; 
 
-
         private bool _isDead = false;
+        private bool _isExhausted = false; 
 
         public bool IsDead => _isDead;
+
+        public bool IsExhausted => _isExhausted; 
+
+        protected Queue<RuntimeEffect> _actionQueue = new Queue<RuntimeEffect>() ; 
+
         public void Awake()
         {
             _dmgOutputPopHanlder = new DamageOutputPopupHandler(_dmgOutputPopHanlder, this); 
@@ -91,6 +97,8 @@ namespace Vanaring_DepaDemo
             if (_baseEntityBrain == null)
                 throw new Exception("Base Entity Brain of " + gameObject.name + " hasn't been assgined");
 
+            _isExhausted = false; 
+
             yield return _runtimeCharacterStatsAccumulator.ResetTemporaryIncreasedValue();
 
             yield return _statusEffectHandler.RunStatusEffectExpiredScheme();
@@ -111,16 +119,23 @@ namespace Vanaring_DepaDemo
                 if (coroutine.Current != null && coroutine.Current is RuntimeEffect)
                 {
                     //Need to cast to RuntimeEffect before returning            
-                    yield return (RuntimeEffect)coroutine.Current;
+                    _actionQueue.Enqueue( (RuntimeEffect)coroutine.Current) ; 
                 }
                 else
                     yield return coroutine.Current;
             }
         }
 
+        public RuntimeEffect GetActionRuntimeEffect()
+        {
+            if (_actionQueue == null)
+                _actionQueue = new Queue<RuntimeEffect>();
 
+            if (_actionQueue.Count == 0)
+                return null;
 
-
+            return _actionQueue.Dequeue(); 
+        }
         public IEnumerator TakeControl()
         {
             yield return _baseEntityBrain.TakeControl();
@@ -138,7 +153,7 @@ namespace Vanaring_DepaDemo
 
         public bool ReadyForControl()
         {
-            return !_runtimeCharacterStatsAccumulator.IsStunt() && !IsDead;
+            return !_runtimeCharacterStatsAccumulator.IsStunt() && ! IsDead && ! IsExhausted ;
         }
 
         public StatusEffectHandler GetStatusEffectHandler()
@@ -146,6 +161,18 @@ namespace Vanaring_DepaDemo
             return _statusEffectHandler;
         }
 
+        /// <summary>
+        /// Invoked before this character perform any action
+        /// </summary>
+        public IEnumerator OnPerformAction(RuntimeEffect action)
+        {
+            _isExhausted = true;
+
+            yield return action.ExecuteRuntimeCoroutine(this);
+
+            yield return action.OnExecuteRuntimeDone(this);
+
+        }
 
         #endregion
 

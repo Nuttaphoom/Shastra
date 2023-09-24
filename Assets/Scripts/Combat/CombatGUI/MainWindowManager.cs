@@ -2,14 +2,16 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing.Design;
 using System.Runtime.InteropServices;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
-using Vanaring_DepaDemo;
 
-namespace Vanaring_DepaDemo
+
+namespace Vanaring 
 {
     public class MainWindowManager : HierarchyUIWindow, IInputReceiver
     {
@@ -32,7 +34,9 @@ namespace Vanaring_DepaDemo
         private Color _defaultColor;
 
         private List<Vector3> _defaultLocalScale;
-        private float modifiedSize = 1.25f ; 
+        private float modifiedSize = 1.25f ;
+
+        CircularArray<int> test ; 
 
         private void Awake()
         {
@@ -104,13 +108,15 @@ namespace Vanaring_DepaDemo
             }
             else if (key == (KeyCode.A))
             {
-                if (CombatReferee.instance.ChangeActiveEntityIndex(false, true))
+                if (CombatReferee.instance.ChangeActiveEntityIndex(true))
                     TargetSelectionFlowControl.Instance.ForceStop();
 
             }
             else if (key == (KeyCode.D))
             {
-                if (CombatReferee.instance.ChangeActiveEntityIndex(true, false))
+                //throw new NotImplementedException();
+
+                if (CombatReferee.instance.ChangeActiveEntityIndex(false))
                     TargetSelectionFlowControl.Instance.ForceStop();
             }
             else if (key == (KeyCode.RightArrow))

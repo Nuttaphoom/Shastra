@@ -8,7 +8,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 
 
-namespace Vanaring_DepaDemo
+namespace Vanaring 
 {
     [Serializable]
     public class EnergyOverflowHandler : MonoBehaviour
