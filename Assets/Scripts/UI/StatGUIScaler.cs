@@ -23,9 +23,6 @@ namespace Vanaring
         [SerializeField]
         private CombatEntity _owner  ;
 
-        [SerializeField]
-        private GameObject _guiObj; 
-
         public TextMeshProUGUI lightNumText;
         public TextMeshProUGUI darkNumText;
 
@@ -197,7 +194,6 @@ namespace Vanaring
 
             if (hpVal <= 0)
             {
-                Destroy(_guiObj);
                 Destroy(gameObject);
             }
 

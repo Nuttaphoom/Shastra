@@ -71,6 +71,10 @@ namespace Vanaring
 
         public RuntimeEffect GetRuntimeEffect()
         {
+            foreach (var target in _targets)
+            {
+                Debug.Log("target is " + target); 
+            }
             return _effect.Factorize(_targets);
         }
 

@@ -13,8 +13,7 @@ namespace Vanaring
 
         public abstract IEnumerator TurnEnter();
 
-        public abstract IEnumerator AfterGetAction(); 
-        public abstract IEnumerator TakeControlSoftLeave();
+    
 
 
         /// <summary>

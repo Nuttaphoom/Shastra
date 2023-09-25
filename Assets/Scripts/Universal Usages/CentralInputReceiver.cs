@@ -30,9 +30,9 @@ namespace Vanaring
         } 
          ~CentralInputReceiver()
         {
-            InputSystem.onAnyButtonPress
-                .Call(ctrl => Debug.Log("test")) ;
+            _receiverStack.Clear(); 
         } 
+
         public static CentralInputReceiver Instance()
         {
             if (instance == null)

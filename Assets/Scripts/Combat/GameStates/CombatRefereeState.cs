@@ -141,12 +141,23 @@ namespace Vanaring
                 {
                     //Maybe it get overheat or some affect stunt it while controling 
 
-                    yield return _actor.OnPerformAction(action); 
-                     
+                    yield return _actor.OnPerformAction(action);
+                    yield return PostPerformActionInEveryCharacter(); 
+
                     break; 
                 }    
                 yield return new WaitForEndOfFrame(); 
             
+            }
+        }
+
+        private IEnumerator PostPerformActionInEveryCharacter()
+        {
+            foreach (ECompetatorSide side in (ECompetatorSide[])Enum.GetValues(typeof(ECompetatorSide))) {
+                foreach (var entity in _stateHandler.Referee.GetCompetatorsBySide(side))
+                {
+                    yield return entity.OnPostPerformAction();
+                }
             }
         }
 

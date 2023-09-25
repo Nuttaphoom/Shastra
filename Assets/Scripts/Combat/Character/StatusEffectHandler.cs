@@ -20,8 +20,8 @@ namespace Vanaring
     [Serializable]
     public class StatusEffectHandler
     {
-        [SerializeField]
         private CombatEntity _appliedEntity;
+
         Dictionary<string, List<StatusRuntimeEffect>> _effects = new Dictionary<string, List<StatusRuntimeEffect>>();
 
         public Dictionary<string, List<StatusRuntimeEffect>> Effects => _effects;
@@ -31,7 +31,10 @@ namespace Vanaring
 
         private UnityAction<Dictionary<string, List<StatusRuntimeEffect>>> _OnUpdateStatus;
 
-        //private StatusWindowManager _statusWindowTopleft;
+        public StatusEffectHandler(CombatEntity entity)
+        {
+            _appliedEntity = entity; 
+        }
 
         public void UpdateStatusUI()
         {

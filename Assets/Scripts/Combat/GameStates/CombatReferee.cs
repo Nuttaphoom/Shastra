@@ -113,7 +113,7 @@ namespace Vanaring
             if (prevEntity != null)
             {
                 FindObjectOfType<CharacterWindowManager>().DeSetActiveEntityGUI(prevEntity);
-                yield return prevEntity.LeaveControl();
+                yield return prevEntity.TakeControlLeave();
             }
 
             if (prevEntity != newEntity && newEntity != null)

@@ -45,6 +45,7 @@ namespace Vanaring
 
         public void ForceStop()
         {
+            ColorfulLogger.LogWithColor("ForceStop ", Color.red); 
             if (_activlySelecting)
             {
                 _activlySelecting = false;
@@ -91,6 +92,8 @@ namespace Vanaring
         #region Private
         public IEnumerator InitializeActionTargetSelectionScheme(CombatEntity caster, IActorAction actorAction, bool randomTarget = false)
         {
+            ColorfulLogger.LogWithColor("Start target selection ", Color.green);
+            Debug.Log("_activlySelecting is " + _activlySelecting);
             if (_activlySelecting)
                 throw new Exception(caster + " Try to active selection scheme while it is already active");
 
@@ -151,7 +154,8 @@ namespace Vanaring
                     cgh.EnableQuickMenuBar(false);
                 }
             }
-
+            actorAction.SetActionTarget(_selectedTarget);
+            caster.AddActionQueue(actorAction);
         End:
             _targetSelectionGUI.EndSelectionScheme();
 
@@ -160,8 +164,7 @@ namespace Vanaring
             CameraSetUPManager.Instance.RestoreVMCameraState();
             CentralInputReceiver.Instance().RemoveInputReceiverIntoStack(this);
 
-            actorAction.SetActionTarget(_selectedTarget); 
-            caster.AddActionQueue(actorAction);
+
                  
             _activlySelecting = false;
 

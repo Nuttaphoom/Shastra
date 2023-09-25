@@ -88,6 +88,7 @@ namespace Vanaring
         }
         public IEnumerator PlayActionAnimation(ActionAnimationInfo actionAnimation )
         {
+
             List<IEnumerator> coroutines = new List<IEnumerator>();
 
             //Self VFX
@@ -108,6 +109,7 @@ namespace Vanaring
 
         public IEnumerator PlayVFXActionAnimation<T>(VFXEntity vfxEntity,  VFXCallbackHandler<T>.VFXCallback  argc  , T pam)
         {
+
             VFXCallbackHandler<T> callbackHandler = new VFXCallbackHandler<T>(GetComponent<CombatEntity>(),
                 vfxEntity , GetVFXSpawnPos(),  argc  );
 
@@ -115,6 +117,7 @@ namespace Vanaring
         }
         public IEnumerator PlayVFXActionAnimation<T>(VFXEntity vfxEntity, VFXCallbackHandler<T>.VFXCallback argc, T pam, Vector3 casterpos, Vector3 targetpos)
         {
+
             VFXCallbackHandler<T> callbackHandler = new VFXCallbackHandler<T>(GetComponent<CombatEntity>(),
                 vfxEntity, GetVFXSpawnPos(), argc);
 

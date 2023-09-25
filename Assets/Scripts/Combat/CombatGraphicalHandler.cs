@@ -96,7 +96,6 @@ namespace Vanaring
         public void DisplayMainMenu()
         {
             _entityWindowManager.ClearStack();
-
             _entityWindowManager.PushInNewWindow(_mainWindowManager);
             _buttonIndicatorWindow.SetIndicatorButtonShow(ButtonIndicatorWindow.IndicatorButtonShow.MAIN, true);
         }
@@ -169,10 +168,7 @@ namespace Vanaring
 
         public void EnableQuickMenuBar(bool b)
         {
-            if (b == false)
-            {
-                Debug.Log("close HP bAR"); 
-            }
+            
             _quickHPBar.gameObject.SetActive(b); 
         }
 
