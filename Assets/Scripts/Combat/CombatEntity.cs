@@ -15,13 +15,14 @@ using static UnityEngine.GraphicsBuffer;
 
 namespace Vanaring
 {
-    [RequireComponent(typeof(BaseEntityBrain))]
+    //[RequireComponent(typeof(BaseEntityBrain))]
     public class CombatEntity : MonoBehaviour, IStatusEffectable, ITurnState, IDamagable, IAttackter
     {
         [Header("Right now we manually assign CharacterSheet, TO DO : Make it loaded from the main database")]
         [SerializeField]
         private CharacterSheetSO _characterSheet;
 
+        [SerializeField]
         private BaseEntityBrain _baseEntityBrain;
 
         [SerializeField]

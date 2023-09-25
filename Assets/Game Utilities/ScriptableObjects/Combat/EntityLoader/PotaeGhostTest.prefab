@@ -50,7 +50,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e0196872ee2b5f4581cba41d14e145a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _combatEntity: {fileID: 8260375911325289032}
+  _combatEntity: {fileID: 0}
   _templatePrefab: {fileID: 7886394462147934825}
   _setOfStatusUIPosition:
   - {fileID: 9009364294534238377}
@@ -1347,7 +1347,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e50745e7c22bef46832cfc1275190f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _owner: {fileID: 8260375911325289032}
+  _owner: {fileID: 0}
   _guiObj: {fileID: 8874530647825648480}
   lightNumText: {fileID: 6799221435612083679}
   darkNumText: {fileID: 2982444944193960378}
@@ -2734,10 +2734,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6372633111618651101}
-  - component: {fileID: 8260375911325289032}
-  - component: {fileID: 4198016615978095350}
-  - component: {fileID: 718383889578207086}
-  - component: {fileID: 7014186767969307044}
+  - component: {fileID: 6091715002068155578}
   - component: {fileID: 2524119204172734917}
   - component: {fileID: 3183956409549396090}
   - component: {fileID: 230340289741595676}
@@ -2769,7 +2766,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8260375911325289032
+--- !u!114 &6091715002068155578
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2778,61 +2775,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 8010838884609612702}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f0ab295370cca3f4ebfaa836aaef2aa1, type: 3}
+  m_Script: {fileID: 11500000, guid: c29349dce07f01f44921401f4122d367, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _characterSheet: {fileID: 11400000, guid: 061e8b75b8639eb42adf81a20ccf9fc7, type: 2}
+  _baseEntityBrain: {fileID: 0}
   _spellCaster: {fileID: 230340289741595676}
   _itemUser: {fileID: 0}
   _statusEffectHandler:
-    _appliedEntity: {fileID: 8260375911325289032}
+    _appliedEntity: {fileID: 6091715002068155578}
   _combatEntityAnimationHandler: {fileID: 2524119204172734917}
   _dmgOutputPopHanlder:
-    _outputDMGTimerPrefab: {fileID: 6205815355120891309, guid: b67fb67d063351e4a9936c0c2247f479, type: 3}
-    _outputHealTimerPrefab: {fileID: 6205815355120891309, guid: c3f10d4c069cca44182d2621e48eab7c, type: 3}
---- !u!114 &4198016615978095350
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8010838884609612702}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 89fadc431746f4a4bbce97112959fbfe, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _behaviorSocketSOs: {fileID: 0}
-  _telegraphyPos: {fileID: 0}
-  _statGUIScaler: {fileID: 0}
---- !u!114 &718383889578207086
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8010838884609612702}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b03f0a05d9a22cb489cfe7f189b8d395, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _combatEntity: {fileID: 0}
---- !u!114 &7014186767969307044
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8010838884609612702}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5625299103692234088efe0c61a90dd6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _behaviorSocketSOs: {fileID: 11400000, guid: 585b9fab4181b4a468707813c376b112, type: 2}
-  _telegraphyPos: {fileID: 5030779872240135818}
-  _statGUIScaler: {fileID: 2587289915787681776}
+    _outputDMGTimerPrefab: {fileID: 0}
+    _outputHealTimerPrefab: {fileID: 0}
 --- !u!114 &2524119204172734917
 MonoBehaviour:
   m_ObjectHideFlags: 0
