@@ -9,7 +9,7 @@ namespace Vanaring
 
     public class AIEntityBrain : BaseEntityBrain
     {
-        BotBehaviorHandler _botBehaviorHandler;
+        BotBehaviorHandler _botBehaviorHandler ;
 
         [SerializeField] 
         private CombatEntity _combatEntity; 
@@ -20,36 +20,38 @@ namespace Vanaring
                 throw new System.Exception("BotBehaviorHandler hasn't been assigned");
 
             StartCoroutine(_botBehaviorHandler.CalculateNextBehavior()); 
-
         }
+
         public override IEnumerator GetAction()
         {
-            BotBehaviorSO.ActionData actionData = _botBehaviorHandler.GetBehaviorEffect();
-            if (_combateEntity == null)
-                Debug.Log("combta entity is null"); 
- 
-            _combatEntity.SpellCaster.ModifyEnergy(_combateEntity, actionData.EnergyCost.Side, actionData.EnergyCost.Amount);
+            //BotBehaviorSO.ActionData actionData = _botBehaviorHandler.GetBehaviorEffect();
+            //if (_combateEntity == null)
+            //    Debug.Log("combta entity is null"); 
 
-            yield return new WaitForSeconds(1.0f);
+            //_combatEntity.SpellCaster.ModifyEnergy(_combateEntity, actionData.EnergyCost.Side, actionData.EnergyCost.Amount);
 
-            foreach (RuntimeEffectFactorySO eff in actionData.Effects) {  
+            //yield return new WaitForSeconds(1.0f);
 
-                yield return TargetSelectionFlowControl.Instance.InitializeTargetSelectionScheme(_combateEntity, eff, true) ;
-                RuntimeEffectFactorySO factory ;
-                List<CombatEntity> selectedTarget ;
-   
-                (factory, selectedTarget) = TargetSelectionFlowControl.Instance.GetLatestAction();
-                     
-                IEnumerator coroutine =   factory.Factorize(selectedTarget);
+            //foreach (RuntimeEffectFactorySO eff in actionData.Effects) {  
 
-                while (coroutine.MoveNext())
-                {
-                    if (coroutine.Current != null && coroutine.Current.GetType().IsSubclassOf(typeof(RuntimeEffect)))
-                    {
-                        yield return coroutine.Current as RuntimeEffect;
-                    }
-                }
-            }
+            //    yield return TargetSelectionFlowControl.Instance.InitializeTargetSelectionScheme(_combateEntity, eff, true) ;
+            //    //RuntimeEffectFactorySO factory ;
+            //    //List<CombatEntity> selectedTarget ;
+
+            //    //(factory, selectedTarget) = TargetSelectionFlowControl.Instance.GetLatestAction();
+
+            //    //IEnumerator coroutine =   factory.Factorize(selectedTarget);
+
+            //    //while (coroutine.MoveNext())
+            //    //{
+            //    //    if (coroutine.Current != null && coroutine.Current.GetType().IsSubclassOf(typeof(RuntimeEffect)))
+            //    //    {
+            //    //        yield return coroutine.Current as RuntimeEffect;
+            //    //    }
+            //    //}
+            //}
+
+            yield return null; 
         }
 
 

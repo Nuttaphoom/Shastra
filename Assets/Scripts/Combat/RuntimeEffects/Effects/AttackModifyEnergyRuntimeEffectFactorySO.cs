@@ -25,7 +25,7 @@ namespace Vanaring
         [SerializeField]
         private ActionAnimationInfo _actionAnimation;
 
-        public override IEnumerator Factorize(List<CombatEntity> targets)
+        public override RuntimeEffect Factorize(List<CombatEntity> targets)
         {
             AttackModifyEnergyRuntimeEffect retEffect = new AttackModifyEnergyRuntimeEffect(_damagScaling, realDmg, _energyModifierData, _actionAnimation);
             if (targets != null)
@@ -34,7 +34,7 @@ namespace Vanaring
                     retEffect.AssignTarget(target);
             }
 
-            yield return retEffect;
+            return retEffect;
         }
     }
 

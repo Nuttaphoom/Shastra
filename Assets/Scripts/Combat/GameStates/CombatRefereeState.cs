@@ -20,19 +20,14 @@ namespace Vanaring
         #region Public_Methods 
         public IEnumerator AdvanceRound()
         {
-            Debug.Log("Enter Round");
             yield return new RoundEnterState(this).Execute();
 
             while (_referee.GetCurrentActiveEntities().Count > 0)
             {
-                Debug.Log("wait for action for " + _referee.GetCurrentActor() );
                 yield return AdvanceTurn();
-                Debug.Log("done behave action");
                 yield return _referee.OnCharacterPerformAction(); 
-            
             }
 
-            Debug.Log("Leave Round");
             yield return new RoundEndState(this).Execute();
         }
 
@@ -45,7 +40,6 @@ namespace Vanaring
         {
             //Perform Action
             yield return new PerformActionState(this).Execute() ; 
-
         }
 
         #endregion
@@ -84,7 +78,6 @@ namespace Vanaring
         public override IEnumerator Execute()
         {
             yield return StateEnter();
-
             yield return StateExit(); 
         }
 
@@ -121,7 +114,6 @@ namespace Vanaring
 
     public class PerformActionState : CombatRefereeState
     {
-         
         public PerformActionState(CombatRefereeStateHandler handler) : base(handler)
         {
 
@@ -129,9 +121,9 @@ namespace Vanaring
 
         public override IEnumerator Execute()
         {
-            CombatEntity _actor; 
+            CombatEntity _actor;
 
-            RuntimeEffect action = null ; 
+            IActorAction action = null ; 
 
             while (true)
             {
@@ -142,20 +134,19 @@ namespace Vanaring
                 if (_actor == null)
                     break; 
                  
-                yield return _actor.GetAction();
+                if ((action = _actor.GetActionRuntimeEffect()) == null) 
+                    yield return _actor.GetAction();
 
-                if ( (action = _actor.GetActionRuntimeEffect()  ) != null)
+                else 
                 {
                     //Maybe it get overheat or some affect stunt it while controling 
-                    if (_actor.ReadyForControl())
-                    {
-                        //ExecuteAction 
-                        yield return _actor.OnPerformAction(action); 
-                    }
+
+                    yield return _actor.OnPerformAction(action); 
+                     
                     break; 
-                }
-                else
-                    yield return new WaitForEndOfFrame(); 
+                }    
+                yield return new WaitForEndOfFrame(); 
+            
             }
         }
 
@@ -170,12 +161,51 @@ namespace Vanaring
         }
     }
 
+    public class PostPerformActionState : CombatRefereeState
+    {
+        public PostPerformActionState(CombatRefereeStateHandler handler) : base(handler)
+        {
+
+        }
+
+        public override IEnumerator Execute()
+        {
+            //We check if there is any character who want to do action
+            
+
+            yield return new PerformActionState(_stateHandler).Execute() ; 
+             
+        }
+
+        private List<CombatEntity> QuerryForEntityWithReaction()
+        {
+            //Querry for player first 
+            foreach (CombatEntity entity in _stateHandler.Referee.GetCompetatorsBySide(ECompetatorSide.Ally))
+            {
+                
+            }
+            throw new NotImplementedException(); 
+            return new List<CombatEntity>() ;
+            //Querry for enemy side
+        }
+
+        protected override IEnumerator StateEnter()
+        {
+            yield return null;
+        }
+
+        protected override IEnumerator StateExit()
+        {
+            yield return null;
+        }
+    }
     public class RoundEndState : CombatRefereeState
     {
         public RoundEndState(CombatRefereeStateHandler handler) : base(handler)
         {
 
         }
+
         public override IEnumerator Execute()
         {
             yield return StateEnter();

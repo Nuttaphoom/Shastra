@@ -18,13 +18,13 @@ namespace Vanaring
 
         [SerializeField]
         private List<StatusRuntimeEffectFactorySO> _effects;
-        public override IEnumerator Factorize(List<CombatEntity> targets)
+        public override RuntimeEffect Factorize(List<CombatEntity> targets)
         {
             StatusEffectApplierRuntimeEffect retEffect = new StatusEffectApplierRuntimeEffect(_effects, _actionAnimationInfo);
             foreach (CombatEntity target in targets)
                 retEffect.AssignTarget(target);
 
-            yield return retEffect;
+            return retEffect;
         }
     }
 

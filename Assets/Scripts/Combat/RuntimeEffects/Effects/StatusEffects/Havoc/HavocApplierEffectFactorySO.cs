@@ -22,13 +22,13 @@ namespace Vanaring {
         [Header("Dmg applied when 'add' Havoc to enemy, not when Evoke")]
         [SerializeField]
         private EDamageScaling dmg;
-        public override IEnumerator Factorize(List<CombatEntity> targets)
+        public override RuntimeEffect Factorize(List<CombatEntity> targets)
         {
             HavocApplierRuntimeEffect retEffect = new HavocApplierRuntimeEffect(_effects, _actionAnimationInfo, dmg);
             foreach (CombatEntity target in targets)
                 retEffect.AssignTarget(target);
 
-            yield return retEffect;
+            return retEffect;
         }
     }
 

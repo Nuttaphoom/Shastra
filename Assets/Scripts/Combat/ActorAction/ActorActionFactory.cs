@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,7 +10,7 @@ using UnityEngine.Tilemaps;
 namespace Vanaring 
 {
     [CreateAssetMenu(fileName= "Combat Ability" , menuName = "ScriptableObject/Combat/CombatAbility" )]
-    public class CombatActionSO : ScriptableObject
+    public class ActorActionFactory : ScriptableObject
     { 
         [SerializeField]
         protected DescriptionBaseField _description; 
@@ -22,8 +23,17 @@ namespace Vanaring
         public string Desscription => _description.FieldDescription;
         public Sprite AbilityImage => _description.FieldImage;
         public RuntimeEffectFactorySO EffectFactory => _effect;
-
         #endregion
+    }
+
+    public interface IActorAction 
+    {
+        public IEnumerator PreActionPerform();
+        public void SetActionTarget(List<CombatEntity> targets);
+
+        public RuntimeEffect GetRuntimeEffect();
+        public TargetSelector GetTargetSelector(); 
+
     }
 
     [Serializable]

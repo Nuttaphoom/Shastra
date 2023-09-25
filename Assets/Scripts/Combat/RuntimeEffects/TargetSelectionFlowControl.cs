@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DG.Tweening;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -33,11 +34,6 @@ namespace Vanaring
 
         private int _currentSelectIndex = 0;
 
-        private SpellAbilityRuntime _latestSelectedSpell;
-        private ItemAbilityRuntime _latestSelectedItem;
-
-        private RuntimeEffectFactorySO _latestAction;
-
         private bool _forceStop = false;
 
 
@@ -52,69 +48,10 @@ namespace Vanaring
             if (_activlySelecting)
             {
                 _activlySelecting = false;
-                _latestAction = null;
                 _forceStop = true;
-                _latestSelectedSpell = null;
-                _latestSelectedItem = null;
-
             }
         }
-
-        public (RuntimeEffectFactorySO, List<CombatEntity>) GetLatestAction()
-        {
-            var tempAction = _latestAction;
-            if (PrepareAction())
-            {
-                _activlySelecting = false;
-                _latestSelectedSpell = null;
-                _latestSelectedItem = null;
-                _latestAction = null;
-
-            }
-            return (tempAction, _selectedTarget);
-        }
-
-        //TODO : Properly separate Spell action so that we don't need to return the spell like this
-        public SpellAbilityRuntime IsLatedActionSpell()
-        {
-            return _latestSelectedSpell;
-        }
-
-        public ItemAbilityRuntime IsLatedActionItem()
-        {
-            return _latestSelectedItem;
-        }
-
-        public bool PrepareAction()
-        {
-            return _activlySelecting && _latestAction != null;
-        }
-
-        #region Static Methods 
-
-        public IEnumerator InitializeSpellTargetSelectionScheme(CombatEntity caster, SpellAbilityRuntime spell, bool randomTarget = false)
-        {
-            if (_activlySelecting)
-                throw new Exception("Try to active selection scheme while it is already active");
-
-            _latestSelectedSpell = spell;
-
-            yield return InitializeTargetSelectionScheme(caster, spell.EffectFactory, randomTarget);
-        }
-
-        public IEnumerator InitializeItemTargetSelectionScheme(CombatEntity caster, ItemAbilityRuntime item, bool randomTarget = false)
-        {
-            if (_activlySelecting)
-                throw new Exception("Try to active selection scheme while it is already active");
-            _latestSelectedItem = item;
-
-            yield return InitializeTargetSelectionScheme(caster, item.EffectFactory, randomTarget);
-        }
-
-
-        #endregion
-
-        #region Private
+        
         public IEnumerator InitializeTargetSelectionSchemeWithoutSelect(List<CombatEntity> _targets)
         {
             if (_activlySelecting)
@@ -128,6 +65,7 @@ namespace Vanaring
                 _validTargets.Add(v);
             }
 
+            transform.DOMove(Vector3.zero, 3.0f);
             while (true)
             {
                 if (_forceStop)
@@ -150,26 +88,21 @@ namespace Vanaring
             _activlySelecting = false;
         }
 
-        public IEnumerator InitializeTargetSelectionScheme(CombatEntity caster, RuntimeEffectFactorySO action, bool randomTarget = false)
+        #region Private
+        public IEnumerator InitializeActionTargetSelectionScheme(CombatEntity caster, IActorAction actorAction, bool randomTarget = false)
         {
-            //throw new NotImplementedException("Caster Side need better way to be determined");
-
-            ECompetatorSide casterSide = CombatReferee.instance.GetCompetatorSide(caster) ;  //CombatReferee.instance.GetCharacterSide(caster);
             if (_activlySelecting)
-                throw new Exception("Try to active selection scheme while it is already active");
+                throw new Exception(caster + " Try to active selection scheme while it is already active");
+
+            _activlySelecting = true;
 
             CentralInputReceiver.Instance().AddInputReceiverIntoStack(this);
 
             OnTargetSelectionSchemeStart.PlayEvent(caster);
 
-            ColorfulLogger.LogWithColor("Initialize Target Selection", Color.green);
-
-            _activlySelecting = true;
-            _latestAction = null;
-
             ValidateData();
 
-            AssignPossibleTargets(caster, action);
+            AssignPossibleTargets(caster, actorAction.GetTargetSelector());
 
             CameraSetUPManager.Instance.CaptureVMCamera();
 
@@ -177,7 +110,7 @@ namespace Vanaring
 
             _buttonIndicatorWindow.SetIndicatorButtonShow(ButtonIndicatorWindow.IndicatorButtonShow.TARGET, true);
 
-            while (_selectedTarget.Count < action.TargetSelect.MaxTarget)
+            while (_selectedTarget.Count < actorAction.GetTargetSelector().MaxTarget)
             {
                 CombatEntity selected = _validTargets[_currentSelectIndex];
                 if (selected.TryGetComponent(out CombatGraphicalHandler cgh))
@@ -187,13 +120,6 @@ namespace Vanaring
 
                 if (!randomTarget)
                 {
-                    //if (casterSide == CombatReferee.instance.GetCharacterSide(selected))
-                    //{
-                    //    CameraSetUPManager.Instance.ActiveTargetModeVirtualCamera();
-                    //}
-                    //else
-                    //    CameraSetUPManager.Instance.RestoreVMCameraState();
-
                     CameraSetUPManager.Instance.SetupTargatModeLookAt(selected.gameObject);
                     _targetSelectionGUI.SelectTargetPointer(selected);
                 }
@@ -226,31 +152,35 @@ namespace Vanaring
                 }
             }
 
-            _latestAction = action;
-
         End:
             _targetSelectionGUI.EndSelectionScheme();
-            OnTargetSelectionSchemeEnd.PlayEvent(caster);
-            CameraSetUPManager.Instance.RestoreVMCameraState();
 
+            OnTargetSelectionSchemeEnd.PlayEvent(caster);
+
+            CameraSetUPManager.Instance.RestoreVMCameraState();
             CentralInputReceiver.Instance().RemoveInputReceiverIntoStack(this);
 
-            yield return null;
+            actorAction.SetActionTarget(_selectedTarget); 
+            caster.AddActionQueue(actorAction);
+                 
+            _activlySelecting = false;
+
+
         }
 
         //TODO : Assign possible target should have more detail, like "dead or not dead" , "got some status effect or not
-        private void AssignPossibleTargets(CombatEntity caster, RuntimeEffectFactorySO action)
+        private void AssignPossibleTargets(CombatEntity caster, TargetSelector targetSelector)
         {
             ECompetatorSide eCompetatorSide = CombatReferee.instance.GetCompetatorSide(caster);  //CombatReferee.instance.GetCharacterSide(caster);
             ;  // CombatReferee.instance.GetCharacterSide(caster);
 
-            if (action.TargetSelect.TargetOppose)
+            if (targetSelector.TargetOppose)
                 eCompetatorSide = (ECompetatorSide)(((int)eCompetatorSide + 1) % 2);
 
             foreach (CombatEntity target in CombatReferee.instance.GetCompetatorsBySide(eCompetatorSide))
                 _validTargets.Add(target);
 
-            if (action.TargetSelect.TargetBoth)
+            if (targetSelector.TargetBoth)
             {
                 eCompetatorSide = (ECompetatorSide)(((int)eCompetatorSide + 1) % 2);
 
@@ -258,7 +188,7 @@ namespace Vanaring
                     _validTargets.Add(target);
             }
 
-            if (action.TargetSelect.TargetCasterItself)
+            if (targetSelector.TargetCasterItself)
             {
                 _validTargets.Clear();
                 _validTargets.Add(caster);

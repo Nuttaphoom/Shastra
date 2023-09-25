@@ -49,10 +49,9 @@ namespace Vanaring
 
         public bool IsDead => _isDead;
 
-        public bool IsExhausted => _isExhausted; 
+        public bool IsExhausted => _isExhausted;
 
-        protected Queue<RuntimeEffect> _actionQueue = new Queue<RuntimeEffect>() ; 
-
+        protected Queue<IActorAction> _actionQueue = new Queue<IActorAction>(); 
         public void Awake()
         {
             _dmgOutputPopHanlder = new DamageOutputPopupHandler(_dmgOutputPopHanlder, this); 
@@ -111,30 +110,27 @@ namespace Vanaring
             if (_baseEntityBrain == null)
                 throw new Exception("Base Entity Brain of " + gameObject.name + " hasn't been assgined");
 
-            IEnumerator coroutine = (_baseEntityBrain.GetAction());
+            yield return (_baseEntityBrain.GetAction());
 
-            while (coroutine.MoveNext())
-            {
-                //No need to return null 
-                if (coroutine.Current != null && coroutine.Current is RuntimeEffect)
-                {
-                    //Need to cast to RuntimeEffect before returning            
-                    _actionQueue.Enqueue( (RuntimeEffect)coroutine.Current) ; 
-                }
-                else
-                    yield return coroutine.Current;
-            }
         }
 
-        public RuntimeEffect GetActionRuntimeEffect()
+        public IActorAction GetActionRuntimeEffect(bool peek = false)
         {
             if (_actionQueue == null)
-                _actionQueue = new Queue<RuntimeEffect>();
+                _actionQueue = new Queue<IActorAction>(); 
 
             if (_actionQueue.Count == 0)
                 return null;
 
+            if (peek)
+                return _actionQueue.Peek(); 
+
             return _actionQueue.Dequeue(); 
+        }
+
+        public void AddActionQueue(IActorAction actorAction)
+        {
+            _actionQueue.Enqueue(actorAction);
         }
         public IEnumerator TakeControl()
         {
@@ -164,13 +160,23 @@ namespace Vanaring
         /// <summary>
         /// Invoked before this character perform any action
         /// </summary>
-        public IEnumerator OnPerformAction(RuntimeEffect action)
+        public IEnumerator OnPerformAction(IActorAction action)
         {
-            _isExhausted = true;
+            //Call on perform action of the ActorAction
+            yield return action.PreActionPerform(); 
 
-            yield return action.ExecuteRuntimeCoroutine(this);
+            var eff = action.GetRuntimeEffect();  
 
-            yield return action.OnExecuteRuntimeDone(this);
+            //check if still be able to call the action
+            if (ReadyForControl()) {
+
+                _isExhausted = true;
+
+                yield return eff.ExecuteRuntimeCoroutine(this);
+
+                yield return eff.OnExecuteRuntimeDone(this);
+            }
+
 
         }
 

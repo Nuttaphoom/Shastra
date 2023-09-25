@@ -19,8 +19,8 @@ namespace Vanaring
     public class SpellCasterHandler : MonoBehaviour
     {
         [SerializeField]
-        private List<SpellAbilitySO> _spellAbilities = new List<SpellAbilitySO>();
-        public List<SpellAbilitySO> SpellAbilities => _spellAbilities;
+        private List<SpellActionSO> _spellAbilities = new List<SpellActionSO>();
+        public List<SpellActionSO> SpellAbilities => _spellAbilities;
 
         private RuntimeMangicalEnergy _mangicalEnergy;
 
@@ -45,9 +45,9 @@ namespace Vanaring
             OnModifyEnergy -= argc;
         }
         #endregion EndSub 
-        public bool IsEnergySufficient(SpellAbilityRuntime spell)
+        public bool IsEnergySufficient(SpellActionSO spell)
         {
-            return GetEnergyAmount(spell.RequireEnergySide) > spell.RequireEnergyAmount;
+            return GetEnergyAmount(spell.RequiredEnergy.Side) > spell.RequiredEnergy.Amount ;
         }
         #region Modify Energy  
 
@@ -90,7 +90,7 @@ namespace Vanaring
         #region Spell
         public void CastSpell(SpellAbilityRuntime runtimeSpell)
         {
-            StartCoroutine(TargetSelectionFlowControl.Instance.InitializeSpellTargetSelectionScheme(_combatEntity, runtimeSpell));
+            StartCoroutine(TargetSelectionFlowControl.Instance.InitializeActionTargetSelectionScheme(_combatEntity, runtimeSpell));
         }
         #endregion
     }

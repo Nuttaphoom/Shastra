@@ -91,7 +91,6 @@ namespace Vanaring
         }
 
         #endregion
-
         private IEnumerator CustomTick()
         {
             while (true)
@@ -175,11 +174,6 @@ namespace Vanaring
         private void SetActiveActors()
         {
             var team = GetCurrentTeam();
-
-            foreach (var v in team)
-            {
-                Debug.Log(v); 
-            }
 
             _activeCombatEntities.Reset();
 

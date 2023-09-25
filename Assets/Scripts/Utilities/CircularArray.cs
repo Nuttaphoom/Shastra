@@ -10,7 +10,6 @@ namespace Vanaring
     public class CircularArray<T> : IEnumerable<T>
     {
         private List<T> data;
-
         public CircularArray(IEnumerable<T> initialData)
         {
             data = new List<T>(initialData);

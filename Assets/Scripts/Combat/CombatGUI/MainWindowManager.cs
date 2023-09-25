@@ -36,8 +36,6 @@ namespace Vanaring
         private List<Vector3> _defaultLocalScale;
         private float modifiedSize = 1.25f ;
 
-        CircularArray<int> test ; 
-
         private void Awake()
         {
             _buttons = new List<Button>();

@@ -44,46 +44,49 @@ namespace Vanaring
             //_statusWindowManager.InstantiateStatusUI(_effects);
         }
 
-        //the effect should be factorize exactly before being applied 
-        private IEnumerator LogicApplyNewEffect(StatusRuntimeEffectFactorySO factory)
+        //
+
+        /// <summary>
+        /// the effect should be factorize exactly before being applied 
+        ///  
+        /// </summary>
+        /// <param name="factory"></param>
+        /// <returns></returns>
+        private void LogicApplyNewEffect(StatusRuntimeEffectFactorySO factory)
         {
-            IEnumerator co = factory.Factorize(new List<CombatEntity>() { _appliedEntity });
+            StatusRuntimeEffect effect = factory.Factorize(new List<CombatEntity>() { _appliedEntity }) as StatusRuntimeEffect ;
 
             string key = factory.StackInfo.StackID();
-            while (co.MoveNext())
+            if (_effects.ContainsKey(key))
             {
-                if (co.Current != null && co.Current.GetType().IsSubclassOf(typeof(RuntimeEffect)))
+                if (factory.StackInfo.Stackable)
                 {
-                    if (_effects.ContainsKey(key)) {
-                        if (factory.StackInfo.Stackable)
-                        {
-                            _effects[key].Add(co.Current as StatusRuntimeEffect);
-                        }
-                        else if (factory.StackInfo.Overwrite)
-                        {
-                            while (_effects[key].Count > 0)
-                                _effects[key].RemoveAt(0);
-
-                            _effects[key].Add(co.Current as StatusRuntimeEffect);
-                        }
-                    }
-                    else
-                    {
-
-                        _effects.Add(key, new List<StatusRuntimeEffect>());
-                        _effects[key].Add(co.Current as StatusRuntimeEffect);
-                    }
-
+                    _effects[key].Add(effect);
                 }
-                yield return new WaitForEndOfFrame();
+                else if (factory.StackInfo.Overwrite)
+                {
+                    while (_effects[key].Count > 0)
+                        _effects[key].RemoveAt(0);
+
+                    _effects[key].Add(effect);
+                }
             }
+            else
+            {
+
+                _effects.Add(key, new List<StatusRuntimeEffect>());
+                _effects[key].Add(effect);
+            }
+
         }
 
         public IEnumerator ApplyNewEffect(StatusRuntimeEffectFactorySO factory/*, ActionAnimationInfo actionAnimationInfo*/)
         {
-            yield return LogicApplyNewEffect(factory);
+            LogicApplyNewEffect(factory);
             //create Status UI
             UpdateStatusUI();
+
+            yield return null; 
 
         }
 

@@ -10,7 +10,7 @@ namespace Vanaring
     [CreateAssetMenu(fileName = "DebugLogRuntimeEffectFactory", menuName = "ScriptableObject/RuntimeEffect/Utility/DebugLogRuntimeEffectFactory")]
     public class DebugLogRuntimeEffectFactory : RuntimeEffectFactorySO
     {
-        public override IEnumerator Factorize( List<CombatEntity> targets)
+        public override RuntimeEffect Factorize( List<CombatEntity> targets)
         {
             RuntimeEffect retEffect = new DebugLogRuntimeEffect();
             if (targets != null)
@@ -19,7 +19,7 @@ namespace Vanaring
                     retEffect.AssignTarget(target);
             }
 
-            yield return retEffect ;
+            return retEffect ;
         }
     }
 

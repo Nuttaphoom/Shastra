@@ -54,15 +54,9 @@ namespace Vanaring
 
         public void Overheat(CombatEntity caster)
         {
-            IEnumerator coroutine = _statusEffectFactory.Factorize(new List<CombatEntity>() { _combatEntity });
-            while (coroutine.MoveNext())
-            {
-                if (coroutine.Current != null && coroutine.Current.GetType().IsSubclassOf(typeof(RuntimeEffect)))
-                {
-                    StartCoroutine((coroutine.Current as RuntimeEffect).ExecuteRuntimeCoroutine(_combatEntity));
-                }
-            }
-
+            RuntimeEffect effect = _statusEffectFactory.Factorize(new List<CombatEntity>() { _combatEntity });
+            StartCoroutine(effect.ExecuteRuntimeCoroutine(_combatEntity));
+                 
             _combatEntity.LogicHurt(null, caster.StatsAccumulator.GetATKAmount());
             if (!_combatEntity.IsDead)
             {

@@ -11,13 +11,13 @@ namespace Vanaring
     [CreateAssetMenu(fileName = "DebugStatusEffectFactorySO", menuName = "ScriptableObject/RuntimeEffect/DebugStatusEffectFactory/DebugStatusEffectFactorySO")]
     public class DebugStatusEffectFactorySO : StatusRuntimeEffectFactorySO
     {
-        public override IEnumerator Factorize(List<CombatEntity> targets)
+        public override RuntimeEffect Factorize(List<CombatEntity> targets)
         {
             DebugStatusEffectApplier retEffect = new DebugStatusEffectApplier(this);
             foreach (CombatEntity target in targets)
                 retEffect.AssignTarget(target);
 
-            yield return retEffect;
+            return retEffect;
         }
     }
 

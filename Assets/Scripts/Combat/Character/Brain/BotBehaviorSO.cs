@@ -20,25 +20,13 @@ namespace  Vanaring  {
         [Header("This variable is used for tepegrahy only : ")]
         private EnergyModifierData _actionEnergyCost ;
 
-        [Serializable]
-        public struct ActionData
-        {
-            public List<RuntimeEffectFactorySO> Effects; 
-            public EnergyModifierData EnergyCost;
-            
-        }
+        [SerializeField]
+        public ActorActionFactory action;
 
-        public IEnumerator GetBehaviorEffect()
-        {
-            ActionData actionData = new ActionData();
-            actionData.Effects = new List<RuntimeEffectFactorySO>();
-            actionData.EnergyCost = _actionEnergyCost; 
-            foreach (RuntimeEffectFactorySO factory in _factories)
-            {
-                actionData.Effects.Add(factory);
-            }
 
-            yield return actionData; 
+        public ActorActionFactory GetAction()
+        {
+            return action; 
         }
 
         #region GETTER 

@@ -17,14 +17,7 @@ namespace Vanaring  {
 
         public IEnumerator GetBehaviorEffect(int index)
         {
-            IEnumerator coroutine =  _botBehaviorSO[index].GetBehaviorEffect();
-
-            while (coroutine.MoveNext() ) {
-                if ( coroutine.Current != null &&  coroutine.Current is (BotBehaviorSO.ActionData))
-                {
-                    yield return (BotBehaviorSO.ActionData) coroutine.Current ;
-                }
-            }
+            yield return null; 
         }
 
         #region GETTER

@@ -39,24 +39,26 @@ namespace Vanaring
             yield return null;
         }
 
-        public BotBehaviorSO.ActionData GetBehaviorEffect()
+        public ActorActionFactory GetBehaviorEffect()
         {
-            _currentBehavior = _nextBehavior;
-            List<BotBehaviorSO.ActionData> ret = new List<BotBehaviorSO.ActionData>();
-            IEnumerator coroutine = _behaviorSocketSOs.GetBehaviorEffect(_currentBehavior);
+            //_currentBehavior = _nextBehavior;
+            //List<BotBehaviorSO.ActionData> ret = new List<BotBehaviorSO.ActionData>();
+            //IEnumerator coroutine = _behaviorSocketSOs.GetBehaviorEffect(_currentBehavior);
 
-            while (coroutine.MoveNext())
-            {
-                Debug.Log("move next"); 
-                Debug.Log(coroutine.GetType() ) ;
-                if (coroutine.Current != null && coroutine.Current is BotBehaviorSO.ActionData )
-                {
-                    return ((BotBehaviorSO.ActionData)coroutine.Current);
-                }
+            //while (coroutine.MoveNext())
+            //{
+            //    Debug.Log("move next"); 
+            //    Debug.Log(coroutine.GetType() ) ;
+            //    if (coroutine.Current != null && coroutine.Current is BotBehaviorSO.ActionData )
+            //    {
+            //        return ((BotBehaviorSO.ActionData)coroutine.Current);
+            //    }
 
-            }
-            Debug.Log("done move next"); 
-            throw new System.Exception("GetBehaviorEffect don't return BotBehaviorSO.ActionData");
+            //}
+            //Debug.Log("done move next"); 
+            //throw new System.Exception("GetBehaviorEffect don't return BotBehaviorSO.ActionData");
+
+             return null; 
 
 
         }

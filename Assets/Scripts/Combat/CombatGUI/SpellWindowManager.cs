@@ -126,7 +126,7 @@ namespace Vanaring
             int tmpNum = 0;
             int tmpSlotIndex = 0;
             _spellSockets = new List<SpellSocketGUI>(); 
-            foreach (SpellAbilitySO spellAbility in _combatEntity.SpellCaster.SpellAbilities)
+            foreach (SpellActionSO spellAbility in _combatEntity.SpellCaster.SpellAbilities)
             {
                 if (tmpNum >= start && tmpNum <= end)
                 {

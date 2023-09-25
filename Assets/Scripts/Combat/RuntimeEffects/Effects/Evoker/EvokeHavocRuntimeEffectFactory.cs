@@ -19,7 +19,7 @@ namespace Vanaring
 
         [SerializeField]
         private ActionAnimationInfo _actionAnimationInfo; 
-        public override IEnumerator Factorize(List<CombatEntity> targets)
+        public override RuntimeEffect Factorize(List<CombatEntity> targets)
         {
             EvokeHavocRuntimeEffect retEffect = new EvokeHavocRuntimeEffect(_energyModifierData,_actionAnimationInfo);
             if (targets != null)
@@ -28,7 +28,7 @@ namespace Vanaring
                     retEffect.AssignTarget(target);
             }
 
-            yield return retEffect;
+            return retEffect;
         }
     }
 

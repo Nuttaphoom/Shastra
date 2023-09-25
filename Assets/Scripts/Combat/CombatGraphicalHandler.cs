@@ -135,12 +135,12 @@ namespace Vanaring
             if (combatEntity != _combatEntity)
                 return;
 
-            if (!TargetSelectionFlowControl.Instance.PrepareAction())
-            {
-                EnableQuickMenuBar(true);
+            //if (!TargetSelectionFlowControl.Instance.PrepareAction())
+            //{
+            //    EnableQuickMenuBar(true);
 
-                _entityWindowManager.PushInNewWindow(_mainWindowManager);
-            }
+            //    _entityWindowManager.PushInNewWindow(_mainWindowManager);
+            //}
 
             //if (_combatEntity == combatEntity)
             //{

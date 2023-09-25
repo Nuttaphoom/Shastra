@@ -28,35 +28,35 @@ namespace Vanaring
         }
 
         public override IEnumerator GetAction(  ) {
-            SpellAbilityRuntime latestSpell = null;
-            ItemAbilityRuntime latestItem = null; 
-            if (TargetSelectionFlowControl.Instance.PrepareAction() )
-            {
-                latestSpell = TargetSelectionFlowControl.Instance.IsLatedActionSpell();
-                latestItem = TargetSelectionFlowControl.Instance.IsLatedActionItem(); 
+            //SpellAbilityRuntime latestSpell = null;
+            //ItemAbilityRuntime latestItem = null; 
+            //if (TargetSelectionFlowControl.Instance.PrepareAction() )
+            //{
+            //    latestSpell = TargetSelectionFlowControl.Instance.IsLatedActionSpell();
+            //    latestItem = TargetSelectionFlowControl.Instance.IsLatedActionItem(); 
 
-                var latestAction = TargetSelectionFlowControl.Instance.GetLatestAction();
-                InitializeAction(latestAction.Item1, latestAction.Item2);
-            }
+            //    var latestAction = TargetSelectionFlowControl.Instance.GetLatestAction();
+            //    InitializeAction(latestAction.Item1, latestAction.Item2);
+            //}
 
-            if (_action != null)
-            {
-                //After return action, we check if we need to modify energy or not 
-                //TODO - Properly check if we should modify the energy 
-                if (latestSpell != null)
-                {
-                    _combateEntity.SpellCaster.ModifyEnergy(_combateEntity,latestSpell.ModifiedEnergySide, latestSpell.ModifiedEnergyAmount);
-                }
-                if (latestItem != null)
-                {
-                    _combateEntity.ItemUser.RemoveItem(latestItem);
-                }
+            //if (_action != null)
+            //{
+            //    //After return action, we check if we need to modify energy or not 
+            //    //TODO - Properly check if we should modify the energy 
+            //    if (latestSpell != null)
+            //    {
+            //        _combateEntity.SpellCaster.ModifyEnergy(_combateEntity,latestSpell.ModifiedEnergySide, latestSpell.ModifiedEnergyAmount);
+            //    }
+            //    if (latestItem != null)
+            //    {
+            //        _combateEntity.ItemUser.RemoveItem(latestItem);
+            //    }
 
-                yield return _action;
+            //    yield return _action;
 
-                latestSpell = null;
-                _action = null;
-            }
+            //    latestSpell = null;
+            //    _action = null;
+            //}
 
             
             yield return null; 
@@ -65,18 +65,7 @@ namespace Vanaring
         }
         #endregion
 
-        private void InitializeAction(RuntimeEffectFactorySO _factory, List<CombatEntity> _targets )
-        {
-            IEnumerator coroutine =  _factory.Factorize(_targets) ; 
-
-            while (coroutine.MoveNext())
-            {
-                if (coroutine.Current != null && coroutine.Current is RuntimeEffect)
-                {
-                    _action = (RuntimeEffect)coroutine.Current;
-                } 
-            }
-        }
+       
 
         public override IEnumerator TakeControl()
         {
