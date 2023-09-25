@@ -1348,7 +1348,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _owner: {fileID: 0}
-  _guiObj: {fileID: 8874530647825648480}
   lightNumText: {fileID: 6799221435612083679}
   darkNumText: {fileID: 2982444944193960378}
   lightImage: {fileID: 4493104000120652238}
@@ -2734,7 +2733,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6372633111618651101}
-  - component: {fileID: 6091715002068155578}
+  - component: {fileID: 8386119338590549407}
   - component: {fileID: 2524119204172734917}
   - component: {fileID: 3183956409549396090}
   - component: {fileID: 230340289741595676}
@@ -2766,7 +2765,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6091715002068155578
+--- !u!114 &8386119338590549407
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2775,16 +2774,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 8010838884609612702}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c29349dce07f01f44921401f4122d367, type: 3}
+  m_Script: {fileID: 11500000, guid: acd9ffed6d6cced4a96205cc907deed7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _characterSheet: {fileID: 11400000, guid: 061e8b75b8639eb42adf81a20ccf9fc7, type: 2}
-  _baseEntityBrain: {fileID: 0}
-  _spellCaster: {fileID: 230340289741595676}
+  _characterSheet: {fileID: 0}
+  _spellCaster: {fileID: 0}
   _itemUser: {fileID: 0}
-  _statusEffectHandler:
-    _appliedEntity: {fileID: 6091715002068155578}
-  _combatEntityAnimationHandler: {fileID: 2524119204172734917}
+  _combatEntityAnimationHandler: {fileID: 0}
   _dmgOutputPopHanlder:
     _outputDMGTimerPrefab: {fileID: 0}
     _outputHealTimerPrefab: {fileID: 0}
