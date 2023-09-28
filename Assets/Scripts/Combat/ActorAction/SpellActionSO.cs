@@ -26,18 +26,19 @@ namespace Vanaring
 
         public SpellAbilityRuntime Factorize(CombatEntity caster)
         {
-            return new SpellAbilityRuntime(EnergyModifer, EffectFactory, caster); 
+            return new SpellAbilityRuntime(EnergyModifer, EffectFactory, caster, _targetSelector); 
         } 
 
     }
 
     public class SpellAbilityRuntime : IActorAction
     {
-        public SpellAbilityRuntime(EnergyModifierData energyModifier, RuntimeEffectFactorySO effect, CombatEntity caster)
+        public SpellAbilityRuntime(EnergyModifierData energyModifier, RuntimeEffectFactorySO effect, CombatEntity caster, TargetSelector targetSelector)
         {
             _effect = effect; 
             _energyModifier = energyModifier ;
-            _caster = caster; 
+            _caster = caster;
+            _targetSelector = targetSelector; 
         }
 
         private CombatEntity _caster; 
@@ -47,8 +48,9 @@ namespace Vanaring
 
         private RuntimeEffectFactorySO _effect;
 
-        private List<CombatEntity> _targets; 
+        private List<CombatEntity> _targets;
 
+        private TargetSelector _targetSelector; 
         public RuntimeMangicalEnergy.EnergySide ModifiedEnergySide { get { return _energyModifier.Side; } }
         public int ModifiedEnergyAmount { get { return _energyModifier.Amount; } }
 
@@ -80,7 +82,7 @@ namespace Vanaring
 
         public TargetSelector GetTargetSelector()
         {
-            return _effect.TargetSelect; 
+            return _targetSelector; 
         }
     }
 

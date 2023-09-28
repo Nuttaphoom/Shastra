@@ -89,7 +89,6 @@ namespace Vanaring
             _activlySelecting = false;
         }
 
-        #region Private
         public IEnumerator InitializeActionTargetSelectionScheme(CombatEntity caster, IActorAction actorAction, bool randomTarget = false)
         {
             ColorfulLogger.LogWithColor("Start target selection ", Color.green);
@@ -170,44 +169,30 @@ namespace Vanaring
 
 
         }
-
-        //TODO : Assign possible target should have more detail, like "dead or not dead" , "got some status effect or not
         private void AssignPossibleTargets(CombatEntity caster, TargetSelector targetSelector)
         {
+            _validTargets.Clear(); 
+
             ECompetatorSide eCompetatorSide = CombatReferee.instance.GetCompetatorSide(caster);  //CombatReferee.instance.GetCharacterSide(caster);
             ;  // CombatReferee.instance.GetCharacterSide(caster);
 
-            if (targetSelector.TargetOppose)
-                eCompetatorSide = (ECompetatorSide)(((int)eCompetatorSide + 1) % 2);
-
-            foreach (CombatEntity target in CombatReferee.instance.GetCompetatorsBySide(eCompetatorSide))
-                _validTargets.Add(target);
-
-            if (targetSelector.TargetBoth)
+            foreach ( ECompetatorSide side in Enum.GetValues(typeof(ECompetatorSide)))
             {
-                eCompetatorSide = (ECompetatorSide)(((int)eCompetatorSide + 1) % 2);
-
-                foreach (CombatEntity target in CombatReferee.instance.GetCompetatorsBySide(eCompetatorSide))
-                    _validTargets.Add(target);
-            }
-
-            if (targetSelector.TargetCasterItself)
-            {
-                _validTargets.Clear();
-                _validTargets.Add(caster);
-            }
-
-            //If no need for dead target, remove them
-            for (int i = 0; i < _validTargets.Count; i++)
-            {
-                if (_validTargets[i].IsDead)
+                foreach (CombatEntity target in CombatReferee.instance.GetCompetatorsBySide(side))
                 {
-                    _validTargets.RemoveAt(i);
-                    i--;
+                    if (targetSelector.CorrectTarget(caster, target))
+                    {
+                        if (! _validTargets.Contains(target))
+                        {
+                            _validTargets.Add(target);
+                        }
+                    }
                 }
             }
-        }
 
+
+           
+        }
         private void ValidateData()
         {
             _validTargets = new List<CombatEntity>();
@@ -246,17 +231,12 @@ namespace Vanaring
                 }
             }
         }
-        #endregion
     }
 
 
     [Serializable]
     public class TargetSelector
     {
-        private enum TargetSide
-        {
-            Self, Oppose, Both
-        }
         [Header("Maximum target that can be assigned to")]
         [SerializeField]
         private int _maxTargetSize = 1;
@@ -264,18 +244,43 @@ namespace Vanaring
         public int MaxTarget => _maxTargetSize;
 
         [SerializeField]
-        private TargetSide _targetSide = TargetSide.Self;
-
-        [SerializeField]
         private bool _targetCaster = false;
 
+        [Header("Toggle target status when selected")]
+        [SerializeField]
+        private bool _targetAlly;
+        [SerializeField]
+        private bool _targetOppose;
+        [SerializeField]
+        private bool _targetSelf; 
 
 
-        public bool TargetOppose => (_targetSide == TargetSide.Oppose);
-        public bool TargetCasterItself => _targetCaster;
+        public bool CorrectTarget(CombatEntity caster, CombatEntity target)
+        {
+            ECompetatorSide casterSide = CombatReferee.instance.GetCompetatorSide(caster) ; 
+            ECompetatorSide targetSide = CombatReferee.instance.GetCompetatorSide(target) ;
 
-        public bool TargetBoth => (_targetSide == TargetSide.Both);
+            if (TargetCasterItself)
+            {
+                return caster == target;
+            }
 
+            if (TargetOppose)
+            {
+                return (casterSide != targetSide); 
+            }
+
+            if (TargetAllyTeam)
+            {
+                return (casterSide == targetSide); 
+            }
+
+            return false; 
+        }
+
+        private bool TargetOppose => (_targetOppose);
+        private bool TargetCasterItself => (_targetSelf);
+        public bool TargetAllyTeam => (_targetAlly) ; 
 
         //Used when the target selection is requires  
     }

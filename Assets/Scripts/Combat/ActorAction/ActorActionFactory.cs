@@ -13,12 +13,17 @@ namespace Vanaring
     public class ActorActionFactory : ScriptableObject
     { 
         [SerializeField]
-        protected DescriptionBaseField _description; 
+        protected DescriptionBaseField _description;
+
+        [SerializeField]
+        protected TargetSelector _targetSelector;
 
         [SerializeField]
         private RuntimeEffectFactorySO _effect ;
 
         #region GETTER
+        public TargetSelector TargetSelect => _targetSelector;
+
         public string AbilityName => _description.FieldName; 
         public string Desscription => _description.FieldDescription;
         public Sprite AbilityImage => _description.FieldImage;
