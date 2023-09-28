@@ -160,12 +160,11 @@ namespace Vanaring
         #endregion
 
         #region InterfaceFunction 
-        private UnityAction<int> _OnUpdateVisualDMG;
-        private UnityAction<int> _OnUpdateVisualDMGEnd;
+        private UnityAction<int> _OnUpdateVisualDMG ;
+        private UnityAction<int> _OnUpdateVisualDMGEnd ;
         public void LogicHurt(CombatEntity attacker, int inputdmg)
         {
             float trueDmg = inputdmg;
-
             //Do some math here
             trueDmg = -trueDmg;
 

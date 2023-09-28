@@ -72,8 +72,6 @@ namespace Vanaring
             }
             else
             {
-
-
                 _defaultValue += value ;
                 if (peakUpdate)
                     _peakValue += value;
@@ -103,6 +101,7 @@ namespace Vanaring
         {
             return (_increasedValue + _defaultValue);
         }
+
         #endregion
 
 
