@@ -1020,8 +1020,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 401615895}
-  m_LocalRotation: {x: 0.10183914, y: -0.6158887, z: 0.08071837, w: 0.77704215}
-  m_LocalPosition: {x: -0.19932765, y: 1.3600005, z: -4.64184}
+  m_LocalRotation: {x: 0.11926049, y: -0.3937896, z: 0.051610056, w: 0.90996873}
+  m_LocalPosition: {x: -0.3080001, y: 1.3600005, z: -5.78}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2847,6 +2847,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1458740242}
   - component: {fileID: 1458740243}
+  - component: {fileID: 1458740244}
+  - component: {fileID: 1458740245}
   m_Layer: 0
   m_Name: Director
   m_TagString: Untagged
@@ -2896,12 +2898,54 @@ PlayableDirector:
     value: {fileID: 2014810605}
   - key: {fileID: 8371859281783397377, guid: e832dae7ba11a994991e2a7a72691b9f, type: 2}
     value: {fileID: 2098927635}
-  - key: {fileID: -1552266956546618035, guid: e832dae7ba11a994991e2a7a72691b9f, type: 2}
-    value: {fileID: 544101511}
   - key: {fileID: -3804973592318868785, guid: e832dae7ba11a994991e2a7a72691b9f, type: 2}
     value: {fileID: 1514498148}
+  - key: {fileID: -2013052913855778023, guid: e832dae7ba11a994991e2a7a72691b9f, type: 2}
+    value: {fileID: 1458740244}
   m_ExposedReferences:
     m_References: []
+--- !u!114 &1458740244
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1458740241}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e52de21a22b6dd44c9cc19f810c65059, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Events:
+    m_Signals:
+    - {fileID: 11400000, guid: ccc65909a5fa13448a37c42faa23e6db, type: 2}
+    m_Events:
+    - m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1458740245}
+          m_TargetAssemblyTypeName: Vanaring.TimelineSignalBroadcaster, Assembly-CSharp
+          m_MethodName: RecieveSignal
+          m_Mode: 5
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: A
+            m_BoolArgument: 0
+          m_CallState: 2
+--- !u!114 &1458740245
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1458740241}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b400b0f32a4edb74299d58f33776c016, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1472709133
 GameObject:
   m_ObjectHideFlags: 0
@@ -3393,8 +3437,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1807549186}
-  m_LocalRotation: {x: 0.10183914, y: -0.6158887, z: 0.08071837, w: 0.77704215}
-  m_LocalPosition: {x: -0.19932765, y: 1.3600005, z: -4.64184}
+  m_LocalRotation: {x: 0.11926049, y: -0.3937896, z: 0.051610056, w: 0.90996873}
+  m_LocalPosition: {x: -0.3080001, y: 1.3600005, z: -5.78}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
