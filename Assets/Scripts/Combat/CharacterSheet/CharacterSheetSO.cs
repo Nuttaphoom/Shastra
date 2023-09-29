@@ -86,8 +86,7 @@ namespace Vanaring
                 }
             }
             return ret; 
-               
-        }
+        } 
 
         public void ModifyPeakValue(int value)
         {

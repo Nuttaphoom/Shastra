@@ -139,10 +139,13 @@ namespace Vanaring
 
                 yield return eff.ExecuteRuntimeCoroutine(this);
 
-                Debug.Log("done execute runtime coroutine");
-
                 yield return eff.OnExecuteRuntimeDone(this);
+
+                yield return action.PostActionPerform();
+
             }
+
+
         }
 
         public IEnumerator OnPostPerformAction()

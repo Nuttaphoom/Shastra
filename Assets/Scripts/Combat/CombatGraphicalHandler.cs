@@ -161,7 +161,6 @@ namespace Vanaring
 
         private void OnUpdateEntityStats(int i)
         {
-            Debug.Log("update entity stats"); 
             if (!_quickHPBar.gameObject.activeSelf)
                 EnableQuickMenuBar(true); 
         }

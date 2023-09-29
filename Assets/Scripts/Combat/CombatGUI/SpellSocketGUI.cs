@@ -72,7 +72,7 @@ namespace Vanaring
             _descriptionText.text = spell.Desscription.ToString();
             _spellCost.text = spell.RequiredEnergy.Amount.ToString();
             _requireEnergyCost.text = "> " + spell.RequiredEnergy.Amount.ToString();
-            _modifiedEnergyCost.text = "+ " + spell.EnergyModifer.Amount.ToString();
+            _modifiedEnergyCost.text = "+ " + spell.RequiredEnergy.Amount.ToString();
             _skillImage.sprite = spell.AbilityImage;
             _fadeBlack.gameObject.SetActive(false); ;
 
@@ -87,7 +87,7 @@ namespace Vanaring
                 _reqEnergyTypeDesImg.sprite = _darkImage;
             }
             
-            if(spell.EnergyModifer.Side == RuntimeMangicalEnergy.EnergySide.LightEnergy)
+            if(spell.RequiredEnergy.Side == RuntimeMangicalEnergy.EnergySide.LightEnergy)
             {
                 _modEnergyTypeDesImg.sprite = _lightImage;
             }
@@ -144,7 +144,6 @@ namespace Vanaring
         }
         public bool IsEnergySufficeientToUseThisSpell()
         {
-          
             return _caster.SpellCaster.IsEnergySufficient(_spellSO); 
         }
     }

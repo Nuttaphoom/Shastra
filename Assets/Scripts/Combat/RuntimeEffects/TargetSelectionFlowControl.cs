@@ -92,7 +92,6 @@ namespace Vanaring
         public IEnumerator InitializeActionTargetSelectionScheme(CombatEntity caster, IActorAction actorAction, bool randomTarget = false)
         {
             ColorfulLogger.LogWithColor("Start target selection ", Color.green);
-            Debug.Log("_activlySelecting is " + _activlySelecting);
             if (_activlySelecting)
                 throw new Exception(caster + " Try to active selection scheme while it is already active");
 

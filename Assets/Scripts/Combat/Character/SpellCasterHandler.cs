@@ -49,8 +49,7 @@ namespace Vanaring
         #region Modify Energy  
         public bool IsEnergySufficient(SpellActionSO spell)
         {
-            Debug.Log(GetEnergyAmount(spell.RequiredEnergy.Side) + " vs " + spell.RequiredEnergy.Amount); 
-            return GetEnergyAmount(spell.RequiredEnergy.Side) > spell.RequiredEnergy.Amount;
+            return GetEnergyAmount(spell.RequiredEnergy.Side) >= spell.RequiredEnergy.Amount;
         }
         public int GetEnergyAmount(RuntimeMangicalEnergy.EnergySide side)
         {
@@ -60,12 +59,12 @@ namespace Vanaring
         public void ModifyEnergy(CombatEntity caster, RuntimeMangicalEnergy.EnergySide side, int value)
         {
             _mangicalEnergy.ModifyEnergy(value, side);
-            Debug.Log("modify " + side + "for " + value);
             OnModifyEnergy?.Invoke(caster, side, value);
         }
 
         public bool IsEnergyOverheat()
         {
+            Debug.Log("is overheat in " + gameObject); 
             return _mangicalEnergy.IsOverheat();
         }
 
@@ -74,10 +73,9 @@ namespace Vanaring
             int modifiedAmout = 0;
             RuntimeMangicalEnergy.EnergySide modifiedSide = RuntimeMangicalEnergy.EnergySide.LightEnergy; 
 
-
             (modifiedAmout, modifiedSide) = _mangicalEnergy.ResetEnergy();
 
-            OnModifyEnergy?.Invoke(null, modifiedSide, modifiedAmout);
+            OnModifyEnergy?.Invoke(null, modifiedSide, modifiedAmout) ;
         }
 
         #endregion
@@ -161,6 +159,9 @@ namespace Vanaring
         public bool IsOverheat()
         {
             int peakVal = _darkDefaultAmount + _lightDefaultAmount;
+
+            Debug.Log("peak val : " + peakVal + " while dark : " + _darkEnergy.GetStatValue() + " and light : " + _lightEnergy.GetStatValue()); 
+
             return (_darkEnergy.GetStatValue() >= peakVal) || (_lightEnergy.GetStatValue() >= peakVal)  ;
         }
 

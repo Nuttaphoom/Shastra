@@ -145,7 +145,6 @@ namespace Vanaring
 
         private IEnumerator ChangeActiveEntityIndexCoroutine(bool forward)
         {
-
             CombatEntity prevActor = GetCurrentActor();
 
             _activeCombatEntities.Progress(forward);

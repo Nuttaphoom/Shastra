@@ -37,8 +37,6 @@ namespace Vanaring
         private List<SpellSocketGUI> _spellSockets = new List<SpellSocketGUI>();
         private List<GameObject> _pageIndexs = new List<GameObject>();
 
-        // Start is called before the first frame update
-        private CombatGraphicalHandler _combatGraphicalHandler ; 
 
         void Awake()
         {

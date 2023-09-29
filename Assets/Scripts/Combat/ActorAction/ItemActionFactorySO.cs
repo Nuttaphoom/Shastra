@@ -60,6 +60,11 @@ namespace Vanaring
             return _targetSelector  ; 
         }
 
+        public IEnumerator PostActionPerform()
+        {
+            yield return null; 
+        }
+
         public IEnumerator PreActionPerform( )
         {
             _itemUserHandler.RemoveItem(this) ;

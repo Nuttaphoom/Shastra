@@ -16,17 +16,14 @@ namespace Vanaring
         [SerializeField]
         private EnergyModifierData _requiredEnergy;
 
-        [Header("===Energy modified after the spell is cast===")]
-        [SerializeField]
-        private EnergyModifierData _energyModifier;
+ 
 
 
         public EnergyModifierData RequiredEnergy => _requiredEnergy;
-        public EnergyModifierData EnergyModifer => _energyModifier;
 
         public SpellAbilityRuntime Factorize(CombatEntity caster)
         {
-            return new SpellAbilityRuntime(EnergyModifer, EffectFactory, caster, _targetSelector); 
+            return new SpellAbilityRuntime(RequiredEnergy, EffectFactory, caster, _targetSelector); 
         } 
 
     }
@@ -43,7 +40,6 @@ namespace Vanaring
 
         private CombatEntity _caster; 
 
-
         private EnergyModifierData _energyModifier;
 
         private RuntimeEffectFactorySO _effect;
@@ -58,8 +54,15 @@ namespace Vanaring
 
         public IEnumerator PreActionPerform()
         {
-            _caster.SpellCaster.ModifyEnergy(_caster, _energyModifier.Side, _energyModifier.Amount); 
             yield return null; 
+        }
+
+        public IEnumerator PostActionPerform()
+        {
+            _caster.SpellCaster.ModifyEnergy(_caster, _energyModifier.Side, _energyModifier.Amount);
+
+            yield return null; 
+
         }
 
         public void SetActionTarget(List<CombatEntity> targets)
@@ -84,6 +87,8 @@ namespace Vanaring
         {
             return _targetSelector; 
         }
+
+      
     }
 
 

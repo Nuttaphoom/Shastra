@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -33,7 +34,17 @@ namespace Vanaring
 
     public interface IActorAction 
     {
+        /// <summary>
+        /// This method should be invoked prior to taking any action as it might causes the Actor to be exhaunted.
+        /// </summary>
+        /// <returns>An IEnumerator representing the pre-action process.</returns>
         public IEnumerator PreActionPerform();
+
+        /// <summary>
+        /// This method should be invoked if and only if the action was successfully executed.
+        /// </summary>
+        /// <returns>An IEnumerator representing the post-action process.</returns>
+        public IEnumerator PostActionPerform();
         public void SetActionTarget(List<CombatEntity> targets);
 
         public RuntimeEffect GetRuntimeEffect();
@@ -60,5 +71,7 @@ namespace Vanaring
         public string FieldName => _fieldName; 
         public string FieldDescription => _fieldDescription; 
         public Sprite FieldImage => _fieldImage; 
-    } 
+    }
+
+    
 }
