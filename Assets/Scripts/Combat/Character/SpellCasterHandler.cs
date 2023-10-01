@@ -20,8 +20,8 @@ namespace Vanaring
     {
         [SerializeField]
         private List<SpellActionSO> _spellAbilities = new List<SpellActionSO>();
-        public List<SpellActionSO> SpellAbilities => _spellAbilities;
 
+        [SerializeField]
         private RuntimeMangicalEnergy _mangicalEnergy;
 
         private UnityAction<CombatEntity, RuntimeMangicalEnergy.EnergySide, int> OnModifyEnergy;
@@ -30,7 +30,7 @@ namespace Vanaring
 
         private void Awake()
         {
-            _mangicalEnergy = new RuntimeMangicalEnergy();
+            _mangicalEnergy = new RuntimeMangicalEnergy(_mangicalEnergy) ;
             _combatEntity = GetComponent<CombatEntity>();
         }
 
@@ -45,12 +45,12 @@ namespace Vanaring
             OnModifyEnergy -= argc;
         }
         #endregion EndSub 
+
+        #region Modify Energy  
         public bool IsEnergySufficient(SpellActionSO spell)
         {
-            return GetEnergyAmount(spell.RequiredEnergy.Side) > spell.RequiredEnergy.Amount ;
+            return GetEnergyAmount(spell.RequiredEnergy.Side) >= spell.RequiredEnergy.Amount;
         }
-        #region Modify Energy  
-
         public int GetEnergyAmount(RuntimeMangicalEnergy.EnergySide side)
         {
             return _mangicalEnergy.GetEnergy(side);
@@ -64,25 +64,18 @@ namespace Vanaring
 
         public bool IsEnergyOverheat()
         {
-            foreach (RuntimeMangicalEnergy.EnergySide key in Enum.GetValues(typeof(RuntimeMangicalEnergy.EnergySide)))
-            {
-                if (GetEnergyAmount(key) >= 100)
-                    return true;
-            }
-            return false;
+            Debug.Log("is overheat in " + gameObject); 
+            return _mangicalEnergy.IsOverheat();
         }
 
         public void ResetEnergy()
         {
-            int lightEnergy = _mangicalEnergy.GetEnergy(RuntimeMangicalEnergy.EnergySide.LightEnergy);
-            int darkEnergy = _mangicalEnergy.GetEnergy(RuntimeMangicalEnergy.EnergySide.DarkEnergy);
+            int modifiedAmout = 0;
+            RuntimeMangicalEnergy.EnergySide modifiedSide = RuntimeMangicalEnergy.EnergySide.LightEnergy; 
 
-            int dif = (int)MathF.Abs(50 - lightEnergy);
-            RuntimeMangicalEnergy.EnergySide modifiedSide = (lightEnergy > darkEnergy ?
-             RuntimeMangicalEnergy.EnergySide.DarkEnergy : RuntimeMangicalEnergy.EnergySide.LightEnergy);
+            (modifiedAmout, modifiedSide) = _mangicalEnergy.ResetEnergy();
 
-            _mangicalEnergy.ModifyEnergy(dif, modifiedSide);
-            OnModifyEnergy?.Invoke(null, modifiedSide, dif);
+            OnModifyEnergy?.Invoke(null, modifiedSide, modifiedAmout) ;
         }
 
         #endregion
@@ -93,12 +86,24 @@ namespace Vanaring
             StartCoroutine(TargetSelectionFlowControl.Instance.InitializeActionTargetSelectionScheme(_combatEntity, runtimeSpell));
         }
         #endregion
+
+        #region GETTER
+        public List<SpellActionSO> SpellAbilities => _spellAbilities;
+
+        #endregion
     }
 
+    [Serializable]
     public class RuntimeMangicalEnergy
     {
-        private RuntimeStat _darkEnergy = new RuntimeStat(100, 50);
-        private RuntimeStat _lightEnergy = new RuntimeStat(100, 50);
+        [Header("Initial Values for Dark and Light Properties")]
+        [SerializeField]
+        private int _darkDefaultAmount = 0;
+        [SerializeField]
+        private int _lightDefaultAmount = 0;
+
+        protected RuntimeStat _darkEnergy ;
+        protected RuntimeStat _lightEnergy  ;
 
         public enum EnergySide
         {
@@ -106,20 +111,16 @@ namespace Vanaring
             DarkEnergy = 1
         }
 
-        #region GETTER 
-        public int GetEnergy(EnergySide side)
-        {
-            if (side == EnergySide.LightEnergy)
-                return _lightEnergy.GetStatValue();
-            else if (side == EnergySide.DarkEnergy)
-                return _darkEnergy.GetStatValue();
-
-            throw new System.Exception("Trying to access invalid side of energy");
-        }
-
-        #endregion
-
         #region Methods 
+
+        public RuntimeMangicalEnergy(RuntimeMangicalEnergy copied)
+        {
+            _darkDefaultAmount =  copied._darkDefaultAmount ;
+            _lightDefaultAmount = copied._lightDefaultAmount ;
+            int peakVal = _darkDefaultAmount + _lightDefaultAmount; 
+            _darkEnergy = new RuntimeStat(peakVal, _darkDefaultAmount);
+            _lightEnergy = new RuntimeStat(peakVal, _lightDefaultAmount);
+        }
 
         /// <summary>
         ///  Modify Runtime Energy of the user
@@ -132,16 +133,61 @@ namespace Vanaring
             switch (side)
             {
                 case EnergySide.LightEnergy:
-                    _lightEnergy.ModifyValue(value, false);
-                    _darkEnergy.ModifyValue(-value, false);
+                    _lightEnergy.ModifyValue(value, false,true);
+                    _darkEnergy.ModifyValue(-value, false,true);
                     break;
                 case EnergySide.DarkEnergy:
-                    _lightEnergy.ModifyValue(-value, false);
-                    _darkEnergy.ModifyValue(value, false);
+                    _lightEnergy.ModifyValue(-value, false,true);
+                    _darkEnergy.ModifyValue(value, false, true);
                     break;
                 default:
                     throw new System.Exception("Trying to access invalid side of energy");
             }
+        }
+        #endregion
+
+        #region GETTER 
+        public int GetEnergy(EnergySide side)
+        {
+            if (side == EnergySide.LightEnergy)
+                return _lightEnergy.GetStatValue();
+            else if (side == EnergySide.DarkEnergy)
+                return _darkEnergy.GetStatValue();
+
+            throw new System.Exception("Trying to access invalid side of energy");
+        }
+        public bool IsOverheat()
+        {
+            int peakVal = _darkDefaultAmount + _lightDefaultAmount;
+
+            Debug.Log("peak val : " + peakVal + " while dark : " + _darkEnergy.GetStatValue() + " and light : " + _lightEnergy.GetStatValue()); 
+
+            return (_darkEnergy.GetStatValue() >= peakVal) || (_lightEnergy.GetStatValue() >= peakVal)  ;
+        }
+
+        public (int, EnergySide) ResetEnergy()
+        {
+            EnergySide modifiedSide;
+            int modifiedAmount = 0; 
+            //Overheat dark
+            if (_darkEnergy.GetStatValue() > _lightEnergy.GetStatValue())
+            {
+                modifiedSide = EnergySide.LightEnergy;
+                modifiedAmount = _lightDefaultAmount ;
+            }
+            //Overheat light 
+            else
+            {
+                modifiedSide = EnergySide.DarkEnergy;
+                modifiedAmount = _darkDefaultAmount ;
+            }
+
+            int peakVal = _darkDefaultAmount + _lightDefaultAmount;
+
+            _darkEnergy = new RuntimeStat(peakVal, _darkDefaultAmount);
+            _lightEnergy = new RuntimeStat(peakVal, _lightDefaultAmount);
+
+            return (modifiedAmount, modifiedSide); 
         }
 
         #endregion

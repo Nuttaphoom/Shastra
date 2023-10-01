@@ -16,7 +16,7 @@ namespace Vanaring
 
         public ItemAbilityRuntime FactorizeRuntimeItem(ItemUserHandler itemuserHandler)
         {
-            return new ItemAbilityRuntime(EffectFactory,this, itemuserHandler) ;
+            return new ItemAbilityRuntime(EffectFactory,this, itemuserHandler, _targetSelector) ;
         }
     }
 
@@ -28,13 +28,14 @@ namespace Vanaring
         private ItemActionFactorySO _factory; 
         private RuntimeEffectFactorySO _effectFactory ;
         private ItemUserHandler _itemUserHandler;
-
-        private List<CombatEntity> _targets; 
-        public ItemAbilityRuntime(RuntimeEffectFactorySO effect, ItemActionFactorySO factory, ItemUserHandler handler)
+        private List<CombatEntity> _targets;
+        private TargetSelector _targetSelector; 
+        public ItemAbilityRuntime(RuntimeEffectFactorySO effect, ItemActionFactorySO factory, ItemUserHandler handler, TargetSelector targetselector)
         {
             _itemUserHandler = handler; 
             _effectFactory = effect;
-             _factory = factory;  
+             _factory = factory;
+            _targetSelector = targetselector;   
         }
 
         public string ItemName => _factory.AbilityName;
@@ -56,7 +57,12 @@ namespace Vanaring
 
         public TargetSelector GetTargetSelector()
         {
-            return _effectFactory.TargetSelect ; 
+            return _targetSelector  ; 
+        }
+
+        public IEnumerator PostActionPerform()
+        {
+            yield return null; 
         }
 
         public IEnumerator PreActionPerform( )

@@ -9,10 +9,7 @@ namespace Vanaring
 {
     public abstract class RuntimeEffectFactorySO : ScriptableObject
     {
-        [SerializeField]
-        private TargetSelector _targetSelector ;
-        
-        public TargetSelector TargetSelect => _targetSelector;
+
         public abstract RuntimeEffect Factorize( List<CombatEntity> targets)  ;
     }
 

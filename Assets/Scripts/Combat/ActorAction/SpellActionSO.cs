@@ -16,39 +16,37 @@ namespace Vanaring
         [SerializeField]
         private EnergyModifierData _requiredEnergy;
 
-        [Header("===Energy modified after the spell is cast===")]
-        [SerializeField]
-        private EnergyModifierData _energyModifier;
+ 
 
 
         public EnergyModifierData RequiredEnergy => _requiredEnergy;
-        public EnergyModifierData EnergyModifer => _energyModifier;
 
         public SpellAbilityRuntime Factorize(CombatEntity caster)
         {
-            return new SpellAbilityRuntime(EnergyModifer, EffectFactory, caster); 
+            return new SpellAbilityRuntime(RequiredEnergy, EffectFactory, caster, _targetSelector); 
         } 
 
     }
 
     public class SpellAbilityRuntime : IActorAction
     {
-        public SpellAbilityRuntime(EnergyModifierData energyModifier, RuntimeEffectFactorySO effect, CombatEntity caster)
+        public SpellAbilityRuntime(EnergyModifierData energyModifier, RuntimeEffectFactorySO effect, CombatEntity caster, TargetSelector targetSelector)
         {
             _effect = effect; 
             _energyModifier = energyModifier ;
-            _caster = caster; 
+            _caster = caster;
+            _targetSelector = targetSelector; 
         }
 
         private CombatEntity _caster; 
-
 
         private EnergyModifierData _energyModifier;
 
         private RuntimeEffectFactorySO _effect;
 
-        private List<CombatEntity> _targets; 
+        private List<CombatEntity> _targets;
 
+        private TargetSelector _targetSelector; 
         public RuntimeMangicalEnergy.EnergySide ModifiedEnergySide { get { return _energyModifier.Side; } }
         public int ModifiedEnergyAmount { get { return _energyModifier.Amount; } }
 
@@ -56,8 +54,15 @@ namespace Vanaring
 
         public IEnumerator PreActionPerform()
         {
-            _caster.SpellCaster.ModifyEnergy(_caster, _energyModifier.Side, _energyModifier.Amount); 
             yield return null; 
+        }
+
+        public IEnumerator PostActionPerform()
+        {
+            _caster.SpellCaster.ModifyEnergy(_caster, _energyModifier.Side, _energyModifier.Amount);
+
+            yield return null; 
+
         }
 
         public void SetActionTarget(List<CombatEntity> targets)
@@ -80,8 +85,10 @@ namespace Vanaring
 
         public TargetSelector GetTargetSelector()
         {
-            return _effect.TargetSelect; 
+            return _targetSelector; 
         }
+
+      
     }
 
 
