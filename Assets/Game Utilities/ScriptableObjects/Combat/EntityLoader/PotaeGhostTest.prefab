@@ -2734,9 +2734,11 @@ GameObject:
   m_Component:
   - component: {fileID: 6372633111618651101}
   - component: {fileID: 8386119338590549407}
+  - component: {fileID: 2350850728653389973}
   - component: {fileID: 2524119204172734917}
   - component: {fileID: 3183956409549396090}
-  - component: {fileID: 230340289741595676}
+  - component: {fileID: 2901598963857771175}
+  - component: {fileID: 8284835757052032061}
   m_Layer: 0
   m_Name: PotaeGhostTest
   m_TagString: Untagged
@@ -2777,13 +2779,41 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: acd9ffed6d6cced4a96205cc907deed7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _characterSheet: {fileID: 0}
-  _spellCaster: {fileID: 0}
-  _itemUser: {fileID: 0}
-  _combatEntityAnimationHandler: {fileID: 0}
+  _characterSheet: {fileID: 11400000, guid: 061e8b75b8639eb42adf81a20ccf9fc7, type: 2}
+  _spellCaster: {fileID: 2901598963857771175}
+  _itemUser: {fileID: 8284835757052032061}
+  _combatEntityAnimationHandler: {fileID: 2524119204172734917}
   _dmgOutputPopHanlder:
     _outputDMGTimerPrefab: {fileID: 0}
     _outputHealTimerPrefab: {fileID: 0}
+  aiBehaviorHandler: {fileID: 2350850728653389973}
+--- !u!114 &2350850728653389973
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8010838884609612702}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8072fb5fe3f2ea40918be8c9feeea73, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _ProrityCondition:
+  - Condition: {fileID: 11400000, guid: d3727bcf82879ae499b71a82f632b1a5, type: 2}
+    conditionAmount: 50
+    SpellList:
+    - spell: {fileID: 11400000, guid: a03faf825e0de7e48950b9e476dcfb7d, type: 2}
+      change: 1
+    - spell: {fileID: 11400000, guid: 41e02732b44fdb64aa66146ff1c2063a, type: 2}
+      change: 1
+    - spell: {fileID: 11400000, guid: 6d83313f42414fb4db96ce801d306a45, type: 2}
+      change: 1
+  - Condition: {fileID: 11400000, guid: 1d753732fc2416f4d9a541a1aff41dbe, type: 2}
+    conditionAmount: 0
+    SpellList:
+    - spell: {fileID: 11400000, guid: 41e02732b44fdb64aa66146ff1c2063a, type: 2}
+      change: 1
 --- !u!114 &2524119204172734917
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2831,7 +2861,7 @@ MonoBehaviour:
     TargetTrigerID: 
     _isProjectile: 0
   _above_head_transform: {fileID: 4271778355199194419}
---- !u!114 &230340289741595676
+--- !u!114 &2901598963857771175
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2844,6 +2874,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _spellAbilities: []
+--- !u!114 &8284835757052032061
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8010838884609612702}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca89d3a2af4baff4187652a97560716d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _itemWindowManager: {fileID: 0}
 --- !u!1 &8167815313844956106
 GameObject:
   m_ObjectHideFlags: 0
