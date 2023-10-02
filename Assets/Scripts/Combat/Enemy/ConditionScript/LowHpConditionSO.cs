@@ -13,10 +13,10 @@ namespace Vanaring
         /// <summary>
         /// LowHp by max 100% the input should be 0-100% when it lower or equal to that amount
         /// </summary>
-        public override bool ConditionsMet(AIEntity aiEntity, int conditionAmount)
+        public override bool ConditionsMet(AIEntity aiEntity, float conditionAmount)
         {
-            int maxHp = aiEntity.CharacterSheet.GetHP;
-            int currHp = aiEntity.StatsAccumulator.GetHPAmount();
+            float maxHp = aiEntity.CharacterSheet.GetHP;
+            float currHp = aiEntity.StatsAccumulator.GetHPAmount();
 
             return (currHp * 100.0f / maxHp) <= conditionAmount;
         }

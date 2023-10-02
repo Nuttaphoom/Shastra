@@ -8,6 +8,6 @@ namespace Vanaring
 {
     public abstract class BaseConditionSO : ScriptableObject
     {
-        public abstract bool ConditionsMet(AIEntity aiEntity, int conditionAmount);
+        public abstract bool ConditionsMet(AIEntity aiEntity, float conditionAmount);
     }
 }

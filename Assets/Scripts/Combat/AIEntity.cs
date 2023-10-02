@@ -22,36 +22,36 @@ namespace Vanaring
 
         public override IEnumerator TurnEnter()
         {
-            yield return null;
+            yield return base.TurnEnter();
         }
 
         public override IEnumerator TurnLeave()
         {
             //Calculate next action
-            yield return null; 
+            yield return base.TurnLeave();
         }
 
 
         public override IEnumerator GetAction()
         {
-            print("GetAction");
+            aiBehaviorHandler.GetNextAction();
+            //print("GetAction");
             //TargetSelectionFlowControl.Instance.InitializeActionTargetSelectionScheme();
-            throw new NotImplementedException();
+            yield return null;
         }
 
         public override IEnumerator TakeControl()
         {
             //throw new NotImplementedException();
-            print("TakeControl");
             aiBehaviorHandler.CheckingCondition();
-            //aiBehaviorHandler.GetNextAction();
-            yield return aiBehaviorHandler.GetNextAction();
+            yield return null;
         }
 
         public override IEnumerator TakeControlLeave()
         {
             print("TakeControlLeave");
-            throw new NotImplementedException();
+            aiBehaviorHandler.TakeControlLeave();
+            yield return null;
         }
 
     }

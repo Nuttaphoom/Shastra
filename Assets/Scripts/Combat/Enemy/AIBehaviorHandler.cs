@@ -10,6 +10,11 @@ namespace Vanaring
     {
         AIEntity aiEntity;
 
+        [Serializable]
+        public enum SpellOrderType {
+            Random = 0,
+            Order
+        }
 
         [Serializable]
         public struct SpellSocket
@@ -17,16 +22,18 @@ namespace Vanaring
             [SerializeField]
             public SpellActionSO spell;
             [SerializeField]
-            public int change;
+            public int chance;
         }
 
         [Serializable]
         public struct ConditionData
         {
             [SerializeField]
+            public SpellOrderType spellOrder;
+            [SerializeField]
             public BaseConditionSO Condition;
             [SerializeField]
-            public int conditionAmount;
+            public float conditionAmount;
             [SerializeField]
             public List<SpellSocket> SpellList;
         }
@@ -35,6 +42,7 @@ namespace Vanaring
         List<ConditionData> _ProrityCondition = new List<ConditionData>();
 
         private int conditionIndex = 0;
+        private int currentspellIndex = 0; //only for spell in order
 
         public void SetEntity(AIEntity entity)
         {
@@ -45,56 +53,65 @@ namespace Vanaring
         {
             for (int i = 0; i < _ProrityCondition.Count; i++)
             {
+                Debug.Log(i);
                 if (_ProrityCondition[i].Condition.ConditionsMet(aiEntity, _ProrityCondition[i].conditionAmount))
                 {
                     conditionIndex = i;
-                    break;
+                    return;
                 }
             }
+            Debug.LogError("Error : No ConditionsMet");
         }
 
-        public IEnumerator GetNextAction()
+        public void GetNextAction()
         {
-            int totalchange = 0;
-            for (int i = 0; i < _ProrityCondition[conditionIndex].SpellList.Count; i++)
-            {
-                totalchange += _ProrityCondition[conditionIndex].SpellList[i].change;
-            }
-
-            int randomNum = UnityEngine.Random.Range(0, totalchange);
-
-            for (int i = 0; i < _ProrityCondition[conditionIndex].SpellList.Count; i++)
-            {
-                if (randomNum > _ProrityCondition[conditionIndex].SpellList[i].change)
-                {
-                    randomNum -= _ProrityCondition[conditionIndex].SpellList[i].change;
-                }
-                else 
-                {
-                    yield return _ProrityCondition[conditionIndex].SpellList[i].spell;
-                }
-            }
-
-            yield return null;
+            UseSpell(_ProrityCondition[conditionIndex].spellOrder);
         }
-        //public void SubOnDamageVisualEvent(UnityAction<int> argc)
-        //{
-        //    _OnUpdateVisualDMG += argc;
-        //}
 
-        //public void UnSubOnDamageVisualEvent(UnityAction<int> argc)
-        //{
-        //    _OnUpdateVisualDMG -= argc;
-        //}
+        private void UseSpell(SpellOrderType type)
+        {
+            if (type == SpellOrderType.Random)
+            {
+                int totalchance = 0;
+                for (int i = 0; i < _ProrityCondition[conditionIndex].SpellList.Count; i++)
+                {
+                    totalchance += _ProrityCondition[conditionIndex].SpellList[i].chance;
+                }
+                if (totalchance != 100)
+                {
+                    Debug.LogError("totalchance should be equal to 100");
+                }
 
-        //public void SubOnDamageVisualEventEnd(UnityAction<int> argc)
-        //{
-        //    _OnUpdateVisualDMGEnd += argc;
-        //}
+                int randomNum = UnityEngine.Random.Range(0, totalchance);
 
-        //public void UnSubOnDamageVisualEventEnd(UnityAction<int> argc)
-        //{
-        //    _OnUpdateVisualDMGEnd -= argc;
-        //}
+                for (int i = 0; i < _ProrityCondition[conditionIndex].SpellList.Count; i++)
+                {
+                    if (randomNum > _ProrityCondition[conditionIndex].SpellList[i].chance)
+                    {
+                        randomNum -= _ProrityCondition[conditionIndex].SpellList[i].chance;
+                    }
+                    else
+                    {
+                        //Debug.Log("Spell name : " +_ProrityCondition[conditionIndex].SpellList[i].spell.name);
+                        StartCoroutine(TargetSelectionFlowControl.Instance.InitializeActionTargetSelectionScheme(aiEntity,
+                            _ProrityCondition[conditionIndex].SpellList[i].spell.Factorize(aiEntity), true));
+                        return;
+                    }
+                }
+                Debug.LogError("Error : Spell out of range!");
+            }
+            else
+            {
+                StartCoroutine(TargetSelectionFlowControl.Instance.InitializeActionTargetSelectionScheme(aiEntity,
+                    _ProrityCondition[conditionIndex].SpellList[currentspellIndex].spell.Factorize(aiEntity), true));
+                currentspellIndex++;
+                currentspellIndex = currentspellIndex % _ProrityCondition[conditionIndex].SpellList.Count;
+            }
+        }
+
+        public void TakeControlLeave()
+        {
+            return;
+        }
     }
 }
