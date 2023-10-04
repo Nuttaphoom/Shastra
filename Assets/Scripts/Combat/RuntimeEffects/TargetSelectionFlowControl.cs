@@ -42,17 +42,103 @@ namespace Vanaring
             Instance = this;
             _targetSelectionGUI.Initialize(transform);
         }
+        
+        private void AssignPossibleTargets(CombatEntity caster, TargetSelector targetSelector)
+        {
+            _validTargets.Clear(); 
+
+            ECompetatorSide eCompetatorSide = CombatReferee.instance.GetCompetatorSide(caster);  //CombatReferee.instance.GetCharacterSide(caster);
+            ;  // CombatReferee.instance.GetCharacterSide(caster);
+
+            foreach ( ECompetatorSide side in Enum.GetValues(typeof(ECompetatorSide)))
+            {
+                foreach (CombatEntity target in CombatReferee.instance.GetCompetatorsBySide(side))
+                {
+                    if (targetSelector.CorrectTarget(caster, target))
+                    {
+                        if (! _validTargets.Contains(target))
+                        {
+                            _validTargets.Add(target);
+                        }
+                    }
+                }
+            }
+
+
+           
+        }
+        private void ValidateData()
+        {
+            _validTargets = new List<CombatEntity>();
+            _selectedTarget = new List<CombatEntity>();
+            _currentSelectIndex = 0;
+        }
+
+        /// <summary>
+        /// Check whether when player do this action, it will make the target overflow or not
+        /// </summary>
+        /// <param name="target"></param>
+        /// <param name="action"></param>
+        private IEnumerator EnergySimulation(CombatEntity target, IActorAction action)
+        {
+            yield return action.Simulate(target) ;
+
+            if (action.GetType() == typeof(SpellActionSO))
+            {
+                Debug.Log("this is spell action"); 
+            }
+
+            if (target.SpellCaster.CheckSimulation())
+            {
+                Debug.Log("this action stun this target"); 
+            }else
+            {
+                Debug.Log("this action do not stun this target"); 
+            }
+        }
+
+        #region Public Method
+        public void ReceiveKeys(KeyCode key)
+        {
+            if (_activlySelecting)
+            {
+                if (key == (KeyCode.D))
+                {
+                    _currentSelectIndex = (_currentSelectIndex + 1) > (_validTargets.Count - 1) ? _currentSelectIndex : (_currentSelectIndex + 1);
+
+                }
+                else if (key == (KeyCode.A))
+                {
+                    _currentSelectIndex = (_currentSelectIndex - 1) < 0 ? 0 : (_currentSelectIndex - 1);
+
+                }
+                else if (key == (KeyCode.Space))
+                {
+                    _buttonIndicatorWindow.SetIndicatorButtonShow(ButtonIndicatorWindow.IndicatorButtonShow.MAIN, false);
+                    _buttonIndicatorWindow.ClosePanel();
+                    _selectedTarget.Add(_validTargets[_currentSelectIndex]);
+                    _validTargets.RemoveAt(_currentSelectIndex);
+                    if (_validTargets.Count != 0)
+                        _currentSelectIndex = _currentSelectIndex % _validTargets.Count;
+
+                }
+                else if (key == (KeyCode.Q))
+                {
+                    ForceStop();
+                    _buttonIndicatorWindow.SetIndicatorButtonShow(ButtonIndicatorWindow.IndicatorButtonShow.MAIN, true);
+                }
+            }
+        }
 
         public void ForceStop()
         {
-            ColorfulLogger.LogWithColor("ForceStop ", Color.red); 
+            ColorfulLogger.LogWithColor("ForceStop ", Color.red);
             if (_activlySelecting)
             {
                 _activlySelecting = false;
                 _forceStop = true;
             }
         }
-        
         public IEnumerator InitializeTargetSelectionSchemeWithoutSelect(List<CombatEntity> _targets)
         {
             if (_activlySelecting)
@@ -88,7 +174,6 @@ namespace Vanaring
             _targetSelectionGUI.EndSelectionScheme();
             _activlySelecting = false;
         }
-
         public IEnumerator InitializeActionTargetSelectionScheme(CombatEntity caster, IActorAction actorAction, bool randomTarget = false)
         {
             ColorfulLogger.LogWithColor("Start target selection ", Color.green);
@@ -114,6 +199,9 @@ namespace Vanaring
             while (_selectedTarget.Count < actorAction.GetTargetSelector().MaxTarget)
             {
                 CombatEntity selected = _validTargets[_currentSelectIndex];
+
+                yield return EnergySimulation(selected, actorAction) ; 
+
                 if (selected.TryGetComponent(out CombatGraphicalHandler cgh))
                 {
                     cgh.EnableQuickMenuBar(true);
@@ -162,74 +250,13 @@ namespace Vanaring
             CameraSetUPManager.Instance.RestoreVMCameraState();
             CentralInputReceiver.Instance().RemoveInputReceiverIntoStack(this);
 
-
-                 
             _activlySelecting = false;
 
 
         }
-        private void AssignPossibleTargets(CombatEntity caster, TargetSelector targetSelector)
-        {
-            _validTargets.Clear(); 
+       
 
-            ECompetatorSide eCompetatorSide = CombatReferee.instance.GetCompetatorSide(caster);  //CombatReferee.instance.GetCharacterSide(caster);
-            ;  // CombatReferee.instance.GetCharacterSide(caster);
-
-            foreach ( ECompetatorSide side in Enum.GetValues(typeof(ECompetatorSide)))
-            {
-                foreach (CombatEntity target in CombatReferee.instance.GetCompetatorsBySide(side))
-                {
-                    if (targetSelector.CorrectTarget(caster, target))
-                    {
-                        if (! _validTargets.Contains(target))
-                        {
-                            _validTargets.Add(target);
-                        }
-                    }
-                }
-            }
-
-
-           
-        }
-        private void ValidateData()
-        {
-            _validTargets = new List<CombatEntity>();
-            _selectedTarget = new List<CombatEntity>();
-            _currentSelectIndex = 0;
-        }
-
-        public void ReceiveKeys(KeyCode key)
-        {
-            if (_activlySelecting)
-            {
-                if (key == (KeyCode.D))
-                {
-                    _currentSelectIndex = (_currentSelectIndex + 1) > (_validTargets.Count - 1) ? _currentSelectIndex : (_currentSelectIndex + 1);
-
-                }
-                else if (key == (KeyCode.A))
-                {
-                    _currentSelectIndex = (_currentSelectIndex - 1) < 0 ? 0 : (_currentSelectIndex - 1);
-
-                }
-                else if (key == (KeyCode.Space))
-                {
-                    _buttonIndicatorWindow.SetIndicatorButtonShow(ButtonIndicatorWindow.IndicatorButtonShow.MAIN, false);
-                    _buttonIndicatorWindow.ClosePanel();
-                    _selectedTarget.Add(_validTargets[_currentSelectIndex]);
-                    _validTargets.RemoveAt(_currentSelectIndex);
-                    if (_validTargets.Count != 0)
-                        _currentSelectIndex = _currentSelectIndex % _validTargets.Count;
-
-                }
-                else if (key == (KeyCode.Q))
-                {
-                    ForceStop();
-                    _buttonIndicatorWindow.SetIndicatorButtonShow(ButtonIndicatorWindow.IndicatorButtonShow.MAIN, true);
-                }
-            }
-        }
+        #endregion
     }
 
 

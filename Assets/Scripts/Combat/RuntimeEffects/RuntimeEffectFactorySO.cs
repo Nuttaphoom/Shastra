@@ -9,7 +9,7 @@ namespace Vanaring
 {
     public abstract class RuntimeEffectFactorySO : ScriptableObject
     {
-
+        public abstract void SimulateEnergyModifier(CombatEntity target)  ; 
         public abstract RuntimeEffect Factorize( List<CombatEntity> targets)  ;
     }
 
