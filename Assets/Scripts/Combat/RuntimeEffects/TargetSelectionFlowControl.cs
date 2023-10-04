@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DG.Tweening;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -33,11 +34,6 @@ namespace Vanaring
 
         private int _currentSelectIndex = 0;
 
-        private SpellAbilityRuntime _latestSelectedSpell;
-        private ItemAbilityRuntime _latestSelectedItem;
-
-        private RuntimeEffectFactorySO _latestAction;
-
         private bool _forceStop = false;
 
 
@@ -49,72 +45,14 @@ namespace Vanaring
 
         public void ForceStop()
         {
+            ColorfulLogger.LogWithColor("ForceStop ", Color.red); 
             if (_activlySelecting)
             {
                 _activlySelecting = false;
-                _latestAction = null;
                 _forceStop = true;
-                _latestSelectedSpell = null;
-                _latestSelectedItem = null;
-
             }
         }
-
-        public (RuntimeEffectFactorySO, List<CombatEntity>) GetLatestAction()
-        {
-            var tempAction = _latestAction;
-            if (PrepareAction())
-            {
-                _activlySelecting = false;
-                _latestSelectedSpell = null;
-                _latestSelectedItem = null;
-                _latestAction = null;
-
-            }
-            return (tempAction, _selectedTarget);
-        }
-
-        //TODO : Properly separate Spell action so that we don't need to return the spell like this
-        public SpellAbilityRuntime IsLatedActionSpell()
-        {
-            return _latestSelectedSpell;
-        }
-
-        public ItemAbilityRuntime IsLatedActionItem()
-        {
-            return _latestSelectedItem;
-        }
-
-        public bool PrepareAction()
-        {
-            return _activlySelecting && _latestAction != null;
-        }
-
-        #region Static Methods 
-
-        public IEnumerator InitializeSpellTargetSelectionScheme(CombatEntity caster, SpellAbilityRuntime spell, bool randomTarget = false)
-        {
-            if (_activlySelecting)
-                throw new Exception("Try to active selection scheme while it is already active");
-
-            _latestSelectedSpell = spell;
-
-            yield return InitializeTargetSelectionScheme(caster, spell.EffectFactory, randomTarget);
-        }
-
-        public IEnumerator InitializeItemTargetSelectionScheme(CombatEntity caster, ItemAbilityRuntime item, bool randomTarget = false)
-        {
-            if (_activlySelecting)
-                throw new Exception("Try to active selection scheme while it is already active");
-            _latestSelectedItem = item;
-
-            yield return InitializeTargetSelectionScheme(caster, item.EffectFactory, randomTarget);
-        }
-
-
-        #endregion
-
-        #region Private
+        
         public IEnumerator InitializeTargetSelectionSchemeWithoutSelect(List<CombatEntity> _targets)
         {
             if (_activlySelecting)
@@ -128,6 +66,7 @@ namespace Vanaring
                 _validTargets.Add(v);
             }
 
+            transform.DOMove(Vector3.zero, 3.0f);
             while (true)
             {
                 if (_forceStop)
@@ -150,26 +89,21 @@ namespace Vanaring
             _activlySelecting = false;
         }
 
-        public IEnumerator InitializeTargetSelectionScheme(CombatEntity caster, RuntimeEffectFactorySO action, bool randomTarget = false)
+        public IEnumerator InitializeActionTargetSelectionScheme(CombatEntity caster, IActorAction actorAction, bool randomTarget = false)
         {
-            //throw new NotImplementedException("Caster Side need better way to be determined");
-
-            ECompetatorSide casterSide = CombatReferee.instance.GetCompetatorSide(caster) ;  //CombatReferee.instance.GetCharacterSide(caster);
+            ColorfulLogger.LogWithColor("Start target selection ", Color.green);
             if (_activlySelecting)
-                throw new Exception("Try to active selection scheme while it is already active");
+                throw new Exception(caster + " Try to active selection scheme while it is already active");
+
+            _activlySelecting = true;
 
             CentralInputReceiver.Instance().AddInputReceiverIntoStack(this);
 
             OnTargetSelectionSchemeStart.PlayEvent(caster);
 
-            ColorfulLogger.LogWithColor("Initialize Target Selection", Color.green);
-
-            _activlySelecting = true;
-            _latestAction = null;
-
             ValidateData();
 
-            AssignPossibleTargets(caster, action);
+            AssignPossibleTargets(caster, actorAction.GetTargetSelector());
 
             CameraSetUPManager.Instance.CaptureVMCamera();
 
@@ -177,7 +111,7 @@ namespace Vanaring
 
             _buttonIndicatorWindow.SetIndicatorButtonShow(ButtonIndicatorWindow.IndicatorButtonShow.TARGET, true);
 
-            while (_selectedTarget.Count < action.TargetSelect.MaxTarget)
+            while (_selectedTarget.Count < actorAction.GetTargetSelector().MaxTarget)
             {
                 CombatEntity selected = _validTargets[_currentSelectIndex];
                 if (selected.TryGetComponent(out CombatGraphicalHandler cgh))
@@ -187,13 +121,6 @@ namespace Vanaring
 
                 if (!randomTarget)
                 {
-                    //if (casterSide == CombatReferee.instance.GetCharacterSide(selected))
-                    //{
-                    //    CameraSetUPManager.Instance.ActiveTargetModeVirtualCamera();
-                    //}
-                    //else
-                    //    CameraSetUPManager.Instance.RestoreVMCameraState();
-
                     CameraSetUPManager.Instance.SetupTargatModeLookAt(selected.gameObject);
                     _targetSelectionGUI.SelectTargetPointer(selected);
                 }
@@ -225,56 +152,46 @@ namespace Vanaring
                     cgh.EnableQuickMenuBar(false);
                 }
             }
-
-            _latestAction = action;
-
+            actorAction.SetActionTarget(_selectedTarget);
+            caster.AddActionQueue(actorAction);
         End:
             _targetSelectionGUI.EndSelectionScheme();
-            OnTargetSelectionSchemeEnd.PlayEvent(caster);
-            CameraSetUPManager.Instance.RestoreVMCameraState();
 
+            OnTargetSelectionSchemeEnd.PlayEvent(caster);
+
+            CameraSetUPManager.Instance.RestoreVMCameraState();
             CentralInputReceiver.Instance().RemoveInputReceiverIntoStack(this);
 
-            yield return null;
-        }
 
-        //TODO : Assign possible target should have more detail, like "dead or not dead" , "got some status effect or not
-        private void AssignPossibleTargets(CombatEntity caster, RuntimeEffectFactorySO action)
+                 
+            _activlySelecting = false;
+
+
+        }
+        private void AssignPossibleTargets(CombatEntity caster, TargetSelector targetSelector)
         {
+            _validTargets.Clear(); 
+
             ECompetatorSide eCompetatorSide = CombatReferee.instance.GetCompetatorSide(caster);  //CombatReferee.instance.GetCharacterSide(caster);
             ;  // CombatReferee.instance.GetCharacterSide(caster);
 
-            if (action.TargetSelect.TargetOppose)
-                eCompetatorSide = (ECompetatorSide)(((int)eCompetatorSide + 1) % 2);
-
-            foreach (CombatEntity target in CombatReferee.instance.GetCompetatorsBySide(eCompetatorSide))
-                _validTargets.Add(target);
-
-            if (action.TargetSelect.TargetBoth)
+            foreach ( ECompetatorSide side in Enum.GetValues(typeof(ECompetatorSide)))
             {
-                eCompetatorSide = (ECompetatorSide)(((int)eCompetatorSide + 1) % 2);
-
-                foreach (CombatEntity target in CombatReferee.instance.GetCompetatorsBySide(eCompetatorSide))
-                    _validTargets.Add(target);
-            }
-
-            if (action.TargetSelect.TargetCasterItself)
-            {
-                _validTargets.Clear();
-                _validTargets.Add(caster);
-            }
-
-            //If no need for dead target, remove them
-            for (int i = 0; i < _validTargets.Count; i++)
-            {
-                if (_validTargets[i].IsDead)
+                foreach (CombatEntity target in CombatReferee.instance.GetCompetatorsBySide(side))
                 {
-                    _validTargets.RemoveAt(i);
-                    i--;
+                    if (targetSelector.CorrectTarget(caster, target))
+                    {
+                        if (! _validTargets.Contains(target))
+                        {
+                            _validTargets.Add(target);
+                        }
+                    }
                 }
             }
-        }
 
+
+           
+        }
         private void ValidateData()
         {
             _validTargets = new List<CombatEntity>();
@@ -313,17 +230,12 @@ namespace Vanaring
                 }
             }
         }
-        #endregion
     }
 
 
     [Serializable]
     public class TargetSelector
     {
-        private enum TargetSide
-        {
-            Self, Oppose, Both
-        }
         [Header("Maximum target that can be assigned to")]
         [SerializeField]
         private int _maxTargetSize = 1;
@@ -331,18 +243,43 @@ namespace Vanaring
         public int MaxTarget => _maxTargetSize;
 
         [SerializeField]
-        private TargetSide _targetSide = TargetSide.Self;
-
-        [SerializeField]
         private bool _targetCaster = false;
 
+        [Header("Toggle target status when selected")]
+        [SerializeField]
+        private bool _targetAlly;
+        [SerializeField]
+        private bool _targetOppose;
+        [SerializeField]
+        private bool _targetSelf; 
 
 
-        public bool TargetOppose => (_targetSide == TargetSide.Oppose);
-        public bool TargetCasterItself => _targetCaster;
+        public bool CorrectTarget(CombatEntity caster, CombatEntity target)
+        {
+            ECompetatorSide casterSide = CombatReferee.instance.GetCompetatorSide(caster) ; 
+            ECompetatorSide targetSide = CombatReferee.instance.GetCompetatorSide(target) ;
 
-        public bool TargetBoth => (_targetSide == TargetSide.Both);
+            if (TargetCasterItself)
+            {
+                return caster == target;
+            }
 
+            if (TargetOppose)
+            {
+                return (casterSide != targetSide); 
+            }
+
+            if (TargetAllyTeam)
+            {
+                return (casterSide == targetSide); 
+            }
+
+            return false; 
+        }
+
+        private bool TargetOppose => (_targetOppose);
+        private bool TargetCasterItself => (_targetSelf);
+        public bool TargetAllyTeam => (_targetAlly) ; 
 
         //Used when the target selection is requires  
     }

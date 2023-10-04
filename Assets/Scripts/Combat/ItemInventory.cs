@@ -16,7 +16,7 @@ namespace Vanaring
         {
             // TODO : Combine itemData & amount into the struct
             [SerializeField]
-            public ItemAbilityFactorySO itemData;
+            public ItemActionFactorySO itemData;
             [SerializeField]
             public int amount;
         }
@@ -24,12 +24,12 @@ namespace Vanaring
         [SerializeField]
         List<ItemInventoryData> _itemInventory;
 
-        private List<ItemAbilityFactorySO> _itemInventoryAbility;
+        private List<ItemActionFactorySO> _itemInventoryAbility;
         private List<int> _itemInventoryAmount;
 
         #region GETTER
 
-        public List<ItemAbilityFactorySO> GetItemInventoryAbility => _itemInventoryAbility; 
+        public List<ItemActionFactorySO> GetItemInventoryAbility => _itemInventoryAbility; 
         
         public List<int> GetItemInventoryAmount => _itemInventoryAmount;
         public List<ItemInventoryData> GetItemInventory()
@@ -42,7 +42,7 @@ namespace Vanaring
         private void Awake()
         {
             instance = this;
-            _itemInventoryAbility = new List<ItemAbilityFactorySO>();
+            _itemInventoryAbility = new List<ItemActionFactorySO>();
             _itemInventoryAmount = new List<int>();
             foreach (ItemInventoryData item in _itemInventory)
             {

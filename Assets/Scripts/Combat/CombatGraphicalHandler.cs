@@ -96,7 +96,6 @@ namespace Vanaring
         public void DisplayMainMenu()
         {
             _entityWindowManager.ClearStack();
-
             _entityWindowManager.PushInNewWindow(_mainWindowManager);
             _buttonIndicatorWindow.SetIndicatorButtonShow(ButtonIndicatorWindow.IndicatorButtonShow.MAIN, true);
         }
@@ -135,12 +134,12 @@ namespace Vanaring
             if (combatEntity != _combatEntity)
                 return;
 
-            if (!TargetSelectionFlowControl.Instance.PrepareAction())
-            {
-                EnableQuickMenuBar(true);
+            //if (!TargetSelectionFlowControl.Instance.PrepareAction())
+            //{
+            //    EnableQuickMenuBar(true);
 
-                _entityWindowManager.PushInNewWindow(_mainWindowManager);
-            }
+            //    _entityWindowManager.PushInNewWindow(_mainWindowManager);
+            //}
 
             //if (_combatEntity == combatEntity)
             //{
@@ -162,17 +161,13 @@ namespace Vanaring
 
         private void OnUpdateEntityStats(int i)
         {
-            Debug.Log("update entity stats"); 
             if (!_quickHPBar.gameObject.activeSelf)
                 EnableQuickMenuBar(true); 
         }
 
         public void EnableQuickMenuBar(bool b)
         {
-            if (b == false)
-            {
-                Debug.Log("close HP bAR"); 
-            }
+            
             _quickHPBar.gameObject.SetActive(b); 
         }
 

@@ -37,8 +37,6 @@ namespace Vanaring
         private List<SpellSocketGUI> _spellSockets = new List<SpellSocketGUI>();
         private List<GameObject> _pageIndexs = new List<GameObject>();
 
-        // Start is called before the first frame update
-        private CombatGraphicalHandler _combatGraphicalHandler ; 
 
         void Awake()
         {
@@ -126,7 +124,8 @@ namespace Vanaring
             int tmpNum = 0;
             int tmpSlotIndex = 0;
             _spellSockets = new List<SpellSocketGUI>(); 
-            foreach (SpellAbilitySO spellAbility in _combatEntity.SpellCaster.SpellAbilities)
+            
+            foreach (SpellActionSO spellAbility in _combatEntity.SpellCaster.SpellAbilities)
             {
                 if (tmpNum >= start && tmpNum <= end)
                 {
@@ -254,7 +253,6 @@ namespace Vanaring
                 } while (!_spellSockets[_currentIndex].IsEnergySufficeientToUseThisSpell());
             }
 
-            Debug.Log("ret currentIndex is = " + _currentIndex); 
 
 
         } 

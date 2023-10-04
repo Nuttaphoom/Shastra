@@ -12,17 +12,11 @@ using UnityEngine.Rendering;
 
 namespace Vanaring 
 {
-    interface ISocketGUI<T>
-    {
-        public void HandleGUI(T s);
-    }
-    public class SpellSocketGUI : MonoBehaviour, ISocketGUI<SpellAbilitySO>
+     
+    public class SpellSocketGUI : MonoBehaviour 
     {
 
-        public void HandleGUI(SpellAbilitySO spell)
-        {
-
-        }
+      
 
         [Header("Main Skill Information")]
         [SerializeField]
@@ -61,13 +55,13 @@ namespace Vanaring
         [SerializeField] private Image _modEnergyTypeDesImg;
 
 
-        private SpellAbilitySO _spellSO;
+        private SpellActionSO _spellSO;
 
         private CombatEntity _caster;
 
         private Color _hightlightedColor = Color.yellow;
         private Color _defaultColor; 
-        public void Init(SpellAbilitySO spell, CombatEntity combatEntity)
+        public void Init(SpellActionSO spell, CombatEntity combatEntity)
         {
             _spellSO = spell;
             this._caster = combatEntity;
@@ -78,7 +72,7 @@ namespace Vanaring
             _descriptionText.text = spell.Desscription.ToString();
             _spellCost.text = spell.RequiredEnergy.Amount.ToString();
             _requireEnergyCost.text = "> " + spell.RequiredEnergy.Amount.ToString();
-            _modifiedEnergyCost.text = "+ " + spell.EnergyModifer.Amount.ToString();
+            _modifiedEnergyCost.text = "+ " + spell.RequiredEnergy.Amount.ToString();
             _skillImage.sprite = spell.AbilityImage;
             _fadeBlack.gameObject.SetActive(false); ;
 
@@ -93,7 +87,7 @@ namespace Vanaring
                 _reqEnergyTypeDesImg.sprite = _darkImage;
             }
             
-            if(spell.EnergyModifer.Side == RuntimeMangicalEnergy.EnergySide.LightEnergy)
+            if(spell.RequiredEnergy.Side == RuntimeMangicalEnergy.EnergySide.LightEnergy)
             {
                 _modEnergyTypeDesImg.sprite = _lightImage;
             }
@@ -121,7 +115,7 @@ namespace Vanaring
         {
             if (IsEnergySufficeientToUseThisSpell())
             {
-                SpellAbilityRuntime runtimeSpell = _spellSO.Factorize();
+                SpellAbilityRuntime runtimeSpell = _spellSO.Factorize(_caster);
                 _caster.SpellCaster.CastSpell(runtimeSpell)  ; 
             }
         }
@@ -150,9 +144,7 @@ namespace Vanaring
         }
         public bool IsEnergySufficeientToUseThisSpell()
         {
-            SpellAbilityRuntime runtimeSpell = _spellSO.Factorize();
-          
-            return _caster.SpellCaster.IsEnergySufficient(runtimeSpell); 
+            return _caster.SpellCaster.IsEnergySufficient(_spellSO); 
         }
     }
 }

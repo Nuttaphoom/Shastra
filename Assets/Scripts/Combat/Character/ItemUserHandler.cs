@@ -19,7 +19,7 @@ namespace Vanaring
     {
         //[Header("right now me manullay assign Item factory for quick demo")]
         //[SerializeField]
-        private List<ItemAbilityFactorySO> _itemInventory = new List<ItemAbilityFactorySO>();
+        private List<ItemActionFactorySO> _itemInventory = new List<ItemActionFactorySO>();
 
         private List<ItemAbilityRuntime> _runtimeItems = new List<ItemAbilityRuntime>();
         private List<int> _runtimeItemsAmount = new List<int>();
@@ -52,9 +52,9 @@ namespace Vanaring
             //TODO : Load inventory from somewhere instead of manually assign them
             _itemInventory = ItemInventory.instance.GetItemInventoryAbility;
             _runtimeItemsAmount = ItemInventory.instance.GetItemInventoryAmount;
-            foreach (ItemAbilityFactorySO factory in _itemInventory)
+            foreach (ItemActionFactorySO factory in _itemInventory)
             {
-                _runtimeItems.Add(factory.FactorizeRuntimeItem());
+                _runtimeItems.Add(factory.FactorizeRuntimeItem(this));
             }
         }
 
@@ -65,13 +65,8 @@ namespace Vanaring
 
         private IEnumerator UseItemCoroutine(ItemAbilityRuntime runtimeItem)
         {
-            //ColorfulLogger.LogWithColor("USE ITEM", Color.cyan);
-            //RemoveItem(runtimeItem);
-            //_itemWindowManager.UpdateItemSocket(_runtimeItems, _runtimeItemsAmount);
-
-            yield return TargetSelectionFlowControl.Instance.InitializeItemTargetSelectionScheme(_combatEntity, runtimeItem);
-            yield return null;
-        }
+            yield return TargetSelectionFlowControl.Instance.InitializeActionTargetSelectionScheme(_combatEntity, runtimeItem);
+         }
 
         public void RemoveItem(ItemAbilityRuntime runtimeItem)
         {

@@ -91,7 +91,6 @@ namespace Vanaring
         }
 
         #endregion
-
         private IEnumerator CustomTick()
         {
             while (true)
@@ -114,7 +113,7 @@ namespace Vanaring
             if (prevEntity != null)
             {
                 FindObjectOfType<CharacterWindowManager>().DeSetActiveEntityGUI(prevEntity);
-                yield return prevEntity.LeaveControl();
+                yield return prevEntity.TakeControlLeave();
             }
 
             if (prevEntity != newEntity && newEntity != null)
@@ -146,7 +145,6 @@ namespace Vanaring
 
         private IEnumerator ChangeActiveEntityIndexCoroutine(bool forward)
         {
-
             CombatEntity prevActor = GetCurrentActor();
 
             _activeCombatEntities.Progress(forward);
@@ -175,11 +173,6 @@ namespace Vanaring
         private void SetActiveActors()
         {
             var team = GetCurrentTeam();
-
-            foreach (var v in team)
-            {
-                Debug.Log(v); 
-            }
 
             _activeCombatEntities.Reset();
 

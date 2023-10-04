@@ -313,8 +313,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e50745e7c22bef46832cfc1275190f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _owner: {fileID: 8260375911325289032}
-  _guiObj: {fileID: 3131638886474133888}
+  _owner: {fileID: 5562888234735126922}
   lightNumText: {fileID: 1525273021878604292}
   darkNumText: {fileID: 1272020777440387748}
   lightImage: {fileID: 3406058543285960479}
@@ -2290,7 +2289,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e0196872ee2b5f4581cba41d14e145a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _combatEntity: {fileID: 8260375911325289032}
+  _combatEntity: {fileID: 0}
   _templatePrefab: {fileID: 3856582992147925476}
   _setOfStatusUIPosition:
   - {fileID: 4728051948473563381}
@@ -2617,12 +2616,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6372633111618651101}
-  - component: {fileID: 8260375911325289032}
   - component: {fileID: 7014186767969307044}
-  - component: {fileID: 3721130482917610571}
   - component: {fileID: 2524119204172734917}
   - component: {fileID: 3183956409549396090}
   - component: {fileID: 230340289741595676}
+  - component: {fileID: 5562888234735126922}
   m_Layer: 0
   m_Name: StrayGhost
   m_TagString: Untagged
@@ -2651,27 +2649,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8260375911325289032
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8010838884609612702}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f0ab295370cca3f4ebfaa836aaef2aa1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _characterSheet: {fileID: 11400000, guid: 0d9057bbe6779cb4090c694a5b2cb026, type: 2}
-  _spellCaster: {fileID: 230340289741595676}
-  _itemUser: {fileID: 0}
-  _statusEffectHandler:
-    _appliedEntity: {fileID: 8260375911325289032}
-  _combatEntityAnimationHandler: {fileID: 2524119204172734917}
-  _dmgOutputPopHanlder:
-    _outputDMGTimerPrefab: {fileID: 6205815355120891309, guid: b67fb67d063351e4a9936c0c2247f479, type: 3}
-    _outputHealTimerPrefab: {fileID: 6205815355120891309, guid: c3f10d4c069cca44182d2621e48eab7c, type: 3}
 --- !u!114 &7014186767969307044
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2687,19 +2664,6 @@ MonoBehaviour:
   _behaviorSocketSOs: {fileID: 11400000, guid: 2c7f246954daa1f4b9d1ef389a5f80a9, type: 2}
   _telegraphyPos: {fileID: 5030779872240135818}
   _statGUIScaler: {fileID: 2018818514978266700}
---- !u!114 &3721130482917610571
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8010838884609612702}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: db5c579e15ab46f4aa1b2333214d5917, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _combatEntity: {fileID: 8260375911325289032}
 --- !u!114 &2524119204172734917
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2760,6 +2724,28 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _spellAbilities: []
+  _mangicalEnergy:
+    _darkDefaultAmount: 50
+    _lightDefaultAmount: 50
+--- !u!114 &5562888234735126922
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8010838884609612702}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: acd9ffed6d6cced4a96205cc907deed7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _characterSheet: {fileID: 11400000, guid: 0d9057bbe6779cb4090c694a5b2cb026, type: 2}
+  _spellCaster: {fileID: 230340289741595676}
+  _itemUser: {fileID: 0}
+  _combatEntityAnimationHandler: {fileID: 2524119204172734917}
+  _dmgOutputPopHanlder:
+    _outputDMGTimerPrefab: {fileID: 6205815355120891309, guid: b67fb67d063351e4a9936c0c2247f479, type: 3}
+    _outputHealTimerPrefab: {fileID: 6205815355120891309, guid: c3f10d4c069cca44182d2621e48eab7c, type: 3}
 --- !u!1 &8149838307054936125
 GameObject:
   m_ObjectHideFlags: 0

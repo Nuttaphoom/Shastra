@@ -36,8 +36,6 @@ namespace Vanaring
         private List<Vector3> _defaultLocalScale;
         private float modifiedSize = 1.25f ;
 
-        CircularArray<int> test ; 
-
         private void Awake()
         {
             _buttons = new List<Button>();
@@ -186,6 +184,7 @@ namespace Vanaring
 
         public override void OnWindowOverlayed()
         {
+            ColorfulLogger.LogWithColor("OnWindowOverlayed", Color.red);
             for (int i = 0; i < _buttons.Count; i++)
             {
                 UnhightlightButton(i);

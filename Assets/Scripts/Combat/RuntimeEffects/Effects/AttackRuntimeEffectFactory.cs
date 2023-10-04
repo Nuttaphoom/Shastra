@@ -21,7 +21,7 @@ namespace Vanaring
         [SerializeField]
         private ActionAnimationInfo _actionAnimation;
 
-        public override IEnumerator Factorize(List<CombatEntity> targets)
+        public override RuntimeEffect Factorize(List<CombatEntity> targets)
         {
             AttackRuntimeEffect retEffect = new AttackRuntimeEffect(_damagScaling,realDmg, _actionAnimation );
             if (targets != null)
@@ -30,7 +30,7 @@ namespace Vanaring
                     retEffect.AssignTarget(target);
             }
 
-            yield return retEffect;
+            return retEffect;
         }
     }
 
@@ -48,7 +48,6 @@ namespace Vanaring
         }
         public override IEnumerator ExecuteRuntimeCoroutine(CombatEntity caster)
         {
-             
             //Deal Dmg directly to enemy ignoring the caster 
             if (_realDmg > 0)
             {
@@ -58,8 +57,7 @@ namespace Vanaring
             //Command caster to attack enemy 
             if (caster == null)
                 throw new Exception("Caster can not be null");
-
-
+ 
             yield return caster.LogicAttack(_targets, _damagScaling ) ;
 
             //2 Visual 
@@ -87,6 +85,7 @@ namespace Vanaring
             coroutines.Add(caster.CombatEntityAnimationHandler.PlayActionAnimation(_actionAnimation));
 
             //2.3.) running animation scheme
+
             yield return new WaitAll(caster, coroutines.ToArray());
 
             //3.) Running after attack

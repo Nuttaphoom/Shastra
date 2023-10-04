@@ -10,13 +10,10 @@ using System.Collections;
 
 namespace Vanaring 
 {
-    public class WeaponSocketGUI : MonoBehaviour, ISocketGUI<SpellAbilitySO>
+    public class WeaponSocketGUI : MonoBehaviour 
     {
 
-        public void HandleGUI(SpellAbilitySO weapon)
-        {
-
-        }
+      
 
         //[SerializeField]
         //private Button _actionButton ;

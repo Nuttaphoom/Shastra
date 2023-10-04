@@ -18,7 +18,7 @@ namespace Vanaring
         [SerializeField]
         private int _realIncreasedAmount = 0 ; 
 
-        public override IEnumerator Factorize(List<CombatEntity> targets)
+        public override RuntimeEffect Factorize(List<CombatEntity> targets)
         {
             EnhanceATKStatusEffect retEffect = new EnhanceATKStatusEffect(this, _modifiedPercent, _realIncreasedAmount);
             foreach (CombatEntity target in targets)
@@ -26,7 +26,7 @@ namespace Vanaring
                 retEffect.AssignTarget(target);
             }
 
-            yield return retEffect;
+            return retEffect;
         }
     }
 

@@ -16,7 +16,6 @@ namespace Vanaring
         [SerializeField]
         private StatusEffectApplierFactorySO _statusEffectFactory ;
  
-
         private CombatEntity _combatEntity;
 
         private SpellCasterHandler _spellCasterHandler; 
@@ -24,7 +23,6 @@ namespace Vanaring
         [SerializeField]
         private GameObject _star_circle_stunVFX;
  
-
         [SerializeField]
         ActionAnimationInfo _actionAnimationInfo;
 
@@ -37,14 +35,11 @@ namespace Vanaring
             _spellCasterHandler.UnSubOnModifyEnergy(OnModifyEnergy);
         }
 
-
-
         #region Method 
         public void OnModifyEnergy(CombatEntity caster, RuntimeMangicalEnergy.EnergySide side, int amount)
         {
             if (_starVFX_Instantied != null)
                 return;
-
 
             if (_spellCasterHandler.IsEnergyOverheat())
             {
@@ -54,15 +49,9 @@ namespace Vanaring
 
         public void Overheat(CombatEntity caster)
         {
-            IEnumerator coroutine = _statusEffectFactory.Factorize(new List<CombatEntity>() { _combatEntity });
-            while (coroutine.MoveNext())
-            {
-                if (coroutine.Current != null && coroutine.Current.GetType().IsSubclassOf(typeof(RuntimeEffect)))
-                {
-                    StartCoroutine((coroutine.Current as RuntimeEffect).ExecuteRuntimeCoroutine(_combatEntity));
-                }
-            }
-
+            RuntimeEffect effect = _statusEffectFactory.Factorize(new List<CombatEntity>() { _combatEntity });
+            StartCoroutine(effect.ExecuteRuntimeCoroutine(_combatEntity));
+                 
             _combatEntity.LogicHurt(null, caster.StatsAccumulator.GetATKAmount());
             if (!_combatEntity.IsDead)
             {

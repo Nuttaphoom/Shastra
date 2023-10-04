@@ -27,7 +27,6 @@ namespace Vanaring
         }
         private void OnEnable()
         {
-            Debug.Log("On Enable");
             lightVal = _combatEntity.SpellCaster.GetEnergyAmount(RuntimeMangicalEnergy.EnergySide.LightEnergy);
             darkVal = _combatEntity.SpellCaster.GetEnergyAmount(RuntimeMangicalEnergy.EnergySide.DarkEnergy);
             DisplayEnergy();
