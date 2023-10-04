@@ -21,7 +21,7 @@ namespace Vanaring
             switch (signal)
             {
                 case "A":
-                    Debug.Log("Signal A");
+                    Debug.Log(SignalType.SignalA);
                     break;
                 //case SignalType.SignalB:
                 //    Debug.Log("Signal B");
