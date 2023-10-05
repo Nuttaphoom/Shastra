@@ -22,7 +22,7 @@ namespace Vanaring
             {
                 case "A":
                     Debug.Log(SignalType.SignalA);
-                    directorManager.TransmitSignal();
+                    //directorManager.TransmitSignal();
                     break;
                 //case SignalType.SignalB:
                 //    Debug.Log("Signal B");
