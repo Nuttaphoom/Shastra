@@ -123,7 +123,7 @@ namespace Vanaring
         {
             CombatEntity _actor;
 
-            IActorAction action = null ; 
+            ActorAction action = null ; 
 
             while (true)
             {

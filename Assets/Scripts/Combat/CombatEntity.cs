@@ -38,7 +38,6 @@ namespace Vanaring
 
         private EnergyOverflowHandler _energyOverflowHandler;
 
-
         [SerializeField]
         private DamageOutputPopupHandler _dmgOutputPopHanlder; 
 
@@ -46,10 +45,9 @@ namespace Vanaring
         private bool _isExhausted = false; 
 
         public bool IsDead => _isDead;
-
         public bool IsExhausted => _isExhausted;
 
-        protected Queue<IActorAction> _actionQueue = new Queue<IActorAction>(); 
+        protected Queue<ActorAction> _actionQueue = new Queue<ActorAction>(); 
         protected virtual void Awake()
         {
             _dmgOutputPopHanlder = new DamageOutputPopupHandler(_dmgOutputPopHanlder, this); 
@@ -94,10 +92,10 @@ namespace Vanaring
         }
 
         #endregion
-        public IActorAction GetActionRuntimeEffect(bool peek = false)
+        public ActorAction GetActionRuntimeEffect(bool peek = false)
         {
             if (_actionQueue == null)
-                _actionQueue = new Queue<IActorAction>();
+                _actionQueue = new Queue<ActorAction>();
 
             if (_actionQueue.Count == 0)
                 return null;
@@ -108,7 +106,7 @@ namespace Vanaring
             return _actionQueue.Dequeue();
         }
 
-        public void AddActionQueue(IActorAction actorAction)
+        public void AddActionQueue(ActorAction actorAction)
         {
             _actionQueue.Enqueue(actorAction);
         }
@@ -122,7 +120,7 @@ namespace Vanaring
         /// <summary>
         /// Invoked before this character perform any action
         /// </summary>
-        public IEnumerator OnPerformAction(IActorAction action)
+        public IEnumerator OnPerformAction(ActorAction action)
         {
             //Call on perform action of the ActorAction
             yield return action.PreActionPerform();

@@ -79,7 +79,7 @@ namespace Vanaring
         /// </summary>
         /// <param name="target"></param>
         /// <param name="action"></param>
-        private IEnumerator EnergySimulation(CombatEntity target, IActorAction action)
+        private IEnumerator EnergySimulation(CombatEntity target, ActorAction action)
         {
             yield return action.Simulate(target) ;
 
@@ -174,7 +174,7 @@ namespace Vanaring
             _targetSelectionGUI.EndSelectionScheme();
             _activlySelecting = false;
         }
-        public IEnumerator InitializeActionTargetSelectionScheme(CombatEntity caster, IActorAction actorAction, bool randomTarget = false)
+        public IEnumerator InitializeActionTargetSelectionScheme(CombatEntity caster, ActorAction actorAction, bool randomTarget = false)
         {
             ColorfulLogger.LogWithColor("Start target selection ", Color.green);
             if (_activlySelecting)

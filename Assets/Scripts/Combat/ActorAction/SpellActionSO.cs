@@ -25,97 +25,33 @@ namespace Vanaring
 
     }
 
-    public class SpellAbilityRuntime : IActorAction
-    {       
-        private CombatEntity _caster; 
-
+    public class SpellAbilityRuntime : ActorAction
+    {
         private EnergyModifierData _energyModifier;
-
-        private List<CombatEntity> _targets;
-
-        private TargetSelector _targetSelector; 
-
-        private ActionSignal _actionSignal ;
-
         public SpellAbilityRuntime(EnergyModifierData energyModifier, CombatEntity caster, TargetSelector targetSelector, ActionSignal actionSignal)
         {
-            _energyModifier = energyModifier ;
-            _caster = caster ;
-            _targetSelector = targetSelector ;
-            _actionSignal = new ActionSignal(actionSignal) ;
+            _energyModifier = energyModifier;
+            _caster = caster;
+            _targetSelector = targetSelector;
+            _actionSignal = new ActionSignal(actionSignal);
         }
 
-        public IEnumerator PreActionPerform()
+        public override IEnumerator PreActionPerform()
         {
-            yield return null ; 
+            yield return null;
         }
 
-        public IEnumerator PostActionPerform()
+        public override IEnumerator PostActionPerform()
         {
             _caster.SpellCaster.ModifyEnergy(_caster, _energyModifier.Side, _energyModifier.Amount);
-            yield return null; 
+            yield return null;
         }
 
-        public void SetActionTarget(List<CombatEntity> targets)
+        public override IEnumerator Simulate(CombatEntity target)
         {
-            _targets = new List<CombatEntity>(); 
-            foreach (var entity in targets)
-            {
-                _targets.Add(entity);
-            }
-        }
-
-        public TargetSelector GetTargetSelector()
-        {
-            return _targetSelector; 
-        }
-
-        public IEnumerator Simulate(CombatEntity target)
-        {
-            throw new NotImplementedException() ;
-            yield return null ; 
-        }
-
-        public IEnumerator PerformAction()
-        {
-            //Set up 
-            SetUpTimeLineActorSetting();
-
-            //Play Timeline in DirectorManager and register signal
-
-
-            //Play runtimeeffect when signal received  
-
-            RuntimeEffectFactorySO factory ; 
-
-            while (_actionSignal.SignalTerminated())
-            {
-                if ( ( factory = _actionSignal.GetReadyEffect() ) != null) {
-                    RuntimeEffect effect =  factory.Factorize(_targets) ;
-
-                    yield return effect.ExecuteRuntimeCoroutine(_caster) ;
-                    yield return effect.OnExecuteRuntimeDone(_caster) ;
-                }
-
-                yield return new WaitForEndOfFrame() ; 
-            }
-            
-            throw new NotImplementedException("The imeplementation is not finished!") ;  
-        }
-
-        private void SetUpTimeLineActorSetting()
-        {
-            List<object> actors = new List<object>();
-
-            actors.Add(_caster); 
-            foreach (var entity in _targets)
-            {
-                actors.Add(entity);
-            }
-
-            _actionSignal.SetUpActorsSetting(actors); 
+            throw new NotImplementedException();
+            yield return null;
         }
     }
-
 
 }

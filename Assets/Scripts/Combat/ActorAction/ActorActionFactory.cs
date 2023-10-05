@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Authentication.ExtendedProtection;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEditor;
@@ -10,7 +11,6 @@ using UnityEngine.Tilemaps;
 
 namespace Vanaring 
 {
-    [CreateAssetMenu(fileName= "Combat Ability" , menuName = "ScriptableObject/Combat/CombatAbility" )]
     public class ActorActionFactory : ScriptableObject
     { 
         [SerializeField]
@@ -31,31 +31,84 @@ namespace Vanaring
         #endregion
     }
 
-    public interface IActorAction 
+    public abstract class ActorAction
     {
-        public IEnumerator Simulate(CombatEntity target); 
+        protected TargetSelector _targetSelector;
+        protected List<CombatEntity> _targets;
+        protected ActionSignal _actionSignal;
+        protected CombatEntity _caster;
+        public abstract IEnumerator Simulate(CombatEntity target); 
         /// <summary>
         /// This method should be invoked prior to taking any action as it might causes the Actor to be exhaunted.
         /// </summary>
         /// <returns>An IEnumerator representing the pre-action process.</returns>
-        public IEnumerator PreActionPerform();
+        public abstract IEnumerator PreActionPerform();
 
         /// <summary>
         /// This method should be invoked if and only if the action was successfully executed.
         /// </summary>
         /// <returns>An IEnumerator representing the post-action process.</returns>
-        public IEnumerator PostActionPerform();
+        public abstract IEnumerator PostActionPerform();
 
         /// <summary>
         /// PerformAction resonsbile for playing animation and effect until the timeline is done playing
         /// </summary>
         /// <param name="targets"></param>
         /// 
-        public IEnumerator PerformAction(); 
+        public IEnumerator PerformAction()
+        {
+            //Set up 
+            SetUpTimeLineActorSetting();
 
-        public void SetActionTarget(List<CombatEntity> targets);
+            //Play Timeline in DirectorManager and register signal
 
-        public TargetSelector GetTargetSelector();
+
+            //Play runtimeeffect when signal received  
+
+            RuntimeEffectFactorySO factory;
+
+            while (_actionSignal.SignalTerminated())
+            {
+                if ((factory = _actionSignal.GetReadyEffect()) != null)
+                {
+                    RuntimeEffect effect = factory.Factorize(_targets);
+
+                    yield return effect.ExecuteRuntimeCoroutine(_caster);
+                    yield return effect.OnExecuteRuntimeDone(_caster);
+                }
+
+                yield return new WaitForEndOfFrame();
+            }
+
+            throw new NotImplementedException("The imeplementation is not finished!");
+        }
+
+        private void SetUpTimeLineActorSetting()
+        {
+            List<object> actors = new List<object>();
+
+            actors.Add(_caster);
+            foreach (var entity in _targets)
+            {
+                actors.Add(entity);
+            }
+
+            _actionSignal.SetUpActorsSetting(actors);
+        }
+    
+        public void SetActionTarget(List<CombatEntity> targets)
+        {
+            _targets = new List<CombatEntity>();
+            foreach (var entity in targets)
+            {
+                _targets.Add(entity);
+            }
+        }
+
+        public TargetSelector GetTargetSelector()
+        {
+            return _targetSelector; 
+        }
 
 
     }

@@ -14,6 +14,7 @@ namespace Vanaring
     {
         [SerializeField] 
         private List<SpellActionSO> _spellActions;
+ 
         public List<SpellActionSO> GetSpellAction => _spellActions ;  
     }
 }
