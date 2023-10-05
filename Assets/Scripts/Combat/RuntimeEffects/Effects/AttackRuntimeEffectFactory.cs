@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.Experimental.GlobalIllumination;
+using static UnityEngine.EventSystems.EventTrigger;
 
 
 namespace Vanaring
@@ -46,6 +47,7 @@ namespace Vanaring
             _actionAnimation = actionAnimation;  
 
         }
+
         public override IEnumerator ExecuteRuntimeCoroutine(CombatEntity caster)
         {
             //Deal Dmg directly to enemy ignoring the caster 

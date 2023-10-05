@@ -16,28 +16,17 @@ namespace Vanaring
         [SerializeField]
         private EnergyModifierData _requiredEnergy;
 
- 
-
-
         public EnergyModifierData RequiredEnergy => _requiredEnergy;
 
         public SpellAbilityRuntime Factorize(CombatEntity caster)
         {
-            return new SpellAbilityRuntime(RequiredEnergy, EffectFactory, caster, _targetSelector); 
+            return new SpellAbilityRuntime(RequiredEnergy, EffectFactory, caster, _targetSelector, _actionSignal); 
         } 
 
     }
 
     public class SpellAbilityRuntime : IActorAction
-    {
-        public SpellAbilityRuntime(EnergyModifierData energyModifier, RuntimeEffectFactorySO effect, CombatEntity caster, TargetSelector targetSelector)
-        {
-            _effect = effect; 
-            _energyModifier = energyModifier ;
-            _caster = caster;
-            _targetSelector = targetSelector; 
-        }
-
+    {       
         private CombatEntity _caster; 
 
         private EnergyModifierData _energyModifier;
@@ -52,6 +41,16 @@ namespace Vanaring
 
         public RuntimeEffectFactorySO EffectFactory { get {  return _effect; } }
 
+        private ActionSignal _actionSignal;
+
+        public SpellAbilityRuntime(EnergyModifierData energyModifier, RuntimeEffectFactorySO effect, CombatEntity caster, TargetSelector targetSelector, ActionSignal actionSignal)
+        {
+            _effect = effect;
+            _energyModifier = energyModifier;
+            _caster = caster;
+            _targetSelector = targetSelector;
+            _actionSignal = new ActionSignal(actionSignal) ;
+        }
         public IEnumerator PreActionPerform()
         {
             yield return null; 
@@ -76,10 +75,7 @@ namespace Vanaring
 
         public RuntimeEffect GetRuntimeEffect()
         {
-            foreach (var target in _targets)
-            {
-                Debug.Log("target is " + target); 
-            }
+             
             return _effect.Factorize(_targets);
         }
 

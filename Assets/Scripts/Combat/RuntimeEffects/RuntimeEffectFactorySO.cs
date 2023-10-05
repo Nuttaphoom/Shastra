@@ -17,7 +17,7 @@ namespace Vanaring
     {
         protected List<CombatEntity> _targets = new List<CombatEntity>();
         public abstract IEnumerator ExecuteRuntimeCoroutine(CombatEntity caster);
-
+       
         public virtual IEnumerator OnExecuteRuntimeDone(CombatEntity caster)
         {
             yield return null;

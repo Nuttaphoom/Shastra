@@ -22,6 +22,9 @@ namespace Vanaring
         [SerializeField]
         private RuntimeEffectFactorySO _effect ;
 
+        [SerializeField]
+        protected ActionSignal _actionSignal; 
+        
         #region GETTER
         public TargetSelector TargetSelect => _targetSelector;
 

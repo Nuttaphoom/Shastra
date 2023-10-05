@@ -61,7 +61,7 @@ namespace Vanaring
                 throw new Exception("SpellCaster haven't been assigned (should never use 'GetComponent' for SpellCaster as it would be too slow') ");
             }
 
- 
+
         }
 
         #region Turn Handler Methods 
@@ -187,8 +187,7 @@ namespace Vanaring
         public void LogicHeal(int amount)
         {    
             int increasedAmoubnt = StatsAccumulator.ModifyHPStat(amount);
-            _dmgOutputPopHanlder.AccumulateHP(increasedAmoubnt);
-
+            _dmgOutputPopHanlder.AccumulateHP(increasedAmoubnt); 
         }
 
         public IEnumerator VisualHeal(string animationTrigger = "No Animation")
