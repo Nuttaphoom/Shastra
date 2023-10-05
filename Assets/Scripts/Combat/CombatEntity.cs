@@ -138,9 +138,7 @@ namespace Vanaring
             {
                 _isExhausted = true;
 
-                //yield return eff.ExecuteRuntimeCoroutine(this);
-
-                //yield return eff.OnExecuteRuntimeDone(this);
+                yield return action.PerformAction(); 
 
                 yield return action.PostActionPerform();
 
