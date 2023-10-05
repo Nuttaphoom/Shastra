@@ -45,7 +45,7 @@ namespace Vanaring
             _energyModifier = energyModifier;
             _caster = caster;
             _targetSelector = targetSelector;
-            _actionSignal = new ActionSignal(actionSignal) ;
+            _actionSignal = new ActionSignal(actionSignal,_targets) ;
         }
 
         public IEnumerator SetUpActionTimelineSetting()

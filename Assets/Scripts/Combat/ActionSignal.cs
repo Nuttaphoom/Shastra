@@ -30,39 +30,45 @@ namespace Vanaring
     public class ActionSignal
     {
         [SerializeField]
+        private TimelineAsset _timelineAsset;
+
+        [SerializeField]
         protected List<int> _keys = new List<int>() ;
 
         [SerializeField]
         protected List<RuntimeEffectFactorySO> _effects = new List<RuntimeEffectFactorySO>() ; 
 
-        private Dictionary<int, RuntimeEffectFactorySO> runtimeEffects = new Dictionary<int, RuntimeEffectFactorySO>() ;
-
-        [SerializeField]
-        private TimelineAsset _timelineAsset ;
+        private Dictionary<int, RuntimeEffectFactorySO> _runtimeEffectWithSignal= new Dictionary<int, RuntimeEffectFactorySO>() ;
 
         [SerializeField]
         private ActionTimelineSettingStruct _actionTimelineSetting; 
 
-        [SerializeField] 
-        private List<string> _trackToChangedName = new List<string>() ;
-        private List<object> _timelineActors = new List<object>() ; 
-
-        public ActionSignal(ActionSignal copied)
+        private List<CombatEntity> _targets = new List<CombatEntity>(); 
+        public ActionSignal(ActionSignal copied, List<CombatEntity> targets)
         {
             int i = 0;
             foreach (var key in _keys)
             {
-                runtimeEffects.Add(key, _effects[i]);
+                _runtimeEffectWithSignal.Add(key, _effects[i]);
                 i++; 
             }
+
+             
+        }
+
+        public void ReceiveSignal(int signal)
+        {
+
+        }
+
+        public IEnumerator InitializeScheme()
+        {
+            yield return null; 
         }
 
         public IEnumerator SetUpActionTimeLineSetting(List<object> actors)
         {
-            for (int i = 0; i < _trackToChangedName.Count; i++)
-            {
-                _timelineActors.Add(actors[i]); 
-            }
+             
             yield return null; 
         }
 

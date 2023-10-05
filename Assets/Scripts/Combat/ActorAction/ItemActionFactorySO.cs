@@ -36,7 +36,7 @@ namespace Vanaring
             _itemUserHandler = handler; 
              _factory = factory;
             _targetSelector = targetselector;
-            _actionSignal = new ActionSignal(actionSignal) ; 
+            _actionSignal = new ActionSignal(actionSignal, _targets) ; 
             
         }
 
