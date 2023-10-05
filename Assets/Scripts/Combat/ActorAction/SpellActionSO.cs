@@ -16,33 +16,21 @@ namespace Vanaring
         [SerializeField]
         private EnergyModifierData _requiredEnergy;
 
- 
-
-
         public EnergyModifierData RequiredEnergy => _requiredEnergy;
 
         public SpellAbilityRuntime Factorize(CombatEntity caster)
         {
-            return new SpellAbilityRuntime(RequiredEnergy, EffectFactory, caster, _targetSelector); 
+            return new SpellAbilityRuntime(RequiredEnergy, caster, _targetSelector, _actionSignal); 
         } 
 
     }
 
     public class SpellAbilityRuntime : IActorAction
-    {
-        public SpellAbilityRuntime(EnergyModifierData energyModifier, RuntimeEffectFactorySO effect, CombatEntity caster, TargetSelector targetSelector)
-        {
-            _effect = effect; 
-            _energyModifier = energyModifier ;
-            _caster = caster;
-            _targetSelector = targetSelector; 
-        }
-
+    {       
         private CombatEntity _caster; 
 
         private EnergyModifierData _energyModifier;
 
-        private RuntimeEffectFactorySO _effect;
 
         private List<CombatEntity> _targets;
 
@@ -50,7 +38,30 @@ namespace Vanaring
         public RuntimeMangicalEnergy.EnergySide ModifiedEnergySide { get { return _energyModifier.Side; } }
         public int ModifiedEnergyAmount { get { return _energyModifier.Amount; } }
 
-        public RuntimeEffectFactorySO EffectFactory { get {  return _effect; } }
+        private ActionSignal _actionSignal;
+
+        public SpellAbilityRuntime(EnergyModifierData energyModifier, CombatEntity caster, TargetSelector targetSelector, ActionSignal actionSignal)
+        {
+            _energyModifier = energyModifier;
+            _caster = caster;
+            _targetSelector = targetSelector;
+            _actionSignal = new ActionSignal(actionSignal,_targets) ;
+        }
+
+        public IEnumerator SetUpActionTimelineSetting()
+        {
+            List<object> actors = new List<object>();
+            actors.Add(_caster);
+
+            foreach (var v in _targets)
+            {
+                actors.Add(v);
+            }
+
+            _actionSignal.SetUpActionTimeLineSetting(actors) ; 
+
+            yield return null;
+        }
 
         public IEnumerator PreActionPerform()
         {
@@ -74,21 +85,18 @@ namespace Vanaring
             }
         }
 
-        public RuntimeEffect GetRuntimeEffect()
-        {
-            foreach (var target in _targets)
-            {
-                Debug.Log("target is " + target); 
-            }
-            return _effect.Factorize(_targets);
-        }
-
         public TargetSelector GetTargetSelector()
         {
             return _targetSelector; 
         }
 
-      
+        public IEnumerator Simulate(CombatEntity target)
+        {
+            _actionSignal.SimulateEnergyModifier(target) ;
+            yield return null; 
+        }
+
+ 
     }
 
 

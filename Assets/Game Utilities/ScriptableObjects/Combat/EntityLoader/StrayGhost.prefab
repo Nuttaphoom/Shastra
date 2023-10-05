@@ -2616,11 +2616,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6372633111618651101}
-  - component: {fileID: 7014186767969307044}
   - component: {fileID: 2524119204172734917}
   - component: {fileID: 3183956409549396090}
   - component: {fileID: 230340289741595676}
   - component: {fileID: 5562888234735126922}
+  - component: {fileID: 8091564974255038199}
   m_Layer: 0
   m_Name: StrayGhost
   m_TagString: Untagged
@@ -2649,21 +2649,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7014186767969307044
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8010838884609612702}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5625299103692234088efe0c61a90dd6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _behaviorSocketSOs: {fileID: 11400000, guid: 2c7f246954daa1f4b9d1ef389a5f80a9, type: 2}
-  _telegraphyPos: {fileID: 5030779872240135818}
-  _statGUIScaler: {fileID: 2018818514978266700}
 --- !u!114 &2524119204172734917
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2746,6 +2731,26 @@ MonoBehaviour:
   _dmgOutputPopHanlder:
     _outputDMGTimerPrefab: {fileID: 6205815355120891309, guid: b67fb67d063351e4a9936c0c2247f479, type: 3}
     _outputHealTimerPrefab: {fileID: 6205815355120891309, guid: c3f10d4c069cca44182d2621e48eab7c, type: 3}
+  aiBehaviorHandler: {fileID: 8091564974255038199}
+--- !u!114 &8091564974255038199
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8010838884609612702}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8072fb5fe3f2ea40918be8c9feeea73, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _ProrityCondition:
+  - spellOrder: 0
+    Condition: {fileID: 11400000, guid: 1d753732fc2416f4d9a541a1aff41dbe, type: 2}
+    conditionAmount: 100
+    SpellList:
+    - spell: {fileID: 11400000, guid: 41e02732b44fdb64aa66146ff1c2063a, type: 2}
+      chance: 100
 --- !u!1 &8149838307054936125
 GameObject:
   m_ObjectHideFlags: 0

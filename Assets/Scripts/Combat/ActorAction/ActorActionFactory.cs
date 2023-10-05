@@ -20,20 +20,20 @@ namespace Vanaring
         protected TargetSelector _targetSelector;
 
         [SerializeField]
-        private RuntimeEffectFactorySO _effect ;
-
+        protected ActionSignal _actionSignal; 
+        
         #region GETTER
         public TargetSelector TargetSelect => _targetSelector;
 
         public string AbilityName => _description.FieldName; 
         public string Desscription => _description.FieldDescription;
         public Sprite AbilityImage => _description.FieldImage;
-        public RuntimeEffectFactorySO EffectFactory => _effect;
         #endregion
     }
 
     public interface IActorAction 
     {
+        public IEnumerator Simulate(CombatEntity target); 
         /// <summary>
         /// This method should be invoked prior to taking any action as it might causes the Actor to be exhaunted.
         /// </summary>
@@ -47,8 +47,9 @@ namespace Vanaring
         public IEnumerator PostActionPerform();
         public void SetActionTarget(List<CombatEntity> targets);
 
-        public RuntimeEffect GetRuntimeEffect();
-        public TargetSelector GetTargetSelector(); 
+        public TargetSelector GetTargetSelector();
+
+        public IEnumerator SetUpActionTimelineSetting();  
 
     }
 

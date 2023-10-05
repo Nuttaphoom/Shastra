@@ -61,7 +61,7 @@ namespace Vanaring
                 throw new Exception("SpellCaster haven't been assigned (should never use 'GetComponent' for SpellCaster as it would be too slow') ");
             }
 
- 
+
         }
 
         #region Turn Handler Methods 
@@ -129,17 +129,18 @@ namespace Vanaring
         {
             //Call on perform action of the ActorAction
             yield return action.PreActionPerform();
-
-            var eff = action.GetRuntimeEffect();
+            
+            //Old one, now we need to call Timeline asset instead 
+            //var eff = action.GetRuntimeEffect();
 
             //check if still be able to call the action
             if (ReadyForControl())
             {
                 _isExhausted = true;
 
-                yield return eff.ExecuteRuntimeCoroutine(this);
+                //yield return eff.ExecuteRuntimeCoroutine(this);
 
-                yield return eff.OnExecuteRuntimeDone(this);
+                //yield return eff.OnExecuteRuntimeDone(this);
 
                 yield return action.PostActionPerform();
 
@@ -187,8 +188,7 @@ namespace Vanaring
         public void LogicHeal(int amount)
         {    
             int increasedAmoubnt = StatsAccumulator.ModifyHPStat(amount);
-            _dmgOutputPopHanlder.AccumulateHP(increasedAmoubnt);
-
+            _dmgOutputPopHanlder.AccumulateHP(increasedAmoubnt); 
         }
 
         public IEnumerator VisualHeal(string animationTrigger = "No Animation")
