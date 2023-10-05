@@ -9,7 +9,7 @@ namespace Vanaring
     public class SpellWindowManager : HierarchyUIWindow, IInputReceiver 
     {
         [SerializeField]
-        private CombatEntity _combatEntity;  
+        private ControlableEntity _combatEntity;  
 
         [SerializeField]
         private SpellSocketGUI _templatePrefab;
@@ -53,7 +53,7 @@ namespace Vanaring
             }
             _upArrow.gameObject.SetActive(false);
             _downArrow.gameObject.SetActive(false);
-            if(_combatEntity.SpellCaster.SpellAbilities.Count <= 3)
+            if(_combatEntity.GetControlableEntityActionRegistry.GetSpellAction.Count <= 3)
             {
                 _upArrow.gameObject.SetActive(false);
                 _downArrow.gameObject.SetActive(false);
@@ -65,12 +65,12 @@ namespace Vanaring
                     _upArrow.gameObject.SetActive(false);
                     _downArrow.gameObject.SetActive(true);
                 }
-                else if (_combatEntity.SpellCaster.SpellAbilities.Count - 1 != endIndex)
+                else if (_combatEntity.GetControlableEntityActionRegistry.GetSpellAction.Count - 1 != endIndex)
                 {
                     _upArrow.gameObject.SetActive(true);
                     _downArrow.gameObject.SetActive(true);
                 }
-                else if (endIndex == _combatEntity.SpellCaster.SpellAbilities.Count - 1)
+                else if (endIndex == _combatEntity.GetControlableEntityActionRegistry.GetSpellAction.Count - 1)
                 {
                     _upArrow.gameObject.SetActive(true);
                     _downArrow.gameObject.SetActive(false);
@@ -125,7 +125,7 @@ namespace Vanaring
             int tmpSlotIndex = 0;
             _spellSockets = new List<SpellSocketGUI>(); 
             
-            foreach (SpellActionSO spellAbility in _combatEntity.SpellCaster.SpellAbilities)
+            foreach (SpellActionSO spellAbility in _combatEntity.GetControlableEntityActionRegistry.GetSpellAction)
             {
                 if (tmpNum >= start && tmpNum <= end)
                 {
@@ -144,7 +144,7 @@ namespace Vanaring
 
         private bool LoadLowerSocketItem()
         {
-            if(endIndex < _combatEntity.SpellCaster.SpellAbilities.Count - 1)
+            if(endIndex < _combatEntity.GetControlableEntityActionRegistry.GetSpellAction.Count - 1)
             {
                 ClearSpellSocketGUI();
                 startIndex++;

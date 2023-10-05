@@ -36,6 +36,7 @@ namespace Vanaring
         {
             _combatEntity = GetComponent<CombatEntity>();
         }
+
         // TODO : Call FactorizeItemInInventory into Awake in correct order 
         private void Start()
         {
@@ -49,7 +50,6 @@ namespace Vanaring
 
         private void FactorizeItemInInventory()
         {
-            //TODO : Load inventory from somewhere instead of manually assign them
             _itemInventory = ItemInventory.instance.GetItemInventoryAbility;
             _runtimeItemsAmount = ItemInventory.instance.GetItemInventoryAmount;
             foreach (ItemActionFactorySO factory in _itemInventory)

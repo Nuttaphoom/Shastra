@@ -8,13 +8,15 @@ using UnityEngine;
 
 namespace Vanaring 
 {
+    [RequireComponent(typeof(AIBehaviorHandler))]
+    [RequireComponent (typeof(CombatEntityAnimationHandler))]
     public class AIEntity : CombatEntity
     {
-        [SerializeField]
         AIBehaviorHandler aiBehaviorHandler;
         protected override void Awake()
         {
             base.Awake();
+            aiBehaviorHandler = GetComponent<AIBehaviorHandler>();
 
             aiBehaviorHandler.SetEntity(this);
             //StartCoroutine(_botBehaviorHandler.CalculateNextBehavior());

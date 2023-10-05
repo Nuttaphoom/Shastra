@@ -15,6 +15,7 @@ using static UnityEngine.GraphicsBuffer;
 
 namespace Vanaring
 {
+    [RequireComponent(typeof(SpellCasterHandler))]
     public abstract class CombatEntity : MonoBehaviour, IStatusEffectable, ITurnState, IDamagable, IAttackter
     {
         [Header("Right now we manually assign CharacterSheet, TO DO : Make it loaded from the main database")]
@@ -60,11 +61,15 @@ namespace Vanaring
             {
                 throw new Exception("SpellCaster haven't been assigned (should never use 'GetComponent' for SpellCaster as it would be too slow') ");
             }
-
-
         }
 
         #region Turn Handler Methods 
+        public abstract IEnumerator GetAction();
+
+        // Take control and leave control should have its own space 
+        public abstract IEnumerator TakeControl();
+        public abstract IEnumerator TakeControlLeave();
+
         public virtual IEnumerator TurnEnter()
         {
             if (_statusEffectHandler == null)
@@ -82,19 +87,11 @@ namespace Vanaring
 
             yield return _statusEffectHandler.RunStatusEffectExpiredScheme();
         }
-
-        public abstract IEnumerator GetAction();
-
-        // Take control and leave control should have its own space 
-        public abstract IEnumerator TakeControl();
-        public abstract IEnumerator TakeControlLeave();
          
-        //is okay 
         public bool ReadyForControl()
         {
             return !_runtimeCharacterStatsAccumulator.IsStunt() && !IsDead && !IsExhausted;
         }
-
 
         #endregion
         public IActorAction GetActionRuntimeEffect(bool peek = false)

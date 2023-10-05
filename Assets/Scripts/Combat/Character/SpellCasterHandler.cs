@@ -19,9 +19,7 @@ namespace Vanaring
     [Serializable]
     public class SpellCasterHandler : MonoBehaviour, ISimulationApplier<RuntimeMangicalEnergy.EnergySide, int, Null>
     {
-
-        [SerializeField]
-        private List<SpellActionSO> _spellAbilities = new List<SpellActionSO>();
+ 
 
         [SerializeField]
         private RuntimeMangicalEnergy _mangicalEnergy;
@@ -31,7 +29,6 @@ namespace Vanaring
         private CombatEntity _combatEntity;
 
         private RuntimeMangicalEnergy _simulateMagicalEnergy = null;
-
 
         private void Awake()
         {
@@ -91,11 +88,6 @@ namespace Vanaring
         }
 
  
-        #endregion
-
-        #region GETTER
-        public List<SpellActionSO> SpellAbilities => _spellAbilities;
-
         #endregion
 
         #region Interface 

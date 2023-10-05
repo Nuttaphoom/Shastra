@@ -99,18 +99,6 @@ namespace Vanaring
             _defaultColor = _actionButton.GetComponent<Image>().color; 
         }
 
-        //public void ActiveSelectedButtonState()
-        //{
-        //    _actionButton.spriteState = SpriteState.highlightSp;
-        //}
-
-        //public void DeactiveSelectedButtonState()
-        //{
-
-        //}
-
-        //public void 
-
         private void ChooseSpell()
         {
             if (IsEnergySufficeientToUseThisSpell())
