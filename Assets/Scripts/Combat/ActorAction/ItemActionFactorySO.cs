@@ -82,6 +82,11 @@ namespace Vanaring
                 _targets.Add(entity) ;
             }
         }
+
+        public IEnumerator Simulate(CombatEntity target)
+        {
+            throw new NotImplementedException();
+        }
         #endregion
     }
 

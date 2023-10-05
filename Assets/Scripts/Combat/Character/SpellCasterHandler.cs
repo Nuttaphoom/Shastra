@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
  
@@ -16,8 +17,9 @@ using static UnityEngine.Rendering.DebugUI;
 namespace Vanaring
 {
     [Serializable]
-    public class SpellCasterHandler : MonoBehaviour
+    public class SpellCasterHandler : MonoBehaviour, ISimulationApplier<RuntimeMangicalEnergy.EnergySide, int, Null>
     {
+
         [SerializeField]
         private List<SpellActionSO> _spellAbilities = new List<SpellActionSO>();
 
@@ -27,6 +29,9 @@ namespace Vanaring
         private UnityAction<CombatEntity, RuntimeMangicalEnergy.EnergySide, int> OnModifyEnergy;
 
         private CombatEntity _combatEntity;
+
+        private RuntimeMangicalEnergy _simulateMagicalEnergy = null;
+
 
         private void Awake()
         {
@@ -64,7 +69,6 @@ namespace Vanaring
 
         public bool IsEnergyOverheat()
         {
-            Debug.Log("is overheat in " + gameObject); 
             return _mangicalEnergy.IsOverheat();
         }
 
@@ -85,11 +89,33 @@ namespace Vanaring
         {
             StartCoroutine(TargetSelectionFlowControl.Instance.InitializeActionTargetSelectionScheme(_combatEntity, runtimeSpell));
         }
+
+ 
         #endregion
 
         #region GETTER
         public List<SpellActionSO> SpellAbilities => _spellAbilities;
 
+        #endregion
+
+        #region Interface 
+        public void Simulate(RuntimeMangicalEnergy.EnergySide argc, int argv, Null arga)
+        {
+            if (_simulateMagicalEnergy == null)
+            {
+                _simulateMagicalEnergy = new RuntimeMangicalEnergy(_mangicalEnergy);
+            
+            }
+            _simulateMagicalEnergy.ModifyEnergy(argv, argc);
+        }
+
+        public bool CheckSimulation()
+        {
+            bool ret = _simulateMagicalEnergy.IsOverheat(); 
+            _simulateMagicalEnergy = null;
+
+            return ret;  
+        }
         #endregion
     }
 
@@ -159,9 +185,6 @@ namespace Vanaring
         public bool IsOverheat()
         {
             int peakVal = _darkDefaultAmount + _lightDefaultAmount;
-
-            Debug.Log("peak val : " + peakVal + " while dark : " + _darkEnergy.GetStatValue() + " and light : " + _lightEnergy.GetStatValue()); 
-
             return (_darkEnergy.GetStatValue() >= peakVal) || (_lightEnergy.GetStatValue() >= peakVal)  ;
         }
 

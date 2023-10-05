@@ -37,6 +37,7 @@ namespace Vanaring
 
     public interface IActorAction 
     {
+        public IEnumerator Simulate(CombatEntity target); 
         /// <summary>
         /// This method should be invoked prior to taking any action as it might causes the Actor to be exhaunted.
         /// </summary>

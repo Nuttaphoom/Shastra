@@ -84,7 +84,11 @@ namespace Vanaring
             return _targetSelector; 
         }
 
-      
+        public IEnumerator Simulate(CombatEntity target)
+        {
+            EffectFactory.SimulateEnergyModifier(target) ;
+            yield return null; 
+        }
     }
 
 

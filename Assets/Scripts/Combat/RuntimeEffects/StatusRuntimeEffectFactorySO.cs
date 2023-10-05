@@ -44,6 +44,10 @@ namespace Vanaring
     }
     public abstract class StatusRuntimeEffectFactorySO : RuntimeEffectFactorySO
     {
+        public override void SimulateEnergyModifier(CombatEntity target)
+        {
+
+        }
         [SerializeField]
         private DescriptionBaseField _statusEffectDescription ;
 

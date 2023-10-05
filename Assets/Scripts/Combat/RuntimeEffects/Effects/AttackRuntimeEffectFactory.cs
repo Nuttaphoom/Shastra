@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using UnityEditor.TerrainTools;
 using UnityEngine;
 using UnityEngine.Experimental.GlobalIllumination;
 using static UnityEngine.EventSystems.EventTrigger;
@@ -32,6 +33,12 @@ namespace Vanaring
             }
 
             return retEffect;
+        }
+
+        public override void SimulateEnergyModifier(CombatEntity combatEntity)
+        {
+            throw new Exception("have been impleented"); 
+            combatEntity.SpellCaster.Simulate(RuntimeMangicalEnergy.EnergySide.LightEnergy, 40, null); 
         }
     }
 
