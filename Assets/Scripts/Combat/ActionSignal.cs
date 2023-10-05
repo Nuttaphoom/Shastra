@@ -106,6 +106,7 @@ namespace Vanaring
             return (effect) ;
         }
 
+        public TimelineAsset TimelineAsset => _timelineAsset;
         public bool SignalTerminated()
         {
             return _runtimeEffectWithSignal.Count == 0; 

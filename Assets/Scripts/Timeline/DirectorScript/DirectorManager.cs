@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Timeline;
 using UnityEngine.Playables;
+using UnityEngine.Rendering;
 
 namespace Vanaring
 {
@@ -13,18 +14,21 @@ namespace Vanaring
         //List<PlayableDirector> _usingDirector = new List<PlayableDirector>();
         private Queue<PlayableDirector> _poolDirector = new Queue<PlayableDirector>();
         private TimelineActorSetupHandler timelineActorHandler;
-        private TimelineAsset _timelineAsset;
         public void TransmitSignal(int recv)
         {
+            if (_currentSignal.Count == 0)
+                Debug.LogError("No registered signal");
+            
             for (int i = 0; i < _currentSignal.Count; i++)
             {
                 _currentSignal[i].ReceiveSignal(recv);
             }
-            Debug.LogError("No Signal ");
         }
 
         public IEnumerator PlayTimeline(ActionSignal signal)
         {
+            _currentSignal.Add(signal); 
+
             // 1.) Create PlayableDirector
             PlayableDirector currentDirector;
             if (_poolDirector.Count > 0)
@@ -33,13 +37,14 @@ namespace Vanaring
             }
             else
             {
+                //Fix : Instantiate 
                 PlayableDirector newDirector = gameObject.AddComponent<PlayableDirector>();
                 currentDirector = newDirector; 
             }
 
             // 2.) Set up the TimelineAsset
             timelineActorHandler.SetUpActor(currentDirector, signal.GetActionTimelineSettingStruct);
-            currentDirector.playableAsset = _timelineAsset;
+            currentDirector.playableAsset = signal.TimelineAsset;
 
             // 3.) Set currentSignal waiting
             currentDirector.Play();
@@ -55,7 +60,7 @@ namespace Vanaring
         {
             while (director.state == PlayState.Playing)
             {
-                yield return null;
+                yield return new WaitForEndOfFrame() ;
             }
         }
     }

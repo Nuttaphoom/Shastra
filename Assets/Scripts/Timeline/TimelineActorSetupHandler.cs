@@ -18,9 +18,7 @@ namespace Vanaring
                 {
                     if (track.name == actionTimelineSetting.TrackNames[i])
                     {
-                        Debug.Log("Found");
                         director.SetGenericBinding(track, actionTimelineSetting.GetObjectWithTrackName(track.name) as GameObject);
-                        break;
                     }
                 }
             }
