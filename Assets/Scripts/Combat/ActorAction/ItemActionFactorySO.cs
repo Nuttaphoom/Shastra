@@ -22,9 +22,6 @@ namespace Vanaring
 
     public class ItemAbilityRuntime  : IActorAction 
     {
-        private string _itemName;
-        private string _description;
-
         private ItemActionFactorySO _factory; 
         private RuntimeEffectFactorySO _effectFactory ;
         private ItemUserHandler _itemUserHandler;
@@ -36,7 +33,7 @@ namespace Vanaring
             _itemUserHandler = handler; 
              _factory = factory;
             _targetSelector = targetselector;
-            _actionSignal = new ActionSignal(actionSignal, _targets) ; 
+            _actionSignal = new ActionSignal(actionSignal) ; 
             
         }
 
@@ -45,10 +42,7 @@ namespace Vanaring
 
         public Sprite ItemSprite => _factory.ItemSprite;
 
-        public RuntimeEffectFactorySO GetEffectFactory()
-        {
-            return _effectFactory ;  
-        }
+     
 
         #region INTERFACE
 
@@ -60,6 +54,11 @@ namespace Vanaring
         public TargetSelector GetTargetSelector()
         {
             return _targetSelector  ; 
+        }
+
+        public IEnumerator PerformAction()
+        {
+            throw new NotImplementedException();
         }
 
         public IEnumerator PostActionPerform()
@@ -82,10 +81,6 @@ namespace Vanaring
             }
         }
 
-        public IEnumerator SetUpActionTimelineSetting()
-        {
-            throw new NotImplementedException();
-        }
 
         public IEnumerator Simulate(CombatEntity target)
         {

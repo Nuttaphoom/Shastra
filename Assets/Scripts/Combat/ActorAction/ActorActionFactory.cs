@@ -45,11 +45,18 @@ namespace Vanaring
         /// </summary>
         /// <returns>An IEnumerator representing the post-action process.</returns>
         public IEnumerator PostActionPerform();
+
+        /// <summary>
+        /// PerformAction resonsbile for playing animation and effect until the timeline is done playing
+        /// </summary>
+        /// <param name="targets"></param>
+        /// 
+        public IEnumerator PerformAction(); 
+
         public void SetActionTarget(List<CombatEntity> targets);
 
         public TargetSelector GetTargetSelector();
 
-        public IEnumerator SetUpActionTimelineSetting();  
 
     }
 
