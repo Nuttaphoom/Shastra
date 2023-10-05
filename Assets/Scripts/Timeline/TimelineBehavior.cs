@@ -6,7 +6,7 @@ using UnityEngine.Playables;
 
 namespace Vanaring
 {
-    public class TimelineActorCaster : MonoBehaviour
+    public class TimelineBehavior : MonoBehaviour
     {
         public PlayableDirector director;
         public GameObject newObjectToAnimate;
@@ -36,39 +36,7 @@ namespace Vanaring
                 }
             }
 
-            TestFunc(trackNameList, objectList,director.playableAsset as TimelineAsset);
-        }
-
-        private void TestFunc(List<string> trackNameList, List<Object> objectList, TimelineAsset timeline)
-        {
-            //Debug.Log("Start");
-            //int current = 0;
-            //PlayableAsset playable;
-            //foreach (string trackName in trackNameList)
-            //{
-            //    if(trackName == objectList[current].name)
-            //    {
-            //        if(objectList[current] is PlayableAsset)
-            //        {
-            //            Debug.Log("Founded:" + objectList[current] + " at index" + current);
-            //            playable = objectList[current] as PlayableAsset;
-            //        }
-            //    }
-            //    current++;
-            //}
-
-            foreach (var track in timeline.GetOutputTracks())
-            {
-                for (int i = 0; i < trackNameList.Count; i++)
-                {
-                    if (track.name == trackNameList[i])
-                    {
-                        Debug.Log("found");
-                        director.SetGenericBinding(track, objectList[i]) ;
-                        break; 
-                    }
-                }
-            }
+            //TestFunc(trackNameList, objectList, director.playableAsset as TimelineAsset);
         }
 
         private AnimationTrack FindAnimationTrackInTimeline(TimelineAsset timeline)
@@ -84,7 +52,7 @@ namespace Vanaring
                 }
                 if (track is LightControlTrack lightControlTrack)
                 {
-                    Debug.Log((lightControlTrack as LightControlTrack).GetLightClip()); 
+                    Debug.Log((lightControlTrack as LightControlTrack).GetLightClip());
                 }
             }
             return null;

@@ -8,21 +8,19 @@ namespace Vanaring
 {
     public class DirectorManager : MonoBehaviour
     {
-        List<ActionSignal> _currentSignal = new List<ActionSignal>();
-        List<PlayableDirector> _usingDirector = new List<PlayableDirector>();
-        Queue<PlayableDirector> _poolDirector = new Queue<PlayableDirector>();
+        //[SerializeField] private ActionSignal actionSignaltest;
+        [SerializeField] private List<ActionSignal> _currentSignal = new List<ActionSignal>();       //Waiting signal
+        //List<PlayableDirector> _usingDirector = new List<PlayableDirector>();
+        private Queue<PlayableDirector> _poolDirector = new Queue<PlayableDirector>();
+        private TimelineActorSetupHandler timelineActorHandler;
         private TimelineAsset _timelineAsset;
         public void TransmitSignal(int recv)
         {
             for (int i = 0; i < _currentSignal.Count; i++)
+            {
                 _currentSignal[i].ReceiveSignal(recv);
-            
-            //_timelineAsset??
-            //_currentSignal.Add(signal);
-            //if (signal == SignalType.SignalA)
-            //{
-
-            //}   
+            }
+            Debug.LogError("No Signal ");
         }
 
         public IEnumerator PlayTimeline(ActionSignal signal)
@@ -40,6 +38,7 @@ namespace Vanaring
             }
 
             // 2.) Set up the TimelineAsset
+            timelineActorHandler.SetUpActor(currentDirector, signal.GetActionTimelineSettingStruct);
             currentDirector.playableAsset = _timelineAsset;
 
             // 3.) Set currentSignal waiting
