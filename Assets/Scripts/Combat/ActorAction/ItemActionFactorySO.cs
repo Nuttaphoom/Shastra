@@ -16,7 +16,7 @@ namespace Vanaring
 
         public ItemAbilityRuntime FactorizeRuntimeItem(ItemUserHandler itemuserHandler)
         {
-            return new ItemAbilityRuntime(EffectFactory,this, itemuserHandler, _targetSelector, _actionSignal) ;
+            return new ItemAbilityRuntime(this, itemuserHandler, _targetSelector, _actionSignal) ;
         }
     }
 
@@ -31,10 +31,9 @@ namespace Vanaring
         private List<CombatEntity> _targets;
         private TargetSelector _targetSelector;
         private ActionSignal _actionSignal; 
-        public ItemAbilityRuntime(RuntimeEffectFactorySO effect, ItemActionFactorySO factory, ItemUserHandler handler, TargetSelector targetselector, ActionSignal actionSignal)
+        public ItemAbilityRuntime(ItemActionFactorySO factory, ItemUserHandler handler, TargetSelector targetselector, ActionSignal actionSignal)
         {
             _itemUserHandler = handler; 
-            _effectFactory = effect;
              _factory = factory;
             _targetSelector = targetselector;
             _actionSignal = new ActionSignal(actionSignal) ; 
@@ -83,7 +82,39 @@ namespace Vanaring
             }
         }
 
+        public IEnumerator SetUpActionTimelineSetting()
+        {
+            throw new NotImplementedException();
+        }
+
         public IEnumerator Simulate(CombatEntity target)
+        {
+            throw new NotImplementedException();
+        }
+
+        TargetSelector IActorAction.GetTargetSelector()
+        {
+            throw new NotImplementedException();
+        }
+
+        IEnumerator IActorAction.PostActionPerform()
+        {
+            throw new NotImplementedException();
+        }
+
+        IEnumerator IActorAction.PreActionPerform()
+        {
+            throw new NotImplementedException();
+        }
+
+        void IActorAction.SetActionTarget(List<CombatEntity> targets)
+        {
+            throw new NotImplementedException();
+        }
+
+     
+
+        IEnumerator IActorAction.Simulate(CombatEntity target)
         {
             throw new NotImplementedException();
         }

@@ -20,9 +20,6 @@ namespace Vanaring
         protected TargetSelector _targetSelector;
 
         [SerializeField]
-        private RuntimeEffectFactorySO _effect ;
-
-        [SerializeField]
         protected ActionSignal _actionSignal; 
         
         #region GETTER
@@ -31,7 +28,6 @@ namespace Vanaring
         public string AbilityName => _description.FieldName; 
         public string Desscription => _description.FieldDescription;
         public Sprite AbilityImage => _description.FieldImage;
-        public RuntimeEffectFactorySO EffectFactory => _effect;
         #endregion
     }
 
@@ -51,8 +47,9 @@ namespace Vanaring
         public IEnumerator PostActionPerform();
         public void SetActionTarget(List<CombatEntity> targets);
 
-        public RuntimeEffect GetRuntimeEffect();
-        public TargetSelector GetTargetSelector(); 
+        public TargetSelector GetTargetSelector();
+
+        public IEnumerator SetUpActionTimelineSetting();  
 
     }
 

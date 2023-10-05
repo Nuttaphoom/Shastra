@@ -129,17 +129,18 @@ namespace Vanaring
         {
             //Call on perform action of the ActorAction
             yield return action.PreActionPerform();
-
-            var eff = action.GetRuntimeEffect();
+            
+            //Old one, now we need to call Timeline asset instead 
+            //var eff = action.GetRuntimeEffect();
 
             //check if still be able to call the action
             if (ReadyForControl())
             {
                 _isExhausted = true;
 
-                yield return eff.ExecuteRuntimeCoroutine(this);
+                //yield return eff.ExecuteRuntimeCoroutine(this);
 
-                yield return eff.OnExecuteRuntimeDone(this);
+                //yield return eff.OnExecuteRuntimeDone(this);
 
                 yield return action.PostActionPerform();
 

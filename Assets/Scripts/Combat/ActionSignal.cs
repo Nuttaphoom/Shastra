@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,6 +10,22 @@ using UnityEngine.Timeline;
 
 namespace Vanaring 
 {
+    [Serializable]
+    struct ActionTimelineSettingStruct
+    {
+        [SerializeField]
+        private List<string> _trackToChangeName;
+        
+        private List<object> _timelienActors ; 
+        
+        public void AddActors(object actor)
+        {
+            if (_timelienActors == null) 
+                _timelienActors = new List<object>() ; 
+            
+            _timelienActors.Add(actor);
+        }
+    }
     [Serializable] 
     public class ActionSignal
     {
@@ -21,8 +38,15 @@ namespace Vanaring
         private Dictionary<int, RuntimeEffectFactorySO> runtimeEffects = new Dictionary<int, RuntimeEffectFactorySO>() ;
 
         [SerializeField]
-        private TimelineAsset _asset;
-       
+        private TimelineAsset _timelineAsset ;
+
+        [SerializeField]
+        private ActionTimelineSettingStruct _actionTimelineSetting; 
+
+        [SerializeField] 
+        private List<string> _trackToChangedName = new List<string>() ;
+        private List<object> _timelineActors = new List<object>() ; 
+
         public ActionSignal(ActionSignal copied)
         {
             int i = 0;
@@ -30,6 +54,23 @@ namespace Vanaring
             {
                 runtimeEffects.Add(key, _effects[i]);
                 i++; 
+            }
+        }
+
+        public IEnumerator SetUpActionTimeLineSetting(List<object> actors)
+        {
+            for (int i = 0; i < _trackToChangedName.Count; i++)
+            {
+                _timelineActors.Add(actors[i]); 
+            }
+            yield return null; 
+        }
+
+        public void SimulateEnergyModifier(CombatEntity target)
+        {
+            foreach (var factory in _effects)
+            {
+                factory.SimulateEnergyModifier(target) ; 
             }
         }
 
