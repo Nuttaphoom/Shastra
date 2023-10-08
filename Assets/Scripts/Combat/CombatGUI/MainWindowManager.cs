@@ -184,7 +184,6 @@ namespace Vanaring
 
         public override void OnWindowOverlayed()
         {
-            ColorfulLogger.LogWithColor("OnWindowOverlayed", Color.red);
             for (int i = 0; i < _buttons.Count; i++)
             {
                 UnhightlightButton(i);

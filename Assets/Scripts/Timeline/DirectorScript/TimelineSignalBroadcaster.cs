@@ -8,6 +8,7 @@ namespace Vanaring
 {
     public enum SignalType
     {
+        None,
         SignalA,
         SignalB,
         SignalC,
@@ -18,22 +19,32 @@ namespace Vanaring
         [SerializeField] DirectorManager directorManager;
         public void RecieveSignal(string signal)
         {
+            SignalType broadcastSignal = SignalType.None  ; 
             switch (signal)
             {
                 case "A":
-                    Debug.Log(SignalType.SignalA);
-                    directorManager.TransmitSignal(0);
+                    broadcastSignal = SignalType.SignalA ;
                     break;
-                //case SignalType.SignalB:
-                //    Debug.Log("Signal B");
-                //    break;
-                //case SignalType.SignalC:
-                //    Debug.Log("Signal C");
-                //    break;
-                //case SignalType.SignalD:
-                //    Debug.Log("Signal D");
-                //    break;
+                case "B":
+                    broadcastSignal = SignalType.SignalB ;
+                    break;
+                    //case SignalType.SignalB:
+                    //    Debug.Log("Signal B");
+                    //    break;
+                    //case SignalType.SignalC:
+                    //    Debug.Log("Signal C");
+                    //    break;
+                    //case SignalType.SignalD:
+                    //    Debug.Log("Signal D");
+                    //    break;
             }
+
+            if (broadcastSignal == SignalType.None)
+            {
+                throw new System.Exception("Received signal is invalid");
+            }
+            directorManager.TransmitSignal(broadcastSignal);
+
         }
     }
 }

@@ -37,8 +37,7 @@ namespace Vanaring
 
         public override void SimulateEnergyModifier(CombatEntity combatEntity)
         {
-            throw new Exception("have been impleented"); 
-            combatEntity.SpellCaster.Simulate(RuntimeMangicalEnergy.EnergySide.LightEnergy, 40, null); 
+            //combatEntity.SpellCaster.Simulate(RuntimeMangicalEnergy.EnergySide.LightEnergy, 100, null); 
         }
     }
 
@@ -57,7 +56,6 @@ namespace Vanaring
 
         public override IEnumerator ExecuteRuntimeCoroutine(CombatEntity caster)
         {
-            //Deal Dmg directly to enemy ignoring the caster 
             if (_realDmg > 0)
             {
                 throw new Exception("Direct dmg, without caster, is not function, TODO "); 

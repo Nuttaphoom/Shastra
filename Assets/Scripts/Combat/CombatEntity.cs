@@ -92,7 +92,7 @@ namespace Vanaring
         }
 
         #endregion
-        public ActorAction GetActionRuntimeEffect(bool peek = false)
+        public ActorAction GetActionRuntimeEffect( )
         {
             if (_actionQueue == null)
                 _actionQueue = new Queue<ActorAction>();
@@ -100,8 +100,6 @@ namespace Vanaring
             if (_actionQueue.Count == 0)
                 return null;
 
-            if (peek)
-                return _actionQueue.Peek();
 
             return _actionQueue.Dequeue();
         }

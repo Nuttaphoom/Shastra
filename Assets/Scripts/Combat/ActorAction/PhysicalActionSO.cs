@@ -45,12 +45,12 @@ namespace Vanaring
 
         private void SetUpTimeLineActorSetting()
         {
-            List<object> actors = new List<object>();
+            List<GameObject> actors = new List<GameObject>();
 
-            actors.Add(_caster);
+            actors.Add(_caster.gameObject);
             foreach (var entity in _targets)
             {
-                actors.Add(entity);
+                actors.Add(entity.gameObject);
             }
 
             _actionSignal.SetUpActorsSetting(actors);

@@ -20,7 +20,7 @@ namespace Vanaring
     public class CombatEntityAnimationHandler : MonoBehaviour
     {
         [SerializeField]
-        private GameObject _mesh ;
+        private GameObject _visualMesh ;
 
         [SerializeField]
         public Transform _vfxPos ;
@@ -43,6 +43,15 @@ namespace Vanaring
             set { _actionCamera = value; }
         }
 
+        #region GETTER
+        public GameObject GetVisualMesh()
+        {
+            if (_visualMesh == null)
+            {
+                throw new Exception("VisualMesh is null"); 
+            }
+            return _visualMesh;
+        }
         public Vector3 GetVFXSpawnPos()
         {
             if (_vfxPos == null || _vfxPos.position == null )
@@ -62,11 +71,11 @@ namespace Vanaring
 
             return _guiPos.position;
         }
-
+        #endregion
         private Animator _animator;
         private void Awake()
         {
-            _animator = _mesh.GetComponent<Animator>();
+            _animator = GetVisualMesh().GetComponent<Animator>();
         }
 
         public IEnumerator PlayTriggerAnimation(string triggerName)
@@ -136,7 +145,7 @@ namespace Vanaring
 
             if (_deadAnimationTrigger == "NONE")
             {
-                _mesh.transform.Translate(new Vector2(10000000, 1000000));
+                _visualMesh.transform.Translate(new Vector2(10000000, 1000000));
                 yield return new WaitForSeconds(2.5f);
                 if (_deadVisualEffect)
                 {
@@ -148,9 +157,6 @@ namespace Vanaring
             {
                 yield return PlayTriggerAnimation(_deadAnimationTrigger);
             }
-
-            
-             
         }
 
    

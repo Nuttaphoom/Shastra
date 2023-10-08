@@ -49,7 +49,10 @@ namespace Vanaring
 
         public override IEnumerator Simulate(CombatEntity target)
         {
-            throw new NotImplementedException();
+            foreach (var factory in _actionSignal.GetRuntimeEffects() )
+            {
+                factory.SimulateEnergyModifier(target); 
+            }
             yield return null;
         }
     }

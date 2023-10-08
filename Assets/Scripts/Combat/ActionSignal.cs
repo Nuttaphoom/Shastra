@@ -17,17 +17,17 @@ namespace Vanaring
         [SerializeField]
         private List<string> _trackToChangeName;
 
-        private List<object> _timelienActors ; 
+        private List<GameObject> _timelienActors ; 
         
-        public void AddActors(object actor)
+        public void AddActors(GameObject actor)
         {
             if (_timelienActors == null) 
-                _timelienActors = new List<object>()  ; 
+                _timelienActors = new List<GameObject>()  ; 
             
             _timelienActors.Add(actor);
         }
 
-        public object GetObjectWithTrackName(string trackName)
+        public GameObject GetObjectWithTrackName(string trackName)
         {
             for (int i = 0; i < _trackToChangeName.Count;i++)
             {
@@ -51,7 +51,7 @@ namespace Vanaring
 
         [Header("Signal need to be match give _effects")]
         [SerializeField]
-        private List<int> _signals = new List<int>() ;
+        private List<SignalType> _signals = new List<SignalType>() ;
 
         [Header("Sequence of effect that would be called from Timeline when signal received")]
         [SerializeField]
@@ -61,31 +61,37 @@ namespace Vanaring
         private ActionTimelineSettingStruct _actionTimelineSetting;
         #endregion
         
-        private Dictionary<int, RuntimeEffectFactorySO> _runtimeEffectWithSignal= new Dictionary<int, RuntimeEffectFactorySO>() ;
+        private Dictionary<SignalType, RuntimeEffectFactorySO> _runtimeEffectWithSignal= new Dictionary<SignalType, RuntimeEffectFactorySO>() ;
         private Queue<RuntimeEffectFactorySO> _readyEffectQueue = new Queue<RuntimeEffectFactorySO>();
 
         public ActionSignal(ActionSignal copied)
         {
-            for (int i = 0; i <  _signals.Count; i++ )
+            for (int i = 0; i < copied._signals.Count; i++ )
                 _runtimeEffectWithSignal.Add(copied._signals[i], copied._effects[i]);
 
             if (copied._signals.Count != copied._effects.Count)
-                throw new Exception("Signal and Effect is not relavant"); 
-        
+                throw new Exception("Signal and Effect is not relavant");
+
+            _actionTimelineSetting = copied._actionTimelineSetting;
+            _timelineAsset = copied._timelineAsset;
+
+
         }
 
         /// <summary>
         /// Should be called from DirectorManager only 
         /// </summary>
         /// <param name="signal"></param>
-        public void ReceiveSignal(int signal)
+        public void ReceiveSignal(SignalType signal)
         {
-            Debug.Log("Receive Signal " + signal);
+            if (! _runtimeEffectWithSignal.ContainsKey(signal))
+                throw new Exception(signal + "is not found in dictionary") ;
+ 
             _readyEffectQueue.Enqueue(_runtimeEffectWithSignal[signal]);
             _runtimeEffectWithSignal.Remove(signal); 
         }
 
-        public void SetUpActorsSetting(List<object> actors)
+        public void SetUpActorsSetting(List<GameObject> actors)
         {
             foreach (var obj in actors)
                 _actionTimelineSetting.AddActors(obj);
@@ -101,7 +107,7 @@ namespace Vanaring
             if (contained)
                 effect = _readyEffectQueue.Dequeue();
             else
-                effect = null; 
+                effect = null;
 
             return (effect) ;
         }
@@ -109,7 +115,18 @@ namespace Vanaring
         public TimelineAsset TimelineAsset => _timelineAsset;
         public bool SignalTerminated()
         {
-            return _runtimeEffectWithSignal.Count == 0; 
+            return _runtimeEffectWithSignal.Count == 0 && _readyEffectQueue.Count == 0; 
+        }
+
+        public List<RuntimeEffectFactorySO> GetRuntimeEffects()
+        {
+            List<RuntimeEffectFactorySO> ret = new List<RuntimeEffectFactorySO>(); 
+
+            foreach (var key in _runtimeEffectWithSignal.Keys)
+            {
+                ret.Add(_runtimeEffectWithSignal[key]); //.SimulateEnergyModifier(); 
+            }
+            return ret; 
         }
         #endregion
     }

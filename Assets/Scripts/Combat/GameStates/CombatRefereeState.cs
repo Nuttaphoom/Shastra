@@ -20,6 +20,7 @@ namespace Vanaring
         #region Public_Methods 
         public IEnumerator AdvanceRound()
         {
+            Debug.Log("enter new round");
             yield return new RoundEnterState(this).Execute();
 
             while (_referee.GetCurrentActiveEntities().Count > 0)
@@ -137,8 +138,9 @@ namespace Vanaring
                 if ((action = _actor.GetActionRuntimeEffect()) == null) 
                     yield return _actor.GetAction();
 
-                else 
+                else
                 {
+
                     //Maybe it get overheat or some affect stunt it while controling 
 
                     yield return _actor.OnPerformAction(action);

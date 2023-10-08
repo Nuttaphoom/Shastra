@@ -10,7 +10,7 @@ namespace Vanaring
     {
         List<ActionSignal> _currentSignal = new List<ActionSignal>();
 
-        public void SetUpActor(PlayableDirector director, ActionTimelineSettingStruct actionTimelineSetting)
+        public void SetUpActor(PlayableDirector director, ActionTimelineSettingStruct actionTimelineSetting , SignalReceiver unitySignalReciver)
         {
             foreach (var track in (director.playableAsset as TimelineAsset).GetOutputTracks())
             {
@@ -18,7 +18,11 @@ namespace Vanaring
                 {
                     if (track.name == actionTimelineSetting.TrackNames[i])
                     {
-                        director.SetGenericBinding(track, actionTimelineSetting.GetObjectWithTrackName(track.name) as GameObject);
+                        GameObject bindedObject = actionTimelineSetting.GetObjectWithTrackName(track.name).GetComponent<CombatEntityAnimationHandler>().GetVisualMesh() ;
+                        director.SetGenericBinding(track, bindedObject );
+                    }else if (track.name == "SignalTrack")
+                    {
+                        director.SetGenericBinding(track, unitySignalReciver) ;
                     }
                 }
             }

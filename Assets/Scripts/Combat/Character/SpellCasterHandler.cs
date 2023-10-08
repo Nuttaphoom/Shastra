@@ -93,8 +93,11 @@ namespace Vanaring
         #region Interface 
         public void Simulate(RuntimeMangicalEnergy.EnergySide argc, int argv, Null arga)
         {
+            Debug.Log("simulate magical energy maybe null");
+
             if (_simulateMagicalEnergy == null)
             {
+                Debug.Log("simulate magical energy is null");
                 _simulateMagicalEnergy = new RuntimeMangicalEnergy(_mangicalEnergy);
             
             }
@@ -103,10 +106,12 @@ namespace Vanaring
 
         public bool CheckSimulation()
         {
-            bool ret = _simulateMagicalEnergy.IsOverheat(); 
-            _simulateMagicalEnergy = null;
+            if (_simulateMagicalEnergy == null)
+                return false; 
 
-            return ret;  
+            bool ret = _simulateMagicalEnergy.IsOverheat() ; 
+            _simulateMagicalEnergy = null ;
+            return ret ;  
         }
         #endregion
     }

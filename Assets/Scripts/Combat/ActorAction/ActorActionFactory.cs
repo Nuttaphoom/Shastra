@@ -59,38 +59,37 @@ namespace Vanaring
         {
             //Set up 
             SetUpTimeLineActorSetting();
-
+ 
             //Play Timeline in DirectorManager and register signal
-
+            DirectorManager.Instance.PlayTimeline(_actionSignal) ; 
 
             //Play runtimeeffect when signal received  
 
             RuntimeEffectFactorySO factory;
 
-            while (_actionSignal.SignalTerminated())
+            while ( ! _actionSignal.SignalTerminated())
             {
                 if ((factory = _actionSignal.GetReadyEffect()) != null)
                 {
                     RuntimeEffect effect = factory.Factorize(_targets);
 
-                    yield return effect.ExecuteRuntimeCoroutine(_caster);
-                    yield return effect.OnExecuteRuntimeDone(_caster);
+                    yield return effect.ExecuteRuntimeCoroutine(_caster) ;
+                    yield return effect.OnExecuteRuntimeDone(_caster) ;
                 }
 
                 yield return new WaitForEndOfFrame();
             }
 
-            throw new NotImplementedException("The imeplementation is not finished!");
         }
 
         private void SetUpTimeLineActorSetting()
         {
-            List<object> actors = new List<object>();
+            List<GameObject> actors = new List<GameObject>();
 
-            actors.Add(_caster);
+            actors.Add(_caster.gameObject);
             foreach (var entity in _targets)
             {
-                actors.Add(entity);
+                actors.Add(entity.gameObject);
             }
 
             _actionSignal.SetUpActorsSetting(actors);

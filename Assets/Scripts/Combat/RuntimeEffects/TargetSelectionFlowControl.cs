@@ -88,13 +88,13 @@ namespace Vanaring
                 Debug.Log("this is spell action"); 
             }
 
-            if (target.SpellCaster.CheckSimulation())
-            {
-                Debug.Log("this action stun this target"); 
-            }else
-            {
-                Debug.Log("this action do not stun this target"); 
-            }
+            //if (target.SpellCaster.CheckSimulation())
+            //{
+            //    Debug.Log("this action stun this target"); 
+            //}else
+            //{
+            //    Debug.Log("this action do not stun this target"); 
+            //}
         }
 
         #region Public Method
@@ -132,7 +132,6 @@ namespace Vanaring
 
         public void ForceStop()
         {
-            ColorfulLogger.LogWithColor("ForceStop ", Color.red);
             if (_activlySelecting)
             {
                 _activlySelecting = false;

@@ -53,7 +53,6 @@ namespace Vanaring
         {
             for (int i = 0; i < _ProrityCondition.Count; i++)
             {
-                Debug.Log(i);
                 if (_ProrityCondition[i].Condition.ConditionsMet(aiEntity, _ProrityCondition[i].conditionAmount))
                 {
                     conditionIndex = i;
