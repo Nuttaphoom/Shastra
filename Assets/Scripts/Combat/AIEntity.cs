@@ -51,7 +51,6 @@ namespace Vanaring
 
         public override IEnumerator TakeControlLeave()
         {
-            print("TakeControlLeave");
             aiBehaviorHandler.TakeControlLeave();
             yield return null;
         }

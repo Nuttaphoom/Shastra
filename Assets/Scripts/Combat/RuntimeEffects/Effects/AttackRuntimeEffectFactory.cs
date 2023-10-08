@@ -67,43 +67,43 @@ namespace Vanaring
  
             yield return caster.LogicAttack(_targets, _damagScaling ) ;
 
-            //2 Visual 
-            List<IEnumerator> coroutines = new List<IEnumerator>();
+            ////2 Visual 
+            //List<IEnumerator> coroutines = new List<IEnumerator>();
 
-            //2.1.) creating vfx for coroutine for targets
-            foreach (CombatEntity target in _targets)
-            {
-                CombatEntity entity = target;
-                if (!_actionAnimation.IsProjectile)
-                {
-                    coroutines.Add(entity.CombatEntityAnimationHandler.PlayVFXActionAnimation<string>(
-                        _actionAnimation.TargetVfxEntity, (string s) => entity.VisualHurt(caster, s), 
-                        _actionAnimation.TargetTrigerID));
-                }
-                else
-                {
-                    coroutines.Add(caster.CombatEntityAnimationHandler.PlayVFXActionAnimation<string>(
-                        _actionAnimation.TargetVfxEntity, (string s) => entity.VisualHurt(caster, s),
-                        _actionAnimation.TargetTrigerID, caster.gameObject.transform.position, entity.gameObject.transform.position));
-                }
-            }
+            ////2.1.) creating vfx for coroutine for targets
+            //foreach (CombatEntity target in _targets)
+            //{
+            //    CombatEntity entity = target;
+            //    if (!_actionAnimation.IsProjectile)
+            //    {
+            //        coroutines.Add(entity.CombatEntityAnimationHandler.PlayVFXActionAnimation<string>(
+            //            _actionAnimation.TargetVfxEntity, (string s) => entity.VisualHurt(caster, s), 
+            //            _actionAnimation.TargetTrigerID));
+            //    }
+            //    else
+            //    {
+            //        coroutines.Add(caster.CombatEntityAnimationHandler.PlayVFXActionAnimation<string>(
+            //            _actionAnimation.TargetVfxEntity, (string s) => entity.VisualHurt(caster, s),
+            //            _actionAnimation.TargetTrigerID, caster.gameObject.transform.position, entity.gameObject.transform.position));
+            //    }
+            //}
 
-            //2.2.) create action animation coroutine for self
-            coroutines.Add(caster.CombatEntityAnimationHandler.PlayActionAnimation(_actionAnimation));
+            ////2.2.) create action animation coroutine for self
+            //coroutines.Add(caster.CombatEntityAnimationHandler.PlayActionAnimation(_actionAnimation));
 
-            //2.3.) running animation scheme
+            ////2.3.) running animation scheme
 
-            yield return new WaitAll(caster, coroutines.ToArray());
+            //yield return new WaitAll(caster, coroutines.ToArray());
 
-            //3.) Running after attack
-            coroutines.Clear(); 
-            foreach (CombatEntity target in _targets)
-            {
-                CombatEntity entity = target;
-                coroutines.Add(caster.GetStatusEffectHandler().ExecuteAfterAttackStatusRuntimeEffectCoroutine(target));
-            }
+            ////3.) Running after attack
+            //coroutines.Clear(); 
+            //foreach (CombatEntity target in _targets)
+            //{
+            //    CombatEntity entity = target;
+            //    coroutines.Add(caster.GetStatusEffectHandler().ExecuteAfterAttackStatusRuntimeEffectCoroutine(target));
+            //}
 
-            yield return new WaitAll(caster, coroutines.ToArray());
+            //yield return new WaitAll(caster, coroutines.ToArray());
 
 
         }

@@ -20,7 +20,6 @@ namespace Vanaring
         #region Public_Methods 
         public IEnumerator AdvanceRound()
         {
-            Debug.Log("enter new round");
             yield return new RoundEnterState(this).Execute();
 
             while (_referee.GetCurrentActiveEntities().Count > 0)

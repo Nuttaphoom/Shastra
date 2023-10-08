@@ -5,30 +5,52 @@ using System.Linq;
 using System.Runtime.Remoting.Messaging;
 using System.Text;
 using System.Threading.Tasks;
+using UnityEditor;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.Playables;
 using UnityEngine.Timeline;
 
 namespace Vanaring 
 {
     [Serializable]
-    public struct ActionTimelineSettingStruct
+    public class ActionTimelineSettingStruct
     {
         [SerializeField]
-        private List<string> _trackToChangeName;
+        private List<string> _trackToChangeName ;
 
-        private List<GameObject> _timelienActors ; 
-        
+        [SerializeField]
+        private List<GameObject> _timelienActors; 
+
+
+        public ActionTimelineSettingStruct(ActionTimelineSettingStruct copied)
+        {
+            _trackToChangeName = new List<string>(); 
+            foreach (var trackName in copied._trackToChangeName)
+            {
+                _trackToChangeName.Add(trackName); 
+            }
+
+            _timelienActors = new List<GameObject>(); 
+        }
+
         public void AddActors(GameObject actor)
         {
-            if (_timelienActors == null) 
-                _timelienActors = new List<GameObject>()  ; 
-            
+            if (_timelienActors == null)
+            {
+                _timelienActors = new List<GameObject>();
+            } 
+ 
+
             _timelienActors.Add(actor);
         }
 
         public GameObject GetObjectWithTrackName(string trackName)
         {
+            foreach (var actor in _timelienActors)
+            {
+                Debug.Log("actor is " + actor.name);
+            }
             for (int i = 0; i < _trackToChangeName.Count;i++)
             {
                 if (_trackToChangeName[i] == trackName)
@@ -42,6 +64,29 @@ namespace Vanaring
 
         public List<string> TrackNames => _trackToChangeName;
     }
+
+    [Serializable] 
+    public struct SignalEffectBindingStruct
+    {
+        [SerializeField]
+        private SignalType _signalType;
+
+        [SerializeField]
+        private List<RuntimeEffectFactorySO> _runtimeEffects ;
+
+        public bool IsSameSignalType(SignalType signal)
+        {
+            return _signalType == signal; 
+        }
+
+        public List<RuntimeEffectFactorySO > RuntimeEffects => _runtimeEffects;
+
+    }
+    
+
+    /// <summary>
+    /// Need to be treated as Runtime because we constantly modify these value everytime action is performed
+    /// </summary>
     [Serializable] 
     public class ActionSignal
     {
@@ -49,30 +94,22 @@ namespace Vanaring
         [SerializeField]
         private TimelineAsset _timelineAsset;
 
-        [Header("Signal need to be match give _effects")]
         [SerializeField]
-        private List<SignalType> _signals = new List<SignalType>() ;
-
-        [Header("Sequence of effect that would be called from Timeline when signal received")]
-        [SerializeField]
-        private List<RuntimeEffectFactorySO> _effects = new List<RuntimeEffectFactorySO>() ;
+        private List<SignalEffectBindingStruct> _signalEffectBindings = new List<SignalEffectBindingStruct>() ;
 
         [SerializeField]
-        private ActionTimelineSettingStruct _actionTimelineSetting;
+        private ActionTimelineSettingStruct _actionTimelineSetting  ;
         #endregion
-        
-        private Dictionary<SignalType, RuntimeEffectFactorySO> _runtimeEffectWithSignal= new Dictionary<SignalType, RuntimeEffectFactorySO>() ;
+ 
+
         private Queue<RuntimeEffectFactorySO> _readyEffectQueue = new Queue<RuntimeEffectFactorySO>();
 
         public ActionSignal(ActionSignal copied)
         {
-            for (int i = 0; i < copied._signals.Count; i++ )
-                _runtimeEffectWithSignal.Add(copied._signals[i], copied._effects[i]);
+            for (int i = 0; i < copied._signalEffectBindings.Count; i++ ) 
+                _signalEffectBindings.Add(copied._signalEffectBindings[i]);
 
-            if (copied._signals.Count != copied._effects.Count)
-                throw new Exception("Signal and Effect is not relavant");
-
-            _actionTimelineSetting = copied._actionTimelineSetting;
+            _actionTimelineSetting = new ActionTimelineSettingStruct(copied._actionTimelineSetting) ;
             _timelineAsset = copied._timelineAsset;
 
 
@@ -84,17 +121,26 @@ namespace Vanaring
         /// <param name="signal"></param>
         public void ReceiveSignal(SignalType signal)
         {
-            if (! _runtimeEffectWithSignal.ContainsKey(signal))
-                throw new Exception(signal + "is not found in dictionary") ;
+            foreach (var signalBinding in _signalEffectBindings)
+            {
+                if (signalBinding.IsSameSignalType(signal))
+                {
+                    foreach (var effect in signalBinding.RuntimeEffects) { 
+                        _readyEffectQueue.Enqueue(effect);
+                    }
+                    _signalEffectBindings.Remove(signalBinding);
+                    break;
+                }
+            }
  
-            _readyEffectQueue.Enqueue(_runtimeEffectWithSignal[signal]);
-            _runtimeEffectWithSignal.Remove(signal); 
         }
 
         public void SetUpActorsSetting(List<GameObject> actors)
         {
             foreach (var obj in actors)
+            {
                 _actionTimelineSetting.AddActors(obj);
+            }
         }
 
         #region GETTER 
@@ -115,21 +161,23 @@ namespace Vanaring
         public TimelineAsset TimelineAsset => _timelineAsset;
         public bool SignalTerminated()
         {
-            return _runtimeEffectWithSignal.Count == 0 && _readyEffectQueue.Count == 0; 
+            return _signalEffectBindings.Count == 0 && _readyEffectQueue.Count == 0; 
         }
 
         public List<RuntimeEffectFactorySO> GetRuntimeEffects()
         {
             List<RuntimeEffectFactorySO> ret = new List<RuntimeEffectFactorySO>(); 
 
-            foreach (var key in _runtimeEffectWithSignal.Keys)
+            foreach (var signalBinding in _signalEffectBindings )
             {
-                ret.Add(_runtimeEffectWithSignal[key]); //.SimulateEnergyModifier(); 
+                foreach (var effect in signalBinding.RuntimeEffects)
+                {
+                    ret.Add(effect);
+                }
             }
             return ret; 
         }
         #endregion
     }
-
-
+     
 }

@@ -59,14 +59,12 @@ namespace Vanaring
             }
             else
             {
-                //Fix : Instantiate 
                 GameObject emptyObj = new GameObject("Director " + (_poolDirector.Count + 1)  );
                 currentDirector =  emptyObj.AddComponent<PlayableDirector>() ;
                 timelineActorSetupHandler = emptyObj.AddComponent<TimelineActorSetupHandler>(); 
             }
 
             // 2.) Set up the TimelineAsset
-    
             currentDirector.playableAsset = signal.TimelineAsset;
 
             timelineActorSetupHandler.SetUpActor(currentDirector, signal.GetActionTimelineSettingStruct, _signalReceiver); 
