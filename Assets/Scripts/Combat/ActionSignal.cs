@@ -62,6 +62,11 @@ namespace Vanaring
             throw new Exception("Given track name " + trackName + " is not listed in this action") ;
         }
 
+        public GameObject GetObjectWithIndex(int index)
+        {
+            return _timelienActors[(int)index];
+        }
+
         public List<string> TrackNames => _trackToChangeName;
     }
 
@@ -91,27 +96,33 @@ namespace Vanaring
     public class ActionSignal
     {
         #region Inspector Setting  
-        [SerializeField]
-        private TimelineAsset _timelineAsset;
+ 
 
         [SerializeField]
         private List<SignalEffectBindingStruct> _signalEffectBindings = new List<SignalEffectBindingStruct>() ;
 
         [SerializeField]
         private ActionTimelineSettingStruct _actionTimelineSetting  ;
+
+
+        [SerializeField]
+        private TimelineActorSetupHandler _timeLineActorSetupPrefab; 
+
         #endregion
- 
+
 
         private Queue<RuntimeEffectFactorySO> _readyEffectQueue = new Queue<RuntimeEffectFactorySO>();
 
         public ActionSignal(ActionSignal copied)
         {
+            if (copied._timeLineActorSetupPrefab == null)
+                throw new NullReferenceException("_timeLineActorSetupPrefab"); 
+
             for (int i = 0; i < copied._signalEffectBindings.Count; i++ ) 
                 _signalEffectBindings.Add(copied._signalEffectBindings[i]);
 
             _actionTimelineSetting = new ActionTimelineSettingStruct(copied._actionTimelineSetting) ;
-            _timelineAsset = copied._timelineAsset;
-
+            _timeLineActorSetupPrefab = copied._timeLineActorSetupPrefab; 
 
         }
 
@@ -158,12 +169,12 @@ namespace Vanaring
             return (effect) ;
         }
 
-        public TimelineAsset TimelineAsset => _timelineAsset;
         public bool SignalTerminated()
         {
             return _signalEffectBindings.Count == 0 && _readyEffectQueue.Count == 0; 
         }
 
+        public TimelineActorSetupHandler GetTimelineActorSetupHanlder => _timeLineActorSetupPrefab; 
         public List<RuntimeEffectFactorySO> GetRuntimeEffects()
         {
             List<RuntimeEffectFactorySO> ret = new List<RuntimeEffectFactorySO>(); 

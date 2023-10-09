@@ -9524,7 +9524,6 @@ GameObject:
   - component: {fileID: 692943628}
   - component: {fileID: 692943631}
   - component: {fileID: 692943630}
-  - component: {fileID: 692943629}
   - component: {fileID: 692943632}
   - component: {fileID: 692943633}
   m_Layer: 0
@@ -9549,23 +9548,6 @@ Transform:
   m_Father: {fileID: 1989031522}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &692943629
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 692943627}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9a5356b95e9f5b344bbcf429edf2d0ad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  director: {fileID: 0}
-  newObjectToAnimate: {fileID: 0}
-  emptyTranform: {fileID: 0}
-  trackNameList: []
-  objectList: []
 --- !u!114 &692943630
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14134,7 +14116,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 60.000004
+  field of view: 60
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -14159,8 +14141,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1212108954}
-  m_LocalRotation: {x: 0.07938954, y: -0.5350845, z: 0.050599482, w: 0.83953655}
-  m_LocalPosition: {x: 0.9005183, y: 1.3859361, z: -3.6055722}
+  m_LocalRotation: {x: 0.08767048, y: -0.21304049, z: 0.019197367, w: 0.9729127}
+  m_LocalPosition: {x: -1.3, y: 1.489, z: -4.1519995}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -14211,13 +14193,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32379dfbdd599a34ca13dac1b2902ec2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _itemInventory:
-  - itemData: {fileID: 11400000, guid: 3deb0a622cd9d844580049ce5ec43934, type: 2}
-    amount: 5
-  - itemData: {fileID: 11400000, guid: ba4db471659909444b56c5bc158ea52b, type: 2}
-    amount: 4
-  - itemData: {fileID: 11400000, guid: 5797740f8d9a4c347933f36003636866, type: 2}
-    amount: 4
+  _itemInventory: []
 --- !u!1 &1227433991
 GameObject:
   m_ObjectHideFlags: 0

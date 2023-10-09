@@ -29,7 +29,7 @@ namespace Vanaring
         //[SerializeField] private ActionSignal actionSignaltest;
         [SerializeField] private List<ActionSignal> _currentSignal = new List<ActionSignal>();       //Waiting signal
         //List<PlayableDirector> _usingDirector = new List<PlayableDirector>();
-        private Queue<PlayableDirector> _poolDirector = new Queue<PlayableDirector>();
+     
         private SignalReceiver _signalReceiver;
 
         public void TransmitSignal(SignalType signal)
@@ -50,23 +50,14 @@ namespace Vanaring
 
             // 1.) Create PlayableDirector
             PlayableDirector currentDirector ;
-            TimelineActorSetupHandler timelineActorSetupHandler ; 
-            if (_poolDirector.Count > 0)
-            {
-                currentDirector = _poolDirector.Dequeue();
-                currentDirector = currentDirector.GetComponent<PlayableDirector>();
-                timelineActorSetupHandler = currentDirector.GetComponent<TimelineActorSetupHandler>();
-            }
-            else
-            {
-                GameObject emptyObj = new GameObject("Director " + (_poolDirector.Count + 1)  );
-                currentDirector =  emptyObj.AddComponent<PlayableDirector>() ;
-                timelineActorSetupHandler = emptyObj.AddComponent<TimelineActorSetupHandler>(); 
-            }
+            TimelineActorSetupHandler timelineActorSetupHandler ;
 
+            //1.1) instantiate TimelineActorSetupHanlder 
+            var actorSetupHandler = Instantiate( signal.GetTimelineActorSetupHanlder, signal.GetActionTimelineSettingStruct.GetObjectWithIndex(0).GetComponent<CombatEntityAnimationHandler>().GetVisualMesh().transform.position, signal.GetTimelineActorSetupHanlder.transform.rotation )  ;
+            currentDirector = actorSetupHandler.GetComponent<PlayableDirector>() ;
+            timelineActorSetupHandler = actorSetupHandler.GetComponent<TimelineActorSetupHandler>(); 
+             
             // 2.) Set up the TimelineAsset
-            currentDirector.playableAsset = signal.TimelineAsset;
-
             timelineActorSetupHandler.SetUpActor(currentDirector, signal.GetActionTimelineSettingStruct, _signalReceiver); 
 
             // 3.) Set currentSignal waiting
@@ -82,7 +73,8 @@ namespace Vanaring
             {
                 yield return new WaitForEndOfFrame() ;
             }
-            _poolDirector.Enqueue(director);
+
+            Destroy(director.gameObject); 
 
         }
     }
