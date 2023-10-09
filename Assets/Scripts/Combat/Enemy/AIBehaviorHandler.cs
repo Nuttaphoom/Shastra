@@ -26,7 +26,7 @@ namespace Vanaring
         }
 
         [Serializable]
-        public struct ConditionData
+        public struct AIConditionData
         {
             [SerializeField]
             public SpellOrderType spellOrder;
@@ -39,7 +39,7 @@ namespace Vanaring
         }
 
         [SerializeField]
-        List<ConditionData> _ProrityCondition = new List<ConditionData>();
+        List<AIConditionData> _ProrityCondition = new List<AIConditionData>();
 
         private int conditionIndex = 0;
         private int currentspellIndex = 0; //only for spell in order

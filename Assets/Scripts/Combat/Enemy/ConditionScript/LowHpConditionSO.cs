@@ -7,16 +7,12 @@ using UnityEngine.UIElements;
 
 namespace Vanaring
 {
-    [CreateAssetMenu( fileName = "LowHpCondition", menuName = "ScriptableObject/Combat/Enemy/ConditionSO/LowHp")]
     public class LowHpConditionSO : BaseConditionSO
     {
-        /// <summary>
-        /// LowHp by max 100% the input should be 0-100% when it lower or equal to that amount
-        /// </summary>
-        public override bool ConditionsMet(AIEntity aiEntity, float conditionAmount)
+        public override bool ConditionsMet(CombatEntity combatEntity, float conditionAmount)
         {
-            float maxHp = aiEntity.CharacterSheet.GetHP;
-            float currHp = aiEntity.StatsAccumulator.GetHPAmount();
+            float maxHp = combatEntity.CharacterSheet.GetHP;
+            float currHp = combatEntity.StatsAccumulator.GetHPAmount();
 
             return (currHp * 100.0f / maxHp) <= conditionAmount;
         }

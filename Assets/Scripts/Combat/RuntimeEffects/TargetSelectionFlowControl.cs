@@ -277,31 +277,53 @@ namespace Vanaring
         [SerializeField]
         private bool _targetOppose;
         [SerializeField]
-        private bool _targetSelf; 
+        private bool _targetSelf;
 
+        [Serializable]
+        public struct ConditionData
+        {
+            [SerializeField]
+            public BaseConditionSO Condition;
+            [SerializeField]
+            public float conditionAmount;
+        }
+        [Header("Condition for selecting target")]
+        public ConditionData targetCondition;
+
+        public bool ConditionChecking(CombatEntity target)
+        {
+            if (targetCondition.Condition == null)
+            {
+                return true;
+            }
+
+            return targetCondition.Condition.ConditionsMet(target, targetCondition.conditionAmount); 
+        }
 
         public bool CorrectTarget(CombatEntity caster, CombatEntity target)
         {
             ECompetatorSide casterSide = CombatReferee.instance.GetCompetatorSide(caster) ; 
             ECompetatorSide targetSide = CombatReferee.instance.GetCompetatorSide(target) ;
 
-            if (TargetCasterItself)
+            bool correctTarget = ConditionChecking(target); 
+
+            if (TargetCasterItself )
             {
-                return caster == target;
+                correctTarget = (caster == target);
             }
 
             if (TargetOppose)
             {
-                return (casterSide != targetSide); 
+                correctTarget = (casterSide != targetSide); 
             }
 
             if (TargetAllyTeam)
             {
-                return (casterSide == targetSide); 
+                correctTarget = (casterSide == targetSide); 
             }
 
 
-            return false; 
+            return correctTarget && ConditionChecking(target); 
         }
 
         private bool TargetOppose => (_targetOppose);

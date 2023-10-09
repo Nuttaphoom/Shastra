@@ -58,7 +58,7 @@ namespace Vanaring
         }
     }
 
-    [Serializable]
+    //[Serializable]
     public class Tutorial
     {
         public Tutorial(string title, string description, Predicate<object> trigger)
