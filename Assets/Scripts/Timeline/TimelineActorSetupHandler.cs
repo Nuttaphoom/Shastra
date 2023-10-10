@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.Timeline;
 using UnityEngine.Playables;
 using Cinemachine;
+using System;
 
 namespace Vanaring
 {
@@ -11,10 +12,15 @@ namespace Vanaring
     {
         [Header("Caster and Target transform should be assigned in Editor, but it should be later on assigned to be child of real caster/targets on runtime ")]
         [SerializeField]
-        private Transform _casterTransform ; 
+        private Transform _casterTransform ;
 
         [SerializeField]
-        private List<Transform> _targetTransform = new List<Transform>(); 
+        private List<Transform> _targetTransform = new List<Transform>();
+
+
+        [Header("Direct Vector Interpolation. The system will place these transform starting from CasterTransform (index 0) up to TargetTransform (last index)")]
+        [SerializeField]
+        private List<Transform> _directVectorTransform = new List<Transform>() ; 
 
 
         public void SetUpActor(PlayableDirector director, ActionTimelineSettingStruct actionTimelineSetting , SignalReceiver unitySignalReciver)
@@ -53,7 +59,20 @@ namespace Vanaring
                 _targetTransform[i].transform.position = par.position ;
                 _targetTransform[i].transform.rotation = par.rotation ;
             }
+
+            SetUpDirectVector(); 
             
         }
+        private void SetUpDirectVector()
+        {
+            if (_directVectorTransform.Count > 0)
+            {
+                throw new NotImplementedException(); 
+            }
+        }
     }
+
+    
+
+
 }

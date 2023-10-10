@@ -228,8 +228,7 @@ namespace Vanaring
         public IEnumerator LogicAttack(List<CombatEntity> targets, EDamageScaling scaling)
         {
             //Prepare for status effect  
-            yield return _statusEffectHandler.ExecuteAttackStatusRuntimeEffectCoroutine();
-
+            yield return _statusEffectHandler.ExecuteAttackStatusRuntimeEffectCoroutine(); 
 
             //1.) Do apply dmg 
             int inputDmg = VanaringMathConst.GetATKWithScaling(scaling, StatsAccumulator.GetATKAmount());
@@ -237,10 +236,6 @@ namespace Vanaring
             {
                 target.LogicHurt(this, inputDmg);
             }
-
-
-            //2.) the VisualAttack should be called somewhere else or the hp bar wouldn't be updated
-
         }
 
 

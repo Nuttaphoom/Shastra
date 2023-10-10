@@ -68,7 +68,13 @@ namespace Vanaring
             yield return caster.LogicAttack(_targets, _damagScaling ) ;
 
             ////2 Visual 
-            //List<IEnumerator> coroutines = new List<IEnumerator>();
+            List<IEnumerator> coroutines = new List<IEnumerator>();
+            foreach (var target in _targets)
+            {
+                coroutines.Add(target.VisualHurt(caster, "Hurt") ) ;
+            }
+
+            yield return new WaitAll(caster,coroutines.ToArray());
 
             ////2.1.) creating vfx for coroutine for targets
             //foreach (CombatEntity target in _targets)
@@ -77,7 +83,7 @@ namespace Vanaring
             //    if (!_actionAnimation.IsProjectile)
             //    {
             //        coroutines.Add(entity.CombatEntityAnimationHandler.PlayVFXActionAnimation<string>(
-            //            _actionAnimation.TargetVfxEntity, (string s) => entity.VisualHurt(caster, s), 
+            //            _actionAnimation.TargetVfxEntity, (string s) => entity.VisualHurt(caster, s),
             //            _actionAnimation.TargetTrigerID));
             //    }
             //    else
@@ -96,7 +102,7 @@ namespace Vanaring
             //yield return new WaitAll(caster, coroutines.ToArray());
 
             ////3.) Running after attack
-            //coroutines.Clear(); 
+            //coroutines.Clear();
             //foreach (CombatEntity target in _targets)
             //{
             //    CombatEntity entity = target;
