@@ -110,10 +110,7 @@ namespace Vanaring
         }
 
 
-        public StatusEffectHandler GetStatusEffectHandler()
-        {
-            return _statusEffectHandler;
-        }
+  
 
         /// <summary>
         /// Invoked before this character perform any action
@@ -145,6 +142,10 @@ namespace Vanaring
             yield return GetStatusEffectHandler().RunStatusEffectExpiredScheme();
         }
         #region GETTER
+        public StatusEffectHandler GetStatusEffectHandler()
+        {
+            return _statusEffectHandler;
+        }
         public RuntimeCharacterStatsAccumulator StatsAccumulator => _runtimeCharacterStatsAccumulator;
         public SpellCasterHandler SpellCaster => _spellCaster;
         public ItemUserHandler ItemUser => _itemUser;
@@ -173,8 +174,6 @@ namespace Vanaring
             {
                 _isDead = true;
             }
-
-
         }
         public void LogicHeal(int amount)
         {    

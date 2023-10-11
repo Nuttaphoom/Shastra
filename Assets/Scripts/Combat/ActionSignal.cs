@@ -20,15 +20,32 @@ namespace Vanaring
         private List<string> _trackToChangeName ;
 
         [SerializeField]
-        private List<GameObject> _timelienActors; 
+        private List<ActorType> _actorTypes ; 
+
+        [SerializeField]
+        private List<GameObject> _timelienActors;
+
+        [SerializeField]
+        private enum ActorType
+        {
+            Mesh, 
+            Entity 
+        }  
 
 
         public ActionTimelineSettingStruct(ActionTimelineSettingStruct copied)
         {
-            _trackToChangeName = new List<string>(); 
+            _trackToChangeName = new List<string>();
+            _actorTypes = new List<ActorType>(); 
+
             foreach (var trackName in copied._trackToChangeName)
             {
                 _trackToChangeName.Add(trackName); 
+            }
+
+            foreach (var v in copied._actorTypes)
+            {
+                _actorTypes.Add(v); 
             }
 
             _timelienActors = new List<GameObject>(); 
@@ -47,15 +64,20 @@ namespace Vanaring
 
         public GameObject GetObjectWithTrackName(string trackName)
         {
-            foreach (var actor in _timelienActors)
-            {
-                Debug.Log("actor is " + actor.name);
-            }
             for (int i = 0; i < _trackToChangeName.Count;i++)
             {
                 if (_trackToChangeName[i] == trackName)
                 {
-                    return _timelienActors[i]; 
+                    if (UseMesh(i))
+                    {
+                        return _timelienActors[i].GetComponent<CombatEntityAnimationHandler>().GetVisualMesh() ;
+                    }else if (UseEntity(i))
+                    {
+                        return _timelienActors[i]; 
+                    }else
+                    {
+                        throw new Exception("This animation binding don't use both VisualMesh and Entity mesh"); 
+                    }
                 }
             }
 
@@ -65,6 +87,16 @@ namespace Vanaring
         public GameObject GetObjectWithIndex(int index)
         {
             return _timelienActors[(int)index];
+        }
+
+        public bool UseMesh(int index)
+        {
+            return _actorTypes[index] == ActorType.Mesh ;
+        }
+
+        public bool UseEntity(int index)
+        {
+            return _actorTypes[index] == ActorType.Entity; 
         }
 
         public List<string> TrackNames => _trackToChangeName;
@@ -143,6 +175,8 @@ namespace Vanaring
                     break;
                 }
             }
+
+
  
         }
 

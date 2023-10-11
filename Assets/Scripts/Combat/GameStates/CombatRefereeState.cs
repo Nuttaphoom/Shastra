@@ -29,6 +29,7 @@ namespace Vanaring
             }
 
             yield return new RoundEndState(this).Execute();
+
         }
 
         /// <summary>
@@ -150,6 +151,9 @@ namespace Vanaring
                 yield return new WaitForEndOfFrame(); 
             
             }
+
+
+            Debug.Log("end perform action"); 
         }
 
         private IEnumerator PostPerformActionInEveryCharacter()

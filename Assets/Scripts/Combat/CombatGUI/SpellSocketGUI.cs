@@ -103,8 +103,7 @@ namespace Vanaring
         {
             if (IsEnergySufficeientToUseThisSpell())
             {
-                SpellAbilityRuntime runtimeSpell = _spellSO.Factorize(_caster);
-                _caster.SpellCaster.CastSpell(runtimeSpell)  ; 
+                _caster.SpellCaster.CastSpell(_spellSO)  ; 
             }
         }
 

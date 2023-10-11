@@ -19,8 +19,6 @@ namespace Vanaring
     [Serializable]
     public class SpellCasterHandler : MonoBehaviour, ISimulationApplier<RuntimeMangicalEnergy.EnergySide, int, Null>
     {
- 
-
         [SerializeField]
         private RuntimeMangicalEnergy _mangicalEnergy;
 
@@ -82,8 +80,10 @@ namespace Vanaring
         #endregion
 
         #region Spell
-        public void CastSpell(SpellAbilityRuntime runtimeSpell)
+        public void CastSpell(SpellActionSO spellSO)
         {
+            SpellAbilityRuntime runtimeSpell = spellSO.Factorize(_combatEntity);
+
             StartCoroutine(TargetSelectionFlowControl.Instance.InitializeActionTargetSelectionScheme(_combatEntity, runtimeSpell));
         }
 

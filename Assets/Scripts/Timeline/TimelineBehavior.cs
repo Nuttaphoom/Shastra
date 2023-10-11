@@ -50,9 +50,9 @@ namespace Vanaring
                     {
                     }
                 }
-                if (track is LightControlTrack lightControlTrack)
+                if (track is CustomAnimatorCallerTrack animationCallerTrack)
                 {
-                    Debug.Log((lightControlTrack as LightControlTrack).GetLightClip());
+                    Debug.Log((animationCallerTrack as CustomAnimatorCallerTrack).GetAnimatorCallerClip());
                 }
             }
             return null;

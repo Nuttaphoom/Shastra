@@ -15,13 +15,11 @@ namespace Vanaring
         private Transform _casterTransform ;
 
         [SerializeField]
-        private List<Transform> _targetTransform = new List<Transform>();
-
+        private List<Transform> _targetTransform = new List<Transform>() ;
 
         [Header("Direct Vector Interpolation. The system will place these transform starting from CasterTransform (index 0) up to TargetTransform (last index)")]
         [SerializeField]
         private List<Transform> _directVectorTransform = new List<Transform>() ; 
-
 
         public void SetUpActor(PlayableDirector director, ActionTimelineSettingStruct actionTimelineSetting , SignalReceiver unitySignalReciver)
         { 
@@ -30,9 +28,9 @@ namespace Vanaring
                 for (int i = 0; i < actionTimelineSetting.TrackNames.Count; i++)
                 {
                     if (track.name == actionTimelineSetting.TrackNames[i])
-                    { 
-                        GameObject bindedObject = actionTimelineSetting.GetObjectWithTrackName(track.name).GetComponent<CombatEntityAnimationHandler>().GetVisualMesh() ;
-                        director.SetGenericBinding(track, bindedObject );
+                    {
+                        GameObject bindedObject = actionTimelineSetting.GetObjectWithTrackName(track.name);    
+                        director.SetGenericBinding(track, bindedObject);
                     }else if (track.name == "SignalTrack")
                     {
                         director.SetGenericBinding(track, unitySignalReciver) ;

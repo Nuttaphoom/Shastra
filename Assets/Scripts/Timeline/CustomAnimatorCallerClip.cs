@@ -8,18 +8,18 @@ using UnityEngine.Timeline;
 namespace Vanaring
 {
     [Serializable]
-    public class LightControlClip : PlayableAsset, ITimelineClipAsset
+    public class CustomAnimatorCallerClip : PlayableAsset, ITimelineClipAsset
     {
 
         [SerializeField]
-        private LightControlBehavior template = new LightControlBehavior();
+        private CustomAnimatorCallerControlBehavior template = new CustomAnimatorCallerControlBehavior();
         public ClipCaps clipCaps {
             get { return ClipCaps.None; } }
 
 
         public override Playable CreatePlayable(PlayableGraph graph, GameObject owner)
         {
-            return ScriptPlayable<LightControlBehavior>.Create(graph, template);
+            return ScriptPlayable<CustomAnimatorCallerControlBehavior>.Create(graph, template);
         }
     }
 }
