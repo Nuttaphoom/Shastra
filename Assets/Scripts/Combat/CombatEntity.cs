@@ -18,6 +18,9 @@ namespace Vanaring
     [RequireComponent(typeof(SpellCasterHandler))]
     public abstract class CombatEntity : MonoBehaviour, IStatusEffectable, ITurnState, IDamagable, IAttackter
     {
+
+        private EventBroadcaster _eventBroadcaster; 
+
         [Header("Right now we manually assign CharacterSheet, TO DO : Make it loaded from the main database")]
         [SerializeField]
         private CharacterSheetSO _characterSheet;
@@ -53,7 +56,12 @@ namespace Vanaring
             _dmgOutputPopHanlder = new DamageOutputPopupHandler(_dmgOutputPopHanlder, this); 
             _runtimeCharacterStatsAccumulator = new RuntimeCharacterStatsAccumulator(_characterSheet);
             _energyOverflowHandler = GetComponent<EnergyOverflowHandler>();
-            _statusEffectHandler = new StatusEffectHandler(this); 
+            _statusEffectHandler = new StatusEffectHandler(this);
+            _eventBroadcaster = new EventBroadcaster();
+
+            Debug.LogWarning("DELETE THIS");
+            _eventBroadcaster.SubEvent<int>(TESTPRINTINT, "OnAttack");
+            _eventBroadcaster.SubEvent<int>(TESTPRINTINT, "OnDamage");
 
             if (_spellCaster == null)
             {
@@ -61,6 +69,14 @@ namespace Vanaring
             }
         }
 
+        private void TESTPRINTINT(int t)
+        {
+            Debug.Log("TO BE DELETED, REMOVE EVENT BINDING : DMG ATTACK" + t); 
+        }
+        private void TESTPRINTINTdmg(int dmg)
+        {
+            Debug.Log("TO BE DELETED, REMOVE EVENT BINDING : DMG RECEIVED " + dmg);
+        }
         #region Turn Handler Methods 
         public abstract IEnumerator GetAction();
 
@@ -142,6 +158,7 @@ namespace Vanaring
             yield return GetStatusEffectHandler().RunStatusEffectExpiredScheme();
         }
         #region GETTER
+        public EventBroadcaster EventBroadcaster => _eventBroadcaster; 
         public StatusEffectHandler GetStatusEffectHandler()
         {
             return _statusEffectHandler;
@@ -174,6 +191,9 @@ namespace Vanaring
             {
                 _isDead = true;
             }
+
+            _eventBroadcaster.InvokeEvent<string>((string) "a", "OnDamage");
+
         }
         public void LogicHeal(int amount)
         {    
@@ -234,6 +254,8 @@ namespace Vanaring
             foreach (CombatEntity target in targets)
             {
                 target.LogicHurt(this, inputDmg);
+
+                _eventBroadcaster.InvokeEvent(inputDmg, "OnAttack");
             }
         }
 

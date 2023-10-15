@@ -14,7 +14,8 @@ namespace Vanaring
 
         [Header("Right now we manually assign valid action, TODO : Load from Database")]
         [SerializeField]
-        private ControlableEntityActionsRegistry _controlableEntityActionRegistry; 
+        private ControlableEntityActionsRegistry _controlableEntityActionRegistry;
+        
         public override IEnumerator GetAction()
         {
             yield return null;

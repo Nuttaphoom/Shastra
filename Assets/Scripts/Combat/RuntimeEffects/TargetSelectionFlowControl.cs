@@ -11,12 +11,12 @@ namespace Vanaring
 {
     public class TargetSelectionFlowControl : MonoBehaviour, IInputReceiver
     {
-        [Header("Broadcast to ")]
-        [SerializeField]
-        private CombatEntityEventChannel OnTargetSelectionSchemeStart;
+        //[Header("Broadcast to ")]
+        //[SerializeField]
+        //private CombatEntityEventChannel OnTargetSelectionSchemeStart;
 
-        [SerializeField]
-        private CombatEntityEventChannel OnTargetSelectionSchemeEnd;
+        //[SerializeField]
+        //private CombatEntityEventChannel OnTargetSelectionSchemeEnd;
 
         [SerializeField]
         private TargetSelectionGUI _targetSelectionGUI;
@@ -183,7 +183,7 @@ namespace Vanaring
 
             CentralInputReceiver.Instance().AddInputReceiverIntoStack(this);
 
-            OnTargetSelectionSchemeStart.PlayEvent(caster);
+            //OnTargetSelectionSchemeStart.PlayEvent(caster);
 
             ValidateData();
 
@@ -244,7 +244,7 @@ namespace Vanaring
         End:
             _targetSelectionGUI.EndSelectionScheme();
 
-            OnTargetSelectionSchemeEnd.PlayEvent(caster);
+            //OnTargetSelectionSchemeEnd.PlayEvent(caster);
 
             CameraSetUPManager.Instance.RestoreVMCameraState();
             CentralInputReceiver.Instance().RemoveInputReceiverIntoStack(this);

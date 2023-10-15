@@ -12,10 +12,10 @@ namespace Vanaring
     public class CombatGraphicalHandler : MonoBehaviour
     {
         [Header("Listen to ")]
-        [SerializeField]
-        private CombatEntityEventChannel OnTargetSelectionSchemeStart;
-        [SerializeField] 
-        private CombatEntityEventChannel OnTargetSelectionSchemeEnd;
+        //[SerializeField]
+        //private CombatEntityEventChannel OnTargetSelectionSchemeStart;
+        //[SerializeField] 
+        //private CombatEntityEventChannel OnTargetSelectionSchemeEnd;
 
 
 
@@ -54,15 +54,15 @@ namespace Vanaring
         {
             _combatEntity.SubOnDamageVisualEvent(OnUpdateEntityStats);
             _combatEntity.SubOnDamageVisualEventEnd(OnVisualHurtUpdateEnd); 
-            OnTargetSelectionSchemeStart.SubEvent(OnTargetSelectionStart_DisableUI) ;
-            OnTargetSelectionSchemeEnd.SubEvent(OnTargetSelectionEnd_EnableUI);
+            //OnTargetSelectionSchemeStart.SubEvent(OnTargetSelectionStart_DisableUI) ;
+            //OnTargetSelectionSchemeEnd.SubEvent(OnTargetSelectionEnd_EnableUI);
             _combatEntity.SpellCaster.SubOnModifyEnergy(OnEnergyUpdate);
         }
 
         private void OnDisable()
         {
-            OnTargetSelectionSchemeStart.UnSubEvent(OnTargetSelectionStart_DisableUI);
-            OnTargetSelectionSchemeEnd.UnSubEvent(OnTargetSelectionEnd_EnableUI); 
+            //OnTargetSelectionSchemeStart.UnSubEvent(OnTargetSelectionStart_DisableUI);
+            //OnTargetSelectionSchemeEnd.UnSubEvent(OnTargetSelectionEnd_EnableUI); 
             _combatEntity.UnSubOnDamageVisualEvent(OnUpdateEntityStats);
             _combatEntity.UnSubOnDamageVisualEventEnd(OnVisualHurtUpdateEnd);
         }
