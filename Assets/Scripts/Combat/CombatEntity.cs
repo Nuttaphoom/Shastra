@@ -59,24 +59,14 @@ namespace Vanaring
             _statusEffectHandler = new StatusEffectHandler(this);
             _eventBroadcaster = new EventBroadcaster();
 
-            Debug.LogWarning("DELETE THIS");
-            _eventBroadcaster.SubEvent<int>(TESTPRINTINT, "OnAttack");
-            _eventBroadcaster.SubEvent<int>(TESTPRINTINT, "OnDamage");
+   
 
             if (_spellCaster == null)
             {
                 throw new Exception("SpellCaster haven't been assigned (should never use 'GetComponent' for SpellCaster as it would be too slow') ");
             }
         }
-
-        private void TESTPRINTINT(int t)
-        {
-            Debug.Log("TO BE DELETED, REMOVE EVENT BINDING : DMG ATTACK" + t); 
-        }
-        private void TESTPRINTINTdmg(int dmg)
-        {
-            Debug.Log("TO BE DELETED, REMOVE EVENT BINDING : DMG RECEIVED " + dmg);
-        }
+ 
         #region Turn Handler Methods 
         public abstract IEnumerator GetAction();
 

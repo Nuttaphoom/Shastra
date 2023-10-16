@@ -70,13 +70,11 @@ namespace Vanaring
 
         public void SubEvent(object param)
         {
-            GetTrueInput(param); 
             _event += (UnityAction<U>)param;
         }
 
         public void UnSubEvent(object param)
         {
-            GetTrueInput(param);
 
             _event -= (UnityAction<U>)param;
         }
