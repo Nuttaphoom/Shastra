@@ -26,7 +26,7 @@ namespace Vanaring
         [SerializeField] private CinemachineVirtualCamera RvirtualCamera;
         [SerializeField] private CinemachineVirtualCamera MvirtualCamera;
         [SerializeField] private CinemachineVirtualCamera LvirtualCamera;
-        [SerializeField] private CinemachineVirtualCamera targetVirtualCamera;
+       
 
         //TempList
         private List<GameObject> playerModels = new List<GameObject>();
@@ -34,21 +34,13 @@ namespace Vanaring
         private List<GameObject> TargetGUIList = new List<GameObject>();
         private List<CinemachineVirtualCamera> CamList = new List<CinemachineVirtualCamera>();
 
+        private Transform _oldAimPoint ; 
+
         [SerializeField]
         private TargetGUI _tgui;
 
-        //public GameObject tempEntity;
-        //public GameObject tempEntity1;
-
         private GameObject _savedVMCamera = null;
 
-        [Header("Shaking Camera Properties")]
-        private CinemachineVirtualCamera shakedVirtualCamera;
-        private float shakeDuration = 3.0f;
-        private float shakeAmplitude = 1.2f;
-        private float shakeFrequency = 2.0f;
-        private float shakeTimer = 0.0f;
-        private bool isShaking = false;
 
         private void Awake()
         {
@@ -56,41 +48,6 @@ namespace Vanaring
                 Destroy(Instance.gameObject); 
             
             Instance = this;
-        }
-        private void Start()
-        {
-            isShaking = false;
-        }
-        private void Update()
-        {
-            //Debug.Log(Camera.main.GetComponent<CinemachineBrain>().ActiveVirtualCamera.VirtualCameraGameObject.GetComponent<CinemachineVirtualCamera>());
-            //if (isShaking)
-            //{
-            //    shakeTimer -= Time.deltaTime;
-            //    if (shakeTimer <= 0.0f)
-            //    {
-            //        var noise = shakedVirtualCamera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
-            //        noise.m_AmplitudeGain = 0.0f;
-            //        noise.m_FrequencyGain = 0.0f;
-            //        isShaking = false;
-            //    }
-            //}
-        }
-
-        
-
-        private IEnumerator shakeVirtualCamera(CinemachineVirtualCamera shakedVirtualCamera)
-        {
-            while (shakeTimer > 0.0f && isShaking)
-            {
-                shakeTimer -= Time.deltaTime;
-                yield return null;
-            }
-
-            var noise = shakedVirtualCamera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
-            noise.m_AmplitudeGain = 0.0f;
-            noise.m_FrequencyGain = 0.0f;
-            isShaking = false;
         }
 
         public void SetBlendMode(CameraBlendMode mode, float blendDuration)
@@ -114,35 +71,11 @@ namespace Vanaring
                 Debug.LogWarning("CinemachineBrain component not found on this GameObject.");
             }
         }
-        
-        public void SetupAttackActionVirtualCamera(GameObject entity)
-        {
-            DeactivateAllVirtualCameras();
-            entity.GetComponent<CombatEntityAnimationHandler>().ActionCamera.gameObject.SetActive(true);
-        }
 
-        public void ActiveTargetModeVirtualCamera()
+        public void SetLookAtTarget(Transform lookat)
         {
-            
-                DeactivateAllVirtualCameras();
-                targetVirtualCamera.gameObject.SetActive(true);
-             
-        }
+            Camera.main.GetComponent<CinemachineBrain>().ActiveVirtualCamera.LookAt = lookat;
 
-        public void SetupTargatModeLookAt(GameObject entity)
-        {
-            if (targetVirtualCamera.LookAt != entity.transform) 
-                targetVirtualCamera.LookAt = entity.transform;
-        }
-
-        private void DeactivateAllVirtualCameras()
-        {
-            CinemachineVirtualCamera[] virtualCameras = FindObjectsOfType<CinemachineVirtualCamera>();
-
-            foreach (CinemachineVirtualCamera camera in virtualCameras)
-            {
-                camera.gameObject.SetActive(false);
-            }
         }
 
         public void CaptureVMCamera()
@@ -152,7 +85,9 @@ namespace Vanaring
   
         public void RestoreVMCameraState()
         {
-            Camera.main.GetComponent<CinemachineBrain>().ActiveVirtualCamera.VirtualCameraGameObject.SetActive(false); 
+            Camera.main.GetComponent<CinemachineBrain>().ActiveVirtualCamera.VirtualCameraGameObject.SetActive(false);
+            Camera.main.GetComponent<CinemachineBrain>().ActiveVirtualCamera.LookAt = _oldAimPoint ;
+
             _savedVMCamera.gameObject.SetActive(true);
         }
 
@@ -304,28 +239,6 @@ namespace Vanaring
 
   
         #endregion
-        #region GETSETTER
-        //[SerializeField]
-        public List<GameObject> EnemyModelSetupList
-        {
-            get { return _enemyModelSetupList; }
-            set { _enemyModelSetupList = value; }
-        }
-        [SerializeField]
-        public List<GameObject> CharacterModelSetupList
-        {
-            get { return _characterModelSetupList; }
-            set { _characterModelSetupList = value; }
-        }
-
-        public List<GameObject> GetPlayerModelPointList()
-        {
-            return playerModels;
-        }
-        public List<GameObject> GetEnemyModelPointList()
-        {
-            return enemyModels;
-        }
-        #endregion
+ 
     }
 }

@@ -80,8 +80,6 @@ namespace Vanaring
 
         public IEnumerator PlayTriggerAnimation(string triggerName)
         {
-            CameraSetUPManager.Instance.SetupAttackActionVirtualCamera(gameObject);
-            CameraSetUPManager.Instance.SetBlendMode(CameraSetUPManager.CameraBlendMode.CUT, 0.0f);
 
             _animator.SetTrigger(triggerName);
 

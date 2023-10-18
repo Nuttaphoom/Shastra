@@ -191,8 +191,6 @@ namespace Vanaring
 
             CameraSetUPManager.Instance.CaptureVMCamera();
 
-            CameraSetUPManager.Instance.SetBlendMode(CameraSetUPManager.CameraBlendMode.EASE_INOUT, 0.5f);
-
             _buttonIndicatorWindow.SetIndicatorButtonShow(ButtonIndicatorWindow.IndicatorButtonShow.TARGET, true);
 
             while (_selectedTarget.Count < actorAction.GetTargetSelector().MaxTarget)
@@ -208,7 +206,7 @@ namespace Vanaring
 
                 if (!randomTarget)
                 {
-                    CameraSetUPManager.Instance.SetupTargatModeLookAt(selected.gameObject);
+                    CameraSetUPManager.Instance.SetLookAtTarget(selected.transform);
                     _targetSelectionGUI.SelectTargetPointer(selected);
                 }
 
