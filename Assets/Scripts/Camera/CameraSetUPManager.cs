@@ -80,9 +80,11 @@ namespace Vanaring
 
         public void CaptureVMCamera()
         {
-            _savedVMCamera = Camera.main.GetComponent<CinemachineBrain>().ActiveVirtualCamera.VirtualCameraGameObject ;   
+            _savedVMCamera = Camera.main.GetComponent<CinemachineBrain>().ActiveVirtualCamera.VirtualCameraGameObject ;
+            _oldAimPoint = Camera.main.GetComponent<CinemachineBrain>().ActiveVirtualCamera.LookAt;
+
         }
-  
+
         public void RestoreVMCameraState()
         {
             Camera.main.GetComponent<CinemachineBrain>().ActiveVirtualCamera.VirtualCameraGameObject.SetActive(false);
