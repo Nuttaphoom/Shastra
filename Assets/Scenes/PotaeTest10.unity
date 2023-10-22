@@ -957,8 +957,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd0fd9952005c5045aea0e6dcf9be0ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  OnTargetSelectionSchemeStart: {fileID: 11400000, guid: 1e9050e9d3c378f448db94ea309439fc, type: 2}
-  OnTargetSelectionSchemeEnd: {fileID: 11400000, guid: 92748f06eaa2f9149a5e17e38fedc1da, type: 2}
   _targetSelectionGUI:
     targetGUI: {fileID: 1989665005}
     _vfxPrefabTemplate: {fileID: 1898189779652114, guid: 34dfcaa6bb3c3cd4da2080dc3fac234b, type: 3}
@@ -10103,7 +10101,6 @@ MonoBehaviour:
   RvirtualCamera: {fileID: 2903037121640110383, guid: 0166f4459de1c0743808956120eca62c, type: 3}
   MvirtualCamera: {fileID: 457243807630978, guid: 3274930b240cc4b47bddd8a4a8527d01, type: 3}
   LvirtualCamera: {fileID: 5001759812624917939, guid: 410358e3a5f3a07409628b9506ec97fc, type: 3}
-  targetVirtualCamera: {fileID: 1992771076}
   _tgui: {fileID: 1989665005}
 --- !u!1 &790692878
 GameObject:
@@ -13988,7 +13985,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 60.000004
+  field of view: 60
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -14013,8 +14010,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1212108954}
-  m_LocalRotation: {x: 0.07938954, y: -0.5350845, z: 0.050599482, w: 0.83953655}
-  m_LocalPosition: {x: 0.9005183, y: 1.3859361, z: -3.6055722}
+  m_LocalRotation: {x: 0.08767048, y: -0.21304049, z: 0.019197367, w: 0.9729127}
+  m_LocalPosition: {x: -1.3, y: 1.489, z: -4.1519995}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -24568,17 +24565,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1992346094}
   m_Mesh: {fileID: 1338693443677999382, guid: 34c12033d1bb56940a6f97bfa4ca4606, type: 3}
---- !u!114 &1992771076 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8064114967206591485, guid: 53136ad9459bd904086038d4827954f9, type: 3}
-  m_PrefabInstance: {fileID: 2037595699}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 45e653bab7fb20e499bda25e1b646fea, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &1992771077 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8637766045703205195, guid: 53136ad9459bd904086038d4827954f9, type: 3}
@@ -25737,7 +25723,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d0b4c94e51503647971675bfb7fce7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _mesh: {fileID: 9192147004761116953}
+  _visualMesh: {fileID: 0}
   _vfxPos: {fileID: 6780610471781700653}
   _guiPos: {fileID: 8397427181367609835}
   _deadVisualEffect: {fileID: 0}
@@ -33784,8 +33770,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0313c7f10f00e9340a9792dfd67e77d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  OnTargetSelectionSchemeStart: {fileID: 11400000, guid: 1e9050e9d3c378f448db94ea309439fc, type: 2}
-  OnTargetSelectionSchemeEnd: {fileID: 11400000, guid: 92748f06eaa2f9149a5e17e38fedc1da, type: 2}
   _spellWindowManager: {fileID: 2195776848046702647}
   _itemWindowManager: {fileID: 3605336500292903914}
   _mainWindowManager: {fileID: 5165480814297618449}
@@ -33973,6 +33957,8 @@ GameObject:
   - component: {fileID: 6350781895640174050}
   - component: {fileID: 9175319781062164917}
   - component: {fileID: 3579398125957819368}
+  - component: {fileID: 9175319781062164919}
+  - component: {fileID: 9175319781062164918}
   m_Layer: 0
   m_Name: Attacker-Combat-Entity Variant
   m_TagString: Untagged
@@ -35138,6 +35124,8 @@ MonoBehaviour:
   _dmgOutputPopHanlder:
     _outputDMGTimerPrefab: {fileID: 6205815355120891309, guid: b67fb67d063351e4a9936c0c2247f479, type: 3}
     _outputHealTimerPrefab: {fileID: 6205815355120891309, guid: c3f10d4c069cca44182d2621e48eab7c, type: 3}
+  _controlableEntityActionRegistry:
+    _spellActions: []
 --- !u!1 &8118426016723861878
 GameObject:
   m_ObjectHideFlags: 0
@@ -36257,13 +36245,83 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99e08b160a785144191e8aba8883c539, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _spellAbilities:
-  - {fileID: 11400000, guid: 407eca402f6c0cc469b05889af6d59a1, type: 2}
-  - {fileID: 11400000, guid: b458aa8a05d4e464e86427484b24b6c1, type: 2}
-  - {fileID: 11400000, guid: 2790587ab22178e458b17aeea68ab0ef, type: 2}
   _mangicalEnergy:
     _darkDefaultAmount: 50
     _lightDefaultAmount: 50
+--- !u!114 &9175319781062164918
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7082959825019259691}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Actions: {fileID: -944628639613478452, guid: 18d04a4c69c084949ba53d535bc7c97e, type: 3}
+  m_NotificationBehavior: 2
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents:
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 9175319781062164919}
+        m_TargetAssemblyTypeName: Vanaring.PotaeTester, Assembly-CSharp
+        m_MethodName: RunInputUp
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 0aea908a-2569-482d-81e9-aa1d63fbb040
+    m_ActionName: PlayerMenuSelector/MoveSelector
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 9175319781062164919}
+        m_TargetAssemblyTypeName: Vanaring.PotaeTester, Assembly-CSharp
+        m_MethodName: RunInputDown
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 8c314327-e680-45fe-9fd1-161eb7ad0092
+    m_ActionName: PlayerMenuSelector/MoveSelectorDown[/SwitchProControllerHID/dpad/down]
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: Keyboard
+  m_DefaultActionMap: PlayerMenuSelector
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}
+--- !u!114 &9175319781062164919
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7082959825019259691}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 38d6926cdcbe72d498bd99d3e48b462b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &9192147004761116953
 GameObject:
   m_ObjectHideFlags: 0
