@@ -23,6 +23,19 @@ namespace Vanaring
     public class CombatReferee : MonoBehaviour
     {
         public static CombatReferee instance = null;
+
+        [SerializeField]
+        private EntityLoader _entityLoader;
+
+        [SerializeField]
+        private int _maxTeamSize = 3;
+
+        private ECompetatorSide _currentSide; // Assign this to the opposite of the actual turn we want to start with 
+
+        //The active entities will always be the one at index 0
+        private CircularArray<CombatEntity> _activeCombatEntities;
+        private CombatRefereeStateHandler _combatRefereeStateHandler;
+
         [Serializable]
         private struct CompetatorDetailStruct
         {
@@ -41,14 +54,9 @@ namespace Vanaring
 
         [SerializeField]
         [Header("For testing, we manually assign these competator (including enemy) ")]
-
         List<CompetatorDetailStruct> _competators;
 
-        private ECompetatorSide _currentSide  ; // Assign this to the opposite of the actual turn we want to start with 
 
-        //The active entities will always be the one at index 0
-        private CircularArray<CombatEntity> _activeCombatEntities ; 
-        private CombatRefereeStateHandler _combatRefereeStateHandler;
 
         private void Awake()
         {
@@ -58,17 +66,17 @@ namespace Vanaring
             _activeCombatEntities = new CircularArray<CombatEntity>(new List<CombatEntity>() );
             _combatRefereeStateHandler = new CombatRefereeStateHandler(this);
         }
+
         private void Start()
         {
             SetUpNewCombatEncounter();
-
             StartCoroutine(CustomTick());
         }
 
         #region SettingUpRound
         private void SetUpNewCombatEncounter()
         {
-            AssignCompetators(FindObjectOfType<EntityLoader>().LoadData(), ECompetatorSide.Hostile);
+            AssignCompetators(_entityLoader.LoadData(), ECompetatorSide.Hostile);
         }
         private void AssignCompetators(List<CombatEntity> entites, ECompetatorSide side)
         {
@@ -91,6 +99,7 @@ namespace Vanaring
         }
 
         #endregion
+
         private IEnumerator CustomTick()
         {
             while (true)
@@ -108,6 +117,7 @@ namespace Vanaring
             }
         }
 
+        #region RefereeHandler Methods
         private IEnumerator SwitchControl(CombatEntity prevEntity, CombatEntity newEntity)
         {
             if (prevEntity != null)
@@ -133,16 +143,6 @@ namespace Vanaring
             }
         }
 
-        public bool ChangeActiveEntityIndex(bool forward)
-        {
-            if (GetCurrentActiveEntities().Count > 1)
-            {
-                StartCoroutine(ChangeActiveEntityIndexCoroutine(forward));
-                return true;
-            }
-            return false;
-        }
-
         private IEnumerator ChangeActiveEntityIndexCoroutine(bool forward)
         {
             CombatEntity prevActor = GetCurrentActor();
@@ -159,9 +159,43 @@ namespace Vanaring
             yield return null; 
              
         }
+        public bool ChangeActiveEntityIndex(bool forward)
+        {
+            if (GetCurrentActiveEntities().Count > 1)
+            {
+                StartCoroutine(ChangeActiveEntityIndexCoroutine(forward));
+                return true;
+            }
+            return false;
+        }
+
+        public void InstantiateCompetator(CombatEntity prefabNewCompetator, ECompetatorSide side)
+        {
+            List<CombatEntity> entitesWithSameSide = new List<CombatEntity>();
+            entitesWithSameSide = GetCompetatorsBySide(side);
+
+            if (entitesWithSameSide.Count > _maxTeamSize)
+                return; 
+            
+            CombatEntity entity = _entityLoader.SpawnPrefab(prefabNewCompetator,entitesWithSameSide.Count) ;
+
+            AssignCompetators(new List<CombatEntity>() { entity } , side);
+        }
+
+        #endregion
 
         public IEnumerator OnCharacterPerformAction()
         {
+            //Check for dead entity
+            for (int i = _competators.Count - 1; i >= 0; i--)
+            {
+                if (_competators[i].Competator.IsDead)
+                {
+                     
+                    //No need to remove from the main list if it was player's
+                    _competators.RemoveAt(i);
+                }
+            }
             CombatEntity _combatEntity = GetCurrentActor(); 
             SetActiveActors();
             yield return SwitchControl(_combatEntity, GetCurrentActor()); 

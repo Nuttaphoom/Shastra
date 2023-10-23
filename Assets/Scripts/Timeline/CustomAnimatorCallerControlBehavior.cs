@@ -22,8 +22,6 @@ namespace Vanaring
         {
             if (!firstTime)
             {
-                Debug.Log("call play animation"); 
-
                 firstTime = true;
                 _entity = (playerData as GameObject).GetComponent<CombatEntity>() ;
 

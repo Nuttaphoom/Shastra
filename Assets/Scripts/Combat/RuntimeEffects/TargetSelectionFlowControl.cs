@@ -266,8 +266,7 @@ namespace Vanaring
 
         public int MaxTarget => _maxTargetSize;
 
-        [SerializeField]
-        private bool _targetCaster = false;
+ 
 
         [Header("Toggle target status when selected")]
         [SerializeField]

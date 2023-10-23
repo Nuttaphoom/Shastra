@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.EventSystems.EventTrigger;
 
 namespace Vanaring
 {
@@ -23,20 +24,24 @@ namespace Vanaring
             int index = 0;
             foreach (CombatEntity entity in pool.Entities)
             {
-                Transform t = _spawnPosition[index];
-                CombatEntity newEntity = GameObject.Instantiate(entity);
-                newEntity.transform.position = t.position;
-                newEntity.transform.forward = t.forward;
-
-                newEntity.name = newEntity.name + index;
-
-                ret.Add(newEntity);
-
+                ret.Add( SpawnPrefab(entity, index) );
                 index++;
             }
 
 
             return ret;
+        }
+
+        public CombatEntity SpawnPrefab(CombatEntity prefab,int spawnPositionIndex)
+        {
+            Transform t = _spawnPosition[spawnPositionIndex];
+            CombatEntity newEntity = GameObject.Instantiate(prefab);
+            newEntity.transform.position = t.position;
+            newEntity.transform.forward = t.forward;
+
+            newEntity.name = newEntity.name + spawnPositionIndex ;
+
+            return newEntity; 
         }
     }
 }

@@ -2616,10 +2616,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6372633111618651101}
+  - component: {fileID: 5562888234735126922}
   - component: {fileID: 2524119204172734917}
   - component: {fileID: 3183956409549396090}
   - component: {fileID: 230340289741595676}
-  - component: {fileID: 5562888234735126922}
   - component: {fileID: 8091564974255038199}
   m_Layer: 0
   m_Name: StrayGhost
@@ -2649,6 +2649,25 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5562888234735126922
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8010838884609612702}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: acd9ffed6d6cced4a96205cc907deed7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _characterSheet: {fileID: 11400000, guid: 0d9057bbe6779cb4090c694a5b2cb026, type: 2}
+  _spellCaster: {fileID: 230340289741595676}
+  _itemUser: {fileID: 0}
+  _combatEntityAnimationHandler: {fileID: 2524119204172734917}
+  _dmgOutputPopHanlder:
+    _outputDMGTimerPrefab: {fileID: 6205815355120891309, guid: b67fb67d063351e4a9936c0c2247f479, type: 3}
+    _outputHealTimerPrefab: {fileID: 6205815355120891309, guid: c3f10d4c069cca44182d2621e48eab7c, type: 3}
 --- !u!114 &2524119204172734917
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2711,25 +2730,6 @@ MonoBehaviour:
   _mangicalEnergy:
     _darkDefaultAmount: 50
     _lightDefaultAmount: 50
---- !u!114 &5562888234735126922
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8010838884609612702}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: acd9ffed6d6cced4a96205cc907deed7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _characterSheet: {fileID: 11400000, guid: 0d9057bbe6779cb4090c694a5b2cb026, type: 2}
-  _spellCaster: {fileID: 230340289741595676}
-  _itemUser: {fileID: 0}
-  _combatEntityAnimationHandler: {fileID: 2524119204172734917}
-  _dmgOutputPopHanlder:
-    _outputDMGTimerPrefab: {fileID: 6205815355120891309, guid: b67fb67d063351e4a9936c0c2247f479, type: 3}
-    _outputHealTimerPrefab: {fileID: 6205815355120891309, guid: c3f10d4c069cca44182d2621e48eab7c, type: 3}
 --- !u!114 &8091564974255038199
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2744,12 +2744,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _ProrityCondition:
   - spellOrder: 1
-    Condition: {fileID: 11400000, guid: d3727bcf82879ae499b71a82f632b1a5, type: 2}
-    conditionAmount: 100
+    Condition: {fileID: 11400000, guid: be1fae307d6613a4089bac45eaca5a85, type: 2}
+    conditionAmount: 2
     SpellList:
-    - spell: {fileID: 11400000, guid: 41e02732b44fdb64aa66146ff1c2063a, type: 2}
-      chance: 100
-    - spell: {fileID: 11400000, guid: 41e02732b44fdb64aa66146ff1c2063a, type: 2}
+    - spell: {fileID: 11400000, guid: 68460ba663dac254db694d0d0a4879f4, type: 2}
       chance: 100
   - spellOrder: 1
     Condition: {fileID: 11400000, guid: d3727bcf82879ae499b71a82f632b1a5, type: 2}
