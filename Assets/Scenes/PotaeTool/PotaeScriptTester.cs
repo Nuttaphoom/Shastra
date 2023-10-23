@@ -14,7 +14,7 @@ namespace Vanaring
         {
             if (Input.GetKeyDown(KeyCode.P))
             {
-                Vector3 screen = UISpaceSingletonHandler.instance.ObjectToUISpace(target);
+                Vector3 screen = UISpaceSingletonHandler.ObjectToUISpace(target);
                 testUI.position = screen;
             }
         }

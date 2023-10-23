@@ -6,16 +6,9 @@ using UnityEngine;
 
 namespace Vanaring 
 {
-    public class UISpaceSingletonHandler : MonoBehaviour
+    public class UISpaceSingletonHandler    
     {
-        public static UISpaceSingletonHandler instance = null;
-
-        private void Awake()
-        {
-            instance = this;
-        }
-
-        public Vector3 ObjectToUISpace(Transform objtransform)
+        public static Vector3 ObjectToUISpace(Transform objtransform)
         {
             return Camera.main.WorldToScreenPoint(objtransform.position); 
         }
