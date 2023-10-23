@@ -195,6 +195,13 @@ namespace Vanaring
 
             while (_selectedTarget.Count < actorAction.GetTargetSelector().MaxTarget)
             {
+                if (_validTargets.Count <= 0)
+                {
+                    if (_selectedTarget.Count == 0)
+                        throw new Exception("Selectable targert were not found"); 
+                    break;
+                }
+
                 CombatEntity selected = _validTargets[_currentSelectIndex];
 
                 yield return EnergySimulation(selected, actorAction) ; 
