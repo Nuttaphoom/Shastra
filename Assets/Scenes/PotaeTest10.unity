@@ -11533,6 +11533,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 820319827}
+  - component: {fileID: 820319829}
+  - component: {fileID: 820319830}
   m_Layer: 0
   m_Name: -----CentralControl
   m_TagString: Untagged
@@ -11555,6 +11557,120 @@ Transform:
   m_Father: {fileID: 1989031522}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &820319829
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 820319826}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Actions: {fileID: -944628639613478452, guid: d4a2f201955150b4ea5672f772b453eb, type: 3}
+  m_NotificationBehavior: 2
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents:
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 820319830}
+        m_TargetAssemblyTypeName: Vanaring.InputActionReader, Assembly-CSharp
+        m_MethodName: InputCall
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: w
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 292cde76-2abc-4ebf-a442-347788b753df
+    m_ActionName: CombatGameplay/Up[/Keyboard/w,/Keyboard/upArrow]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 820319830}
+        m_TargetAssemblyTypeName: Vanaring.InputActionReader, Assembly-CSharp
+        m_MethodName: InputCall
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: s
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: fc4b9c4a-8342-4c0b-99c2-4ae5e0e8d4da
+    m_ActionName: CombatGameplay/Down[/Keyboard/downArrow,/Keyboard/s]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 820319830}
+        m_TargetAssemblyTypeName: Vanaring.InputActionReader, Assembly-CSharp
+        m_MethodName: InputCall
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: a
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 9520fa0f-6fda-4602-8882-bb3458630090
+    m_ActionName: CombatGameplay/Left[/Keyboard/leftArrow,/Keyboard/a]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 820319830}
+        m_TargetAssemblyTypeName: Vanaring.InputActionReader, Assembly-CSharp
+        m_MethodName: InputCall
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: d
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 9b113450-0495-4f6e-ac86-a1721d4b861d
+    m_ActionName: CombatGameplay/Right[/Keyboard/rightArrow,/Keyboard/d]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 139a4d0f-f163-47a1-929e-d28128f45d6c
+    m_ActionName: CombatGameplay/Accept[/Keyboard/enter]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 1104af7b-801a-4aa7-b286-0774bc08c997
+    m_ActionName: CombatGameplay/Decline[/Keyboard/escape]
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: 
+  m_DefaultActionMap: CombatGameplay
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}
+--- !u!114 &820319830
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 820319826}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b551f7e3855a7f4182273f40089cf07, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &871698246
 GameObject:
   m_ObjectHideFlags: 0
@@ -16254,6 +16370,50 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1538752414}
   m_Mesh: {fileID: 1338693443677999382, guid: 34c12033d1bb56940a6f97bfa4ca4606, type: 3}
+--- !u!1 &1559107851
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1559107852}
+  - component: {fileID: 1559107853}
+  m_Layer: 0
+  m_Name: inputSingleton
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1559107852
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1559107851}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -85.732544, y: -137.50174, z: 788.9577}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 16
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1559107853
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1559107851}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 993ec1de014aab349b14649206344462, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1576700448
 GameObject:
   m_ObjectHideFlags: 0
@@ -33957,8 +34117,6 @@ GameObject:
   - component: {fileID: 6350781895640174050}
   - component: {fileID: 9175319781062164917}
   - component: {fileID: 3579398125957819368}
-  - component: {fileID: 9175319781062164919}
-  - component: {fileID: 9175319781062164918}
   m_Layer: 0
   m_Name: Attacker-Combat-Entity Variant
   m_TagString: Untagged
@@ -36248,80 +36406,6 @@ MonoBehaviour:
   _mangicalEnergy:
     _darkDefaultAmount: 50
     _lightDefaultAmount: 50
---- !u!114 &9175319781062164918
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7082959825019259691}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Actions: {fileID: -944628639613478452, guid: 18d04a4c69c084949ba53d535bc7c97e, type: 3}
-  m_NotificationBehavior: 2
-  m_UIInputModule: {fileID: 0}
-  m_DeviceLostEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_DeviceRegainedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_ControlsChangedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_ActionEvents:
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 9175319781062164919}
-        m_TargetAssemblyTypeName: Vanaring.PotaeTester, Assembly-CSharp
-        m_MethodName: RunInputUp
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: 0aea908a-2569-482d-81e9-aa1d63fbb040
-    m_ActionName: PlayerMenuSelector/MoveSelector
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 9175319781062164919}
-        m_TargetAssemblyTypeName: Vanaring.PotaeTester, Assembly-CSharp
-        m_MethodName: RunInputDown
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: 8c314327-e680-45fe-9fd1-161eb7ad0092
-    m_ActionName: PlayerMenuSelector/MoveSelectorDown[/SwitchProControllerHID/dpad/down]
-  m_NeverAutoSwitchControlSchemes: 0
-  m_DefaultControlScheme: Keyboard
-  m_DefaultActionMap: PlayerMenuSelector
-  m_SplitScreenIndex: -1
-  m_Camera: {fileID: 0}
---- !u!114 &9175319781062164919
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7082959825019259691}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 38d6926cdcbe72d498bd99d3e48b462b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &9192147004761116953
 GameObject:
   m_ObjectHideFlags: 0

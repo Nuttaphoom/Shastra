@@ -12,7 +12,7 @@ using UnityEngine.TextCore.Text;
 
 namespace Vanaring 
 {
-    public class CentralInputReceiver 
+    public class CentralInputReceiver
     {
         private  Dictionary<char, KeyCode> _keycodeCache = new Dictionary<char, KeyCode>();
 
@@ -20,15 +20,18 @@ namespace Vanaring
 
         private static Stack<IInputReceiver> _receiverStack = new Stack<IInputReceiver>()  ;
 
+        private static Queue<string> _inputQueue = new Queue<string>();
+
         public CentralInputReceiver()
         {
             InputSystem.onAnyButtonPress
                  .Call(ctrl => TransmitInput(ctrl.name));
 
             _keycodeCache = new Dictionary<char, KeyCode>();
-            _receiverStack = new Stack<IInputReceiver>(); 
-        } 
-         ~CentralInputReceiver()
+            _receiverStack = new Stack<IInputReceiver>();
+        }
+
+        ~CentralInputReceiver()
         {
             _receiverStack.Clear(); 
         } 
@@ -43,11 +46,26 @@ namespace Vanaring
             return instance;
         }
 
-        private void TransmitInput(string str)
+        public void TransmitInput(string str)
         {
-            if (_receiverStack.Count > 0) {
-                _receiverStack.Peek().ReceiveKeys(GetKeyCode(str));
-            } 
+            if (_inputQueue.Contains(str))
+                return;
+            
+            _inputQueue.Enqueue(str);
+        }
+        bool Activated = false;
+        public IEnumerator CustomUpdate()
+        {
+            if (Activated == false)
+            {
+                Activated = true;
+                if (_receiverStack.Count > 0 && _inputQueue.Count > 0)
+                {
+                    _receiverStack.Peek().ReceiveKeys(GetKeyCode(_inputQueue.Dequeue()));
+                }
+                yield return new WaitForSeconds(0.1f);
+                Activated = false;
+            }
         }
 
         private KeyCode GetKeyCode(string key)

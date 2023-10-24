@@ -4,41 +4,18 @@ using UnityEngine;
 
 namespace Vanaring
 {
-    public class PotaeTester : MonoBehaviour, IInputReceiver
+    public class PotaeTester : MonoBehaviour
     {
-        public void RunInputUp()
+        private static Stack<IInputReceiver> _receiverStack = new Stack<IInputReceiver>();
+        public void RunInputUp(string str)
         {
-            //Debug.Log("RunInputUp");
-            ReceiveKeys(KeyCode.W);
-            CentralInputReceiver.Instance().AddInputReceiverIntoStack(this);
+
+            //CentralInputReceiver.Instance().TransmitInput(str);
         }
 
-        public void RunInputDown()
+        public void RunInputDown(string str)
         {
-            //Debug.Log("RunInputDown");
-            ReceiveKeys(KeyCode.S);
-            CentralInputReceiver.Instance().AddInputReceiverIntoStack(this);
+            //CentralInputReceiver.Instance().TransmitInput(str);
         }
-
-        public void ReceiveKeys(KeyCode key)
-        {
-            if (key == KeyCode.W)
-            {
-                //Debug.Log("KeyCode.W");
-            }
-            else if (key == KeyCode.S)
-            {
-                //Debug.Log("KeyCode.S");
-            }
-            else if (key == KeyCode.Space)
-            {
-                //Debug.Log("KeyCode.Space");
-            }
-            else if (key == KeyCode.Q)
-            {
-                //Debug.Log("KeyCode.Q");
-            }
-        }
-
     }
 }
