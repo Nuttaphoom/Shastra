@@ -11,12 +11,36 @@ namespace Vanaring
     {
         public abstract void SimulateEnergyModifier(CombatEntity target)  ; 
         public abstract RuntimeEffect Factorize( List<CombatEntity> targets)  ;
+
+        protected RuntimeEffect SetUpRuntimeEffect(RuntimeEffect effect,List<CombatEntity> targets)
+        {
+            AssignTarget(effect, targets);
+            return effect; 
+        }
+
+        protected void AssignTarget(RuntimeEffect effect, List<CombatEntity> targets)
+        {
+            if (effect == null)
+                throw new NullReferenceException();
+
+            if (targets == null || targets.Count == 0)
+                return; 
+
+            foreach (CombatEntity target in targets)
+            {
+                effect.AssignTarget(target);
+            }
+
+        }
     }
 
     public abstract class RuntimeEffect 
     {
         protected List<CombatEntity> _targets = new List<CombatEntity>();
-        public abstract IEnumerator ExecuteRuntimeCoroutine(CombatEntity caster);
+        public virtual IEnumerator ExecuteRuntimeCoroutine(CombatEntity caster)
+        {
+            yield return null; 
+        }
         public virtual IEnumerator OnExecuteRuntimeDone(CombatEntity caster)
         {
             yield return null;

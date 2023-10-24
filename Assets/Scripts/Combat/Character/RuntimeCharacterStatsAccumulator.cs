@@ -71,7 +71,7 @@ namespace Vanaring
 
         #region StuntManipulationMethod 
 
-        public void ApplyStunt()
+        public void ApplyStun()
         {
             _characterStats[ECharacterStatType.Stunt].ResetIncreasedValue() ; 
             _characterStats[ECharacterStatType.Stunt].ModifyValue(1) ; 

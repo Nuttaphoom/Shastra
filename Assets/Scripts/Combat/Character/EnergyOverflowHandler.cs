@@ -41,21 +41,22 @@ namespace Vanaring
             if (_starVFX_Instantied != null)
                 return;
 
-            if (_spellCasterHandler.IsEnergyOverheat())
+            if (_spellCasterHandler.IsEnergyOverflow())
             {
-                Overheat(caster);
+                Overflow(caster);
             }
         }
 
-        public void Overheat(CombatEntity caster)
+        public void Overflow(CombatEntity caster)
         {
             RuntimeEffect effect = _statusEffectFactory.Factorize(new List<CombatEntity>() { _combatEntity });
-            StartCoroutine(effect.ExecuteRuntimeCoroutine(_combatEntity));
-                 
+            StartCoroutine(effect.ExecuteRuntimeCoroutine(_combatEntity)); 
+
             _combatEntity.LogicHurt(null, caster.StatsAccumulator.GetATKAmount());
+            _combatEntity.ApplyOverflow(); 
+
             if (!_combatEntity.IsDead)
             {
-                //We stunt this turn and the next turn 
                 StartCoroutine(_combatEntity.CombatEntityAnimationHandler.PlayVFXActionAnimation<string>(_actionAnimationInfo.CasterVfxEntity, VisualStunApplier, "Stunt"));
                 _starVFX_Instantied = Instantiate(_star_circle_stunVFX, _above_head_transform)  ;  
                 _starVFX_Instantied.transform.position = _above_head_transform.position;
@@ -80,7 +81,6 @@ namespace Vanaring
         {
 
             StartCoroutine(RunnintOverheatVisualEffect()); 
-            _combatEntity.StatsAccumulator.ApplyStunt() ; 
             yield return (_combatEntity.VisualHurt(null, "Stunt"));
 
 

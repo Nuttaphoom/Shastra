@@ -6,6 +6,7 @@ using static UnityEngine.GraphicsBuffer;
  
 using System.Runtime.CompilerServices;
 using CustomYieldInstructions;
+using static Cinemachine.CinemachineTargetGroup;
 
 namespace Vanaring { 
 
@@ -33,7 +34,7 @@ namespace Vanaring {
 
         public override void SimulateEnergyModifier(CombatEntity target)
         {
-            throw new System.NotImplementedException();
+            return;
         }
     }
 
@@ -52,49 +53,58 @@ namespace Vanaring {
         {
             List<IEnumerator> applyEffectCoroutine = new List<IEnumerator>();
 
-       
-
             int attack = VanaringMathConst.GetATKWithScaling(dmg, caster.StatsAccumulator.GetATKAmount());
-         
+
+            List<IEnumerator> coroutines = new List<IEnumerator>();
 
             foreach (CombatEntity target in _targets)
             {
-                CombatEntity tar = target;
-
-                if (target is not IStatusEffectable)
-                    throw new System.Exception("Assigned target is not IStatusEffectable");
-
-
                 foreach (StatusRuntimeEffectFactorySO effect in _effects)
                 {
-                    StatusRuntimeEffectFactorySO eff = effect;
-                    applyEffectCoroutine.Add(tar.CombatEntityAnimationHandler.PlayVFXActionAnimation<StatusRuntimeEffectFactorySO>(_actionAnimationInfo.TargetVfxEntity, (param) => ApplyEffectCoroutine(param, tar), eff));
-
-
-                    tar.LogicHurt(null,attack);
+                    coroutines.Add(target.GetStatusEffectHandler().ApplyNewEffect(effect, caster));
                 }
+
             }
+            yield return new WaitAll(caster, coroutines.ToArray());
+
+            //foreach (CombatEntity target in _targets)
+            //{
+            //    CombatEntity tar = target;
+
+            //    if (target is not IStatusEffectable)
+            //        throw new System.Exception("Assigned target is not IStatusEffectable");
 
 
-            applyEffectCoroutine.Add(caster.CombatEntityAnimationHandler.PlayActionAnimation(_actionAnimationInfo));
+            //    foreach (StatusRuntimeEffectFactorySO effect in _effects)
+            //    {
+            //        StatusRuntimeEffectFactorySO eff = effect;
+            //        applyEffectCoroutine.Add(tar.CombatEntityAnimationHandler.PlayVFXActionAnimation<StatusRuntimeEffectFactorySO>(_actionAnimationInfo.TargetVfxEntity, (param) => ApplyEffectCoroutine(param, tar,caster), eff));
 
 
-            yield return new WaitAll(caster, applyEffectCoroutine.ToArray());
+            //        tar.LogicHurt(null,attack);
+            //    }
+            //}
 
 
-            yield return null;
+            //applyEffectCoroutine.Add(caster.CombatEntityAnimationHandler.PlayActionAnimation(_actionAnimationInfo));
+
+
+            //yield return new WaitAll(caster, applyEffectCoroutine.ToArray());
+
+
+            //yield return null;
         }
 
-        protected override IEnumerator ApplyEffectCoroutine(StatusRuntimeEffectFactorySO effect, CombatEntity target)
-        {
-            List<IEnumerator> coroutines = new List<IEnumerator>();
+        //protected override IEnumerator ApplyEffectCoroutine(StatusRuntimeEffectFactorySO effect, CombatEntity target, CombatEntity caster)
+        //{
+        //    List<IEnumerator> coroutines = new List<IEnumerator>();
 
-            coroutines.Add(target.GetStatusEffectHandler().ApplyNewEffect(effect) ) ;
-            coroutines.Add(target.VisualHurt(null,_actionAnimationInfo.TargetTrigerID))  ; 
+        //    coroutines.Add(target.GetStatusEffectHandler().ApplyNewEffect(effect, caster));
+        //    //coroutines.Add(target.VisualHurt(null,_actionAnimationInfo.TargetTrigerID))  ; 
 
 
-            yield return new WaitAll(target,coroutines.ToArray()) ; 
-        }
+        //    yield return new WaitAll(target, coroutines.ToArray());
+        //}
 
 
     }

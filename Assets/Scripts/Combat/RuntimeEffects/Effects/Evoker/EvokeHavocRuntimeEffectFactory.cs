@@ -54,7 +54,6 @@ namespace Vanaring
             if (caster == null)
                 throw new Exception("Caster can not be null");
 
-
             int havocCount = 0 ;  
             foreach (CombatEntity entity in _targets)
             {

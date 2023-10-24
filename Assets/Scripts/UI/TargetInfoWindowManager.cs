@@ -171,9 +171,9 @@ namespace Vanaring
 
             foreach (KeyValuePair<string, List<StatusRuntimeEffect>> entry in effects)
             {
-                if (entry.Value != null && entry.Value.Count != 0 && entry.Key == _currentStatusEffect.StackInfo.StackID().ToString() )
+                if (entry.Value != null && entry.Value.Count != 0 && entry.Key == _currentStatusEffect.Property.StackID().ToString() )
                 {
-                    if (!entry.Value[0].StackInfo.Stackable)
+                    if (!entry.Value[0].Property.Stackable)
                     {
                         StackNum.text = "";
                     }

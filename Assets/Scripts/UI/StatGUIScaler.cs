@@ -128,12 +128,13 @@ namespace Vanaring
         }
         public void lightScaleDecrease(int val)
         {
-            if (lightScale - val < 0)
-            {
-                Debug.Log("Value can't be lower than 0!");
-                return;
-            }
             lightScale -= val;
+
+            if (lightScale < 0)
+            {
+                lightScale = 0;
+            }
+
             StartCoroutine(IEAnimateEnergyBarScale());
         }
         #endregion

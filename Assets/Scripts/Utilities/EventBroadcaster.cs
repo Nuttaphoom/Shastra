@@ -15,6 +15,10 @@ namespace Vanaring
     {
         private Dictionary<string, IEventChannel> _events = new Dictionary<string, IEventChannel>();
 
+        public void OpenChannel<T>(string key)
+        {
+            _events[key] = new EventChannelRuntime<T>();
+        }
         public void SubEvent<T>(UnityAction<T> callback, string key)
         {
             if (callback == null)
@@ -22,7 +26,7 @@ namespace Vanaring
 
 
             if (!_events.ContainsKey(key))
-                _events[key] = new EventChannelRuntime<T>();
+                throw new Exception(key + "is not found in this broadcaster");
 
 
             _events[key].SubEvent(callback);

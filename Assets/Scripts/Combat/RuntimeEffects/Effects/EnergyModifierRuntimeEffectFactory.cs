@@ -21,19 +21,12 @@ namespace Vanaring
         public EnergyModifierData ModifierData => _data;
         public override RuntimeEffect Factorize(List<CombatEntity> targets)
         {
-            EnergyModifierRuntimeEffect retEffect = new EnergyModifierRuntimeEffect(_data, _actionAnimation);
-            if (targets != null)
-            {
-                foreach (CombatEntity target in targets)
-                    retEffect.AssignTarget(target);
-            }
-
-            return retEffect;
+            return SetUpRuntimeEffect(new EnergyModifierRuntimeEffect(_data, _actionAnimation), targets) ;
         }
 
         public override void SimulateEnergyModifier(CombatEntity target)
         {
-            throw new NotImplementedException();
+            target.SpellCaster.Simulate(ModifierData.Side, ModifierData.Amount);
         }
     }
 
@@ -49,30 +42,34 @@ namespace Vanaring
         }
         public override IEnumerator ExecuteRuntimeCoroutine(CombatEntity caster)
         {
-            List<IEnumerator> iEnumerators = new List<IEnumerator>();
+            //List<IEnumerator> iEnumerators = new List<IEnumerator>();
             _caster = caster;
-
-            iEnumerators.Add(_caster.CombatEntityAnimationHandler.PlayTriggerAnimation(_actionAnimationInfo.SelfTrigerID));
+            List<IEnumerator> iEnumerators = new List<IEnumerator>();
 
             foreach (var target in _targets)
             {
-                CombatEntity entity = target;
-                iEnumerators.Add (target.CombatEntityAnimationHandler.PlayVFXActionAnimation<CombatEntity>(_actionAnimationInfo.TargetVfxEntity, ModifyenergyCoroutine, entity));
-                iEnumerators.Add(_caster.CombatEntityAnimationHandler.PlayVFXActionAnimation<CombatEntity>(_actionAnimationInfo.CasterVfxEntity, null, entity));
-
+                target.SpellCaster.ModifyEnergy(_caster, _data.Side, _data.Amount);
+                iEnumerators.Add(target.CombatEntityAnimationHandler.PlayTriggerAnimation(_actionAnimationInfo.TargetTrigerID));
             }
-
-            yield return new WaitAll(_caster,iEnumerators.ToArray() ) ;
-        }
-
-        private IEnumerator ModifyenergyCoroutine(CombatEntity target)
-        {
-            target.SpellCaster.ModifyEnergy(_caster, _data.Side, _data.Amount);
-            List<IEnumerator> iEnumerators = new List<IEnumerator>();
-            iEnumerators.Add(target.CombatEntityAnimationHandler.PlayTriggerAnimation(_actionAnimationInfo.TargetTrigerID));
-
             yield return new WaitAll(_caster, iEnumerators.ToArray());
+
+            //iEnumerators.Add(_caster.CombatEntityAnimationHandler.PlayTriggerAnimation(_actionAnimationInfo.SelfTrigerID));
+
+            //foreach (var target in _targets)
+            //{
+            //    CombatEntity entity = target;
+            //    iEnumerators.Add (target.CombatEntityAnimationHandler.PlayVFXActionAnimation<CombatEntity>(_actionAnimationInfo.TargetVfxEntity, ModifyenergyCoroutine, entity));
+            //    iEnumerators.Add(_caster.CombatEntityAnimationHandler.PlayVFXActionAnimation<CombatEntity>(_actionAnimationInfo.CasterVfxEntity, null, entity));
+
+            //}
+
+            //yield return new WaitAll(_caster,iEnumerators.ToArray() ) ;
         }
+
+        //private IEnumerator ModifyenergyCoroutine(CombatEntity target)
+        //{
+           
+        //}
 
 
 

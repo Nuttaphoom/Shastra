@@ -36,24 +36,20 @@ namespace Vanaring
 
         }
 
-
-        //_cgs can be null =, be careful not assuming he got _cgs 
-        public override IEnumerator ExecuteRuntimeCoroutine(CombatEntity caster)
-        { 
+        public override IEnumerator ExecuteRuntimeCoroutine(CombatEntity owner)
+        {
             foreach (CombatEntity target in _targets)
             {
                 if (target is not IStatusEffectable)
                     throw new System.Exception("Assigned target is not IStatusEffectable");
 
                 if (target is CombatEntity)
-                {
-                    target.StatsAccumulator.ApplyStunt(); 
-                }
-
+                    target.ApplyStun();
             }
 
             yield return null;
         }
+        
 
         public override IEnumerator OnStatusEffecExpire(CombatEntity caster)
         {

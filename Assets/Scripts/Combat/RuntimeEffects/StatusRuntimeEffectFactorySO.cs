@@ -17,18 +17,33 @@ namespace Vanaring
 
 
     [Serializable]
-    public struct StatusStackInfo
+    public struct StatusEffectProperty
     {
         [SerializeField]
         private string stackID ; 
 
         [SerializeField]
         private bool _stackable  ;
-        [SerializeField] 
+
+        [SerializeField]
         private bool _overwriten ;
+
+        [SerializeField]
+        private bool _overflowBreak;
+
+        [SerializeField]
+        [Header("InfiniteTTL status wait until certain thing happens, if it happens, it reduce _TTL by one")]
+        private bool _infiniteTTL;
+
+        [SerializeField]
+        [Header("Duration (turn unit) for this status effect")]
+        private int _TTL;
 
         public bool Stackable => _stackable  ;  
         public bool Overwrite => _overwriten ;
+        public bool OverflowBreak => _overflowBreak ;
+        public int TimeToLive => _TTL;
+        public bool InfiniteTTL => _infiniteTTL ; 
 
         public bool IsSameStatus(string id) {
             return (stackID == id) ; 
@@ -44,20 +59,8 @@ namespace Vanaring
     }
     public abstract class StatusRuntimeEffectFactorySO : RuntimeEffectFactorySO
     {
-        public override void SimulateEnergyModifier(CombatEntity target)
-        {
-
-        }
         [SerializeField]
         private DescriptionBaseField _statusEffectDescription ;
-
-        [SerializeField]
-        [Header("Duration (turn unit) for this status effect")]
-        protected int _TTL;
-
-        [SerializeField]
-        [Header("InfiniteTTL status wait until certain thing happens, if it happens, it reduce _TTL by one")] 
-        protected bool _infiniteTTL ;
 
         [SerializeField]
         [Header("Evoke keys when user want to find specific status effects")]
@@ -65,26 +68,23 @@ namespace Vanaring
 
         [SerializeField]
         [Header("Status when applied multiple instance of same status effect")]
-        protected StatusStackInfo _stackInfo   ;
+        protected StatusEffectProperty _property;
 
-
-
-        public StatusStackInfo StackInfo => _stackInfo ;
-        public int TTL => _TTL;
-        public bool InfiniteTTL => _infiniteTTL ;
+        public StatusEffectProperty Property => _property ;
         public EEvokeKey EvokeKey => _evokeKey;
         public string StatusDescription => _statusEffectDescription.FieldDescription;
         public string StatusName => _statusEffectDescription.FieldName;
         public Sprite StatusImage => _statusEffectDescription.FieldImage;
+        public override void SimulateEnergyModifier(CombatEntity target)
+        {
 
+        }
     }
 
 
     //All of the status effect should have "target" assigned to them 
     public abstract class StatusRuntimeEffect : RuntimeEffect
     {
-
-        protected bool _infiniteTTL = false;
         //Turn base TTL
         protected int _timeToLive = 0;
 
@@ -92,17 +92,30 @@ namespace Vanaring
 
         protected DescriptionBaseField _statusEffectDescription;
 
-        protected StatusStackInfo _stackInfo;
-
+        protected StatusEffectProperty _property ;
         
         public StatusRuntimeEffect(StatusRuntimeEffectFactorySO effectFactory)
         {
+            this._property = effectFactory.Property ;
             this._evokeKey = effectFactory.EvokeKey ; 
-            this._infiniteTTL = effectFactory.InfiniteTTL ;
-            this._timeToLive = effectFactory.TTL ;
+            this._timeToLive = _property.TimeToLive  ;
             this._statusEffectDescription = new DescriptionBaseField(effectFactory.StatusName,
-                effectFactory.StatusDescription, effectFactory.StatusImage);
-            this._stackInfo = effectFactory.StackInfo;
+            effectFactory.StatusDescription, effectFactory.StatusImage);
+        }
+
+        #region Event Effect
+        public virtual IEnumerator OnStatusEffectApplied(CombatEntity applier)
+        {
+            yield return null; 
+        }
+
+        /// <summary>
+        /// Occurs when the owning entity is overflow 
+        /// </summary>
+        /// <returns></returns>
+        public virtual IEnumerator OnStatusEffectBreakWithOverflow()
+        {
+            yield return null; 
         }
 
         /// <summary>
@@ -126,21 +139,27 @@ namespace Vanaring
             yield return null;
         }
 
-        public virtual bool IsExpired()
+        #endregion
+
+        public bool IsExpired()
         {
             return _timeToLive <= 0.0f;
+        }
+
+        public bool IsBreakWhenStun()
+        {
+            return _property.OverflowBreak; 
         }
 
         public void ForceExpire()
         {
             _timeToLive = 0; 
         }
-        public virtual void UpdateTTLCondition()
+        public void UpdateTTLCondition()
         {
-            if (!_infiniteTTL)
+            if (! _property.InfiniteTTL)
                 _timeToLive -= 1;
         }
-
         public bool IsCorrectEvokeKey(EEvokeKey evokeKey)
         {
             return (_evokeKey == evokeKey) ;
@@ -152,9 +171,9 @@ namespace Vanaring
         }
 
         #region GETTER
-        public bool IsInfiniteTTL => _infiniteTTL;
+        public bool IsInfiniteTTL => _property.InfiniteTTL;
         public int TimeToLive => _timeToLive;
-        public StatusStackInfo StackInfo => _stackInfo;
+        public StatusEffectProperty Property => _property;
         public DescriptionBaseField GetStatusEffectDescription()
         {
             return _statusEffectDescription;

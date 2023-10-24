@@ -60,7 +60,7 @@ namespace Vanaring
                 foreach (StatusRuntimeEffectFactorySO effect in _effects)
                 {
                     StatusRuntimeEffectFactorySO eff = effect;
-                    applyEffectCoroutine.Add(tar.CombatEntityAnimationHandler.PlayVFXActionAnimation<StatusRuntimeEffectFactorySO>(_actionAnimationInfo.TargetVfxEntity, (param) => ApplyEffectCoroutine(param, tar), eff));
+                    applyEffectCoroutine.Add(tar.CombatEntityAnimationHandler.PlayVFXActionAnimation<StatusRuntimeEffectFactorySO>(_actionAnimationInfo.TargetVfxEntity, (param) => ApplyEffectCoroutine(param, tar,caster), eff));
                 }
             }
 
@@ -70,13 +70,11 @@ namespace Vanaring
 
             yield return new WaitAll(caster, applyEffectCoroutine.ToArray());
 
-
-            yield return null;
         }
 
-        protected virtual IEnumerator ApplyEffectCoroutine(StatusRuntimeEffectFactorySO effect, CombatEntity target)
+        protected virtual IEnumerator ApplyEffectCoroutine(StatusRuntimeEffectFactorySO effect, CombatEntity target, CombatEntity applier)
         {
-            yield return target.GetStatusEffectHandler().ApplyNewEffect(effect);
+            yield return target.GetStatusEffectHandler().ApplyNewEffect(effect, applier);
         }
 
 

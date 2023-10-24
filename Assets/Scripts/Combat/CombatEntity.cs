@@ -19,7 +19,6 @@ namespace Vanaring
     public abstract class CombatEntity : MonoBehaviour, IStatusEffectable, ITurnState, IDamagable, IAttackter
     {
 
-        private EventBroadcaster _eventBroadcaster; 
 
         [Header("Right now we manually assign CharacterSheet, TO DO : Make it loaded from the main database")]
         [SerializeField]
@@ -42,7 +41,9 @@ namespace Vanaring
         private EnergyOverflowHandler _energyOverflowHandler;
 
         [SerializeField]
-        private DamageOutputPopupHandler _dmgOutputPopHanlder; 
+        private DamageOutputPopupHandler _dmgOutputPopHanlder;
+
+        private EventBroadcaster _eventBroadcaster;
 
         private bool _isDead = false;
         private bool _isExhausted = false; 
@@ -53,13 +54,17 @@ namespace Vanaring
         protected Queue<ActorAction> _actionQueue = new Queue<ActorAction>(); 
         protected virtual void Awake()
         {
+            //Need to setup event broadcaster first before init other classes as other class many require reference to event broadcaster 
+            _eventBroadcaster = new EventBroadcaster();
+
+            _eventBroadcaster.OpenChannel<int>("OnAttack");
+            _eventBroadcaster.OpenChannel<int>("OnDamage");
+
             _dmgOutputPopHanlder = new DamageOutputPopupHandler(_dmgOutputPopHanlder, this); 
             _runtimeCharacterStatsAccumulator = new RuntimeCharacterStatsAccumulator(_characterSheet);
             _energyOverflowHandler = GetComponent<EnergyOverflowHandler>();
             _statusEffectHandler = new StatusEffectHandler(this);
-            _eventBroadcaster = new EventBroadcaster();
 
-   
 
             if (_spellCaster == null)
             {
@@ -182,7 +187,7 @@ namespace Vanaring
                 _isDead = true;
             }
 
-            _eventBroadcaster.InvokeEvent<string>((string) "a", "OnDamage");
+            _eventBroadcaster.InvokeEvent<int>((int) trueDmg, "OnDamage");
 
         }
         public void LogicHeal(int amount)
@@ -249,6 +254,25 @@ namespace Vanaring
             }
         }
 
+        public IEnumerator DeadVisualClear()
+        {
+            yield return _combatEntityAnimationHandler.DestroyVisualMesh();
+        }
+
+        /// <summary>
+        /// Apply Stun will be called from EnergyOverflowHandler 
+        /// </summary>
+        public void ApplyStun()
+        {
+            StatsAccumulator.ApplyStun();
+        }
+
+        public void ApplyOverflow()
+        {
+            GetStatusEffectHandler().StunBreakStatusEffect(this);
+
+        }
+        #endregion
 
         public void SubOnDamageVisualEvent(UnityAction<int> argc)
         {
@@ -276,12 +300,8 @@ namespace Vanaring
         /// <returns></returns>
    
 
-        public IEnumerator DeadVisualClear()
-        {
-            yield return _combatEntityAnimationHandler.DestroyVisualMesh();
-        }
+       
 
 
-        #endregion
     }
 }

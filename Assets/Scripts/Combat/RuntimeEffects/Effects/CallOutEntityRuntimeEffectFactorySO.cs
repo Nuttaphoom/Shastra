@@ -23,14 +23,10 @@ namespace Vanaring
 
         public override RuntimeEffect Factorize(List<CombatEntity> targets)
         {
-            CallOutEntityRuntimeEffect retEffect = new CallOutEntityRuntimeEffect(_prefab, _side);
-            if (targets != null)
-            {
-                foreach (CombatEntity target in targets)
-                    retEffect.AssignTarget(target);
-            }
+            
+            return SetUpRuntimeEffect(new CallOutEntityRuntimeEffect(_prefab, _side), targets);
 
-            return retEffect;
+            
         }
 
         public override void SimulateEnergyModifier(CombatEntity combatEntity)

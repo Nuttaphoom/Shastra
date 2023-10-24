@@ -62,7 +62,7 @@ namespace Vanaring
             OnModifyEnergy?.Invoke(caster, side, value);
         }
 
-        public bool IsEnergyOverheat()
+        public bool IsEnergyOverflow()
         {
             return _mangicalEnergy.IsOverheat();
         }
@@ -91,15 +91,12 @@ namespace Vanaring
         #endregion
 
         #region Interface 
-        public void Simulate(RuntimeMangicalEnergy.EnergySide argc, int argv, Null arga)
+        public void Simulate(RuntimeMangicalEnergy.EnergySide argc, int argv, Null arga = null)
         {
-            Debug.Log("simulate magical energy maybe null");
 
             if (_simulateMagicalEnergy == null)
             {
-                Debug.Log("simulate magical energy is null");
                 _simulateMagicalEnergy = new RuntimeMangicalEnergy(_mangicalEnergy);
-            
             }
             _simulateMagicalEnergy.ModifyEnergy(argv, argc);
         }

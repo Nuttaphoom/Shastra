@@ -204,19 +204,18 @@ namespace Vanaring
         /// <summary>
         /// this function should be called everytime an action is finished performed
         /// </summary>
-        private void SetActiveActors()
+        public void SetActiveActors()
         {
             var team = GetCurrentTeam();
 
             _activeCombatEntities.Reset();
-
-            for (int i =0; i < team.Count; i++)
+            for (int i = 0; i < team.Count; i++)
             {
-                if (! team[i].ReadyForControl())
+                if (!team[i].ReadyForControl())
                 {
                     team.RemoveAt(i);
                     i--;
-                    continue;  
+                    continue;
                 }
 
                 _activeCombatEntities.Add(team[i]); 

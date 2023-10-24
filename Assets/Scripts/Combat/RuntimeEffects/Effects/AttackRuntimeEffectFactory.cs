@@ -25,14 +25,7 @@ namespace Vanaring
 
         public override RuntimeEffect Factorize(List<CombatEntity> targets)
         {
-            AttackRuntimeEffect retEffect = new AttackRuntimeEffect(_damagScaling,realDmg, _actionAnimation );
-            if (targets != null)
-            {
-                foreach (CombatEntity target in targets)
-                    retEffect.AssignTarget(target);
-            }
-
-            return retEffect;
+            return SetUpRuntimeEffect(new AttackRuntimeEffect(_damagScaling, realDmg, _actionAnimation), targets); 
         }
 
         public override void SimulateEnergyModifier(CombatEntity combatEntity)

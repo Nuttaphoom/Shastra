@@ -43,7 +43,7 @@ namespace Vanaring
             _statusName.text = temp.FieldName;
             _statusDescription.text = temp.FieldDescription;
             _statusImageIcon.sprite = temp.FieldImage;
-            if (!description.StackInfo.Stackable)
+            if (!description.Property.Stackable)
             {
                 _statusStackUI.text = "";
             }
@@ -65,7 +65,7 @@ namespace Vanaring
         }
         public void ChangeBuffStack(StatusRuntimeEffect status, int stackcount)
         {
-            if (!status.StackInfo.Stackable)
+            if (!status.Property.Stackable)
             {
                 _statusStackUI.text = "";
             }

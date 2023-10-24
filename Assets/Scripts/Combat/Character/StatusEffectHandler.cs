@@ -26,14 +26,12 @@ namespace Vanaring
 
         public Dictionary<string, List<StatusRuntimeEffect>> Effects => _effects;
 
-        //[SerializeField]
-        //private StatusWindowManager _statusWindowManager;
-
         private UnityAction<Dictionary<string, List<StatusRuntimeEffect>>> _OnUpdateStatus;
 
         public StatusEffectHandler(CombatEntity entity)
         {
-            _appliedEntity = entity; 
+            _appliedEntity = entity;
+
         }
 
         public void UpdateStatusUI()
@@ -55,37 +53,38 @@ namespace Vanaring
         /// </summary>
         /// <param name="factory"></param>
         /// <returns></returns>
-        private void LogicApplyNewEffect(StatusRuntimeEffectFactorySO factory)
+        private void LogicApplyNewEffect(StatusRuntimeEffectFactorySO factory, CombatEntity applier)
         {
+             
             StatusRuntimeEffect effect = factory.Factorize(new List<CombatEntity>() { _appliedEntity }) as StatusRuntimeEffect ;
 
-            string key = factory.StackInfo.StackID();
-            if (_effects.ContainsKey(key))
-            {
-                if (factory.StackInfo.Stackable)
-                {
-                    _effects[key].Add(effect);
-                }
-                else if (factory.StackInfo.Overwrite)
-                {
-                    while (_effects[key].Count > 0)
-                        _effects[key].RemoveAt(0);
+            string key = factory.Property.StackID();
 
-                    _effects[key].Add(effect);
-                }
-            }
-            else
+            if (! _effects.ContainsKey(key))
             {
-
                 _effects.Add(key, new List<StatusRuntimeEffect>());
+                _effects[key].Add(effect);
+                return; 
+            }
+
+            if (factory.Property.Stackable)
+            {
+                _effects[key].Add(effect);
+            }
+            else if (factory.Property.Overwrite)
+            {
+                while (_effects[key].Count > 0)
+                    _effects[key].RemoveAt(0);
+
                 _effects[key].Add(effect);
             }
 
+            effect.OnStatusEffectApplied(applier) ; 
         }
 
-        public IEnumerator ApplyNewEffect(StatusRuntimeEffectFactorySO factory/*, ActionAnimationInfo actionAnimationInfo*/)
+        public IEnumerator ApplyNewEffect(StatusRuntimeEffectFactorySO factory, CombatEntity applier )
         {
-            LogicApplyNewEffect(factory);
+            LogicApplyNewEffect(factory, applier);
             //create Status UI
             UpdateStatusUI();
 
@@ -99,8 +98,11 @@ namespace Vanaring
         {
             foreach (var key in _effects.Keys)
             {
+                Debug.Log("Execute effect : " + key + " ----------------");
+
                 for (int i = 0; i < _effects[key].Count; i++)
                 {
+                    
                     StatusRuntimeEffect statusEffect = _effects[key][i];
 
                     yield return statusEffect.ExecuteRuntimeCoroutine(_appliedEntity);
@@ -111,7 +113,6 @@ namespace Vanaring
             }
 
         }
-
         public IEnumerator ExecuteStatusRuntimeEffectCoroutineWithEvokeKey(EEvokeKey evokeKey)
         {
             foreach (var key in _effects.Keys)
@@ -192,6 +193,7 @@ namespace Vanaring
             UpdateStatusUI();
         }
 
+        //TODO : Remove these two functions 
         public void SubOnStatusVisualEvent(UnityAction<Dictionary<string, List<StatusRuntimeEffect>>> argc)
         {
             _OnUpdateStatus += argc;
@@ -201,6 +203,31 @@ namespace Vanaring
             _OnUpdateStatus -= argc;
         }
 
+
+        #region EVENTListener 
+
+        /// <summary>
+        /// Listen to "OnStun", remove any effect that have Breakable when overflow
+        /// </summary>
+        public void StunBreakStatusEffect(CombatEntity entity)
+        {
+            foreach (var key in _effects.Keys)
+            {
+                if (_effects[key].Count == 0)
+                    continue;
+
+                if (! _effects[key][0].IsBreakWhenStun())
+                    continue; 
+
+                for (int i = 0; i < _effects[key].Count; i++)
+                    _effects[key][i].ForceExpire();
+
+                Debug.Log("Break " + key); 
+
+            }
+        }
+
+        #endregion
         #region GETTER
         public List<StatusRuntimeEffect> GetStatusRuntimeEffectWithEvokeKey(EEvokeKey evokeKey, bool updateTTLAfterGet = true)
         {

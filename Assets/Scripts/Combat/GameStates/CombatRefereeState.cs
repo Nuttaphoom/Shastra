@@ -84,17 +84,19 @@ namespace Vanaring
 
         protected override IEnumerator StateEnter()
         {
-            //Prepare Referee for new round 
-            yield return _stateHandler.Referee.PrepareRefereeForNewRound();  
+
              
             List<CombatEntity> team = _stateHandler.Referee.GetCurrentTeam();
 
-            //1.) Call Enter Turn of the entity, this included running status effect 
+            //1.) Prepare current team for Enter Turn of the entity, this included running status effect 
             foreach (CombatEntity entity in team)
             {
                 yield return entity.TurnEnter();     
             }
-            
+
+            //2.) Prepare Referee for new round 
+            yield return _stateHandler.Referee.PrepareRefereeForNewRound();
+
             ////2.) Notify UI elements
             //if (team.Count > 0)
             //{
@@ -124,13 +126,14 @@ namespace Vanaring
         {
             CombatEntity _actor;
 
-            ActorAction action = null ; 
+            ActorAction action = null ;
+
+            _stateHandler.Referee.SetActiveActors(); 
 
             while (true)
             {
                 //Asking for actor every frame
                 _actor = _stateHandler.Referee.GetCurrentActor() ;
-
                 //No Actor left (Possibly, everyone is exhaunted) 
                 if (_actor == null)
                     break; 
@@ -153,7 +156,6 @@ namespace Vanaring
             }
 
 
-            Debug.Log("end perform action"); 
         }
 
         private IEnumerator PostPerformActionInEveryCharacter()
