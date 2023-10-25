@@ -1,19 +1,21 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Principal;
 using UnityEngine;
 using UnityEngine.Events;
 
 namespace Vanaring
 {
+    
     public class AIBehaviorHandler : MonoBehaviour
-    {
-        AIEntity aiEntity;
+    {     
+        private AIEntity aiEntity;
 
         [Serializable]
         public enum SpellOrderType {
             Random = 0,
-            Order
+            Order,
         }
 
         [Serializable]
@@ -44,9 +46,12 @@ namespace Vanaring
         private int conditionIndex = 0;
         private int currentspellIndex = 0; //only for spell in order
 
-        public void SetEntity(AIEntity entity)
+        private void Awake()
         {
-            aiEntity = entity;
+            if (! TryGetComponent(out aiEntity))
+            {
+                throw new Exception("AI entity can not be found"); 
+            }
         }
 
         public void CheckingCondition()
@@ -108,9 +113,6 @@ namespace Vanaring
             }
         }
 
-        public void TakeControlLeave()
-        {
-            return;
-        }
+       
     }
 }

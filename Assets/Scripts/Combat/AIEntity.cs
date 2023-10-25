@@ -18,7 +18,6 @@ namespace Vanaring
             base.Awake();
             aiBehaviorHandler = GetComponent<AIBehaviorHandler>();
 
-            aiBehaviorHandler.SetEntity(this);
             //StartCoroutine(_botBehaviorHandler.CalculateNextBehavior());
         }
 
@@ -51,7 +50,6 @@ namespace Vanaring
 
         public override IEnumerator TakeControlLeave()
         {
-            aiBehaviorHandler.TakeControlLeave();
             yield return null;
         }
 
