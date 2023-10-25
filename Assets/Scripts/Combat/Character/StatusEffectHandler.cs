@@ -98,7 +98,7 @@ namespace Vanaring
         {
             foreach (var key in _effects.Keys)
             {
-                Debug.Log("Execute effect : " + key + " ----------------");
+                Debug.Log("Execute effect : " + key + " in " + _appliedEntity.name);
 
                 for (int i = 0; i < _effects[key].Count; i++)
                 {
@@ -211,6 +211,7 @@ namespace Vanaring
         /// </summary>
         public void StunBreakStatusEffect(CombatEntity entity)
         {
+            Debug.Log("searching for break effects");
             foreach (var key in _effects.Keys)
             {
                 if (_effects[key].Count == 0)
@@ -219,6 +220,7 @@ namespace Vanaring
                 if (! _effects[key][0].IsBreakWhenStun())
                     continue; 
 
+                
                 for (int i = 0; i < _effects[key].Count; i++)
                     _effects[key][i].ForceExpire();
 
