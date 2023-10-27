@@ -5,6 +5,7 @@ using System.Runtime.CompilerServices;
 using System.Security.Principal;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.PlayerLoop;
 
 
 namespace Vanaring
@@ -61,13 +62,13 @@ namespace Vanaring
             int priority = -100;
             for (int i = 0; i < _behaviors.Count; i++)
             {
-                if (_behaviors[i].Priority < priority)
+                if (_behaviors[i].GetPriority() < priority)
                     continue;
 
                 if (_behaviors[i].IsConditionMet(aiEntity))
                 {
                     Debug.Log("condition met at " + i);
-                    priority = _behaviors[i].Priority;
+                    priority = _behaviors[i].GetPriority();
                     conditionIndex = i;
                 }
             }
@@ -129,10 +130,25 @@ namespace Vanaring
         [SerializeField]
         private int _priority = 0;
 
-        private int _currentOrder = 0; 
+        private int _currentOrder = 0;
+
+        [SerializeField]
+        private BehaviorComboHandler _comboHandler; 
 
         #region GETTER
-        public int Priority => _priority;
+        public int GetPriority()
+        {
+            if (_comboHandler.IsPerformingCombo)
+                return VanaringMathConst.InfinityValue;
+
+            return _priority;
+        }
+
+        public int GetCurrentOrder()
+        {
+            return _currentOrder; 
+        }
+
         #endregion
 
         #region PublicMethods
@@ -141,7 +157,7 @@ namespace Vanaring
             if (AND && OR)
                 throw new Exception("AND and OR cannot both be true");
 
-            if (_performingCombo)
+            if (_comboHandler.IsPerformingCombo) 
                 return true;
 
             if (AND)
@@ -166,39 +182,15 @@ namespace Vanaring
             return false;
         }
 
-        #region ComboRegion
-        [Header("Combo behavior will keep performing until last action is performed")]
-        [SerializeField]
-        private bool _combo = false;
-        private bool _performingCombo = false;
-        private bool _comboFinished = false; 
-        private int _tempPri = 0 ; 
-        private void LockCombo()
-        {
-            _performingCombo = true;
-            _tempPri = _priority; 
-            _priority = VanaringMathConst.InfinityValue ; 
-        }
 
-        private void ReleaseCombo()
+        private void ProgressActionOrder()
         {
-            _priority = _tempPri ;
-            _performingCombo = false ;
-            _comboFinished = false; 
-        }
-        #endregion
+            _currentOrder = (_currentOrder + 1);
 
-        private ActorActionFactory GetOrderAction()
-        {
-            ActorActionFactory ret = _actions[_currentOrder].ActionFactory;
-            _currentOrder = (_currentOrder + 1); 
-
-            if ( (_currentOrder = (_currentOrder % _actions.Count) ) == 0)
-            {
-                _comboFinished = true; 
+            if (_currentOrder >= _actions.Count) {
+                _comboHandler.OnResetOrder_EndPerformingCombo();
+                _currentOrder = 0; 
             }
-
-            return ret; 
         }
 
         private ActorActionFactory GetRandomAction()
@@ -229,12 +221,8 @@ namespace Vanaring
 
         private ActorActionFactory GetBehaviorAction()
         {
-            if (_combo && !_performingCombo)
-                LockCombo(); 
-            
-
-            if (_invokeOrder == ActionInvokeOrder.Order || _performingCombo)
-                return GetOrderAction();  
+            if (_invokeOrder == ActionInvokeOrder.Order  )
+                return _actions[_currentOrder].ActionFactory; ;  
            
 
             if (_invokeOrder == ActionInvokeOrder.Random)
@@ -244,16 +232,61 @@ namespace Vanaring
         }
         public IEnumerator ExecuteBehavior(CombatEntity actor)
         {
+            _comboHandler.InitializeAction(this); 
+
             yield return TargetSelectionFlowControl.Instance.InitializeActionTargetSelectionScheme(actor,
     GetBehaviorAction().FactorizeRuntimeAction(actor), true);
 
-            if (_comboFinished)
-                ReleaseCombo() ; 
+            if (_invokeOrder == ActionInvokeOrder.Order)
+                ProgressActionOrder();
+
+            yield return null; 
         }
 
         #endregion
-
-
-
     }
+
+    [Serializable]
+    public class BehaviorComboHandler
+    {
+        #region ComboRegion
+        [Header("Combo behavior will keep performing until last action is performed")]
+        [SerializeField]
+        private bool _combo = false;
+        private bool _performingCombo = false;
+
+        #region GETTER
+        public bool IsPerformingCombo => _performingCombo;
+
+        #endregion
+
+        public void InitializeAction(BehaviorInstance behavior)
+        {
+            if (!_combo)
+                return;
+
+            if (!_performingCombo)
+                _performingCombo = true; 
+        }
+
+        public void OnResetOrder_EndPerformingCombo()
+        {
+            if (!_combo)
+                return; 
+        
+            _performingCombo= false;
+
+        }
+        private void LockCombo()
+        {
+            _performingCombo = true;
+        }
+
+        private void ReleaseCombo()
+        {
+            _performingCombo = false;
+        }
+        #endregion
+    }
+
 }
