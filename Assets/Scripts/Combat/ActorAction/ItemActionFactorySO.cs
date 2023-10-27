@@ -10,13 +10,14 @@ using UnityEngine;
 namespace Vanaring 
 { 
     [CreateAssetMenu(fileName = "Item Ability", menuName = "ScriptableObject/Combat/ItemAbility")]
-    public class ItemActionFactorySO : ActorActionFactory
+    public class ItemActionFactorySO : ActorActionFactory 
     {
         public Sprite ItemSprite  => this.AbilityImage;
 
-        public ItemAbilityRuntime FactorizeRuntimeItem(ItemUserHandler itemuserHandler)
+        public override ActorAction FactorizeRuntimeAction(CombatEntity user)
         {
-            return new ItemAbilityRuntime(this, itemuserHandler, _targetSelector, _actionSignal) ;
+            
+            return new ItemAbilityRuntime(this, user.ItemUser, _targetSelector, _actionSignal) ;
         }
     }
 

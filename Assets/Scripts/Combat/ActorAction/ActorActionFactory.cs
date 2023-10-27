@@ -11,8 +11,8 @@ using UnityEngine.Tilemaps;
 
 namespace Vanaring 
 {
-    public class ActorActionFactory : ScriptableObject
-    { 
+    public abstract class ActorActionFactory : ScriptableObject
+    {
         [SerializeField]
         protected DescriptionBaseField _description;
 
@@ -20,16 +20,20 @@ namespace Vanaring
         protected TargetSelector _targetSelector;
 
         [SerializeField]
-        protected ActionSignal _actionSignal; 
-        
+        protected ActionSignal _actionSignal;
+        public abstract ActorAction FactorizeRuntimeAction(CombatEntity combatEntity );
+
         #region GETTER
         public TargetSelector TargetSelect => _targetSelector;
 
-        public string AbilityName => _description.FieldName; 
+        public string AbilityName => _description.FieldName;
         public string Desscription => _description.FieldDescription;
-        public Sprite AbilityImage => _description.FieldImage;
+        public Sprite AbilityImage => _description.FieldImage; 
+
         #endregion
+
     }
+    
 
     public abstract class ActorAction
     {

@@ -10,9 +10,9 @@ using UnityEngine;
 namespace Vanaring
 {
     [CreateAssetMenu(fileName = "Physical Ability", menuName = "ScriptableObject/Combat/PhysicalActionSO")]
-    public class PhysicalActionSO : ActorActionFactory
+    public class PhysicalActionSO : ActorActionFactory 
     {
-        public PhysicalAbilityRuntime Factorize(CombatEntity caster)
+        public override ActorAction FactorizeRuntimeAction(CombatEntity caster)
         {
             return new PhysicalAbilityRuntime(caster, _targetSelector, _actionSignal);
         }

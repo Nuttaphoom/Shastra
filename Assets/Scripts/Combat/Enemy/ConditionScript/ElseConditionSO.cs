@@ -9,7 +9,7 @@ namespace Vanaring
     [CreateAssetMenu( fileName = "ElseCondition", menuName = "ScriptableObject/Combat/Enemy/ConditionSO/Else")]
     public class ElseConditionSO : BaseConditionSO
     {
-        public override bool ConditionsMet(AIEntity aiEntity, float conditionAmount)
+        public override bool ConditionsMet(CombatEntity aiEntity)
         {
             return true;
         }

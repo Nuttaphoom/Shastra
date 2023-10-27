@@ -10,7 +10,7 @@ using UnityEngine;
 namespace Vanaring 
 { 
     [CreateAssetMenu(fileName = "Spell Ability", menuName = "ScriptableObject/Combat/SpellAbility")]
-    public class SpellActionSO : ActorActionFactory
+    public class SpellActionSO : ActorActionFactory 
     {
         [Header("===Require Energy amount before casting===")]
         [SerializeField]
@@ -18,11 +18,12 @@ namespace Vanaring
 
         public EnergyModifierData RequiredEnergy => _requiredEnergy;
 
-        public SpellAbilityRuntime Factorize(CombatEntity caster)
-        {
-            return new SpellAbilityRuntime(RequiredEnergy, caster, _targetSelector, _actionSignal); 
-        } 
+ 
 
+        public override ActorAction FactorizeRuntimeAction(CombatEntity caster)
+        {
+            return new SpellAbilityRuntime(RequiredEnergy, caster, _targetSelector, _actionSignal);
+        }
     }
 
     public class SpellAbilityRuntime : ActorAction

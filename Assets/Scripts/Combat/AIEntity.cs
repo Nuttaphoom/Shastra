@@ -36,7 +36,8 @@ namespace Vanaring
         public override IEnumerator GetAction()
         {
             aiBehaviorHandler.CheckingCondition();
-            aiBehaviorHandler.GetNextAction();
+            
+            yield return aiBehaviorHandler.GetNextAction();
             //print("GetAction");
             //TargetSelectionFlowControl.Instance.InitializeActionTargetSelectionScheme();
             yield return null;

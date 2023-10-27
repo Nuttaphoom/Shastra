@@ -82,7 +82,7 @@ namespace Vanaring
         #region Spell
         public void CastSpell(SpellActionSO spellSO)
         {
-            SpellAbilityRuntime runtimeSpell = spellSO.Factorize(_combatEntity);
+            SpellAbilityRuntime runtimeSpell = spellSO.FactorizeRuntimeAction(_combatEntity) as SpellAbilityRuntime;
 
             StartCoroutine(TargetSelectionFlowControl.Instance.InitializeActionTargetSelectionScheme(_combatEntity, runtimeSpell));
         }

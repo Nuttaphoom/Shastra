@@ -5,15 +5,14 @@ using System.Security.Principal;
 using UnityEngine;
 using UnityEngine.Events;
 
+
 namespace Vanaring
 {
-    
     public class AIBehaviorHandler : MonoBehaviour
-    {     
-        private AIEntity aiEntity;
-
+    {
         [Serializable]
-        public enum SpellOrderType {
+        public enum SpellOrderType
+        {
             Random = 0,
             Order,
         }
@@ -40,79 +39,189 @@ namespace Vanaring
             public List<SpellSocket> SpellList;
         }
 
+        private AIEntity aiEntity;
+
         [SerializeField]
-        List<ConditionData> _ProrityCondition = new List<ConditionData>();
+        private List<BehaviorInstance> _behaviors;
 
         private int conditionIndex = 0;
-        private int currentspellIndex = 0; //only for spell in order
 
         private void Awake()
         {
-            if (! TryGetComponent(out aiEntity))
+            if (!TryGetComponent(out aiEntity))
             {
-                throw new Exception("AI entity can not be found"); 
+                throw new Exception("AI entity can not be found");
             }
         }
 
         public void CheckingCondition()
         {
-            for (int i = 0; i < _ProrityCondition.Count; i++)
+            conditionIndex = -1;
+            int priority = -100;
+            for (int i = 0; i < _behaviors.Count; i++)
             {
-                if (_ProrityCondition[i].Condition.ConditionsMet(aiEntity, _ProrityCondition[i].conditionAmount))
+                if (_behaviors[i].Priority < priority)
+                    continue;
+
+                if (_behaviors[i].IsConditionMet(aiEntity))
                 {
+                    Debug.Log("condition met at " + i);
+                    priority = _behaviors[i].Priority;
                     conditionIndex = i;
-                    return;
                 }
             }
-            Debug.LogError("Error : No ConditionsMet");
+
+            if (conditionIndex == -1)
+                throw new Exception("No valid behavior's condition has been met");
         }
 
-        public void GetNextAction()
+        public IEnumerator GetNextAction()
         {
-            UseSpell(_ProrityCondition[conditionIndex].spellOrder);
+            yield return _behaviors[conditionIndex].ExecuteBehavior(aiEntity);
         }
 
-        private void UseSpell(SpellOrderType type)
+    }
+
+    [Serializable]
+    public class BehaviorInstance
+    {
+        [Serializable]
+        public enum ActionInvokeOrder
         {
-            if (type == SpellOrderType.Random)
-            {
-                int totalchance = 0;
-                for (int i = 0; i < _ProrityCondition[conditionIndex].SpellList.Count; i++)
-                {
-                    totalchance += _ProrityCondition[conditionIndex].SpellList[i].chance;
-                }
-                if (totalchance != 100)
-                {
-                    Debug.LogError("totalchance should be equal to 100");
-                }
-
-                int randomNum = UnityEngine.Random.Range(0, totalchance);
-
-                for (int i = 0; i < _ProrityCondition[conditionIndex].SpellList.Count; i++)
-                {
-                    if (randomNum > _ProrityCondition[conditionIndex].SpellList[i].chance)
-                    {
-                        randomNum -= _ProrityCondition[conditionIndex].SpellList[i].chance;
-                    }
-                    else
-                    {
-                        //Debug.Log("Spell name : " +_ProrityCondition[conditionIndex].SpellList[i].spell.name);
-                        StartCoroutine(TargetSelectionFlowControl.Instance.InitializeActionTargetSelectionScheme(aiEntity,
-                            _ProrityCondition[conditionIndex].SpellList[i].spell.Factorize(aiEntity), true));
-                        return;
-                    }
-                }
-                Debug.LogError("Error : Spell out of range!");
-            }
-            else
-            {
-                StartCoroutine(TargetSelectionFlowControl.Instance.InitializeActionTargetSelectionScheme(aiEntity,
-                    _ProrityCondition[conditionIndex].SpellList[currentspellIndex].spell.Factorize(aiEntity), true));
-                currentspellIndex++;
-                currentspellIndex = currentspellIndex % _ProrityCondition[conditionIndex].SpellList.Count;
-            }
+            Random = 0,
+            Order,
         }
 
-       
+        [Serializable]
+        private struct BehaviorActionInformation
+        {
+            [SerializeField]
+            private ActorActionFactory _actionFactory;
+
+            [Range(0.0f,1.0f)]
+            [SerializeField]
+            private float _possibility ;
+
+            public ActorActionFactory ActionFactory => _actionFactory;
+
+            public float Posibility => _possibility ; 
+        }
+
+        [Header("# Use 'OR' to return true if at least one condition is true.\r\n# Use 'AND' to require all conditions to be true for a true result.")]
+        [SerializeField]
+        private bool OR;
+
+        [SerializeField]
+        private bool AND;
+ 
+        [Header("Conditions for this set of action to be executed")]
+        [SerializeField]
+        private List<BaseConditionSO> _behaviorCondition;
+
+        [SerializeField]
+        private ActionInvokeOrder _invokeOrder;
+
+        [SerializeField]
+        private List<BehaviorActionInformation> _actions;
+
+        [Header("Behavior with highest priority will be executed first")]
+        [SerializeField]
+        private int _priority = 0;
+
+
+        private int _currentOrder = 0;
+
+        #region GETTER
+        public int Priority => _priority; 
+
+        #endregion
+
+        #region PublicMethods
+        public bool IsConditionMet(CombatEntity actor)
+        {
+            if (AND && OR)
+                throw new Exception("AND , OR Can not both equal to true"); 
+
+            bool AND_Combination = true ;
+            foreach (var condition in _behaviorCondition)
+            {
+                bool conditionMet = condition.ConditionsMet(actor);
+
+                if (AND)
+                {
+                    AND_Combination = AND_Combination && conditionMet;
+                    //Debug.Log("in AND and ret is " + ret);
+                }
+                else if (OR && conditionMet)
+                {
+                    return true;
+                }
+            }
+
+            if (AND)
+                return AND_Combination ;
+
+            return false; 
+        }
+
+
+        private ActorActionFactory GetOrderAction()
+        {
+            ActorActionFactory ret = _actions[_currentOrder].ActionFactory;
+            _currentOrder = (_currentOrder + 1 ) % _actions.Count ;
+            return ret; 
+        }
+
+        private ActorActionFactory GetRandomAction()
+        {
+            float total = 0;
+            foreach (var actionInstance in _actions)
+            {
+                total += actionInstance.Posibility;
+            }
+
+            if (total != 1.0f)
+                throw new Exception("Sum of posibility is not equal to 1.0 ");
+
+            float rand = UnityEngine.Random.Range(0.0f, 1.0f);
+
+            total = 0; 
+
+            foreach (var actionInstance in _actions)
+            {
+                if (total + rand <= actionInstance.Posibility)
+                    return actionInstance.ActionFactory;
+
+                total += actionInstance.Posibility ; 
+            }
+
+            throw new Exception("no matching return action");
+        }
+
+        private ActorActionFactory GetBehaviorAction()
+        {
+            ActorActionFactory ret = null ; 
+            if (_invokeOrder == ActionInvokeOrder.Order)
+                return GetOrderAction();  
+           
+
+            if (_invokeOrder == ActionInvokeOrder.Random)
+                return GetRandomAction();
+            
+            throw new Exception("_invokeOrder was set to invalid value ") ; 
+        }
+        public IEnumerator ExecuteBehavior(CombatEntity actor)
+        {
+            yield return null;
+
+            yield return TargetSelectionFlowControl.Instance.InitializeActionTargetSelectionScheme(actor,
+    GetBehaviorAction().FactorizeRuntimeAction(actor), true);
+           
+        }
+
+        #endregion
+
+
+
     }
 }
