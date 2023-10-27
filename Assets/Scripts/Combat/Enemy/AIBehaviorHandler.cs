@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Security.Principal;
 using UnityEngine;
 using UnityEngine.Events;
@@ -128,47 +129,75 @@ namespace Vanaring
         [SerializeField]
         private int _priority = 0;
 
-
-        private int _currentOrder = 0;
+        private int _currentOrder = 0; 
 
         #region GETTER
-        public int Priority => _priority; 
-
+        public int Priority => _priority;
         #endregion
 
         #region PublicMethods
         public bool IsConditionMet(CombatEntity actor)
         {
             if (AND && OR)
-                throw new Exception("AND , OR Can not both equal to true"); 
+                throw new Exception("AND and OR cannot both be true");
 
-            bool AND_Combination = true ;
-            foreach (var condition in _behaviorCondition)
+            if (_performingCombo)
+                return true;
+
+            if (AND)
             {
-                bool conditionMet = condition.ConditionsMet(actor);
-
-                if (AND)
+                foreach (var condition in _behaviorCondition)
                 {
-                    AND_Combination = AND_Combination && conditionMet;
-                    //Debug.Log("in AND and ret is " + ret);
+                    if (!condition.ConditionsMet(actor))
+                        return false;
                 }
-                else if (OR && conditionMet)
+                return true;
+            }
+
+            if (OR)
+            {
+                foreach (var condition in _behaviorCondition)
                 {
-                    return true;
+                    if (condition.ConditionsMet(actor))
+                        return true;
                 }
             }
 
-            if (AND)
-                return AND_Combination ;
-
-            return false; 
+            return false;
         }
 
+        #region ComboRegion
+        [Header("Combo behavior will keep performing until last action is performed")]
+        [SerializeField]
+        private bool _combo = false;
+        private bool _performingCombo = false;
+        private bool _comboFinished = false; 
+        private int _tempPri = 0 ; 
+        private void LockCombo()
+        {
+            _performingCombo = true;
+            _tempPri = _priority; 
+            _priority = VanaringMathConst.InfinityValue ; 
+        }
+
+        private void ReleaseCombo()
+        {
+            _priority = _tempPri ;
+            _performingCombo = false ;
+            _comboFinished = false; 
+        }
+        #endregion
 
         private ActorActionFactory GetOrderAction()
         {
             ActorActionFactory ret = _actions[_currentOrder].ActionFactory;
-            _currentOrder = (_currentOrder + 1 ) % _actions.Count ;
+            _currentOrder = (_currentOrder + 1); 
+
+            if ( (_currentOrder = (_currentOrder % _actions.Count) ) == 0)
+            {
+                _comboFinished = true; 
+            }
+
             return ret; 
         }
 
@@ -200,8 +229,11 @@ namespace Vanaring
 
         private ActorActionFactory GetBehaviorAction()
         {
-            ActorActionFactory ret = null ; 
-            if (_invokeOrder == ActionInvokeOrder.Order)
+            if (_combo && !_performingCombo)
+                LockCombo(); 
+            
+
+            if (_invokeOrder == ActionInvokeOrder.Order || _performingCombo)
                 return GetOrderAction();  
            
 
@@ -212,11 +244,11 @@ namespace Vanaring
         }
         public IEnumerator ExecuteBehavior(CombatEntity actor)
         {
-            yield return null;
-
             yield return TargetSelectionFlowControl.Instance.InitializeActionTargetSelectionScheme(actor,
     GetBehaviorAction().FactorizeRuntimeAction(actor), true);
-           
+
+            if (_comboFinished)
+                ReleaseCombo() ; 
         }
 
         #endregion

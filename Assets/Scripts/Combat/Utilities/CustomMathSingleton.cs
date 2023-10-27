@@ -3,7 +3,7 @@ namespace Vanaring
 {
    public static class VanaringMathConst
     {
-        public  const int InfinityValue = 1000000000 ; 
+        public  const int InfinityValue = 2147483647 ; 
 
         public static int GetATKWithScaling(EDamageScaling scaling, int inputDmg)
         {
