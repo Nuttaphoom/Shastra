@@ -16,7 +16,9 @@ namespace Vanaring
         //private CombatEntityEventChannel OnTargetSelectionSchemeStart;
 
         //[SerializeField]
-        //private CombatEntityEventChannel OnTargetSelectionSchemeEnd;
+        //private CombatEntityEventChannel OnTargetSelectionSchemeEnd; 
+
+        private EventBroadcaster _eventBroadcaster;
 
         [SerializeField]
         private TargetSelectionGUI _targetSelectionGUI;
@@ -36,27 +38,43 @@ namespace Vanaring
 
         private bool _forceStop = false;
 
+        #region GETTER
+
+        public EventBroadcaster GetEventBroadcaster()
+        {
+            if (_eventBroadcaster == null)
+            {
+                _eventBroadcaster = new EventBroadcaster();
+            }
+            return _eventBroadcaster;
+        }
+        #endregion
 
         private void Awake()
         {
             Instance = this;
             _targetSelectionGUI.Initialize(transform);
+            _eventBroadcaster = new EventBroadcaster();
+
+            _eventBroadcaster.OpenChannel<bool>("OnTargetSelectionEnd") ;
+            _eventBroadcaster.OpenChannel<CombatEntity>("OnTargetSelectionEnter") ;
+
         }
-        
+
         private void AssignPossibleTargets(CombatEntity caster, TargetSelector targetSelector)
         {
-            _validTargets.Clear(); 
+            _validTargets.Clear();
 
             ECompetatorSide eCompetatorSide = CombatReferee.instance.GetCompetatorSide(caster);  //CombatReferee.instance.GetCharacterSide(caster);
             ;  // CombatReferee.instance.GetCharacterSide(caster);
 
-            foreach ( ECompetatorSide side in Enum.GetValues(typeof(ECompetatorSide)))
+            foreach (ECompetatorSide side in Enum.GetValues(typeof(ECompetatorSide)))
             {
                 foreach (CombatEntity target in CombatReferee.instance.GetCompetatorsBySide(side))
                 {
                     if (targetSelector.CorrectTarget(caster, target))
                     {
-                        if (! _validTargets.Contains(target))
+                        if (!_validTargets.Contains(target))
                         {
                             _validTargets.Add(target);
                         }
@@ -65,7 +83,7 @@ namespace Vanaring
             }
 
 
-           
+
         }
         private void ValidateData()
         {
@@ -81,11 +99,11 @@ namespace Vanaring
         /// <param name="action"></param>
         private IEnumerator EnergySimulation(CombatEntity target, ActorAction action)
         {
-            yield return action.Simulate(target) ;
+            yield return action.Simulate(target);
 
             if (action.GetType() == typeof(SpellActionSO))
             {
-                Debug.Log("this is spell action"); 
+                Debug.Log("this is spell action");
             }
 
             //if (target.SpellCaster.CheckSimulation())
@@ -163,8 +181,6 @@ namespace Vanaring
 
                 _targetSelectionGUI.SelectTargetPointer(_validTargets[_currentSelectIndex]);
 
-                yield return null;
-
                 yield return _validTargets[_currentSelectIndex];
 
             }
@@ -181,6 +197,8 @@ namespace Vanaring
 
             _activlySelecting = true;
 
+            _eventBroadcaster.InvokeEvent<CombatEntity>(caster, "OnTargetSelectionEnter");
+
             CentralInputReceiver.Instance().AddInputReceiverIntoStack(this);
 
             //OnTargetSelectionSchemeStart.PlayEvent(caster);
@@ -191,20 +209,15 @@ namespace Vanaring
 
             CameraSetUPManager.Instance.CaptureVMCamera();
 
+            CameraSetUPManager.Instance.SetBlendMode(CameraSetUPManager.CameraBlendMode.EASE_INOUT, 0.5f);
+
             _buttonIndicatorWindow.SetIndicatorButtonShow(ButtonIndicatorWindow.IndicatorButtonShow.TARGET, true);
 
             while (_selectedTarget.Count < actorAction.GetTargetSelector().MaxTarget)
             {
-                if (_validTargets.Count <= 0)
-                {
-                    if (_selectedTarget.Count == 0)
-                        throw new Exception("Selectable targert were not found"); 
-                    break;
-                }
-
                 CombatEntity selected = _validTargets[_currentSelectIndex];
 
-                yield return EnergySimulation(selected, actorAction) ; 
+                yield return EnergySimulation(selected, actorAction);
 
                 if (selected.TryGetComponent(out CombatGraphicalHandler cgh))
                 {
@@ -219,7 +232,6 @@ namespace Vanaring
 
                 if (_forceStop)
                 {
-                    _forceStop = false;
                     if (cgh != null)
                     {
                         cgh.EnableQuickMenuBar(false);
@@ -250,15 +262,18 @@ namespace Vanaring
             _targetSelectionGUI.EndSelectionScheme();
 
             //OnTargetSelectionSchemeEnd.PlayEvent(caster);
+            //Broadcast Ending of target selection with Sucesfful status
+            _eventBroadcaster.InvokeEvent<bool>(!_forceStop, "OnTargetSelectionEnd");
 
             CameraSetUPManager.Instance.RestoreVMCameraState();
             CentralInputReceiver.Instance().RemoveInputReceiverIntoStack(this);
 
+            _forceStop = false;
             _activlySelecting = false;
 
 
         }
-       
+
 
         #endregion
     }
@@ -273,7 +288,8 @@ namespace Vanaring
 
         public int MaxTarget => _maxTargetSize;
 
- 
+        [SerializeField]
+        private bool _targetCaster = false;
 
         [Header("Toggle target status when selected")]
         [SerializeField]
@@ -281,13 +297,13 @@ namespace Vanaring
         [SerializeField]
         private bool _targetOppose;
         [SerializeField]
-        private bool _targetSelf; 
+        private bool _targetSelf;
 
 
         public bool CorrectTarget(CombatEntity caster, CombatEntity target)
         {
-            ECompetatorSide casterSide = CombatReferee.instance.GetCompetatorSide(caster) ; 
-            ECompetatorSide targetSide = CombatReferee.instance.GetCompetatorSide(target) ;
+            ECompetatorSide casterSide = CombatReferee.instance.GetCompetatorSide(caster);
+            ECompetatorSide targetSide = CombatReferee.instance.GetCompetatorSide(target);
 
             if (TargetCasterItself)
             {
@@ -296,21 +312,21 @@ namespace Vanaring
 
             if (TargetOppose)
             {
-                return (casterSide != targetSide); 
+                return (casterSide != targetSide);
             }
 
             if (TargetAllyTeam)
             {
-                return (casterSide == targetSide); 
+                return (casterSide == targetSide);
             }
 
 
-            return false; 
+            return false;
         }
 
         private bool TargetOppose => (_targetOppose);
         private bool TargetCasterItself => (_targetSelf);
-        public bool TargetAllyTeam => (_targetAlly) ; 
+        public bool TargetAllyTeam => (_targetAlly);
 
         //Used when the target selection is requires  
     }

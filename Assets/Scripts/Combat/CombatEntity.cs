@@ -57,7 +57,9 @@ namespace Vanaring
 
             _eventBroadcaster.OpenChannel<int>("OnAttack");
             _eventBroadcaster.OpenChannel<int>("OnDamage");
-
+            _eventBroadcaster.OpenChannel<CombatEntity>("OnTakeControl");
+            _eventBroadcaster.OpenChannel<CombatEntity>("OnTakeControlLeave");
+            
             _dmgOutputPopHanlder = new DamageOutputPopupHandler(_dmgOutputPopHanlder, this); 
             _runtimeCharacterStatsAccumulator = new RuntimeCharacterStatsAccumulator(_characterSheet);
             _energyOverflowHandler = GetComponent<EnergyOverflowHandler>();
@@ -74,8 +76,17 @@ namespace Vanaring
         public abstract IEnumerator GetAction();
 
         // Take control and leave control should have its own space 
-        public abstract IEnumerator TakeControl();
-        public abstract IEnumerator TakeControlLeave();
+        public virtual IEnumerator TakeControl()
+        {
+            EventBroadcaster.InvokeEvent(this, "OnTakeControl");
+            yield return null;
+        }
+        public virtual IEnumerator TakeControlLeave()
+        {
+            EventBroadcaster.InvokeEvent(this, "OnTakeControlLeave");
+
+            yield return null;
+        }
 
         public virtual IEnumerator TurnEnter()
         {

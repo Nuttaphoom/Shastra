@@ -44,13 +44,13 @@ namespace Vanaring
 
         public override IEnumerator TakeControl()
         {
-            //throw new NotImplementedException();
-            yield return null;
+            yield return base.TakeControl(); 
+        
         }
 
         public override IEnumerator TakeControlLeave()
         {
-            yield return null;
+            yield return base.TakeControlLeave();  ;
         }
          
         

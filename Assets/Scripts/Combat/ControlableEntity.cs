@@ -23,6 +23,8 @@ namespace Vanaring
 
         public override IEnumerator TakeControl()
         {
+            yield return base.TakeControl(); 
+
             if (_combatGraphicalHandler == null)
                 _combatGraphicalHandler = GetComponent<CombatGraphicalHandler>();
 
@@ -31,6 +33,8 @@ namespace Vanaring
 
         public override IEnumerator TakeControlLeave()
         {
+            yield return base.TakeControlLeave(); 
+
             _combatGraphicalHandler.TakeControlLeave();
             yield return null;
         }
