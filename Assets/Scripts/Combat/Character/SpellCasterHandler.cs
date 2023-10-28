@@ -84,6 +84,7 @@ namespace Vanaring
         public void CastSpell(SpellActionSO spellSO)
         {
             SpellAbilityRuntime runtimeSpell = spellSO.FactorizeRuntimeAction(_combatEntity) as SpellAbilityRuntime;
+            
 
             StartCoroutine(TargetSelectionFlowControl.Instance.InitializeActionTargetSelectionScheme(_combatEntity, runtimeSpell));
         }

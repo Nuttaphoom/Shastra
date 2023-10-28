@@ -25,17 +25,17 @@ namespace Vanaring
         {
             yield return base.TakeControl(); 
 
-            if (_combatGraphicalHandler == null)
-                _combatGraphicalHandler = GetComponent<CombatGraphicalHandler>();
+            //if (_combatGraphicalHandler == null)
+            //    _combatGraphicalHandler = GetComponent<CombatGraphicalHandler>();
 
-            yield return _combatGraphicalHandler.TakeControl();
+            //yield return _combatGraphicalHandler.TakeControl();
         }
 
         public override IEnumerator TakeControlLeave()
         {
             yield return base.TakeControlLeave(); 
 
-            _combatGraphicalHandler.TakeControlLeave();
+            //_combatGraphicalHandler.TakeControlLeave();
             yield return null;
         }
 

@@ -45,7 +45,7 @@ namespace Vanaring
             {
                 Debug.Log("item window manager is null");
             }
-            _itemWindowManager.UpdateItemSocket(Items, ItemsAmount);
+            //_itemWindowManager.UpdateItemSocket(Items, ItemsAmount);
         }
 
         private void FactorizeItemInInventory()

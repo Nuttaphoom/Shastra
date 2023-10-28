@@ -108,10 +108,16 @@ namespace Vanaring
 
         public void CloseWindow(CombatEntity combatEntity = null)
         {
-            _lastWindowOpen.OnWindowDeActive();
-            HideCurrentWindow(); 
-            _lastWindowOpen = null;
             CentralInputReceiver.Instance().RemoveInputReceiverIntoStack(this);
+
+            if (_lastWindowOpen != null)
+                return;
+                
+            
+            _lastWindowOpen.OnWindowDeActive();
+            HideCurrentWindow();
+            _lastWindowOpen = null;
+
         }
 
         public void DisplayCurrentWindow()
@@ -142,7 +148,7 @@ namespace Vanaring
 
         private void OnTargetSelectionEnd(bool sucessfullySelect )
         {
-            if (sucessfullySelect)
+            if ( sucessfullySelect)
             {
                 CloseWindow(); 
             }else

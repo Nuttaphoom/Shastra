@@ -50,7 +50,7 @@ namespace Vanaring
         }
         public void UpdateItemSocket(List<ItemAbilityRuntime> updatedItemdata, List<int> updatedItemAmount)
         {
-            ResetGUIinventory();
+            //ResetGUIinventory();
             _itemInventoryData = updatedItemdata;
             _itemInventoryAmount = updatedItemAmount;
 
