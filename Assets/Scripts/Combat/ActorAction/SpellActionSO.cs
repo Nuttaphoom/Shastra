@@ -18,8 +18,6 @@ namespace Vanaring
 
         public EnergyModifierData RequiredEnergy => _requiredEnergy;
 
- 
-
         public override ActorAction FactorizeRuntimeAction(CombatEntity caster)
         {
             return new SpellAbilityRuntime(RequiredEnergy, caster, _targetSelector, _actionSignal);

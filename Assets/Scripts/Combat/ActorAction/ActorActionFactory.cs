@@ -21,11 +21,11 @@ namespace Vanaring
 
         [SerializeField]
         protected ActionSignal _actionSignal;
+
         public abstract ActorAction FactorizeRuntimeAction(CombatEntity combatEntity );
 
         #region GETTER
         public TargetSelector TargetSelect => _targetSelector;
-
         public string AbilityName => _description.FieldName;
         public string Desscription => _description.FieldDescription;
         public Sprite AbilityImage => _description.FieldImage; 

@@ -35,7 +35,6 @@ namespace Vanaring
 
         public override IEnumerator GetAction()
         {
-            aiBehaviorHandler.CheckingCondition();
             
             yield return aiBehaviorHandler.GetNextAction();
             //print("GetAction");
@@ -53,6 +52,13 @@ namespace Vanaring
         {
             yield return null;
         }
+         
+        
+        public override void ApplyOverflow()
+        {
+            base.ApplyOverflow();
 
+            aiBehaviorHandler.OnBehaviorOwnerStun(); 
+        }
     }
 }

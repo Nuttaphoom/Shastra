@@ -24,7 +24,7 @@ namespace Vanaring
 
         public override void SimulateEnergyModifier(CombatEntity target)
         {
-            throw new NotImplementedException();
+            return; 
         }
     }
 

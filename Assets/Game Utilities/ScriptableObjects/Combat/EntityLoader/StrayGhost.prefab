@@ -2754,6 +2754,7 @@ MonoBehaviour:
     _priority: 100
     _comboHandler:
       _combo: 0
+      _breakOnStun: 0
   - OR: 0
     AND: 1
     _behaviorCondition:
@@ -2763,11 +2764,14 @@ MonoBehaviour:
     _actions:
     - _actionFactory: {fileID: 11400000, guid: 68460ba663dac254db694d0d0a4879f4, type: 2}
       _possibility: 1
+    - _actionFactory: {fileID: 11400000, guid: 394aeddfe79728046848a110706ec97e, type: 2}
+      _possibility: 1
     - _actionFactory: {fileID: 11400000, guid: 68460ba663dac254db694d0d0a4879f4, type: 2}
       _possibility: 1
     _priority: 101
     _comboHandler:
       _combo: 1
+      _breakOnStun: 1
 --- !u!1 &8149838307054936125
 GameObject:
   m_ObjectHideFlags: 0

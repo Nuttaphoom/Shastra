@@ -27,7 +27,6 @@ namespace Vanaring
             if (Current_MoreThan)
                 return (CombatReferee.instance.GetCompetatorsBySide(_side).Count > _sizeAmout);
 
-            Debug.Log("current size : " + CombatReferee.instance.GetCompetatorsBySide(_side).Count);
             return (CombatReferee.instance.GetCompetatorsBySide(_side).Count < _sizeAmout);
 
         }

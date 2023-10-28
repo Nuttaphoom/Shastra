@@ -29,7 +29,6 @@ namespace Vanaring
             float currHP = aiEntity.StatsAccumulator.GetHPAmount();
 
             float result = (currHP * 100.0f / maxHP);
-            Debug.Log("result is " + result + " <= " + _lowerThan_Percent + " >= " + _moreThan_Percent) ; 
             return result <= _lowerThan_Percent && result >= _moreThan_Percent ; 
         }
     }
