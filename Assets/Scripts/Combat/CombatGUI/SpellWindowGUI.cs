@@ -86,14 +86,14 @@ namespace Vanaring  {
             }
             else if(key == KeyCode.S)
             {
-                if (currentSelectedIndex < spellSocketGUIList.Count - 1)
+                if (currentSelectedIndex < spellSocketGUIList.Count - 1 && spellSocketGUIList.Count > 1)
                 {
                     ScrollToNext();
                 }
             }
             else if (key == KeyCode.W)
             {
-                if (currentSelectedIndex > 0)
+                if (currentSelectedIndex > 0 && spellSocketGUIList.Count > 1)
                 {
                     ScrollToPrevious();
                 }
@@ -179,13 +179,7 @@ namespace Vanaring  {
                     spellIndexFocusUpMax = 4;
                     spellIndexFocusDownMin = 0;
                     spellIndexFocusDownMax = 4;
-                    break;
-                //default:
-                //    spellIndexFocusUpMin = currentSelectedIndex - 2;
-                //    spellIndexFocusUpMax = currentSelectedIndex + 2 >= spellSocketGUIList.Count ? spellSocketGUIList.Count - 1 : currentSelectedIndex + 2;
-                //    spellIndexFocusDownMin = currentSelectedIndex - 3; //>= spellSocketGUIList.Count ? spellSocketGUIList.Count - 1 : currentSelectedIndex + 2; ;
-                //    spellIndexFocusDownMax = currentSelectedIndex + 2 >= spellSocketGUIList.Count ? spellSocketGUIList.Count - 1 : currentSelectedIndex + 2;  ;
-                //    break; 
+                    break; 
                 case 3:
                     spellIndexFocusUpMin = 1;
                     spellIndexFocusUpMax = 4;

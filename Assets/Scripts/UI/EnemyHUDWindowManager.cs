@@ -6,16 +6,11 @@ namespace Vanaring
 {
     public class EnemyHUDWindowManager : MonoBehaviour
     {
-        // Start is called before the first frame update
-        void Start()
+        [SerializeField]
+        private List<CombatEntity> enemyList = new List<CombatEntity>();
+        private void Start()
         {
-        
-        }
-
-        // Update is called once per frame
-        void Update()
-        {
-        
+            
         }
     }
 }

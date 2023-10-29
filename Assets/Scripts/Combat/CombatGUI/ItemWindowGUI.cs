@@ -177,14 +177,14 @@ namespace Vanaring
             }
             else if (key == KeyCode.S)
             {
-                if (currentSelectedIndex < itemSocketGUIList.Count - 1)
+                if (currentSelectedIndex < itemSocketGUIList.Count - 1 && itemSocketGUIList.Count > 1)
                 {
                     ScrollToNext();
                 }
             }
             else if (key == KeyCode.W)
             {
-                if (currentSelectedIndex > 0)
+                if (currentSelectedIndex > 0 && itemSocketGUIList.Count > 1)
                 {
                     ScrollToPrevious();
                 }
