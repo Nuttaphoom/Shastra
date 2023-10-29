@@ -225,16 +225,18 @@ namespace Vanaring
 
             _buttonIndicatorWindow.SetIndicatorButtonShow(ButtonIndicatorWindow.IndicatorButtonShow.TARGET, true);
 
-            while (_selectedTarget.Count < actorAction.GetTargetSelector().MaxTarget)
+            while (_selectedTarget.Count < actorAction.GetTargetSelector().MaxTarget )
             {
-                if (_forceStop)                
-                    goto End;
+                if (_validTargets.Count < actorAction.GetTargetSelector().MaxTarget && _validTargets.Count == 0)
+                    break;
+
+                if (_forceStop)
+                    break;
 
                 _selectingTarget.Clear(); 
 
                 _selectingTarget.Add(_validTargets[_currentSelectIndex]);
-                //Debug.Log("validCount " + _validTargets.Count + 1); 
-                //Debug.Log("MaxTarget " + actorAction.GetTargetSelector().MaxTarget);
+  
 
                 if (_validTargets.Count <= actorAction.GetTargetSelector().MaxTarget)
                 {
@@ -248,10 +250,7 @@ namespace Vanaring
                     _currentSelectIndex = UnityEngine.Random.Range(0, _validTargets.Count);
                     _selectedTarget.Add(_validTargets[_currentSelectIndex]);
                     _validTargets.RemoveAt(_currentSelectIndex);
-                    //if (cgh != null)
-                    //{
-                    //    cgh.EnableQuickMenuBar(false);
-                    //}
+                 
                     continue;
                 }
                 if (! randomTarget)
@@ -259,7 +258,6 @@ namespace Vanaring
                     foreach (CombatEntity selectedEntity in _selectingTarget)
                     {
                         yield return EnergySimulation(selectedEntity, actorAction);
-
                     }
                     _targetSelectionGUI.SelectTargetPointer(_selectingTarget);
 
@@ -271,9 +269,12 @@ namespace Vanaring
 
             }
 
-            actorAction.SetActionTarget(_selectedTarget);
-            caster.AddActionQueue(actorAction);
-        End:
+            if (_selectedTarget.Count > 0)
+            { 
+                actorAction.SetActionTarget(_selectedTarget);
+                caster.AddActionQueue(actorAction);
+            }
+
             _targetSelectionGUI.EndSelectionScheme();
 
             //OnTargetSelectionSchemeEnd.PlayEvent(caster);
@@ -313,8 +314,6 @@ namespace Vanaring
         private bool _targetOppose;
         [SerializeField]
         private bool _targetSelf;
-
-
         public bool CorrectTarget(CombatEntity caster, CombatEntity target)
         {
             ECompetatorSide casterSide = CombatReferee.instance.GetCompetatorSide(caster);

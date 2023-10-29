@@ -169,17 +169,19 @@ namespace Vanaring
             return false;
         }
 
-        public void InstantiateCompetator(CombatEntity prefabNewCompetator, ECompetatorSide side)
+        public CombatEntity InstantiateCompetator(CombatEntity prefabNewCompetator, ECompetatorSide side)
         {
             List<CombatEntity> entitesWithSameSide = new List<CombatEntity>();
             entitesWithSameSide = GetCompetatorsBySide(side);
 
             if (entitesWithSameSide.Count > _maxTeamSize)
-                return; 
+                return null ; 
             
             CombatEntity entity = _entityLoader.SpawnPrefab(prefabNewCompetator,entitesWithSameSide.Count) ;
 
             AssignCompetators(new List<CombatEntity>() { entity } , side);
+
+            return entity ; 
         }
 
         #endregion

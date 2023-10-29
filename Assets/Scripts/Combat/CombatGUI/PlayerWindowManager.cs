@@ -115,7 +115,8 @@ namespace Vanaring
 
             OpenWindow(EWindowGUI.Main);
 
-            CentralInputReceiver.Instance().AddInputReceiverIntoStack(this); 
+            CentralInputReceiver.Instance().AddInputReceiverIntoStack(this);
+
         }
 
         public void CloseWindow(CombatEntity combatEntity = null)

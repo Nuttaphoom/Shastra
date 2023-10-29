@@ -13,7 +13,7 @@ namespace Vanaring
     {
 
         public static DirectorManager Instance;
-
+        private bool _playingTimeline = false;
         private void Awake()
         {
             if (Instance != null)
@@ -26,10 +26,8 @@ namespace Vanaring
             _signalReceiver = GetComponent<SignalReceiver>();
 
         }
-        //[SerializeField] private ActionSignal actionSignaltest;
-        [SerializeField] private List<ActionSignal> _currentSignal = new List<ActionSignal>();       //Waiting signal
-        //List<PlayableDirector> _usingDirector = new List<PlayableDirector>();
-     
+
+        [SerializeField] private List<ActionSignal> _currentSignal = new List<ActionSignal>();       
         private SignalReceiver _signalReceiver;
 
         public void TransmitSignal(SignalType signal)
@@ -45,7 +43,6 @@ namespace Vanaring
 
         public void PlayTimeline(ActionSignal signal)
         {
-
             _currentSignal.Add(signal); 
 
             // 1.) Create PlayableDirector
@@ -67,15 +64,22 @@ namespace Vanaring
             StartCoroutine (WaitForTimeline(currentDirector));
  
         }
+
         private IEnumerator WaitForTimeline(PlayableDirector director)
         {
+            _playingTimeline = true; 
             while (director.state == PlayState.Playing)
             {
                 yield return new WaitForEndOfFrame() ;
             }
-
+            _playingTimeline = false; 
             Destroy(director.gameObject); 
 
         }
+
+        #region GETTER
+        bool IsPlayingTimeline => _playingTimeline;
+
+        #endregion
     }
 }

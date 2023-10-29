@@ -18,8 +18,6 @@ namespace Vanaring
 
         private Dictionary<CombatEntity, GameObject> _instantiatedVFXCircle = new Dictionary<CombatEntity, GameObject>(); 
 
-        private List<GameObject> _poolTargetGUI = new List<GameObject>();
-
         [SerializeField]
         private GameObject _vfxPrefabTemplate;
         private GameObject instantiatedVFXCircle;
@@ -31,6 +29,7 @@ namespace Vanaring
             instantiatedVFXCircle = MonoBehaviour.Instantiate(_vfxPrefabTemplate, _vfxPrefabTemplate.transform.position, Quaternion.identity);
             _instantiatedVFXCircle = new Dictionary<CombatEntity, GameObject>();
             _parent = argc;
+
             SetInit(true);
         }
 
@@ -42,8 +41,7 @@ namespace Vanaring
 
         public void HideAllPointer()
         {
-            Debug.Log("Hide All Pointer"); 
-            foreach (var key in _instantiatedTargetGUI.Keys)
+             foreach (var key in _instantiatedTargetGUI.Keys)
             {
                 _instantiatedTargetGUI[key].SetActive(false);
             }
@@ -73,21 +71,17 @@ namespace Vanaring
 
             foreach (var combatEntity in entities)
             {
-                //Check IsOnSameTarget
                 if (!_instantiatedTargetGUI.ContainsKey(combatEntity))
                 {
-                    if (_poolTargetGUI.Count > 0)
-                    {
-                        _instantiatedTargetGUI.Add(combatEntity, _poolTargetGUI[0]);
-                        _poolTargetGUI.RemoveAt(0);
-                    }
-                    else
-                    {
+                    //if (_poolTargetGUI.Count > 0)
+                    //{
+                    //    _instantiatedTargetGUI.Add(combatEntity, _poolTargetGUI[0]);
+                    //    _poolTargetGUI.RemoveAt(0);
+                    //}
+                    //else
+                    //{
                         _instantiatedTargetGUI.Add(combatEntity, targetGUI.Init(combatEntity.CombatEntityAnimationHandler.GetGUISpawnPos(), _parent));
-                        //    Vector3 circleTranform = combatEntity.CombatEntityAnimationHandler.GetGUISpawnPos();
-                        //    instantiatedVFXCircle.transform.position = new Vector3(circleTranform.x, circleTranform.y - 1.7f, circleTranform.z);
-                        //}
-                    }
+                    //}
 
                 }
 
@@ -95,10 +89,6 @@ namespace Vanaring
                 {
                     _instantiatedTargetGUI[combatEntity].transform.position = combatEntity.CombatEntityAnimationHandler.GetGUISpawnPos();
                     _instantiatedTargetGUI[combatEntity].SetActive(true);
-                    //Is Active? is yes move, If not nothing;
-                    //Vector3 circleTranform = combatEntity.CombatEntityAnimationHandler.GetGUISpawnPos();
-                    //instantiatedVFXCircle.transform.position = new Vector3(circleTranform.x, 0.03f, circleTranform.z);
-                    //instantiatedVFXCircle.SetActive(true);
                 }
 
                 if (!_instantiatedVFXCircle.ContainsKey(combatEntity))
@@ -116,11 +106,11 @@ namespace Vanaring
         public void EndSelectionScheme()
         {
             HideAllPointer(); 
-            foreach (var key in _instantiatedTargetGUI.Keys)
-            {
-                if (!_poolTargetGUI.Contains(_instantiatedTargetGUI[key]))
-                    _poolTargetGUI.Add(_instantiatedTargetGUI[key]);
-            }
+            //foreach (var key in _instantiatedTargetGUI.Keys)
+            //{
+            //    if (!_poolTargetGUI.Contains(_instantiatedTargetGUI[key]))
+            //        _poolTargetGUI.Add(_instantiatedTargetGUI[key]);
+            //}
 
 
 

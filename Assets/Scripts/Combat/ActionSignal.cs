@@ -23,7 +23,7 @@ namespace Vanaring
         private List<ActorType> _actorTypes ; 
 
         [SerializeField]
-        private List<GameObject> _timelienActors;
+        private List<Transform> _timelienActors;
 
         [SerializeField]
         private enum ActorType
@@ -48,21 +48,21 @@ namespace Vanaring
                 _actorTypes.Add(v); 
             }
 
-            _timelienActors = new List<GameObject>(); 
+            _timelienActors = new List<Transform>(); 
         }
 
         public void AddActors(GameObject actor)
         {
             if (_timelienActors == null)
             {
-                _timelienActors = new List<GameObject>();
+                _timelienActors = new List<Transform>();
             } 
  
 
-            _timelienActors.Add(actor);
+            _timelienActors.Add(actor.transform);
         }
 
-        public GameObject GetObjectWithTrackName(string trackName)
+        public Transform GetObjectWithTrackName(string trackName)
         {
             for (int i = 0; i < _trackToChangeName.Count;i++)
             {
@@ -70,10 +70,10 @@ namespace Vanaring
                 {
                     if (UseMesh(i))
                     {
-                        return _timelienActors[i].GetComponent<CombatEntityAnimationHandler>().GetVisualMesh() ;
+                        return _timelienActors[i].GetComponent<CombatEntityAnimationHandler>().GetVisualMesh().transform ;
                     }else if (UseEntity(i))
                     {
-                        return _timelienActors[i]; 
+                        return _timelienActors[i]  ; 
                     }else
                     {
                         throw new Exception("This animation binding don't use both VisualMesh and Entity mesh"); 
@@ -86,7 +86,7 @@ namespace Vanaring
 
         public GameObject GetObjectWithIndex(int index)
         {
-            return _timelienActors[(int)index];
+            return _timelienActors[(int)index].gameObject;
         }
 
         public bool UseMesh(int index)
