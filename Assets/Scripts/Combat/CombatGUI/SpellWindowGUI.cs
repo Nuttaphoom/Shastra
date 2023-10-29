@@ -29,9 +29,22 @@ namespace Vanaring  {
         {
 
         }
+
+        public override void ClearData()
+        {
+            for (int index = spellSocketGUIList.Count - 1; index >= 0; index--)
+            {
+                Destroy(spellSocketGUIList[index].gameObject);
+                spellSocketGUIList.RemoveAt(index);
+            }
+
+            spellSocketGUIList.Clear();
+        }
         public override void LoadWindowData(CombatEntity entity)
         {
+
             _spellSocket.gameObject.SetActive(true);
+
             int i = 3;
             if (entity is ControlableEntity controlableEntity)
             {
@@ -89,17 +102,25 @@ namespace Vanaring  {
         private void ScrollToNext()
         {
             //select below index
+
+
             int i = 0;
             foreach (SpellSocketGUI spell in spellSocketGUIList)
             {
                 if (spell != null)
                 {
-                    if(displayingSpellIndexList[i] > 0 && i >= spellIndexFocusUpMin && i <= spellIndexFocusUpMax)
+                    if (displayingSpellIndexList[i] < 0 || displayingSpellIndexList[i] > spellTransformList.Length - 1)
                     {
-                        
-                        displayingSpellIndexList[i] = displayingSpellIndexList[i] - 1;
-                        spell.GetComponent<RectTransform>().DOAnchorPos(spellTransformList[displayingSpellIndexList[i]].localPosition, 0.1f);
+                        throw new Exception("Can't assign socket to transform that out of range");
                     }
+                    if (spellTransformList[displayingSpellIndexList[i]] == null)
+                    {
+                        throw new Exception("No Transform can be assigned");
+                    }
+
+                    displayingSpellIndexList[i] = displayingSpellIndexList[i] - 1;
+                    spell.GetComponent<RectTransform>().DOAnchorPos(spellTransformList[displayingSpellIndexList[i]].localPosition, 0.1f);
+                     
                 }
                 else
                 {

@@ -20,6 +20,7 @@ namespace Vanaring  {
             _windowManager = windowManager;            
         }
 
+        public abstract void ClearData(); 
         public abstract void OnWindowActive();
         public abstract void OnWindowDeActive();
         public abstract void LoadWindowData(CombatEntity entity);
