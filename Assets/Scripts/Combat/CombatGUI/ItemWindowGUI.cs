@@ -31,6 +31,17 @@ namespace Vanaring
             
 
         }
+
+        public override void ClearData()
+        {
+            for (int index = itemSocketGUIList.Count - 1; index >= 0; index--)
+            {
+                Destroy(itemSocketGUIList[index].gameObject);
+                itemSocketGUIList.RemoveAt(index);
+            }
+
+            itemSocketGUIList.Clear();
+        }
         public override void LoadWindowData(CombatEntity entity)
         {
             _itemSocketTemplate.gameObject.SetActive(true);

@@ -21,14 +21,17 @@ namespace Vanaring
         private EventBroadcaster _eventBroadcaster;
 
         [SerializeField]
-        private TargetSelectionGUI _targetSelectionGUI;
+        private TargetSelectionGUI _targetSelectionGUI ;
 
+ 
         [Header("Indicator")]
         [SerializeField]
         ButtonIndicatorWindow _buttonIndicatorWindow;
 
         private List<CombatEntity> _validTargets = new List<CombatEntity>();
         private List<CombatEntity> _selectedTarget = new List<CombatEntity>();
+
+        private List<CombatEntity> _selectingTarget = new List<CombatEntity>(); 
 
         public static TargetSelectionFlowControl Instance;
 
@@ -37,6 +40,7 @@ namespace Vanaring
         private int _currentSelectIndex = 0;
 
         private bool _forceStop = false;
+
 
         #region GETTER
 
@@ -89,6 +93,7 @@ namespace Vanaring
         {
             _validTargets = new List<CombatEntity>();
             _selectedTarget = new List<CombatEntity>();
+            _selectingTarget = new List<CombatEntity>(); 
             _currentSelectIndex = 0;
         }
 
@@ -123,19 +128,25 @@ namespace Vanaring
                 if (key == (KeyCode.D))
                 {
                     _currentSelectIndex = (_currentSelectIndex + 1) > (_validTargets.Count - 1) ? _currentSelectIndex : (_currentSelectIndex + 1);
+                    _targetSelectionGUI.HideAllPointer( );
 
                 }
                 else if (key == (KeyCode.A))
                 {
                     _currentSelectIndex = (_currentSelectIndex - 1) < 0 ? 0 : (_currentSelectIndex - 1);
-
+                    _targetSelectionGUI.HideAllPointer(); 
                 }
                 else if (key == (KeyCode.Space))
                 {
                     _buttonIndicatorWindow.SetIndicatorButtonShow(ButtonIndicatorWindow.IndicatorButtonShow.MAIN, false);
                     _buttonIndicatorWindow.ClosePanel();
-                    _selectedTarget.Add(_validTargets[_currentSelectIndex]);
-                    _validTargets.RemoveAt(_currentSelectIndex);
+
+                    foreach (var entity in _selectingTarget)
+                    {
+                        _selectedTarget.Add(entity);
+                        _validTargets.Remove(entity) ;
+                    }
+
                     if (_validTargets.Count != 0)
                         _currentSelectIndex = _currentSelectIndex % _validTargets.Count;
 
@@ -179,7 +190,7 @@ namespace Vanaring
                     goto End;
                 }
 
-                _targetSelectionGUI.SelectTargetPointer(_validTargets[_currentSelectIndex]);
+                //_targetSelectionGUI.SelectTargetPointer(_validTargets[_currentSelectIndex]);
 
                 yield return _validTargets[_currentSelectIndex];
 
@@ -216,46 +227,48 @@ namespace Vanaring
 
             while (_selectedTarget.Count < actorAction.GetTargetSelector().MaxTarget)
             {
-                CombatEntity selected = _validTargets[_currentSelectIndex];
-
-                yield return EnergySimulation(selected, actorAction);
-
-                if (selected.TryGetComponent(out CombatGraphicalHandler cgh))
-                {
-                    cgh.EnableQuickMenuBar(true);
-                }
-
-                if (!randomTarget)
-                {
-                    CameraSetUPManager.Instance.SetLookAtTarget(selected.transform);
-                    _targetSelectionGUI.SelectTargetPointer(selected);
-                }
-
-                if (_forceStop)
-                {
-                    if (cgh != null)
-                    {
-                        cgh.EnableQuickMenuBar(false);
-                    }
+                if (_forceStop)                
                     goto End;
+
+                _selectingTarget.Clear(); 
+
+                _selectingTarget.Add(_validTargets[_currentSelectIndex]);
+                //Debug.Log("validCount " + _validTargets.Count + 1); 
+                //Debug.Log("MaxTarget " + actorAction.GetTargetSelector().MaxTarget);
+
+                if (_validTargets.Count <= actorAction.GetTargetSelector().MaxTarget)
+                {
+                    _selectingTarget.Clear();
+                    for (int i = 0; i < _validTargets.Count; i++)
+                        _selectingTarget.Add(_validTargets[i]);
                 }
+
                 if (randomTarget)
                 {
                     _currentSelectIndex = UnityEngine.Random.Range(0, _validTargets.Count);
                     _selectedTarget.Add(_validTargets[_currentSelectIndex]);
                     _validTargets.RemoveAt(_currentSelectIndex);
-                    if (cgh != null)
-                    {
-                        cgh.EnableQuickMenuBar(false);
-                    }
+                    //if (cgh != null)
+                    //{
+                    //    cgh.EnableQuickMenuBar(false);
+                    //}
                     continue;
                 }
+                if (! randomTarget)
+                {
+                    foreach (CombatEntity selectedEntity in _selectingTarget)
+                    {
+                        yield return EnergySimulation(selectedEntity, actorAction);
+
+                    }
+                    _targetSelectionGUI.SelectTargetPointer(_selectingTarget);
+
+                    CameraSetUPManager.Instance.SetLookAtTarget(_selectingTarget[0].transform) ;
+
+                }
+
                 yield return new WaitForEndOfFrame();
 
-                if (cgh != null)
-                {
-                    cgh.EnableQuickMenuBar(false);
-                }
             }
 
             actorAction.SetActionTarget(_selectedTarget);

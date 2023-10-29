@@ -17,12 +17,23 @@ namespace Vanaring
         [SerializeField]    private SpellWindowGUI _spellWindow;
         [SerializeField]    private ItemWindowGUI _itemWindow;
         [SerializeField]    private WeaponWindowGUI _weaponWindow;
-        [SerializeField]    private MainWindowGUI _mainWindow; 
+        [SerializeField]    private MainWindowGUI _mainWindow;
+
 
         private WindowGUI _lastWindowOpen;
 
-    
-        private void Start()
+        private List<WindowGUI> GetAllValidWindows()
+        {
+            List<WindowGUI> allWindows = new List<WindowGUI>() ;
+            allWindows.Add(_spellWindow);
+            allWindows.Add(_itemWindow);
+            allWindows.Add(_weaponWindow);
+            allWindows.Add(_mainWindow);
+
+            return allWindows; 
+        }
+
+    private void Start()
         {
 
             foreach (var entity in CombatReferee.instance.GetCompetatorsBySide(ECompetatorSide.Ally))
@@ -34,10 +45,9 @@ namespace Vanaring
             TargetSelectionFlowControl.Instance.GetEventBroadcaster().SubEvent<bool>(OnTargetSelectionEnd, "OnTargetSelectionEnd");
             TargetSelectionFlowControl.Instance.GetEventBroadcaster().SubEvent<CombatEntity>(OnTargetSelectionEnter, "OnTargetSelectionEnter");
 
-            _spellWindow.Init(this);
-            _itemWindow.Init(this);
-            _weaponWindow.Init(this);
-            _mainWindow.Init(this);
+            foreach (var window in GetAllValidWindows())
+                window.Init(this);
+            
 
             //_spellWindow.gameObject.SetActive(false);
             //_itemWindow.gameObject.SetActive(false);
@@ -96,10 +106,12 @@ namespace Vanaring
 
         public void SetUpWindows(CombatEntity entity)
         {
-            _spellWindow.LoadWindowData(entity); 
-            _itemWindow.LoadWindowData(entity);
-            _weaponWindow.LoadWindowData(entity);
-            _mainWindow.LoadWindowData(entity);
+
+            foreach (var window in GetAllValidWindows())
+                window.ClearData( );
+
+            foreach (var window in GetAllValidWindows())
+                window.LoadWindowData(entity);
 
             OpenWindow(EWindowGUI.Main);
 

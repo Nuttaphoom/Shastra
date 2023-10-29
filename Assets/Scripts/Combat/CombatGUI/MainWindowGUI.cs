@@ -32,9 +32,14 @@ namespace Vanaring
 
         }
 
+        public override void ClearData()
+        {
+            return; 
+        }
+
         public override void ReceiveKeysFromWindowManager(KeyCode key)
         {
-            //throw new NotImplementedException();
+
         }
     }
 }
