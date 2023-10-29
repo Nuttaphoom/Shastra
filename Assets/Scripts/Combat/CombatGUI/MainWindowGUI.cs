@@ -34,7 +34,7 @@ namespace Vanaring
 
         public override void ReceiveKeysFromWindowManager(KeyCode key)
         {
-            //throw new NotImplementedException();
+
         }
     }
 }
