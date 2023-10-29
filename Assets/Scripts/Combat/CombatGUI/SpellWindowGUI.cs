@@ -73,12 +73,12 @@ namespace Vanaring  {
             }
             else if(key == KeyCode.S)
             {
-                if (currentSelectedIndex < spellSocketGUIList.Count - 1)
+                if (currentSelectedIndex < spellSocketGUIList.Count - 1 && spellSocketGUIList.Count > 1)
                 {
                     ScrollToNext();
                 }
             }
-            else if (key == KeyCode.W)
+            else if (key == KeyCode.W && spellSocketGUIList.Count > 1)
             {
                 if (currentSelectedIndex > 0)
                 {
@@ -96,7 +96,14 @@ namespace Vanaring  {
                 {
                     if(displayingSpellIndexList[i] > 0 && i >= spellIndexFocusUpMin && i <= spellIndexFocusUpMax)
                     {
-                        
+                        if (displayingSpellIndexList[i] < 0 || displayingSpellIndexList[i] > spellTransformList.Length - 1)
+                        {
+                            throw new Exception("Can't assign socket to transform that out of range");
+                        }
+                        if (spellTransformList[displayingSpellIndexList[i]] == null)
+                        {
+                            throw new Exception("No Transform can be assigned");
+                        }
                         displayingSpellIndexList[i] = displayingSpellIndexList[i] - 1;
                         spell.GetComponent<RectTransform>().DOAnchorPos(spellTransformList[displayingSpellIndexList[i]].localPosition, 0.1f);
                     }
@@ -159,12 +166,6 @@ namespace Vanaring  {
                     spellIndexFocusDownMin = 0;
                     spellIndexFocusDownMax = 4;
                     break;
-                //default:
-                //    spellIndexFocusUpMin = currentSelectedIndex - 2;
-                //    spellIndexFocusUpMax = currentSelectedIndex + 2 >= spellSocketGUIList.Count ? spellSocketGUIList.Count - 1 : currentSelectedIndex + 2;
-                //    spellIndexFocusDownMin = currentSelectedIndex - 3; //>= spellSocketGUIList.Count ? spellSocketGUIList.Count - 1 : currentSelectedIndex + 2; ;
-                //    spellIndexFocusDownMax = currentSelectedIndex + 2 >= spellSocketGUIList.Count ? spellSocketGUIList.Count - 1 : currentSelectedIndex + 2;  ;
-                //    break; 
                 case 3:
                     spellIndexFocusUpMin = 1;
                     spellIndexFocusUpMax = 4;
