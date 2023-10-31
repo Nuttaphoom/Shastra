@@ -211,7 +211,6 @@ namespace Vanaring
         /// </summary>
         public void StunBreakStatusEffect(CombatEntity entity)
         {
-            Debug.Log("searching for break effects");
             foreach (var key in _effects.Keys)
             {
                 if (_effects[key].Count == 0)

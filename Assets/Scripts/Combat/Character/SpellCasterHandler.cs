@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Unity.VisualScripting;
+using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.Events;
  
@@ -28,9 +29,13 @@ namespace Vanaring
 
         private RuntimeMangicalEnergy _simulateMagicalEnergy = null;
 
+        [Header("Balanced Style will synchonize")]
+        [SerializeField]
+        private bool _balancedEnergyStyle = false; 
+
         private void Awake()
         {
-            _mangicalEnergy = new RuntimeMangicalEnergy(_mangicalEnergy) ;
+            _mangicalEnergy = new RuntimeMangicalEnergy(_mangicalEnergy,this) ;
             _combatEntity = GetComponent<CombatEntity>();
         }
 
@@ -57,10 +62,25 @@ namespace Vanaring
             return _mangicalEnergy.GetEnergy(side);
         }
 
-        public void ModifyEnergy(CombatEntity caster, RuntimeMangicalEnergy.EnergySide side, int value)
+        public void ModifyEnergy(RuntimeMangicalEnergy.EnergySide side, int value)
         {
-            _mangicalEnergy.ModifyEnergy(value, side);
-            OnModifyEnergy?.Invoke(caster, side, value);
+            Debug.Log("entity : " + _combatEntity);
+            Debug.Log("Before => Light : " + _mangicalEnergy.GetEnergy(RuntimeMangicalEnergy.EnergySide.LightEnergy) + "Dark : " + _mangicalEnergy.GetEnergy(RuntimeMangicalEnergy.EnergySide.DarkEnergy));
+
+            int modValue = _mangicalEnergy.ModifyEnergy(value, side);
+            OnModifyEnergy?.Invoke(_combatEntity, side, modValue);
+
+            if (! _balancedEnergyStyle)
+                return;
+
+            RuntimeMangicalEnergy.EnergySide oppositeSide = (RuntimeMangicalEnergy.EnergySide)((int)(side + 1) % 2); 
+            _mangicalEnergy.ModifyEnergy(-modValue, oppositeSide);
+            OnModifyEnergy?.Invoke(_combatEntity, oppositeSide, -modValue);
+            
+            Debug.Log("modValue  " + modValue);
+            Debug.Log("After Light : " + _mangicalEnergy.GetEnergy(RuntimeMangicalEnergy.EnergySide.LightEnergy) + "Dark : " + _mangicalEnergy.GetEnergy(RuntimeMangicalEnergy.EnergySide.DarkEnergy));
+
+            
         }
 
         public bool IsEnergyOverflow()
@@ -70,12 +90,19 @@ namespace Vanaring
 
         public void ResetEnergy()
         {
-            int modifiedAmout = 0;
-            RuntimeMangicalEnergy.EnergySide modifiedSide = RuntimeMangicalEnergy.EnergySide.LightEnergy; 
+            //RuntimeMangicalEnergy.EnergySide modifiedSide = RuntimeMangicalEnergy.EnergySide.LightEnergy;
 
-            (modifiedAmout, modifiedSide) = _mangicalEnergy.ResetEnergy();
+            int lightModifiedAmout =  _mangicalEnergy.ResetEnergy(RuntimeMangicalEnergy.EnergySide.LightEnergy) ;
+            int darkAmodifiedAmout =  _mangicalEnergy.ResetEnergy(RuntimeMangicalEnergy.EnergySide.LightEnergy) ;
 
-            OnModifyEnergy?.Invoke(null, modifiedSide, modifiedAmout) ;
+            ModifyEnergy(RuntimeMangicalEnergy.EnergySide.LightEnergy, lightModifiedAmout); 
+
+            if (! _balancedEnergyStyle) 
+                ModifyEnergy(RuntimeMangicalEnergy.EnergySide.DarkEnergy, darkAmodifiedAmout); 
+
+            //(modifiedAmout, modifiedSide) = _mangicalEnergy.ResetEnergy();
+
+            //OnModifyEnergy?.Invoke(null, modifiedSide, modifiedAmout) ;
         }
 
         #endregion
@@ -85,7 +112,6 @@ namespace Vanaring
         {
             SpellAbilityRuntime runtimeSpell = spellSO.FactorizeRuntimeAction(_combatEntity) as SpellAbilityRuntime;
             
-
             StartCoroutine(TargetSelectionFlowControl.Instance.InitializeActionTargetSelectionScheme(_combatEntity, runtimeSpell));
         }
 
@@ -98,7 +124,7 @@ namespace Vanaring
 
             if (_simulateMagicalEnergy == null)
             {
-                _simulateMagicalEnergy = new RuntimeMangicalEnergy(_mangicalEnergy);
+                _simulateMagicalEnergy = new RuntimeMangicalEnergy(_mangicalEnergy, this);
             }
             _simulateMagicalEnergy.ModifyEnergy(argv, argc);
         }
@@ -124,9 +150,12 @@ namespace Vanaring
         [SerializeField]
         private int _lightDefaultAmount = 0;
 
-        protected RuntimeStat _darkEnergy ;
-        protected RuntimeStat _lightEnergy  ;
+        //protected RuntimeStat _darkEnergy ;
+        //protected RuntimeStat _lightEnergy;
 
+        private SpellCasterHandler _spellCasterHandler; 
+
+        private Dictionary<EnergySide, RuntimeStat> _energy; 
         public enum EnergySide
         {
             LightEnergy = 0,
@@ -135,83 +164,119 @@ namespace Vanaring
 
         #region Methods 
 
-        public RuntimeMangicalEnergy(RuntimeMangicalEnergy copied)
+        public RuntimeMangicalEnergy(RuntimeMangicalEnergy copied, SpellCasterHandler spellCasterHandler)
         {
+            _spellCasterHandler = spellCasterHandler; 
+
             _darkDefaultAmount =  copied._darkDefaultAmount ;
             _lightDefaultAmount = copied._lightDefaultAmount ;
             int peakVal = _darkDefaultAmount + _lightDefaultAmount; 
-            _darkEnergy = new RuntimeStat(peakVal, _darkDefaultAmount);
-            _lightEnergy = new RuntimeStat(peakVal, _lightDefaultAmount);
+
+            var _darkEnergy = new RuntimeStat(peakVal, _darkDefaultAmount);
+            var _lightEnergy = new RuntimeStat(peakVal, _lightDefaultAmount);
+
+            _energy = new Dictionary<EnergySide, RuntimeStat>();
+            _energy.Add(EnergySide.DarkEnergy, _darkEnergy);
+            _energy.Add(EnergySide.LightEnergy, _lightEnergy);
+
         }
 
         /// <summary>
         ///  Modify Runtime Energy of the user
         /// </summary>
-        public void ModifyEnergy(int value, EnergySide side)
+        public int ModifyEnergy(int value, EnergySide side)
         {
-            if (value < 0)
-                throw new System.Exception("Value is negative, this can result in incorrect modification of energy");
+            //if (value < 0)
+            //    throw new System.Exception("Value is negative, this can result in incorrect modification of energy");
 
-            switch (side)
-            {
-                case EnergySide.LightEnergy:
-                    _lightEnergy.ModifyValue(value, false,true);
-                    _darkEnergy.ModifyValue(-value, false,true);
-                    break;
-                case EnergySide.DarkEnergy:
-                    _lightEnergy.ModifyValue(-value, false,true);
-                    _darkEnergy.ModifyValue(value, false, true);
-                    break;
-                default:
-                    throw new System.Exception("Trying to access invalid side of energy");
-            }
+            int v = value; 
+            
+            if (v + _energy[side].GetStatValue() < 0)  
+                v = -_energy[side].GetStatValue();
+
+            else if (v + _energy[side].GetStatValue() > _darkDefaultAmount + _lightDefaultAmount)
+                v = (int) MathF.Abs(_darkDefaultAmount + _lightDefaultAmount  - _energy[side].GetStatValue() ) ;
+
+            _energy[side].ModifyValue(v,false,true);
+
+            return v;
+            //switch (side)
+            //{
+            //    case EnergySide.LightEnergy:
+            //        _lightEnergy.ModifyValue(value, false,true);
+            //        _darkEnergy.ModifyValue(-value, false,true);
+            //        break;
+            //    case EnergySide.DarkEnergy:
+            //        _lightEnergy.ModifyValue(-value, false,true);
+            //        _darkEnergy.ModifyValue(value, false, true);
+            //        break;
+            //    default:
+            //        throw new System.Exception("Trying to access invalid side of energy");
+            //}
         }
         #endregion
 
         #region GETTER 
         public int GetEnergy(EnergySide side)
         {
-            if (side == EnergySide.LightEnergy)
-                return _lightEnergy.GetStatValue();
-            else if (side == EnergySide.DarkEnergy)
-                return _darkEnergy.GetStatValue();
+            return _energy[side].GetStatValue() ;
 
-            throw new System.Exception("Trying to access invalid side of energy");
+            //if (side == EnergySide.LightEnergy)
+            //    return _lightEnergy.GetStatValue();
+            //else if (side == EnergySide.DarkEnergy)
+            //    return _darkEnergy.GetStatValue();
+
+            //throw new System.Exception("Trying to access invalid side of energy");
         }
         public bool IsOverheat()
         {
-            int peakVal = _darkDefaultAmount + _lightDefaultAmount;
-            return (_darkEnergy.GetStatValue() >= peakVal) || (_lightEnergy.GetStatValue() >= peakVal)  ;
+            bool noLightEnergyRemaining = (GetEnergy(EnergySide.LightEnergy) == 0) && (_lightDefaultAmount > 0);
+            bool noDarkEnergyRemaining = (GetEnergy(EnergySide.DarkEnergy) == 0) && (_darkDefaultAmount > 0);
+
+            return noLightEnergyRemaining || noDarkEnergyRemaining;
+
+            //return (_darkEnergy.GetStatValue() >= peakVal) || (_lightEnergy.GetStatValue() >= peakVal)  ;
         }
 
-        public (int, EnergySide) ResetEnergy()
+        public int ResetEnergy(EnergySide side)
         {
-            EnergySide modifiedSide;
-            int modifiedAmount = 0; 
-            //Overheat dark
-            if (_darkEnergy.GetStatValue() > _lightEnergy.GetStatValue())
-            {
-                modifiedSide = EnergySide.LightEnergy;
-                modifiedAmount = _lightDefaultAmount ;
-            }
-            //Overheat light 
-            else
-            {
-                modifiedSide = EnergySide.DarkEnergy;
-                modifiedAmount = _darkDefaultAmount ;
-            }
+            int defaultAmout = _darkDefaultAmount; 
+            if (side == EnergySide.LightEnergy)
+                defaultAmout = _lightDefaultAmount; 
 
-            int peakVal = _darkDefaultAmount + _lightDefaultAmount;
+            int diff =  _energy[side].GetStatValue() - defaultAmout ;
+            return -1* diff; 
 
-            _darkEnergy = new RuntimeStat(peakVal, _darkDefaultAmount);
-            _lightEnergy = new RuntimeStat(peakVal, _lightDefaultAmount);
+          
 
-            return (modifiedAmount, modifiedSide); 
+            //ModifyEnergy(darkDiff,EnergySide.DarkEnergy) ;
+            //ModifyEnergy(lightDiff, EnergySide.LightEnergy);
+
+            //EnergySide modifiedSide;
+            //int modifiedAmount = 0; 
+            ////Overheat dark
+            //if (_darkEnergy.GetStatValue() > _lightEnergy.GetStatValue())
+            //{
+            //    modifiedSide = EnergySide.LightEnergy;
+            //    modifiedAmount = _lightDefaultAmount ;
+            //}
+            ////Overheat light 
+            //else
+            //{
+            //    modifiedSide = EnergySide.DarkEnergy;
+            //    modifiedAmount = _darkDefaultAmount ;
+            //}
+
+            //int peakVal = _darkDefaultAmount + _lightDefaultAmount;
+
+            //_darkEnergy = new RuntimeStat(peakVal, _darkDefaultAmount);
+            //_lightEnergy = new RuntimeStat(peakVal, _lightDefaultAmount);
+
+            //return (modifiedAmount, modifiedSide); 
         }
 
         #endregion
     }
-
 
     [Serializable]
     public struct EnergyModifierData
