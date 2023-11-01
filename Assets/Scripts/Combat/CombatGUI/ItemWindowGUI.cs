@@ -82,7 +82,6 @@ namespace Vanaring
                 {
                     if (displayingItemIndexList[i] > 0 && i >= itemIndexFocusUpMin && i <= itemIndexFocusUpMax)
                     {
-
                         displayingItemIndexList[i] = displayingItemIndexList[i] - 1;
                         item.GetComponent<RectTransform>().DOAnchorPos(itemTransformList[displayingItemIndexList[i]].localPosition, 0.1f);
                     }

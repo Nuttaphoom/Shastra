@@ -72,7 +72,7 @@ namespace Vanaring  {
                 throw new Exception("No spell found in SpellRegister (due to empty spell) ");
 
             _spellSocket.gameObject.SetActive(false);
-            spellSocketGUIList[0].HightlightedButton();
+            spellSocketGUIList[currentSelectedIndex].HightlightedButton();
         }
         public override void ReceiveKeysFromWindowManager(KeyCode key)
         {
@@ -118,9 +118,11 @@ namespace Vanaring  {
                         throw new Exception("No Transform can be assigned");
                     }
 
-                    displayingSpellIndexList[i] = displayingSpellIndexList[i] - 1;
-                    spell.GetComponent<RectTransform>().DOAnchorPos(spellTransformList[displayingSpellIndexList[i]].localPosition, 0.1f);
-                     
+                    if(i >= spellIndexFocusUpMin && i <= spellIndexFocusUpMax)
+                    {
+                        displayingSpellIndexList[i] = displayingSpellIndexList[i] - 1;
+                        spell.GetComponent<RectTransform>().DOAnchorPos(spellTransformList[displayingSpellIndexList[i]].localPosition, 0.1f);
+                    }
                 }
                 else
                 {
@@ -163,15 +165,15 @@ namespace Vanaring  {
             switch (currentSelectedIndex)
             {
                 case 0:
-                    spellIndexFocusUpMin = 0;
-                    spellIndexFocusUpMax = 3;
-                    spellIndexFocusDownMin = 0;
-                    spellIndexFocusDownMax = 2;
+                    spellIndexFocusUpMin = 0; //force
+                    spellIndexFocusUpMax = 3; //force
+                    spellIndexFocusDownMin = 0; //force
+                    spellIndexFocusDownMax = 2; //force
                     break;
                 case 1:
-                    spellIndexFocusUpMin = 0;
-                    spellIndexFocusUpMax = 4;
-                    spellIndexFocusDownMin = 0;
+                    spellIndexFocusUpMin = 0; //force
+                    spellIndexFocusUpMax = 4; //+1
+                    spellIndexFocusDownMin = 0; 
                     spellIndexFocusDownMax = 3;
                     break;
                 case 2:
