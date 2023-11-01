@@ -52,6 +52,8 @@ namespace Vanaring
         [Header("EnergySlot")]
         [SerializeField] private Image lightSlotImg;
         [SerializeField] private Image darkSlotImg;
+        private List<Image> energySlotList = new List<Image>();
+        [SerializeField] private GameObject horizontalLayout;
         [SerializeField] private TextMeshProUGUI lightTmpText;
         [SerializeField] private TextMeshProUGUI darkTmpText;
 
@@ -72,17 +74,44 @@ namespace Vanaring
             {
                 hpVal = _owner.StatsAccumulator.GetHPAmount();
                 maxHP = _owner.StatsAccumulator.GetHPAmount();
-                Debug.Log(maxHP);   
+                
                 lightScale = _owner.SpellCaster.GetEnergyAmount(RuntimeMangicalEnergy.EnergySide.LightEnergy);
                 darkScale = _owner.SpellCaster.GetEnergyAmount(RuntimeMangicalEnergy.EnergySide.DarkEnergy);
 
                 lightTmpText.text = lightScale.ToString();
                 darkTmpText.text = darkScale.ToString();
 
+                InitEnergySlot();
+
                 enemyName.text = _owner.CharacterSheet.CharacterName.ToString();
             }
-            //UpdateHPBarScaleGUI();
-            //SetEnergyModified(ModifiedEnergy.NONE);
+        }
+
+        private void InitEnergySlot()
+        {
+            for (int i = energySlotList.Count - 1 ; i >= 0 ; i--)
+            {
+                Destroy(energySlotList[i]);
+                energySlotList.RemoveAt(i);
+            }
+            if (lightScale > 0)
+            {
+                for (int i = 0; i < lightScale; i++)
+                {
+                    Image slot = Instantiate(lightSlotImg, horizontalLayout.transform);
+                    slot.gameObject.SetActive(true);
+                    energySlotList.Add(slot);
+                }
+            }
+            if (darkScale > 0)
+            {
+                for (int i = 0; i < darkScale; i++)
+                {
+                    Image slot = Instantiate(darkSlotImg, horizontalLayout.transform);
+                    slot.gameObject.SetActive(true);
+                    energySlotList.Add(slot);
+                }
+            }
         }
 
         public CombatEntity GetOwner()
@@ -130,8 +159,6 @@ namespace Vanaring
                     modifiedEnergyImg.sprite = modDark;
                     break;
             }
-
-            
         }
 
         #region Energy
@@ -147,12 +174,14 @@ namespace Vanaring
             {
                 lightScale += val;
                 lightTmpText.text = lightScale.ToString();
+                InitEnergySlot();
                 //lightScaleIncrease(val);
             }
             else
             {
                 darkScale += val;
                 darkTmpText.text = darkScale.ToString();
+                InitEnergySlot();
                 //lightScaleDecrease(val);
             }
         }

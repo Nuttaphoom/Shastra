@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -30,7 +31,6 @@ namespace Vanaring
             }
             else    //Create new instead
             {
-                Debug.Log("2");
                 foreach (CombatEntity entity in entities)
                 {
                     EnemyHUD newEnemyHUD = Instantiate(enemyHudTemplate, transform);
@@ -38,8 +38,6 @@ namespace Vanaring
                     SetUITransform(newEnemyHUD, entity);
                     enemyHUDList.Add(newEnemyHUD);
                     //newEnemyHUD.gameObject.SetActive(false);
-
-
                 }
             }
         }
@@ -82,7 +80,11 @@ namespace Vanaring
             int i = 0;
             foreach (CombatEntity entity in CombatReferee.instance.GetCompetatorsBySide(ECompetatorSide.Hostile))
             {
-                if(enemyHUDList[i] != null)
+                if(enemyHUDList[i] == null)
+                {
+                    throw new Exception("EnenmyHUD is not load for this entity:" + entity);
+                }
+                else
                 {
                     SetUITransform(enemyHUDList[i], entity);
                 }
@@ -99,9 +101,10 @@ namespace Vanaring
         }
         public void ClearEnemyHUD()
         {
-            foreach (EnemyHUD enemyHUD in enemyHUDList)
+            for (int i = enemyHUDList.Count - 1; i >= 0; i++)
             {
-                Destroy(enemyHUD);
+                Destroy(enemyHUDList[i]);
+                enemyHUDList.RemoveAt(i);
             }
         }
 
@@ -112,6 +115,10 @@ namespace Vanaring
 
         private IEnumerator InitTest()
         {
+            if(enemyHUDList.Count > 0)
+            {
+                ClearEnemyHUD();
+            }
             yield return new WaitForSeconds(1.0f);
             DisplayEnemyHUD(CombatReferee.instance.GetCompetatorsBySide(ECompetatorSide.Hostile));
         }
