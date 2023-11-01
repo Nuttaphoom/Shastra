@@ -38,7 +38,6 @@ namespace Vanaring
         public void SubOnModifyEnergy(UnityAction<CombatEntity, RuntimeMangicalEnergy.EnergySide, int> argc)
         {
             OnModifyEnergy += argc;
-
         }
 
         public void UnSubOnModifyEnergy(UnityAction<CombatEntity, RuntimeMangicalEnergy.EnergySide, int> argc)
