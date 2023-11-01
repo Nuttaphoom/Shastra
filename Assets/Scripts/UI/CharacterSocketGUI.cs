@@ -171,6 +171,7 @@ namespace Vanaring
 
         private void OnEnergyModified(CombatEntity caster, RuntimeMangicalEnergy.EnergySide side, int val)
         {
+
             if (side == RuntimeMangicalEnergy.EnergySide.LightEnergy)
             {
                 //Increase Light
