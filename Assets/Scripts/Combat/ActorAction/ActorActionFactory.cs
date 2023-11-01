@@ -5,6 +5,7 @@ using System.Linq;
 using System.Security.Authentication.ExtendedProtection;
 using System.Text;
 using System.Threading.Tasks;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Tilemaps;
@@ -76,14 +77,21 @@ namespace Vanaring
                 if ((factory = _actionSignal.GetReadyEffect()) != null)
                 {
                     RuntimeEffect effect = factory.Factorize(_targets);
+                    _caster.StartCoroutine(CasterStartExecuteEffectCoroutine(effect)); 
 
-                    yield return effect.ExecuteRuntimeCoroutine(_caster) ;
-                    yield return effect.OnExecuteRuntimeDone(_caster) ;
+                    //yield return effect.ExecuteRuntimeCoroutine(_caster) ;
+                    //yield return effect.OnExecuteRuntimeDone(_caster) ;
                 }
 
                 yield return new WaitForEndOfFrame();
             }
 
+        }
+
+        private IEnumerator CasterStartExecuteEffectCoroutine(RuntimeEffect effect)
+        {
+            yield return effect.ExecuteRuntimeCoroutine(_caster);
+            yield return effect.OnExecuteRuntimeDone(_caster);
         }
 
         private void SetUpTimeLineActorSetting()
