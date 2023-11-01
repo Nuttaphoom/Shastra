@@ -8673,7 +8673,7 @@ GameObject:
   m_Component:
   - component: {fileID: 546446555}
   m_Layer: 0
-  m_Name: SpawnPosition (3)
+  m_Name: SpawnPosition 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -12923,9 +12923,9 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 546446555}
   - {fileID: 1578437412}
   - {fileID: 1956526638}
-  - {fileID: 546446555}
   m_Father: {fileID: 1989031522}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -12943,7 +12943,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _pools:
   - {fileID: 11400000, guid: 4367ff60691f4cf4496bd6c95d0611b4, type: 2}
-  _spawnPosition:
+  _spawnPositionSet:
   - {fileID: 546446555}
   - {fileID: 1578437412}
   - {fileID: 1956526638}
@@ -14344,7 +14344,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 60.000004
+  field of view: 60
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -14369,8 +14369,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1212108954}
-  m_LocalRotation: {x: 0.13518377, y: -0.15721323, z: 0.02173015, w: 0.97802716}
-  m_LocalPosition: {x: 0.9005183, y: 1.3859361, z: -3.6055722}
+  m_LocalRotation: {x: 0.08840024, y: -0.17193787, z: 0.015493554, w: 0.9810111}
+  m_LocalPosition: {x: 0.91868174, y: 1.489, z: -3.462236}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -16802,7 +16802,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1578437412}
   m_Layer: 0
-  m_Name: SpawnPosition (1)
+  m_Name: SpawnPosition 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -24509,7 +24509,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1956526638}
   m_Layer: 0
-  m_Name: SpawnPosition (2)
+  m_Name: SpawnPosition 3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -40942,6 +40942,7 @@ MonoBehaviour:
   _mangicalEnergy:
     _darkDefaultAmount: 50
     _lightDefaultAmount: 20
+  _balancedEnergyStyle: 1
 --- !u!1 &9192147004761116953
 GameObject:
   m_ObjectHideFlags: 0

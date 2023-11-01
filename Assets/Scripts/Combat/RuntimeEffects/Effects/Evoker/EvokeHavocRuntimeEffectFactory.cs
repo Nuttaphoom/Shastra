@@ -61,7 +61,7 @@ namespace Vanaring
                 foreach (var v in havoc)
                     v.ForceExpire();
                 havocCount = havoc.Count; 
-                entity.SpellCaster.ModifyEnergy(caster, _energyModifierData.Side, _energyModifierData.Amount * havoc.Count);
+                entity.SpellCaster.ModifyEnergy(_energyModifierData.Side, _energyModifierData.Amount * havoc.Count);
 
             }
 

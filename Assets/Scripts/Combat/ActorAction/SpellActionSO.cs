@@ -42,7 +42,7 @@ namespace Vanaring
 
         public override IEnumerator PostActionPerform()
         {
-            _caster.SpellCaster.ModifyEnergy(_caster, _energyModifier.Side, _energyModifier.Amount);
+            _caster.SpellCaster.ModifyEnergy(_energyModifier.Side, _energyModifier.Amount);
             yield return null;
         }
 

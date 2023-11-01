@@ -23,10 +23,7 @@ namespace Vanaring
 
         public override RuntimeEffect Factorize(List<CombatEntity> targets)
         {
-            
             return SetUpRuntimeEffect(new CallOutEntityRuntimeEffect(_prefab, _side), targets);
-
-            
         }
 
         public override void SimulateEnergyModifier(CombatEntity combatEntity)
@@ -50,10 +47,9 @@ namespace Vanaring
             if (_prefabTemplate == null)
                 throw new NullReferenceException();
 
-            CombatReferee.instance.InstantiateCompetator(_prefabTemplate,_side);
+            var entity = CombatReferee.instance.InstantiateCompetator(_prefabTemplate,_side);
 
-            yield return null;
-
+            yield return null ;
         }
 
 

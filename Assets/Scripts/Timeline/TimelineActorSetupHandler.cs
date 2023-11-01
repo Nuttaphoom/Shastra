@@ -19,18 +19,21 @@ namespace Vanaring
 
         [Header("Direct Vector Interpolation. The system will place these transform starting from CasterTransform (index 0) up to TargetTransform (last index)")]
         [SerializeField]
-        private List<Transform> _directVectorTransform = new List<Transform>() ; 
+        private List<Transform> _directVectorTransform = new List<Transform>() ;
+
+        private PlayableDirector _director; 
 
         public void SetUpActor(PlayableDirector director, ActionTimelineSettingStruct actionTimelineSetting , SignalReceiver unitySignalReciver)
-        { 
+        {
+            _director = director; 
+
             foreach (var track in (director.playableAsset as TimelineAsset).GetOutputTracks())
             {
                 for (int i = 0; i < actionTimelineSetting.TrackNames.Count; i++)
                 {
                     if (track.name == actionTimelineSetting.TrackNames[i])
                     {
-                        GameObject bindedObject = actionTimelineSetting.GetObjectWithTrackName(track.name);    
-                        director.SetGenericBinding(track, bindedObject);
+                        director.SetGenericBinding(track, actionTimelineSetting.GetObjectWithTrackName(track.name));
                     }else if (track.name == "SignalTrack")
                     {
                         director.SetGenericBinding(track, unitySignalReciver) ;
@@ -59,8 +62,10 @@ namespace Vanaring
             }
 
             SetUpDirectVector(); 
-            
+
         }
+
+       
         private void SetUpDirectVector()
         {
             if (_directVectorTransform.Count > 0)

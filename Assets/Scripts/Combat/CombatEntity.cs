@@ -267,6 +267,8 @@ namespace Vanaring
         public IEnumerator DeadVisualClear()
         {
             yield return _combatEntityAnimationHandler.DestroyVisualMesh();
+        
+            
         }
 
         /// <summary>

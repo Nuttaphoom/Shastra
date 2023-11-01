@@ -23,7 +23,12 @@ namespace Vanaring
             if (!firstTime)
             {
                 firstTime = true;
-                _entity = (playerData as GameObject).GetComponent<CombatEntity>() ;
+                
+                if (playerData is Transform)
+                    _entity = (playerData as Transform).gameObject.GetComponent<CombatEntity>() ;
+
+                else if (playerData is GameObject)
+                    _entity = (playerData as GameObject).gameObject.GetComponent<CombatEntity>();
 
                 if (_entity == null)
                 {

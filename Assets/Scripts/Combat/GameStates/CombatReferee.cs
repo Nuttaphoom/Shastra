@@ -169,17 +169,19 @@ namespace Vanaring
             return false;
         }
 
-        public void InstantiateCompetator(CombatEntity prefabNewCompetator, ECompetatorSide side)
+        public CombatEntity InstantiateCompetator(CombatEntity prefabNewCompetator, ECompetatorSide side)
         {
             List<CombatEntity> entitesWithSameSide = new List<CombatEntity>();
             entitesWithSameSide = GetCompetatorsBySide(side);
 
             if (entitesWithSameSide.Count > _maxTeamSize)
-                return; 
+                return null ; 
             
-            CombatEntity entity = _entityLoader.SpawnPrefab(prefabNewCompetator,entitesWithSameSide.Count) ;
+            CombatEntity entity = _entityLoader.SpawnPrefab(prefabNewCompetator) ;
 
             AssignCompetators(new List<CombatEntity>() { entity } , side);
+
+            return entity ; 
         }
 
         #endregion
@@ -191,8 +193,9 @@ namespace Vanaring
             {
                 if (_competators[i].Competator.IsDead)
                 {
-                     
+
                     //No need to remove from the main list if it was player's
+                    _entityLoader.ReleasePosition(_competators[i].Competator);
                     _competators.RemoveAt(i);
                 }
             }
