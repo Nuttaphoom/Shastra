@@ -38,6 +38,17 @@ namespace Vanaring
         private int _peakValue;
         private int _increasedValue;
 
+        public RuntimeStat(RuntimeStat copied)
+        {
+            _defaultValue = copied._defaultValue;
+            _peakValue = copied._peakValue;
+            _increasedValue = copied._increasedValue;
+
+            //Debug.Log("increaesed : " + _defaultValue);
+            //Debug.Log(" copied._defaultValue : " + copied._defaultValue);
+            //Debug.Log(" copied.getvalue : " + copied.GetStatValue() ) ;
+        }
+
         public RuntimeStat(int peakValue, int defaultValue)
         {
             _defaultValue = defaultValue;

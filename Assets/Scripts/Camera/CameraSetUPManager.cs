@@ -31,7 +31,7 @@ namespace Vanaring
         //TempList
         private List<GameObject> playerModels = new List<GameObject>();
         private List<GameObject> enemyModels = new List<GameObject>();
-        private List<GameObject> TargetGUIList = new List<GameObject>();
+        //private List<GameObject> TargetGUIList = new List<GameObject>();
         private List<CinemachineVirtualCamera> CamList = new List<CinemachineVirtualCamera>();
 
         private Transform _oldAimPoint ; 
@@ -112,14 +112,7 @@ namespace Vanaring
             {
                 //Vector3 spawnPosition = startPositionEnemy + new Vector3(i * spacing, 0.5f, 10f);
                 //Vector3 targetPosition = enemyModelSetupList[i].transform.position + new Vector3(i * spacing, 2.5f, 10.5);
-                Vector3 targetPosition = _enemyModelSetupList[i].transform.position + new Vector3(0, 0, -1.2f);
-                //GameObject newPoint = Instantiate(enemyModelSetupList[i], spawnPosition, Quaternion.identity, transform);
-                GameObject newTarget = _tgui.Init(targetPosition, _enemyModelSetupList[i].transform);
-                //newPoint.transform.rotation = Quaternion.Euler(rotation);
-                //newPoint.name = "Enemy" + i;
-                //enemyPoints.Add(spawnPosition);
-                //enemyModels.Add(newPoint);
-                TargetGUIList.Add(newTarget);
+     
             }
         }
         private void GeneratePlayerAttacher(List<GameObject> _characterModelSetupList)

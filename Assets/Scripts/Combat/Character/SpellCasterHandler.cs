@@ -21,7 +21,7 @@ namespace Vanaring
     public class SpellCasterHandler : MonoBehaviour, ISimulationApplier<RuntimeMangicalEnergy.EnergySide, int, Null>
     {
         [SerializeField]
-        private RuntimeMangicalEnergy _mangicalEnergy;
+        private RuntimeMangicalEnergy _magicalEnergy;
 
         private UnityAction<CombatEntity, RuntimeMangicalEnergy.EnergySide, int> OnModifyEnergy;
 
@@ -35,8 +35,8 @@ namespace Vanaring
 
         private void Awake()
         {
-            _mangicalEnergy = new RuntimeMangicalEnergy(_mangicalEnergy,this) ;
             _combatEntity = GetComponent<CombatEntity>();
+            _magicalEnergy.Init(this); 
         }
 
         #region Event Sub
@@ -58,20 +58,20 @@ namespace Vanaring
         }
         public int GetEnergyAmount(RuntimeMangicalEnergy.EnergySide side)
         {
-            return _mangicalEnergy.GetEnergy(side);
+            return _magicalEnergy.GetEnergy(side);
         }
 
         public void ModifyEnergy(RuntimeMangicalEnergy.EnergySide side, int value)
         {
             
-            int modValue = _mangicalEnergy.ModifyEnergy(value, side);
+            int modValue = _magicalEnergy.ModifyEnergy(value, side);
             OnModifyEnergy?.Invoke(_combatEntity, side, modValue);
 
             if (! _balancedEnergyStyle)
                 return;
 
-            RuntimeMangicalEnergy.EnergySide oppositeSide = (RuntimeMangicalEnergy.EnergySide)((int)(side + 1) % 2); 
-            _mangicalEnergy.ModifyEnergy(-modValue, oppositeSide);
+            RuntimeMangicalEnergy.EnergySide oppositeSide = (RuntimeMangicalEnergy.EnergySide)((int)(side + 1) % 2);
+            _magicalEnergy.ModifyEnergy(-modValue, oppositeSide);
             OnModifyEnergy?.Invoke(_combatEntity, oppositeSide, -modValue);
  
 
@@ -79,15 +79,15 @@ namespace Vanaring
 
         public bool IsEnergyOverflow()
         {
-            return _mangicalEnergy.IsOverheat();
+            return _magicalEnergy.IsOverheat();
         }
 
         public void ResetEnergy()
         {
             //RuntimeMangicalEnergy.EnergySide modifiedSide = RuntimeMangicalEnergy.EnergySide.LightEnergy;
 
-            int lightModifiedAmout =  _mangicalEnergy.ResetEnergy(RuntimeMangicalEnergy.EnergySide.LightEnergy) ;
-            int darkAmodifiedAmout =  _mangicalEnergy.ResetEnergy(RuntimeMangicalEnergy.EnergySide.LightEnergy) ;
+            int lightModifiedAmout = _magicalEnergy.ResetEnergy(RuntimeMangicalEnergy.EnergySide.LightEnergy) ;
+            int darkAmodifiedAmout = _magicalEnergy.ResetEnergy(RuntimeMangicalEnergy.EnergySide.LightEnergy) ;
 
             ModifyEnergy(RuntimeMangicalEnergy.EnergySide.LightEnergy, lightModifiedAmout); 
 
@@ -118,8 +118,10 @@ namespace Vanaring
 
             if (_simulateMagicalEnergy == null)
             {
-                _simulateMagicalEnergy = new RuntimeMangicalEnergy(_mangicalEnergy, this);
+                _simulateMagicalEnergy = new RuntimeMangicalEnergy(_magicalEnergy);
             }
+
+
             _simulateMagicalEnergy.ModifyEnergy(argv, argc);
         }
 
@@ -129,7 +131,9 @@ namespace Vanaring
                 return false; 
 
             bool ret = _simulateMagicalEnergy.IsOverheat() ; 
-            _simulateMagicalEnergy = null ;
+            
+            _simulateMagicalEnergy = null ; 
+
             return ret ;  
         }
         #endregion
@@ -149,7 +153,7 @@ namespace Vanaring
 
         private SpellCasterHandler _spellCasterHandler; 
 
-        private Dictionary<EnergySide, RuntimeStat> _energy; 
+        private Dictionary<EnergySide, RuntimeStat> _energy = new Dictionary<EnergySide, RuntimeStat>() ; 
         public enum EnergySide
         {
             LightEnergy = 0,
@@ -157,21 +161,34 @@ namespace Vanaring
         }
 
         #region Methods 
-        public RuntimeMangicalEnergy(RuntimeMangicalEnergy copied, SpellCasterHandler spellCasterHandler)
+
+        public void Init(SpellCasterHandler spellCasterHandler) {
+            _spellCasterHandler = spellCasterHandler;
+
+            int peak = _darkDefaultAmount + _lightDefaultAmount; 
+
+            var darkEnergy = new RuntimeStat(peak, _darkDefaultAmount) ;
+            var lightEnergy = new RuntimeStat(peak, _lightDefaultAmount) ;
+
+            _energy = new Dictionary<EnergySide, RuntimeStat>();
+
+            _energy.Add(EnergySide.DarkEnergy, darkEnergy);
+            _energy.Add(EnergySide.LightEnergy, lightEnergy);
+        }
+        public RuntimeMangicalEnergy( RuntimeMangicalEnergy copied )
         {
-            _spellCasterHandler = spellCasterHandler; 
+            _spellCasterHandler = copied._spellCasterHandler ;
 
-            _darkDefaultAmount =  copied._darkDefaultAmount ;
-            _lightDefaultAmount = copied._lightDefaultAmount ;
+            _darkDefaultAmount = copied._darkDefaultAmount;
+            _lightDefaultAmount = copied._lightDefaultAmount; 
 
-            int peakVal = _darkDefaultAmount + _lightDefaultAmount; 
+            var darkEnergy = new RuntimeStat(copied.GetEnergyRuntimeStat(EnergySide.DarkEnergy)) ;
+            var lightEnergy = new RuntimeStat(copied.GetEnergyRuntimeStat(EnergySide.LightEnergy)) ;
 
-            var _darkEnergy = new RuntimeStat(peakVal, _darkDefaultAmount);
-            var _lightEnergy = new RuntimeStat(peakVal, _lightDefaultAmount);
+            _energy = new Dictionary<EnergySide, RuntimeStat>();
 
-            _energy = new Dictionary<EnergySide, RuntimeStat>() ;
-            _energy.Add(EnergySide.DarkEnergy, _darkEnergy)     ;
-            _energy.Add(EnergySide.LightEnergy, _lightEnergy)   ;
+            _energy.Add(EnergySide.DarkEnergy, darkEnergy);
+            _energy.Add(EnergySide.LightEnergy, lightEnergy);
 
         }
 
@@ -222,11 +239,22 @@ namespace Vanaring
 
             //throw new System.Exception("Trying to access invalid side of energy");
         }
+
+        public RuntimeStat GetEnergyRuntimeStat(EnergySide side)
+        {
+            return _energy[side]; 
+        }
         public bool IsOverheat()
         {
             bool noLightEnergyRemaining = (GetEnergy(EnergySide.LightEnergy) == 0) && (_lightDefaultAmount > 0);
             bool noDarkEnergyRemaining = (GetEnergy(EnergySide.DarkEnergy) == 0) && (_darkDefaultAmount > 0);
 
+            Debug.Log("IsOverheat --------");
+
+            Debug.Log("Dark : " + GetEnergy(EnergySide.DarkEnergy) + "darkDefault " + _darkDefaultAmount) ;
+            Debug.Log("Light: " + GetEnergy(EnergySide.LightEnergy) + "lightDefault " + _lightDefaultAmount);
+
+            Debug.Log("--------------------"); 
             return noLightEnergyRemaining || noDarkEnergyRemaining;
 
             //return (_darkEnergy.GetStatValue() >= peakVal) || (_lightEnergy.GetStatValue() >= peakVal)  ;

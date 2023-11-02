@@ -11,13 +11,6 @@ namespace Vanaring
 {
     public class TargetSelectionFlowControl : MonoBehaviour, IInputReceiver
     {
-        //[Header("Broadcast to ")]
-        //[SerializeField]
-        //private CombatEntityEventChannel OnTargetSelectionSchemeStart;
-
-        //[SerializeField]
-        //private CombatEntityEventChannel OnTargetSelectionSchemeEnd; 
-
         private EventBroadcaster _eventBroadcaster;
 
         [SerializeField]
@@ -36,9 +29,7 @@ namespace Vanaring
 
         private bool _forceStop = false;
 
-
         #region GETTER
-
         public EventBroadcaster GetEventBroadcaster()
         {
             if (_eventBroadcaster == null)
@@ -55,7 +46,7 @@ namespace Vanaring
             _targetSelectionGUI.Initialize(transform);
             _eventBroadcaster = new EventBroadcaster();
 
-            _eventBroadcaster.OpenChannel<bool>("OnTargetSelectionEnd") ;
+            _eventBroadcaster.OpenChannel<bool>("OnTargetSelectionEnd")  ;
             _eventBroadcaster.OpenChannel<CombatEntity>("OnTargetSelectionEnter") ;
 
         }
@@ -106,13 +97,14 @@ namespace Vanaring
                 Debug.Log("this is spell action");
             }
 
-            //if (target.SpellCaster.CheckSimulation())
-            //{
-            //    Debug.Log("this action stun this target"); 
-            //}else
-            //{
-            //    Debug.Log("this action do not stun this target"); 
-            //}
+            if (target.SpellCaster.CheckSimulation())
+            {
+                _targetSelectionGUI.SelectBreakTarget(target); 
+            }
+            else
+            {
+            //    Debug.Log("Check not pass");
+            }
         }
 
         #region Public Method
@@ -203,8 +195,6 @@ namespace Vanaring
             _eventBroadcaster.InvokeEvent<CombatEntity>(caster, "OnTargetSelectionEnter");
 
             CentralInputReceiver.Instance().AddInputReceiverIntoStack(this);
-
-            //OnTargetSelectionSchemeStart.PlayEvent(caster);
 
             ValidateData();
 

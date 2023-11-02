@@ -16,7 +16,9 @@ namespace Vanaring
         [SerializeField]
         private Dictionary<CombatEntity, GameObject> _instantiatedTargetGUI = new Dictionary<CombatEntity, GameObject>();
 
-        private Dictionary<CombatEntity, GameObject> _instantiatedVFXCircle = new Dictionary<CombatEntity, GameObject>(); 
+        private Dictionary<CombatEntity, GameObject> _instantiatedVFXCircle = new Dictionary<CombatEntity, GameObject>();
+
+        private Dictionary<CombatEntity, GameObject> _instantiatedBreakGUI = new Dictionary<CombatEntity, GameObject>();
 
         [SerializeField]
         private GameObject _vfxPrefabTemplate;
@@ -37,18 +39,20 @@ namespace Vanaring
         {
             _instantiatedTargetGUI[combatEntity].SetActive(false);
             _instantiatedVFXCircle[combatEntity].SetActive(false);
+            _instantiatedBreakGUI[combatEntity].SetActive(false);
         }
 
         public void HideAllPointer()
         {
              foreach (var key in _instantiatedTargetGUI.Keys)
-            {
                 _instantiatedTargetGUI[key].SetActive(false);
-            }
+
             foreach (var key in _instantiatedTargetGUI.Keys)
-            {
                 _instantiatedVFXCircle[key].SetActive(false);
-            }
+            
+            foreach (var key in _instantiatedBreakGUI.Keys)
+                _instantiatedBreakGUI[key].SetActive(false);
+
         }
 
         public void SelectTargetPointer(List<CombatEntity> entities)
@@ -73,16 +77,7 @@ namespace Vanaring
             {
                 if (!_instantiatedTargetGUI.ContainsKey(combatEntity))
                 {
-                    //if (_poolTargetGUI.Count > 0)
-                    //{
-                    //    _instantiatedTargetGUI.Add(combatEntity, _poolTargetGUI[0]);
-                    //    _poolTargetGUI.RemoveAt(0);
-                    //}
-                    //else
-                    //{
-                        _instantiatedTargetGUI.Add(combatEntity, targetGUI.Init(combatEntity.CombatEntityAnimationHandler.GetGUISpawnPos(), _parent));
-                    //}
-
+                     _instantiatedTargetGUI.Add(combatEntity, targetGUI.InstantiateTargetGUI(combatEntity.CombatEntityAnimationHandler.GetGUISpawnPos(), _parent));
                 }
 
                 if (!_instantiatedTargetGUI[combatEntity].activeSelf)
@@ -100,6 +95,23 @@ namespace Vanaring
 
                 if (!_instantiatedVFXCircle[combatEntity].activeSelf)
                     _instantiatedVFXCircle[combatEntity].SetActive(true);
+            }
+        }
+
+        public void SelectBreakTarget(CombatEntity combatEntity)
+        {
+            if (!_instantiatedBreakGUI.ContainsKey(combatEntity))
+            {
+                _instantiatedBreakGUI.Add(combatEntity, targetGUI.InstantiateBreakGUI(combatEntity.CombatEntityAnimationHandler.GetGUISpawnPos(), _parent));
+
+                Vector3 location = combatEntity.CombatEntityAnimationHandler.GetGUISpawnPos();
+                _instantiatedBreakGUI[combatEntity].transform.position =  location ;// new Vector3(circleTranform.x, 0.03f, circleTranform.z);
+            
+            }
+
+            if (!_instantiatedBreakGUI[combatEntity].activeSelf)
+            {
+                _instantiatedBreakGUI[combatEntity].SetActive(true);
             }
         }
 
