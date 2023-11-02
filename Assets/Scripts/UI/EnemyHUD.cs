@@ -160,7 +160,7 @@ namespace Vanaring
 
         private void OnEnergyModified(CombatEntity caster, RuntimeMangicalEnergy.EnergySide side, int val)
         {
-            Debug.Log(_owner.CharacterSheet.CharacterName + " mod energy " + side + " " + ": " + val);
+            //Debug.Log(_owner.CharacterSheet.CharacterName + " mod energy " + side + " " + ": " + val);
             if(val == 0)
             {
                 return;
@@ -219,7 +219,6 @@ namespace Vanaring
                 }
                 yield return new WaitForSeconds(0.01f);
             }
-            Debug.Log("Slot break to: " + curScale);
             yield return null;
         }
 
@@ -237,7 +236,6 @@ namespace Vanaring
                 energySlotList[i].color = defaultSlotColor;
                 i++;
             }
-            Debug.Log("Slot recovery to: " + i);
             yield return null;
         }
 

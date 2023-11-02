@@ -65,15 +65,17 @@ namespace Vanaring
         {
             
             int modValue = _magicalEnergy.ModifyEnergy(value, side);
+
+            if (_balancedEnergyStyle)
+            {
+                RuntimeMangicalEnergy.EnergySide oppositeSide = (RuntimeMangicalEnergy.EnergySide)((int)(side + 1) % 2);
+                _magicalEnergy.ModifyEnergy(-modValue, oppositeSide);
+                OnModifyEnergy?.Invoke(_combatEntity, oppositeSide, -modValue);
+            }
+
+
             OnModifyEnergy?.Invoke(_combatEntity, side, modValue);
 
-            if (! _balancedEnergyStyle)
-                return;
-
-            RuntimeMangicalEnergy.EnergySide oppositeSide = (RuntimeMangicalEnergy.EnergySide)((int)(side + 1) % 2);
-            _magicalEnergy.ModifyEnergy(-modValue, oppositeSide);
-            OnModifyEnergy?.Invoke(_combatEntity, oppositeSide, -modValue);
- 
 
         }
 
@@ -84,16 +86,33 @@ namespace Vanaring
 
         public void ResetEnergy()
         {
+            Debug.Log("Reset energy in " +  gameObject);
+
             //RuntimeMangicalEnergy.EnergySide modifiedSide = RuntimeMangicalEnergy.EnergySide.LightEnergy;
-
             int lightModifiedAmout = _magicalEnergy.ResetEnergy(RuntimeMangicalEnergy.EnergySide.LightEnergy) ;
-            int darkAmodifiedAmout = _magicalEnergy.ResetEnergy(RuntimeMangicalEnergy.EnergySide.LightEnergy) ;
+            int darkAmodifiedAmout = _magicalEnergy.ResetEnergy(RuntimeMangicalEnergy.EnergySide.DarkEnergy) ;
 
-            ModifyEnergy(RuntimeMangicalEnergy.EnergySide.LightEnergy, lightModifiedAmout); 
+            Debug.Log("LightMod Amout " + lightModifiedAmout + " Dark amout " + darkAmodifiedAmout);
 
-            if (! _balancedEnergyStyle) 
-                ModifyEnergy(RuntimeMangicalEnergy.EnergySide.DarkEnergy, darkAmodifiedAmout); 
 
+
+            if (_balancedEnergyStyle)
+            {
+                if (lightModifiedAmout != 0)
+                    ModifyEnergy(RuntimeMangicalEnergy.EnergySide.LightEnergy, lightModifiedAmout);
+                else if (darkAmodifiedAmout != 0)
+                    ModifyEnergy(RuntimeMangicalEnergy.EnergySide.DarkEnergy, darkAmodifiedAmout);
+
+                return; 
+            }
+
+            if (! _balancedEnergyStyle)
+            {
+                if (lightModifiedAmout != 0)
+                    ModifyEnergy(RuntimeMangicalEnergy.EnergySide.LightEnergy, lightModifiedAmout);
+                if (darkAmodifiedAmout != 0)
+                    ModifyEnergy(RuntimeMangicalEnergy.EnergySide.DarkEnergy, darkAmodifiedAmout);
+            }
             //(modifiedAmout, modifiedSide) = _mangicalEnergy.ResetEnergy();
 
             //OnModifyEnergy?.Invoke(null, modifiedSide, modifiedAmout) ;
@@ -249,12 +268,7 @@ namespace Vanaring
             bool noLightEnergyRemaining = (GetEnergy(EnergySide.LightEnergy) == 0) && (_lightDefaultAmount > 0);
             bool noDarkEnergyRemaining = (GetEnergy(EnergySide.DarkEnergy) == 0) && (_darkDefaultAmount > 0);
 
-            Debug.Log("IsOverheat --------");
-
-            Debug.Log("Dark : " + GetEnergy(EnergySide.DarkEnergy) + "darkDefault " + _darkDefaultAmount) ;
-            Debug.Log("Light: " + GetEnergy(EnergySide.LightEnergy) + "lightDefault " + _lightDefaultAmount);
-
-            Debug.Log("--------------------"); 
+ 
             return noLightEnergyRemaining || noDarkEnergyRemaining;
 
             //return (_darkEnergy.GetStatValue() >= peakVal) || (_lightEnergy.GetStatValue() >= peakVal)  ;

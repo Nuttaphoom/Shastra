@@ -98,7 +98,6 @@ namespace Vanaring
         {
             foreach (var key in _effects.Keys)
             {
-                Debug.Log("Execute effect : " + key + " in " + _appliedEntity.name);
 
                 for (int i = 0; i < _effects[key].Count; i++)
                 {

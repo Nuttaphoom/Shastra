@@ -42,6 +42,8 @@ namespace Vanaring
         protected List<CombatEntity> _targets;
         protected ActionSignal _actionSignal;
         protected CombatEntity _caster;
+
+        private List<Coroutine> _ongoingEffect = new List<Coroutine>();
         public abstract IEnumerator Simulate(CombatEntity target); 
         /// <summary>
         /// This method should be invoked prior to taking any action as it might causes the Actor to be exhaunted.
@@ -77,7 +79,7 @@ namespace Vanaring
                 if ((factory = _actionSignal.GetReadyEffect()) != null)
                 {
                     RuntimeEffect effect = factory.Factorize(_targets);
-                    _caster.StartCoroutine(CasterStartExecuteEffectCoroutine(effect)); 
+                    _ongoingEffect.Add(_caster.StartCoroutine(CasterStartExecuteEffectCoroutine(effect)));
 
                     //yield return effect.ExecuteRuntimeCoroutine(_caster) ;
                     //yield return effect.OnExecuteRuntimeDone(_caster) ;
@@ -86,12 +88,20 @@ namespace Vanaring
                 yield return new WaitForEndOfFrame();
             }
 
+            int i = 0; 
+            while (_ongoingEffect.Count > 0)
+                yield return new WaitForEndOfFrame(); 
+            
+
+            
+
         }
 
         private IEnumerator CasterStartExecuteEffectCoroutine(RuntimeEffect effect)
         {
             yield return effect.ExecuteRuntimeCoroutine(_caster);
             yield return effect.OnExecuteRuntimeDone(_caster);
+            _ongoingEffect.RemoveAt(0);
         }
 
         private void SetUpTimeLineActorSetting()
