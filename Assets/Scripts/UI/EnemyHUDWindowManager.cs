@@ -82,6 +82,7 @@ namespace Vanaring
             {
                 if(enemyHUDList[i] == null)
                 {
+                    Debug.Log("Enemy didn't load their HUD");
                     throw new Exception("EnenmyHUD is not load for this entity:" + entity);
                 }
                 else
@@ -101,7 +102,7 @@ namespace Vanaring
         }
         public void ClearEnemyHUD()
         {
-            for (int i = enemyHUDList.Count - 1; i >= 0; i++)
+            for (int i = enemyHUDList.Count - 1; i >= 0; i--)
             {
                 Destroy(enemyHUDList[i]);
                 enemyHUDList.RemoveAt(i);
