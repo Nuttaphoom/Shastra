@@ -64,9 +64,6 @@ namespace Vanaring
 
             yield return new WaitAll(caster,coroutines.ToArray());
 
-            
-
-
         }
 
        

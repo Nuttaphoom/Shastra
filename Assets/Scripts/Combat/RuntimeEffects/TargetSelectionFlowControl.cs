@@ -23,11 +23,6 @@ namespace Vanaring
         [SerializeField]
         private TargetSelectionGUI _targetSelectionGUI ;
 
- 
-        [Header("Indicator")]
-        [SerializeField]
-        ButtonIndicatorWindow _buttonIndicatorWindow;
-
         private List<CombatEntity> _validTargets = new List<CombatEntity>();
         private List<CombatEntity> _selectedTarget = new List<CombatEntity>();
 
@@ -138,9 +133,6 @@ namespace Vanaring
                 }
                 else if (key == (KeyCode.Space))
                 {
-                    _buttonIndicatorWindow.SetIndicatorButtonShow(ButtonIndicatorWindow.IndicatorButtonShow.MAIN, false);
-                    _buttonIndicatorWindow.ClosePanel();
-
                     foreach (var entity in _selectingTarget)
                     {
                         _selectedTarget.Add(entity);
@@ -154,7 +146,6 @@ namespace Vanaring
                 else if (key == (KeyCode.Q))
                 {
                     ForceStop();
-                    _buttonIndicatorWindow.SetIndicatorButtonShow(ButtonIndicatorWindow.IndicatorButtonShow.MAIN, true);
                 }
             }
         }
@@ -222,8 +213,6 @@ namespace Vanaring
             CameraSetUPManager.Instance.CaptureVMCamera();
 
             CameraSetUPManager.Instance.SetBlendMode(CameraSetUPManager.CameraBlendMode.EASE_INOUT, 0.5f);
-
-            _buttonIndicatorWindow.SetIndicatorButtonShow(ButtonIndicatorWindow.IndicatorButtonShow.TARGET, true);
 
             while (_selectedTarget.Count < actorAction.GetTargetSelector().MaxTarget )
             {

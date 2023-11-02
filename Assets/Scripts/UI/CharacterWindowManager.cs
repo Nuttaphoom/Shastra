@@ -7,7 +7,7 @@ namespace Vanaring
     public class CharacterWindowManager : MonoBehaviour
     {
         [SerializeField]
-        CombatEntity _combatEntity;
+        private CombatEntity _combatEntity;
         [SerializeField]
         private CharacterSocketGUI _templatePrefab;
         [SerializeField]

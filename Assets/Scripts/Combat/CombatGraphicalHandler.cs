@@ -34,10 +34,7 @@ namespace Vanaring
 
         [SerializeField]
         private CombatEntity _combatEntity;
-
-        [Header("Indicator")]
-        [SerializeField]
-        ButtonIndicatorWindow _buttonIndicatorWindow;
+ 
 
         private void Awake()
         {
@@ -70,13 +67,11 @@ namespace Vanaring
         public void DisplayItemPanel()
         {
             _entityWindowManager.PushInNewWindow(_itemWindowManager);
-            _buttonIndicatorWindow.SetIndicatorButtonShow(ButtonIndicatorWindow.IndicatorButtonShow.LIST, true);
         }
 
         public void DisplaySpellPanel()
         {
             _entityWindowManager.PushInNewWindow(_spellWindowManager);
-            _buttonIndicatorWindow.SetIndicatorButtonShow(ButtonIndicatorWindow.IndicatorButtonShow.LIST, true);
         }
 
         public void DisplayWeaponPanel()
@@ -97,7 +92,6 @@ namespace Vanaring
         {
             _entityWindowManager.ClearStack();
             _entityWindowManager.PushInNewWindow(_mainWindowManager);
-            _buttonIndicatorWindow.SetIndicatorButtonShow(ButtonIndicatorWindow.IndicatorButtonShow.MAIN, true);
         }
 
         public IEnumerator TakeControl()

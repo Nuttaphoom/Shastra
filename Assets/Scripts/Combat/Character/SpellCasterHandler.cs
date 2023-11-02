@@ -63,9 +63,7 @@ namespace Vanaring
 
         public void ModifyEnergy(RuntimeMangicalEnergy.EnergySide side, int value)
         {
-            Debug.Log("entity : " + _combatEntity);
-            Debug.Log("Before => Light : " + _mangicalEnergy.GetEnergy(RuntimeMangicalEnergy.EnergySide.LightEnergy) + "Dark : " + _mangicalEnergy.GetEnergy(RuntimeMangicalEnergy.EnergySide.DarkEnergy));
-
+            
             int modValue = _mangicalEnergy.ModifyEnergy(value, side);
             OnModifyEnergy?.Invoke(_combatEntity, side, modValue);
 
@@ -75,11 +73,8 @@ namespace Vanaring
             RuntimeMangicalEnergy.EnergySide oppositeSide = (RuntimeMangicalEnergy.EnergySide)((int)(side + 1) % 2); 
             _mangicalEnergy.ModifyEnergy(-modValue, oppositeSide);
             OnModifyEnergy?.Invoke(_combatEntity, oppositeSide, -modValue);
-            
-            Debug.Log("modValue  " + modValue);
-            Debug.Log("After Light : " + _mangicalEnergy.GetEnergy(RuntimeMangicalEnergy.EnergySide.LightEnergy) + "Dark : " + _mangicalEnergy.GetEnergy(RuntimeMangicalEnergy.EnergySide.DarkEnergy));
+ 
 
-            
         }
 
         public bool IsEnergyOverflow()
@@ -162,21 +157,21 @@ namespace Vanaring
         }
 
         #region Methods 
-
         public RuntimeMangicalEnergy(RuntimeMangicalEnergy copied, SpellCasterHandler spellCasterHandler)
         {
             _spellCasterHandler = spellCasterHandler; 
 
             _darkDefaultAmount =  copied._darkDefaultAmount ;
             _lightDefaultAmount = copied._lightDefaultAmount ;
+
             int peakVal = _darkDefaultAmount + _lightDefaultAmount; 
 
             var _darkEnergy = new RuntimeStat(peakVal, _darkDefaultAmount);
             var _lightEnergy = new RuntimeStat(peakVal, _lightDefaultAmount);
 
-            _energy = new Dictionary<EnergySide, RuntimeStat>();
-            _energy.Add(EnergySide.DarkEnergy, _darkEnergy);
-            _energy.Add(EnergySide.LightEnergy, _lightEnergy);
+            _energy = new Dictionary<EnergySide, RuntimeStat>() ;
+            _energy.Add(EnergySide.DarkEnergy, _darkEnergy)     ;
+            _energy.Add(EnergySide.LightEnergy, _lightEnergy)   ;
 
         }
 

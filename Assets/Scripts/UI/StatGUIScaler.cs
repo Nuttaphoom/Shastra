@@ -103,7 +103,7 @@ namespace Vanaring
 
         #region Energy
         private void OnEnergyModified(CombatEntity caster, RuntimeMangicalEnergy.EnergySide side , int val)
-        {
+        { 
             if (side == RuntimeMangicalEnergy.EnergySide.LightEnergy)
             {
                 lightScaleIncrease(val);

@@ -213,7 +213,6 @@ namespace Vanaring
         #region HP
         private void OnHPModified(int damage)
         {
-            //Debug.LogError("HP check");
             //throw new Exception("dd");
             hpVal = _owner.StatsAccumulator.GetHPAmount();
 

@@ -155,7 +155,6 @@ namespace Vanaring
 
             _actionTimelineSetting = new ActionTimelineSettingStruct(copied._actionTimelineSetting) ;
             _timeLineActorSetupPrefab = copied._timeLineActorSetupPrefab; 
-
         }
 
         /// <summary>
@@ -168,6 +167,7 @@ namespace Vanaring
             {
                 if (signalBinding.IsSameSignalType(signal))
                 {
+
                     foreach (var effect in signalBinding.RuntimeEffects) { 
                         _readyEffectQueue.Enqueue(effect);
                     }
