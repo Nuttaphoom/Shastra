@@ -21,17 +21,15 @@ namespace Vanaring
         }
         private CombatEntity _owner;
 
-        //public TextMeshProUGUI lightNumText;
-        //public TextMeshProUGUI darkNumText;
-
         [SerializeField]
         private TextMeshProUGUI enemyName;
 
         [Header("Energy bar value")]
 
         private float lightScale = 1;
-
         private float darkScale = 1;
+        private float maxLightScale = 1;
+        private float maxDarkScale = 1;
 
         private float maxEnergyVal = 100.0f;
         [SerializeField] private Image lightImage;
@@ -41,7 +39,6 @@ namespace Vanaring
         private float maxHP;
         [SerializeField] private Image hpImage;
         [SerializeField] private Image secondhpImage;
-        //[SerializeField] private GameObject gui;
 
         [Header("Modified Sprite Feedback")]
         [SerializeField] private Image modifiedEnergyImg;
@@ -52,6 +49,7 @@ namespace Vanaring
         [Header("EnergySlot")]
         [SerializeField] private Image lightSlotImg;
         [SerializeField] private Image darkSlotImg;
+        private Color defaultSlotColor;
         private List<Image> energySlotList = new List<Image>();
         [SerializeField] private GameObject horizontalLayout;
         [SerializeField] private TextMeshProUGUI lightTmpText;
@@ -60,13 +58,6 @@ namespace Vanaring
 
         private void Awake()
         {
-            //lightScale = 50;
-            //darkScale = 50;
-            //if (lightNumText != null && darkNumText != null)
-            //{
-            //    lightNumText.text = lightScale.ToString();
-            //    darkNumText.text = darkScale.ToString();
-            //}
         }
         private void Start()
         {
@@ -77,6 +68,8 @@ namespace Vanaring
                 
                 lightScale = _owner.SpellCaster.GetEnergyAmount(RuntimeMangicalEnergy.EnergySide.LightEnergy);
                 darkScale = _owner.SpellCaster.GetEnergyAmount(RuntimeMangicalEnergy.EnergySide.DarkEnergy);
+                maxLightScale = lightScale;
+                maxDarkScale = darkScale;
 
                 lightTmpText.text = lightScale.ToString();
                 darkTmpText.text = darkScale.ToString();
@@ -84,33 +77,6 @@ namespace Vanaring
                 InitEnergySlot();
 
                 enemyName.text = _owner.CharacterSheet.CharacterName.ToString();
-            }
-        }
-
-        private void InitEnergySlot()
-        {
-            for (int i = energySlotList.Count - 1 ; i >= 0 ; i--)
-            {
-                Destroy(energySlotList[i]);
-                energySlotList.RemoveAt(i);
-            }
-            if (lightScale > 0)
-            {
-                for (int i = 0; i < lightScale; i++)
-                {
-                    Image slot = Instantiate(lightSlotImg, horizontalLayout.transform);
-                    slot.gameObject.SetActive(true);
-                    energySlotList.Add(slot);
-                }
-            }
-            if (darkScale > 0)
-            {
-                for (int i = 0; i < darkScale; i++)
-                {
-                    Image slot = Instantiate(darkSlotImg, horizontalLayout.transform);
-                    slot.gameObject.SetActive(true);
-                    energySlotList.Add(slot);
-                }
             }
         }
 
@@ -168,47 +134,137 @@ namespace Vanaring
         /// <param name="caster"></param>
         /// <param name="side"></param>
         /// <param name="val" ></param>
+        private void InitEnergySlot()
+        {
+            if (lightScale > 0)
+            {
+                for (int i = 0; i < lightScale; i++)
+                {
+                    Image slot = Instantiate(lightSlotImg, horizontalLayout.transform);
+                    slot.gameObject.SetActive(true);
+                    energySlotList.Add(slot);
+                    defaultSlotColor = slot.color;
+                }
+            }
+            if (darkScale > 0)
+            {
+                for (int i = 0; i < darkScale; i++)
+                {
+                    Image slot = Instantiate(darkSlotImg, horizontalLayout.transform);
+                    slot.gameObject.SetActive(true);
+                    energySlotList.Add(slot);
+                    defaultSlotColor = slot.color;
+                }
+            }
+        }
+
         private void OnEnergyModified(CombatEntity caster, RuntimeMangicalEnergy.EnergySide side, int val)
         {
+            Debug.Log(_owner.CharacterSheet.CharacterName + " mod energy " + side + " " + ": " + val);
+            if(val == 0)
+            {
+                return;
+            }
             if (side == RuntimeMangicalEnergy.EnergySide.LightEnergy)
             {
-                lightScale += val;
-                lightTmpText.text = lightScale.ToString();
-                InitEnergySlot();
-                //lightScaleIncrease(val);
+                if (lightScale + val >= 0)
+                {
+                    lightScale += val;
+                    lightTmpText.text = lightScale.ToString();
+                    if (val < 0)
+                    {
+                        StartCoroutine(SlotBreak((int)maxLightScale, (int)lightScale));
+                    }
+                    else
+                    {
+                        StartCoroutine(SlotRecovery());
+                    }
+                }
             }
             else
             {
-                darkScale += val;
-                darkTmpText.text = darkScale.ToString();
-                InitEnergySlot();
-                //lightScaleDecrease(val);
+                if (darkScale + val >= 0)
+                {
+                    darkScale += val;
+                    darkTmpText.text = darkScale.ToString();
+                    if (val < 0)
+                    {
+                        StartCoroutine(SlotBreak((int)maxDarkScale, (int)darkScale));
+                    }
+                    else
+                    {
+                        StartCoroutine(SlotRecovery());
+                    }
+                }
             }
         }
-        private void UpdateEnergyBarScaleGUI()
-        {
-            //lightImage.fillAmount = (int.Parse(lightNumText.text) / maxEnergyVal);
-        }
-        public void lightScaleIncrease(int val)
-        {
-            if (lightScale + val > 100)
-            {
-                val = (int)(100 - lightScale);
-            }
-            lightScale += val;
-            //StartCoroutine(IEAnimateEnergyBarScale());
-        }
-        public void lightScaleDecrease(int val)
-        {
-            lightScale -= val;
 
-            if (lightScale < 0)
+        private IEnumerator SlotBreak(int maxSlot, int curScale)
+        {
+            for (int i = maxSlot-1; i >= 0; i--)
             {
-                lightScale = 0;
+                if (i+1 > curScale)
+                {
+                    //Break
+                    Color curColor = energySlotList[i].color;
+                    curColor.a = 0.3f;
+                    energySlotList[i].color = curColor;
+                }
+                else
+                {
+                    //Stay
+                    Color curColor = energySlotList[i].color;
+                    curColor.a = 1.0f;
+                    energySlotList[i].color = curColor;
+                }
+                yield return new WaitForSeconds(0.01f);
             }
-
-            //StartCoroutine(IEAnimateEnergyBarScale());
+            Debug.Log("Slot break to: " + curScale);
+            yield return null;
         }
+
+        private IEnumerator SlotRecovery()
+        {
+            int i = 0;
+            foreach (Image slot in energySlotList)
+            {
+                Color curColor = energySlotList[i].color;
+                curColor.a = 1.0f;
+                curColor = Color.white;
+                energySlotList[i].color = curColor;
+                yield return new WaitForSeconds(0.1f);
+                defaultSlotColor.a = 1.0f;
+                energySlotList[i].color = defaultSlotColor;
+                i++;
+            }
+            Debug.Log("Slot recovery to: " + i);
+            yield return null;
+        }
+
+        private void UpdateEnergySlotState()
+        {
+            
+        }
+        //public void lightScaleIncrease(int val)
+        //{
+        //    if (lightScale + val > 100)
+        //    {
+        //        val = (int)(100 - lightScale);
+        //    }
+        //    lightScale += val;
+        //    //StartCoroutine(IEAnimateEnergyBarScale());
+        //}
+        //public void lightScaleDecrease(int val)
+        //{
+        //    lightScale -= val;
+
+        //    if (lightScale < 0)
+        //    {
+        //        lightScale = 0;
+        //    }
+
+        //    //StartCoroutine(IEAnimateEnergyBarScale());
+        //}
         #endregion
         #region HP
         private void OnHPModified(int damage)

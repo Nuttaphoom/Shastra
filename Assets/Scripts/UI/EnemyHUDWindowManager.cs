@@ -82,6 +82,7 @@ namespace Vanaring
             {
                 if(enemyHUDList[i] == null)
                 {
+                    Debug.Log("Enemy didn't load their HUD");
                     throw new Exception("EnenmyHUD is not load for this entity:" + entity);
                 }
                 else
