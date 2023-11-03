@@ -33,25 +33,43 @@ namespace Vanaring
             _pools.RemoveAt(0);
 
             int index = 0;
-            foreach (CombatEntity entity in pool.Entities)
+            foreach (var entityPrefabPool in pool.GetEntityPrefabPoolStruct)
             {
-                ret.Add( SpawnPrefab(entity) );
+                ret.Add( SpawnPrefab(entityPrefabPool.Prefab, entityPrefabPool.DedicatedLocation)); 
                 index++;
             }
 
             return ret;
         }
 
-        public CombatEntity SpawnPrefab(CombatEntity prefab)
+        public CombatEntity SpawnPrefab(CombatEntity prefab, int location = -1)
         {
             if (_available.Count == 0)
                 throw new Exception("Available.Count is equal to 0");
             
             CombatEntity newEntity = GameObject.Instantiate(prefab);
 
-            _spawnPositionDict.Add(newEntity, _available[0]);
 
-            _available.RemoveAt(0); 
+            if (location == -1)
+            {
+                // If location is -1, use the first available position
+                UseAvailablePosition(newEntity,0);
+            }
+            else
+            {
+                int index = location - _spawnPositionDict.Count;
+
+                if (index >= 0 && _available[index] != null)
+                {
+                    // If the index is valid and the available position is not null, use it
+                    UseAvailablePosition(newEntity, index);
+                }
+                else
+                {
+                    // Otherwise, use the first available position
+                    UseAvailablePosition(newEntity,0);
+                }
+            }
 
             Transform t = _spawnPositionDict[newEntity] ; 
 
@@ -64,6 +82,14 @@ namespace Vanaring
             return newEntity; 
         }
 
+
+        void UseAvailablePosition(CombatEntity newEntity, int index)
+        {
+            _spawnPositionDict.Add(newEntity, _available[index]);
+            _available.RemoveAt(index);
+        }
+
+    
 
         public void ReleasePosition(CombatEntity ce)
         {
