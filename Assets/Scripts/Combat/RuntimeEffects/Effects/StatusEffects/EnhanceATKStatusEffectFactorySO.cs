@@ -48,6 +48,8 @@ namespace Vanaring
         
         public override IEnumerator BeforeAttackEffect(CombatEntity caster)
         {
+            Debug.Log("increased attack"); 
+
             caster.StatsAccumulator.ModifyATKAmount(_realIncreasedAmount);
             caster.StatsAccumulator.ModifyATKAmountByPercent(_modifiedPercent);
 
