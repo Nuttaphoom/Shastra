@@ -247,7 +247,7 @@ namespace Vanaring
             else if (v + _energy[side].GetStatValue() > _darkDefaultAmount + _lightDefaultAmount)
                 v = (int) MathF.Abs(_darkDefaultAmount + _lightDefaultAmount  - _energy[side].GetStatValue() ) ;
 
-            _energy[side].ModifyValue(v,false,true);
+            _energy[side].ModifyValue(v,false,false);
 
             return v;
             //switch (side)
