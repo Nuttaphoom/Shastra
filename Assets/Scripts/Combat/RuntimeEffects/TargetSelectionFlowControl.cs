@@ -16,6 +16,9 @@ namespace Vanaring
         [SerializeField]
         private TargetSelectionGUI _targetSelectionGUI ;
 
+        [SerializeField]
+        private Transform _targetSelectionDisplayer; 
+
         private List<CombatEntity> _validTargets = new List<CombatEntity>();
         private List<CombatEntity> _selectedTarget = new List<CombatEntity>();
 
@@ -43,7 +46,7 @@ namespace Vanaring
         private void Awake()
         {
             Instance = this;
-            _targetSelectionGUI.Initialize(transform);
+            _targetSelectionGUI.Initialize(_targetSelectionDisplayer);
             _eventBroadcaster = new EventBroadcaster();
 
             _eventBroadcaster.OpenChannel<bool>("OnTargetSelectionEnd")  ;
@@ -92,19 +95,9 @@ namespace Vanaring
         {
             yield return action.Simulate(target);
 
-            if (action.GetType() == typeof(SpellActionSO))
-            {
-                Debug.Log("this is spell action");
-            }
-
             if (target.SpellCaster.CheckSimulation())
-            {
                 _targetSelectionGUI.SelectBreakTarget(target); 
-            }
-            else
-            {
-            //    Debug.Log("Check not pass");
-            }
+            
         }
 
         #region Public Method

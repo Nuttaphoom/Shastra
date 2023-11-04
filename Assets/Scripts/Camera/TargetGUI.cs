@@ -30,7 +30,8 @@ namespace Vanaring
 
         public GameObject InstantiateTargetGUI(Vector3 pos, Transform parent)
         {
-            GameObject newTargetObj = Instantiate(targetGUI, pos, Quaternion.identity, parent);
+            GameObject newTargetObj = Instantiate(targetGUI, pos, targetGUI.transform.rotation) ;
+            newTargetObj.transform.parent = parent;
             newTargetObj.SetActive(false);
             return newTargetObj;
         }

@@ -72,24 +72,30 @@ namespace Vanaring
                 if (! entities.Contains(key))
                     _instantiatedVFXCircle[key].SetActive(false);
             }
+            foreach (var key in _instantiatedBreakGUI.Keys)
+            {
+                if (!entities.Contains(key))
+                    _instantiatedBreakGUI[key].SetActive(false);
+            }
 
             foreach (var combatEntity in entities)
             {
                 if (!_instantiatedTargetGUI.ContainsKey(combatEntity))
                 {
-                     _instantiatedTargetGUI.Add(combatEntity, targetGUI.InstantiateTargetGUI(combatEntity.CombatEntityAnimationHandler.GetGUISpawnPos(), _parent));
+                     _instantiatedTargetGUI.Add(combatEntity, targetGUI.InstantiateTargetGUI(UISpaceSingletonHandler.ObjectToUISpace(combatEntity.transform) , _parent));
                 }
 
                 if (!_instantiatedTargetGUI[combatEntity].activeSelf)
                 {
-                    _instantiatedTargetGUI[combatEntity].transform.position = combatEntity.CombatEntityAnimationHandler.GetGUISpawnPos();
                     _instantiatedTargetGUI[combatEntity].SetActive(true);
                 }
+
+                _instantiatedTargetGUI[combatEntity].transform.position = UISpaceSingletonHandler.ObjectToUISpace(combatEntity.transform);
 
                 if (!_instantiatedVFXCircle.ContainsKey(combatEntity))
                 {
                     _instantiatedVFXCircle.Add(combatEntity, MonoBehaviour.Instantiate(_vfxPrefabTemplate, _vfxPrefabTemplate.transform.position, Quaternion.identity));
-                    Vector3 circleTranform = combatEntity.CombatEntityAnimationHandler.GetGUISpawnPos();
+                    Vector3 circleTranform = UISpaceSingletonHandler.ObjectToUISpace(combatEntity.CombatEntityAnimationHandler.GetGUISpawnTransform());//  combatEntity.CombatEntityAnimationHandler.GetGUISpawnPos();
                     _instantiatedVFXCircle[combatEntity].transform.position = new Vector3(circleTranform.x, 0.03f, circleTranform.z);
                 }
 
@@ -104,7 +110,7 @@ namespace Vanaring
             {
                 _instantiatedBreakGUI.Add(combatEntity, targetGUI.InstantiateBreakGUI(combatEntity.CombatEntityAnimationHandler.GetGUISpawnPos(), _parent));
 
-                Vector3 location = combatEntity.CombatEntityAnimationHandler.GetGUISpawnPos();
+                Vector3 location = UISpaceSingletonHandler.ObjectToUISpace(combatEntity.CombatEntityAnimationHandler.GetGUISpawnTransform());
                 _instantiatedBreakGUI[combatEntity].transform.position =  location ;// new Vector3(circleTranform.x, 0.03f, circleTranform.z);
             
             }

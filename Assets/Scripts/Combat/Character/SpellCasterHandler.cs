@@ -161,6 +161,11 @@ namespace Vanaring
             return ret ;  
         }
         #endregion
+
+        #region GETTER
+        public bool IsBalanceStyle => _balancedEnergyStyle; 
+
+        #endregion
     }
 
     [Serializable]
@@ -189,10 +194,20 @@ namespace Vanaring
         public void Init(SpellCasterHandler spellCasterHandler) {
             _spellCasterHandler = spellCasterHandler;
 
-            int peak = _darkDefaultAmount + _lightDefaultAmount; 
+            int peak = _darkDefaultAmount + _lightDefaultAmount;
+            
+            RuntimeStat darkEnergy;
+            RuntimeStat lightEnergy; 
 
-            var darkEnergy = new RuntimeStat(peak, _darkDefaultAmount) ;
-            var lightEnergy = new RuntimeStat(peak, _lightDefaultAmount) ;
+            if (_spellCasterHandler.IsBalanceStyle)
+            {
+                darkEnergy = new RuntimeStat(peak, _darkDefaultAmount);
+                lightEnergy = new RuntimeStat(peak, _lightDefaultAmount);
+            }else
+            {
+                darkEnergy = new RuntimeStat(_darkDefaultAmount, _darkDefaultAmount);
+                lightEnergy = new RuntimeStat(_lightDefaultAmount, _lightDefaultAmount);
+            }
 
             _energy = new Dictionary<EnergySide, RuntimeStat>();
 
