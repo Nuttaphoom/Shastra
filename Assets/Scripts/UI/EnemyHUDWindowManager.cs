@@ -16,34 +16,34 @@ namespace Vanaring
         }
 
         //Display what reference(list) want to
-        public void DisplayEnemyHUD(List<CombatEntity> entities)
-        {
+        //public void DisplayEnemyHUD(List<CombatEntity> entities)
+        //{
  
-            if(entities.Count < 1)
-            {
-                Debug.Log("No enemy on field/detect");
-                return;
-            }
-            if(enemyHUDList.Count > 0)
-            {
-                Debug.Log(enemyHUDList.Count);
-                DisableEnemyHUD();
-                SelectHUDToDisplay(entities);
-            }
-            else    //Create new instead
-            {
-                foreach (CombatEntity entity in entities)
-                {
-                    EnemyHUD newEnemyHUD = Instantiate(enemyHudTemplate, transform);
-                    newEnemyHUD.Init(entity);
-                    SetUITransform(newEnemyHUD, entity);
-                    enemyHUDList.Add(newEnemyHUD);
-                    //newEnemyHUD.gameObject.SetActive(false);
-                }
-            }
-        }
+        //    if(entities.Count < 1)
+        //    {
+        //        Debug.Log("No enemy on field/detect");
+        //        return;
+        //    }
+        //    if(enemyHUDList.Count > 0)
+        //    {
+        //        Debug.Log(enemyHUDList.Count);
+        //        DisableEnemyHUD();
+        //        SelectHUDToDisplay(entities);
+        //    }
+        //    else    //Create new instead
+        //    {
+        //        foreach (CombatEntity entity in entities)
+        //        {
+        //            EnemyHUD newEnemyHUD = Instantiate(enemyHudTemplate, transform);
+        //            newEnemyHUD.Init(entity);
+        //            SetUITransform(newEnemyHUD, entity);
+        //            enemyHUDList.Add(newEnemyHUD);
+        //            //newEnemyHUD.gameObject.SetActive(false);
+        //        }
+        //    }
+        //}
 
-        public void InitEnemyHUD(List<CombatEntity> entities)
+        public void DisplayEnemyHUD(List<CombatEntity> entities)
         {
             foreach (var key in instantiatedEnemyHUD.Keys)
             {
