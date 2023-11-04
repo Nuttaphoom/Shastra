@@ -28,8 +28,6 @@ namespace Vanaring
 
         private float lightScale = 1;
         private float darkScale = 1;
-        private float maxLightScale = 1;
-        private float maxDarkScale = 1;
 
         private float maxEnergyVal = 100.0f;
         [SerializeField] private Image lightImage;
@@ -69,9 +67,6 @@ namespace Vanaring
                 lightScale = _owner.SpellCaster.GetEnergyAmount(RuntimeMangicalEnergy.EnergySide.LightEnergy);
                 darkScale = _owner.SpellCaster.GetEnergyAmount(RuntimeMangicalEnergy.EnergySide.DarkEnergy);
 
-                maxLightScale = lightScale;
-                maxDarkScale = darkScale;
-
                 lightTmpText.text = lightScale.ToString();
                 darkTmpText.text = darkScale.ToString();
 
@@ -108,26 +103,6 @@ namespace Vanaring
             _owner.UnSubOnDamageVisualEvent(OnHPModified);
         }
 
-        //public void SetEnergyModified(ModifiedEnergy modifiedEnergy)
-        //{
-        //    if (modifiedEnergyImg == null)
-        //    {
-        //        return;
-        //    }
-        //    switch (modifiedEnergy)
-        //    {
-        //        case ModifiedEnergy.NONE:
-        //            modifiedEnergyImg.sprite = modDefault;
-        //            break;
-        //        case ModifiedEnergy.LIGHT:
-        //            modifiedEnergyImg.sprite = modLight;
-        //            break;
-        //        case ModifiedEnergy.DARK:
-        //            modifiedEnergyImg.sprite = modDark;
-        //            break;
-        //    }
-        //}
-
         #region Energy
         /// <summary>
         /// val = increased value
@@ -137,9 +112,11 @@ namespace Vanaring
         /// <param name="val" ></param>
         private void InitEnergySlot()
         {
-            if (lightScale > 0)
+            Debug.Log("Light" + _owner.SpellCaster.GetPeakEnergyAmout(RuntimeMangicalEnergy.EnergySide.LightEnergy));
+            Debug.Log("Dark" + _owner.SpellCaster.GetPeakEnergyAmout(RuntimeMangicalEnergy.EnergySide.DarkEnergy));
+            if (_owner.SpellCaster.GetPeakEnergyAmout(RuntimeMangicalEnergy.EnergySide.LightEnergy) > 0)
             {
-                for (int i = 0; i < lightScale; i++)
+                for (int i = 0; i < _owner.SpellCaster.GetPeakEnergyAmout(RuntimeMangicalEnergy.EnergySide.LightEnergy); i++)
                 {
                     Image slot = Instantiate(lightSlotImg, horizontalLayout.transform);
                     slot.gameObject.SetActive(true);
@@ -147,9 +124,9 @@ namespace Vanaring
                     defaultSlotColor = slot.color;
                 }
             }
-            if (darkScale > 0)
+            if (_owner.SpellCaster.GetPeakEnergyAmout(RuntimeMangicalEnergy.EnergySide.DarkEnergy) > 0)
             {
-                for (int i = 0; i < darkScale; i++)
+                for (int i = 0; i < _owner.SpellCaster.GetPeakEnergyAmout(RuntimeMangicalEnergy.EnergySide.DarkEnergy); i++)
                 {
                     Image slot = Instantiate(darkSlotImg, horizontalLayout.transform);
                     slot.gameObject.SetActive(true);
@@ -174,7 +151,7 @@ namespace Vanaring
                     lightTmpText.text = lightScale.ToString();
                     if (val < 0)
                     {
-                        StartCoroutine(SlotBreak((int)maxLightScale, (int)lightScale));
+                        StartCoroutine(SlotBreak(_owner.SpellCaster.GetPeakEnergyAmout(RuntimeMangicalEnergy.EnergySide.LightEnergy), (int)lightScale));
                     }
                     else
                     {
@@ -190,7 +167,7 @@ namespace Vanaring
                     darkTmpText.text = darkScale.ToString();
                     if (val < 0)
                     {
-                        StartCoroutine(SlotBreak((int)maxDarkScale, (int)darkScale));
+                        StartCoroutine(SlotBreak(_owner.SpellCaster.GetPeakEnergyAmout(RuntimeMangicalEnergy.EnergySide.DarkEnergy), (int)darkScale));
                     }
                     else
                     {

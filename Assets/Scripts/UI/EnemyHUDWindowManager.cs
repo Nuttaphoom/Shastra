@@ -9,7 +9,7 @@ namespace Vanaring
     {
         [SerializeField] private EnemyHUD enemyHudTemplate;
         private List<EnemyHUD> enemyHUDList = new List<EnemyHUD>();
-
+        private Dictionary<CombatEntity, GameObject> instantiatedEnemyHUD = new Dictionary<CombatEntity, GameObject>();
         private void Start()
         {
             StartCoroutine(InitTest());
@@ -84,7 +84,7 @@ namespace Vanaring
                 if(enemyHUDList[i] == null)
                 {
                     Debug.Log("Enemy didn't load their HUD");
-                    throw new Exception("EnenmyHUD is not load for this entity:" + entity);
+                    //throw new Exception("EnenmyHUD is not load for this entity:" + entity);
                 }
                 else
                 {
