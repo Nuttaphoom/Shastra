@@ -71,6 +71,16 @@ namespace Vanaring
 
             return _guiPos.position;
         }
+
+        public Transform GetGUISpawnTransform()
+        {
+            if (_guiPos == null || _guiPos.position == null)
+            {
+                throw new Exception("GUI Spawn Position of " + gameObject.name + "hasn't never been assigned");
+            }
+
+            return _guiPos ;
+        }
         #endregion
         private Animator _animator;
         private void Awake()
