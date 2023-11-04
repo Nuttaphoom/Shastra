@@ -62,7 +62,7 @@ namespace Vanaring
             if (_owner != null)
             {
                 hpVal = _owner.StatsAccumulator.GetHPAmount();
-                maxHP = _owner.StatsAccumulator.GetHPAmount();
+                //maxHP = _owner.StatsAccumulator.Get
 
                 lightScale = _owner.SpellCaster.GetEnergyAmount(RuntimeMangicalEnergy.EnergySide.LightEnergy);
                 darkScale = _owner.SpellCaster.GetEnergyAmount(RuntimeMangicalEnergy.EnergySide.DarkEnergy);
@@ -112,8 +112,6 @@ namespace Vanaring
         /// <param name="val" ></param>
         private void InitEnergySlot()
         {
-            Debug.Log("Light" + _owner.SpellCaster.GetPeakEnergyAmout(RuntimeMangicalEnergy.EnergySide.LightEnergy));
-            Debug.Log("Dark" + _owner.SpellCaster.GetPeakEnergyAmout(RuntimeMangicalEnergy.EnergySide.DarkEnergy));
             if (_owner.SpellCaster.GetPeakEnergyAmout(RuntimeMangicalEnergy.EnergySide.LightEnergy) > 0)
             {
                 for (int i = 0; i < _owner.SpellCaster.GetPeakEnergyAmout(RuntimeMangicalEnergy.EnergySide.LightEnergy); i++)
