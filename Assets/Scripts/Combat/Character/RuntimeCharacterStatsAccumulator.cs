@@ -67,6 +67,11 @@ namespace Vanaring
         {
             return _characterStats[ECharacterStatType.HP].GetStatValue();  
         }
+
+        public int GetPeakHPAmount()
+        {
+            return _characterStats[ECharacterStatType.HP].GetPeakValue();
+        }
         #endregion
 
         #region StuntManipulationMethod 
