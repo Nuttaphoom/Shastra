@@ -53,16 +53,12 @@ namespace Vanaring
         [SerializeField] private TextMeshProUGUI lightTmpText;
         [SerializeField] private TextMeshProUGUI darkTmpText;
 
-
-        private void Awake()
-        {
-        }
         private void Start()
         {
             if (_owner != null)
             {
                 hpVal = _owner.StatsAccumulator.GetHPAmount();
-                //maxHP = _owner.StatsAccumulator.Get
+                maxHP = _owner.StatsAccumulator.GetPeakHPAmount();
 
                 lightScale = _owner.SpellCaster.GetEnergyAmount(RuntimeMangicalEnergy.EnergySide.LightEnergy);
                 darkScale = _owner.SpellCaster.GetEnergyAmount(RuntimeMangicalEnergy.EnergySide.DarkEnergy);
@@ -143,7 +139,7 @@ namespace Vanaring
             }
             if (side == RuntimeMangicalEnergy.EnergySide.LightEnergy)
             {
-                if (lightScale + val >= 0)
+                if (_owner.SpellCaster.GetEnergyAmount(RuntimeMangicalEnergy.EnergySide.LightEnergy) + val >= 0)
                 {
                     lightScale += val;
                     lightTmpText.text = lightScale.ToString();
@@ -159,7 +155,7 @@ namespace Vanaring
             }
             else
             {
-                if (darkScale + val >= 0)
+                if (_owner.SpellCaster.GetEnergyAmount(RuntimeMangicalEnergy.EnergySide.DarkEnergy) + val >= 0)
                 {
                     darkScale += val;
                     darkTmpText.text = darkScale.ToString();
@@ -177,6 +173,7 @@ namespace Vanaring
 
         private IEnumerator SlotBreak(int maxSlot, int curScale)
         {
+            Debug.Log("max= " + maxSlot + " cur= " + curScale);
             for (int i = maxSlot-1; i >= 0; i--)
             {
                 if (i+1 > curScale)
