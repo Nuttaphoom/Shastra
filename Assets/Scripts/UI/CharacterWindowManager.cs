@@ -14,6 +14,7 @@ namespace Vanaring
         private Transform _socketVerticalLayout;
         [SerializeField]
         private GameObject _entities;
+        private List<CombatEntity> entities = new List<CombatEntity>();
 
         private List<CharacterSocketGUI> characterSocketList = new List<CharacterSocketGUI>();
         private List<CombatEntity> combatEntityList = new List<CombatEntity>();
@@ -21,10 +22,12 @@ namespace Vanaring
    
         private void Start()
         {
-            for (int i = 0; i < _entities.transform.childCount; i++)
+            entities = CombatReferee.instance.GetCompetatorsBySide(ECompetatorSide.Ally);
+            for (int i = 0; i < entities.Count; i++)
             {
                 CharacterSocketGUI newSocket = Instantiate(_templatePrefab, _templatePrefab.transform.position, _templatePrefab.transform.rotation);
-                CombatEntity _cet = _entities.transform.GetChild(i).GetComponent<CombatEntity>();
+                //CombatEntity _cet = _entities.transform.GetChild(i).GetComponent<CombatEntity>();
+                CombatEntity _cet = entities[i];
                 newSocket.transform.parent = _socketVerticalLayout.transform;
                 newSocket.transform.localScale = _templatePrefab.transform.localScale;
                 newSocket.Init(_cet);

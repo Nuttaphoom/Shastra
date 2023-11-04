@@ -40,11 +40,11 @@ namespace Vanaring
         [SerializeField] private Image hpImage;
         [SerializeField] private Image secondhpImage;
 
-        [Header("Modified Sprite Feedback")]
-        [SerializeField] private Image modifiedEnergyImg;
-        [SerializeField] private Sprite modLight;
-        [SerializeField] private Sprite modDark;
-        [SerializeField] private Sprite modDefault;
+        //[Header("Modified Sprite Feedback")]
+        //[SerializeField] private Image modifiedEnergyImg;
+        //[SerializeField] private Sprite modLight;
+        //[SerializeField] private Sprite modDark;
+        //[SerializeField] private Sprite modDefault;
 
         [Header("EnergySlot")]
         [SerializeField] private Image lightSlotImg;
@@ -107,25 +107,25 @@ namespace Vanaring
             _owner.UnSubOnDamageVisualEvent(OnHPModified);
         }
 
-        public void SetEnergyModified(ModifiedEnergy modifiedEnergy)
-        {
-            if (modifiedEnergyImg == null)
-            {
-                return;
-            }
-            switch (modifiedEnergy)
-            {
-                case ModifiedEnergy.NONE:
-                    modifiedEnergyImg.sprite = modDefault;
-                    break;
-                case ModifiedEnergy.LIGHT:
-                    modifiedEnergyImg.sprite = modLight;
-                    break;
-                case ModifiedEnergy.DARK:
-                    modifiedEnergyImg.sprite = modDark;
-                    break;
-            }
-        }
+        //public void SetEnergyModified(ModifiedEnergy modifiedEnergy)
+        //{
+        //    if (modifiedEnergyImg == null)
+        //    {
+        //        return;
+        //    }
+        //    switch (modifiedEnergy)
+        //    {
+        //        case ModifiedEnergy.NONE:
+        //            modifiedEnergyImg.sprite = modDefault;
+        //            break;
+        //        case ModifiedEnergy.LIGHT:
+        //            modifiedEnergyImg.sprite = modLight;
+        //            break;
+        //        case ModifiedEnergy.DARK:
+        //            modifiedEnergyImg.sprite = modDark;
+        //            break;
+        //    }
+        //}
 
         #region Energy
         /// <summary>
@@ -217,7 +217,7 @@ namespace Vanaring
                     curColor.a = 1.0f;
                     energySlotList[i].color = curColor;
                 }
-                yield return new WaitForSeconds(0.01f);
+                yield return new WaitForSeconds(0.1f);
             }
             yield return null;
         }
@@ -227,11 +227,13 @@ namespace Vanaring
             int i = 0;
             foreach (Image slot in energySlotList)
             {
+                //Set recovery pop
                 Color curColor = energySlotList[i].color;
                 curColor.a = 1.0f;
                 curColor = Color.white;
                 energySlotList[i].color = curColor;
                 yield return new WaitForSeconds(0.1f);
+                //Set default sprite
                 defaultSlotColor.a = 1.0f;
                 energySlotList[i].color = defaultSlotColor;
                 i++;
