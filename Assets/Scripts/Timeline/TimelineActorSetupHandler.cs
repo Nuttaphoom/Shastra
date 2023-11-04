@@ -17,6 +17,9 @@ namespace Vanaring
         [SerializeField]
         private List<Transform> _targetTransform = new List<Transform>() ;
 
+        [SerializeField]
+        private List<GameObject> _destroyedWithTimeline = new List<GameObject>() ;  
+
         [Header("Direct Vector Interpolation. The system will place these transform starting from CasterTransform (index 0) up to TargetTransform (last index)")]
         [SerializeField]
         private List<Transform> _directVectorTransform = new List<Transform>() ;
@@ -55,6 +58,13 @@ namespace Vanaring
 
             for (int i = 0; i < _targetTransform.Count; i++)
             {
+                if (actionTimelineSetting.GetObjectWithIndex(i + 1) == null)
+                {         
+                    _targetTransform[i].gameObject.SetActive(false);
+                    continue;
+                }
+
+
                 Transform par = actionTimelineSetting.GetObjectWithIndex(i + 1).transform;
                 _targetTransform[i].transform.parent = par; 
                 _targetTransform[i].transform.position = par.position ;
@@ -65,7 +75,6 @@ namespace Vanaring
 
         }
 
-       
         private void SetUpDirectVector()
         {
             if (_directVectorTransform.Count > 0)
@@ -73,7 +82,21 @@ namespace Vanaring
                 throw new NotImplementedException(); 
             }
         }
+    
+    
+        public void DestroyTimelineElement()
+        {
+            for (int i = _destroyedWithTimeline.Count - 1 ;i >= 0; i--)
+               Destroy( _destroyedWithTimeline[i] ) ;
+            
+            _destroyedWithTimeline.Clear();
+
+            Destroy(gameObject);
+        }
+
     }
+
+
 
     
 

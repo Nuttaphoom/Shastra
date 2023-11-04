@@ -10,17 +10,17 @@ using UnityEngine;
 namespace Vanaring
 {
     [CreateAssetMenu(fileName = "Physical Ability", menuName = "ScriptableObject/Combat/PhysicalActionSO")]
-    public class PhysicalActionSO : ActorActionFactory 
+    public class WeaponActionSO : ActorActionFactory 
     {
         public override ActorAction FactorizeRuntimeAction(CombatEntity caster)
         {
-            return new PhysicalAbilityRuntime(caster, _targetSelector, _actionSignal);
+            return new WeaponActionAbilityRuntime(caster, _targetSelector, _actionSignal);
         }
     }
 
-    public class PhysicalAbilityRuntime : ActorAction
+    public class WeaponActionAbilityRuntime : ActorAction
     {
-        public PhysicalAbilityRuntime(CombatEntity caster, TargetSelector targetSelector, ActionSignal actionSignal)
+        public WeaponActionAbilityRuntime(CombatEntity caster, TargetSelector targetSelector, ActionSignal actionSignal)
         {
             _caster = caster;
             _targetSelector = targetSelector;
@@ -39,22 +39,10 @@ namespace Vanaring
  
         public override IEnumerator Simulate(CombatEntity target)
         {
-            throw new NotImplementedException();
             yield return null;
         }
 
-        private void SetUpTimeLineActorSetting()
-        {
-            List<GameObject> actors = new List<GameObject>();
-
-            actors.Add(_caster.gameObject);
-            foreach (var entity in _targets)
-            {
-                actors.Add(entity.gameObject);
-            }
-
-            _actionSignal.SetUpActorsSetting(actors);
-        }
+        
     }
 
 

@@ -87,12 +87,12 @@ namespace Vanaring
 
                 yield return new WaitForEndOfFrame();
             }
-
-            int i = 0; 
+ 
             while (_ongoingEffect.Count > 0)
-                yield return new WaitForEndOfFrame(); 
-            
+                yield return new WaitForEndOfFrame();
 
+            while (DirectorManager.Instance.IsPlayingTimeline)
+                yield return new WaitForEndOfFrame(); 
             
 
         }

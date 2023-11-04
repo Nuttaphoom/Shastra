@@ -12,10 +12,7 @@ namespace Vanaring {
 
     [CreateAssetMenu(fileName = "HavocApplierEffectFactorySO", menuName = "ScriptableObject/RuntimeEffect/HavocApplierEffectFactorySO")]
     public class HavocApplierEffectFactorySO : RuntimeEffectFactorySO
-    {
-        [SerializeField]
-        ActionAnimationInfo _actionAnimationInfo;
-
+    { 
         [Header("This section should be insert with Evoke status effect")]
         [SerializeField]
         private List<StatusRuntimeEffectFactorySO> _effects;
@@ -25,7 +22,7 @@ namespace Vanaring {
         private EDamageScaling dmg;
         public override RuntimeEffect Factorize(List<CombatEntity> targets)
         {
-            HavocApplierRuntimeEffect retEffect = new HavocApplierRuntimeEffect(_effects, _actionAnimationInfo, dmg);
+            HavocApplierRuntimeEffect retEffect = new HavocApplierRuntimeEffect(_effects   , dmg);
             foreach (CombatEntity target in targets)
                 retEffect.AssignTarget(target);
 
@@ -42,7 +39,7 @@ namespace Vanaring {
     public class HavocApplierRuntimeEffect : StatusEffectApplierRuntimeEffect
     { 
         private EDamageScaling dmg = 0 ;
-        public HavocApplierRuntimeEffect(List<StatusRuntimeEffectFactorySO> effects, ActionAnimationInfo actionAnimationInfo, EDamageScaling dmg) : base(effects, actionAnimationInfo)
+        public HavocApplierRuntimeEffect(List<StatusRuntimeEffectFactorySO> effects    , EDamageScaling dmg) : base(effects   )
         {
             this.dmg = dmg; 
         }

@@ -14,6 +14,9 @@ namespace Vanaring
     {
         [SerializeField] 
         private List<SpellActionSO> _spellActions;
+
+        [SerializeField]
+        private List<WeaponActionAbilityRuntime> _equipedWeaponAction ;
  
         public List<SpellActionSO> GetSpellAction => _spellActions ;  
     }

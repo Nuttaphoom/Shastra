@@ -86,6 +86,9 @@ namespace Vanaring
 
         public GameObject GetObjectWithIndex(int index)
         {
+            if (index >= _timelienActors.Count)
+                return null;
+
             return _timelienActors[(int)index].gameObject;
         }
 
@@ -148,7 +151,8 @@ namespace Vanaring
         public ActionSignal(ActionSignal copied)
         {
             if (copied._timeLineActorSetupPrefab == null)
-                throw new NullReferenceException("_timeLineActorSetupPrefab"); 
+                throw new Exception("TimeLineActorSetUpPrefab hasn't been assigned   " );
+            
 
             for (int i = 0; i < copied._signalEffectBindings.Count; i++ ) 
                 _signalEffectBindings.Add(copied._signalEffectBindings[i]);

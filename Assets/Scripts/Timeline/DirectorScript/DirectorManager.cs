@@ -61,24 +61,26 @@ namespace Vanaring
             currentDirector.Play();
 
             // 4.) Wait until Timeline is done
-            StartCoroutine (WaitForTimeline(currentDirector));
+            StartCoroutine (WaitForTimeline(currentDirector, timelineActorSetupHandler));
  
         }
 
-        private IEnumerator WaitForTimeline(PlayableDirector director)
+        private IEnumerator WaitForTimeline(PlayableDirector director, TimelineActorSetupHandler timelineActorSetupHandler)
         {
             _playingTimeline = true; 
             while (director.state == PlayState.Playing)
             {
                 yield return new WaitForEndOfFrame() ;
             }
-            _playingTimeline = false; 
+            _playingTimeline = false;
+            timelineActorSetupHandler.DestroyTimelineElement();
+            
             Destroy(director.gameObject); 
 
         }
 
         #region GETTER
-        bool IsPlayingTimeline => _playingTimeline;
+        public bool IsPlayingTimeline => _playingTimeline;
 
         #endregion
     }
