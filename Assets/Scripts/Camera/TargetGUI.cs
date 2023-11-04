@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Playables;
 
 namespace Vanaring 
 {
@@ -13,6 +14,8 @@ namespace Vanaring
         [SerializeField]
         private GameObject _weakTargetGUI;
 
+        [SerializeField]
+        private Vector3 _breakGUIOffset; 
         private void Awake()
         {
             if (_breakTargetGUI == null)
@@ -43,9 +46,19 @@ namespace Vanaring
         }
         public GameObject InstantiateWeakGUI(Vector3 pos, Transform parent)
         {
-            GameObject newTargetObj = Instantiate(_weakTargetGUI, pos, Quaternion.identity, parent);
+            GameObject newTargetObj = Instantiate(_weakTargetGUI, pos , Quaternion.identity, parent);
             newTargetObj.SetActive(false);
             return newTargetObj;
+        }
+
+        public void SetBreakGUIPosition(GameObject breakGUIOBJ, Vector3 pos)
+        {
+            breakGUIOBJ.transform.position = pos + _breakGUIOffset; 
+        }
+
+        public void SetTargetGUIPosition(GameObject targetGUIOBJ, Vector3 pos)
+        {
+            targetGUIOBJ.transform.position = pos    ;
         }
         //public void En
     }
