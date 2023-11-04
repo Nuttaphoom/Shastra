@@ -36,6 +36,7 @@ namespace Vanaring
         private CircularArray<CombatEntity> _activeCombatEntities;
         private CombatRefereeStateHandler _combatRefereeStateHandler;
 
+        
         [Serializable]
         private struct CompetatorDetailStruct
         {

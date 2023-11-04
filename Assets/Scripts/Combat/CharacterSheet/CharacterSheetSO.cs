@@ -34,13 +34,13 @@ namespace Vanaring
 
     public class RuntimeStat
     {
-        private int _defaultValue ;
+        private int _initialValue ;
         private int _peakValue;
         private int _increasedValue;
 
         public RuntimeStat(RuntimeStat copied)
         {
-            _defaultValue = copied._defaultValue;
+            _initialValue = copied._initialValue;
             _peakValue = copied._peakValue;
             _increasedValue = copied._increasedValue;
 
@@ -49,9 +49,9 @@ namespace Vanaring
             //Debug.Log(" copied.getvalue : " + copied.GetStatValue() ) ;
         }
 
-        public RuntimeStat(int peakValue, int defaultValue)
+        public RuntimeStat(int peakValue, int initialValue)
         {
-            _defaultValue = defaultValue;
+            _initialValue = initialValue;
             _peakValue = peakValue;
             _increasedValue = 0;
         }
@@ -70,11 +70,11 @@ namespace Vanaring
             if (temp)
             {
                 _increasedValue += value;
-                if (_increasedValue + _defaultValue > _peakValue)
+                if (_increasedValue + _initialValue > _peakValue)
                 {
                     ret = _peakValue - (_increasedValue - value) ;
 
-                    _increasedValue = _peakValue - _defaultValue;
+                    _increasedValue = _peakValue - _initialValue;
                 }
 
                 if (_increasedValue < 0) 
@@ -83,17 +83,17 @@ namespace Vanaring
             }
             else
             {
-                _defaultValue += value ;
+                _initialValue += value ;
                 if (peakUpdate)
                     _peakValue += value;
 
-                if (_defaultValue < 0)
-                    _defaultValue = 0;
+                if (_initialValue < 0)
+                    _initialValue = 0;
 
-                else if (_defaultValue > _peakValue)
+                else if (_initialValue > _peakValue)
                 {
-                    ret =  _peakValue - (_defaultValue - value) ;
-                    _defaultValue = _peakValue;
+                    ret =  _peakValue - (_initialValue - value) ;
+                    _initialValue = _peakValue;
                 }
             }
             return ret; 
@@ -109,7 +109,12 @@ namespace Vanaring
         #region GETTER 
         public int GetStatValue()
         {
-            return (_increasedValue + _defaultValue);
+            return (_increasedValue + _initialValue);
+        }
+
+        public int GetPeakValue()
+        {
+            return (_peakValue); 
         }
 
         #endregion

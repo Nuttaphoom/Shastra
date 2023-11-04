@@ -61,6 +61,11 @@ namespace Vanaring
             return _magicalEnergy.GetEnergy(side);
         }
 
+        public int GetPeakEnergyAmout(RuntimeMangicalEnergy.EnergySide side)
+        {
+            return _magicalEnergy.GetEnergyRuntimeStat(side).GetPeakValue();
+        }
+
         public void ModifyEnergy(RuntimeMangicalEnergy.EnergySide side, int value)
         {
             

@@ -65,9 +65,10 @@ namespace Vanaring
             {
                 hpVal = _owner.StatsAccumulator.GetHPAmount();
                 maxHP = _owner.StatsAccumulator.GetHPAmount();
-                
+
                 lightScale = _owner.SpellCaster.GetEnergyAmount(RuntimeMangicalEnergy.EnergySide.LightEnergy);
                 darkScale = _owner.SpellCaster.GetEnergyAmount(RuntimeMangicalEnergy.EnergySide.DarkEnergy);
+
                 maxLightScale = lightScale;
                 maxDarkScale = darkScale;
 
