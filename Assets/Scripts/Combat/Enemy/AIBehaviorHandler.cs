@@ -12,8 +12,7 @@ using UnityEngine.PlayerLoop;
 namespace Vanaring
 {
     public class AIBehaviorHandler : MonoBehaviour
-    {
-       
+    {       
         [SerializeField]
         private List<BehaviorInstance> _behaviors;
 
@@ -116,6 +115,10 @@ namespace Vanaring
     [Serializable]
     public class BehaviorInstance
     {
+        [Header("BehaviorDescription served as a note for devs")]
+        [SerializeField]
+        private string _behaviorDescription;
+
         #region PrivateStructEnum
         [Serializable]
         public enum ActionInvokeOrder
@@ -167,7 +170,7 @@ namespace Vanaring
 
         private int _currentOrder = 0;
 
-        private AIBehaviorHandler _aiBehaviorHandler; 
+        private AIBehaviorHandler _aiBehaviorHandler;
 
         [SerializeField]
         private BehaviorComboHandler _comboHandler; 
