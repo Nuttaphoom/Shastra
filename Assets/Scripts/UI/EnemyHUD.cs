@@ -58,6 +58,9 @@ namespace Vanaring
             if (_owner != null)
             {
                 hpVal = _owner.StatsAccumulator.GetHPAmount();
+                hpImage.fillAmount = hpVal / _owner.StatsAccumulator.GetPeakHPAmount();
+                secondhpImage.fillAmount = hpVal / _owner.StatsAccumulator.GetPeakHPAmount();
+
                 maxHP = _owner.StatsAccumulator.GetPeakHPAmount();
 
                 lightScale = _owner.SpellCaster.GetEnergyAmount(RuntimeMangicalEnergy.EnergySide.LightEnergy);
@@ -173,7 +176,7 @@ namespace Vanaring
 
         private IEnumerator SlotBreak(int maxSlot, int curScale)
         {
-            Debug.Log("max= " + maxSlot + " cur= " + curScale);
+            //Debug.Log("max= " + maxSlot + " cur= " + curScale);
             for (int i = maxSlot-1; i >= 0; i--)
             {
                 if (i+1 > curScale)

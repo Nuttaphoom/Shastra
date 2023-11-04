@@ -43,6 +43,32 @@ namespace Vanaring
             }
         }
 
+        public void InitEnemyHUD(List<CombatEntity> entities)
+        {
+            foreach (var key in instantiatedEnemyHUD.Keys)
+            {
+                if (! entities.Contains(key))
+                    instantiatedEnemyHUD[key].SetActive(false);
+            }
+            foreach (var combatEntity in entities)
+            {
+                if (!instantiatedEnemyHUD.ContainsKey(combatEntity))
+                {
+                    EnemyHUD newEnemyHUD = Instantiate(enemyHudTemplate, transform);
+                    instantiatedEnemyHUD.Add(combatEntity, newEnemyHUD.gameObject);
+                    Vector3 screen = UISpaceSingletonHandler.ObjectToUISpace(combatEntity.transform);
+                    instantiatedEnemyHUD[combatEntity].transform.position = screen;
+                    instantiatedEnemyHUD[combatEntity].transform.position += new Vector3(0, 200, 0);
+                }
+                if (!instantiatedEnemyHUD[combatEntity].activeSelf)
+                {
+                    instantiatedEnemyHUD[combatEntity].SetActive(true);
+                }
+                
+            }
+            
+        }
+
         private void SelectHUDToDisplay(List<CombatEntity> entities)
         {
             foreach (EnemyHUD hud in enemyHUDList)
