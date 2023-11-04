@@ -9,38 +9,64 @@ namespace Vanaring
     {
         [SerializeField] private EnemyHUD enemyHudTemplate;
         private List<EnemyHUD> enemyHUDList = new List<EnemyHUD>();
-
+        private Dictionary<CombatEntity, GameObject> instantiatedEnemyHUD = new Dictionary<CombatEntity, GameObject>();
         private void Start()
         {
             StartCoroutine(InitTest());
         }
 
         //Display what reference(list) want to
+        //public void DisplayEnemyHUD(List<CombatEntity> entities)
+        //{
+ 
+        //    if(entities.Count < 1)
+        //    {
+        //        Debug.Log("No enemy on field/detect");
+        //        return;
+        //    }
+        //    if(enemyHUDList.Count > 0)
+        //    {
+        //        Debug.Log(enemyHUDList.Count);
+        //        DisableEnemyHUD();
+        //        SelectHUDToDisplay(entities);
+        //    }
+        //    else    //Create new instead
+        //    {
+        //        foreach (CombatEntity entity in entities)
+        //        {
+        //            EnemyHUD newEnemyHUD = Instantiate(enemyHudTemplate, transform);
+        //            newEnemyHUD.Init(entity);
+        //            SetUITransform(newEnemyHUD, entity);
+        //            enemyHUDList.Add(newEnemyHUD);
+        //            //newEnemyHUD.gameObject.SetActive(false);
+        //        }
+        //    }
+        //}
+
         public void DisplayEnemyHUD(List<CombatEntity> entities)
         {
- 
-            if(entities.Count < 1)
+            foreach (var key in instantiatedEnemyHUD.Keys)
             {
-                Debug.Log("No enemy on field/detect");
-                return;
+                if (! entities.Contains(key))
+                    instantiatedEnemyHUD[key].SetActive(false);
             }
-            if(enemyHUDList.Count > 0)
+            foreach (var combatEntity in entities)
             {
-                Debug.Log(enemyHUDList.Count);
-                DisableEnemyHUD();
-                SelectHUDToDisplay(entities);
-            }
-            else    //Create new instead
-            {
-                foreach (CombatEntity entity in entities)
+                if (!instantiatedEnemyHUD.ContainsKey(combatEntity))
                 {
                     EnemyHUD newEnemyHUD = Instantiate(enemyHudTemplate, transform);
-                    newEnemyHUD.Init(entity);
-                    SetUITransform(newEnemyHUD, entity);
-                    enemyHUDList.Add(newEnemyHUD);
-                    //newEnemyHUD.gameObject.SetActive(false);
+                    instantiatedEnemyHUD.Add(combatEntity, newEnemyHUD.gameObject);
+                    Vector3 screen = UISpaceSingletonHandler.ObjectToUISpace(combatEntity.transform);
+                    instantiatedEnemyHUD[combatEntity].transform.position = screen;
+                    instantiatedEnemyHUD[combatEntity].transform.position += new Vector3(0, 200, 0);
                 }
+                if (!instantiatedEnemyHUD[combatEntity].activeSelf)
+                {
+                    instantiatedEnemyHUD[combatEntity].SetActive(true);
+                }
+                
             }
+            
         }
 
         private void SelectHUDToDisplay(List<CombatEntity> entities)
@@ -84,7 +110,7 @@ namespace Vanaring
                 if(enemyHUDList[i] == null)
                 {
                     Debug.Log("Enemy didn't load their HUD");
-                    throw new Exception("EnenmyHUD is not load for this entity:" + entity);
+                    //throw new Exception("EnenmyHUD is not load for this entity:" + entity);
                 }
                 else
                 {
