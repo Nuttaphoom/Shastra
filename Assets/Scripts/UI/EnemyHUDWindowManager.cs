@@ -18,8 +18,7 @@ namespace Vanaring
         //Display what reference(list) want to
         public void DisplayEnemyHUD(List<CombatEntity> entities)
         {
-
-            entities[0].SpellCaster.
+ 
             if(entities.Count < 1)
             {
                 Debug.Log("No enemy on field/detect");
