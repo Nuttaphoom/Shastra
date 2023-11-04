@@ -9,7 +9,7 @@ using UnityEngine.Rendering.VirtualTexturing;
 
 namespace Vanaring
 {
-    public class TargetSelectionFlowControl : MonoBehaviour, IInputReceiver
+    public class TargetSelectionFlowControl : MonoBehaviour, IInputReceiver, IBroadcaster
     {
         private EventBroadcaster _eventBroadcaster;
 
@@ -43,6 +43,10 @@ namespace Vanaring
             {
                 _eventBroadcaster = new EventBroadcaster();
             }
+
+            _eventBroadcaster.OpenChannel<bool>("OnTargetSelectionEnd");
+            _eventBroadcaster.OpenChannel<CombatEntity>("OnTargetSelectionEnter");
+
             return _eventBroadcaster;
         }
         #endregion
@@ -53,8 +57,6 @@ namespace Vanaring
             _targetSelectionGUI.Initialize(_targetSelectionDisplayer);
             _eventBroadcaster = new EventBroadcaster();
 
-            _eventBroadcaster.OpenChannel<bool>("OnTargetSelectionEnd")  ;
-            _eventBroadcaster.OpenChannel<CombatEntity>("OnTargetSelectionEnter") ;
 
         }
 

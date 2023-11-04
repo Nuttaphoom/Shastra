@@ -16,7 +16,7 @@ using static UnityEngine.GraphicsBuffer;
 namespace Vanaring
 {
     [RequireComponent(typeof(SpellCasterHandler))]
-    public abstract class CombatEntity : MonoBehaviour, IStatusEffectable, ITurnState, IDamagable, IAttackter
+    public abstract class CombatEntity : MonoBehaviour, IStatusEffectable, ITurnState, IDamagable, IAttackter, IBroadcaster
     {
         [Header("Right now we manually assign CharacterSheet, TO DO : Make it loaded from the main database")]
         [SerializeField]
@@ -48,17 +48,25 @@ namespace Vanaring
         public bool IsDead => _isDead;
         public bool IsExhausted => _isExhausted;
 
-        protected Queue<ActorAction> _actionQueue = new Queue<ActorAction>(); 
-        protected virtual void Awake()
-        {
-            //Need to setup event broadcaster first before init other classes as other class many require reference to event broadcaster 
-            _eventBroadcaster = new EventBroadcaster();
+        protected Queue<ActorAction> _actionQueue = new Queue<ActorAction>();
 
+        public EventBroadcaster GetEventBroadcaster()
+        {
+            if (_eventBroadcaster == null)
+            {
+                _eventBroadcaster = new EventBroadcaster();
+            }
             _eventBroadcaster.OpenChannel<int>("OnAttack");
             _eventBroadcaster.OpenChannel<int>("OnDamage");
             _eventBroadcaster.OpenChannel<CombatEntity>("OnTakeControl");
             _eventBroadcaster.OpenChannel<CombatEntity>("OnTakeControlLeave");
-            
+
+            return _eventBroadcaster; 
+
+        }
+
+        protected virtual void Awake()
+        {
             _dmgOutputPopHanlder = new POPUPNumberTextHandler(this); 
             _runtimeCharacterStatsAccumulator = new RuntimeCharacterStatsAccumulator(_characterSheet);
             _energyOverflowHandler = GetComponent<EnergyOverflowHandler>();
@@ -77,12 +85,13 @@ namespace Vanaring
         // Take control and leave control should have its own space 
         public virtual IEnumerator TakeControl()
         {
-            EventBroadcaster.InvokeEvent(this, "OnTakeControl");
+            Debug.Log("take control invoke");
+            GetEventBroadcaster().InvokeEvent(this, "OnTakeControl");
             yield return null;
         }
         public virtual IEnumerator TakeControlLeave()
         {
-            EventBroadcaster.InvokeEvent(this, "OnTakeControlLeave");
+            GetEventBroadcaster().InvokeEvent(this, "OnTakeControlLeave");
 
             yield return null;
         }
@@ -162,7 +171,7 @@ namespace Vanaring
             yield return GetStatusEffectHandler().RunStatusEffectExpiredScheme();
         }
         #region GETTER
-        public EventBroadcaster EventBroadcaster => _eventBroadcaster; 
+
         public StatusEffectHandler GetStatusEffectHandler()
         {
             return _statusEffectHandler;
@@ -196,7 +205,7 @@ namespace Vanaring
                 _isDead = true;
             }
 
-            _eventBroadcaster.InvokeEvent<int>((int) trueDmg, "OnDamage");
+            GetEventBroadcaster().InvokeEvent<int>((int) trueDmg, "OnDamage");
 
         }
         public void LogicHeal(int amount)
@@ -259,7 +268,7 @@ namespace Vanaring
             {
                 target.LogicHurt(this, inputDmg);
 
-                _eventBroadcaster.InvokeEvent(inputDmg, "OnAttack");
+                GetEventBroadcaster().InvokeEvent(inputDmg, "OnAttack");
             }
         }
 

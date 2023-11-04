@@ -20,8 +20,17 @@ namespace Vanaring
         Hostile
     }
 
-    public class CombatReferee : MonoBehaviour
+    public class CombatReferee : MonoBehaviour, IBroadcaster
     {
+        private EventBroadcaster _eventBroadcaster; 
+        public EventBroadcaster GetEventBroadcaster()
+        {
+            if (_eventBroadcaster == null) 
+                _eventBroadcaster = new EventBroadcaster();
+
+            return _eventBroadcaster; 
+        }
+
         public static CombatReferee instance = null;
 
         [SerializeField]
@@ -70,11 +79,16 @@ namespace Vanaring
 
         private void Start()
         {
-            SetUpNewCombatEncounter();
-            StartCoroutine(CustomTick());
+            StartCoroutine(BeginNewBattle()); 
         }
 
         #region SettingUpRound
+        private IEnumerator BeginNewBattle()
+        {
+            SetUpNewCombatEncounter();
+            StartCoroutine(CustomTick());
+            yield return null; 
+        }
         private void SetUpNewCombatEncounter()
         {
             AssignCompetators(_entityLoader.LoadData(), ECompetatorSide.Hostile);
@@ -138,7 +152,7 @@ namespace Vanaring
                         CameraSetUPManager.Instance.SelectCharacterCamera(i);
                     }
                 }
-                
+
                 yield return newEntity.TakeControl();
 
             }

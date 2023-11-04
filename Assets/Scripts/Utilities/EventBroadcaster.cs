@@ -1,24 +1,47 @@
-﻿using System;
+﻿using Cinemachine;
+using CustomYieldInstructions;
+using System;
+using System.Collections;
 using System.Collections.Generic;
-using System.Data.Odbc;
-using System.Diagnostics.Tracing;
-using System.Linq;
+using System.Drawing.Printing;
+using System.Numerics;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
+using Unity.VisualScripting;
+using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.InputSystem;
-
+using static Cinemachine.CinemachineTargetGroup;
+using static UnityEngine.EventSystems.EventTrigger;
+using static UnityEngine.GraphicsBuffer;
 namespace Vanaring
 {
+    /// <summary>
+    /// Every broadcaster need to be attached with IBroadcaster
+    /// </summary>
+    /// <returns></returns>
+    public interface IBroadcaster
+    {
+        /// <summary>
+        /// Retrieves the appropriate EventBroadcaster instance and initializes the associated event channel.
+        /// </summary>
+        /// <returns>The EventBroadcaster instance for managing events.</returns>
+        public EventBroadcaster GetEventBroadcaster();
+    }
     public class EventBroadcaster
     {
         private Dictionary<string, IEventChannel> _events = new Dictionary<string, IEventChannel>();
 
         public void OpenChannel<T>(string key)
         {
+            if (_events.ContainsKey(key)) 
+                return;
+            
             _events[key] = new EventChannelRuntime<T>();
         }
+        ~EventBroadcaster()
+        {
+            _events.Clear(); 
+        }
+
         public void SubEvent<T>(UnityAction<T> callback, string key)
         {
             if (callback == null)
