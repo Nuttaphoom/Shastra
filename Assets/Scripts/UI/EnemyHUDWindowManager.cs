@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Vanaring
@@ -10,9 +11,11 @@ namespace Vanaring
         [SerializeField] private EnemyHUD enemyHudTemplate;
         private List<EnemyHUD> enemyHUDList = new List<EnemyHUD>();
         private Dictionary<CombatEntity, GameObject> instantiatedEnemyHUD = new Dictionary<CombatEntity, GameObject>();
+
+
         private void Start()
         {
-            StartCoroutine(InitTest());
+            //StartCoroutine(InitTest());
         }
 
         //Display what reference(list) want to
@@ -45,6 +48,12 @@ namespace Vanaring
 
         public void DisplayEnemyHUD(List<CombatEntity> entities)
         {
+            if (entities.Count <= 0)
+                return;
+
+            if (entities[0] is not AIEntity) 
+                return; 
+
             foreach (var key in instantiatedEnemyHUD.Keys)
             {
                 if (! entities.Contains(key))

@@ -16,8 +16,9 @@ namespace Vanaring
         private List<SpellActionSO> _spellActions;
 
         [SerializeField]
-        private List<WeaponActionAbilityRuntime> _equipedWeaponAction ;
+        private List<WeaponActionSO> _equipedWeaponAction ;
  
         public List<SpellActionSO> GetSpellAction => _spellActions ;  
+        public List<WeaponActionSO> GetWeaponAction => _equipedWeaponAction ;
     }
 }

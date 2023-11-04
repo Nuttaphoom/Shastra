@@ -16,6 +16,10 @@ namespace Vanaring
         [SerializeField]
         private TargetSelectionGUI _targetSelectionGUI ;
 
+
+        [SerializeField] 
+        private EnemyHUDWindowManager _enemyHUDWindowManager ;
+
         [SerializeField]
         private Transform _targetSelectionDisplayer; 
 
@@ -205,6 +209,7 @@ namespace Vanaring
                 if (_forceStop)
                     break;
 
+
                 _selectingTarget.Clear(); 
 
                 _selectingTarget.Add(_validTargets[_currentSelectIndex]);
@@ -232,6 +237,7 @@ namespace Vanaring
                         yield return EnergySimulation(selectedEntity, actorAction);
                     }
                     _targetSelectionGUI.SelectTargetPointer(_selectingTarget);
+                    _enemyHUDWindowManager.DisplayEnemyHUD(_selectingTarget);
 
                     CameraSetUPManager.Instance.SetLookAtTarget(_selectingTarget[0].transform) ;
 

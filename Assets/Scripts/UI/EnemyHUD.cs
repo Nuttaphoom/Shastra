@@ -98,6 +98,7 @@ namespace Vanaring
 
         private void OnDisable()
         {
+            Debug.Log(_owner);
             _owner.SpellCaster.UnSubOnModifyEnergy(OnEnergyModified);
             _owner.UnSubOnDamageVisualEvent(OnHPModified);
         }
