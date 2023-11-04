@@ -20,6 +20,7 @@ namespace Vanaring
 
         private Dictionary<CombatEntity, GameObject> _instantiatedBreakGUI = new Dictionary<CombatEntity, GameObject>();
 
+
         [SerializeField]
         private GameObject _vfxPrefabTemplate;
         private GameObject instantiatedVFXCircle;
@@ -90,7 +91,6 @@ namespace Vanaring
                     _instantiatedTargetGUI[combatEntity].SetActive(true);
                 }
 
-                _instantiatedTargetGUI[combatEntity].transform.position = UISpaceSingletonHandler.ObjectToUISpace(combatEntity.transform);
 
                 if (!_instantiatedVFXCircle.ContainsKey(combatEntity))
                 {
@@ -101,6 +101,8 @@ namespace Vanaring
 
                 if (!_instantiatedVFXCircle[combatEntity].activeSelf)
                     _instantiatedVFXCircle[combatEntity].SetActive(true);
+
+                targetGUI.SetTargetGUIPosition(_instantiatedTargetGUI[combatEntity], UISpaceSingletonHandler.ObjectToUISpace(combatEntity.transform));
             }
         }
 
@@ -112,13 +114,14 @@ namespace Vanaring
 
                 Vector3 location = UISpaceSingletonHandler.ObjectToUISpace(combatEntity.CombatEntityAnimationHandler.GetGUISpawnTransform());
                 _instantiatedBreakGUI[combatEntity].transform.position =  location ;// new Vector3(circleTranform.x, 0.03f, circleTranform.z);
-            
             }
 
             if (!_instantiatedBreakGUI[combatEntity].activeSelf)
             {
                 _instantiatedBreakGUI[combatEntity].SetActive(true);
             }
+
+            targetGUI.SetBreakGUIPosition(_instantiatedBreakGUI[combatEntity], UISpaceSingletonHandler.ObjectToUISpace(combatEntity.transform));
         }
 
         public void EndSelectionScheme()
