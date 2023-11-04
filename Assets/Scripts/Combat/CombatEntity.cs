@@ -38,8 +38,7 @@ namespace Vanaring
 
         private EnergyOverflowHandler _energyOverflowHandler;
 
-        [SerializeField]
-        private DamageOutputPopupHandler _dmgOutputPopHanlder;
+        private POPUPNumberTextHandler _dmgOutputPopHanlder;
 
         private EventBroadcaster _eventBroadcaster;
 
@@ -60,7 +59,7 @@ namespace Vanaring
             _eventBroadcaster.OpenChannel<CombatEntity>("OnTakeControl");
             _eventBroadcaster.OpenChannel<CombatEntity>("OnTakeControlLeave");
             
-            _dmgOutputPopHanlder = new DamageOutputPopupHandler(_dmgOutputPopHanlder, this); 
+            _dmgOutputPopHanlder = new POPUPNumberTextHandler(this); 
             _runtimeCharacterStatsAccumulator = new RuntimeCharacterStatsAccumulator(_characterSheet);
             _energyOverflowHandler = GetComponent<EnergyOverflowHandler>();
             _statusEffectHandler = new StatusEffectHandler(this);
