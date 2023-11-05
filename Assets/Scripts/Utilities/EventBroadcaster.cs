@@ -34,7 +34,8 @@ namespace Vanaring
         {
             if (_events.ContainsKey(key)) 
                 return;
-            
+
+
             _events[key] = new EventChannelRuntime<T>();
         }
         ~EventBroadcaster()
@@ -49,7 +50,7 @@ namespace Vanaring
 
 
             if (!_events.ContainsKey(key))
-                throw new Exception(key + "is not found in this broadcaster");
+                throw new Exception(key + " is not found in this broadcaster");
 
 
             _events[key].SubEvent(callback);

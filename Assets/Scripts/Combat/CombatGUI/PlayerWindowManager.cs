@@ -37,15 +37,15 @@ namespace Vanaring
         {
             foreach (var entity in CombatReferee.instance.GetCompetatorsBySide(ECompetatorSide.Ally))
             {
-                entity.GetEventBroadcaster().SubEvent<CombatEntity>(SetUpWindows, "OnTakeControl");
-                entity.GetEventBroadcaster().SubEvent<CombatEntity>(CloseWindow, "OnTakeControlLeave");
+                entity.SubOnTakeControlEvent(SetUpWindows); 
+                entity.SubOnTakeControlLeaveEvent(CloseWindow) ;
             }
         }
 
         private void Start()
         {
-            TargetSelectionFlowControl.Instance.GetEventBroadcaster().SubEvent<bool>(OnTargetSelectionEnd, "OnTargetSelectionEnd");
-            TargetSelectionFlowControl.Instance.GetEventBroadcaster().SubEvent<CombatEntity>(OnTargetSelectionEnter, "OnTargetSelectionEnter");
+            TargetSelectionFlowControl.Instance.SubOnTargetSelectionEnter(OnTargetSelectionEnter);
+            TargetSelectionFlowControl.Instance.SubOnTargetSelectionEnd(OnTargetSelectionEnd);//.SubEvent<bool>(OnTargetSelectionEnd, "OnTargetSelectionEnd");
 
             foreach (var window in GetAllValidWindows())
                 window.Init(this);
@@ -108,7 +108,6 @@ namespace Vanaring
 
         public void SetUpWindows(CombatEntity entity)
         {
-            Debug.Log("set up window");
             foreach (var window in GetAllValidWindows())
                 window.ClearData( );
 

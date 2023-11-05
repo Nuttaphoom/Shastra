@@ -28,7 +28,5 @@ namespace Vanaring
         public void SubOnDamageVisualEvent(UnityAction<int> argc);
         public void UnSubOnDamageVisualEvent(UnityAction<int> argc);
 
-        public void SubOnDamageVisualEventEnd(UnityAction<int> argc);
-        public void UnSubOnDamageVisualEventEnd(UnityAction<int> argc);
     }
 }

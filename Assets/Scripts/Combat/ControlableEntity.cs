@@ -10,8 +10,7 @@ namespace Vanaring
 {
     public class ControlableEntity : CombatEntity
     {
-        private CombatGraphicalHandler _combatGraphicalHandler;
-
+ 
         [Header("Right now we manually assign valid action, TODO : Load from Database")]
         [SerializeField]
         private ControlableEntityActionsRegistry _controlableEntityActionRegistry;
@@ -50,12 +49,7 @@ namespace Vanaring
             yield return base.TurnLeave();
         }
 
-        public IEnumerator TakeControlSoftLeave()
-        {
-            _combatGraphicalHandler.DisableMenuElements();
-
-            yield return null;
-        }
+     
 
         #region GETTER
 

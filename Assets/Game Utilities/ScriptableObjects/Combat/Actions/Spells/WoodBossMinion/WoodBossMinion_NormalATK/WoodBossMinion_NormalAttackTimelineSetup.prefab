@@ -2800,7 +2800,7 @@ VFXRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1452438914189460945}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
@@ -3282,7 +3282,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7872968055011658286}
-  - {fileID: 3621127687670927701}
   - {fileID: 8705048859024685886}
   m_Father: {fileID: 1149797596626964522}
   m_RootOrder: -1
@@ -5181,13 +5180,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2625657199242517183}
-  m_LocalRotation: {x: -6.290268e-17, y: 0.98705035, z: -0.16041104, w: 2.300319e-17}
-  m_LocalPosition: {x: -0, y: 1.08, z: 3.235}
+  m_LocalRotation: {x: -0.0000000023903113, y: 0.98705035, z: -0.16041106, w: -0.000000014708198}
+  m_LocalPosition: {x: 0, y: 1.0799999, z: 12.495}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5915516283096463799}
-  m_Father: {fileID: 6994607169353217868}
+  m_Father: {fileID: 1149797596626964522}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0.000008164217, y: 0.00002527416, z: -0.000002455161}
 --- !u!114 &6920500911853107637
@@ -11019,7 +11018,7 @@ GameObject:
   - component: {fileID: 970540921105678251}
   - component: {fileID: -8615740222444698358}
   m_Layer: 0
-  m_Name: WoodBoss_NormalAttackTimelineSetup
+  m_Name: WoodBossMinion_NormalAttackTimelineSetup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -11040,6 +11039,7 @@ Transform:
   - {fileID: 8223999238057057151}
   - {fileID: 8458182411839524502}
   - {fileID: 6994607169353217868}
+  - {fileID: 3621127687670927701}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -11052,7 +11052,7 @@ PlayableDirector:
   m_GameObject: {fileID: 5164534958145871061}
   m_Enabled: 1
   serializedVersion: 3
-  m_PlayableAsset: {fileID: 11400000, guid: 0b66a8953e13b0a4d93c63e0f388b995, type: 2}
+  m_PlayableAsset: {fileID: 11400000, guid: 9f486116442f75847abd92b462a82589, type: 2}
   m_InitialState: 1
   m_WrapMode: 2
   m_DirectorUpdateMode: 1
@@ -11083,6 +11083,16 @@ PlayableDirector:
   - key: {fileID: 8698538307611173587, guid: 0b66a8953e13b0a4d93c63e0f388b995, type: 2}
     value: {fileID: 3176135359483854009}
   - key: {fileID: -2630757710924346121, guid: 0b66a8953e13b0a4d93c63e0f388b995, type: 2}
+    value: {fileID: 1452438914189460945}
+  - key: {fileID: -8566236742965208575, guid: 9f486116442f75847abd92b462a82589, type: 2}
+    value: {fileID: 0}
+  - key: {fileID: 5678101593322881192, guid: 9f486116442f75847abd92b462a82589, type: 2}
+    value: {fileID: 0}
+  - key: {fileID: -681927769836099648, guid: 9f486116442f75847abd92b462a82589, type: 2}
+    value: {fileID: 2625657199242517183}
+  - key: {fileID: 8698538307611173587, guid: 9f486116442f75847abd92b462a82589, type: 2}
+    value: {fileID: 3176135359483854009}
+  - key: {fileID: -2630757710924346121, guid: 9f486116442f75847abd92b462a82589, type: 2}
     value: {fileID: 1452438914189460945}
   m_ExposedReferences:
     m_References:
@@ -12567,8 +12577,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5719500168860355823}
-  m_LocalRotation: {x: -6.290268e-17, y: 0.98705035, z: -0.16041104, w: 2.300319e-17}
-  m_LocalPosition: {x: 0, y: 1.0799999, z: 12.495}
+  m_LocalRotation: {x: -0, y: 0.9943776, z: -0.10589252, w: 0}
+  m_LocalPosition: {x: 0, y: 0.80999994, z: 3.442}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

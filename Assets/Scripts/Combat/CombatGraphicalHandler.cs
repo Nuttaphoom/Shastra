@@ -49,8 +49,8 @@ namespace Vanaring
 
         private void OnEnable()
         {
-            _combatEntity.SubOnDamageVisualEvent(OnUpdateEntityStats);
-            _combatEntity.SubOnDamageVisualEventEnd(OnVisualHurtUpdateEnd); 
+            //_combatEntity.SubOnDamageVisualEvent(OnUpdateEntityStats);
+            //_combatEntity.SubOnDamageVisualEventEnd(OnVisualHurtUpdateEnd); 
             //OnTargetSelectionSchemeStart.SubEvent(OnTargetSelectionStart_DisableUI) ;
             //OnTargetSelectionSchemeEnd.SubEvent(OnTargetSelectionEnd_EnableUI);
             _combatEntity.SpellCaster.SubOnModifyEnergy(OnEnergyUpdate);
@@ -60,8 +60,8 @@ namespace Vanaring
         {
             //OnTargetSelectionSchemeStart.UnSubEvent(OnTargetSelectionStart_DisableUI);
             //OnTargetSelectionSchemeEnd.UnSubEvent(OnTargetSelectionEnd_EnableUI); 
-            _combatEntity.UnSubOnDamageVisualEvent(OnUpdateEntityStats);
-            _combatEntity.UnSubOnDamageVisualEventEnd(OnVisualHurtUpdateEnd);
+            //_combatEntity.UnSubOnDamageVisualEvent(OnUpdateEntityStats);
+            //_combatEntity.UnSubOnDamageVisualEventEnd(OnVisualHurtUpdateEnd);
         }
 
         public void DisplayItemPanel()

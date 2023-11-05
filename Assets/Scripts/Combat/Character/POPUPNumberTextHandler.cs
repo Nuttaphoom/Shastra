@@ -14,19 +14,21 @@ namespace Vanaring
 
         public POPUPNumberTextHandler(CombatEntity _owner)
         {
- 
-            _entity = _owner; 
-            _entity.SubOnDamageVisualEvent(OnDMGVisualUpdate);
+            
+            _entity = _owner;
+            _entity.SubOnDamageVisualEvent(OnHPATKVisualUpdate);
+            _entity.SubOnHealVisualEvent(OnHPATKVisualUpdate);
         }
 
 
         ~POPUPNumberTextHandler()
         {
-            _entity.UnSubOnDamageVisualEvent(OnDMGVisualUpdate);
+            _entity.UnSubOnDamageVisualEvent(OnHPATKVisualUpdate);
+            _entity.UnSubOnHealVisualEvent(OnHPATKVisualUpdate);
         }
 
 
-        private void OnDMGVisualUpdate(int DONTUSE)
+        private void OnHPATKVisualUpdate(int DONTUSE)
         {
             POPUPNumberTextManager.Instance.DisplayDPOPUPText(_accumulatedDMG, _accumulatedHP, _entity);
             _accumulatedDMG = 0;

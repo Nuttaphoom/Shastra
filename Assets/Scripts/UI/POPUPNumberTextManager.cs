@@ -50,25 +50,28 @@ namespace Vanaring
         {
             if (accumulatedDMG > 0)
             {
+                _outputDMGTimerPrefab.gameObject.SetActive(true);
                 var v = MonoBehaviour.Instantiate(_outputDMGTimerPrefab, transform);
                 v.GetComponent<TextMeshProUGUI>().text = accumulatedDMG.ToString();
                 v.transform.position = UISpaceSingletonHandler.ObjectToUISpace(showToThisEntity.CombatEntityAnimationHandler.GetGUISpawnTransform());
 
-                v.gameObject.SetActive(true);
-
                 AddNewEntityToTextList(showToThisEntity, v.gameObject);
+
+                _outputDMGTimerPrefab.gameObject.SetActive(false);
             }
 
             if (accumulatedHP > 0)
             {
+                _outputHealTimerPrefab.gameObject.SetActive(true);
                 var vv = MonoBehaviour.Instantiate(_outputHealTimerPrefab, transform);
                 vv.GetComponent<TextMeshProUGUI>().text = accumulatedHP.ToString();
                 vv.transform.position = UISpaceSingletonHandler.ObjectToUISpace(showToThisEntity.CombatEntityAnimationHandler.GetGUISpawnTransform());
                 
                 vv.gameObject.SetActive(true);
 
-                AddNewEntityToTextList(showToThisEntity, vv.gameObject); 
+                AddNewEntityToTextList(showToThisEntity, vv.gameObject);
 
+                _outputHealTimerPrefab.gameObject.SetActive(false) ;
             }
         }
 

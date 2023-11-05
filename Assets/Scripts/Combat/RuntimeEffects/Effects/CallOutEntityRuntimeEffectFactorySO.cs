@@ -14,16 +14,20 @@ namespace Vanaring
     [CreateAssetMenu(fileName = "CallOutEntityRuntimeEffectFactorySO", menuName = "ScriptableObject/RuntimeEffect/CallOutEntityRuntimeEffectFactorySO")]
     public class CallOutEntityRuntimeEffectFactorySO : RuntimeEffectFactorySO
     {
-        [SerializeField]
-        private ECompetatorSide _side;
+        [Serializable]
+        public struct CallOutEntityDataStruct
+        {
+            public ECompetatorSide Side ;
+            public CombatEntity CombatEntity; 
+        }
 
         [SerializeField]
-        private CombatEntity _prefab;
+        private List<CallOutEntityDataStruct> _entitiesData;
  
 
         public override RuntimeEffect Factorize(List<CombatEntity> targets)
         {
-            return SetUpRuntimeEffect(new CallOutEntityRuntimeEffect(_prefab, _side), targets);
+            return SetUpRuntimeEffect(new CallOutEntityRuntimeEffect(_entitiesData), targets);
         }
 
         public override void SimulateEnergyModifier(CombatEntity combatEntity)
@@ -34,20 +38,23 @@ namespace Vanaring
 
     public class CallOutEntityRuntimeEffect : RuntimeEffect
     {
-        private CombatEntity _prefabTemplate;
-        private ECompetatorSide _side;
-        public CallOutEntityRuntimeEffect(CombatEntity prefabTemplate, ECompetatorSide side)
+        private List<CallOutEntityRuntimeEffectFactorySO.CallOutEntityDataStruct> _entitiesData;
+        public CallOutEntityRuntimeEffect(List<CallOutEntityRuntimeEffectFactorySO.CallOutEntityDataStruct> entitiesData )
         {
-            _prefabTemplate = prefabTemplate;
-            _side = side;
+            _entitiesData = new List<CallOutEntityRuntimeEffectFactorySO.CallOutEntityDataStruct>();
+            foreach (var entity in entitiesData )
+                _entitiesData.Add( entity );
         }
 
         public override IEnumerator ExecuteRuntimeCoroutine(CombatEntity caster)
         {
-            if (_prefabTemplate == null)
-                throw new NullReferenceException();
+            foreach (var entityData in _entitiesData)
+            {
+                var prefabTemplate = entityData.CombatEntity;
+                var side = entityData.Side; 
 
-            var entity = CombatReferee.instance.InstantiateCompetator(_prefabTemplate,_side);
+                CombatReferee.instance.InstantiateCompetator( prefabTemplate,  side);
+            }
 
             yield return null ;
         }

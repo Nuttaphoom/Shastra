@@ -25,7 +25,6 @@ namespace Vanaring
             while (_referee.GetCurrentActiveEntities().Count > 0)
             {
                 yield return AdvanceTurn();
-                yield return _referee.OnCharacterPerformAction(); 
             }
 
             yield return new RoundEndState(this).Execute();
@@ -143,12 +142,8 @@ namespace Vanaring
 
                 else
                 {
-
-                    //Maybe it get overheat or some affect stunt it while controling 
-
-                    yield return _actor.OnPerformAction(action);
-                    yield return PostPerformActionInEveryCharacter(); 
-
+                    yield return _stateHandler.Referee.OnCharacterPerformAction(_actor,action);
+                    
                     break; 
                 }    
                 yield return new WaitForEndOfFrame(); 
@@ -158,15 +153,7 @@ namespace Vanaring
 
         }
 
-        private IEnumerator PostPerformActionInEveryCharacter()
-        {
-            foreach (ECompetatorSide side in (ECompetatorSide[])Enum.GetValues(typeof(ECompetatorSide))) {
-                foreach (var entity in _stateHandler.Referee.GetCompetatorsBySide(side))
-                {
-                    yield return entity.OnPostPerformAction();
-                }
-            }
-        }
+       
 
         protected override IEnumerator StateEnter()
         {

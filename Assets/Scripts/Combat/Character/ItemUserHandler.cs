@@ -29,8 +29,7 @@ namespace Vanaring
 
         private CombatEntity _combatEntity;
 
-        [SerializeField]
-        private ItemWindowManager _itemWindowManager;
+       
 
         private void Awake()
         {
@@ -41,10 +40,7 @@ namespace Vanaring
         private void Start()
         {
             FactorizeItemInInventory();
-            if (_itemWindowManager == null)
-            {
-                Debug.Log("item window manager is null");
-            }
+           
             //_itemWindowManager.UpdateItemSocket(Items, ItemsAmount);
         }
 
@@ -89,10 +85,7 @@ namespace Vanaring
 
             //TODO : fix this 
 
-            foreach (ItemWindowManager windowManager in FindObjectsOfType<ItemWindowManager>())
-            {
-                windowManager.UpdateItemSocket(_runtimeItems, _runtimeItemsAmount);
-            }
+            
         }
     }
 }

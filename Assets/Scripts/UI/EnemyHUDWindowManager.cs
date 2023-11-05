@@ -46,6 +46,28 @@ namespace Vanaring
         //    }
         //}
 
+        public void DisplaySingleEnemyHUD(CombatEntity combatEntity)
+        {
+            if (combatEntity is not AIEntity)
+                return;
+
+            Vector3 screenPosition = UISpaceSingletonHandler.ObjectToUISpace(combatEntity.transform) + new Vector3(0, 200, 0);
+
+            if (!instantiatedEnemyHUD.ContainsKey(combatEntity))
+            {
+                EnemyHUD newEnemyHUD = Instantiate(enemyHudTemplate, transform);
+                newEnemyHUD.Init(combatEntity);
+                instantiatedEnemyHUD.Add(combatEntity, newEnemyHUD.gameObject);
+            }
+            if (!instantiatedEnemyHUD[combatEntity].activeSelf)
+            {
+                instantiatedEnemyHUD[combatEntity].SetActive(true);
+            }
+
+            instantiatedEnemyHUD[combatEntity].transform.position = screenPosition;
+             
+        }
+
         public void DisplayEnemyHUD(List<CombatEntity> entities)
         {
             if (entities.Count <= 0)
@@ -53,6 +75,7 @@ namespace Vanaring
 
             if (entities[0] is not AIEntity) 
                 return;
+
             foreach (var key in instantiatedEnemyHUD.Keys)
             {
                 if (! entities.Contains(key))
@@ -60,89 +83,90 @@ namespace Vanaring
             }
             foreach (var combatEntity in entities)
             {
+                Vector3 screenPosition = UISpaceSingletonHandler.ObjectToUISpace(combatEntity.transform) + new Vector3(0, 200, 0);
+
                 if (!instantiatedEnemyHUD.ContainsKey(combatEntity))
                 {
                     EnemyHUD newEnemyHUD = Instantiate(enemyHudTemplate, transform);
                     newEnemyHUD.Init(combatEntity);
                     instantiatedEnemyHUD.Add(combatEntity, newEnemyHUD.gameObject);
-                    Vector3 screen = UISpaceSingletonHandler.ObjectToUISpace(combatEntity.transform);
-                    instantiatedEnemyHUD[combatEntity].transform.position = screen;
-                    instantiatedEnemyHUD[combatEntity].transform.position += new Vector3(0, 200, 0);
                 }
                 if (!instantiatedEnemyHUD[combatEntity].activeSelf)
                 {
                     instantiatedEnemyHUD[combatEntity].SetActive(true);
                 }
-                
+
+                instantiatedEnemyHUD[combatEntity].transform.position = screenPosition ;
             }
-            
+
         }
 
-        private void SelectHUDToDisplay(List<CombatEntity> entities)
-        {
-            foreach (EnemyHUD hud in enemyHUDList)
-            {
-                CombatEntity owner = entities.Find(entity => entity == hud.GetOwner());
+        //private void SelectHUDToDisplay(List<CombatEntity> entities)
+        //{
+        //    foreach (EnemyHUD hud in enemyHUDList)
+        //    {
+        //        CombatEntity owner = entities.Find(entity => entity == hud.GetOwner());
 
-                if (owner != null)
-                {
-                    hud.gameObject.SetActive(true);
-                }
-                else
-                {
-                    hud.gameObject.SetActive(false);
-                }
-            }
-        }
+        //        if (owner != null)
+        //        {
+        //            hud.gameObject.SetActive(true);
+        //        }
+        //        else
+        //        {
+        //            hud.gameObject.SetActive(false);
+        //        }
+        //    }
+        //}
 
-        private void SetUITransform(EnemyHUD hud ,CombatEntity entity)
-        {
-            Vector3 screen = UISpaceSingletonHandler.ObjectToUISpace(entity.transform);
-            hud.transform.position = screen;
-            hud.transform.position += new Vector3(0, 200, 0);
-        }
+        //private void SetUITransform(EnemyHUD hud ,CombatEntity entity)
+        //{
+        //    Vector3 screen = UISpaceSingletonHandler.ObjectToUISpace(entity.transform);
+        //    hud.transform.position = screen;
+        //    hud.transform.position += new Vector3(0, 200, 0);
+        //}
 
 
-        private void Update()
-        {
-            if (instantiatedEnemyHUD.Count > 0)
-            {
-                SetAllUITransform();
-            }
-        }
+     
 
-        private void SetAllUITransform()
-        {
-            //int i = 0;
-            //foreach (CombatEntity entity in CombatReferee.instance.GetCompetatorsBySide(ECompetatorSide.Hostile))
-            //{
-            //    if(enemyHUDList[i] == null)
-            //    {
-            //        Debug.Log("Enemy didn't load their HUD");
-            //        //throw new Exception("EnenmyHUD is not load for this entity:" + entity);
-            //    }
-            //    else
-            //    {
-            //        SetUITransform(enemyHUDList[i], entity);
-            //    }
-            //    i++;
-            //}
+        //private void SetAllUITransform()
+        //{
+        //    //int i = 0;
+        //    //foreach (CombatEntity entity in CombatReferee.instance.GetCompetatorsBySide(ECompetatorSide.Hostile))
+        //    //{
+        //    //    if(enemyHUDList[i] == null)
+        //    //    {
+        //    //        Debug.Log("Enemy didn't load their HUD");
+        //    //        //throw new Exception("EnenmyHUD is not load for this entity:" + entity);
+        //    //    }
+        //    //    else
+        //    //    {
+        //    //        SetUITransform(enemyHUDList[i], entity);
+        //    //    }
+        //    //    i++;
+        //    //}
 
-            //foreach (var key in instantiatedEnemyHUD.Keys)
-            //{
-            //    Vector3 screen = UISpaceSingletonHandler.ObjectToUISpace(instantiatedEnemyHUD[key].transform);
-            //    instantiatedEnemyHUD[key].transform.position = screen;
-            //    instantiatedEnemyHUD[combatEntity].transform.position += new Vector3(0, 200, 0);
-            //}
-        }
+        //    //foreach (var key in instantiatedEnemyHUD.Keys)
+        //    //{
+        //    //    Vector3 screen = UISpaceSingletonHandler.ObjectToUISpace(instantiatedEnemyHUD[key].transform);
+        //    //    instantiatedEnemyHUD[key].transform.position = screen;
+        //    //    instantiatedEnemyHUD[combatEntity].transform.position += new Vector3(0, 200, 0);
+        //    //}
+        //}
 
-        private void DisableEnemyHUD()
+        public void DisableEnemyHUD()
         {
             foreach (EnemyHUD enemyHUD in enemyHUDList)
             {
                 enemyHUD.gameObject.SetActive(false);
             }
+
+            foreach (var key in instantiatedEnemyHUD.Keys)
+            {
+                instantiatedEnemyHUD[key].SetActive(false); 
+            }
         }
+
+
         public void ClearEnemyHUD()
         {
             for (int i = enemyHUDList.Count - 1; i >= 0; i--)

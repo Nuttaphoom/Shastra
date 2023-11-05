@@ -16,7 +16,7 @@ using static UnityEngine.GraphicsBuffer;
 namespace Vanaring
 {
     [RequireComponent(typeof(SpellCasterHandler))]
-    public abstract class CombatEntity : MonoBehaviour, IStatusEffectable, ITurnState, IDamagable, IAttackter, IBroadcaster
+    public abstract class CombatEntity : MonoBehaviour, IStatusEffectable, ITurnState, IDamagable, IAttackter
     {
         [Header("Right now we manually assign CharacterSheet, TO DO : Make it loaded from the main database")]
         [SerializeField]
@@ -43,23 +43,25 @@ namespace Vanaring
         private EventBroadcaster _eventBroadcaster;
 
         private bool _isDead = false;
-        private bool _isExhausted = false; 
+        private bool _isExhausted = true ; 
 
         public bool IsDead => _isDead;
         public bool IsExhausted => _isExhausted;
 
         protected Queue<ActorAction> _actionQueue = new Queue<ActorAction>();
 
-        public EventBroadcaster GetEventBroadcaster()
+        private EventBroadcaster GetEventBroadcaster()
         {
             if (_eventBroadcaster == null)
             {
                 _eventBroadcaster = new EventBroadcaster();
+                _eventBroadcaster.OpenChannel<int>("OnAttack");
+                _eventBroadcaster.OpenChannel<int>("OnHeal");
+                _eventBroadcaster.OpenChannel<int>("OnDamage");
+                _eventBroadcaster.OpenChannel<CombatEntity>("OnTakeControl");
+                _eventBroadcaster.OpenChannel<CombatEntity>("OnTakeControlLeave");
             }
-            _eventBroadcaster.OpenChannel<int>("OnAttack");
-            _eventBroadcaster.OpenChannel<int>("OnDamage");
-            _eventBroadcaster.OpenChannel<CombatEntity>("OnTakeControl");
-            _eventBroadcaster.OpenChannel<CombatEntity>("OnTakeControlLeave");
+
 
             return _eventBroadcaster; 
 
@@ -67,11 +69,11 @@ namespace Vanaring
 
         protected virtual void Awake()
         {
+            
             _dmgOutputPopHanlder = new POPUPNumberTextHandler(this); 
             _runtimeCharacterStatsAccumulator = new RuntimeCharacterStatsAccumulator(_characterSheet);
             _energyOverflowHandler = GetComponent<EnergyOverflowHandler>();
-            _statusEffectHandler = new StatusEffectHandler(this);
-
+            _statusEffectHandler = new StatusEffectHandler(this); 
 
             if (_spellCaster == null)
             {
@@ -85,7 +87,6 @@ namespace Vanaring
         // Take control and leave control should have its own space 
         public virtual IEnumerator TakeControl()
         {
-            Debug.Log("take control invoke");
             GetEventBroadcaster().InvokeEvent(this, "OnTakeControl");
             yield return null;
         }
@@ -186,8 +187,7 @@ namespace Vanaring
         #endregion
 
         #region InterfaceFunction 
-        private UnityAction<int> _OnUpdateVisualDMG ;
-        private UnityAction<int> _OnUpdateVisualDMGEnd ;
+ 
         public void LogicHurt(CombatEntity attacker, int inputdmg)
         {
             float trueDmg = inputdmg;
@@ -205,23 +205,21 @@ namespace Vanaring
                 _isDead = true;
             }
 
-            GetEventBroadcaster().InvokeEvent<int>((int) trueDmg, "OnDamage");
-
         }
         public void LogicHeal(int amount)
-        {    
+        {
             int increasedAmoubnt = StatsAccumulator.ModifyHPStat(amount);
-            _dmgOutputPopHanlder.AccumulateHP(increasedAmoubnt); 
+
+            _dmgOutputPopHanlder.AccumulateHP(amount);
+
+            StartCoroutine(VisualHeal()); 
+
         }
 
         public IEnumerator VisualHeal(string animationTrigger = "No Animation")
         {
-            _OnUpdateVisualDMG?.Invoke(0);
-
-            yield return new WaitForSeconds(2.0f); 
-
-            _OnUpdateVisualDMGEnd?.Invoke(0);
-
+            GetEventBroadcaster().InvokeEvent<int>((int)0, "OnHeal");
+            yield return null; 
         }
         public IEnumerator VisualHurt(CombatEntity attacker , string animationTrigger = "No Animation" )
         {
@@ -237,10 +235,9 @@ namespace Vanaring
                     _callingDeadScheme = true;
                 }
                 _coroutine.Add(_combatEntityAnimationHandler.PlayTriggerAnimation(animationTrigger));
-
             }
 
-            _OnUpdateVisualDMG?.Invoke(0);
+            GetEventBroadcaster().InvokeEvent<int>((int)0, "OnDamage");
 
             yield return new WaitAll(this, _coroutine.ToArray());
 
@@ -249,8 +246,6 @@ namespace Vanaring
             {
                 yield return DeadVisualClear();
             }
-
-            _OnUpdateVisualDMGEnd?.Invoke(0);
 
             yield return null;
 
@@ -275,8 +270,6 @@ namespace Vanaring
         public IEnumerator DeadVisualClear()
         {
             yield return _combatEntityAnimationHandler.DestroyVisualMesh();
-        
-            
         }
 
         /// <summary>
@@ -294,33 +287,67 @@ namespace Vanaring
         }
         #endregion
 
+        #region SubEvents Methods 
+                 
+        public void SubOnAttackVisualEvent(UnityAction<int> argc)
+        {
+            GetEventBroadcaster().SubEvent(argc, "OnAttack");
+        }
         public void SubOnDamageVisualEvent(UnityAction<int> argc)
         {
-            _OnUpdateVisualDMG += argc;
+            GetEventBroadcaster().SubEvent(argc, "OnDamage");
         }
+
+        public void SubOnTakeControlEvent(UnityAction<CombatEntity> argc)
+        {
+            GetEventBroadcaster().SubEvent(argc, "OnTakeControl");
+        }
+
+        public void SubOnHealVisualEvent(UnityAction<int> argc)
+        {
+            GetEventBroadcaster().SubEvent(argc, "OnHeal");
+        }
+
+        public void SubOnTakeControlLeaveEvent(UnityAction<CombatEntity> argc)
+        {
+            GetEventBroadcaster().SubEvent(argc, "OnTakeControlLeave");
+        }
+
+        public void UnSubOnAttackVisualEvent(UnityAction<int> argc)
+        {
+            GetEventBroadcaster().UnSubEvent(argc, "OnAttack");
+        }  
 
         public void UnSubOnDamageVisualEvent(UnityAction<int> argc)
         {
-            _OnUpdateVisualDMG -= argc;
+            GetEventBroadcaster().UnSubEvent(argc, "OnDamage");
         }
 
-        public void SubOnDamageVisualEventEnd(UnityAction<int> argc)
+        public void UnSubOnHealVisualEvent(UnityAction<int> argc)
         {
-            _OnUpdateVisualDMGEnd += argc;
+            GetEventBroadcaster().UnSubEvent(argc, "OnHeal");
         }
 
-        public void UnSubOnDamageVisualEventEnd(UnityAction<int> argc)
+        public void UnSubOnTakeControlEvent(UnityAction<CombatEntity> argc)
         {
-            _OnUpdateVisualDMGEnd -= argc;
+            GetEventBroadcaster().UnSubEvent(argc, "OnTakeControl");
         }
+
+        public void UnSubOnTakeControlLeaveEvent(UnityAction<CombatEntity> argc)
+        {
+            GetEventBroadcaster().UnSubEvent(argc, "OnTakeControlLeave");
+        }
+        #endregion
+
+
 
         /// <summary>
         /// this function is invoked in every character after certain action is applied
         /// </summary>
         /// <returns></returns>
-   
 
-       
+
+
 
 
     }

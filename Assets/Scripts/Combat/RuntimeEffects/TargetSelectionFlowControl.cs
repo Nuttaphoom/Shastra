@@ -4,12 +4,14 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.InputSystem;
 using UnityEngine.Rendering.VirtualTexturing;
 
 
 namespace Vanaring
 {
-    public class TargetSelectionFlowControl : MonoBehaviour, IInputReceiver, IBroadcaster
+    public class TargetSelectionFlowControl : MonoBehaviour, IInputReceiver   
     {
         private EventBroadcaster _eventBroadcaster;
 
@@ -37,15 +39,17 @@ namespace Vanaring
         private bool _forceStop = false;
 
         #region GETTER
-        public EventBroadcaster GetEventBroadcaster()
+        private EventBroadcaster GetEventBroadcaster()
         {
             if (_eventBroadcaster == null)
             {
                 _eventBroadcaster = new EventBroadcaster();
+
+                _eventBroadcaster.OpenChannel<bool>("OnTargetSelectionEnd");
+                _eventBroadcaster.OpenChannel<CombatEntity>("OnTargetSelectionEnter");
             }
 
-            _eventBroadcaster.OpenChannel<bool>("OnTargetSelectionEnd");
-            _eventBroadcaster.OpenChannel<CombatEntity>("OnTargetSelectionEnter");
+
 
             return _eventBroadcaster;
         }
@@ -55,9 +59,6 @@ namespace Vanaring
         {
             Instance = this;
             _targetSelectionGUI.Initialize(_targetSelectionDisplayer);
-            _eventBroadcaster = new EventBroadcaster();
-
-
         }
 
         private void AssignPossibleTargets(CombatEntity caster, TargetSelector targetSelector)
@@ -211,8 +212,7 @@ namespace Vanaring
                 if (_forceStop)
                     break;
 
-
-                _selectingTarget.Clear(); 
+                _selectingTarget.Clear();
 
                 _selectingTarget.Add(_validTargets[_currentSelectIndex]);
   
@@ -229,7 +229,7 @@ namespace Vanaring
                     _currentSelectIndex = UnityEngine.Random.Range(0, _validTargets.Count);
                     _selectedTarget.Add(_validTargets[_currentSelectIndex]);
                     _validTargets.RemoveAt(_currentSelectIndex);
-                 
+                    _currentSelectIndex = 0; 
                     continue;
                 }
                 if (! randomTarget)
@@ -256,6 +256,7 @@ namespace Vanaring
             }
 
             _targetSelectionGUI.EndSelectionScheme();
+            _enemyHUDWindowManager.DisableEnemyHUD(); 
 
             //OnTargetSelectionSchemeEnd.PlayEvent(caster);
             //Broadcast Ending of target selection with Sucesfful status
@@ -270,6 +271,28 @@ namespace Vanaring
 
         }
 
+        #endregion
+
+        #region SubEvents Methods 
+
+ 
+        public void SubOnTargetSelectionEnd(UnityAction<bool> argc)
+        {
+            GetEventBroadcaster().SubEvent(argc, "OnTargetSelectionEnd");
+        }
+        public void UnSubOnTargetSelectionEnd (UnityAction<bool> argc)
+        {
+            GetEventBroadcaster().UnSubEvent(argc, "OnTargetSelectionEnd");
+        }
+
+        public void SubOnTargetSelectionEnter(UnityAction<CombatEntity> argc)
+        {
+            GetEventBroadcaster().SubEvent(argc, "OnTargetSelectionEnter");
+        }
+        public void UnSubOnTargetSelectionEnter(UnityAction<CombatEntity> argc)
+        {
+            GetEventBroadcaster().UnSubEvent(argc, "OnTargetSelectionEnter");
+        }
 
         #endregion
     }

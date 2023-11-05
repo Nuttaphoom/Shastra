@@ -76,6 +76,7 @@ namespace Vanaring  {
         }
         public override void ReceiveKeysFromWindowManager(KeyCode key)
         {
+
             if (key == KeyCode.Q)
             {
                 _windowManager.OpenWindow(EWindowGUI.Main);

@@ -125,6 +125,10 @@ namespace Vanaring
                 _targets.Add(entity);
             }
         }
+        public List<CombatEntity> GetActionTargets()
+        {
+            return _targets; 
+        }
 
         public TargetSelector GetTargetSelector()
         {

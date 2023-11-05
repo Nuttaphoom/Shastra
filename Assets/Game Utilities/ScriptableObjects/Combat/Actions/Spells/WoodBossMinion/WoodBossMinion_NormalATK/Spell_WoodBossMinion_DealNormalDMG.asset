@@ -10,28 +10,29 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2f5d27031a83ca845945ea045c3f11b6, type: 3}
-  m_Name: WoodBoss_ComboEmpty
+  m_Name: Spell_WoodBossMinion_DealNormalDMG
   m_EditorClassIdentifier: 
   _description:
-    _fieldName: 
-    _fieldDescription: 
-    _fieldImage: {fileID: 0}
+    _fieldName: Soul Slash
+    _fieldDescription: Apply <b>normal</b> damage to a target
+    _fieldImage: {fileID: 21300000, guid: db089e60338a024409779b3e539a84a7, type: 3}
   _targetSelector:
     _maxTargetSize: 1
+    _targetCaster: 0
     _targetAlly: 0
-    _targetOppose: 0
-    _targetSelf: 1
+    _targetOppose: 1
+    _targetSelf: 0
   _actionSignal:
     _signalEffectBindings:
     - _signalType: 1
       _runtimeEffects:
-      - {fileID: 11400000, guid: 7725e9743a978b54886fb6006f596207, type: 2}
+      - {fileID: 11400000, guid: 7a7a54f6e8b543b449743e8310fb2505, type: 2}
     _actionTimelineSetting:
       _trackToChangeName:
       - Caster
       _actorTypes: 01000000
       _timelienActors: []
-    _timeLineActorSetupPrefab: {fileID: 8451769878112211376, guid: 3b7d18094cca4ca4097234d46832815e, type: 3}
+    _timeLineActorSetupPrefab: {fileID: -8615740222444698358, guid: 4df8344368d2f1c42a4faba4a8eab050, type: 3}
   _requiredEnergy:
     _side: 0
     _amount: 0

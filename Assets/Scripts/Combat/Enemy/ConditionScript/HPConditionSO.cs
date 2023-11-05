@@ -13,8 +13,7 @@ namespace Vanaring
         /// <summary>
         /// LowHp by max 100% the input should be 0-100% when it lower or equal to that amount
         /// </summary>
-
-
+        
         [Range(0, 100)]
         [SerializeField]
         private float _lowerThan_Percent = 100.0f;

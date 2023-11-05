@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics.Tracing;
 using System.Linq;
+using System.Numerics;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
@@ -23,7 +24,7 @@ namespace Vanaring
     public class CombatReferee : MonoBehaviour, IBroadcaster
     {
         private EventBroadcaster _eventBroadcaster; 
-        public EventBroadcaster GetEventBroadcaster()
+        EventBroadcaster IBroadcaster.GetEventBroadcaster()
         {
             if (_eventBroadcaster == null) 
                 _eventBroadcaster = new EventBroadcaster();
@@ -183,7 +184,6 @@ namespace Vanaring
             }
             return false;
         }
-
         public CombatEntity InstantiateCompetator(CombatEntity prefabNewCompetator, ECompetatorSide side)
         {
             List<CombatEntity> entitesWithSameSide = new List<CombatEntity>();
@@ -196,12 +196,27 @@ namespace Vanaring
 
             AssignCompetators(new List<CombatEntity>() { entity } , side);
 
+           
             return entity ; 
         }
 
         #endregion
 
-        public IEnumerator OnCharacterPerformAction()
+        #region EntityDOAction Methods
+        public IEnumerator OnCharacterPerformAction(CombatEntity actor, ActorAction action)
+        {
+            yield return actor.OnPerformAction(action);
+
+            yield return PostPerformActionInEveryCharacter();
+
+            ResolveEntityDead(); 
+
+            CombatEntity _combatEntity = GetCurrentActor();
+            SetActiveActors();
+            yield return SwitchControl(_combatEntity, GetCurrentActor());
+        }
+
+        private void ResolveEntityDead()
         {
             //Check for dead entity
             for (int i = _competators.Count - 1; i >= 0; i--)
@@ -214,10 +229,22 @@ namespace Vanaring
                     _competators.RemoveAt(i);
                 }
             }
-            CombatEntity _combatEntity = GetCurrentActor(); 
-            SetActiveActors();
-            yield return SwitchControl(_combatEntity, GetCurrentActor()); 
+
+   
+
         }
+        private IEnumerator PostPerformActionInEveryCharacter()
+        {
+            foreach (ECompetatorSide side in (ECompetatorSide[])Enum.GetValues(typeof(ECompetatorSide)))
+            {
+                foreach (var entity in GetCompetatorsBySide(side))
+                {
+                    yield return entity.OnPostPerformAction();
+                }
+            }
+        }
+
+        #endregion
 
         /// <summary>
         /// this function should be called everytime an action is finished performed
