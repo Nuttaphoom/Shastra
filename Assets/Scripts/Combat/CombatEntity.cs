@@ -23,7 +23,7 @@ namespace Vanaring
         private CharacterSheetSO _characterSheet;
 
         [SerializeField]
-        private SpellCasterHandler _spellCaster;
+        protected SpellCasterHandler _spellCaster;
 
         [SerializeField]
         private ItemUserHandler _itemUser;

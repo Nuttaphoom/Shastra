@@ -12,6 +12,7 @@ namespace Vanaring
         private List<EnemyHUD> enemyHUDList = new List<EnemyHUD>();
         private Dictionary<CombatEntity, GameObject> instantiatedEnemyHUD = new Dictionary<CombatEntity, GameObject>();
 
+      
 
         private void Start()
         {
@@ -21,7 +22,7 @@ namespace Vanaring
         //Display what reference(list) want to
         //public void DisplayEnemyHUD(List<CombatEntity> entities)
         //{
- 
+
         //    if(entities.Count < 1)
         //    {
         //        Debug.Log("No enemy on field/detect");
@@ -46,30 +47,13 @@ namespace Vanaring
         //    }
         //}
 
-        public void DisplaySingleEnemyHUD(CombatEntity combatEntity)
-        {
-            if (combatEntity is not AIEntity)
-                return;
+        
 
-            Vector3 screenPosition = UISpaceSingletonHandler.ObjectToUISpace(combatEntity.transform) + new Vector3(0, 200, 0);
 
-            if (!instantiatedEnemyHUD.ContainsKey(combatEntity))
-            {
-                EnemyHUD newEnemyHUD = Instantiate(enemyHudTemplate, transform);
-                newEnemyHUD.Init(combatEntity);
-                instantiatedEnemyHUD.Add(combatEntity, newEnemyHUD.gameObject);
-            }
-            if (!instantiatedEnemyHUD[combatEntity].activeSelf)
-            {
-                instantiatedEnemyHUD[combatEntity].SetActive(true);
-            }
-
-            instantiatedEnemyHUD[combatEntity].transform.position = screenPosition;
-             
-        }
 
         public void DisplayEnemyHUD(List<CombatEntity> entities)
         {
+
             if (entities.Count <= 0)
                 return;
 
@@ -95,7 +79,7 @@ namespace Vanaring
                 {
                     instantiatedEnemyHUD[combatEntity].SetActive(true);
                 }
-
+                //Debug.Log("display " + combatEntity) ; 
                 instantiatedEnemyHUD[combatEntity].transform.position = screenPosition ;
             }
 

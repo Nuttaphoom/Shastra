@@ -248,15 +248,16 @@ namespace Vanaring
                 yield return new WaitForEndOfFrame();
 
             }
-
+            _enemyHUDWindowManager.DisableEnemyHUD();
+            _targetSelectionGUI.EndSelectionScheme();
+            
             if (_selectedTarget.Count > 0)
             { 
                 actorAction.SetActionTarget(_selectedTarget);
                 caster.AddActionQueue(actorAction);
             }
 
-            _targetSelectionGUI.EndSelectionScheme();
-            _enemyHUDWindowManager.DisableEnemyHUD(); 
+    
 
             //OnTargetSelectionSchemeEnd.PlayEvent(caster);
             //Broadcast Ending of target selection with Sucesfful status

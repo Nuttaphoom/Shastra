@@ -35,6 +35,9 @@ namespace Vanaring
         public static CombatReferee instance = null;
 
         [SerializeField]
+        private EnemyHUDWindowManager _enemyHUDWindowManager;
+
+        [SerializeField]
         private EntityLoader _entityLoader;
 
         [SerializeField]
@@ -203,9 +206,16 @@ namespace Vanaring
         #endregion
 
         #region EntityDOAction Methods
+
         public IEnumerator OnCharacterPerformAction(CombatEntity actor, ActorAction action)
         {
+            var targets = action.GetActionTargets();
+
+            _enemyHUDWindowManager.DisplayEnemyHUD(targets);
+
             yield return actor.OnPerformAction(action);
+
+            _enemyHUDWindowManager.DisableEnemyHUD();
 
             yield return PostPerformActionInEveryCharacter();
 

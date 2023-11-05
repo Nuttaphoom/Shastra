@@ -23,6 +23,8 @@ namespace Vanaring
 
         public override IEnumerator TakeControl()
         {
+            ColorfulLogger.LogWithColor("Player remain Light : " +  _spellCaster.GetEnergyAmount(RuntimeMangicalEnergy.EnergySide.LightEnergy) + " Dark : " + _spellCaster.GetEnergyAmount(RuntimeMangicalEnergy.EnergySide.DarkEnergy), Color.yellow);
+
             yield return base.TakeControl(); 
 
             //if (_combatGraphicalHandler == null)
