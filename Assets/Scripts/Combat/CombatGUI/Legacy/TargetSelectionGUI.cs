@@ -91,7 +91,6 @@ namespace Vanaring
                     _instantiatedTargetGUI[combatEntity].SetActive(true);
                 }
 
-
                 if (!_instantiatedVFXCircle.ContainsKey(combatEntity))
                 {
                     _instantiatedVFXCircle.Add(combatEntity, MonoBehaviour.Instantiate(_vfxPrefabTemplate, _vfxPrefabTemplate.transform.position, Quaternion.identity));
