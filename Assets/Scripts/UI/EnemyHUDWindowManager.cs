@@ -52,8 +52,7 @@ namespace Vanaring
                 return;
 
             if (entities[0] is not AIEntity) 
-                return; 
-
+                return;
             foreach (var key in instantiatedEnemyHUD.Keys)
             {
                 if (! entities.Contains(key))
@@ -64,6 +63,7 @@ namespace Vanaring
                 if (!instantiatedEnemyHUD.ContainsKey(combatEntity))
                 {
                     EnemyHUD newEnemyHUD = Instantiate(enemyHudTemplate, transform);
+                    newEnemyHUD.Init(combatEntity);
                     instantiatedEnemyHUD.Add(combatEntity, newEnemyHUD.gameObject);
                     Vector3 screen = UISpaceSingletonHandler.ObjectToUISpace(combatEntity.transform);
                     instantiatedEnemyHUD[combatEntity].transform.position = screen;
@@ -105,7 +105,7 @@ namespace Vanaring
 
         private void Update()
         {
-            if (enemyHUDList.Count > 0)
+            if (instantiatedEnemyHUD.Count > 0)
             {
                 SetAllUITransform();
             }
@@ -113,20 +113,27 @@ namespace Vanaring
 
         private void SetAllUITransform()
         {
-            int i = 0;
-            foreach (CombatEntity entity in CombatReferee.instance.GetCompetatorsBySide(ECompetatorSide.Hostile))
-            {
-                if(enemyHUDList[i] == null)
-                {
-                    Debug.Log("Enemy didn't load their HUD");
-                    //throw new Exception("EnenmyHUD is not load for this entity:" + entity);
-                }
-                else
-                {
-                    SetUITransform(enemyHUDList[i], entity);
-                }
-                i++;
-            } 
+            //int i = 0;
+            //foreach (CombatEntity entity in CombatReferee.instance.GetCompetatorsBySide(ECompetatorSide.Hostile))
+            //{
+            //    if(enemyHUDList[i] == null)
+            //    {
+            //        Debug.Log("Enemy didn't load their HUD");
+            //        //throw new Exception("EnenmyHUD is not load for this entity:" + entity);
+            //    }
+            //    else
+            //    {
+            //        SetUITransform(enemyHUDList[i], entity);
+            //    }
+            //    i++;
+            //}
+
+            //foreach (var key in instantiatedEnemyHUD.Keys)
+            //{
+            //    Vector3 screen = UISpaceSingletonHandler.ObjectToUISpace(instantiatedEnemyHUD[key].transform);
+            //    instantiatedEnemyHUD[key].transform.position = screen;
+            //    instantiatedEnemyHUD[combatEntity].transform.position += new Vector3(0, 200, 0);
+            //}
         }
 
         private void DisableEnemyHUD()
