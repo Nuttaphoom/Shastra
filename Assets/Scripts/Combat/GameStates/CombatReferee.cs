@@ -291,6 +291,8 @@ namespace Vanaring
         //Good 
         public List<CombatEntity> GetCompetatorsBySide(ECompetatorSide ESide)
         {
+            
+
             return _competators.Where(v => v.Side == ESide).Select(v => v.Competator).ToList();
         }
 

@@ -65,8 +65,7 @@ namespace Vanaring
         {
             _validTargets.Clear();
 
-            ECompetatorSide eCompetatorSide = CombatReferee.instance.GetCompetatorSide(caster);  //CombatReferee.instance.GetCharacterSide(caster);
-            ;  // CombatReferee.instance.GetCharacterSide(caster);
+            ECompetatorSide eCompetatorSide = CombatReferee.instance.GetCompetatorSide(caster);   
 
             foreach (ECompetatorSide side in Enum.GetValues(typeof(ECompetatorSide)))
             {
@@ -82,9 +81,19 @@ namespace Vanaring
                 }
             }
 
-
+            _validTargets = ArrangeEntityListInXAxis(_validTargets); 
 
         }
+
+        private List<CombatEntity> ArrangeEntityListInXAxis(List<CombatEntity> entities)
+        {
+            if (Camera.main.transform.right.x > 0)
+                entities.Sort((entity1, entity2) => entity1.transform.position.x.CompareTo(entity2.transform.position.x));
+            else
+                entities.Sort((entity1, entity2) => entity2.transform.position.x.CompareTo(entity1.transform.position.x));
+            return entities;
+        }
+
         private void ValidateData()
         {
             _validTargets = new List<CombatEntity>();
