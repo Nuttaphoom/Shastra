@@ -239,6 +239,7 @@ namespace Vanaring
                         yield return EnergySimulation(selectedEntity, actorAction);
                     }
                     _targetSelectionGUI.SelectTargetPointer(_selectingTarget);
+                    
                     _enemyHUDWindowManager.DisplayEnemyHUD(_selectingTarget);
 
                     CameraSetUPManager.Instance.SetLookAtTarget(_selectingTarget[0].transform) ;

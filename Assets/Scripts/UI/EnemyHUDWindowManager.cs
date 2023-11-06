@@ -10,7 +10,7 @@ namespace Vanaring
     {
         [SerializeField] private EnemyHUD enemyHudTemplate;
         private List<EnemyHUD> enemyHUDList = new List<EnemyHUD>();
-        private Dictionary<CombatEntity, GameObject> instantiatedEnemyHUD = new Dictionary<CombatEntity, GameObject>();
+        private Dictionary<CombatEntity, EnemyHUD> instantiatedEnemyHUD = new Dictionary<CombatEntity, EnemyHUD>();
 
       
 
@@ -53,7 +53,6 @@ namespace Vanaring
 
         public void DisplayEnemyHUD(List<CombatEntity> entities)
         {
-
             if (entities.Count <= 0)
                 return;
 
@@ -62,25 +61,22 @@ namespace Vanaring
 
             foreach (var key in instantiatedEnemyHUD.Keys)
             {
-                if (! entities.Contains(key))
-                    instantiatedEnemyHUD[key].SetActive(false);
+                if (!entities.Contains(key))
+                    instantiatedEnemyHUD[key].HideHUDVisual(); // .SetActive(false);
             }
             foreach (var combatEntity in entities)
             {
-                Vector3 screenPosition = UISpaceSingletonHandler.ObjectToUISpace(combatEntity.transform) + new Vector3(0, 200, 0);
+                Vector3 screenPosition = UISpaceSingletonHandler.ObjectToUISpace(combatEntity.transform)  ;
 
                 if (!instantiatedEnemyHUD.ContainsKey(combatEntity))
                 {
                     EnemyHUD newEnemyHUD = Instantiate(enemyHudTemplate, transform);
                     newEnemyHUD.Init(combatEntity);
-                    instantiatedEnemyHUD.Add(combatEntity, newEnemyHUD.gameObject);
+                    instantiatedEnemyHUD.Add(combatEntity, newEnemyHUD );
                 }
-                if (!instantiatedEnemyHUD[combatEntity].activeSelf)
-                {
-                    instantiatedEnemyHUD[combatEntity].SetActive(true);
-                }
-                //Debug.Log("display " + combatEntity) ; 
-                instantiatedEnemyHUD[combatEntity].transform.position = screenPosition ;
+                 
+                instantiatedEnemyHUD[combatEntity].DisplayHUDVisual()  ;
+                
             }
 
         }
@@ -146,7 +142,7 @@ namespace Vanaring
 
             foreach (var key in instantiatedEnemyHUD.Keys)
             {
-                instantiatedEnemyHUD[key].SetActive(false); 
+                instantiatedEnemyHUD[key].HideHUDVisual(); //.SetActive(false); 
             }
         }
 

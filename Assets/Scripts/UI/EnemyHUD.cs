@@ -13,12 +13,13 @@ namespace Vanaring
 {
     public class EnemyHUD : MonoBehaviour
     {
-        public enum ModifiedEnergy
-        {
-            NONE,
-            LIGHT,
-            DARK
-        }
+        [Header("Spawning offset regard to VFX position of the Entity")]
+        [SerializeField]
+        private Vector3 _spawnOffset; 
+
+        [SerializeField]
+        private GameObject _visualMesh; 
+
         private CombatEntity _owner;
 
         [SerializeField]
@@ -29,7 +30,6 @@ namespace Vanaring
         private float lightScale = 1;
         private float darkScale = 1;
 
-        private float maxEnergyVal = 100.0f;
         [SerializeField] private Image lightImage;
 
         [Header("HP bar value")]
@@ -38,11 +38,6 @@ namespace Vanaring
         [SerializeField] private Image hpImage;
         [SerializeField] private Image secondhpImage;
 
-        //[Header("Modified Sprite Feedback")]
-        //[SerializeField] private Image modifiedEnergyImg;
-        //[SerializeField] private Sprite modLight;
-        //[SerializeField] private Sprite modDark;
-        //[SerializeField] private Sprite modDefault;
 
         [Header("EnergySlot")]
         [SerializeField] private Image lightSlotImg;
@@ -53,38 +48,38 @@ namespace Vanaring
         [SerializeField] private TextMeshProUGUI lightTmpText;
         [SerializeField] private TextMeshProUGUI darkTmpText;
 
-        private void Start()
-        {
-            if (_owner != null)
-            {
-                hpVal = _owner.StatsAccumulator.GetHPAmount();
-                hpImage.fillAmount = hpVal / _owner.StatsAccumulator.GetPeakHPAmount();
-                secondhpImage.fillAmount = hpVal / _owner.StatsAccumulator.GetPeakHPAmount();
-
-                maxHP = _owner.StatsAccumulator.GetPeakHPAmount();
-
-                lightScale = _owner.SpellCaster.GetEnergyAmount(RuntimeMangicalEnergy.EnergySide.LightEnergy);
-                darkScale = _owner.SpellCaster.GetEnergyAmount(RuntimeMangicalEnergy.EnergySide.DarkEnergy);
-
-                lightTmpText.text = lightScale.ToString();
-                darkTmpText.text = darkScale.ToString();
-
-                InitEnergySlot();
-
-                enemyName.text = _owner.CharacterSheet.CharacterName.ToString();
-            }
-        }
-
-        public CombatEntity GetOwner()
-        {
-            return _owner;
-        }
+      
 
         public void Init(CombatEntity owner)
         {
             _owner = owner;
             _owner.SpellCaster.SubOnModifyEnergy(OnEnergyModified);
             _owner.SubOnDamageVisualEvent(OnHPModified);
+
+            hpVal = _owner.StatsAccumulator.GetHPAmount();
+            hpImage.fillAmount = hpVal / _owner.StatsAccumulator.GetPeakHPAmount();
+            secondhpImage.fillAmount = hpVal / _owner.StatsAccumulator.GetPeakHPAmount();
+
+            maxHP = _owner.StatsAccumulator.GetPeakHPAmount();
+
+            lightScale = _owner.SpellCaster.GetEnergyAmount(RuntimeMangicalEnergy.EnergySide.LightEnergy);
+            darkScale = _owner.SpellCaster.GetEnergyAmount(RuntimeMangicalEnergy.EnergySide.DarkEnergy);
+
+            lightTmpText.text = lightScale.ToString();
+            darkTmpText.text = darkScale.ToString();
+
+            InitEnergySlot();
+
+            enemyName.text = _owner.CharacterSheet.CharacterName.ToString();
+
+        }
+
+        private void Update()
+        {
+            if (_visualMesh.activeSelf)
+            {
+                transform.position = UISpaceSingletonHandler.ObjectToUISpace(_owner.transform) + _spawnOffset ;
+            }
         }
 
         private void OnEnable()
@@ -135,43 +130,12 @@ namespace Vanaring
 
         private void OnEnergyModified(CombatEntity caster, RuntimeMangicalEnergy.EnergySide side, int val)
         {
-            //Debug.Log(_owner.CharacterSheet.CharacterName + " mod energy " + side + " " + ": " + val);
             if(val == 0)
-            {
                 return;
-            }
-            if (side == RuntimeMangicalEnergy.EnergySide.LightEnergy)
-            {
-                if (_owner.SpellCaster.GetEnergyAmount(RuntimeMangicalEnergy.EnergySide.LightEnergy) + val >= 0)
-                {
-                    lightScale += val;
-                    lightTmpText.text = lightScale.ToString();
-                    if (val < 0)
-                    {
-                        StartCoroutine(SlotBreak(_owner.SpellCaster.GetPeakEnergyAmout(RuntimeMangicalEnergy.EnergySide.LightEnergy), (int)lightScale));
-                    }
-                    else
-                    {
-                        StartCoroutine(SlotRecovery());
-                    }
-                }
-            }
-            else
-            {
-                if (_owner.SpellCaster.GetEnergyAmount(RuntimeMangicalEnergy.EnergySide.DarkEnergy) + val >= 0)
-                {
-                    darkScale += val;
-                    darkTmpText.text = darkScale.ToString();
-                    if (val < 0)
-                    {
-                        StartCoroutine(SlotBreak(_owner.SpellCaster.GetPeakEnergyAmout(RuntimeMangicalEnergy.EnergySide.DarkEnergy), (int)darkScale));
-                    }
-                    else
-                    {
-                        StartCoroutine(SlotRecovery());
-                    }
-                }
-            }
+
+
+            StartCoroutine(OnModifyEnergyVisualUpdateCoroutine(caster, side, val));
+
         }
 
         private IEnumerator SlotBreak(int maxSlot, int curScale)
@@ -217,35 +181,28 @@ namespace Vanaring
             yield return null;
         }
 
-        private void UpdateEnergySlotState()
+        public void HideHUDVisual()
         {
-            
+            if (!_visualMesh.activeSelf)
+                return; 
+
+            _visualMesh.gameObject.SetActive(false); 
         }
-        //public void lightScaleIncrease(int val)
-        //{
-        //    if (lightScale + val > 100)
-        //    {
-        //        val = (int)(100 - lightScale);
-        //    }
-        //    lightScale += val;
-        //    //StartCoroutine(IEAnimateEnergyBarScale());
-        //}
-        //public void lightScaleDecrease(int val)
-        //{
-        //    lightScale -= val;
 
-        //    if (lightScale < 0)
-        //    {
-        //        lightScale = 0;
-        //    }
+        public void DisplayHUDVisual()
+        {
+            if (_visualMesh.activeSelf)
+                return; 
 
-        //    //StartCoroutine(IEAnimateEnergyBarScale());
-        //}
+            _visualMesh.gameObject.SetActive(true); 
+        }
+         
         #endregion
         #region HP
         private void OnHPModified(int damage)
         {
-            //throw new Exception("dd");
+            DisplayHUDVisual();
+
             hpVal = _owner.StatsAccumulator.GetHPAmount();
 
             float hptemp = maxHP == 0 ? (hpVal == 0 ? 1 : hpVal) : maxHP;
@@ -253,35 +210,10 @@ namespace Vanaring
             hpImage.fillAmount = hpVal / hptemp;
             StartCoroutine(IEAnimateHPBarScale(hptemp));
         }
-        private void UpdateHPBarScaleGUI()
-        {
-            //secondhpImage.fillAmount -= 0.01f;
-            //if (secondhpImage.fillAmount <= 0 && gui != null)
-            //{
-            //    //gui.SetActive(false);
-            //}
-        }
+        
         #endregion
         #region IEnumerator
-        //private IEnumerator IEAnimateEnergyBarScale()
-        //{
-        //    while (int.Parse(lightNumText.text) < lightScale)
-        //    {
-        //        lightNumText.text = (int.Parse(lightNumText.text) + 1).ToString();
-        //        darkNumText.text = (int.Parse(darkNumText.text) - 1).ToString();
-        //        UpdateEnergyBarScaleGUI();
-        //        yield return new WaitForSeconds(0.01f);
-        //    }
-        //    while (int.Parse(lightNumText.text) > lightScale)
-        //    {
-        //        lightNumText.text = (int.Parse(lightNumText.text) - 1).ToString();
-        //        darkNumText.text = (int.Parse(darkNumText.text) + 1).ToString();
-        //        UpdateEnergyBarScaleGUI();
-        //        yield return new WaitForSeconds(0.01f);
-        //    }
-        //    yield return null;
-        //}
-
+       
         private IEnumerator IEAnimateHPBarScale(float maxHP)
         {
             float tickRate = 0.5f / ((Mathf.Abs((hpVal / maxHP) - secondhpImage.fillAmount)) * 100);
@@ -305,6 +237,48 @@ namespace Vanaring
 
 
             yield return null;
+        }
+
+        private IEnumerator OnModifyEnergyVisualUpdateCoroutine(CombatEntity caster, RuntimeMangicalEnergy.EnergySide side, int val)
+        {
+            DisplayHUDVisual();
+
+            if (side == RuntimeMangicalEnergy.EnergySide.LightEnergy)
+            {
+                if (_owner.SpellCaster.GetEnergyAmount(RuntimeMangicalEnergy.EnergySide.LightEnergy) + val >= 0)
+                {
+                    lightScale += val;
+                    lightTmpText.text = lightScale.ToString();
+                    if (val < 0)
+                    {
+                        yield return (SlotBreak(_owner.SpellCaster.GetPeakEnergyAmout(RuntimeMangicalEnergy.EnergySide.LightEnergy), (int)lightScale));
+                    }
+                    else
+                    {
+                        yield return (SlotRecovery());
+                    }
+                }
+            }
+            else
+            {
+                if (_owner.SpellCaster.GetEnergyAmount(RuntimeMangicalEnergy.EnergySide.DarkEnergy) + val >= 0)
+                {
+                    darkScale += val;
+                    darkTmpText.text = darkScale.ToString();
+                    if (val < 0)
+                    {
+                        yield return (SlotBreak(_owner.SpellCaster.GetPeakEnergyAmout(RuntimeMangicalEnergy.EnergySide.DarkEnergy), (int)darkScale));
+                    }
+                    else
+                    {
+                        yield return (SlotRecovery());
+                    }
+                }
+            }
+
+            yield return new WaitForSeconds(0.5f); 
+
+            HideHUDVisual(); 
         }
         #endregion
     }

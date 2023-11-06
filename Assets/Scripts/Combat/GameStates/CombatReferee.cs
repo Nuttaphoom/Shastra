@@ -211,11 +211,7 @@ namespace Vanaring
         {
             var targets = action.GetActionTargets();
 
-            _enemyHUDWindowManager.DisplayEnemyHUD(targets);
-
             yield return actor.OnPerformAction(action);
-
-            _enemyHUDWindowManager.DisableEnemyHUD();
 
             yield return PostPerformActionInEveryCharacter();
 
