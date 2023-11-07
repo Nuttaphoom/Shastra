@@ -18,34 +18,20 @@ namespace Vanaring
     {
         [SerializeField]
         private List<string> _trackToChangeName ;
-
-        [SerializeField]
-        private List<ActorType> _actorTypes ; 
-
+ 
         [SerializeField]
         private List<Transform> _timelienActors;
 
-        [SerializeField]
-        private enum ActorType
-        {
-            Mesh, 
-            Entity 
-        }  
+       
 
 
         public ActionTimelineSettingStruct(ActionTimelineSettingStruct copied)
         {
             _trackToChangeName = new List<string>();
-            _actorTypes = new List<ActorType>(); 
 
             foreach (var trackName in copied._trackToChangeName)
             {
                 _trackToChangeName.Add(trackName); 
-            }
-
-            foreach (var v in copied._actorTypes)
-            {
-                _actorTypes.Add(v); 
             }
 
             _timelienActors = new List<Transform>(); 
@@ -68,16 +54,7 @@ namespace Vanaring
             {
                 if (_trackToChangeName[i] == trackName)
                 {
-                    if (UseMesh(i))
-                    {
-                        return _timelienActors[i].GetComponent<CombatEntityAnimationHandler>().GetVisualMesh().transform ;
-                    }else if (UseEntity(i))
-                    {
-                        return _timelienActors[i]  ; 
-                    }else
-                    {
-                        throw new Exception("This animation binding don't use both VisualMesh and Entity mesh"); 
-                    }
+                    return _timelienActors[i]  ;     
                 }
             }
 
@@ -92,15 +69,7 @@ namespace Vanaring
             return _timelienActors[(int)index].gameObject;
         }
 
-        public bool UseMesh(int index)
-        {
-            return _actorTypes[index] == ActorType.Mesh ;
-        }
-
-        public bool UseEntity(int index)
-        {
-            return _actorTypes[index] == ActorType.Entity; 
-        }
+       
 
         public List<string> TrackNames => _trackToChangeName;
     }

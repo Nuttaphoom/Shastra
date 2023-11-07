@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Cinemachine;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,14 +9,13 @@ using UnityEngine;
 
 namespace Vanaring
 {
-    public class ControlableEntity : CombatEntity
+    public class ControlableEntity : CombatEntity , ICameraAttacher
     {
  
         [Header("Right now we manually assign valid action, TODO : Load from Database")]
         [SerializeField]
         private ControlableEntityActionsRegistry _controlableEntityActionRegistry;
  
-        
         public override IEnumerator GetAction()
         {
             yield return null;
@@ -23,22 +23,16 @@ namespace Vanaring
 
         public override IEnumerator TakeControl()
         {
-            ColorfulLogger.LogWithColor("Player remain Light : " +  _spellCaster.GetEnergyAmount(RuntimeMangicalEnergy.EnergySide.LightEnergy) + " Dark : " + _spellCaster.GetEnergyAmount(RuntimeMangicalEnergy.EnergySide.DarkEnergy), Color.yellow);
-
-            yield return base.TakeControl(); 
-
-            //if (_combatGraphicalHandler == null)
-            //    _combatGraphicalHandler = GetComponent<CombatGraphicalHandler>();
-
-            //yield return _combatGraphicalHandler.TakeControl();
+            Debug.Log(gameObject + "take control");
+            yield return base.TakeControl();
+            EnableCamera();
         }
 
         public override IEnumerator TakeControlLeave()
         {
-            yield return base.TakeControlLeave(); 
-
-            //_combatGraphicalHandler.TakeControlLeave();
-            yield return null;
+            Debug.Log(gameObject + "take control leave");
+            yield return base.TakeControlLeave();
+            DisableCamera(); 
         }
 
         public override IEnumerator TurnEnter()
@@ -51,7 +45,26 @@ namespace Vanaring
             yield return base.TurnLeave();
         }
 
-     
+
+
+        #region INTERFACE 
+
+        private CinemachineVirtualCamera _attachedCamera; 
+        public void AttachCamera(CinemachineVirtualCamera camera)
+        {
+            _attachedCamera = camera; 
+        }
+
+        public void EnableCamera()
+        {
+            CameraSetUPManager.Instance.EnableCamera(_attachedCamera);
+        }
+
+        public void DisableCamera()
+        {
+            CameraSetUPManager.Instance.DisableCamera(_attachedCamera);
+        }
+        #endregion
 
         #region GETTER
 

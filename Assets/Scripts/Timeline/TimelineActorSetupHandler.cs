@@ -50,10 +50,9 @@ namespace Vanaring
             if (_casterTransform != null)
             { 
                 Transform par = actionTimelineSetting.GetObjectWithIndex(0).transform;
-                _casterTransform.transform.parent = par;
+                _casterTransform.transform.parent = par ;
                 _casterTransform.transform.position = par.position ;
-                _casterTransform.transform.rotation = par.rotation;
-
+                _casterTransform.transform.rotation = par.rotation ;
             }
 
             for (int i = 0; i < _targetTransform.Count; i++)
@@ -63,7 +62,6 @@ namespace Vanaring
                     _targetTransform[i].gameObject.SetActive(false);
                     continue;
                 }
-
 
                 Transform par = actionTimelineSetting.GetObjectWithIndex(i + 1).transform;
                 _targetTransform[i].transform.parent = par; 

@@ -209,9 +209,9 @@ namespace Vanaring
 
             AssignPossibleTargets(caster, actorAction.GetTargetSelector());
 
-            CameraSetUPManager.Instance.CaptureVMCamera();
+            if (! randomTarget) 
+                CameraSetUPManager.Instance.CaptureVMCamera();
 
-            CameraSetUPManager.Instance.SetBlendMode(CameraSetUPManager.CameraBlendMode.EASE_INOUT, 0.5f);
 
             while (_selectedTarget.Count < actorAction.GetTargetSelector().MaxTarget )
             {
@@ -273,7 +273,9 @@ namespace Vanaring
             //Broadcast Ending of target selection with Sucesfful status
             _eventBroadcaster.InvokeEvent<bool>(!_forceStop, "OnTargetSelectionEnd");
 
-            CameraSetUPManager.Instance.RestoreVMCameraState();
+            if (! randomTarget)
+                CameraSetUPManager.Instance.RestoreVMCameraState();
+
             CentralInputReceiver.Instance().RemoveInputReceiverIntoStack(this);
 
             _forceStop = false;

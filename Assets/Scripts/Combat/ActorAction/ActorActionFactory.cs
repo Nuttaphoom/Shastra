@@ -80,20 +80,18 @@ namespace Vanaring
                 {
                     RuntimeEffect effect = factory.Factorize(_targets);
                     _ongoingEffect.Add(_caster.StartCoroutine(CasterStartExecuteEffectCoroutine(effect)));
-
-                    //yield return effect.ExecuteRuntimeCoroutine(_caster) ;
-                    //yield return effect.OnExecuteRuntimeDone(_caster) ;
                 }
 
                 yield return new WaitForEndOfFrame();
             }
- 
+
             while (_ongoingEffect.Count > 0)
                 yield return new WaitForEndOfFrame();
-
+             
             while (DirectorManager.Instance.IsPlayingTimeline)
-                yield return new WaitForEndOfFrame(); 
-            
+                yield return new WaitForEndOfFrame();
+
+            DirectorManager.Instance.ClearCurrentTimeline() ; 
 
         }
 

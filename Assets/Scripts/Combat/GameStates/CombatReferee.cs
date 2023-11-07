@@ -149,14 +149,6 @@ namespace Vanaring
             {
                 FindObjectOfType<CharacterWindowManager>().SetActiveEntityGUI(newEntity);
 
-                for (int i = 0; i < GetCompetatorsBySide(ECompetatorSide.Ally).Count; i++)
-                {
-                    if (GetCompetatorsBySide(ECompetatorSide.Ally)[i] == newEntity)
-                    {
-                        CameraSetUPManager.Instance.SelectCharacterCamera(i);
-                    }
-                }
-
                 yield return newEntity.TakeControl();
 
             }
@@ -209,17 +201,19 @@ namespace Vanaring
 
         public IEnumerator OnCharacterPerformAction(CombatEntity actor, ActorAction action)
         {
-            var targets = action.GetActionTargets();
+            yield return SwitchControl(GetCurrentActor(), null) ; 
 
+            var targets = action.GetActionTargets();
+            
             yield return actor.OnPerformAction(action);
 
             yield return PostPerformActionInEveryCharacter();
 
             ResolveEntityDead(); 
 
-            CombatEntity _combatEntity = GetCurrentActor();
             SetActiveActors();
-            yield return SwitchControl(_combatEntity, GetCurrentActor());
+            
+            yield return SwitchControl(null, GetCurrentActor());
         }
 
         private void ResolveEntityDead()
