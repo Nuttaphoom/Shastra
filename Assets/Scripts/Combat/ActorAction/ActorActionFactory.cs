@@ -90,7 +90,7 @@ namespace Vanaring
              
             while (DirectorManager.Instance.IsPlayingTimeline)
                 yield return new WaitForEndOfFrame();
-
+ 
             DirectorManager.Instance.ClearCurrentTimeline() ; 
 
         }

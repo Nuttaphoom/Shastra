@@ -119,7 +119,6 @@ namespace Vanaring
                 }
                 else
                 {
-                    Debug.Log("add " + key + " to list");
                     ret.Add(instantiatedEnemyHUD[key]);
                 }
             }
