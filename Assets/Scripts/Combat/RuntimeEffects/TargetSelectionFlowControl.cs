@@ -258,6 +258,7 @@ namespace Vanaring
                 yield return new WaitForEndOfFrame();
 
             }
+
             _enemyHUDWindowManager.DisableEnemyHUD();
             _targetSelectionGUI.EndSelectionScheme();
             

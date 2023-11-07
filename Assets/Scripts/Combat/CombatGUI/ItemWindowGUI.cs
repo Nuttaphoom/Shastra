@@ -66,7 +66,7 @@ namespace Vanaring
             }
 
             if (itemSocketGUIList.Count == 0)
-                throw new Exception("No item found in inventory (due to empty inventory) "); 
+                return;
 
       
             _itemSocketTemplate.gameObject.SetActive(false);

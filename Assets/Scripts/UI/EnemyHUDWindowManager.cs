@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -59,11 +60,17 @@ namespace Vanaring
             if (entities[0] is not AIEntity) 
                 return;
 
-            foreach (var key in instantiatedEnemyHUD.Keys)
+            foreach (EnemyHUD hud in GetAllInstantiatedHUD())
             {
-                if (!entities.Contains(key))
-                    instantiatedEnemyHUD[key].HideHUDVisual(); // .SetActive(false);
+                hud.HideHUDVisual();
             }
+
+            //foreach (var key in instantiatedEnemyHUD.Keys)
+            //{
+            //    if (!entities.Contains(key))
+            //        instantiatedEnemyHUD[key].HideHUDVisual(); // .SetActive(false);
+            //}
+
             foreach (var combatEntity in entities)
             {
                 Vector3 screenPosition = UISpaceSingletonHandler.ObjectToUISpace(combatEntity.transform)  ;
@@ -81,68 +88,10 @@ namespace Vanaring
 
         }
 
-        //private void SelectHUDToDisplay(List<CombatEntity> entities)
-        //{
-        //    foreach (EnemyHUD hud in enemyHUDList)
-        //    {
-        //        CombatEntity owner = entities.Find(entity => entity == hud.GetOwner());
-
-        //        if (owner != null)
-        //        {
-        //            hud.gameObject.SetActive(true);
-        //        }
-        //        else
-        //        {
-        //            hud.gameObject.SetActive(false);
-        //        }
-        //    }
-        //}
-
-        //private void SetUITransform(EnemyHUD hud ,CombatEntity entity)
-        //{
-        //    Vector3 screen = UISpaceSingletonHandler.ObjectToUISpace(entity.transform);
-        //    hud.transform.position = screen;
-        //    hud.transform.position += new Vector3(0, 200, 0);
-        //}
-
-
-     
-
-        //private void SetAllUITransform()
-        //{
-        //    //int i = 0;
-        //    //foreach (CombatEntity entity in CombatReferee.instance.GetCompetatorsBySide(ECompetatorSide.Hostile))
-        //    //{
-        //    //    if(enemyHUDList[i] == null)
-        //    //    {
-        //    //        Debug.Log("Enemy didn't load their HUD");
-        //    //        //throw new Exception("EnenmyHUD is not load for this entity:" + entity);
-        //    //    }
-        //    //    else
-        //    //    {
-        //    //        SetUITransform(enemyHUDList[i], entity);
-        //    //    }
-        //    //    i++;
-        //    //}
-
-        //    //foreach (var key in instantiatedEnemyHUD.Keys)
-        //    //{
-        //    //    Vector3 screen = UISpaceSingletonHandler.ObjectToUISpace(instantiatedEnemyHUD[key].transform);
-        //    //    instantiatedEnemyHUD[key].transform.position = screen;
-        //    //    instantiatedEnemyHUD[combatEntity].transform.position += new Vector3(0, 200, 0);
-        //    //}
-        //}
-
         public void DisableEnemyHUD()
         {
-            foreach (EnemyHUD enemyHUD in enemyHUDList)
-            {
-                enemyHUD.gameObject.SetActive(false);
-            }
-
-            foreach (var key in instantiatedEnemyHUD.Keys)
-            {
-                instantiatedEnemyHUD[key].HideHUDVisual(); //.SetActive(false); 
+            foreach (var hud in GetAllInstantiatedHUD()) {
+                hud.HideHUDVisual(); 
             }
         }
 
@@ -156,19 +105,26 @@ namespace Vanaring
             }
         }
 
-        private void OnUpdateValue()
+     
+        private List<EnemyHUD> GetAllInstantiatedHUD()
         {
-
-        }
-
-        private IEnumerator InitTest()
-        {
-            if(enemyHUDList.Count > 0)
+            var keys = instantiatedEnemyHUD.Keys.ToList(); // Create a copy of the keys
+            List<EnemyHUD> ret = new List<EnemyHUD>(); 
+            for (int i = 0; i < keys.Count; i++)
             {
-                ClearEnemyHUD();
+                var key = keys[i];
+                if (instantiatedEnemyHUD[key] == null)
+                {
+                    instantiatedEnemyHUD.Remove(key);
+                }
+                else
+                {
+                    Debug.Log("add " + key + " to list");
+                    ret.Add(instantiatedEnemyHUD[key]);
+                }
             }
-            yield return new WaitForSeconds(1.0f);
-            DisplayEnemyHUD(CombatReferee.instance.GetCompetatorsBySide(ECompetatorSide.Hostile));
+
+            return ret; 
         }
     }
 }
