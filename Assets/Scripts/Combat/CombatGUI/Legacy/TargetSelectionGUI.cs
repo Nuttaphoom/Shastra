@@ -83,7 +83,7 @@ namespace Vanaring
             {
                 if (!_instantiatedTargetGUI.ContainsKey(combatEntity))
                 {
-                     _instantiatedTargetGUI.Add(combatEntity, targetGUI.InstantiateTargetGUI(UISpaceSingletonHandler.ObjectToUISpace(combatEntity.transform) , _parent));
+                     _instantiatedTargetGUI.Add(combatEntity, targetGUI.InstantiateTargetGUI(UISpaceSingletonHandler.ObjectToUISpace(combatEntity.CombatEntityAnimationHandler.GetGUISpawnTransform()) , _parent));
                 }
 
                 if (!_instantiatedTargetGUI[combatEntity].activeSelf)
@@ -101,7 +101,7 @@ namespace Vanaring
                 if (!_instantiatedVFXCircle[combatEntity].activeSelf)
                     _instantiatedVFXCircle[combatEntity].SetActive(true);
 
-                targetGUI.SetTargetGUIPosition(_instantiatedTargetGUI[combatEntity], UISpaceSingletonHandler.ObjectToUISpace(combatEntity.transform));
+                targetGUI.SetTargetGUIPosition(_instantiatedTargetGUI[combatEntity], UISpaceSingletonHandler.ObjectToUISpace(combatEntity.CombatEntityAnimationHandler.GetGUISpawnTransform()));
             }
         }
 
