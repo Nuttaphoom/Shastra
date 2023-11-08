@@ -26,7 +26,6 @@ namespace Vanaring
         private TextMeshProUGUI enemyName;
 
         [Header("Energy bar value")]
-
         private float lightScale = 1;
         private float darkScale = 1;
 
@@ -47,8 +46,6 @@ namespace Vanaring
         [SerializeField] private GameObject horizontalLayout;
         [SerializeField] private TextMeshProUGUI lightTmpText;
         [SerializeField] private TextMeshProUGUI darkTmpText;
-
-      
 
         public void Init(CombatEntity owner)
         {
@@ -71,14 +68,13 @@ namespace Vanaring
             InitEnergySlot();
 
             enemyName.text = _owner.CharacterSheet.CharacterName.ToString();
-
         }
 
         private void Update()
         {
             if (_visualMesh.activeSelf)
             {
-                transform.position = UISpaceSingletonHandler.ObjectToUISpace(_owner.transform) + _spawnOffset ;
+                transform.position = UISpaceSingletonHandler.ObjectToUISpace(_owner.GetComponent<CombatEntityAnimationHandler>().GetGUISpawnTransform()) + _spawnOffset ;
             }
         }
 
@@ -116,6 +112,7 @@ namespace Vanaring
                     defaultSlotColor = slot.color;
                 }
             }
+
             if (_owner.SpellCaster.GetPeakEnergyAmout(RuntimeMangicalEnergy.EnergySide.DarkEnergy) > 0)
             {
                 for (int i = 0; i < _owner.SpellCaster.GetPeakEnergyAmout(RuntimeMangicalEnergy.EnergySide.DarkEnergy); i++)
@@ -132,7 +129,6 @@ namespace Vanaring
         {
             if(val == 0)
                 return;
-
 
             StartCoroutine(OnModifyEnergyVisualUpdateCoroutine(caster, side, val));
 

@@ -225,7 +225,6 @@ namespace Vanaring
 
                 _selectingTarget.Add(_validTargets[_currentSelectIndex]);
   
-
                 if (_validTargets.Count <= actorAction.GetTargetSelector().MaxTarget)
                 {
                     _selectingTarget.Clear();
@@ -251,8 +250,7 @@ namespace Vanaring
                     
                     _enemyHUDWindowManager.DisplayEnemyHUD(_selectingTarget);
 
-                    CameraSetUPManager.Instance.SetLookAtTarget(_selectingTarget[0].transform) ;
-
+                    CameraSetUPManager.Instance.SetLookAtTarget(_selectingTarget[0].GetComponent<CombatEntityAnimationHandler>().GetGUISpawnTransform()) ;
                 }
 
                 yield return new WaitForEndOfFrame();

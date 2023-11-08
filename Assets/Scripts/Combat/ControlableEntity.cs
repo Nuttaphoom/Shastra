@@ -23,14 +23,12 @@ namespace Vanaring
 
         public override IEnumerator TakeControl()
         {
-            Debug.Log(gameObject + "take control");
             yield return base.TakeControl();
             EnableCamera();
         }
 
         public override IEnumerator TakeControlLeave()
         {
-            Debug.Log(gameObject + "take control leave");
             yield return base.TakeControlLeave();
             DisableCamera(); 
         }

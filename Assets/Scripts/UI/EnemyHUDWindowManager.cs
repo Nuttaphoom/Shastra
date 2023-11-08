@@ -13,8 +13,6 @@ namespace Vanaring
         private List<EnemyHUD> enemyHUDList = new List<EnemyHUD>();
         private Dictionary<CombatEntity, EnemyHUD> instantiatedEnemyHUD = new Dictionary<CombatEntity, EnemyHUD>();
 
-      
-
         private void Start()
         {
             //StartCoroutine(InitTest());
@@ -48,10 +46,6 @@ namespace Vanaring
         //    }
         //}
 
-        
-
-
-
         public void DisplayEnemyHUD(List<CombatEntity> entities)
         {
             if (entities.Count <= 0)
@@ -73,12 +67,10 @@ namespace Vanaring
 
             foreach (var combatEntity in entities)
             {
-                Vector3 screenPosition = UISpaceSingletonHandler.ObjectToUISpace(combatEntity.transform)  ;
-
                 if (!instantiatedEnemyHUD.ContainsKey(combatEntity))
                 {
                     EnemyHUD newEnemyHUD = Instantiate(enemyHudTemplate, transform);
-                    newEnemyHUD.Init(combatEntity);
+                    newEnemyHUD.Init(combatEntity) ;
                     instantiatedEnemyHUD.Add(combatEntity, newEnemyHUD );
                 }
                  

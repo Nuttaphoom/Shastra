@@ -120,7 +120,7 @@ namespace Vanaring
                 _instantiatedBreakGUI[combatEntity].SetActive(true);
             }
 
-            targetGUI.SetBreakGUIPosition(_instantiatedBreakGUI[combatEntity], UISpaceSingletonHandler.ObjectToUISpace(combatEntity.transform));
+            targetGUI.SetBreakGUIPosition(_instantiatedBreakGUI[combatEntity], UISpaceSingletonHandler.ObjectToUISpace(combatEntity.GetComponent<CombatEntityAnimationHandler>().GetGUISpawnTransform() ));
         }
 
         public void EndSelectionScheme()
