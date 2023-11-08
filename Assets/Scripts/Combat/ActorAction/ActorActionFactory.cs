@@ -39,7 +39,7 @@ namespace Vanaring
     public abstract class ActorAction
     {
         protected TargetSelector _targetSelector;
-        protected List<CombatEntity> _targets;
+        protected List<CombatEntity> _targets = new List<CombatEntity>() ;
         protected ActionSignal _actionSignal;
         protected CombatEntity _caster;
 
@@ -66,16 +66,17 @@ namespace Vanaring
         {
             //Set up 
             SetUpTimeLineActorSetting();
- 
+
             //Play Timeline in DirectorManager and register signal
-            DirectorManager.Instance.PlayTimeline(_actionSignal) ; 
+            DirectorManager.Instance.PlayTimeline(_actionSignal);
 
             //Play runtimeeffect when signal received  
 
             RuntimeEffectFactorySO factory;
 
-            while ( ! _actionSignal.SignalTerminated())
+            do
             {
+                Debug.Log("signal not terminated");
                 if ((factory = _actionSignal.GetReadyEffect()) != null)
                 {
                     RuntimeEffect effect = factory.Factorize(_targets);
@@ -83,14 +84,18 @@ namespace Vanaring
                 }
 
                 yield return new WaitForEndOfFrame();
-            }
+            } while ((!_actionSignal.SignalTerminated())); 
 
             while (_ongoingEffect.Count > 0)
+            {
+                Debug.Log("on goging > 0");
                 yield return new WaitForEndOfFrame();
-             
+            }
             while (DirectorManager.Instance.IsPlayingTimeline)
+            {
+                Debug.Log("is playing timeline"); 
                 yield return new WaitForEndOfFrame();
- 
+            }
             DirectorManager.Instance.ClearCurrentTimeline() ; 
 
         }
@@ -107,6 +112,7 @@ namespace Vanaring
             List<GameObject> actors = new List<GameObject>();
 
             actors.Add(_caster.gameObject);
+            
             foreach (var entity in _targets)
             {
                 actors.Add(entity.gameObject);

@@ -169,14 +169,20 @@ namespace Vanaring
 
         public IEnumerator OnPostPerformAction()
         {
+            //1 Check stun 
+            yield return _energyOverflowHandler.PostActionOverflowResolve();  
+            //2. check status effect 
             yield return GetStatusEffectHandler().RunStatusEffectExpiredScheme();
         }
+
         #region GETTER
 
         public StatusEffectHandler GetStatusEffectHandler()
         {
             return _statusEffectHandler;
         }
+
+        public EnergyOverflowHandler OverflowHandler => _energyOverflowHandler ;
         public RuntimeCharacterStatsAccumulator StatsAccumulator => _runtimeCharacterStatsAccumulator;
         public SpellCasterHandler SpellCaster => _spellCaster;
         public ItemUserHandler ItemUser => _itemUser;

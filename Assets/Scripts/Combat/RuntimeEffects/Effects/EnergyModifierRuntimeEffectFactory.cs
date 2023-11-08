@@ -44,6 +44,7 @@ namespace Vanaring
             foreach (var target in _targets)
             {
                 target.SpellCaster.ModifyEnergy( _data.Side, _data.Amount);
+                iEnumerators.Add( target.OverflowHandler.OverflowResolve()) ; 
                // iEnumerators.Add(target.CombatEntityAnimationHandler.PlayTriggerAnimation(_actionAnimationInfo.TargetTrigerID));
             }
             yield return new WaitAll(_caster, iEnumerators.ToArray());

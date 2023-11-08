@@ -29,45 +29,75 @@ namespace Vanaring
         [SerializeField]
         private Transform _above_head_transform;
 
-        private GameObject _starVFX_Instantied ; 
- 
-        ~EnergyOverflowHandler() {
-            _spellCasterHandler.UnSubOnModifyEnergy(OnModifyEnergy);
-        }
+        private GameObject _starVFX_Instantied ;
+
+        private bool _isOverflow = false ;
+
+        [SerializeField]
+        private ActorActionFactory _overflowAction;
 
         #region Method 
-        public void OnModifyEnergy(CombatEntity caster, RuntimeMangicalEnergy.EnergySide side, int amount)
+        /// <summary>
+        /// Call instantly if modify energy  is apply to them 
+        /// Call after action is perform when a character use spell 
+        /// </summary>
+        /// <param name="caster"></param>
+        /// <param name="side"></param>
+        /// <param name="amount"></param>
+        public IEnumerator OverflowResolve()
         {
-            if (_starVFX_Instantied != null)
-                return;
-
             if (_spellCasterHandler.IsEnergyOverflow())
-            {
-                Overflow(caster);
-            }
-
-
+                yield return Overflow( ) ;
         }
 
-        public void Overflow(CombatEntity caster)
-        { 
-            ColorfulLogger.LogWithColor(caster + " Overflow", Color.yellow); 
-
-            RuntimeEffect effect = _statusEffectFactory.Factorize(new List<CombatEntity>() { _combatEntity });
-            StartCoroutine(effect.ExecuteRuntimeCoroutine(_combatEntity)); 
-
-            _combatEntity.LogicHurt(null, caster.StatsAccumulator.GetATKAmount());
-            _combatEntity.ApplyOverflow(); 
-
-            if (!_combatEntity.IsDead)
+        public IEnumerator PostActionOverflowResolve()
+        {
+            if (_spellCasterHandler.IsEnergyOverflow())
             {
-                StartCoroutine(_combatEntity.CombatEntityAnimationHandler.PlayVFXActionAnimation<string>(_actionAnimationInfo.CasterVfxEntity, VisualStunApplier, "Stunt"));
-                _starVFX_Instantied = Instantiate(_star_circle_stunVFX, _above_head_transform)  ;  
-                _starVFX_Instantied.transform.position = _above_head_transform.position;
-            }
-            else
+                if (!_isOverflow)
+                {
+                    _isOverflow = true;
+
+                    ColorfulLogger.LogWithColor(_combatEntity + " Overflow", Color.yellow);
+
+                    RuntimeEffect effect = _statusEffectFactory.Factorize(new List<CombatEntity>() { _combatEntity });
+                    StartCoroutine(effect.ExecuteRuntimeCoroutine(_combatEntity));
+
+                    _combatEntity.LogicHurt(null, _combatEntity.StatsAccumulator.GetATKAmount());
+                    _combatEntity.ApplyOverflow();
+
+                    Debug.Log("start overflow");
+                    yield return (_overflowAction.FactorizeRuntimeAction(_combatEntity)).PerformAction() ;
+                    Debug.Log("end overflow") ;
+                }
+            } 
+        }
+
+        
+        public IEnumerator Overflow()
+        {
+            if (!_isOverflow)
             {
-                StartCoroutine(_combatEntity.VisualHurt(null, "Die"));
+                _isOverflow = true; 
+
+                ColorfulLogger.LogWithColor(_combatEntity + " Overflow", Color.yellow);
+
+                RuntimeEffect effect = _statusEffectFactory.Factorize(new List<CombatEntity>() { _combatEntity });
+                StartCoroutine(effect.ExecuteRuntimeCoroutine(_combatEntity));
+
+                _combatEntity.LogicHurt(null, _combatEntity.StatsAccumulator.GetATKAmount());
+                _combatEntity.ApplyOverflow();
+
+                if (!_combatEntity.IsDead)
+                {
+                    yield return (_combatEntity.CombatEntityAnimationHandler.PlayVFXActionAnimation<string>(_actionAnimationInfo.CasterVfxEntity, VisualStunApplier, "Stunt"));
+                    _starVFX_Instantied = Instantiate(_star_circle_stunVFX, _above_head_transform);
+                    _starVFX_Instantied.transform.position = _above_head_transform.position;
+                }
+                else
+                {
+                    yield return (_combatEntity.VisualHurt(null, "Die"));
+                }
             }
         }
 
@@ -79,14 +109,13 @@ namespace Vanaring
                 _starVFX_Instantied = null;
             }
             _combatEntity.SpellCaster.ResetEnergy();
+            _isOverflow = false; 
         }
 
         private IEnumerator VisualStunApplier(string s)
         {
-
             StartCoroutine(RunnintOverheatVisualEffect()); 
             yield return (_combatEntity.VisualHurt(null, "Stunt"));
-
 
         }
 
@@ -102,13 +131,15 @@ namespace Vanaring
 
         private void Awake()
         {
-            this._combatEntity = GetComponent<CombatEntity>() ; 
+            this._combatEntity = GetComponent<CombatEntity>() ;
+
+            if (_star_circle_stunVFX == null)
+                throw new Exception("Star Circle Stun VFX hasnt been assigned in " + _combatEntity); 
         }
 
         private void Start()
         {
             this._spellCasterHandler = this._combatEntity.SpellCaster;
-            _spellCasterHandler.SubOnModifyEnergy(OnModifyEnergy);
         }
 
         #endregion

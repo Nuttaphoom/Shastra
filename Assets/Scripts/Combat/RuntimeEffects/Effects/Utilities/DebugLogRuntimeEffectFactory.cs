@@ -33,10 +33,7 @@ namespace Vanaring
         public override IEnumerator ExecuteRuntimeCoroutine(CombatEntity caster)
         {
    
-            foreach (var target in _targets)
-            {
-                Debug.Log("target is " + target.name);
-            }
+             
           
 
             yield return null; 

@@ -68,7 +68,6 @@ namespace Vanaring
 
         public void ModifyEnergy(RuntimeMangicalEnergy.EnergySide side, int value)
         {
-            
             int modValue = _magicalEnergy.ModifyEnergy(value, side);
 
             if (_balancedEnergyStyle)
@@ -81,7 +80,6 @@ namespace Vanaring
 
             OnModifyEnergy?.Invoke(_combatEntity, side, modValue);
 
-
         }
 
         public bool IsEnergyOverflow()
@@ -91,13 +89,11 @@ namespace Vanaring
 
         public void ResetEnergy()
         {
-            Debug.Log("Reset energy in " +  gameObject);
 
             //RuntimeMangicalEnergy.EnergySide modifiedSide = RuntimeMangicalEnergy.EnergySide.LightEnergy;
             int lightModifiedAmout = _magicalEnergy.ResetEnergy(RuntimeMangicalEnergy.EnergySide.LightEnergy) ;
             int darkAmodifiedAmout = _magicalEnergy.ResetEnergy(RuntimeMangicalEnergy.EnergySide.DarkEnergy) ;
 
-            Debug.Log("LightMod Amout " + lightModifiedAmout + " Dark amout " + darkAmodifiedAmout);
 
 
 
