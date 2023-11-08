@@ -24,11 +24,11 @@ namespace Vanaring
         [SerializeField]
         private List<Transform> _directVectorTransform = new List<Transform>() ;
 
-        private PlayableDirector _director; 
+        private PlayableDirector _director;
 
-        public void SetUpActor(PlayableDirector director, ActionTimelineSettingStruct actionTimelineSetting , SignalReceiver unitySignalReciver)
+        public void SetUpActor(PlayableDirector director, ActionTimelineSettingStruct actionTimelineSetting, SignalReceiver unitySignalReciver)
         {
-            _director = director; 
+            _director = director;
 
             foreach (var track in (director.playableAsset as TimelineAsset).GetOutputTracks())
             {
@@ -37,40 +37,39 @@ namespace Vanaring
                     if (track.name == actionTimelineSetting.TrackNames[i])
                     {
                         director.SetGenericBinding(track, actionTimelineSetting.GetObjectWithTrackName(track.name));
-                    }else if (track.name == "SignalTrack")
+                    } else if (track.name == "SignalTrack")
                     {
-                        director.SetGenericBinding(track, unitySignalReciver) ;
-                    }else if (track is CinemachineTrack)
+                        director.SetGenericBinding(track, unitySignalReciver);
+                    } else if (track is CinemachineTrack)
                     {
-                        
+
                     }
                 }
             }
 
             if (_casterTransform != null)
-            { 
-                Transform par = actionTimelineSetting.GetObjectWithIndex(0).transform;
-                _casterTransform.transform.parent = par ;
-                _casterTransform.transform.position = par.position ;
-                _casterTransform.transform.rotation = par.rotation ;
-            }
+                SetUpCasterTargetTransform(_casterTransform, actionTimelineSetting.GetObjectWithIndex(0)); 
 
             for (int i = 0; i < _targetTransform.Count; i++)
             {
                 if (actionTimelineSetting.GetObjectWithIndex(i + 1) == null)
-                {         
+                {
                     _targetTransform[i].gameObject.SetActive(false);
                     continue;
                 }
 
-                Transform par = actionTimelineSetting.GetObjectWithIndex(i + 1).transform;
-                _targetTransform[i].transform.parent = par; 
-                _targetTransform[i].transform.position = par.position ;
-                _targetTransform[i].transform.rotation = par.rotation ;
+                SetUpCasterTargetTransform(_targetTransform[i].transform, actionTimelineSetting.GetObjectWithIndex(i + 1));
             }
 
-            SetUpDirectVector(); 
+            SetUpDirectVector();
 
+        }
+
+        private void SetUpCasterTargetTransform(Transform owner, GameObject objectWithIndex)
+        {
+            owner.transform.parent = objectWithIndex.transform;
+            owner.transform.position = objectWithIndex.GetComponent<CombatEntityAnimationHandler>().GetEntityTimelineAnimationLocation(); ;
+            owner.transform.rotation = objectWithIndex.transform.rotation;
         }
 
         private void SetUpDirectVector()

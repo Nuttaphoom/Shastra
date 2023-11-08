@@ -109,7 +109,7 @@ namespace Vanaring
         {
             if (!_instantiatedBreakGUI.ContainsKey(combatEntity))
             {
-                _instantiatedBreakGUI.Add(combatEntity, targetGUI.InstantiateBreakGUI(combatEntity.CombatEntityAnimationHandler.GetGUISpawnPos(), _parent));
+                _instantiatedBreakGUI.Add(combatEntity, targetGUI.InstantiateBreakGUI(combatEntity.CombatEntityAnimationHandler.GetGUISpawnTransform().position, _parent));
 
                 Vector3 location = UISpaceSingletonHandler.ObjectToUISpace(combatEntity.CombatEntityAnimationHandler.GetGUISpawnTransform());
                 _instantiatedBreakGUI[combatEntity].transform.position =  location ;// new Vector3(circleTranform.x, 0.03f, circleTranform.z);

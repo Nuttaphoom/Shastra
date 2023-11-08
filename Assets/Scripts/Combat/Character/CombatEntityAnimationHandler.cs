@@ -44,6 +44,10 @@ namespace Vanaring
         }
 
         #region GETTER
+        public Vector3 GetEntityTimelineAnimationLocation()
+        {
+            return GetGUISpawnTransform().position  ;
+        }
         public GameObject GetVisualMesh()
         {
             if (_visualMesh == null)
@@ -60,16 +64,6 @@ namespace Vanaring
             }
             
             return _vfxPos.position ;
-        }
-
-        public Vector3 GetGUISpawnPos()
-        {
-            if (_guiPos == null || _guiPos.position == null)
-            {
-                throw new Exception("GUI Spawn Position of " + gameObject.name + "hasn't never been assigned");
-            }
-
-            return _guiPos.position;
         }
 
         public Transform GetGUISpawnTransform()
