@@ -41,6 +41,15 @@ namespace Vanaring
         private GameObject darkGroup;
         [SerializeField]
         private GameObject lightGroup;
+        [SerializeField]
+        private GameObject verticalLayout;
+        [SerializeField]
+        private Image lightSlot;
+        [SerializeField]
+        private Image darkSlot;
+        [SerializeField]
+        private Image energySlot;
+        private List<Image> energySlotList = new List<Image>();
 
         [Header("TextMeshPro")]
         [SerializeField]
@@ -121,8 +130,31 @@ namespace Vanaring
             animator = GetComponent<Animator>();
 
             _combatEntity.GetStatusEffectHandler().SubOnStatusVisualEvent(_statusWindow.ShowStatusIconUI);
+            InitEnergySlot();
 
         }
+
+        private void InitEnergySlot()
+        {
+            for (int i = 0; i < _combatEntity.SpellCaster.GetEnergyAmount(RuntimeMangicalEnergy.EnergySide.LightEnergy); i++)
+            {
+                Image slot = Instantiate(energySlot, verticalLayout.transform);
+                Color lightColor = lightSlot.color;
+                slot.color = lightColor;
+                slot.gameObject.SetActive(true);
+                energySlotList.Add(slot);
+;           }
+            for (int i = 0; i < _combatEntity.SpellCaster.GetEnergyAmount(RuntimeMangicalEnergy.EnergySide.DarkEnergy); i++)
+            {
+                Image slot = Instantiate(energySlot, verticalLayout.transform);
+                Color lightColor = darkSlot.color;
+                slot.color = lightColor;
+                slot.gameObject.SetActive(true);
+                energySlotList.Add(slot);
+            }
+
+        }
+
         #region TurnStatus
         public void ToggleTurnStatusDisplay(bool b)
         {
@@ -174,13 +206,27 @@ namespace Vanaring
 
             if (side == RuntimeMangicalEnergy.EnergySide.LightEnergy)
             {
+                //Debug.Log("Player spell:" + caster.SpellCaster.GetEnergyAmount(RuntimeMangicalEnergy.EnergySide.LightEnergy));
+                for (int i = 0; i < caster.SpellCaster.GetEnergyAmount(RuntimeMangicalEnergy.EnergySide.LightEnergy); i++)
+                {
+                    Debug.Log("change light");
+                    Color slotColor = lightSlot.color;
+                    energySlotList[i].color = slotColor;
+                }
                 //Increase Light
-                LightScaleIncrease(val);
+                //LightScaleIncrease(val);
             }
             else
             {
+                Debug.Log("Player spell:" + caster.SpellCaster.GetEnergyAmount(RuntimeMangicalEnergy.EnergySide.DarkEnergy));
+                for (int i = caster.SpellCaster.GetEnergyAmount(RuntimeMangicalEnergy.EnergySide.LightEnergy) + caster.SpellCaster.GetEnergyAmount(RuntimeMangicalEnergy.EnergySide.DarkEnergy)-1; i >= caster.SpellCaster.GetEnergyAmount(RuntimeMangicalEnergy.EnergySide.LightEnergy); i--)
+                {
+                    Debug.Log("change dark");
+                    Color slotColor = darkSlot.color;
+                    energySlotList[i].color = slotColor;
+                }
                 //Increase Dark
-                DarkScaleIncrease(val);
+                //DarkScaleIncrease(val);
             }
         }
 
