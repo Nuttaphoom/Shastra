@@ -99,6 +99,11 @@ namespace Vanaring
             _defaultColor = _actionButton.GetComponent<Image>().color; 
         }
 
+        public string GetSpellDescription()
+        {
+            return _spellSO.Desscription.ToString();
+        }
+
         private void ChooseSpell()
         {
             if (IsEnergySufficeientToUseThisSpell())

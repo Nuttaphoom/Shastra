@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 using DG.Tweening;
+using TMPro;
 
 namespace Vanaring  { 
     public class SpellWindowGUI : WindowGUI
@@ -14,6 +15,7 @@ namespace Vanaring  {
         [SerializeField] private Transform[] spellTransformList;
         private List<SpellSocketGUI> spellSocketGUIList = new List<SpellSocketGUI>();
         private List<int> displayingSpellIndexList = new List<int>();
+        [SerializeField] private TextMeshProUGUI spellLogText;
         private int spellIndexFocusUpMin = 0;
         private int spellIndexFocusUpMax = 3;
         private int spellIndexFocusDownMin = 0;
@@ -51,6 +53,7 @@ namespace Vanaring  {
                 foreach (SpellActionSO spellAction in controlableEntity.GetControlableEntityActionRegistry.GetSpellAction)
                 {
                     SpellSocketGUI newSocket = Instantiate(_spellSocket, transform);
+                    newSocket.transform.SetAsFirstSibling();
                     newSocket.Init(spellAction, entity);
                     spellSocketGUIList.Add(newSocket);
                     if (spellSocketGUIList.Count > 3)
@@ -133,6 +136,7 @@ namespace Vanaring  {
             }
             spellSocketGUIList[currentSelectedIndex].UnHighlightedButton();
             currentSelectedIndex++;
+            spellLogText.text = spellSocketGUIList[currentSelectedIndex].GetSpellDescription();
             spellSocketGUIList[currentSelectedIndex].HightlightedButton();
             UpdateIndexFocusOnInputCall();
         }
@@ -158,6 +162,7 @@ namespace Vanaring  {
             }
             spellSocketGUIList[currentSelectedIndex].UnHighlightedButton();
             currentSelectedIndex--;
+            spellLogText.text = spellSocketGUIList[currentSelectedIndex].GetSpellDescription();
             spellSocketGUIList[currentSelectedIndex].HightlightedButton();
             UpdateIndexFocusOnInputCall();
         }
