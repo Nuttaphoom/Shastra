@@ -14,18 +14,7 @@ using static UnityEngine.EventSystems.EventTrigger;
 using static UnityEngine.GraphicsBuffer;
 namespace Vanaring
 {
-    /// <summary>
-    /// Every broadcaster need to be attached with IBroadcaster
-    /// </summary>
-    /// <returns></returns>
-    public interface IBroadcaster
-    {
-        /// <summary>
-        /// Retrieves the appropriate EventBroadcaster instance and initializes the associated event channel.
-        /// </summary>
-        /// <returns>The EventBroadcaster instance for managing events.</returns>
-        public EventBroadcaster GetEventBroadcaster();
-    }
+    
     public class EventBroadcaster
     {
         private Dictionary<string, IEventChannel> _events = new Dictionary<string, IEventChannel>();
@@ -109,9 +98,13 @@ namespace Vanaring
 
         private U GetTrueInput(object param)
         {
-            if (param is U uParam)
+            if (param is U uParam )
             {
                 return uParam;
+            }
+            else if (param is null)
+            {
+                return (U)param; 
             }
             else
             {

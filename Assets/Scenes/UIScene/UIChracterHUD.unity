@@ -468,7 +468,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d754f547dd36f647a7484395d3ee952, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cinemachineBrain: {fileID: 0}
+  cinemachineBrain: {fileID: 1320665027}
   _enemyModelSetupList:
   - {fileID: 1147761711}
   - {fileID: 0}
@@ -479,6 +479,7 @@ MonoBehaviour:
   RvirtualCamera: {fileID: 2903037121640110383, guid: 0166f4459de1c0743808956120eca62c, type: 3}
   MvirtualCamera: {fileID: 457243807630978, guid: 3274930b240cc4b47bddd8a4a8527d01, type: 3}
   LvirtualCamera: {fileID: 5001759812624917939, guid: 410358e3a5f3a07409628b9506ec97fc, type: 3}
+  _ally_cam_aimPoint: {fileID: 1278082051}
   _tgui: {fileID: 486383031}
 --- !u!1 &25517303
 GameObject:
@@ -11538,7 +11539,6 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 89353639eaf169c4a9d8b4e4e70300c5, type: 2}
     - {fileID: 11400000, guid: 2ab926a84844f0e45992f42669fc4d15, type: 2}
     - {fileID: 11400000, guid: b83d49188931c7941a64b8aaa8d27129, type: 2}
-    - {fileID: 11400000, guid: d9d678f1a3ddf7f47b5997201ea91cea, type: 2}
     _equipedWeaponAction: []
 --- !u!114 &367861801
 MonoBehaviour:
@@ -11615,6 +11615,7 @@ MonoBehaviour:
     TargetTrigerID: Stunt
     _isProjectile: 0
   _above_head_transform: {fileID: 609529000}
+  _overflowAction: {fileID: 0}
 --- !u!1 &368228363
 GameObject:
   m_ObjectHideFlags: 0
@@ -26176,6 +26177,7 @@ Transform:
   - {fileID: 486383030}
   - {fileID: 28513638}
   - {fileID: 199499832}
+  - {fileID: 1278082051}
   m_Father: {fileID: 1497938901}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -28881,6 +28883,37 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: e8e49f95c4ad33e449d099b4f214f3bf, type: 3}
   m_PrefabInstance: {fileID: 1271524489}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1278082050
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1278082051}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1278082051
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1278082050}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 5.91}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1028215676}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1293955221
 GameObject:
   m_ObjectHideFlags: 0
@@ -35238,9 +35271,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32379dfbdd599a34ca13dac1b2902ec2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _itemInventory:
-  - itemData: {fileID: 11400000, guid: ba4db471659909444b56c5bc158ea52b, type: 2}
-    amount: 0
+  _itemInventory: []
 --- !u!1 &1740562722
 GameObject:
   m_ObjectHideFlags: 0
@@ -41315,7 +41346,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2141451199
 RectTransform:
   m_ObjectHideFlags: 0

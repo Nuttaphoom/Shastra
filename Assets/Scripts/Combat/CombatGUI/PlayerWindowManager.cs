@@ -33,17 +33,21 @@ namespace Vanaring
             return allWindows; 
         }
 
-        private void Awake()
+      
+
+        private void LoadNewEntityIntoHUD(Null n)
         {
             foreach (var entity in CombatReferee.instance.GetCompetatorsBySide(ECompetatorSide.Ally))
             {
-                entity.SubOnTakeControlEvent(SetUpWindows); 
-                entity.SubOnTakeControlLeaveEvent(CloseWindow) ;
+                entity.SubOnTakeControlEvent(SetUpWindows);
+                entity.SubOnTakeControlLeaveEvent(CloseWindow);
             }
         }
 
         private void Start()
         {
+            CombatReferee.instance.GetEventBroadcaster().SubEvent<Null>(LoadNewEntityIntoHUD, "OnCombatPreparation");
+
             TargetSelectionFlowControl.Instance.SubOnTargetSelectionEnter(OnTargetSelectionEnter);
             TargetSelectionFlowControl.Instance.SubOnTargetSelectionEnd(OnTargetSelectionEnd);//.SubEvent<bool>(OnTargetSelectionEnd, "OnTargetSelectionEnd");
 

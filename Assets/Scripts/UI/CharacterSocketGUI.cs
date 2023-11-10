@@ -209,7 +209,6 @@ namespace Vanaring
                 //Debug.Log("Player spell:" + caster.SpellCaster.GetEnergyAmount(RuntimeMangicalEnergy.EnergySide.LightEnergy));
                 for (int i = 0; i < caster.SpellCaster.GetEnergyAmount(RuntimeMangicalEnergy.EnergySide.LightEnergy); i++)
                 {
-                    Debug.Log("change light");
                     Color slotColor = lightSlot.color;
                     energySlotList[i].color = slotColor;
                 }
@@ -218,10 +217,8 @@ namespace Vanaring
             }
             else
             {
-                Debug.Log("Player spell:" + caster.SpellCaster.GetEnergyAmount(RuntimeMangicalEnergy.EnergySide.DarkEnergy));
                 for (int i = caster.SpellCaster.GetEnergyAmount(RuntimeMangicalEnergy.EnergySide.LightEnergy) + caster.SpellCaster.GetEnergyAmount(RuntimeMangicalEnergy.EnergySide.DarkEnergy)-1; i >= caster.SpellCaster.GetEnergyAmount(RuntimeMangicalEnergy.EnergySide.LightEnergy); i--)
                 {
-                    Debug.Log("change dark");
                     Color slotColor = darkSlot.color;
                     energySlotList[i].color = slotColor;
                 }

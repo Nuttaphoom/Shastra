@@ -76,7 +76,6 @@ namespace Vanaring
 
             do
             {
-                Debug.Log("signal not terminated");
                 if ((factory = _actionSignal.GetReadyEffect()) != null)
                 {
                     RuntimeEffect effect = factory.Factorize(_targets);
@@ -88,12 +87,10 @@ namespace Vanaring
 
             while (_ongoingEffect.Count > 0)
             {
-                Debug.Log("on goging > 0");
                 yield return new WaitForEndOfFrame();
             }
             while (DirectorManager.Instance.IsPlayingTimeline)
             {
-                Debug.Log("is playing timeline"); 
                 yield return new WaitForEndOfFrame();
             }
             DirectorManager.Instance.ClearCurrentTimeline() ; 

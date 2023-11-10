@@ -21,18 +21,20 @@ namespace Vanaring
         Hostile
     }
 
-    public class CombatReferee : MonoBehaviour, IBroadcaster
+    public class CombatReferee : MonoBehaviour   
     {
-        private EventBroadcaster _eventBroadcaster; 
-        EventBroadcaster IBroadcaster.GetEventBroadcaster()
+        private EventBroadcaster _eventBroadcaster;
+        public EventBroadcaster GetEventBroadcaster()
         {
-            if (_eventBroadcaster == null) 
+            if (_eventBroadcaster == null)
+            {
                 _eventBroadcaster = new EventBroadcaster();
-
+                _eventBroadcaster.OpenChannel<Null>("OnCombatPreparation");    
+            }
+        
             return _eventBroadcaster; 
         }
 
-        public static CombatReferee instance = null;
 
         [SerializeField]
         private EnemyHUDWindowManager _enemyHUDWindowManager;
@@ -71,6 +73,7 @@ namespace Vanaring
         List<CompetatorDetailStruct> _competators;
 
 
+        public static CombatReferee instance;
 
         private void Awake()
         {
@@ -90,8 +93,14 @@ namespace Vanaring
         private IEnumerator BeginNewBattle()
         {
             SetUpNewCombatEncounter();
+            _eventBroadcaster.InvokeEvent<Null>(null, "OnCombatPreparation"); //b <Null>("OnCombatPreparation");
+
+            yield return new WaitForSeconds(1.0f) ;
+
             StartCoroutine(CustomTick());
-            yield return null; 
+
+
+
         }
         private void SetUpNewCombatEncounter()
         {
@@ -285,8 +294,6 @@ namespace Vanaring
         //Good 
         public List<CombatEntity> GetCompetatorsBySide(ECompetatorSide ESide)
         {
-            
-
             return _competators.Where(v => v.Side == ESide).Select(v => v.Competator).ToList();
         }
 
