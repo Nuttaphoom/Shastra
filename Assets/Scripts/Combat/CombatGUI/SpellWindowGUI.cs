@@ -136,6 +136,14 @@ namespace Vanaring  {
             }
             spellSocketGUIList[currentSelectedIndex].UnHighlightedButton();
             currentSelectedIndex++;
+            if (spellLogText == null)
+            {
+                Debug.Log("null 1");
+            }
+            if (spellSocketGUIList[currentSelectedIndex] == null)
+            {
+                Debug.Log("null 2"); 
+            }
             spellLogText.text = spellSocketGUIList[currentSelectedIndex].GetSpellDescription();
             spellSocketGUIList[currentSelectedIndex].HightlightedButton();
             UpdateIndexFocusOnInputCall();

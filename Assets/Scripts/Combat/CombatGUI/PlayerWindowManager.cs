@@ -22,6 +22,27 @@ namespace Vanaring
 
         private WindowGUI _lastWindowOpen;
 
+
+        private void Start()
+        {
+            CombatReferee.Instance?.GetEventBroadcaster().SubEvent<Null>(LoadNewEntityIntoHUD, "OnCombatPreparation");
+
+
+            TargetSelectionFlowControl.Instance.SubOnTargetSelectionEnter(OnTargetSelectionEnter);
+            TargetSelectionFlowControl.Instance.SubOnTargetSelectionEnd(OnTargetSelectionEnd);//.SubEvent<bool>(OnTargetSelectionEnd, "OnTargetSelectionEnd");
+
+            foreach (var window in GetAllValidWindows())
+                window.Init(this);
+
+
+            //_spellWindow.gameObject.SetActive(false);
+            //_itemWindow.gameObject.SetActive(false);
+            //_weaponWindow.gameObject.SetActive(false);
+            //_mainWindow.gameObject.SetActive(false);
+
+        }
+
+
         private List<WindowGUI> GetAllValidWindows()
         {
             List<WindowGUI> allWindows = new List<WindowGUI>() ;
@@ -37,29 +58,11 @@ namespace Vanaring
 
         private void LoadNewEntityIntoHUD(Null n)
         {
-            foreach (var entity in CombatReferee.instance.GetCompetatorsBySide(ECompetatorSide.Ally))
+            foreach (var entity in CombatReferee.Instance.GetCompetatorsBySide(ECompetatorSide.Ally))
             {
                 entity.SubOnTakeControlEvent(SetUpWindows);
                 entity.SubOnTakeControlLeaveEvent(CloseWindow);
             }
-        }
-
-        private void Start()
-        {
-            CombatReferee.instance.GetEventBroadcaster().SubEvent<Null>(LoadNewEntityIntoHUD, "OnCombatPreparation");
-
-            TargetSelectionFlowControl.Instance.SubOnTargetSelectionEnter(OnTargetSelectionEnter);
-            TargetSelectionFlowControl.Instance.SubOnTargetSelectionEnd(OnTargetSelectionEnd);//.SubEvent<bool>(OnTargetSelectionEnd, "OnTargetSelectionEnd");
-
-            foreach (var window in GetAllValidWindows())
-                window.Init(this);
-            
-
-            //_spellWindow.gameObject.SetActive(false);
-            //_itemWindow.gameObject.SetActive(false);
-            //_weaponWindow.gameObject.SetActive(false);
-            //_mainWindow.gameObject.SetActive(false);
-
         }
 
         #region PrivateMethod

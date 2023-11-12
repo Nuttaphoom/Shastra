@@ -22,7 +22,8 @@ namespace Vanaring
    
         private void Start()
         {
-            entities = CombatReferee.instance.GetCompetatorsBySide(ECompetatorSide.Ally);
+            entities = CombatReferee.Instance.GetCompetatorsBySide(ECompetatorSide.Ally);
+
             for (int i = 0; i < entities.Count; i++)
             {
                 CharacterSocketGUI newSocket = Instantiate(_templatePrefab, _templatePrefab.transform.position, _templatePrefab.transform.rotation);

@@ -73,14 +73,14 @@ namespace Vanaring
         List<CompetatorDetailStruct> _competators;
 
 
-        public static CombatReferee instance;
-
+        public static CombatReferee Instance ;
+       
         private void Awake()
         {
-            instance = this;
-            _currentSide = ECompetatorSide.Ally;
+            Instance = this; 
 
-            _activeCombatEntities = new CircularArray<CombatEntity>(new List<CombatEntity>() );
+            _currentSide = ECompetatorSide.Ally;
+            _activeCombatEntities = new CircularArray<CombatEntity>(new List<CombatEntity>());
             _combatRefereeStateHandler = new CombatRefereeStateHandler(this);
         }
 
@@ -93,9 +93,11 @@ namespace Vanaring
         private IEnumerator BeginNewBattle()
         {
             SetUpNewCombatEncounter();
-            _eventBroadcaster.InvokeEvent<Null>(null, "OnCombatPreparation"); //b <Null>("OnCombatPreparation");
 
             yield return new WaitForSeconds(1.0f) ;
+
+            GetEventBroadcaster().InvokeEvent<Null>(null, "OnCombatPreparation"); //b <Null>("OnCombatPreparation");
+
 
             StartCoroutine(CustomTick());
 
