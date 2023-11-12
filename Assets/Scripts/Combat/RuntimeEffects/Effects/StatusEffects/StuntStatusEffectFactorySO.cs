@@ -53,9 +53,8 @@ namespace Vanaring
 
         public override IEnumerator OnStatusEffecExpire(CombatEntity caster)
         {
-            caster.GetComponent<EnergyOverflowHandler>().ResetOverflow(); 
-            yield return caster.CombatEntityAnimationHandler.PlayTriggerAnimation("StuntRelieve");
-        }
+            yield return caster.GetComponent<EnergyOverflowHandler>().ResetOverflow(); 
+         }
 
 
     } 
