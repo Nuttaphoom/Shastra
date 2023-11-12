@@ -106,7 +106,7 @@ namespace Vanaring
             }
             else if (key == (KeyCode.A))
             {
-                if (CombatReferee.instance.ChangeActiveEntityIndex(true))
+                if (CombatReferee.Instance.ChangeActiveEntityIndex(true))
                     TargetSelectionFlowControl.Instance.ForceStop();
 
             }
@@ -114,7 +114,7 @@ namespace Vanaring
             {
                 //throw new NotImplementedException();
 
-                if (CombatReferee.instance.ChangeActiveEntityIndex(false))
+                if (CombatReferee.Instance.ChangeActiveEntityIndex(false))
                     TargetSelectionFlowControl.Instance.ForceStop();
             }
             else if (key == (KeyCode.RightArrow))
@@ -137,7 +137,7 @@ namespace Vanaring
         private IEnumerator TargettingTarget()
         {
             CombatEntity selectedEntity = null ;
-            List<CombatEntity> entities = CombatReferee.instance.GetCompetatorsBySide(ECompetatorSide.Hostile); 
+            List<CombatEntity> entities = CombatReferee.Instance.GetCompetatorsBySide(ECompetatorSide.Hostile); 
             for (int i = 0;  i < entities.Count; i++)
             {
                 if (entities[i].IsDead)

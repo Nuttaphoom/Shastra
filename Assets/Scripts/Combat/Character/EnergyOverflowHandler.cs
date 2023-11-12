@@ -1,3 +1,4 @@
+using CustomYieldInstructions;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -34,7 +35,7 @@ namespace Vanaring
         private bool _isOverflow = false ;
 
         [SerializeField]
-        private ActorActionFactory _overflowAction;
+        private ActorActionFactory _zoomToSelfAction ;
 
         #region Method 
         /// <summary>
@@ -66,9 +67,22 @@ namespace Vanaring
                     _combatEntity.LogicHurt(null, _combatEntity.StatsAccumulator.GetATKAmount());
                     _combatEntity.ApplyOverflow();
 
-                    Debug.Log("start overflow");
-                    yield return (_overflowAction.FactorizeRuntimeAction(_combatEntity)).PerformAction() ;
-                    Debug.Log("end overflow") ;
+                    List<IEnumerator> _iEnumerator = new List<IEnumerator>(); 
+
+                    if (!_combatEntity.IsDead)
+                    {
+                        _iEnumerator.Add((_combatEntity.CombatEntityAnimationHandler.PlayVFXActionAnimation<string>(_actionAnimationInfo.CasterVfxEntity, VisualStunApplier, "Stunt")));
+                        _starVFX_Instantied = Instantiate(_star_circle_stunVFX, _above_head_transform);
+                        _starVFX_Instantied.transform.position = _above_head_transform.position;
+                    }
+                    else
+                    {
+                        _iEnumerator .Add (_combatEntity.VisualHurt(null, "Die"));
+                    }
+
+                    _iEnumerator.Add ( (_zoomToSelfAction.FactorizeRuntimeAction(_combatEntity)).PerformAction() ) ;
+
+                    yield return new WaitAll(this,_iEnumerator.ToArray() );
                 }
             } 
         }
@@ -101,15 +115,26 @@ namespace Vanaring
             }
         }
 
-        public void ResetOverflow()
+        public IEnumerator ResetOverflow()
         {
+            List<IEnumerator> _iEnumerator = new List<IEnumerator>();
+
             if (_starVFX_Instantied != null)
             {
                 Destroy(_starVFX_Instantied.gameObject);
                 _starVFX_Instantied = null;
             }
             _combatEntity.SpellCaster.ResetEnergy();
-            _isOverflow = false; 
+            _isOverflow = false;
+
+            
+            _iEnumerator.Add((_zoomToSelfAction.FactorizeRuntimeAction(_combatEntity)).PerformAction());
+
+            _iEnumerator.Add(_combatEntity.CombatEntityAnimationHandler.PlayTriggerAnimation("StuntRelieve"));
+
+            yield return new WaitAll(_combatEntity, _iEnumerator.ToArray() ); 
+        
+        
         }
 
         private IEnumerator VisualStunApplier(string s)

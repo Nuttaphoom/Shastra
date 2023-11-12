@@ -54,7 +54,19 @@ namespace Vanaring
         #region Modify Energy  
         public bool IsEnergySufficient(SpellActionSO spell)
         {
-            return GetEnergyAmount(spell.RequiredEnergy.Side) >= spell.RequiredEnergy.Amount;
+            // we use opposited side of Required energy to check because if spell display Dark 3 to cast, meaning we will need 
+            //at least Light 3 to cast the spell
+            RuntimeMangicalEnergy.EnergySide side; 
+            if (spell.RequiredEnergy.Side == RuntimeMangicalEnergy.EnergySide.DarkEnergy)
+            {
+                side = RuntimeMangicalEnergy.EnergySide.LightEnergy;
+            }
+            else //if (spell.RequiredEnergy.Side == RuntimeMangicalEnergy.EnergySide.LightEnergy)
+            {
+                side = RuntimeMangicalEnergy.EnergySide.DarkEnergy; 
+            }
+
+            return GetEnergyAmount(side) >= spell.RequiredEnergy.Amount;
         }
         public int GetEnergyAmount(RuntimeMangicalEnergy.EnergySide side)
         {

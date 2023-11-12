@@ -65,11 +65,11 @@ namespace Vanaring
         {
             _validTargets.Clear();
 
-            ECompetatorSide eCompetatorSide = CombatReferee.instance.GetCompetatorSide(caster);   
+            ECompetatorSide eCompetatorSide = CombatReferee.Instance.GetCompetatorSide(caster);   
 
             foreach (ECompetatorSide side in Enum.GetValues(typeof(ECompetatorSide)))
             {
-                foreach (CombatEntity target in CombatReferee.instance.GetCompetatorsBySide(side))
+                foreach (CombatEntity target in CombatReferee.Instance.GetCompetatorsBySide(side))
                 {
                     if (targetSelector.CorrectTarget(caster, target))
                     {
@@ -331,8 +331,8 @@ namespace Vanaring
         private bool _targetSelf;
         public bool CorrectTarget(CombatEntity caster, CombatEntity target)
         {
-            ECompetatorSide casterSide = CombatReferee.instance.GetCompetatorSide(caster);
-            ECompetatorSide targetSide = CombatReferee.instance.GetCompetatorSide(target);
+            ECompetatorSide casterSide = CombatReferee.Instance.GetCompetatorSide(caster);
+            ECompetatorSide targetSide = CombatReferee.Instance.GetCompetatorSide(target);
 
             if (TargetCasterItself)
             {

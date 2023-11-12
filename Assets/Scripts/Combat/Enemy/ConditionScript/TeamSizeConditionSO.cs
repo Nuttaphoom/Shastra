@@ -25,9 +25,9 @@ namespace Vanaring
         public override bool ConditionsMet(CombatEntity entity)
         {
             if (Current_MoreThan)
-                return (CombatReferee.instance.GetCompetatorsBySide(_side).Count > _sizeAmout);
+                return (CombatReferee.Instance.GetCompetatorsBySide(_side).Count > _sizeAmout);
 
-            return (CombatReferee.instance.GetCompetatorsBySide(_side).Count < _sizeAmout);
+            return (CombatReferee.Instance.GetCompetatorsBySide(_side).Count < _sizeAmout);
 
         }
     }

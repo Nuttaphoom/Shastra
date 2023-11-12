@@ -53,7 +53,7 @@ namespace Vanaring
                 var prefabTemplate = entityData.CombatEntity;
                 var side = entityData.Side; 
 
-                CombatReferee.instance.InstantiateCompetator( prefabTemplate,  side);
+                CombatReferee.Instance.InstantiateCompetator( prefabTemplate,  side);
             }
 
             yield return null ;
