@@ -29,18 +29,18 @@ namespace Vanaring
         private Image hpBar;
         [SerializeField]
         private Image secondHpBar;
-        [SerializeField]
-        private Image lightBar;
-        [SerializeField]
-        private Image secondLightBar;
-        [SerializeField]
-        private Image darkBar;
-        [SerializeField]
-        private Image secondDarkBar;
-        [SerializeField]
-        private GameObject darkGroup;
-        [SerializeField]
-        private GameObject lightGroup;
+        //[SerializeField]
+        //private Image lightBar;
+        //[SerializeField]
+        //private Image secondLightBar;
+        //[SerializeField]
+        //private Image darkBar;
+        //[SerializeField]
+        //private Image secondDarkBar;
+        //[SerializeField]
+        //private GameObject darkGroup;
+        //[SerializeField]
+        //private GameObject lightGroup;
         [SerializeField]
         private GameObject verticalLayout;
         [SerializeField]
@@ -54,10 +54,10 @@ namespace Vanaring
         [Header("TextMeshPro")]
         [SerializeField]
         private TextMeshProUGUI characterName;
-        [SerializeField]
-        private TextMeshProUGUI lightNumText;
-        [SerializeField]
-        private TextMeshProUGUI darkNumText;
+        //[SerializeField]
+        //private TextMeshProUGUI lightNumText;
+        //[SerializeField]
+        //private TextMeshProUGUI darkNumText;
         [SerializeField]
         private TextMeshProUGUI hpNumText;
 
@@ -87,11 +87,11 @@ namespace Vanaring
             lightVal = 50;
             darkVal = 50;
 
-            if (lightNumText != null && darkNumText != null)
-            {
-                lightNumText.text = lightVal.ToString();
-                darkNumText.text = darkVal.ToString();
-            }
+            //if (lightNumText != null && darkNumText != null)
+            //{
+            //    lightNumText.text = lightVal.ToString();
+            //    darkNumText.text = darkVal.ToString();
+            //}
         }
         private void OnEnable()
         {
@@ -118,8 +118,8 @@ namespace Vanaring
             characterImg.sprite = _characterSheetSO.GetCharacterIcon;
             isCanTurn = false;
             isSelected = false;
-            lightBar.fillAmount = 0.5f;
-            darkBar.fillAmount = 0.5f;
+            //lightBar.fillAmount = 0.5f;
+            //darkBar.fillAmount = 0.5f;
             _turnStatusImage.gameObject.SetActive(false);
             _highlightTurn.gameObject.SetActive(false);
             characterName.text = _characterSheetSO.CharacterName;
@@ -180,14 +180,15 @@ namespace Vanaring
         private void UpdateHPScaleGUI()
         {
             hpBar.fillAmount = (float)hpVal / maxHpVal;
-            hpNumText.text = "HP " + hpVal.ToString() + "/" + maxHpVal.ToString();
+            //hpNumText.text = "HP " + hpVal.ToString() + "/" + maxHpVal.ToString();
+            hpNumText.text = hpVal.ToString();
             //animator.Play("CharacterIconGotHit");
         }
 
         private void UpdateEnergyScaleGUI()
         {
-            lightBar.fillAmount = (int.Parse(lightNumText.text) / maxEnergyVal);
-            darkBar.fillAmount = (maxEnergyVal/100) - lightBar.fillAmount;
+            //lightBar.fillAmount = (int.Parse(lightNumText.text) / maxEnergyVal);
+            //darkBar.fillAmount = (maxEnergyVal/100) - lightBar.fillAmount;
         }
 
         private void OnHPModified(int damage)
@@ -227,49 +228,49 @@ namespace Vanaring
             }
         }
 
-        public void LightScaleIncrease(int val)
-        {
-            lightGroup.transform.SetAsLastSibling();
-            if (lightVal + val > 100)
-            {
-                val = (int)(100 - lightVal);
-            }
-            lightVal += val;
-            secondLightBar.fillAmount = lightVal / maxEnergyVal;
-            StartCoroutine(IEAnimateEnergyBarScale());
-        }
-        public void DarkScaleIncrease(int val)
-        {
-            darkGroup.transform.SetAsLastSibling();
-            if (lightVal - val < 0)
-            {
-                Debug.Log("Value can't be lower than 0!");
-                return;
-            }
-            lightVal -= val;
-            secondDarkBar.fillAmount = (float)(100-lightVal) / maxEnergyVal;
-            StartCoroutine(IEAnimateEnergyBarScale());
-        }
+        //public void LightScaleIncrease(int val)
+        //{
+        //    lightGroup.transform.SetAsLastSibling();
+        //    if (lightVal + val > 100)
+        //    {
+        //        val = (int)(100 - lightVal);
+        //    }
+        //    lightVal += val;
+        //    secondLightBar.fillAmount = lightVal / maxEnergyVal;
+        //    StartCoroutine(IEAnimateEnergyBarScale());
+        //}
+        //public void DarkScaleIncrease(int val)
+        //{
+        //    darkGroup.transform.SetAsLastSibling();
+        //    if (lightVal - val < 0)
+        //    {
+        //        Debug.Log("Value can't be lower than 0!");
+        //        return;
+        //    }
+        //    lightVal -= val;
+        //    secondDarkBar.fillAmount = (float)(100-lightVal) / maxEnergyVal;
+        //    StartCoroutine(IEAnimateEnergyBarScale());
+        //}
 
-        private IEnumerator IEAnimateEnergyBarScale()
-        {
-            yield return new WaitForSeconds(0.5f);
-            while (int.Parse(lightNumText.text) < lightVal)
-            {
-                lightNumText.text = (int.Parse(lightNumText.text) + 1).ToString();
-                darkNumText.text = (int.Parse(darkNumText.text) - 1).ToString();
-                UpdateEnergyScaleGUI();
-                yield return new WaitForSeconds(0.01f);
-            }
-            while (int.Parse(lightNumText.text) > lightVal)
-            {
-                lightNumText.text = (int.Parse(lightNumText.text) - 1).ToString();
-                darkNumText.text = (int.Parse(darkNumText.text) + 1).ToString();
-                UpdateEnergyScaleGUI();
-                yield return new WaitForSeconds(0.01f);
-            }
-            yield return null;
-        }
+        //private IEnumerator IEAnimateEnergyBarScale()
+        //{
+        //    yield return new WaitForSeconds(0.5f);
+        //    while (int.Parse(lightNumText.text) < lightVal)
+        //    {
+        //        lightNumText.text = (int.Parse(lightNumText.text) + 1).ToString();
+        //        darkNumText.text = (int.Parse(darkNumText.text) - 1).ToString();
+        //        UpdateEnergyScaleGUI();
+        //        yield return new WaitForSeconds(0.01f);
+        //    }
+        //    while (int.Parse(lightNumText.text) > lightVal)
+        //    {
+        //        lightNumText.text = (int.Parse(lightNumText.text) - 1).ToString();
+        //        darkNumText.text = (int.Parse(darkNumText.text) + 1).ToString();
+        //        UpdateEnergyScaleGUI();
+        //        yield return new WaitForSeconds(0.01f);
+        //    }
+        //    yield return null;
+        //}
 
         private IEnumerator IEAnimateHPBarScale(float maxHP)
         {
