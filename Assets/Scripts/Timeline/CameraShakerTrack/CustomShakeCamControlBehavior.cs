@@ -68,7 +68,6 @@ namespace Vanaring
 
         private void StopCamShake()
         {
-            Debug.Log("stop cam shake");
             _multiChannelPerlin.m_AmplitudeGain = _oldAmp ;
             _multiChannelPerlin.m_NoiseProfile = _oldNoiseSetting ;
         }

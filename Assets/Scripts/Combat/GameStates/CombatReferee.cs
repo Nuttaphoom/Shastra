@@ -1,4 +1,5 @@
 
+using CustomYieldInstructions;
 using JetBrains.Annotations;
 using System;
 using System.Collections;
@@ -92,7 +93,7 @@ namespace Vanaring
         #region SettingUpRound
         private IEnumerator BeginNewBattle()
         {
-            SetUpNewCombatEncounter();
+            yield return SetUpNewCombatEncounter();
 
             yield return new WaitForSeconds(1.0f) ;
 
@@ -104,12 +105,20 @@ namespace Vanaring
 
 
         }
-        private void SetUpNewCombatEncounter()
+        private IEnumerator SetUpNewCombatEncounter()
         {
-            AssignCompetators(_entityLoader.LoadData(), ECompetatorSide.Hostile);
+            yield return AssignCompetators(_entityLoader.LoadData(), ECompetatorSide.Hostile);
         }
-        private void AssignCompetators(List<CombatEntity> entites, ECompetatorSide side)
+
+        private IEnumerator AssignCompetators(List<CombatEntity> entites, ECompetatorSide side)
         {
+            List<IEnumerator> _allIEs = new List<IEnumerator>(); 
+            foreach (var entity in entites) {
+                _allIEs.Add(entity.InitializeEntityIntoCombat() ) ; 
+            }
+
+            yield return new WaitAll(this, _allIEs.ToArray()); 
+
             foreach (var entity in entites)
             {
                 CompetatorDetailStruct c = new CompetatorDetailStruct(side, entity);
@@ -118,6 +127,9 @@ namespace Vanaring
 
             // Call the GenerateEntityAttacher method with the lists
             CameraSetUPManager.Instance.GenerateEntityAttacher(GetCompetatorsBySide(ECompetatorSide.Ally).Select(c => c.gameObject).ToList(), GetCompetatorsBySide(ECompetatorSide.Hostile).Select(c => c.gameObject).ToList());
+
+            
+            yield return null; 
         }
         public IEnumerator PrepareRefereeForNewRound()
         {
@@ -190,20 +202,20 @@ namespace Vanaring
             }
             return false;
         }
-        public CombatEntity InstantiateCompetator(CombatEntity prefabNewCompetator, ECompetatorSide side)
+        public IEnumerator InstantiateCompetator(CombatEntity prefabNewCompetator, ECompetatorSide side)
         {
             List<CombatEntity> entitesWithSameSide = new List<CombatEntity>();
             entitesWithSameSide = GetCompetatorsBySide(side);
 
             if (entitesWithSameSide.Count > _maxTeamSize)
-                return null ; 
+                throw new Exception("Can't spawn more competator into the combat"); 
             
             CombatEntity entity = _entityLoader.SpawnPrefab(prefabNewCompetator) ;
 
-            AssignCompetators(new List<CombatEntity>() { entity } , side);
+            yield return AssignCompetators(new List<CombatEntity>() { entity } , side);
 
            
-            return entity ; 
+             
         }
 
         #endregion

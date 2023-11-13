@@ -35,13 +35,7 @@ namespace Vanaring
         private string _deadAnimationTrigger = "NONE";
 
         [SerializeField]
-        private CinemachineVirtualCamera _actionCamera;
-
-        public CinemachineVirtualCamera ActionCamera
-        {
-            get { return _actionCamera; }
-            set { _actionCamera = value; }
-        }
+        private ParticleSystem _spawnVisualEffect; 
 
         #region GETTER
         public Vector3 GetEntityTimelineAnimationLocation()
@@ -117,7 +111,6 @@ namespace Vanaring
             yield return new WaitAll(this, coroutines.ToArray() );
 
         }
-
         public IEnumerator PlayVFXActionAnimation<T>(VFXEntity vfxEntity,  VFXCallbackHandler<T>.VFXCallback  argc  , T pam)
         {
 
@@ -161,7 +154,32 @@ namespace Vanaring
             }
         }
 
-   
+        public void InstantlyHideVisualMesh()
+        {
+            _visualMesh.SetActive(false);
+        }
+
+        public IEnumerator PlaySpawnVisualEffectCoroutine()
+        {
+            float overallTime = 0.0f ;
+            if (_spawnVisualEffect != null)
+            {
+                _spawnVisualEffect.gameObject.SetActive(true);
+                _spawnVisualEffect.Play();
+                overallTime = _spawnVisualEffect.main.duration; 
+                yield return new WaitForSeconds(overallTime / 2);
+            }
+
+            _visualMesh.SetActive(true);
+
+            yield return new WaitForSeconds(overallTime / 2);
+
+            if (_spawnVisualEffect != null)
+            {
+                _spawnVisualEffect.gameObject.SetActive(false); 
+            }
+        }
+
 
 
 

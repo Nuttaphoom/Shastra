@@ -66,10 +66,8 @@ namespace Vanaring
             return _eventBroadcaster; 
 
         }
-
         protected virtual void Awake()
         {
-            
             _dmgOutputPopHanlder = new POPUPNumberTextHandler(this); 
             _runtimeCharacterStatsAccumulator = new RuntimeCharacterStatsAccumulator(_characterSheet);
             _energyOverflowHandler = GetComponent<EnergyOverflowHandler>();
@@ -80,8 +78,10 @@ namespace Vanaring
                 throw new Exception("SpellCaster haven't been assigned (should never use 'GetComponent' for SpellCaster as it would be too slow') ");
             }
         }
- 
+
         #region Turn Handler Methods 
+        public abstract IEnumerator InitializeEntityIntoCombat(); 
+
         public abstract IEnumerator GetAction();
 
         // Take control and leave control should have its own space 
@@ -119,6 +119,7 @@ namespace Vanaring
         {
             return !_runtimeCharacterStatsAccumulator.IsStunt() && !IsDead && !IsExhausted;
         }
+
 
         #endregion
         public ActorAction GetActionRuntimeEffect( )
