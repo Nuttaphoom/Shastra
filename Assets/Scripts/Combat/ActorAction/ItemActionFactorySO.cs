@@ -17,7 +17,7 @@ namespace Vanaring
         public override ActorAction FactorizeRuntimeAction(CombatEntity user)
         {
             
-            return new ItemAbilityRuntime(this, user.ItemUser, _targetSelector, _actionSignal) ;
+            return new ItemAbilityRuntime(user,this, user.ItemUser, _targetSelector, _actionSignal,_description ) ;
         }
     }
 
@@ -30,12 +30,10 @@ namespace Vanaring
         public string ItemDescrption => _factory.Desscription;
 
         public Sprite ItemSprite => _factory.ItemSprite;
-        public ItemAbilityRuntime(ItemActionFactorySO factory, ItemUserHandler handler, TargetSelector targetselector, ActionSignal actionSignal)
+        public ItemAbilityRuntime(CombatEntity caster, ItemActionFactorySO factory, ItemUserHandler handler, TargetSelector targetselector, ActionSignal actionSignal,DescriptionBaseField description) : base(description, targetselector, actionSignal, caster)
         {
             _itemUserHandler = handler; 
              _factory = factory;
-            _targetSelector = targetselector;
-            _actionSignal = new ActionSignal(actionSignal) ; 
             
         }
 

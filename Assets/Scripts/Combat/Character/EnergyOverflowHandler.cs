@@ -94,8 +94,6 @@ namespace Vanaring
             {
                 _isOverflow = true; 
 
-                ColorfulLogger.LogWithColor(_combatEntity + " Overflow", Color.yellow);
-
                 RuntimeEffect effect = _statusEffectFactory.Factorize(new List<CombatEntity>() { _combatEntity });
                 StartCoroutine(effect.ExecuteRuntimeCoroutine(_combatEntity));
 

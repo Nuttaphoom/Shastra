@@ -8,6 +8,7 @@ using System.ComponentModel;
 using System.Diagnostics.Tracing;
 using System.Linq;
 using System.Numerics;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
@@ -24,18 +25,40 @@ namespace Vanaring
 
     public class CombatReferee : MonoBehaviour   
     {
-        private EventBroadcaster _eventBroadcaster;
-        public EventBroadcaster GetEventBroadcaster()
+        #region EventBroadcaster
+        private EventBroadcaster _eventBroadcaster ;
+        private EventBroadcaster GetEventBroadcaster()
         {
             if (_eventBroadcaster == null)
             {
                 _eventBroadcaster = new EventBroadcaster();
-                _eventBroadcaster.OpenChannel<Null>("OnCombatPreparation");    
+                _eventBroadcaster.OpenChannel<Null>("OnCombatPreparation");
+                _eventBroadcaster.OpenChannel<CombatEntity>("OnCompetitorEnterCombat");
+                
             }
-        
+
             return _eventBroadcaster; 
         }
+        
+        public void SubOnCombatPreparation(UnityAction<Null> argc)
+        {
+            GetEventBroadcaster().SubEvent<Null>(argc, "OnCombatPreparation") ;
+        }
 
+        public void UnSubOnCombatPreparation(UnityAction<Null> argc)
+        {
+            GetEventBroadcaster().UnSubEvent<Null>(argc, "OnCombatPreparation");
+        }
+        public void SubOnCompetitorEnterCombat(UnityAction<CombatEntity> argc)
+        {
+            GetEventBroadcaster().SubEvent<CombatEntity>(argc, "OnCompetitorEnterCombat");
+        }
+     
+        public void UnSubOnCompetitorEnterCombat(UnityAction<CombatEntity> argc)
+        {
+            GetEventBroadcaster().UnSubEvent<CombatEntity>(argc, "OnCompetitorEnterCombat"); 
+        }
+        #endregion
 
         [SerializeField]
         private EnemyHUDWindowManager _enemyHUDWindowManager;
@@ -107,13 +130,19 @@ namespace Vanaring
         }
         private IEnumerator SetUpNewCombatEncounter()
         {
+            Debug.LogWarning("Need to properly load ally" );
+            foreach (CombatEntity entity in GetCompetatorsBySide(ECompetatorSide.Ally))
+                GetEventBroadcaster().InvokeEvent<CombatEntity>(entity, "OnCompetitorEnterCombat");
+
             yield return AssignCompetators(_entityLoader.LoadData(), ECompetatorSide.Hostile);
         }
 
         private IEnumerator AssignCompetators(List<CombatEntity> entites, ECompetatorSide side)
         {
-            List<IEnumerator> _allIEs = new List<IEnumerator>(); 
+            List<IEnumerator> _allIEs = new List<IEnumerator>();
+
             foreach (var entity in entites) {
+                GetEventBroadcaster().InvokeEvent<CombatEntity>(entity, "OnCompetitorEnterCombat");
                 _allIEs.Add(entity.InitializeEntityIntoCombat() ) ; 
             }
 
@@ -226,8 +255,6 @@ namespace Vanaring
         {
             yield return SwitchControl(GetCurrentActor(), null) ; 
 
-            var targets = action.GetActionTargets();
-            
             yield return actor.OnPerformAction(action);
 
             yield return PostPerformActionInEveryCharacter();

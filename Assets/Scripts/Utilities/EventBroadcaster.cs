@@ -27,6 +27,7 @@ namespace Vanaring
 
             _events[key] = new EventChannelRuntime<T>();
         }
+
         ~EventBroadcaster()
         {
             _events.Clear(); 
@@ -67,15 +68,12 @@ namespace Vanaring
         }
     }
 
-  
-
     public interface IEventChannel
     {
         void SubEvent(object param);
         void UnSubEvent(object param);
         void InvokeEvent(object param);
     }
-
     public class EventChannelRuntime<U> : IEventChannel
     {
         private UnityAction<U> _event;
@@ -110,15 +108,20 @@ namespace Vanaring
             {
                 throw new InvalidCastException($"Invalid cast: Expected type {typeof(U)}, but got {param.GetType()}");
             }
-
-
         }
-
     }
+
+    #region StructForSubscription 
+    public struct EntityActionPair
+    {
+        public CombatEntity Actor ;
+        public ActorAction PerformedAction ;
+    }
+
+    #endregion
 }
 
 
 
 
 
- 

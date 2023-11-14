@@ -78,7 +78,6 @@ namespace Vanaring
 
             newEntity.name = newEntity.name + "Loaded" ;
 
-            Debug.Log("load " + newEntity);
 
             return newEntity; 
         }
