@@ -7,9 +7,18 @@ namespace Vanaring
 {
     public class CombatBacklogNotification : MonoBehaviour
     {
-        private CombatReferee _referee;
-        private List<CombatEntity> _entitiesWithNotification = new List<CombatEntity>() ;  
+        [SerializeField]
+        private CombatBacklogDisplayer _combatBacklogDisplayer; 
 
+        private CombatReferee _referee;
+        private List<CombatEntity> _entitiesWithNotification = new List<CombatEntity>() ;
+
+        private void Awake()
+        {
+            if (_combatBacklogDisplayer == null)
+                throw new System.Exception("_combatBacklogDisplayer is null");
+
+        }
         private void Start()
         {
             _referee = CombatReferee.Instance;
@@ -49,10 +58,7 @@ namespace Vanaring
 
         private void NotifyOnEntityPerformAction(EntityActionPair entityActionPair)
         {
-            CombatEntity entity = entityActionPair.Actor;
-            ActorAction action = entityActionPair.PerformedAction;
-
-            ColorfulLogger.LogWithColor(entity.CharacterSheet.CharacterName + " Perform " + action.GetDescription().FieldName, Color.cyan); 
+            _combatBacklogDisplayer.DisplayPerformedActionBacklog(entityActionPair); 
         }
 
         private void NotifyOnEntityStun(CombatEntity entity)

@@ -138,7 +138,7 @@ namespace Vanaring
         private IEnumerator VisualStunApplier(string s)
         {
             StartCoroutine(RunnintOverheatVisualEffect()); 
-            yield return (_combatEntity.VisualHurt(null, "Stunt"));
+            yield return (_combatEntity.VisualHurt(null, "Stun"));
 
         }
 
