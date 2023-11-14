@@ -48,15 +48,16 @@ namespace Vanaring
 
         public override IEnumerator ExecuteRuntimeCoroutine(CombatEntity caster)
         {
+            List<IEnumerator> ie = new List<IEnumerator>();
             foreach (var entityData in _entitiesData)
             {
                 var prefabTemplate = entityData.CombatEntity;
                 var side = entityData.Side; 
 
-                CombatReferee.Instance.InstantiateCompetator( prefabTemplate,  side);
+                ie.Add(CombatReferee.Instance.InstantiateCompetator( prefabTemplate,  side)) ;
             }
 
-            yield return null ;
+            yield return new WaitAll(caster,ie.ToArray() );
         }
 
 

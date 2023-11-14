@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Drawing.Printing;
 using System.Numerics;
 using System.Runtime.InteropServices;
+using Unity.PlasticSCM.Editor.UI;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
@@ -50,26 +51,86 @@ namespace Vanaring
 
         protected Queue<ActorAction> _actionQueue = new Queue<ActorAction>();
 
+        #region GetEventBroadcaster Methods 
         private EventBroadcaster GetEventBroadcaster()
         {
             if (_eventBroadcaster == null)
             {
                 _eventBroadcaster = new EventBroadcaster();
-                _eventBroadcaster.OpenChannel<int>("OnAttack");
+
                 _eventBroadcaster.OpenChannel<int>("OnHeal");
                 _eventBroadcaster.OpenChannel<int>("OnDamage");
                 _eventBroadcaster.OpenChannel<CombatEntity>("OnTakeControl");
                 _eventBroadcaster.OpenChannel<CombatEntity>("OnTakeControlLeave");
+                _eventBroadcaster.OpenChannel<EntityActionPair>("OnPerformAction");
+                _eventBroadcaster.OpenChannel<CombatEntity>("OnEntityStun");
             }
 
-
-            return _eventBroadcaster; 
-
+            return _eventBroadcaster;
         }
 
+        public void SubOnEntityStunEvent(UnityAction<CombatEntity> argc)
+        {
+            Debug.Log("sub event");
+            GetEventBroadcaster().SubEvent(argc, "OnEntityStun") ;
+        }
+        public void SubOnDamageVisualEvent(UnityAction<int> argc)
+        {
+            GetEventBroadcaster().SubEvent(argc, "OnDamage");
+        }
+
+        public void SubOnPerformAction(UnityAction<EntityActionPair> argc)
+        {
+            GetEventBroadcaster().SubEvent(argc, "OnPerformAction");
+        }
+        public void SubOnTakeControlEvent(UnityAction<CombatEntity> argc)
+        {
+            GetEventBroadcaster().SubEvent(argc, "OnTakeControl");
+        }
+
+        public void SubOnHealVisualEvent(UnityAction<int> argc)
+        {
+            GetEventBroadcaster().SubEvent(argc, "OnHeal");
+        }
+
+        public void SubOnTakeControlLeaveEvent(UnityAction<CombatEntity> argc)
+        {
+            GetEventBroadcaster().SubEvent(argc, "OnTakeControlLeave");
+        }
+        public void UnSubOnEntityStunEvent(UnityAction<CombatEntity> argc)
+        {
+            GetEventBroadcaster().UnSubEvent(argc, "OnEntityStun");
+        }
+        public void UnSubOnPerformAction(UnityAction<EntityActionPair> argc)
+        {
+            GetEventBroadcaster().UnSubEvent(argc, "OnPerformAction");
+        }
+
+        public void UnSubOnDamageVisualEvent(UnityAction<int> argc)
+        {
+            GetEventBroadcaster().UnSubEvent(argc, "OnDamage");
+        }
+
+        public void UnSubOnHealVisualEvent(UnityAction<int> argc)
+        {
+            GetEventBroadcaster().UnSubEvent(argc, "OnHeal");
+        }
+
+        public void UnSubOnTakeControlEvent(UnityAction<CombatEntity> argc)
+        {
+            GetEventBroadcaster().UnSubEvent(argc, "OnTakeControl");
+        }
+
+        public void UnSubOnTakeControlLeaveEvent(UnityAction<CombatEntity> argc)
+        {
+            GetEventBroadcaster().UnSubEvent(argc, "OnTakeControlLeave");
+        }
+        #endregion
+
+
+        
         protected virtual void Awake()
         {
-            
             _dmgOutputPopHanlder = new POPUPNumberTextHandler(this); 
             _runtimeCharacterStatsAccumulator = new RuntimeCharacterStatsAccumulator(_characterSheet);
             _energyOverflowHandler = GetComponent<EnergyOverflowHandler>();
@@ -80,8 +141,10 @@ namespace Vanaring
                 throw new Exception("SpellCaster haven't been assigned (should never use 'GetComponent' for SpellCaster as it would be too slow') ");
             }
         }
- 
+
         #region Turn Handler Methods 
+        public abstract IEnumerator InitializeEntityIntoCombat(); 
+
         public abstract IEnumerator GetAction();
 
         // Take control and leave control should have its own space 
@@ -120,6 +183,7 @@ namespace Vanaring
             return !_runtimeCharacterStatsAccumulator.IsStunt() && !IsDead && !IsExhausted;
         }
 
+
         #endregion
         public ActorAction GetActionRuntimeEffect( )
         {
@@ -157,6 +221,8 @@ namespace Vanaring
             if (ReadyForControl())
             {
                 _isExhausted = true;
+
+                _eventBroadcaster.InvokeEvent<EntityActionPair>(new EntityActionPair() { Actor = this, PerformedAction = action } ,"OnPerformAction");
 
                 yield return action.PerformAction(); 
 
@@ -284,6 +350,7 @@ namespace Vanaring
         public virtual void ApplyStun()
         {
             StatsAccumulator.ApplyStun();
+            GetEventBroadcaster().InvokeEvent(this,"OnEntityStun");
         }
 
         public virtual void ApplyOverflow()
@@ -293,59 +360,7 @@ namespace Vanaring
         }
         #endregion
 
-        #region SubEvents Methods 
-                 
-        public void SubOnAttackVisualEvent(UnityAction<int> argc)
-        {
-            GetEventBroadcaster().SubEvent(argc, "OnAttack");
-        }
-        public void SubOnDamageVisualEvent(UnityAction<int> argc)
-        {
-            GetEventBroadcaster().SubEvent(argc, "OnDamage");
-        }
-
-        public void SubOnTakeControlEvent(UnityAction<CombatEntity> argc)
-        {
-            GetEventBroadcaster().SubEvent(argc, "OnTakeControl");
-        }
-
-        public void SubOnHealVisualEvent(UnityAction<int> argc)
-        {
-            GetEventBroadcaster().SubEvent(argc, "OnHeal");
-        }
-
-        public void SubOnTakeControlLeaveEvent(UnityAction<CombatEntity> argc)
-        {
-            GetEventBroadcaster().SubEvent(argc, "OnTakeControlLeave");
-        }
-
-        public void UnSubOnAttackVisualEvent(UnityAction<int> argc)
-        {
-            GetEventBroadcaster().UnSubEvent(argc, "OnAttack");
-        }  
-
-        public void UnSubOnDamageVisualEvent(UnityAction<int> argc)
-        {
-            GetEventBroadcaster().UnSubEvent(argc, "OnDamage");
-        }
-
-        public void UnSubOnHealVisualEvent(UnityAction<int> argc)
-        {
-            GetEventBroadcaster().UnSubEvent(argc, "OnHeal");
-        }
-
-        public void UnSubOnTakeControlEvent(UnityAction<CombatEntity> argc)
-        {
-            GetEventBroadcaster().UnSubEvent(argc, "OnTakeControl");
-        }
-
-        public void UnSubOnTakeControlLeaveEvent(UnityAction<CombatEntity> argc)
-        {
-            GetEventBroadcaster().UnSubEvent(argc, "OnTakeControlLeave");
-        }
-        #endregion
-
-
+     
 
         /// <summary>
         /// this function is invoked in every character after certain action is applied

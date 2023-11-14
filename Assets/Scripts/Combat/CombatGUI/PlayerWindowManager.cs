@@ -22,11 +22,9 @@ namespace Vanaring
 
         private WindowGUI _lastWindowOpen;
 
-
         private void Start()
         {
-            CombatReferee.Instance?.GetEventBroadcaster().SubEvent<Null>(LoadNewEntityIntoHUD, "OnCombatPreparation");
-
+            CombatReferee.Instance.SubOnCombatPreparation(LoadNewEntityIntoHUD);
 
             TargetSelectionFlowControl.Instance.SubOnTargetSelectionEnter(OnTargetSelectionEnter);
             TargetSelectionFlowControl.Instance.SubOnTargetSelectionEnd(OnTargetSelectionEnd);//.SubEvent<bool>(OnTargetSelectionEnd, "OnTargetSelectionEnd");
@@ -42,6 +40,10 @@ namespace Vanaring
 
         }
 
+        private void OnDisable()
+        {
+            CombatReferee.Instance.UnSubOnCombatPreparation(LoadNewEntityIntoHUD);
+        }
 
         private List<WindowGUI> GetAllValidWindows()
         {

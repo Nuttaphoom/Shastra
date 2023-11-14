@@ -42,8 +42,17 @@ namespace Vanaring
         protected List<CombatEntity> _targets = new List<CombatEntity>() ;
         protected ActionSignal _actionSignal;
         protected CombatEntity _caster;
+        protected DescriptionBaseField _description;
 
         private List<Coroutine> _ongoingEffect = new List<Coroutine>();
+
+        public ActorAction(DescriptionBaseField description, TargetSelector targetSelector, ActionSignal actionSignal, CombatEntity caster)
+        {
+            _description = description;
+            _targetSelector = targetSelector;
+            _actionSignal = new ActionSignal(actionSignal);
+            _caster = caster; 
+        }
         public abstract IEnumerator Simulate(CombatEntity target); 
         /// <summary>
         /// This method should be invoked prior to taking any action as it might causes the Actor to be exhaunted.
@@ -130,10 +139,15 @@ namespace Vanaring
         {
             return _targets; 
         }
-
+        
         public TargetSelector GetTargetSelector()
         {
             return _targetSelector; 
+        }
+
+        public DescriptionBaseField GetDescription()
+        {
+            return _description;
         }
 
 

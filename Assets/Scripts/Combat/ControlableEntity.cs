@@ -15,7 +15,12 @@ namespace Vanaring
         [Header("Right now we manually assign valid action, TODO : Load from Database")]
         [SerializeField]
         private ControlableEntityActionsRegistry _controlableEntityActionRegistry;
- 
+
+        public override IEnumerator InitializeEntityIntoCombat()
+        {
+            throw new NotImplementedException();
+        }
+
         public override IEnumerator GetAction()
         {
             yield return null;
@@ -43,8 +48,6 @@ namespace Vanaring
             yield return base.TurnLeave();
         }
 
-
-
         #region INTERFACE 
 
         private CinemachineVirtualCamera _attachedCamera; 
@@ -62,6 +65,8 @@ namespace Vanaring
         {
             CameraSetUPManager.Instance.DisableCamera(_attachedCamera);
         }
+
+ 
         #endregion
 
         #region GETTER

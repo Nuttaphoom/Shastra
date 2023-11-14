@@ -12,7 +12,10 @@ namespace Vanaring
     [RequireComponent (typeof(CombatEntityAnimationHandler))]
     public class AIEntity : CombatEntity
     {
+        [SerializeField]
         AIBehaviorHandler aiBehaviorHandler;
+
+        
         protected override void Awake()
         {
             base.Awake();
@@ -20,7 +23,12 @@ namespace Vanaring
 
             //StartCoroutine(_botBehaviorHandler.CalculateNextBehavior());
         }
+        public override IEnumerator InitializeEntityIntoCombat()
+        {
+            CombatEntityAnimationHandler.InstantlyHideVisualMesh();
+            yield return CombatEntityAnimationHandler.PlaySpawnVisualEffectCoroutine(); 
 
+        }
         public override IEnumerator TurnEnter()
         {
             yield return base.TurnEnter();

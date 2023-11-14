@@ -66,7 +66,7 @@ namespace Vanaring
                 side = RuntimeMangicalEnergy.EnergySide.DarkEnergy; 
             }
 
-            return GetEnergyAmount(side) >= spell.RequiredEnergy.Amount;
+            return GetEnergyAmount(side) > spell.RequiredEnergy.Amount;
         }
         public int GetEnergyAmount(RuntimeMangicalEnergy.EnergySide side)
         {
