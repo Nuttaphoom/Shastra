@@ -75,6 +75,7 @@ namespace Vanaring  {
                 throw new Exception("No spell found in SpellRegister (due to empty spell) ");
 
             _spellSocket.gameObject.SetActive(false);
+            spellLogText.text = spellSocketGUIList[currentSelectedIndex].GetSpellDescription();
             spellSocketGUIList[currentSelectedIndex].HightlightedButton();
         }
         public override void ReceiveKeysFromWindowManager(KeyCode key)
