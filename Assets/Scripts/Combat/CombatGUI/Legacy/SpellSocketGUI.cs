@@ -46,6 +46,13 @@ namespace Vanaring
         private Sprite _darkImage;
         [SerializeField] private Image _fadeBlack;
 
+        [Header("Slot Layout")]
+        [SerializeField] private Sprite _lightSlotImage;
+        [SerializeField] private Sprite _darkSlotImage;
+
+        [SerializeField] private GameObject VerticalSlotLayout;
+        [SerializeField] private GameObject HorizontalSlotLayout;
+
         [Header("Description Window")]
         [SerializeField] private TextMeshProUGUI _spellNameTextDes;
         [SerializeField] private TextMeshProUGUI _descriptionText;
