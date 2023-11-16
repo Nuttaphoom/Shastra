@@ -23,13 +23,21 @@ namespace Vanaring
         [SerializeField]
         protected ActionSignal _actionSignal;
 
+        [SerializeField]
+        protected Comment _comment;
+
+
         public abstract ActorAction FactorizeRuntimeAction(CombatEntity combatEntity );
 
         #region GETTER
         public TargetSelector TargetSelect => _targetSelector;
         public string AbilityName => _description.FieldName;
         public string Desscription => _description.FieldDescription;
-        public Sprite AbilityImage => _description.FieldImage; 
+        public Sprite AbilityImage => _description.FieldImage;
+
+        public ActionSignal ActionSignal => _actionSignal;
+        public DescriptionBaseField DescriptionBaseField => _description; 
+        public Comment GetActionComment => _comment; 
 
         #endregion
 
@@ -43,14 +51,18 @@ namespace Vanaring
         protected ActionSignal _actionSignal;
         protected CombatEntity _caster;
         protected DescriptionBaseField _description;
+        protected Comment _actionComment ; 
+
 
         private List<Coroutine> _ongoingEffect = new List<Coroutine>();
 
-        public ActorAction(DescriptionBaseField description, TargetSelector targetSelector, ActionSignal actionSignal, CombatEntity caster)
+        public ActorAction(ActorActionFactory actionFactory, CombatEntity caster)
         {
-            _description = description;
-            _targetSelector = targetSelector;
-            _actionSignal = new ActionSignal(actionSignal);
+            _description = actionFactory.DescriptionBaseField ;
+            _targetSelector = actionFactory.TargetSelect ;
+            _actionSignal = new ActionSignal(actionFactory.ActionSignal) ;
+            _actionComment = actionFactory.GetActionComment ;
+            
             _caster = caster; 
         }
         public abstract IEnumerator Simulate(CombatEntity target); 
@@ -106,6 +118,7 @@ namespace Vanaring
 
         }
 
+
         private IEnumerator CasterStartExecuteEffectCoroutine(RuntimeEffect effect)
         {
             yield return effect.ExecuteRuntimeCoroutine(_caster);
@@ -127,6 +140,10 @@ namespace Vanaring
             _actionSignal.SetUpActorsSetting(actors);
         }
     
+        public Comment GetActionComment()
+        {
+            return _actionComment;
+        }
         public void SetActionTarget(List<CombatEntity> targets)
         {
             _targets = new List<CombatEntity>();

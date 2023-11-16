@@ -20,14 +20,14 @@ namespace Vanaring
 
         public override ActorAction FactorizeRuntimeAction(CombatEntity caster)
         {
-            return new SpellAbilityRuntime(RequiredEnergy, caster, _targetSelector, _actionSignal,_description);
+            return new SpellAbilityRuntime(RequiredEnergy, caster, this);
         }
     }
 
     public class SpellAbilityRuntime : ActorAction
     {
         private EnergyModifierData _energyModifier;
-        public SpellAbilityRuntime(EnergyModifierData energyModifier, CombatEntity caster, TargetSelector targetSelector, ActionSignal actionSignal, DescriptionBaseField description) : base(description,targetSelector,actionSignal,caster)
+        public SpellAbilityRuntime(EnergyModifierData energyModifier, CombatEntity caster, ActorActionFactory factory) : base(factory,caster)
         {
             _energyModifier = energyModifier;
         }

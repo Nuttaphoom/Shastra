@@ -71,7 +71,6 @@ namespace Vanaring
 
         public void SubOnEntityStunEvent(UnityAction<CombatEntity> argc)
         {
-            Debug.Log("sub event");
             GetEventBroadcaster().SubEvent(argc, "OnEntityStun") ;
         }
         public void SubOnDamageVisualEvent(UnityAction<int> argc)
@@ -222,7 +221,7 @@ namespace Vanaring
             {
                 _isExhausted = true;
 
-                _eventBroadcaster.InvokeEvent<EntityActionPair>(new EntityActionPair() { Actor = this, PerformedAction = action } ,"OnPerformAction");
+                GetEventBroadcaster().InvokeEvent<EntityActionPair>(new EntityActionPair() { Actor = this, PerformedAction = action } ,"OnPerformAction");
 
                 yield return action.PerformAction(); 
 

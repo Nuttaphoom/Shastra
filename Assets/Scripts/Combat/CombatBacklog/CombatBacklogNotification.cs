@@ -8,9 +8,17 @@ namespace Vanaring
     public class CombatBacklogNotification : MonoBehaviour
     {
         [SerializeField]
-        private CombatBacklogDisplayer _combatBacklogDisplayer; 
+        private CombatBacklogDisplayer _combatBacklogDisplayer;
 
+        [Header("TODO : Commentator should be loaded along with level / team data")]
+        [SerializeField]
+        private CommentatorSO _commentator;
+
+        private CommentatorRuntime _commentatorRuntime;
+
+        [SerializeField]
         private CombatReferee _referee;
+
         private List<CombatEntity> _entitiesWithNotification = new List<CombatEntity>() ;
 
         private void Awake()
@@ -18,14 +26,13 @@ namespace Vanaring
             if (_combatBacklogDisplayer == null)
                 throw new System.Exception("_combatBacklogDisplayer is null");
 
-        }
-        private void Start()
-        {
-            _referee = CombatReferee.Instance;
+            _commentatorRuntime = _commentator.CreateCommentatorRuntime();
 
-            _referee.SubOnCompetitorEnterCombat(OnNewEntityEnterCombat);  
-            
+            _referee.SubOnCompetitorEnterCombat(OnNewEntityEnterCombat);
+
+
         }
+      
 
         private void OnDisable()
         {

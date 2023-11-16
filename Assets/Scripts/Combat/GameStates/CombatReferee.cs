@@ -51,6 +51,7 @@ namespace Vanaring
         }
         public void SubOnCompetitorEnterCombat(UnityAction<CombatEntity> argc)
         {
+            Debug.Log("sub on entity enter combat");
             GetEventBroadcaster().SubEvent<CombatEntity>(argc, "OnCompetitorEnterCombat");
         }
      
@@ -116,9 +117,10 @@ namespace Vanaring
         #region SettingUpRound
         private IEnumerator BeginNewBattle()
         {
+
             yield return SetUpNewCombatEncounter();
 
-            yield return new WaitForSeconds(1.0f) ;
+            yield return new WaitForSeconds(1.0f);
 
             GetEventBroadcaster().InvokeEvent<Null>(null, "OnCombatPreparation"); //b <Null>("OnCombatPreparation");
 

@@ -14,13 +14,13 @@ namespace Vanaring
     {
         public override ActorAction FactorizeRuntimeAction(CombatEntity caster)
         {
-            return new WeaponActionAbilityRuntime(caster, _targetSelector, _actionSignal, _description);
+            return new WeaponActionAbilityRuntime(caster, this);
         }
     }
 
     public class WeaponActionAbilityRuntime : ActorAction
     {
-        public WeaponActionAbilityRuntime(CombatEntity caster, TargetSelector targetSelector, ActionSignal actionSignal, DescriptionBaseField description) : base(description,targetSelector,actionSignal,caster)
+        public WeaponActionAbilityRuntime(CombatEntity caster, ActorActionFactory factory) : base(factory,caster)
         {
             
         }

@@ -10,8 +10,12 @@ namespace Vanaring
         {
             CombatEntity entity = entityActionPair.Actor;
             ActorAction action = entityActionPair.PerformedAction;
-
-            ColorfulLogger.LogWithColor(entity.CharacterSheet.CharacterName + " Perform " + action.GetDescription().FieldName, Color.cyan);
+            string comment = action.GetActionComment().GetComment(entity) ;
+            if (comment == null || comment == "")
+                return; 
+            
+           
+            ColorfulLogger.LogWithColor(comment, Color.cyan) ;
         }
     }
 }

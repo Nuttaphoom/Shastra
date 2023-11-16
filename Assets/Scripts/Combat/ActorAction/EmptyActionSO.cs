@@ -20,13 +20,13 @@ namespace Vanaring
 
         public override ActorAction FactorizeRuntimeAction(CombatEntity caster)
         {
-            return new EmptyAbilityRuntime(_description,  caster, _targetSelector, _actionSignal);
+            return new EmptyAbilityRuntime(this,  caster);
         }
     }
 
     public class EmptyAbilityRuntime : ActorAction
     {
-        public EmptyAbilityRuntime(DescriptionBaseField description, CombatEntity caster, TargetSelector targetSelector, ActionSignal actionSignal) : base(description,targetSelector, actionSignal,caster)
+        public EmptyAbilityRuntime(ActorActionFactory actorAction, CombatEntity caster) : base(actorAction, caster)
         {
 
         }
