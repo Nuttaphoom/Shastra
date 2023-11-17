@@ -16,6 +16,9 @@ namespace Vanaring  {
         private List<SpellSocketGUI> spellSocketGUIList = new List<SpellSocketGUI>();
         private List<int> displayingSpellIndexList = new List<int>();
         [SerializeField] private TextMeshProUGUI spellLogText;
+        [SerializeField] private GameObject spellTransform;
+        [SerializeField] private GameObject arrowUp;
+        [SerializeField] private GameObject arrowDown;
         private int spellIndexFocusUpMin = 0;
         private int spellIndexFocusUpMax = 3;
         private int spellIndexFocusDownMin = 0;
@@ -52,7 +55,7 @@ namespace Vanaring  {
             {
                 foreach (SpellActionSO spellAction in controlableEntity.GetControlableEntityActionRegistry.GetSpellAction)
                 {
-                    SpellSocketGUI newSocket = Instantiate(_spellSocket, transform);
+                    SpellSocketGUI newSocket = Instantiate(_spellSocket, spellTransform.transform);
                     newSocket.transform.SetAsFirstSibling();
                     newSocket.Init(spellAction, entity);
                     spellSocketGUIList.Add(newSocket);
@@ -68,6 +71,11 @@ namespace Vanaring  {
                     }
                     newSocket.UnHighlightedButton();
                     i++;
+                }
+                if(controlableEntity.GetControlableEntityActionRegistry.GetSpellAction.Count > 1)
+                {
+                    arrowDown.SetActive(true);
+                    arrowUp.SetActive(false);
                 }
             }
 
@@ -107,8 +115,6 @@ namespace Vanaring  {
         private void ScrollToNext()
         {
             //select below index
-
-
             int i = 0;
             foreach (SpellSocketGUI spell in spellSocketGUIList)
             {
@@ -148,6 +154,7 @@ namespace Vanaring  {
             spellLogText.text = spellSocketGUIList[currentSelectedIndex].GetSpellDescription();
             spellSocketGUIList[currentSelectedIndex].HightlightedButton();
             UpdateIndexFocusOnInputCall();
+            DisplayArrowIndicator();
         }
         private void ScrollToPrevious()
         {
@@ -174,6 +181,24 @@ namespace Vanaring  {
             spellLogText.text = spellSocketGUIList[currentSelectedIndex].GetSpellDescription();
             spellSocketGUIList[currentSelectedIndex].HightlightedButton();
             UpdateIndexFocusOnInputCall();
+            DisplayArrowIndicator();
+        }
+        private void DisplayArrowIndicator()
+        {
+            if (currentSelectedIndex < spellSocketGUIList.Count - 1 && spellSocketGUIList.Count > 1) {
+                arrowDown.SetActive(true);
+            }
+            else
+            {
+                arrowDown.SetActive(false);
+            }
+            if (currentSelectedIndex > 0 && spellSocketGUIList.Count > 1) {
+                arrowUp.SetActive(true);
+            }
+            else
+            {
+                arrowUp.SetActive(false);
+            }
         }
         private void UpdateIndexFocusOnInputCall()
         {
