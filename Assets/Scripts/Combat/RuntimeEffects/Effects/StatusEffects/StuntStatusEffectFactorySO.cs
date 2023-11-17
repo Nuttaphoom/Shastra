@@ -40,9 +40,6 @@ namespace Vanaring
         {
             foreach (CombatEntity target in _targets)
             {
-                if (target is not IStatusEffectable)
-                    throw new System.Exception("Assigned target is not IStatusEffectable");
-
                 if (target is CombatEntity)
                     target.ApplyStun();
             }

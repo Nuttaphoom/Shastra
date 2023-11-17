@@ -25,10 +25,10 @@ namespace Vanaring
         {
             _templatePrefab.gameObject.SetActive(false);
             currentStatusObject = new List<GameObject>();
-            if (_combatEntity != null)
-            {
-                _combatEntity.GetStatusEffectHandler().SubOnStatusVisualEvent(UpdateStatusUI);
-            }
+            //if (_combatEntity != null)
+            //{
+            //    _combatEntity.GetStatusEffectHandler().SubOnStatusVisualEvent(UpdateStatusUI);
+            //}
         }
 
         public void InstantiateStatusUI(Dictionary<string, List<StatusRuntimeEffect>> effects)
@@ -68,7 +68,7 @@ namespace Vanaring
         {
             _combatEntity = entity;
 
-            _combatEntity.GetStatusEffectHandler().SubOnStatusVisualEvent(UpdateStatusUI);
+            //_combatEntity.GetStatusEffectHandler().SubOnStatusVisualEvent(UpdateStatusUI);
         }
 
         public void UpdateStatusUI(Dictionary<string, List<StatusRuntimeEffect>> effects)

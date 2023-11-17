@@ -129,7 +129,7 @@ namespace Vanaring
             UpdateHPScaleGUI();
             animator = GetComponent<Animator>();
 
-            _combatEntity.GetStatusEffectHandler().SubOnStatusVisualEvent(_statusWindow.ShowStatusIconUI);
+            //_combatEntity.GetStatusEffectHandler().SubOnStatusVisualEvent(_statusWindow.ShowStatusIconUI);
             InitEnergySlot();
 
         }

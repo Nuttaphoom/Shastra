@@ -116,36 +116,36 @@ namespace Vanaring
 
         private void createStatusUI()
         {
-            int count = 0;
-            foreach (KeyValuePair<string, List<StatusRuntimeEffect>> entry in _combatEntity.GetStatusEffectHandler().Effects)
-            {
-                if (entry.Value != null && entry.Value.Count != 0)
-                {
-                    TargetStatusIconUI newIcon = Instantiate(_IconSample, _IconSample.transform.position, _IconSample.transform.rotation);
-                    if (count >= _IconPos.Length)
-                    {
-                        count = 0;
-                    }
-                    newIcon.transform.SetParent( _IconLayout.transform ) ;
-                    newIcon.transform.localPosition = _IconPos[count].localPosition;
-                    newIcon.transform.localScale = _IconPos[count].localScale;
-                    Image iconImage = newIcon.GetComponent<Image>();
-                    iconImage.sprite = entry.Value[0].GetStatusEffectDescription().FieldImage;
+            //int count = 0;
+            //foreach (KeyValuePair<string, List<StatusRuntimeEffect>> entry in _combatEntity.GetStatusEffectHandler().Effects)
+            //{
+            //    if (entry.Value != null && entry.Value.Count != 0)
+            //    {
+            //        TargetStatusIconUI newIcon = Instantiate(_IconSample, _IconSample.transform.position, _IconSample.transform.rotation);
+            //        if (count >= _IconPos.Length)
+            //        {
+            //            count = 0;
+            //        }
+            //        newIcon.transform.SetParent( _IconLayout.transform ) ;
+            //        newIcon.transform.localPosition = _IconPos[count].localPosition;
+            //        newIcon.transform.localScale = _IconPos[count].localScale;
+            //        Image iconImage = newIcon.GetComponent<Image>();
+            //        iconImage.sprite = entry.Value[0].GetStatusEffectDescription().FieldImage;
 
-                    newIcon.Init(this, entry.Value[0]);
-                    newIcon.gameObject.SetActive(true);
+            //        newIcon.Init(this, entry.Value[0]);
+            //        newIcon.gameObject.SetActive(true);
 
-                    _ClonedGameObject.Add(newIcon.gameObject);
+            //        _ClonedGameObject.Add(newIcon.gameObject);
 
-                    count++;
-                }
-            }
+            //        count++;
+            //    }
+            //}
         }
 
         public void ShowStatusEffectInfoUI(StatusRuntimeEffect effect)
         {
-            StatusEffectUISetup(_combatEntity.GetStatusEffectHandler().Effects, effect);
-            _statusInfoWindow.SetActive(true);
+            //StatusEffectUISetup(_combatEntity.GetStatusEffectHandler().Effects, effect);
+            //_statusInfoWindow.SetActive(true);
         }
 
         public void HideStatusEffectInfoUI()

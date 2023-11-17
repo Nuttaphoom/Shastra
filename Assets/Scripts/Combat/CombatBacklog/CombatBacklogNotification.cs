@@ -55,14 +55,20 @@ namespace Vanaring
         {
             entity.SubOnPerformAction(NotifyOnEntityPerformAction);
             entity.SubOnEntityStunEvent(NotifyOnEntityStun);
+            entity.SubOnStatusEffectApplied(NotifyOnStatusEffectApplied);
         }
 
         private void UnSubscriptionWithEntity(CombatEntity entity)
         {
             entity.UnSubOnPerformAction(NotifyOnEntityPerformAction);
             entity.UnSubOnEntityStunEvent(NotifyOnEntityStun);
+            entity.UnSubOnStatusEffectApplied(NotifyOnStatusEffectApplied);
         }
 
+        private void NotifyOnStatusEffectApplied(EntityStatusEffectPair pair)
+        {
+            _combatBacklogDisplayer.DisplayStatusEffectAppliedBacklog(pair);
+        }
         private void NotifyOnEntityPerformAction(EntityActionPair entityActionPair)
         {
             _combatBacklogDisplayer.DisplayPerformedActionBacklog(entityActionPair); 

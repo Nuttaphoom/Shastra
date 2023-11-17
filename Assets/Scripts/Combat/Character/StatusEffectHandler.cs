@@ -9,34 +9,56 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Events;
 using static UnityEngine.EventSystems.EventTrigger;
+using Unity.VisualScripting;
 
 namespace Vanaring 
 {
-    public interface IStatusEffectable
-    {
-        public StatusEffectHandler GetStatusEffectHandler() ;
-    }
+  
 
     [Serializable]
     public class StatusEffectHandler
     {
+
+        #region EventBroadcaster Methods 
+        private EventBroadcaster _eventBroadcaster;
+        private EventBroadcaster GetEventBroadcaster()
+        {
+            if (_eventBroadcaster == null)
+            {
+                _eventBroadcaster = new EventBroadcaster();
+
+                _eventBroadcaster.OpenChannel<EntityStatusEffectPair>("OnStatusEffectApplied");
+            }
+
+            return _eventBroadcaster;
+        }
+        public void SubOnStatusEffectApplied(UnityAction<EntityStatusEffectPair> func)
+        {
+            GetEventBroadcaster().SubEvent(func,"OnStatusEffectApplied");
+        }
+
+        public void UnSubOnStatusEffectApplied(UnityAction<EntityStatusEffectPair> func)
+        {
+            GetEventBroadcaster().UnSubEvent(func, "OnStatusEffectApplied");
+        }
+        #endregion
         private CombatEntity _appliedEntity;
 
         Dictionary<string, List<StatusRuntimeEffect>> _effects = new Dictionary<string, List<StatusRuntimeEffect>>();
 
         public Dictionary<string, List<StatusRuntimeEffect>> Effects => _effects;
 
-        private UnityAction<Dictionary<string, List<StatusRuntimeEffect>>> _OnUpdateStatus;
+        //private UnityAction<Dictionary<string, List<StatusRuntimeEffect>>> _OnUpdateStatus;
 
         public StatusEffectHandler(CombatEntity entity)
         {
             _appliedEntity = entity;
-
         }
 
         public void UpdateStatusUI()
         {
-            _OnUpdateStatus?.Invoke(_effects);
+            //_OnUpdateStatus?.Invoke(_effects);
+            
             //_statusWindowManager.ClearCurrentStatus();
             //foreach (KeyValuePair<string, List<StatusRuntimeEffect>> entry in _effects)
             //{
@@ -85,6 +107,13 @@ namespace Vanaring
         public IEnumerator ApplyNewEffect(StatusRuntimeEffectFactorySO factory, CombatEntity applier )
         {
             LogicApplyNewEffect(factory, applier);
+
+            GetEventBroadcaster().InvokeEvent(new EntityStatusEffectPair()
+            {
+                Actor = applier,
+                StatusEffectFactory = factory
+            }, "OnStatusEffectApplied") ;
+
             //create Status UI
             UpdateStatusUI();
 
@@ -192,15 +221,15 @@ namespace Vanaring
             UpdateStatusUI();
         }
 
-        //TODO : Remove these two functions 
-        public void SubOnStatusVisualEvent(UnityAction<Dictionary<string, List<StatusRuntimeEffect>>> argc)
-        {
-            _OnUpdateStatus += argc;
-        }
-        public void UnSubOnStatusVisualEvent(UnityAction<Dictionary<string, List<StatusRuntimeEffect>>> argc)
-        {
-            _OnUpdateStatus -= argc;
-        }
+        ////TODO : Remove these two functions 
+        //public void SubOnStatusVisualEvent(UnityAction<Dictionary<string, List<StatusRuntimeEffect>>> argc)
+        //{
+        //    _OnUpdateStatus += argc;
+        //}
+        //public void UnSubOnStatusVisualEvent(UnityAction<Dictionary<string, List<StatusRuntimeEffect>>> argc)
+        //{
+        //    _OnUpdateStatus -= argc;
+        //}
 
 
         #region EVENTListener 

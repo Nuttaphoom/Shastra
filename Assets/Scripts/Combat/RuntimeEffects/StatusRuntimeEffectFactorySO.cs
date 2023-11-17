@@ -60,6 +60,8 @@ namespace Vanaring
     public abstract class StatusRuntimeEffectFactorySO : RuntimeEffectFactorySO
     {
         [SerializeField]
+        private Comment _comment_on_applied;
+        [SerializeField]
         private DescriptionBaseField _statusEffectDescription ;
 
         [SerializeField]
@@ -74,7 +76,8 @@ namespace Vanaring
         public EEvokeKey EvokeKey => _evokeKey;
         public string StatusDescription => _statusEffectDescription.FieldDescription;
         public string StatusName => _statusEffectDescription.FieldName;
-        public Sprite StatusImage => _statusEffectDescription.FieldImage;
+        public Sprite StatusImage => _statusEffectDescription.FieldImage; 
+        public Comment GetCommentOnApplied => _comment_on_applied; 
         public override void SimulateEnergyModifier(CombatEntity target)
         {
 

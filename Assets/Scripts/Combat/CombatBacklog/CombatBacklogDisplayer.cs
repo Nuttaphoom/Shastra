@@ -9,6 +9,8 @@ namespace Vanaring
     {
         [SerializeField]
         private TextMeshProUGUI _actionTabTMP ;
+        [SerializeField]
+        private TextMeshProUGUI _utilityTabTMP; 
 
         [SerializeField]
         private float _displayIntervalInSecond = 0.0f;
@@ -16,8 +18,48 @@ namespace Vanaring
         [SerializeField]
         private GameObject _actionTab;
 
-        private Queue<IEnumerator> _displayActionTabQueue = new Queue<IEnumerator>(); 
+        [SerializeField]
+        private GameObject _utilityTab; 
 
+        private Queue<IEnumerator> _displayActionTabQueue = new Queue<IEnumerator>();
+        private Queue<IEnumerator> _displayUtilityTabQueue = new Queue<IEnumerator>();
+
+
+
+        #region UtilityTabs
+        public void DisplayStatusEffectAppliedBacklog(EntityStatusEffectPair pair)
+        {
+            CombatEntity entity = pair.Actor;
+            var action = pair.StatusEffectFactory  ;
+            //string comment = action.GetActionComment().GetComment(entity) ;
+            //if (comment == null || comment == "")
+            //    return; 
+
+            string comment = action.GetCommentOnApplied.GetComment(entity) ;
+
+            _displayUtilityTabQueue.Enqueue(DisplayUtilityTabCoroutine(comment));
+        }
+
+        private void TryoToDisplayUtilityQueue()
+        {
+            if (_utilityTab.activeSelf)
+                return;
+
+            StartCoroutine(_displayUtilityTabQueue.Dequeue());
+        }
+
+        private IEnumerator DisplayUtilityTabCoroutine(string displayedText)
+        {
+            _utilityTab.SetActive(true);
+            _utilityTabTMP.text = displayedText;
+
+
+            yield return new WaitForSecondsRealtime(_displayIntervalInSecond);
+            _utilityTab.SetActive(false);
+            _utilityTabTMP.text = "";
+        }
+        #endregion
+        #region ActionTab
         public void DisplayPerformedActionBacklog(EntityActionPair entityActionPair)
         {
             CombatEntity entity = entityActionPair.Actor;
@@ -28,10 +70,9 @@ namespace Vanaring
 
             string comment = action.GetDescription().FieldName;
 
-            _displayActionTabQueue.Enqueue(DisplayActionTabCoroutine(comment)); 
-            
-        }
+            _displayActionTabQueue.Enqueue(DisplayActionTabCoroutine(comment));
 
+        }
         private IEnumerator DisplayActionTabCoroutine(string displayedText)
         {
             _actionTab.SetActive(true); 
@@ -44,6 +85,7 @@ namespace Vanaring
 
         }
 
+
         private void TryToDIsplayActionQueue()
         {
             if (_actionTab.activeSelf)
@@ -51,11 +93,17 @@ namespace Vanaring
 
             StartCoroutine(_displayActionTabQueue.Dequeue()) ; 
         }
+        #endregion
+
+
 
         private void Update()
         {
             if (_displayActionTabQueue.Count > 0)
-                TryToDIsplayActionQueue(); 
+                TryToDIsplayActionQueue();
+
+            if (_displayUtilityTabQueue.Count > 0)
+                TryoToDisplayUtilityQueue(); 
 
         }
     }

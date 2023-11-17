@@ -17,7 +17,7 @@ using static UnityEngine.GraphicsBuffer;
 namespace Vanaring
 {
     [RequireComponent(typeof(SpellCasterHandler))]
-    public abstract class CombatEntity : MonoBehaviour, IStatusEffectable, ITurnState, IDamagable, IAttackter
+    public abstract class CombatEntity : MonoBehaviour, ITurnState, IDamagable, IAttackter
     {
         [Header("Right now we manually assign CharacterSheet, TO DO : Make it loaded from the main database")]
         [SerializeField]
@@ -41,7 +41,6 @@ namespace Vanaring
 
         private POPUPNumberTextHandler _dmgOutputPopHanlder;
 
-        private EventBroadcaster _eventBroadcaster;
 
         private bool _isDead = false;
         private bool _isExhausted = true ; 
@@ -52,6 +51,8 @@ namespace Vanaring
         protected Queue<ActorAction> _actionQueue = new Queue<ActorAction>();
 
         #region GetEventBroadcaster Methods 
+
+        private EventBroadcaster _eventBroadcaster;
         private EventBroadcaster GetEventBroadcaster()
         {
             if (_eventBroadcaster == null)
@@ -67,6 +68,11 @@ namespace Vanaring
             }
 
             return _eventBroadcaster;
+        }
+
+        public void SubOnStatusEffectApplied(UnityAction<EntityStatusEffectPair> func) 
+        {
+            _statusEffectHandler.SubOnStatusEffectApplied(func); 
         }
 
         public void SubOnEntityStunEvent(UnityAction<CombatEntity> argc)
@@ -95,6 +101,11 @@ namespace Vanaring
         public void SubOnTakeControlLeaveEvent(UnityAction<CombatEntity> argc)
         {
             GetEventBroadcaster().SubEvent(argc, "OnTakeControlLeave");
+        }
+
+        public void UnSubOnStatusEffectApplied(UnityAction<EntityStatusEffectPair> func)
+        {
+            _statusEffectHandler.UnSubOnStatusEffectApplied(func);
         }
         public void UnSubOnEntityStunEvent(UnityAction<CombatEntity> argc)
         {
@@ -125,8 +136,6 @@ namespace Vanaring
             GetEventBroadcaster().UnSubEvent(argc, "OnTakeControlLeave");
         }
         #endregion
-
-
         
         protected virtual void Awake()
         {
@@ -237,15 +246,11 @@ namespace Vanaring
             //1 Check stun 
             yield return _energyOverflowHandler.PostActionOverflowResolve();  
             //2. check status effect 
-            yield return GetStatusEffectHandler().RunStatusEffectExpiredScheme();
+            yield return _statusEffectHandler.RunStatusEffectExpiredScheme();
         }
 
         #region GETTER
 
-        public StatusEffectHandler GetStatusEffectHandler()
-        {
-            return _statusEffectHandler;
-        }
 
         public EnergyOverflowHandler OverflowHandler => _energyOverflowHandler ;
         public RuntimeCharacterStatsAccumulator StatsAccumulator => _runtimeCharacterStatsAccumulator;
@@ -257,8 +262,12 @@ namespace Vanaring
 
         #endregion
 
-        #region InterfaceFunction 
- 
+        #region Combat Methods 
+        public IEnumerator ApplyNewEffect(StatusRuntimeEffectFactorySO factory, CombatEntity applier)
+        {
+            yield return _statusEffectHandler.ApplyNewEffect(factory, applier); 
+        }
+
         public void LogicHurt(CombatEntity attacker, int inputdmg)
         {
             float trueDmg = inputdmg;
@@ -354,8 +363,7 @@ namespace Vanaring
 
         public virtual void ApplyOverflow()
         {
-            GetStatusEffectHandler().StunBreakStatusEffect(this);
-
+            _statusEffectHandler.StunBreakStatusEffect(this);
         }
         #endregion
 
