@@ -34,17 +34,17 @@ namespace Vanaring
         [SerializeField]
         private TextMeshProUGUI _spellCost;
 
-        [Header("Button")]
-        [SerializeField]
-        private Sprite _highlightButtonImg;
-        [SerializeField]
-        private Sprite _defaultButtonImg;
-
-        [SerializeField]
-        private Sprite _lightImage;
-        [SerializeField]
-        private Sprite _darkImage;
+        [Header("Spell Socket Layer")]
         [SerializeField] private Image _fadeBlack;
+        [SerializeField] private GameObject highlightImage;
+
+        [Header("Slot Layout")]
+        [SerializeField] private Image _lightSlotReqImage;
+        [SerializeField] private Image _darkSlotReqImage;
+
+        [SerializeField] private GameObject VerticalSlotLayout;
+        [SerializeField] private GameObject HorizontalSlotLayout;
+        [SerializeField] private GameObject HorizontalSlotLayout2;
 
         [Header("Description Window")]
         [SerializeField] private TextMeshProUGUI _spellNameTextDes;
@@ -59,7 +59,7 @@ namespace Vanaring
 
         private CombatEntity _caster;
 
-        private Color _hightlightedColor = Color.yellow;
+        //private Color _hightlightedColor = Color.yellow;
         private Color _defaultColor; 
         public void Init(SpellActionSO spell, CombatEntity combatEntity)
         {
@@ -72,28 +72,60 @@ namespace Vanaring
             _spellCost.text = spell.RequiredEnergy.Amount.ToString();
             _requireEnergyCost.text = "> " + spell.RequiredEnergy.Amount.ToString();
             _modifiedEnergyCost.text = "+ " + spell.RequiredEnergy.Amount.ToString();
-            _skillImage.sprite = spell.AbilityImage;
+            //_skillImage.sprite = spell.AbilityImage;
             _fadeBlack.gameObject.SetActive(false); ;
 
             if (spell.RequiredEnergy.Side == RuntimeMangicalEnergy.EnergySide.LightEnergy)
             {
-                _spellEnergyCostType.sprite = _lightImage;
-                _reqEnergyTypeDesImg.sprite = _lightImage;
+                for (int i = 0; i < spell.RequiredEnergy.Amount; i++)
+                {
+                    if(spell.RequiredEnergy.Amount <= 3)
+                    {
+                        Image slot = Instantiate(_lightSlotReqImage, HorizontalSlotLayout.transform);
+                        slot.gameObject.SetActive(true);
+                    }
+                    else
+                    {
+                        if (i < 2)
+                        {
+                            Image slot = Instantiate(_lightSlotReqImage, HorizontalSlotLayout.transform);
+                            slot.gameObject.SetActive(true);
+                        }
+                        else
+                        {
+                            HorizontalSlotLayout2.gameObject.SetActive(true);
+                            Image slot = Instantiate(_lightSlotReqImage, HorizontalSlotLayout2.transform);
+                            slot.gameObject.SetActive(true);
+                        }
+                    }
+                }
             }
             else
             {
-                _spellEnergyCostType.sprite = _darkImage;
-                _reqEnergyTypeDesImg.sprite = _darkImage;
+                for (int i = 0; i < spell.RequiredEnergy.Amount; i++)
+                {
+                    if (spell.RequiredEnergy.Amount <= 3)
+                    {
+                        Image slot = Instantiate(_darkSlotReqImage, HorizontalSlotLayout.transform);
+                        slot.gameObject.SetActive(true);
+                    }
+                    else
+                    {
+                        if (i < 2)
+                        {
+                            Image slot = Instantiate(_darkSlotReqImage, HorizontalSlotLayout.transform);
+                            slot.gameObject.SetActive(true);
+                        }
+                        else
+                        {
+                            HorizontalSlotLayout2.gameObject.SetActive(true);
+                            Image slot = Instantiate(_darkSlotReqImage, HorizontalSlotLayout2.transform);
+                            slot.gameObject.SetActive(true);
+                        }
+                    }
+                }
             }
-            
-            if(spell.RequiredEnergy.Side == RuntimeMangicalEnergy.EnergySide.LightEnergy)
-            {
-                _modEnergyTypeDesImg.sprite = _lightImage;
-            }
-            else
-            {
-                _modEnergyTypeDesImg.sprite = _darkImage;
-            }
+            HorizontalSlotLayout.gameObject.SetActive(true);
 
             _defaultColor = _actionButton.GetComponent<Image>().color; 
         }
@@ -119,13 +151,14 @@ namespace Vanaring
 
         public void HightlightedButton()
         {
-            _actionButton.GetComponent<Image>().sprite = _highlightButtonImg; 
+            _fadeBlack.gameObject.SetActive(false);
+            highlightImage.SetActive(true);
         }
 
         public void UnHighlightedButton()
         {
-            _fadeBlack.gameObject.SetActive(false);
-            _actionButton.GetComponent<Image>().sprite = _defaultButtonImg;
+            _fadeBlack.gameObject.SetActive(true);
+            highlightImage.SetActive(false);
         }
 
         public void DisableHighlightedButton()
