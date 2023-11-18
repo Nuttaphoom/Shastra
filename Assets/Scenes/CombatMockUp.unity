@@ -2114,7 +2114,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2055041419924217041, guid: 020e34f29e1254a47a783dfd0b7bbd3c, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 1.957
       objectReference: {fileID: 0}
     - target: {fileID: 2055041419924217041, guid: 020e34f29e1254a47a783dfd0b7bbd3c, type: 3}
       propertyPath: m_LocalPosition.y
@@ -2168,6 +2168,10 @@ PrefabInstance:
       propertyPath: _controlableEntityActionRegistry._spellActions.Array.data[1]
       value: 
       objectReference: {fileID: 11400000, guid: e54c4e4a66f245b448238b532e91f160, type: 2}
+    - target: {fileID: 9139232750856232359, guid: 020e34f29e1254a47a783dfd0b7bbd3c, type: 3}
+      propertyPath: _visualMesh
+      value: 
+      objectReference: {fileID: 2051936409}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2178,6 +2182,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2055041419924217041, guid: 020e34f29e1254a47a783dfd0b7bbd3c, type: 3}
   m_PrefabInstance: {fileID: 275958836}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &275958842 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5591972313678855088, guid: 020e34f29e1254a47a783dfd0b7bbd3c, type: 3}
+  m_PrefabInstance: {fileID: 275958836}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae437faf0a26dcf4d9f14f8e73c15e79, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &278543704
 GameObject:
   m_ObjectHideFlags: 0
@@ -12002,9 +12017,9 @@ MonoBehaviour:
   _maxTeamSize: 3
   _competators:
   - _side: 0
-    _entity: {fileID: 1514131074}
+    _entity: {fileID: 275958842}
   - _side: 0
-    _entity: {fileID: 0}
+    _entity: {fileID: 1514131074}
 --- !u!1 &714144046
 GameObject:
   m_ObjectHideFlags: 0
@@ -19168,6 +19183,10 @@ PrefabInstance:
     - target: {fileID: 5442174224194596669, guid: accfa19e24739864da30ab9f017f2efe, type: 3}
       propertyPath: m_Name
       value: Support-Entity Ally Prefab
+      objectReference: {fileID: 0}
+    - target: {fileID: 5442174224194596669, guid: accfa19e24739864da30ab9f017f2efe, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -30860,6 +30879,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2036956952}
   m_CullTransparentMesh: 1
+--- !u!1 &2051936409 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4668436485662365413, guid: 020e34f29e1254a47a783dfd0b7bbd3c, type: 3}
+  m_PrefabInstance: {fileID: 275958836}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2057695380
 GameObject:
   m_ObjectHideFlags: 0
