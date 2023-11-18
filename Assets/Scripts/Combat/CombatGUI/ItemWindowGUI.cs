@@ -15,6 +15,7 @@ namespace Vanaring
         [SerializeField] Transform[] itemTransformList;
         private List<ItemSocketGUI> itemSocketGUIList = new List<ItemSocketGUI>();
         private List<int> displayingItemIndexList = new List<int>();
+        [SerializeField] private GameObject itemTranform;
         private int itemIndexFocusUpMin = 0;
         private int itemIndexFocusUpMax = 3;
         private int itemIndexFocusDownMin = 0;
@@ -48,7 +49,7 @@ namespace Vanaring
             int i = 3 ; 
             foreach (ItemAbilityRuntime item in entity.ItemUser.Items)
             {
-                ItemSocketGUI newSocket = Instantiate(_itemSocketTemplate, transform) ;
+                ItemSocketGUI newSocket = Instantiate(_itemSocketTemplate, itemTranform.transform) ;
                 newSocket.Init(item, entity);
                 itemSocketGUIList.Add(newSocket);
                 if (itemSocketGUIList.Count > 3)
@@ -65,10 +66,11 @@ namespace Vanaring
                 i++;
             }
 
-            if (itemSocketGUIList.Count == 0)
+            if (entity.ItemUser.Items.Count == 0)
+            {
+                Debug.Log("No item in inventory can be load");
                 return;
-
-      
+            }
             _itemSocketTemplate.gameObject.SetActive(false);
             itemSocketGUIList[0].HightlightedButton();
         }

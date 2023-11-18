@@ -120,8 +120,10 @@ namespace Vanaring
         public ActionSignal(ActionSignal copied)
         {
             if (copied._timeLineActorSetupPrefab == null)
-                throw new Exception("TimeLineActorSetUpPrefab hasn't been assigned to  " + copied );
-            
+                Debug.LogWarning("TimeLineActorSetUpPrefab hasn't been assigned to  " + copied);
+                return; 
+                //throw new Exception("TimeLineActorSetUpPrefab hasn't been assigned to  " + copied );
+
 
             for (int i = 0; i < copied._signalEffectBindings.Count; i++ ) 
                 _signalEffectBindings.Add(copied._signalEffectBindings[i]);

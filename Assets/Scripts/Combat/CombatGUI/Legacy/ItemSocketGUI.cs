@@ -26,9 +26,9 @@ namespace Vanaring
 
         [Header("Button")]
         [SerializeField]
-        private Sprite _highlightButtonImg;
-        [SerializeField]
-        private Sprite _defaultButtonImg;
+        private Image _highlightButtonImg;
+        //[SerializeField]
+        //private Sprite _defaultButtonImg;
 
         private string _itemName;
 
@@ -55,7 +55,7 @@ namespace Vanaring
 
             _textMeshProUGUI.text = item.ItemName.ToString() ;
             _itemDescription.text = item.ItemDescrption.ToString();
-            _itemIcon.sprite = item.ItemSprite;
+            //_itemIcon.sprite = item.ItemSprite;
             _itemName = item.ItemName.ToString();
             _itemAmount = 1;
         }
@@ -104,12 +104,15 @@ namespace Vanaring
 
         public void HightlightedButton()
         {
-            _actionButton.GetComponent<Image>().sprite = _highlightButtonImg;
+            //_actionButton.GetComponent<Image>().sprite = _highlightButtonImg;
+            _highlightButtonImg.gameObject.SetActive(true);
         }
 
         public void UnHighlightedButton()
         {
-            _actionButton.GetComponent<Image>().sprite = _defaultButtonImg; 
+            _highlightButtonImg.gameObject.SetActive(false);
+            //_actionButton.GetComponent<Image>().sprite = _defaultButtonImg;
+
         }
     }
 }
