@@ -39,7 +39,17 @@ namespace Vanaring
 
         public override void ReceiveKeysFromWindowManager(KeyCode key)
         {
+            if (key == (KeyCode.A))
+            {
+                if (CombatReferee.Instance.ChangeActiveEntityIndex(true))
+                    TargetSelectionFlowControl.Instance.ForceStop();
 
+            }
+            if (key == (KeyCode.D))
+            {
+                if (CombatReferee.Instance.ChangeActiveEntityIndex(false))
+                    TargetSelectionFlowControl.Instance.ForceStop();
+            }
         }
     }
 }

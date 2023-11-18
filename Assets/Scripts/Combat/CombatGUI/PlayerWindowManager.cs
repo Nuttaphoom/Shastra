@@ -14,11 +14,10 @@ namespace Vanaring
     
     public class PlayerWindowManager : MonoBehaviour, IInputReceiver
     {
-        [SerializeField]    private SpellWindowGUI _spellWindow;
-        [SerializeField]    private ItemWindowGUI _itemWindow;
-        [SerializeField]    private WeaponWindowGUI _weaponWindow;
-        [SerializeField]    private MainWindowGUI _mainWindow;
-
+        [SerializeField] private SpellWindowGUI _spellWindow;
+        [SerializeField] private ItemWindowGUI _itemWindow;
+        [SerializeField] private WeaponWindowGUI _weaponWindow;
+        [SerializeField] private MainWindowGUI _mainWindow;
 
         private WindowGUI _lastWindowOpen;
 
@@ -31,12 +30,6 @@ namespace Vanaring
 
             foreach (var window in GetAllValidWindows())
                 window.Init(this);
-
-
-            //_spellWindow.gameObject.SetActive(false);
-            //_itemWindow.gameObject.SetActive(false);
-            //_weaponWindow.gameObject.SetActive(false);
-            //_mainWindow.gameObject.SetActive(false);
 
         }
 
@@ -55,8 +48,6 @@ namespace Vanaring
 
             return allWindows; 
         }
-
-      
 
         private void LoadNewEntityIntoHUD(Null n)
         {
@@ -88,7 +79,6 @@ namespace Vanaring
         #endregion
 
         #region PublicMethod
-
         public void OpenWindow(EWindowGUI newWindowType)
         {
             WindowGUI windowToOpen = _mainWindow;

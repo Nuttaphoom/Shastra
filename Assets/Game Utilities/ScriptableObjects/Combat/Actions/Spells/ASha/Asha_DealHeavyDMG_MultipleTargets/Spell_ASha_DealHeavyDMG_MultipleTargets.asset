@@ -10,30 +10,33 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2f5d27031a83ca845945ea045c3f11b6, type: 3}
-  m_Name: Spell_ASha_BuffATK
+  m_Name: Spell_ASha_DealHeavyDMG_MultipleTargets
   m_EditorClassIdentifier: 
   _description:
-    _fieldName: Self Enhancment
+    _fieldName: Heavy Slashes
     _fieldDescription: Apply <b>normal</b> damage to a target
     _fieldImage: {fileID: 21300000, guid: db089e60338a024409779b3e539a84a7, type: 3}
   _targetSelector:
-    _maxTargetSize: 1
-    _targetCaster: 1
+    _maxTargetSize: 3
+    _targetCaster: 0
     _targetAlly: 0
-    _targetOppose: 0
-    _targetSelf: 1
+    _targetOppose: 1
+    _targetSelf: 0
   _actionSignal:
     _signalEffectBindings:
     - _signalType: 1
       _runtimeEffects:
-      - {fileID: 11400000, guid: 594f64919ef5fcd4e80f9b872f92b77d, type: 2}
+      - {fileID: 11400000, guid: ecc19d0526fa0d842974464e6ddfcc09, type: 2}
+    - _signalType: 2
+      _runtimeEffects:
+      - {fileID: 11400000, guid: 90cd324290233bd4c897d1f2bbd2146c, type: 2}
     _actionTimelineSetting:
       _trackToChangeName:
       - Caster
       _timelienActors: []
-    _timeLineActorSetupPrefab: {fileID: -8615740222444698358, guid: 55d42acbd988ad3438911ed89adc7ce6, type: 3}
+    _timeLineActorSetupPrefab: {fileID: -8615740222444698358, guid: 86a55ebe411e0a943b80e71edd9aa1d4, type: 3}
   _comment:
     _comment: 
   _requiredEnergy:
-    _side: 1
-    _amount: 1
+    _side: 0
+    _amount: 3

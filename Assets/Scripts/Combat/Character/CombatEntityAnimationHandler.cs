@@ -73,6 +73,11 @@ namespace Vanaring
         private Animator _animator;
         private void Awake()
         {
+            if (_visualMesh == null)
+                throw new Exception("Visual Mesh  of " + gameObject + " need to be assigned"); 
+
+          
+
             _animator = GetVisualMesh().GetComponent<Animator>();
         }
 

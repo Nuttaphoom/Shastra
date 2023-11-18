@@ -46,6 +46,7 @@ namespace Vanaring
         private void TransmitInput(string str)
         {
             if (_receiverStack.Count > 0) {
+                Debug.Log("Received " + str); 
                 _receiverStack.Peek().ReceiveKeys(GetKeyCode(str));
             } 
         }
