@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 using DG.Tweening;
+using TMPro;
 
 namespace Vanaring
 {
@@ -15,7 +16,10 @@ namespace Vanaring
         [SerializeField] Transform[] itemTransformList;
         private List<ItemSocketGUI> itemSocketGUIList = new List<ItemSocketGUI>();
         private List<int> displayingItemIndexList = new List<int>();
+        [SerializeField] private TextMeshProUGUI itemLogText;
         [SerializeField] private GameObject itemTranform;
+        [SerializeField] private GameObject arrowUp;
+        [SerializeField] private GameObject arrowDown;
         private int itemIndexFocusUpMin = 0;
         private int itemIndexFocusUpMax = 3;
         private int itemIndexFocusDownMin = 0;
@@ -51,6 +55,7 @@ namespace Vanaring
             {
                 ItemSocketGUI newSocket = Instantiate(_itemSocketTemplate, itemTranform.transform) ;
                 newSocket.Init(item, entity);
+                newSocket.transform.SetAsFirstSibling();
                 itemSocketGUIList.Add(newSocket);
                 if (itemSocketGUIList.Count > 3)
                 {
@@ -68,8 +73,14 @@ namespace Vanaring
 
             if (entity.ItemUser.Items.Count == 0)
             {
+                _itemSocketTemplate.gameObject.SetActive(false);
                 Debug.Log("No item in inventory can be load");
                 return;
+            }
+            else
+            {
+                arrowDown.SetActive(true);
+                arrowUp.SetActive(false);
             }
             _itemSocketTemplate.gameObject.SetActive(false);
             itemSocketGUIList[0].HightlightedButton();
@@ -96,8 +107,10 @@ namespace Vanaring
             }
             itemSocketGUIList[currentSelectedIndex].UnHighlightedButton();
             currentSelectedIndex++;
+            itemLogText.text = itemSocketGUIList[currentSelectedIndex].GetItemDescription();
             itemSocketGUIList[currentSelectedIndex].HightlightedButton();
             UpdateIndexFocusOnInputCall();
+            DisplayArrowIndicator();
         }
 
         private void ScrollToPrevious()
@@ -122,8 +135,29 @@ namespace Vanaring
             }
             itemSocketGUIList[currentSelectedIndex].UnHighlightedButton();
             currentSelectedIndex--;
+            itemLogText.text = itemSocketGUIList[currentSelectedIndex].GetItemDescription();
             itemSocketGUIList[currentSelectedIndex].HightlightedButton();
             UpdateIndexFocusOnInputCall();
+            DisplayArrowIndicator();
+        }
+        private void DisplayArrowIndicator()
+        {
+            if (currentSelectedIndex < itemSocketGUIList.Count - 1 && itemSocketGUIList.Count > 1)
+            {
+                arrowDown.SetActive(true);
+            }
+            else
+            {
+                arrowDown.SetActive(false);
+            }
+            if (currentSelectedIndex > 0 && itemSocketGUIList.Count > 1)
+            {
+                arrowUp.SetActive(true);
+            }
+            else
+            {
+                arrowUp.SetActive(false);
+            }
         }
 
         private void UpdateIndexFocusOnInputCall()

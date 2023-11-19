@@ -60,6 +60,11 @@ namespace Vanaring
             _itemAmount = 1;
         }
 
+        public string GetItemDescription()
+        {
+            return _item.ItemName.ToString();
+        }
+
         public void AddItem(int amount)
         {
             _itemAmount += amount;
