@@ -20,8 +20,8 @@ namespace Vanaring
 
 
         [Header("Panel and Canvas object (menu)")]
-        //[SerializeField]
-        //private SpellWindowManager _spellWindowManager;
+        [SerializeField]
+        private SpellWindowManager _spellWindowManager;
         [SerializeField]
         private ItemWindowManager _itemWindowManager;
         [SerializeField]
@@ -71,7 +71,7 @@ namespace Vanaring
 
         public void DisplaySpellPanel()
         {
-            //_entityWindowManager.PushInNewWindow(_spellWindowManager);
+            _entityWindowManager.PushInNewWindow(_spellWindowManager);
         }
 
         public void DisplayWeaponPanel()
