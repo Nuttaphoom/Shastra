@@ -230,6 +230,9 @@ namespace Vanaring
                     _selectingTarget.Clear();
                     for (int i = 0; i < _validTargets.Count; i++)
                         _selectingTarget.Add(_validTargets[i]);
+
+                    //Re organize it 
+
                 }
 
                 if (randomTarget)

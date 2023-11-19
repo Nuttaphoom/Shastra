@@ -29,11 +29,8 @@ namespace Vanaring
             _commentatorRuntime = _commentator.CreateCommentatorRuntime();
 
             _referee.SubOnCompetitorEnterCombat(OnNewEntityEnterCombat);
-
-
         }
       
-
         private void OnDisable()
         {
             _referee.UnSubOnCompetitorEnterCombat(OnNewEntityEnterCombat);
@@ -73,10 +70,14 @@ namespace Vanaring
         {
             _combatBacklogDisplayer.DisplayPerformedActionBacklog(entityActionPair); 
         }
-
         private void NotifyOnEntityStun(CombatEntity entity)
         {
             ColorfulLogger.LogWithColor(entity.CharacterSheet.CharacterName + " Stun", Color.cyan);
+        }
+    
+        public void NotifyString(string s)
+        {
+            _combatBacklogDisplayer.DisplayUtilityWithStringBacklog(s); 
         }
     }
 }
