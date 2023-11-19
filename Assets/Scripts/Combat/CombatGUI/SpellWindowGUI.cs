@@ -88,7 +88,7 @@ namespace Vanaring  {
         }
         public override void ReceiveKeysFromWindowManager(KeyCode key)
         {
-
+            Debug.Log("currentSelectedIndex : " + currentSelectedIndex); 
             if (key == KeyCode.Q)
             {
                 _windowManager.OpenWindow(EWindowGUI.Main);
