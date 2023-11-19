@@ -42,8 +42,8 @@ namespace Vanaring
         private POPUPNumberTextHandler _dmgOutputPopHanlder;
 
 
-        private bool _isDead = false;
-        private bool _isExhausted = true ; 
+        private bool _isDead = false ;
+        private bool _isExhausted = false ; 
 
         public bool IsDead => _isDead;
         public bool IsExhausted => _isExhausted;
@@ -175,6 +175,16 @@ namespace Vanaring
 
             yield return (_statusEffectHandler.ExecuteStatusRuntimeEffectCoroutine());
 
+            
+            if (! ReadyForControl())
+            {
+                Debug.LogWarning("Remove this line, we should be clear with when or how to zoom in and notify backlog like " +
+                    "'this character is freezed'  . a character should have its own finite state of frezzing, overflowing, stun, etc");
+
+                Debug.LogWarning("another problem is that this assume the character is recover exactly on this stage, or the camera won't be focus to this character"); 
+                FindObjectOfType<CombatBacklogNotification>().NotifyString(_characterSheet.CharacterName + " is exhaunted") ; 
+                //yield return _combatEntityAnimationHandler.SelfZoomCameraSequnece(); 
+            }
         }
 
         public virtual IEnumerator TurnLeave()
@@ -200,8 +210,6 @@ namespace Vanaring
 
             if (_actionQueue.Count == 0)
                 return null;
-
-
  
             return _actionQueue.Dequeue();
         }

@@ -127,10 +127,8 @@ namespace Vanaring
         {
             foreach (var key in _effects.Keys)
             {
-
                 for (int i = 0; i < _effects[key].Count; i++)
                 {
-                    
                     StatusRuntimeEffect statusEffect = _effects[key][i];
 
                     yield return statusEffect.ExecuteRuntimeCoroutine(_appliedEntity);
@@ -139,28 +137,6 @@ namespace Vanaring
                     statusEffect.UpdateTTLCondition();
                 }
             }
-
-        }
-        public IEnumerator ExecuteStatusRuntimeEffectCoroutineWithEvokeKey(EEvokeKey evokeKey)
-        {
-            foreach (var key in _effects.Keys)
-            {
-                for (int i = 0; i < _effects[key].Count; i++)
-                {
-                    StatusRuntimeEffect statusEffect = _effects[key][i];
-
-                    if (!statusEffect.IsCorrectEvokeKey(evokeKey))
-                        break;
-
-                    yield return statusEffect.ExecuteRuntimeCoroutine(_appliedEntity);
-                    yield return statusEffect.OnExecuteRuntimeDone(_appliedEntity);
-
-                    statusEffect.UpdateTTLCondition();
-
-                }
-            }
-
-
         }
 
         public IEnumerator ExecuteAttackStatusRuntimeEffectCoroutine()

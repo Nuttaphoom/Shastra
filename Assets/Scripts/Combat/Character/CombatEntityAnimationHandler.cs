@@ -35,7 +35,10 @@ namespace Vanaring
         private string _deadAnimationTrigger = "NONE";
 
         [SerializeField]
-        private ParticleSystem _spawnVisualEffect; 
+        private ParticleSystem _spawnVisualEffect;
+
+        [SerializeField]
+        private ActorActionFactory _zoomToSelfAction;
 
         #region GETTER
         public Vector3 GetEntityTimelineAnimationLocation()
@@ -74,16 +77,16 @@ namespace Vanaring
         private void Awake()
         {
             if (_visualMesh == null)
-                throw new Exception("Visual Mesh  of " + gameObject + " need to be assigned"); 
+                throw new Exception("Visual Mesh  of " + gameObject + " need to be assigned");
 
-          
+            if (_zoomToSelfAction == null)
+                throw new Exception("_zoomToSelfAction of " + gameObject + " need to be assigned"); 
 
             _animator = GetVisualMesh().GetComponent<Animator>();
         }
 
         public IEnumerator PlayTriggerAnimation(string triggerName)
         {
-
             _animator.SetTrigger(triggerName);
 
             // Get the hash of the animation state
@@ -96,26 +99,8 @@ namespace Vanaring
 
             yield return new WaitForSeconds(3.0f);
         }
-        public IEnumerator PlayActionAnimation(ActionAnimationInfo actionAnimation )
-        {
 
-            List<IEnumerator> coroutines = new List<IEnumerator>();
-
-            //Self VFX
-            if (actionAnimation.CasterVfxEntity.IsValid() )
-            {
-                VFXCallbackHandler<string> callbackHandler = new VFXCallbackHandler<string>(GetComponent<CombatEntity>(),
-                    actionAnimation.CasterVfxEntity, GetVFXSpawnPos(), null);
-
-                coroutines.Add(callbackHandler.PlayVFX(actionAnimation.TargetTrigerID)) ;
-            }
-
-            //Play Animation 
-            coroutines.Add (PlayTriggerAnimation(actionAnimation.SelfTrigerID) ) ;
-
-            yield return new WaitAll(this, coroutines.ToArray() );
-
-        }
+         
         public IEnumerator PlayVFXActionAnimation<T>(VFXEntity vfxEntity,  VFXCallbackHandler<T>.VFXCallback  argc  , T pam)
         {
 
@@ -123,14 +108,6 @@ namespace Vanaring
                 vfxEntity , GetVFXSpawnPos(),  argc  );
 
             yield return (callbackHandler.PlayVFX(pam));
-        }
-        public IEnumerator PlayVFXActionAnimation<T>(VFXEntity vfxEntity, VFXCallbackHandler<T>.VFXCallback argc, T pam, Vector3 casterpos, Vector3 targetpos)
-        {
-
-            VFXCallbackHandler<T> callbackHandler = new VFXCallbackHandler<T>(GetComponent<CombatEntity>(),
-                vfxEntity, GetVFXSpawnPos(), argc);
-
-            yield return (callbackHandler.PlayVFX(pam, casterpos, targetpos));
         }
 
         public IEnumerator DestroyVisualMesh()
@@ -185,6 +162,13 @@ namespace Vanaring
             }
         }
 
+        public IEnumerator SelfZoomCameraSequnece()
+        {
+
+            yield return _zoomToSelfAction.FactorizeRuntimeAction(GetComponent<CombatEntity>()).PerformAction() ;
+
+
+        }
 
 
 

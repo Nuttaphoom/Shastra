@@ -40,6 +40,11 @@ namespace Vanaring
             _displayUtilityTabQueue.Enqueue(DisplayUtilityTabCoroutine(comment));
         }
 
+        public void DisplayUtilityWithStringBacklog(string str)
+        {
+            _displayUtilityTabQueue.Enqueue(DisplayUtilityTabCoroutine(str));
+
+        }
         private void TryoToDisplayUtilityQueue()
         {
             if (_utilityTab.activeSelf)
@@ -59,6 +64,7 @@ namespace Vanaring
             _utilityTabTMP.text = "";
         }
         #endregion
+
         #region ActionTab
         public void DisplayPerformedActionBacklog(EntityActionPair entityActionPair)
         {
@@ -84,7 +90,6 @@ namespace Vanaring
             _actionTabTMP.text = "" ;
 
         }
-
 
         private void TryToDIsplayActionQueue()
         {
