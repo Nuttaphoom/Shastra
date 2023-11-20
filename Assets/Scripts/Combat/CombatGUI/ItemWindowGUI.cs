@@ -28,7 +28,7 @@ namespace Vanaring
 
         public override void OnWindowActive()
         {
-
+            
         }
 
         public override void OnWindowDeActive()
@@ -44,12 +44,23 @@ namespace Vanaring
                 Destroy(itemSocketGUIList[index].gameObject);
                 itemSocketGUIList.RemoveAt(index);
             }
-
+            for (int index = displayingItemIndexList.Count - 1; index >= 0; index--)
+            {
+                displayingItemIndexList[index] = 0;
+                displayingItemIndexList.RemoveAt(index);
+            }
+            displayingItemIndexList.Clear();
             itemSocketGUIList.Clear();
         }
         public override void LoadWindowData(CombatEntity entity)
         {
+            ClearData();
             _itemSocketTemplate.gameObject.SetActive(true);
+            itemIndexFocusUpMin = 0;
+            itemIndexFocusUpMax = 3;
+            itemIndexFocusDownMin = 0;
+            itemIndexFocusDownMax = 2;
+            currentSelectedIndex = 0;
             int i = 3 ; 
             foreach (ItemAbilityRuntime item in entity.ItemUser.Items)
             {
