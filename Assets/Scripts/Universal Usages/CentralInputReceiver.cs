@@ -36,15 +36,19 @@ namespace Vanaring
         public static CentralInputReceiver Instance()
         {
             if (instance == null)
+            {
                 instance = new CentralInputReceiver();
-            
-            return instance ;
+            }
+
+            return instance;
         }
 
         private void TransmitInput(string str)
         {
-            if (_receiverStack.Count > 0) 
-                _receiverStack.Peek().ReceiveKeys(GetKeyCode(str)) ;
+            if (_receiverStack.Count > 0) {
+                Debug.Log("Received " + str); 
+                _receiverStack.Peek().ReceiveKeys(GetKeyCode(str));
+            } 
         }
 
         private KeyCode GetKeyCode(string key)

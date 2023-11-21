@@ -24,11 +24,6 @@ namespace Vanaring
         [SerializeField]
         private List<Transform> _directVectorTransform = new List<Transform>() ;
 
-
-        [Header("Dynamically binding look at position with center betwen target transform")]
-        [SerializeField]
-        private CinemachineVirtualCamera _virtualCameraToChangeLookAt ;
-
         private PlayableDirector _director;
 
         public void SetUpActor(PlayableDirector director, ActionTimelineSettingStruct actionTimelineSetting, SignalReceiver unitySignalReciver)
@@ -53,9 +48,8 @@ namespace Vanaring
             }
 
             if (_casterTransform != null)
-                SetUpCasterTargetTransform(_casterTransform, actionTimelineSetting.GetObjectWithIndex(0));
+                SetUpCasterTargetTransform(_casterTransform, actionTimelineSetting.GetObjectWithIndex(0)); 
 
-            int targetSelectedAmount = 0; 
             for (int i = 0; i < _targetTransform.Count; i++)
             {
                 if (actionTimelineSetting.GetObjectWithIndex(i + 1) == null)
@@ -63,44 +57,12 @@ namespace Vanaring
                     _targetTransform[i].gameObject.SetActive(false);
                     continue;
                 }
-                targetSelectedAmount += 1; 
 
                 SetUpCasterTargetTransform(_targetTransform[i].transform, actionTimelineSetting.GetObjectWithIndex(i + 1));
             }
 
             SetUpDirectVector();
 
-            SetUpDynamicLookAtBinding(targetSelectedAmount);
-
-
-        }
-
-        private void SetUpDynamicLookAtBinding(int targetSelectedAmount)
-        {
-            if (_virtualCameraToChangeLookAt == null)
-                return;
-
-            if (targetSelectedAmount == 0)
-                return; 
-
-            Transform newLookAt = Instantiate(_targetTransform[0].transform) ;
-
-            Vector3 averagePos = _targetTransform[0].transform.position ;
-
-
-            for (int i = 1; i < targetSelectedAmount ; i++)
-            {
-                averagePos += _targetTransform[i].transform.position;
-            }
-
-            averagePos.x /= targetSelectedAmount;
-            averagePos.y /= targetSelectedAmount ;
-            averagePos.z /= targetSelectedAmount ;
-
-            newLookAt.position = averagePos; 
-
-            _virtualCameraToChangeLookAt.LookAt = newLookAt; // [index];
-            newLookAt.gameObject.SetActive(true); 
         }
 
         private void SetUpCasterTargetTransform(Transform owner, GameObject objectWithIndex)

@@ -164,7 +164,10 @@ namespace Vanaring
 
         public IEnumerator SelfZoomCameraSequnece()
         {
+
             yield return _zoomToSelfAction.FactorizeRuntimeAction(GetComponent<CombatEntity>()).PerformAction() ;
+
+
         }
 
 

@@ -27,12 +27,12 @@ namespace Vanaring  {
 
         public override void OnWindowActive()
         {
-            
+
         }
 
         public override void OnWindowDeActive()
         {
-            //Debug.Log("Window deactive");
+
         }
 
         public override void ClearData()
@@ -42,25 +42,13 @@ namespace Vanaring  {
                 Destroy(spellSocketGUIList[index].gameObject);
                 spellSocketGUIList.RemoveAt(index);
             }
-            for (int index = displayingSpellIndexList.Count - 1; index >= 0; index--)
-            {
-                displayingSpellIndexList[index] = 0;
-                displayingSpellIndexList.RemoveAt(index);
-            }
+
             spellSocketGUIList.Clear();
-            displayingSpellIndexList.Clear();
         }
         public override void LoadWindowData(CombatEntity entity)
         {
-            ClearData();
-            Debug.Log("Load Spell Window");
-            _spellSocket.gameObject.SetActive(true);
 
-            spellIndexFocusUpMin = 0;
-            spellIndexFocusUpMax = 3;
-            spellIndexFocusDownMin = 0;
-            spellIndexFocusDownMax = 2;
-            currentSelectedIndex = 0;
+            _spellSocket.gameObject.SetActive(true);
 
             int i = 3;
             if (entity is ControlableEntity controlableEntity)

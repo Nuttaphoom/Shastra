@@ -12,6 +12,8 @@ namespace Vanaring
         private CharacterSocketGUI _templatePrefab;
         [SerializeField]
         private Transform _socketVerticalLayout;
+        [SerializeField]
+        private GameObject _entities;
         private List<CombatEntity> entities = new List<CombatEntity>();
 
         private List<CharacterSocketGUI> characterSocketList = new List<CharacterSocketGUI>();
