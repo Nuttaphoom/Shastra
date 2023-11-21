@@ -27,8 +27,6 @@ namespace Vanaring
         [Header("Button")]
         [SerializeField]
         private Image _highlightButtonImg;
-        //[SerializeField]
-        //private Sprite _defaultButtonImg;
 
         private string _itemName;
 
@@ -58,6 +56,11 @@ namespace Vanaring
             //_itemIcon.sprite = item.ItemSprite;
             _itemName = item.ItemName.ToString();
             _itemAmount = 1;
+        }
+
+        public string GetItemDescription()
+        {
+            return _item.ItemDescrption.ToString();
         }
 
         public void AddItem(int amount)
