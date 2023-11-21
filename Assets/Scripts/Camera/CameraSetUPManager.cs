@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
 using Unity.VisualScripting;
+using System.Net.Http.Headers;
 
 namespace Vanaring 
 {
@@ -133,15 +134,33 @@ namespace Vanaring
         {
             if(follow == null)
                 throw new System.Exception("No follow object");
-                
-            CinemachineVirtualCamera newVMCamera = Instantiate(LvirtualCamera, gameObject.transform.position, Quaternion.identity, follow.transform);
+
+            CinemachineVirtualCamera newVMCamera = null ; 
+            
+            switch (eCam)
+            {
+                case CameraOffset.LEFT:
+                    newVMCamera = Instantiate(LvirtualCamera, gameObject.transform.position, Quaternion.identity, follow.transform);
+                    break;
+                case CameraOffset.MIDDLE:
+                    newVMCamera = Instantiate(MvirtualCamera, gameObject.transform.position, Quaternion.identity, follow.transform);
+                    break;
+                case CameraOffset.RIGHT:
+                    newVMCamera = Instantiate(RvirtualCamera, gameObject.transform.position, Quaternion.identity, follow.transform);
+                    break; 
+            }
+
+            if (newVMCamera == null)
+                throw new System.Exception("newVMCamera never have been instantiated"); 
+
+            
             newVMCamera.Follow = follow.transform;
             newVMCamera.LookAt = _ally_cam_aimPoint.transform;
             CamList.Add(newVMCamera);
 
             if (follow.TryGetComponent(out ICameraAttacher iCamAttacher))
                 iCamAttacher.AttachCamera(newVMCamera);
-
+            
             
 
             //switch (eCam)

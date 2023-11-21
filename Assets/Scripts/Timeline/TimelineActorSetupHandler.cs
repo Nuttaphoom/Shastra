@@ -87,7 +87,6 @@ namespace Vanaring
 
             Vector3 averagePos = _targetTransform[0].transform.position ;
 
-            Debug.Log("_targetTransform.count : " + _targetTransform.Count); 
 
             for (int i = 1; i < targetSelectedAmount ; i++)
             {
