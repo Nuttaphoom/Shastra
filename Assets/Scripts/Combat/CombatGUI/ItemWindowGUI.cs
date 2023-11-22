@@ -84,14 +84,10 @@ namespace Vanaring
 
             if (entity.ItemUser.Items.Count == 0)
             {
+                DisplayArrowIndicator();
                 _itemSocketTemplate.gameObject.SetActive(false);
                 Debug.Log("No item in inventory can be load");
                 return;
-            }
-            else
-            {
-                arrowDown.SetActive(true);
-                arrowUp.SetActive(false);
             }
             _itemSocketTemplate.gameObject.SetActive(false);
             itemSocketGUIList[0].HightlightedButton();

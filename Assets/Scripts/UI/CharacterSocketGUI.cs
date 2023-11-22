@@ -21,8 +21,6 @@ namespace Vanaring
         private Image characterImg;
         [SerializeField]
         private Image _highlightTurn;
-        [SerializeField]
-        private Image _turnStatusImage;
 
         [Header("BarScaler")]
         [SerializeField]
@@ -118,9 +116,6 @@ namespace Vanaring
             characterImg.sprite = _characterSheetSO.GetCharacterIcon;
             isCanTurn = false;
             isSelected = false;
-            //lightBar.fillAmount = 0.5f;
-            //darkBar.fillAmount = 0.5f;
-            _turnStatusImage.gameObject.SetActive(false);
             _highlightTurn.gameObject.SetActive(false);
             characterName.text = _characterSheetSO.CharacterName;
             hpVal = _combatEntity.StatsAccumulator.GetHPAmount();
@@ -156,10 +151,10 @@ namespace Vanaring
         }
 
         #region TurnStatus
-        public void ToggleTurnStatusDisplay(bool b)
-        {
-            _turnStatusImage.gameObject.SetActive(b);
-        }
+        //public void ToggleTurnStatusDisplay(bool b)
+        //{
+        //    _turnStatusImage.gameObject.SetActive(b);
+        //}
         #endregion
         public void ToggleOnTurnHighlightDisplay(bool b)
         {

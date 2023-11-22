@@ -19,6 +19,8 @@ namespace Vanaring  {
         [SerializeField] private GameObject spellTransform;
         [SerializeField] private GameObject arrowUp;
         [SerializeField] private GameObject arrowDown;
+        [SerializeField] private GameObject notificationBox;
+        [SerializeField] private TextMeshProUGUI notificationText;
         private int spellIndexFocusUpMin = 0;
         private int spellIndexFocusUpMax = 3;
         private int spellIndexFocusDownMin = 0;
@@ -84,11 +86,7 @@ namespace Vanaring  {
                     newSocket.UnHighlightedButton();
                     i++;
                 }
-                if(controlableEntity.GetControlableEntityActionRegistry.GetSpellAction.Count > 1)
-                {
-                    arrowDown.SetActive(true);
-                    arrowUp.SetActive(false);
-                }
+                DisplayArrowIndicator();
             }
 
             if (spellSocketGUIList.Count == 0)
@@ -108,6 +106,10 @@ namespace Vanaring  {
             else if (key == KeyCode.Space)
             {
                 spellSocketGUIList[currentSelectedIndex].CallButtonCallback();
+                if (!spellSocketGUIList[currentSelectedIndex].IsEnergySufficeientToUseThisSpell())
+                {
+                    notificationBox.SetActive(true);
+                }
             }
             else if(key == KeyCode.S)
             {
@@ -115,6 +117,7 @@ namespace Vanaring  {
                 {
                     ScrollToNext();
                 }
+                notificationBox.SetActive(false);
             }
             else if (key == KeyCode.W)
             {
@@ -122,6 +125,7 @@ namespace Vanaring  {
                 {
                     ScrollToPrevious();
                 }
+                notificationBox.SetActive(false);
             }
         }
         private void ScrollToNext()
@@ -164,7 +168,12 @@ namespace Vanaring  {
                 Debug.Log("null 2"); 
             }
             spellLogText.text = spellSocketGUIList[currentSelectedIndex].GetSpellDescription();
-            spellSocketGUIList[currentSelectedIndex].HightlightedButton();
+            if (!spellSocketGUIList[currentSelectedIndex].IsEnergySufficeientToUseThisSpell())
+            {
+                notificationBox.SetActive(true);
+                spellSocketGUIList[currentSelectedIndex].RedHightlightedButton();
+            }
+            else { spellSocketGUIList[currentSelectedIndex].HightlightedButton(); }
             UpdateIndexFocusOnInputCall();
             DisplayArrowIndicator();
         }
@@ -191,7 +200,12 @@ namespace Vanaring  {
             spellSocketGUIList[currentSelectedIndex].UnHighlightedButton();
             currentSelectedIndex--;
             spellLogText.text = spellSocketGUIList[currentSelectedIndex].GetSpellDescription();
-            spellSocketGUIList[currentSelectedIndex].HightlightedButton();
+            if (!spellSocketGUIList[currentSelectedIndex].IsEnergySufficeientToUseThisSpell())
+            {
+                notificationBox.SetActive(true);
+                spellSocketGUIList[currentSelectedIndex].RedHightlightedButton();
+            }
+            else { spellSocketGUIList[currentSelectedIndex].HightlightedButton(); }
             UpdateIndexFocusOnInputCall();
             DisplayArrowIndicator();
         }

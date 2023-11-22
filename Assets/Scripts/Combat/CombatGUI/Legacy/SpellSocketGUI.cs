@@ -37,6 +37,7 @@ namespace Vanaring
         [Header("Spell Socket Layer")]
         [SerializeField] private Image _fadeBlack;
         [SerializeField] private GameObject highlightImage;
+        [SerializeField] private GameObject unhighlightImage;
 
         [Header("Slot Layout")]
         [SerializeField] private Image _lightSlotReqImage;
@@ -46,35 +47,20 @@ namespace Vanaring
         [SerializeField] private GameObject HorizontalSlotLayout;
         [SerializeField] private GameObject HorizontalSlotLayout2;
 
-        [Header("Description Window")]
-        [SerializeField] private TextMeshProUGUI _spellNameTextDes;
-        [SerializeField] private TextMeshProUGUI _descriptionText;
-        [SerializeField] private TextMeshProUGUI _requireEnergyCost;
-        [SerializeField] private TextMeshProUGUI _modifiedEnergyCost;
-        [SerializeField] private Image _reqEnergyTypeDesImg;
-        [SerializeField] private Image _modEnergyTypeDesImg;
-
-
         private SpellActionSO _spellSO;
-
         private CombatEntity _caster;
 
-        //private Color _hightlightedColor = Color.yellow;
-        private Color _defaultColor; 
         public void Init(SpellActionSO spell, CombatEntity combatEntity)
         {
             _spellSO = spell;
             this._caster = combatEntity;
             _actionButton.onClick.AddListener(ChooseSpell);
             _textMeshProUGUI.text = spell.AbilityName.ToString();
-            _spellNameTextDes.text = spell.AbilityName.ToString();
-            _descriptionText.text = spell.Desscription.ToString();
             _spellCost.text = spell.RequiredEnergy.Amount.ToString();
-            _requireEnergyCost.text = "> " + spell.RequiredEnergy.Amount.ToString();
-            _modifiedEnergyCost.text = "+ " + spell.RequiredEnergy.Amount.ToString();
             //_skillImage.sprite = spell.AbilityImage;
             _fadeBlack.gameObject.SetActive(false); ;
 
+            //init slot layout
             if (spell.RequiredEnergy.Side == RuntimeMangicalEnergy.EnergySide.LightEnergy)
             {
                 for (int i = 0; i < spell.RequiredEnergy.Amount; i++)
@@ -126,8 +112,6 @@ namespace Vanaring
                 }
             }
             HorizontalSlotLayout.gameObject.SetActive(true);
-
-            _defaultColor = _actionButton.GetComponent<Image>().color; 
         }
 
         public string GetSpellDescription()
@@ -145,7 +129,6 @@ namespace Vanaring
 
         public void CallButtonCallback()
         {
-         
              _actionButton.onClick?.Invoke(); 
         }
 
@@ -155,10 +138,17 @@ namespace Vanaring
             highlightImage.SetActive(true);
         }
 
+        public void RedHightlightedButton()
+        {
+            _fadeBlack.gameObject.SetActive(true);
+            unhighlightImage.SetActive(true);
+        }
+
         public void UnHighlightedButton()
         {
             _fadeBlack.gameObject.SetActive(true);
             highlightImage.SetActive(false);
+            unhighlightImage.SetActive(false);
         }
 
         public void DisableHighlightedButton()
