@@ -41,7 +41,7 @@ namespace Vanaring
             foreach (CombatEntity target in _targets)
             {
                 if (target is CombatEntity)
-                    target.ApplyStun();
+                    target.ApplyStun( ) ;
             }
 
             yield return null;

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -31,17 +32,19 @@ namespace Vanaring
         {
             CombatEntity entity = pair.Actor;
             var action = pair.StatusEffectFactory  ;
-            //string comment = action.GetActionComment().GetComment(entity) ;
-            //if (comment == null || comment == "")
-            //    return; 
+            string comment = action.GetCommentOnApplied.GetComment(entity);
+            if (comment == null || comment == "")
+                return;
 
-            string comment = action.GetCommentOnApplied.GetComment(entity) ;
 
             _displayUtilityTabQueue.Enqueue(DisplayUtilityTabCoroutine(comment));
         }
 
         public void DisplayUtilityWithStringBacklog(string str)
         {
+            if (str == "")
+                return; 
+
             _displayUtilityTabQueue.Enqueue(DisplayUtilityTabCoroutine(str));
 
         }
@@ -70,11 +73,10 @@ namespace Vanaring
         {
             CombatEntity entity = entityActionPair.Actor;
             ActorAction action = entityActionPair.PerformedAction;
-            //string comment = action.GetActionComment().GetComment(entity) ;
-            //if (comment == null || comment == "")
-            //    return; 
-
             string comment = action.GetDescription().FieldName;
+            if (comment == null || comment == "")
+                return;
+
 
             _displayActionTabQueue.Enqueue(DisplayActionTabCoroutine(comment));
 

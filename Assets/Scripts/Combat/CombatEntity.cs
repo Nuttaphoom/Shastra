@@ -41,6 +41,9 @@ namespace Vanaring
 
         private POPUPNumberTextHandler _dmgOutputPopHanlder;
 
+        [SerializeField]
+        protected AilmentHandler _ailmentHandler; 
+
 
         private bool _isDead = false ;
         private bool _isExhausted = false ; 
@@ -139,6 +142,7 @@ namespace Vanaring
         
         protected virtual void Awake()
         {
+            _ailmentHandler = new AilmentHandler(this); 
             _dmgOutputPopHanlder = new POPUPNumberTextHandler(this); 
             _runtimeCharacterStatsAccumulator = new RuntimeCharacterStatsAccumulator(_characterSheet);
             _energyOverflowHandler = GetComponent<EnergyOverflowHandler>();
@@ -198,7 +202,7 @@ namespace Vanaring
          
         public bool ReadyForControl()
         {
-            return !_runtimeCharacterStatsAccumulator.IsStunt() && !IsDead && !IsExhausted;
+            return  !IsDead && !IsExhausted;
         }
 
 
@@ -363,9 +367,9 @@ namespace Vanaring
         /// <summary>
         /// Apply Stun will be called from EnergyOverflowHandler 
         /// </summary>
-        public virtual void ApplyStun()
+        public virtual void ApplyStun(   )
         {
-            StatsAccumulator.ApplyStun();
+            _ailmentHandler.LogicApplyAilment( AilmentLocator.Instance.GetAilmentObject(AilmentLocator.AilmentType.Stun).FactorizeAilment(this,1) ) ; 
             GetEventBroadcaster().InvokeEvent(this,"OnEntityStun");
         }
 

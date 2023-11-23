@@ -21,9 +21,8 @@ namespace Vanaring
         {
             if (_currentAilment != null)
                 return;
-
-            _currentAilment = newAilment; 
-
+            Debug.Log("apply " + newAilment); 
+            _currentAilment = newAilment ; 
         }
 
         /// <summary>
@@ -43,6 +42,11 @@ namespace Vanaring
         /// <returns></returns>
         public bool DoesAilmentOccur()
         {
+            if (_currentAilment == null)
+            {
+                return false;
+            }
+
             if (_currentAilment.AlimentExpired())
             {
                 _currentAilment = null;
@@ -51,12 +55,12 @@ namespace Vanaring
             return (_currentAilment != null);
         }
 
-        public IEnumerator AlimentControl()
+        public IEnumerator AlimentControlGetAction()
         {
             if (_currentAilment == null)
                 throw new Exception("_currentAilment is null when it shouldn't be");
 
-            yield return _currentAilment.TakeControlEntity();
+            yield return _currentAilment.SetEntityAction();
         }
 
 

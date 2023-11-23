@@ -23,7 +23,14 @@ namespace Vanaring
 
         public override IEnumerator GetAction()
         {
-            yield return null;
+            if (_ailmentHandler.DoesAilmentOccur())
+            {
+                yield return _ailmentHandler.AlimentControlGetAction();
+            }
+            else
+            {
+                yield return null; 
+            }
         }
 
         public override IEnumerator TakeControl()

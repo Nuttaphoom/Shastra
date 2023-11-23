@@ -1,0 +1,66 @@
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using UnityEngine;
+
+namespace Vanaring 
+{
+    public abstract class AilmentFactorySO : ScriptableObject
+    {
+        public abstract Ailment FactorizeAilment(CombatEntity patient,int ttl);
+    }
+    public abstract class AilmentFactorySO <DataType> : AilmentFactorySO where DataType : class
+    {
+        [SerializeField]
+        private DataType dataType; 
+    }
+
+    public abstract class Ailment
+    {
+        protected CombatEntity _entity; 
+
+        protected int _ttl = 0;
+
+        public Ailment(CombatEntity entity, int ttl)
+        {
+            _entity = entity;
+            _ttl = ttl; 
+        }
+        public bool AlimentExpired()
+        {
+            return (_ttl <= 0);
+        }
+
+        public void UpdateTTL()
+        {
+            _ttl -= 1;
+        }
+
+        public abstract IEnumerator SetEntityAction();
+        public abstract IEnumerable AilmentRecover();
+    }
+
+    /// <summary>
+    /// Ailment status effect will be completely different than normal status effect as it controls behavior of the patient 
+    /// Right now in control only when owner's control enter is called 
+    /// *** If Ailment is expired ,let's say, in Turn 1 (the effect affects still), it will be removed from combat entity at the begining of Turn 2
+    /// </summary>
+    public abstract class Ailment<DataType> : Ailment where DataType : class
+    {
+        public Ailment(CombatEntity entity,int ttl) : base(entity,ttl) 
+        {
+        }
+
+        protected DataType _dataType;
+
+        public abstract void Init(DataType dataType); 
+
+
+    }
+
+ 
+    
+}

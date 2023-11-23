@@ -13,15 +13,15 @@ MonoBehaviour:
   m_Name: ZoomToSelfAction
   m_EditorClassIdentifier: 
   _description:
-    _fieldName: STUN ACTION
-    _fieldDescription: USE IN OVERFLOW HANDLER ONLY
+    _fieldName: 
+    _fieldDescription: 
     _fieldImage: {fileID: 0}
   _targetSelector:
     _maxTargetSize: 1
-    _targetCaster: 1
-    _targetAlly: 0
-    _targetOppose: 0
-    _targetSelf: 0
+    _targetCaster: 0
+    _targetAlly: 1
+    _targetOppose: 1
+    _targetSelf: 1
   _actionSignal:
     _signalEffectBindings: []
     _actionTimelineSetting:
@@ -29,6 +29,8 @@ MonoBehaviour:
       - Caster
       _timelienActors: []
     _timeLineActorSetupPrefab: {fileID: -8615740222444698358, guid: 954ee3a478b5d084780fadabed205652, type: 3}
+  _comment:
+    _comment: 
   _requiredEnergy:
     _side: 0
     _amount: 0

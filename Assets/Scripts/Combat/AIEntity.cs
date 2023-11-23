@@ -43,11 +43,14 @@ namespace Vanaring
 
         public override IEnumerator GetAction()
         {
-            
-            yield return aiBehaviorHandler.GetNextAction();
-            //print("GetAction");
-            //TargetSelectionFlowControl.Instance.InitializeActionTargetSelectionScheme();
-            yield return null;
+            if (_ailmentHandler.DoesAilmentOccur())
+            {
+                yield return _ailmentHandler.AlimentControlGetAction();
+            }
+            else
+            {
+                yield return aiBehaviorHandler.GetNextAction();
+            }
         }
 
         public override IEnumerator TakeControl()
