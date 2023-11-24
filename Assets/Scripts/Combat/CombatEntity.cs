@@ -67,21 +67,25 @@ namespace Vanaring
                 _eventBroadcaster.OpenChannel<CombatEntity>("OnTakeControl");
                 _eventBroadcaster.OpenChannel<CombatEntity>("OnTakeControlLeave");
                 _eventBroadcaster.OpenChannel<EntityActionPair>("OnPerformAction");
-                _eventBroadcaster.OpenChannel<CombatEntity>("OnEntityStun");
             }
 
             return _eventBroadcaster;
+        }
+        public void SubOnAilmentRecoverEventChannel(UnityAction<EntityAilmentEffectPair> func)
+        {
+            _ailmentHandler.SubOnAilmentRecoverEventChannel(func);
+        }
+
+        public void SubOnAilmentControlEventChannel(UnityAction<EntityAilmentEffectPair> func)
+        {
+            _ailmentHandler.SubOnAilmentControlEventChannel(func);
         }
 
         public void SubOnStatusEffectApplied(UnityAction<EntityStatusEffectPair> func) 
         {
             _statusEffectHandler.SubOnStatusEffectApplied(func); 
         }
-
-        public void SubOnEntityStunEvent(UnityAction<CombatEntity> argc)
-        {
-            GetEventBroadcaster().SubEvent(argc, "OnEntityStun") ;
-        }
+  
         public void SubOnDamageVisualEvent(UnityAction<int> argc)
         {
             GetEventBroadcaster().SubEvent(argc, "OnDamage");
@@ -110,10 +114,7 @@ namespace Vanaring
         {
             _statusEffectHandler.UnSubOnStatusEffectApplied(func);
         }
-        public void UnSubOnEntityStunEvent(UnityAction<CombatEntity> argc)
-        {
-            GetEventBroadcaster().UnSubEvent(argc, "OnEntityStun");
-        }
+    
         public void UnSubOnPerformAction(UnityAction<EntityActionPair> argc)
         {
             GetEventBroadcaster().UnSubEvent(argc, "OnPerformAction");
@@ -138,8 +139,20 @@ namespace Vanaring
         {
             GetEventBroadcaster().UnSubEvent(argc, "OnTakeControlLeave");
         }
+
+        public void UnSubOnAilmentControlEventChannel(UnityAction<EntityAilmentEffectPair> func)
+        {
+            _ailmentHandler.UnSubOnAilmentControlEventChannel(func); 
+        }
+
+
+
+        public void UnSubOnAilmentRecoverEventChannel(UnityAction<EntityAilmentEffectPair> func)
+        {
+            _ailmentHandler.UnSubOnAilmentRecoverEventChannel(func);
+        }
         #endregion
-        
+
         protected virtual void Awake()
         {
             _ailmentHandler = new AilmentHandler(this); 
@@ -162,7 +175,8 @@ namespace Vanaring
         // Take control and leave control should have its own space 
         public virtual IEnumerator TakeControl()
         {
-            GetEventBroadcaster().InvokeEvent(this, "OnTakeControl");
+            GetEventBroadcaster().InvokeEvent(this, "OnTakeControl"); 
+
             yield return null;
         }
         public virtual IEnumerator TakeControlLeave()
@@ -176,6 +190,7 @@ namespace Vanaring
         {
             if (_statusEffectHandler == null)
                 throw new Exception("Status Effect Handler hasn't never been init");
+
 
             yield return (_statusEffectHandler.ExecuteStatusRuntimeEffectCoroutine());
 

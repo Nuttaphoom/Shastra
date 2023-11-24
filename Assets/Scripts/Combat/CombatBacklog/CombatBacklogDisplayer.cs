@@ -39,6 +39,27 @@ namespace Vanaring
 
             _displayUtilityTabQueue.Enqueue(DisplayUtilityTabCoroutine(comment));
         }
+        public void DisplayAilmentBacklog(EntityAilmentEffectPair pair, bool takeControl ,bool recover)
+        {
+            string comment = null ;
+            if (takeControl)
+            {
+                comment = pair.Ailment.GetOnTakeControlComment().GetComment(pair.Actor);
+            }
+            else if (recover)
+            {
+                comment = pair.Ailment.GetOnRecoverComment().GetComment(pair.Actor);
+            }
+            else
+                throw new Exception("TakeControl and Reocver both are false") ;
+
+            if (comment == null || comment == "")
+                return;
+
+
+
+            _displayUtilityTabQueue.Enqueue(DisplayUtilityTabCoroutine(comment));
+        }
 
         public void DisplayUtilityWithStringBacklog(string str)
         {

@@ -4,7 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Vanaring
 {
@@ -12,6 +14,42 @@ namespace Vanaring
     {
         private CombatEntity _user;
         private Ailment _currentAilment;
+
+        #region EventBroadcaster 
+        private EventBroadcaster _eventBroadcaster;
+
+        public EventBroadcaster GetEventBroadcaster()
+        {
+            if (_eventBroadcaster == null)
+            {
+                _eventBroadcaster = new EventBroadcaster();
+                _eventBroadcaster.OpenChannel<EntityAilmentEffectPair>("OnAilmentControl");
+                _eventBroadcaster.OpenChannel<EntityAilmentEffectPair>("OnAilmentRecover");
+            }
+
+            return _eventBroadcaster;
+        }
+
+        public void SubOnAilmentControlEventChannel(UnityAction<EntityAilmentEffectPair> func)
+        {
+            GetEventBroadcaster().SubEvent<EntityAilmentEffectPair>(func, "OnAilmentControl"); 
+        }
+
+        public void UnSubOnAilmentControlEventChannel(UnityAction<EntityAilmentEffectPair> func)
+        {
+            GetEventBroadcaster().UnSubEvent<EntityAilmentEffectPair>(func, "OnAilmentControl");
+        }
+        public void SubOnAilmentRecoverEventChannel(UnityAction<EntityAilmentEffectPair> func)
+        {
+            GetEventBroadcaster().SubEvent<EntityAilmentEffectPair>(func, "OnAilmentRecover");
+        }
+
+        public void UnSubOnAilmentRecoverEventChannel(UnityAction<EntityAilmentEffectPair> func)
+        {
+            GetEventBroadcaster().UnSubEvent<EntityAilmentEffectPair>(func, "OnAilmentRecover");
+        }
+
+        #endregion 
         public AilmentHandler(CombatEntity user)
         {
             _user = user;
@@ -21,12 +59,13 @@ namespace Vanaring
         {
             if (_currentAilment != null)
                 return;
-            Debug.Log("apply " + newAilment); 
+
             _currentAilment = newAilment ; 
         }
 
         /// <summary>
-        /// Call ProgressAlimentTTL when turn enter 
+        /// Call ProgressAlimentTTL when turn enter  
+        /// Removed ailment return true ;
         /// </summary>
         public void ProgressAlimentTTL()
         {
@@ -34,8 +73,24 @@ namespace Vanaring
                 return;
 
             _currentAilment.UpdateTTL();
+
         }
 
+        public IEnumerator CheckForExpiration()
+        {
+            if (_currentAilment != null)
+            {
+                if (_currentAilment.AlimentExpired())
+                {
+                    Debug.Log("check for expiration");
+                    yield return _currentAilment.AilmentRecover();
+                    Debug.Log("current ailment type is " + _currentAilment.GetType()) ;
+                    _currentAilment = null;
+                }
+            }
+
+            yield return null; 
+        }
         /// <summary>
         /// If Ailment is expired, remove its effect and return false to give control back to the Entity 
         /// </summary>
@@ -47,10 +102,7 @@ namespace Vanaring
                 return false;
             }
 
-            if (_currentAilment.AlimentExpired())
-            {
-                _currentAilment = null;
-            }
+           
 
             return (_currentAilment != null);
         }
@@ -61,6 +113,9 @@ namespace Vanaring
                 throw new Exception("_currentAilment is null when it shouldn't be");
 
             yield return _currentAilment.SetEntityAction();
+
+            _eventBroadcaster.InvokeEvent<EntityAilmentEffectPair>(new EntityAilmentEffectPair() { Ailment = _currentAilment, Actor = _user }, "OnAilmentControl");
+
         }
 
 

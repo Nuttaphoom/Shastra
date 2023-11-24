@@ -50,8 +50,9 @@ namespace Vanaring
 
         public override IEnumerator OnStatusEffecExpire(CombatEntity caster)
         {
+            Debug.Log("status effect expired");
             yield return caster.GetComponent<EnergyOverflowHandler>().ResetOverflow(); 
-         }
+        }
 
 
     } 

@@ -39,12 +39,13 @@ namespace Vanaring
             this._dataType = dataType;
         }
         
-        public override IEnumerable AilmentRecover()
+        public override IEnumerator AilmentRecover()
         {
-            throw new NotImplementedException();
+             
+           yield return _entity.GetComponent<EnergyOverflowHandler>().ResetOverflow() ;
         }
 
-       
+
 
         public override IEnumerator SetEntityAction()
         {
@@ -53,12 +54,9 @@ namespace Vanaring
     }
 
     [Serializable]
-    public class StunAilmentDataType
+    public class StunAilmentDataType : AilmentBasicDataInfo
     {
-        [SerializeField]
-        private ActorActionFactory _action;
 
-        public ActorActionFactory Action => _action ; 
     }
 
 

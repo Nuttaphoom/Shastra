@@ -15,7 +15,7 @@ namespace Vanaring
     public class EnergyOverflowHandler : MonoBehaviour
     {
         [SerializeField]
-        private StatusEffectApplierFactorySO _statusEffectFactory ;
+        private StunAilmentAppilerRuntimeEffectFactorySO _stunApplier;
  
         private CombatEntity _combatEntity;
 
@@ -61,7 +61,7 @@ namespace Vanaring
 
                     ColorfulLogger.LogWithColor(_combatEntity + " Overflow", Color.yellow);
 
-                    RuntimeEffect effect = _statusEffectFactory.Factorize(new List<CombatEntity>() { _combatEntity });
+                    RuntimeEffect effect = _stunApplier.Factorize(new List<CombatEntity>() { _combatEntity });
                     StartCoroutine(effect.ExecuteRuntimeCoroutine(_combatEntity));
 
                     _combatEntity.LogicHurt(null, _combatEntity.StatsAccumulator.GetATKAmount());
@@ -94,7 +94,7 @@ namespace Vanaring
             {
                 _isOverflow = true; 
 
-                RuntimeEffect effect = _statusEffectFactory.Factorize(new List<CombatEntity>() { _combatEntity });
+                RuntimeEffect effect = _stunApplier.Factorize(new List<CombatEntity>() { _combatEntity });
                 StartCoroutine(effect.ExecuteRuntimeCoroutine(_combatEntity));
                 
                 //_combatEntity.LogicHurt(null, _combatEntity.StatsAccumulator.GetATKAmount());
@@ -117,6 +117,7 @@ namespace Vanaring
 
         public IEnumerator ResetOverflow()
         {
+            Debug.Log("reset overflow"); 
             List<IEnumerator> _iEnumerator = new List<IEnumerator>();
 
             if (_starVFX_Instantied != null)

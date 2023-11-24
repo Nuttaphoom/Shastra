@@ -51,7 +51,6 @@ namespace Vanaring
         }
         public void SubOnCompetitorEnterCombat(UnityAction<CombatEntity> argc)
         {
-            Debug.Log("sub on entity enter combat");
             GetEventBroadcaster().SubEvent<CombatEntity>(argc, "OnCompetitorEnterCombat");
         }
      

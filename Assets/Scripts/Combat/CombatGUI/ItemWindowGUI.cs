@@ -85,7 +85,6 @@ namespace Vanaring
             if (entity.ItemUser.Items.Count == 0)
             {
                 _itemSocketTemplate.gameObject.SetActive(false);
-                Debug.Log("No item in inventory can be load");
                 return;
             }
             else

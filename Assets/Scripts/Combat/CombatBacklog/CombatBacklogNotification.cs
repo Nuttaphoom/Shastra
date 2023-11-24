@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -51,17 +52,29 @@ namespace Vanaring
         private void SubscriptionWithEntity(CombatEntity entity)
         {
             entity.SubOnPerformAction(NotifyOnEntityPerformAction);
-            entity.SubOnEntityStunEvent(NotifyOnEntityStun);
             entity.SubOnStatusEffectApplied(NotifyOnStatusEffectApplied);
+            entity.SubOnAilmentControlEventChannel(NotifyAilmentControl);
+            entity.SubOnAilmentRecoverEventChannel(NotifyAilmentRecover);
         }
 
         private void UnSubscriptionWithEntity(CombatEntity entity)
         {
             entity.UnSubOnPerformAction(NotifyOnEntityPerformAction);
-            entity.UnSubOnEntityStunEvent(NotifyOnEntityStun);
             entity.UnSubOnStatusEffectApplied(NotifyOnStatusEffectApplied);
-        }
+            entity.UnSubOnAilmentControlEventChannel(NotifyAilmentControl);
+            entity.UnSubOnAilmentRecoverEventChannel(NotifyAilmentRecover);
 
+        }
+        private void NotifyAilmentRecover(EntityAilmentEffectPair ailment)
+        {
+            _combatBacklogDisplayer.DisplayAilmentBacklog(ailment,false,true);
+
+        }
+        private void NotifyAilmentControl(EntityAilmentEffectPair ailment)
+        {
+            _combatBacklogDisplayer.DisplayAilmentBacklog(ailment,true,false);
+
+        }
         private void NotifyOnStatusEffectApplied(EntityStatusEffectPair pair)
         {
             _combatBacklogDisplayer.DisplayStatusEffectAppliedBacklog(pair);
@@ -70,10 +83,7 @@ namespace Vanaring
         {
             _combatBacklogDisplayer.DisplayPerformedActionBacklog(entityActionPair); 
         }
-        private void NotifyOnEntityStun(CombatEntity entity)
-        {
-            ColorfulLogger.LogWithColor(entity.CharacterSheet.CharacterName + " Stun", Color.cyan);
-        }
+      
     
         public void NotifyString(string s)
         {

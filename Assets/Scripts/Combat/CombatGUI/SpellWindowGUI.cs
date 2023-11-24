@@ -53,7 +53,6 @@ namespace Vanaring  {
         public override void LoadWindowData(CombatEntity entity)
         {
             ClearData();
-            Debug.Log("Load Spell Window");
             _spellSocket.gameObject.SetActive(true);
 
             spellIndexFocusUpMin = 0;

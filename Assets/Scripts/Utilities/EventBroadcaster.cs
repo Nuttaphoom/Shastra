@@ -122,6 +122,11 @@ namespace Vanaring
         public CombatEntity Actor ;
         public StatusRuntimeEffectFactorySO StatusEffectFactory ;
     }
+    public struct EntityAilmentEffectPair
+    {
+        public CombatEntity Actor;
+        public Ailment Ailment; 
+    }
     #endregion
 }
 

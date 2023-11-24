@@ -40,7 +40,10 @@ namespace Vanaring
         }
 
         public abstract IEnumerator SetEntityAction();
-        public abstract IEnumerable AilmentRecover();
+        public abstract IEnumerator AilmentRecover(); 
+        public abstract Comment GetOnTakeControlComment();
+        public abstract Comment GetOnRecoverComment();
+
     }
 
     /// <summary>
@@ -48,18 +51,46 @@ namespace Vanaring
     /// Right now in control only when owner's control enter is called 
     /// *** If Ailment is expired ,let's say, in Turn 1 (the effect affects still), it will be removed from combat entity at the begining of Turn 2
     /// </summary>
-    public abstract class Ailment<DataType> : Ailment where DataType : class
+    public abstract class Ailment<DataType> : Ailment where DataType : AilmentBasicDataInfo
     {
+        
         public Ailment(CombatEntity entity,int ttl) : base(entity,ttl) 
         {
         }
 
         protected DataType _dataType;
 
-        public abstract void Init(DataType dataType); 
+        public abstract void Init(DataType dataType);
+        public override Comment GetOnTakeControlComment()
+        {
+            return _dataType.TakeControlComment  ; 
+        }
+        public override Comment GetOnRecoverComment()
+        {
+            return _dataType.TakeControlComment;
+        }
 
 
     }
+
+    [Serializable]
+    public abstract class AilmentBasicDataInfo
+    {
+        [SerializeField]
+        private Comment _comment_TakeControl;
+        public Comment TakeControlComment => _comment_TakeControl ;
+
+        [SerializeField]
+        private Comment _comment_Reocver;
+        public Comment RecoverComment => _comment_TakeControl;
+
+        [SerializeField]
+        private ActorActionFactory _action;
+        public ActorActionFactory Action => _action;
+
+    }
+
+    
 
  
     

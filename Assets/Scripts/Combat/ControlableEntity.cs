@@ -23,6 +23,8 @@ namespace Vanaring
 
         public override IEnumerator GetAction()
         {
+            yield return _ailmentHandler.CheckForExpiration() ; 
+            
             if (_ailmentHandler.DoesAilmentOccur())
             {
                 yield return _ailmentHandler.AlimentControlGetAction();
