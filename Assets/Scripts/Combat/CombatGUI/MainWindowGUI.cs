@@ -39,6 +39,16 @@ namespace Vanaring
 
         public override void ReceiveKeysFromWindowManager(KeyCode key)
         {
+            if (key == (KeyCode.Q))
+            {
+                _windowManager.OpenWindow(EWindowGUI.Spell);
+            }
+
+            if (key == (KeyCode.E))
+            {
+                _windowManager.OpenWindow(EWindowGUI.Item);
+            }
+
             if (key == (KeyCode.A))
             {
                 if (CombatReferee.Instance.ChangeActiveEntityIndex(true))

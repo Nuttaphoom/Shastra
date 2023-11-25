@@ -46,7 +46,7 @@ namespace Vanaring
             {
                 if (combatEntityList[i] == entity)
                 {
-                    characterSocketList[i].ToggleTurnStatusDisplay(true);
+                    //characterSocketList[i].ToggleTurnStatusDisplay(true);
                     characterSocketList[i].ToggleExpandSizeUI();
                 }
             }
@@ -58,7 +58,7 @@ namespace Vanaring
             {
                 if (combatEntityList[i] == entity)
                 {
-                    characterSocketList[i].ToggleTurnStatusDisplay(false);
+                    //characterSocketList[i].ToggleTurnStatusDisplay(false);
                     characterSocketList[i].ToggleShrinkSizeGUI();
                 }
             }

@@ -84,13 +84,9 @@ namespace Vanaring
 
             if (entity.ItemUser.Items.Count == 0)
             {
+                DisplayArrowIndicator();
                 _itemSocketTemplate.gameObject.SetActive(false);
                 return;
-            }
-            else
-            {
-                arrowDown.SetActive(true);
-                arrowUp.SetActive(false);
             }
             _itemSocketTemplate.gameObject.SetActive(false);
             itemSocketGUIList[0].HightlightedButton();
