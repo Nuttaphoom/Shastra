@@ -41,7 +41,7 @@ namespace Vanaring
         
         public override IEnumerator AilmentRecover()
         {
-             
+           yield return DirectorManager.Instance.PlayTimelineCoroutine(_dataType.RecoverTimelineInfo) ; 
            yield return _entity.GetComponent<EnergyOverflowHandler>().ResetOverflow() ;
         }
 
@@ -56,7 +56,7 @@ namespace Vanaring
     [Serializable]
     public class StunAilmentDataType : AilmentBasicDataInfo
     {
-
+        
     }
 
 

@@ -31,7 +31,7 @@ namespace Vanaring
 
         private PlayableDirector _director;
 
-        public void SetUpActor(PlayableDirector director, ActionTimelineSettingStruct actionTimelineSetting, SignalReceiver unitySignalReciver)
+        public void SetUpActor(PlayableDirector director, ActionTimelineSettingStruct actionTimelineSetting, SignalReceiver unitySignalReciver   )
         {
             _director = director;
 
@@ -42,13 +42,12 @@ namespace Vanaring
                     if (track.name == actionTimelineSetting.TrackNames[i])
                     {
                         director.SetGenericBinding(track, actionTimelineSetting.GetObjectWithTrackName(track.name));
-                    } else if (track.name == "SignalTrack")
-                    {
-                        director.SetGenericBinding(track, unitySignalReciver);
+                    } else if ( track.name == "SignalTrack") {
+                        director.SetGenericBinding(track, unitySignalReciver) ; 
                     } else if (track is CinemachineTrack)
                     {
 
-                    }
+                    } 
                 }
             }
 

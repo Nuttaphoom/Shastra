@@ -75,6 +75,20 @@ namespace Vanaring
     }
 
     [Serializable] 
+    public struct TimelineInfo
+    {
+        [SerializeField]
+        private ActionTimelineSettingStruct _actionTimeLineSettingStruct;
+
+        public ActionTimelineSettingStruct GetActionTimeLineSettingStruct => _actionTimeLineSettingStruct;
+
+        [SerializeField]
+        private TimelineActorSetupHandler _timelineActorSetupHandler;
+        public TimelineActorSetupHandler GetTimelineActorSetupHandler => _timelineActorSetupHandler; 
+
+    }
+
+    [Serializable] 
     public struct SignalEffectBindingStruct
     {
         [SerializeField]

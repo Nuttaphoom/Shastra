@@ -71,6 +71,31 @@ namespace Vanaring
  
         }
 
+        /// <summary>
+        /// Calling Timeline without Action won't make the flow of the game stop 
+        /// </summary>
+        /// <param name="timelineActorSetupHandler"></param>
+        /// <param name="actionTimelineSettingStruct"></param>
+        public IEnumerator PlayTimelineCoroutine(TimelineInfo info)
+        {
+            // 1.) Create PlayableDirector
+            PlayableDirector currentDirector;
+
+            //1.1) instantiate TimelineActorSetupHanlder 
+            var actorSetupHandler = Instantiate(info.GetTimelineActorSetupHandler, info.GetActionTimeLineSettingStruct.GetObjectWithIndex(0).GetComponent<CombatEntityAnimationHandler>().GetVisualMesh().transform.position, info.GetTimelineActorSetupHandler.transform.rotation);
+            currentDirector = actorSetupHandler.GetComponent<PlayableDirector>();
+            _currentTimelineActorSetupHandler = actorSetupHandler.GetComponent<TimelineActorSetupHandler>();
+
+            // 2.) Set up the TimelineAsset
+            _currentTimelineActorSetupHandler.SetUpActor(currentDirector, info.GetActionTimeLineSettingStruct, _signalReceiver);
+
+            // 3.) Set currentSignal waiting
+            currentDirector.Play();
+
+            //// 4.) Wait until Timeline is done
+            yield return (WaitForTimeline(currentDirector));
+        }
+
         private IEnumerator WaitForTimeline(PlayableDirector director)
         {
             _playingTimeline = true; 

@@ -88,6 +88,11 @@ namespace Vanaring
         private ActorActionFactory _action;
         public ActorActionFactory Action => _action;
 
+
+        [SerializeField]
+        private TimelineInfo _recoverTimelineInfo;
+        public TimelineInfo RecoverTimelineInfo => _recoverTimelineInfo;
+
     }
 
     
