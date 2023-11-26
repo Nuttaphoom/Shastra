@@ -56,7 +56,7 @@ namespace Vanaring  {
         {
             ClearData();
             _spellSocket.gameObject.SetActive(true);
-
+            notificationBox.SetActive(false);
             spellIndexFocusUpMin = 0;
             spellIndexFocusUpMax = 3;
             spellIndexFocusDownMin = 0;

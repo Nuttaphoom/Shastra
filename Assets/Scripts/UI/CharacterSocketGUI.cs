@@ -110,7 +110,7 @@ namespace Vanaring
 
         private void InitEnergySlot()
         {
-            curveMask.fillAmount = slotBarRatios[_combatEntity.SpellCaster.GetEnergyAmount(RuntimeMangicalEnergy.EnergySide.LightEnergy)];
+            curveMask.fillAmount = slotBarRatios[_combatEntity.SpellCaster.GetEnergyAmount(RuntimeMangicalEnergy.EnergySide.DarkEnergy)];
 //            for (int i = 0; i < _combatEntity.SpellCaster.GetEnergyAmount(RuntimeMangicalEnergy.EnergySide.LightEnergy); i++)
 //            {
 //                Image slot = Instantiate(energySlot, verticalLayout.transform);
@@ -178,7 +178,8 @@ namespace Vanaring
 
         private void OnEnergyModified(CombatEntity caster, RuntimeMangicalEnergy.EnergySide side, int val)
         {
-            curveMask.fillAmount = slotBarRatios[_combatEntity.SpellCaster.GetEnergyAmount(RuntimeMangicalEnergy.EnergySide.LightEnergy)];
+            Debug.Log(caster.name + " " + side + "= " + val);
+            curveMask.fillAmount = slotBarRatios[_combatEntity.SpellCaster.GetEnergyAmount(RuntimeMangicalEnergy.EnergySide.DarkEnergy)];
             //if (side == RuntimeMangicalEnergy.EnergySide.LightEnergy)
             //{
             //    for (int i = 0; i < caster.SpellCaster.GetEnergyAmount(RuntimeMangicalEnergy.EnergySide.LightEnergy); i++)
