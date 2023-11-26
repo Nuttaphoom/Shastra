@@ -26,8 +26,8 @@ namespace Vanaring
         private TextMeshProUGUI enemyName;
 
         [Header("Energy bar value")]
-        private float lightScale = 1;
-        private float darkScale = 1;
+        private int lightScale = 1;
+        private int darkScale = 1;
 
         [SerializeField] private Image lightImage;
 
@@ -43,6 +43,8 @@ namespace Vanaring
         [SerializeField] private Image darkSlotImg;
         private Color defaultSlotColor;
         private List<Image> energySlotList = new List<Image>();
+        private int maxLight = 0;
+        private int maxDark = 0;
         [SerializeField] private GameObject horizontalLayout;
         [SerializeField] private TextMeshProUGUI lightTmpText;
         [SerializeField] private TextMeshProUGUI darkTmpText;
@@ -65,11 +67,13 @@ namespace Vanaring
 
             lightScale = _owner.SpellCaster.GetEnergyAmount(RuntimeMangicalEnergy.EnergySide.LightEnergy);
             darkScale = _owner.SpellCaster.GetEnergyAmount(RuntimeMangicalEnergy.EnergySide.DarkEnergy);
+            maxLight = _owner.SpellCaster.GetPeakEnergyAmout(RuntimeMangicalEnergy.EnergySide.LightEnergy);
+            maxDark = _owner.SpellCaster.GetPeakEnergyAmout(RuntimeMangicalEnergy.EnergySide.DarkEnergy);
 
             lightTmpText.text = lightScale.ToString();
             darkTmpText.text = darkScale.ToString();
 
-            InitEnergySlot();
+            DisplayEnergySlot(maxLight, maxDark, false);
 
             enemyName.text = _owner.CharacterSheet.CharacterName.ToString();
         }
@@ -104,13 +108,13 @@ namespace Vanaring
         /// <param name="caster"></param>
         /// <param name="side"></param>
         /// <param name="val" ></param>
-        private void InitEnergySlot()
+        private void DisplayEnergySlot(int lightVal, int darkVal, bool isBreak)
         {
             foreach (Image slot in highlightSlotList)
             {
                 slot.gameObject.SetActive(false);
             }
-            if (_owner.SpellCaster.GetPeakEnergyAmout(RuntimeMangicalEnergy.EnergySide.LightEnergy) > 0)
+            if (lightVal >= 0)
             {
                 foreach (Image slot in lightSlotList)
                 {
@@ -119,17 +123,28 @@ namespace Vanaring
                 }
                 for (int i = 0; i < lightSlotList.Count; i++)
                 {
-                    if(i < _owner.SpellCaster.GetPeakEnergyAmout(RuntimeMangicalEnergy.EnergySide.LightEnergy)){
+                    if(i < lightVal)
+                    {
                         lightSlotList[i].color = Color.white;
                     }
                     else
                     {
-                        lightSlotList[i].color = Color.black;
+                        if (isBreak)
+                        {
+                            Color defaultColor = lightSlotList[i].color;
+                            defaultColor.a = 0.0f;
+                            lightSlotList[i].color = defaultColor;
+                        }
+                        else
+                        {
+                            lightSlotList[i].color = Color.black;
+                        }
+                        
                     }
                 }
             }
 
-            if (_owner.SpellCaster.GetPeakEnergyAmout(RuntimeMangicalEnergy.EnergySide.DarkEnergy) > 0)
+            if (darkVal >= 0)
             {
                 foreach (Image slot in darkSlotList)
                 {
@@ -137,13 +152,22 @@ namespace Vanaring
                 }
                 for (int i = 0; i < darkSlotList.Count; i++)
                 {
-                    if (i < _owner.SpellCaster.GetPeakEnergyAmout(RuntimeMangicalEnergy.EnergySide.DarkEnergy))
+                    if (i < darkVal)
                     {
                         darkSlotList[i].color = Color.white;
                     }
                     else
                     {
-                        darkSlotList[i].color = Color.black;
+                        if (isBreak && i < maxDark)
+                        {
+                            Color defaultColor = darkSlotList[i].color;
+                            defaultColor.a = 0.0f;
+                            darkSlotList[i].color = defaultColor;
+                        }
+                        else
+                        {
+                            darkSlotList[i].color = Color.black;
+                        }
                     }
 
                 }
@@ -163,8 +187,12 @@ namespace Vanaring
         {
             if(val == 0)
                 return;
-
-            StartCoroutine(OnModifyEnergyVisualUpdateCoroutine(caster, side, val));
+           
+            lightScale = _owner.SpellCaster.GetEnergyAmount(RuntimeMangicalEnergy.EnergySide.LightEnergy);
+            darkScale = _owner.SpellCaster.GetEnergyAmount(RuntimeMangicalEnergy.EnergySide.DarkEnergy);
+            Debug.Log(lightScale + " " + darkScale);
+            DisplayEnergySlot(lightScale, darkScale, true);
+            //StartCoroutine(OnModifyEnergyVisualUpdateCoroutine(caster, side, val));
 
         }
 

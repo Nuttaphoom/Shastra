@@ -23,13 +23,15 @@ namespace Vanaring
         private void Start()
         {
             entities = CombatReferee.Instance.GetCompetatorsBySide(ECompetatorSide.Ally);
+            //Debug.Log(entities.Count);
 
             for (int i = 0; i < entities.Count; i++)
             {
-                CharacterSocketGUI newSocket = Instantiate(_templatePrefab, _templatePrefab.transform.position, _templatePrefab.transform.rotation);
+                //CharacterSocketGUI newSocket = Instantiate(_templatePrefab, _templatePrefab.transform.position, _templatePrefab.transform.rotation);
+                CharacterSocketGUI newSocket = Instantiate(_templatePrefab, _socketVerticalLayout.transform);
                 //CombatEntity _cet = _entities.transform.GetChild(i).GetComponent<CombatEntity>();
                 CombatEntity _cet = entities[i];
-                newSocket.transform.parent = _socketVerticalLayout.transform;
+                //newSocket.transform.parent = _socketVerticalLayout.transform;
                 newSocket.transform.localScale = _templatePrefab.transform.localScale;
                 newSocket.Init(_cet);
                 characterSocketList.Add(newSocket);

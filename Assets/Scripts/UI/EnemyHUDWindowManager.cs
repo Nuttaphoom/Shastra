@@ -13,11 +13,6 @@ namespace Vanaring
         private List<EnemyHUD> enemyHUDList = new List<EnemyHUD>();
         private Dictionary<CombatEntity, EnemyHUD> instantiatedEnemyHUD = new Dictionary<CombatEntity, EnemyHUD>();
 
-        private void Start()
-        {
-            //StartCoroutine(InitTest());
-        }
-
         //Display what reference(list) want to
         //public void DisplayEnemyHUD(List<CombatEntity> entities)
         //{
