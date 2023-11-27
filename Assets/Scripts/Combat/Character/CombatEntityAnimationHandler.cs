@@ -37,8 +37,7 @@ namespace Vanaring
         [SerializeField]
         private ParticleSystem _spawnVisualEffect;
 
-        [SerializeField]
-        private ActorActionFactory _zoomToSelfAction;
+   
 
         #region GETTER
         public Vector3 GetEntityTimelineAnimationLocation()
@@ -56,9 +55,7 @@ namespace Vanaring
         public Vector3 GetVFXSpawnPos()
         {
             if (_vfxPos == null || _vfxPos.position == null )
-            {
                 throw new Exception("VFX Spawn Position of " + gameObject.name + "hasn't never been assigned");
-            }
             
             return _vfxPos.position ;
         }
@@ -66,10 +63,8 @@ namespace Vanaring
         public Transform GetGUISpawnTransform()
         {
             if (_guiPos == null || _guiPos.position == null)
-            {
                 throw new Exception("GUI Spawn Position of " + gameObject.name + "hasn't never been assigned");
-            }
-
+            
             return _guiPos ;
         }
         #endregion
@@ -162,12 +157,24 @@ namespace Vanaring
             }
         }
 
-        public IEnumerator SelfZoomCameraSequnece()
+
+        /// <summary>
+        /// Attahment position include 
+        /// "HEAD" , "CENTERMESH" 
+        /// </summary>
+        /// <param name="visual"></param>
+        /// <param name="whereToAttach"></param>
+        public void AttachVFXToMeshComponent(GameObject visual, string whereToAttach)
         {
+            if (whereToAttach == "HEAD")
+            {
+                _head
+            }
 
-            yield return _zoomToSelfAction.FactorizeRuntimeAction(GetComponent<CombatEntity>()).PerformAction() ;
+            if (whereToAttach == "CENTERMESH")
+            {
 
-
+            }
         }
 
 

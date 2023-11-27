@@ -270,8 +270,7 @@ namespace Vanaring
 
         public IEnumerator OnPostPerformAction()
         {
-            //1 Check stun 
-            yield return _energyOverflowHandler.PostActionOverflowResolve();  
+    
             //2. check status effect 
             yield return _statusEffectHandler.RunStatusEffectExpiredScheme();
         }

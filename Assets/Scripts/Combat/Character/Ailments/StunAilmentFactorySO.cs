@@ -53,14 +53,22 @@ namespace Vanaring
         {
             yield return  (TargetSelectionFlowControl.Instance.InitializeActionTargetSelectionScheme(_entity, _basicDataInfo.Action.FactorizeRuntimeAction(_entity),true));
         }
+
+        public override void OnApplyAilment()
+        {
+            _entity.GetComponent<CombatEntityAnimationHandler>().AttachVFXToMeshComponent(_dataType.GeStarCircleStunVFX, "HEAD"); 
+        }
     }
 
     [Serializable]
     public struct StunAilmentDataType  
     {
-   
+        [SerializeField]
+        private GameObject _star_circle_stunVFX;
 
-     }
+        public GameObject GeStarCircleStunVFX; 
+
+    }
 
 
 
