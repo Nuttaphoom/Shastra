@@ -5,6 +5,7 @@ using UnityEngine.Timeline;
 using UnityEngine.Playables;
 using UnityEngine.Rendering;
 using Unity.VisualScripting;
+using System.Management.Instrumentation;
 
 namespace Vanaring
 {
@@ -73,21 +74,30 @@ namespace Vanaring
 
         /// <summary>
         /// Calling Timeline without Action won't make the flow of the game stop 
+        /// make sure  that at least one Actor is given  
         /// </summary>
         /// <param name="timelineActorSetupHandler"></param>
         /// <param name="actionTimelineSettingStruct"></param>
-        public IEnumerator PlayTimelineCoroutine(TimelineInfo info)
+        public IEnumerator PlayTimelineCoroutine(TimelineInfo info, List<GameObject> actors )
         {
             // 1.) Create PlayableDirector
             PlayableDirector currentDirector;
 
+            //As actor used in timeline won't be set up from Action class, we need to set them up here
+
+            var timelineSettingStruct = new ActionTimelineSettingStruct(info.GetActionTimeLineSettingStruct) ;
+
+            foreach (var actor in actors)
+                timelineSettingStruct.AddActors(actor); 
+
+            
             //1.1) instantiate TimelineActorSetupHanlder 
-            var actorSetupHandler = Instantiate(info.GetTimelineActorSetupHandler, info.GetActionTimeLineSettingStruct.GetObjectWithIndex(0).GetComponent<CombatEntityAnimationHandler>().GetVisualMesh().transform.position, info.GetTimelineActorSetupHandler.transform.rotation);
+            var actorSetupHandler = Instantiate(info.GetTimelineActorSetupHandler, timelineSettingStruct.GetObjectWithIndex(0).GetComponent<CombatEntityAnimationHandler>().GetVisualMesh().transform.position, info.GetTimelineActorSetupHandler.transform.rotation);
             currentDirector = actorSetupHandler.GetComponent<PlayableDirector>();
             _currentTimelineActorSetupHandler = actorSetupHandler.GetComponent<TimelineActorSetupHandler>();
 
             // 2.) Set up the TimelineAsset
-            _currentTimelineActorSetupHandler.SetUpActor(currentDirector, info.GetActionTimeLineSettingStruct, _signalReceiver);
+            _currentTimelineActorSetupHandler.SetUpActor(currentDirector, timelineSettingStruct, _signalReceiver);
 
             // 3.) Set currentSignal waiting
             currentDirector.Play();

@@ -18,23 +18,21 @@ namespace Vanaring
     {
         [SerializeField]
         private List<string> _trackToChangeName ;
- 
+
         [SerializeField]
         private List<Transform> _timelienActors;
-
-       
-
 
         public ActionTimelineSettingStruct(ActionTimelineSettingStruct copied)
         {
             _trackToChangeName = new List<string>();
-
+            _timelienActors = new List<Transform>(); 
             foreach (var trackName in copied._trackToChangeName)
             {
                 _trackToChangeName.Add(trackName); 
             }
 
-            _timelienActors = new List<Transform>(); 
+            foreach (var transform in copied._timelienActors)  
+                _timelienActors.Add(transform) ; 
         }
 
         public void AddActors(GameObject actor)
@@ -42,8 +40,7 @@ namespace Vanaring
             if (_timelienActors == null)
             {
                 _timelienActors = new List<Transform>();
-            } 
- 
+            }
 
             _timelienActors.Add(actor.transform);
         }
@@ -79,12 +76,13 @@ namespace Vanaring
     {
         [SerializeField]
         private ActionTimelineSettingStruct _actionTimeLineSettingStruct;
-
         public ActionTimelineSettingStruct GetActionTimeLineSettingStruct => _actionTimeLineSettingStruct;
 
         [SerializeField]
         private TimelineActorSetupHandler _timelineActorSetupHandler;
-        public TimelineActorSetupHandler GetTimelineActorSetupHandler => _timelineActorSetupHandler; 
+        public TimelineActorSetupHandler GetTimelineActorSetupHandler => _timelineActorSetupHandler;
+ 
+         
 
     }
 

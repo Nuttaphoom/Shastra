@@ -23,7 +23,7 @@ namespace Vanaring
         public override Ailment FactorizeAilment(CombatEntity patient,int ttl)
         {
             var stunAilment = new StunAilment(patient, ttl);
-            stunAilment.Init(_data);
+            stunAilment.Init(_basicInfo,_data);
             return stunAilment;
         }
     }
@@ -34,14 +34,16 @@ namespace Vanaring
         {
 
         }
-        public override void Init(StunAilmentDataType dataType)
+        public override void Init(AilmentBasicDataInfo basicInfo, StunAilmentDataType dataType)
         {
             this._dataType = dataType;
+            this._basicDataInfo = basicInfo;
+            this._basicDataInfo.header = "somethingggg";
         }
         
         public override IEnumerator AilmentRecover()
         {
-           yield return DirectorManager.Instance.PlayTimelineCoroutine(_dataType.RecoverTimelineInfo) ; 
+           yield return DirectorManager.Instance.PlayTimelineCoroutine(_basicDataInfo.RecoverTimelineInfo, new List<GameObject>() {_entity.gameObject})  ; 
            yield return _entity.GetComponent<EnergyOverflowHandler>().ResetOverflow() ;
         }
 
@@ -49,15 +51,16 @@ namespace Vanaring
 
         public override IEnumerator SetEntityAction()
         {
-            yield return  (TargetSelectionFlowControl.Instance.InitializeActionTargetSelectionScheme(_entity, _dataType.Action.FactorizeRuntimeAction(_entity),true));
+            yield return  (TargetSelectionFlowControl.Instance.InitializeActionTargetSelectionScheme(_entity, _basicDataInfo.Action.FactorizeRuntimeAction(_entity),true));
         }
     }
 
     [Serializable]
-    public class StunAilmentDataType : AilmentBasicDataInfo
+    public struct StunAilmentDataType  
     {
-        
-    }
+   
+
+     }
 
 
 

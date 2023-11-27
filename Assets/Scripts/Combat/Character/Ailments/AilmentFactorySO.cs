@@ -5,11 +5,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 namespace Vanaring 
 {
     public abstract class AilmentFactorySO : ScriptableObject
     {
+        [SerializeField]
+        protected AilmentBasicDataInfo _basicInfo; 
         public abstract Ailment FactorizeAilment(CombatEntity patient,int ttl);
     }
     public abstract class AilmentFactorySO <DataType> : AilmentFactorySO where DataType : class
@@ -51,30 +54,31 @@ namespace Vanaring
     /// Right now in control only when owner's control enter is called 
     /// *** If Ailment is expired ,let's say, in Turn 1 (the effect affects still), it will be removed from combat entity at the begining of Turn 2
     /// </summary>
-    public abstract class Ailment<DataType> : Ailment where DataType : AilmentBasicDataInfo
+    public abstract class Ailment<DataType> : Ailment where DataType : struct 
     {
-        
-        public Ailment(CombatEntity entity,int ttl) : base(entity,ttl) 
-        {
-        }
-
+        public AilmentBasicDataInfo _basicDataInfo ;
         protected DataType _dataType;
 
-        public abstract void Init(DataType dataType);
+        public Ailment(CombatEntity entity,int ttl) : base(entity,ttl) 
+        { 
+
+        }
+
+        public abstract void Init(AilmentBasicDataInfo _basicDataInfo , DataType dataType);
         public override Comment GetOnTakeControlComment()
         {
-            return _dataType.TakeControlComment  ; 
+            return _basicDataInfo.TakeControlComment  ; 
         }
         public override Comment GetOnRecoverComment()
         {
-            return _dataType.TakeControlComment;
+            return _basicDataInfo.TakeControlComment;
         }
 
 
     }
 
     [Serializable]
-    public abstract class AilmentBasicDataInfo
+    public struct AilmentBasicDataInfo
     {
         [SerializeField]
         private Comment _comment_TakeControl;
@@ -88,11 +92,10 @@ namespace Vanaring
         private ActorActionFactory _action;
         public ActorActionFactory Action => _action;
 
-
+        public string header; 
         [SerializeField]
         private TimelineInfo _recoverTimelineInfo;
         public TimelineInfo RecoverTimelineInfo => _recoverTimelineInfo;
-
     }
 
     
