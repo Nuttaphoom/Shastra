@@ -46,7 +46,7 @@ namespace Vanaring
 
 
         private bool _isDead = false ;
-        private bool _isExhausted = false ; 
+        private bool _isExhausted = true ; 
 
         public bool IsDead => _isDead;
         public bool IsExhausted => _isExhausted;
@@ -188,6 +188,8 @@ namespace Vanaring
 
         public virtual IEnumerator TurnEnter()
         {
+            _isExhausted = false;
+
             if (_statusEffectHandler == null)
                 throw new Exception("Status Effect Handler hasn't never been init");
 

@@ -27,9 +27,6 @@ namespace Vanaring
         [SerializeField]
         ActionAnimationInfo _actionAnimationInfo;
 
-        [SerializeField]
-        private Transform _above_head_transform;
-
         private GameObject _starVFX_Instantied ;
 
         private bool _isOverflow = false ;
@@ -147,8 +144,8 @@ namespace Vanaring
 
         private IEnumerator RunnintOverheatVisualEffect()
         {
-            _starVFX_Instantied = Instantiate(_star_circle_stunVFX, _above_head_transform);
-            _starVFX_Instantied.transform.position = _above_head_transform.position;
+            //_starVFX_Instantied = Instantiate(_star_circle_stunVFX, _above_head_transform);
+            //_starVFX_Instantied.transform.position = _above_head_transform.position;
 
             yield return new WaitForSecondsRealtime(0.2f); 
             Time.timeScale = 0.25f;

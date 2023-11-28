@@ -22,8 +22,7 @@ namespace Vanaring
         [SerializeField]
         private GameObject _visualMesh ;
 
-        [SerializeField]
-        public Transform _vfxPos ;
+
 
         [SerializeField]
         public Transform _guiPos;
@@ -37,7 +36,11 @@ namespace Vanaring
         [SerializeField]
         private ParticleSystem _spawnVisualEffect;
 
-   
+        [SerializeField]
+        private Transform _head_position ;
+
+        [SerializeField]
+        public Transform _vfxPos;
 
         #region GETTER
         public Vector3 GetEntityTimelineAnimationLocation()
@@ -73,10 +76,7 @@ namespace Vanaring
         {
             if (_visualMesh == null)
                 throw new Exception("Visual Mesh  of " + gameObject + " need to be assigned");
-
-            if (_zoomToSelfAction == null)
-                throw new Exception("_zoomToSelfAction of " + gameObject + " need to be assigned"); 
-
+ 
             _animator = GetVisualMesh().GetComponent<Animator>();
         }
 
@@ -164,16 +164,38 @@ namespace Vanaring
         /// </summary>
         /// <param name="visual"></param>
         /// <param name="whereToAttach"></param>
-        public void AttachVFXToMeshComponent(GameObject visual, string whereToAttach)
+        public void AttachVFXToMeshComponent(GameObject vfxPrefab, string whereToAttach, string vfxName)
+        {
+
+            Transform parent = GetAttachmentFromName(whereToAttach) ;
+     
+            var newVFX = Instantiate(vfxPrefab, parent);
+            newVFX.name = vfxName;
+            newVFX.transform.position = parent.position;
+            newVFX.transform.rotation = parent.rotation; 
+        }
+
+        public void DeAttachVFXFromMeshComponent(string vfxName, string whereToAttach)
+        {
+            Transform parent = GetAttachmentFromName(whereToAttach);
+
+            Destroy(parent.Find(vfxName).gameObject) ;
+        }
+
+        private Transform GetAttachmentFromName(string whereToAttach)
         {
             if (whereToAttach == "HEAD")
             {
-                _head
+                return _head_position;
             }
 
-            if (whereToAttach == "CENTERMESH")
+            else if (whereToAttach == "CENTERMESH")
             {
-
+                return _vfxPos;
+            }
+            else
+            {
+                throw new Exception("whereToAttach is not match");
             }
         }
 

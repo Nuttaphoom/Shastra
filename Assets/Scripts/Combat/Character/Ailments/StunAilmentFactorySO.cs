@@ -43,8 +43,11 @@ namespace Vanaring
         
         public override IEnumerator AilmentRecover()
         {
-           yield return DirectorManager.Instance.PlayTimelineCoroutine(_basicDataInfo.RecoverTimelineInfo, new List<GameObject>() {_entity.gameObject})  ; 
-           yield return _entity.GetComponent<EnergyOverflowHandler>().ResetOverflow() ;
+           yield return DirectorManager.Instance.PlayTimelineCoroutine(_basicDataInfo.RecoverTimelineInfo, new List<GameObject>() {_entity.gameObject})  ;
+            _entity.GetComponent<CombatEntityAnimationHandler>().DeAttachVFXFromMeshComponent("STARSTUNAILMENT", "HEAD");
+
+            yield return _entity.GetComponent<EnergyOverflowHandler>().ResetOverflow() ;
+
         }
 
 
@@ -56,7 +59,7 @@ namespace Vanaring
 
         public override void OnApplyAilment()
         {
-            _entity.GetComponent<CombatEntityAnimationHandler>().AttachVFXToMeshComponent(_dataType.GeStarCircleStunVFX, "HEAD"); 
+            _entity.GetComponent<CombatEntityAnimationHandler>().AttachVFXToMeshComponent(_dataType.GeStarCircleStunVFX, "HEAD", "STARSTUNAILMENT"); 
         }
     }
 
@@ -66,7 +69,7 @@ namespace Vanaring
         [SerializeField]
         private GameObject _star_circle_stunVFX;
 
-        public GameObject GeStarCircleStunVFX; 
+        public GameObject GeStarCircleStunVFX => _star_circle_stunVFX ; 
 
     }
 
