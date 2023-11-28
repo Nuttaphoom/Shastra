@@ -22,8 +22,7 @@ namespace Vanaring
         [SerializeField]
         private GameObject _visualMesh ;
 
-        [SerializeField]
-        public Transform _vfxPos ;
+
 
         [SerializeField]
         public Transform _guiPos;
@@ -38,7 +37,10 @@ namespace Vanaring
         private ParticleSystem _spawnVisualEffect;
 
         [SerializeField]
-        private ActorActionFactory _zoomToSelfAction;
+        private Transform _head_position ;
+
+        [SerializeField]
+        public Transform _vfxPos;
 
         #region GETTER
         public Vector3 GetEntityTimelineAnimationLocation()
@@ -56,9 +58,7 @@ namespace Vanaring
         public Vector3 GetVFXSpawnPos()
         {
             if (_vfxPos == null || _vfxPos.position == null )
-            {
                 throw new Exception("VFX Spawn Position of " + gameObject.name + "hasn't never been assigned");
-            }
             
             return _vfxPos.position ;
         }
@@ -66,10 +66,8 @@ namespace Vanaring
         public Transform GetGUISpawnTransform()
         {
             if (_guiPos == null || _guiPos.position == null)
-            {
                 throw new Exception("GUI Spawn Position of " + gameObject.name + "hasn't never been assigned");
-            }
-
+            
             return _guiPos ;
         }
         #endregion
@@ -78,10 +76,7 @@ namespace Vanaring
         {
             if (_visualMesh == null)
                 throw new Exception("Visual Mesh  of " + gameObject + " need to be assigned");
-
-            if (_zoomToSelfAction == null)
-                throw new Exception("_zoomToSelfAction of " + gameObject + " need to be assigned"); 
-
+ 
             _animator = GetVisualMesh().GetComponent<Animator>();
         }
 
@@ -162,12 +157,46 @@ namespace Vanaring
             }
         }
 
-        public IEnumerator SelfZoomCameraSequnece()
+
+        /// <summary>
+        /// Attahment position include 
+        /// "HEAD" , "CENTERMESH" 
+        /// </summary>
+        /// <param name="visual"></param>
+        /// <param name="whereToAttach"></param>
+        public void AttachVFXToMeshComponent(GameObject vfxPrefab, string whereToAttach, string vfxName)
         {
 
-            yield return _zoomToSelfAction.FactorizeRuntimeAction(GetComponent<CombatEntity>()).PerformAction() ;
+            Transform parent = GetAttachmentFromName(whereToAttach) ;
+     
+            var newVFX = Instantiate(vfxPrefab, parent);
+            newVFX.name = vfxName;
+            newVFX.transform.position = parent.position;
+            newVFX.transform.rotation = parent.rotation; 
+        }
 
+        public void DeAttachVFXFromMeshComponent(string vfxName, string whereToAttach)
+        {
+            Transform parent = GetAttachmentFromName(whereToAttach);
 
+            Destroy(parent.Find(vfxName).gameObject) ;
+        }
+
+        private Transform GetAttachmentFromName(string whereToAttach)
+        {
+            if (whereToAttach == "HEAD")
+            {
+                return _head_position;
+            }
+
+            else if (whereToAttach == "CENTERMESH")
+            {
+                return _vfxPos;
+            }
+            else
+            {
+                throw new Exception("whereToAttach is not match");
+            }
         }
 
 

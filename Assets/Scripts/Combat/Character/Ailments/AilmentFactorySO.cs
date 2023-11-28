@@ -42,6 +42,7 @@ namespace Vanaring
             _ttl -= 1;
         }
 
+        public abstract void OnApplyAilment(); 
         public abstract IEnumerator SetEntityAction();
         public abstract IEnumerator AilmentRecover(); 
         public abstract Comment GetOnTakeControlComment();

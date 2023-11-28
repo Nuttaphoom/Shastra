@@ -60,7 +60,9 @@ namespace Vanaring
             if (_currentAilment != null)
                 return;
 
-            _currentAilment = newAilment ; 
+            _currentAilment = newAilment ;
+            _currentAilment.OnApplyAilment();
+
         }
 
         /// <summary>
