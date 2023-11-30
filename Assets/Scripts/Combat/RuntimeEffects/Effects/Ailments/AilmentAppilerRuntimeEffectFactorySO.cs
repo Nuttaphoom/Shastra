@@ -49,7 +49,7 @@ namespace Vanaring
             {
                 if (target is CombatEntity)
                 {
-                   target.ApplyAilment( AilmentLocator.Instance.GetAilmentObject(_ailmentType).FactorizeAilment(target, _initTTL));//  target.ApplyStun();
+                   yield return target.ApplyAilment( AilmentLocator.Instance.GetAilmentObject(_ailmentType).FactorizeAilment(target, _initTTL));//  target.ApplyStun();
                 }
             }
 

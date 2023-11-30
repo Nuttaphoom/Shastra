@@ -55,13 +55,24 @@ namespace Vanaring
             _user = user;
         }
 
-        public void LogicApplyAilment(Ailment newAilment)
+        public IEnumerator LogicApplyAilment(Ailment newAilment)
         {
             if (_currentAilment != null)
-                return;
+            {
+                if (! newAilment.ShouldOverwritedOthers())
+                    goto End;
+
+                if (_currentAilment.ResistOverwrited())
+                    goto End;
+
+                yield return _currentAilment.AilmentRecover();
+            }
 
             _currentAilment = newAilment ;
             _currentAilment.OnApplyAilment();
+
+            End:
+            yield return null;
 
         }
 

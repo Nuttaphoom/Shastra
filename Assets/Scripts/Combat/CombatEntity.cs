@@ -387,9 +387,9 @@ namespace Vanaring
             GetEventBroadcaster().InvokeEvent(this,"OnEntityStun");
         }
 
-        public void ApplyAilment(Ailment ailment)
+        public IEnumerator ApplyAilment(Ailment ailment)
         {
-            _ailmentHandler.LogicApplyAilment(ailment);
+            yield return _ailmentHandler.LogicApplyAilment(ailment);
 
         }
 

@@ -47,6 +47,8 @@ namespace Vanaring
         public abstract IEnumerator AilmentRecover(); 
         public abstract Comment GetOnTakeControlComment();
         public abstract Comment GetOnRecoverComment();
+        public abstract bool ShouldOverwritedOthers();
+        public abstract bool ResistOverwrited();
 
     }
 
@@ -74,6 +76,8 @@ namespace Vanaring
         {
             return _basicDataInfo.TakeControlComment;
         }
+
+
 
 
     }

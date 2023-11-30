@@ -61,6 +61,16 @@ namespace Vanaring
             _entity.ApplyStun(); 
             _entity.GetComponent<CombatEntityAnimationHandler>().AttachVFXToMeshComponent(_dataType.GeStarCircleStunVFX, "HEAD", "STARSTUNAILMENT"); 
         }
+
+        public override bool ShouldOverwritedOthers()
+        {
+            return true ;
+        }
+
+        public override bool ResistOverwrited()
+        {
+            return true ;
+        }
     }
 
     [Serializable]

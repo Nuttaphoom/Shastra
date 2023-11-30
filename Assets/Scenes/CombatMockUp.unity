@@ -593,8 +593,8 @@ MonoBehaviour:
   _ailmentLocation:
   - _ailmentType: 0
     _ailmentFactorySO: {fileID: 11400000, guid: 2d07452f9ee64f041a1281af9fccd036, type: 2}
-  - _ailmentType: 0
-    _ailmentFactorySO: {fileID: 11400000, guid: 2d07452f9ee64f041a1281af9fccd036, type: 2}
+  - _ailmentType: 1
+    _ailmentFactorySO: {fileID: 11400000, guid: f8431af3e1409be4282c09fb6f8851b8, type: 2}
 --- !u!1 &31001668
 GameObject:
   m_ObjectHideFlags: 0
@@ -11851,6 +11851,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Asha-Entity Ally Prefab
       objectReference: {fileID: 0}
+    - target: {fileID: 5591972313678855088, guid: 020e34f29e1254a47a783dfd0b7bbd3c, type: 3}
+      propertyPath: _controlableEntityActionRegistry._spellActions.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5591972313678855088, guid: 020e34f29e1254a47a783dfd0b7bbd3c, type: 3}
+      propertyPath: _controlableEntityActionRegistry._spellActions.Array.data[2]
+      value: 
+      objectReference: {fileID: 11400000, guid: 2bb6ef1b3774fe94fac102e067910236, type: 2}
     - target: {fileID: 7060522147335130693, guid: 020e34f29e1254a47a783dfd0b7bbd3c, type: 3}
       propertyPath: m_LocalRotation.w
       value: -0.041992117
@@ -12245,6 +12253,10 @@ MonoBehaviour:
   _entityLoader: {fileID: 1386119686}
   _maxTeamSize: 3
   _competators:
+  - _side: 0
+    _entity: {fileID: 1202954548}
+  - _side: 0
+    _entity: {fileID: 1101805976}
   - _side: 0
     _entity: {fileID: 1158423832}
 --- !u!1 &721749843
@@ -17581,6 +17593,17 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1086286042}
   m_CullTransparentMesh: 1
+--- !u!114 &1101805976 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5591972313678855088, guid: accfa19e24739864da30ab9f017f2efe, type: 3}
+  m_PrefabInstance: {fileID: 204091711}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae437faf0a26dcf4d9f14f8e73c15e79, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1103586265
 GameObject:
   m_ObjectHideFlags: 0
@@ -19294,6 +19317,17 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1202140402}
   m_CullTransparentMesh: 1
+--- !u!114 &1202954548 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5591972313678855088, guid: 020e34f29e1254a47a783dfd0b7bbd3c, type: 3}
+  m_PrefabInstance: {fileID: 680568898}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae437faf0a26dcf4d9f14f8e73c15e79, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1205172040
 GameObject:
   m_ObjectHideFlags: 0
@@ -19566,11 +19600,11 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.3
-  far clip plane: 1000
+  near clip plane: 0.1
+  far clip plane: 5000
   field of view: 60.000004
   orthographic: 0
-  orthographic size: 5
+  orthographic size: 10
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -19593,8 +19627,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1212108954}
-  m_LocalRotation: {x: 0.0068381815, y: 0.9904359, z: -0.053294748, w: 0.12708157}
-  m_LocalPosition: {x: 4.04248, y: 0.5639999, z: 0.49676645}
+  m_LocalRotation: {x: 7.541203e-10, y: 0.9816327, z: -0.1907807, w: 0.000000003880211}
+  m_LocalPosition: {x: 0, y: 1.306, z: 3.233}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
