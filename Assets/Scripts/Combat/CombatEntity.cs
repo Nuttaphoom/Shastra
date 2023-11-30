@@ -304,8 +304,7 @@ namespace Vanaring
 
             _runtimeCharacterStatsAccumulator.ModifyHPStat(trueDmg);
 
-            ColorfulLogger.LogWithColor(gameObject.name + "is hit with " + trueDmg + " remaining HP : " + _runtimeCharacterStatsAccumulator.GetHPAmount(), Color.red);
-
+    
             _dmgOutputPopHanlder.AccumulateDMG(inputdmg); 
 
             if (_runtimeCharacterStatsAccumulator.GetHPAmount() <= 0)

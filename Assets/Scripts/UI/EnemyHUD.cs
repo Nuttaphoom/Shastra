@@ -53,6 +53,11 @@ namespace Vanaring
         [SerializeField] private List<Image> lightSlotList;
         [SerializeField] private List<Image> highlightSlotList;
 
+        #region ConstantValue
+        const float _time_BeforeHideHUD = 1.0f ;
+
+        #endregion
+
         public void Init(CombatEntity owner)
         {
             _owner = owner;
@@ -293,7 +298,8 @@ namespace Vanaring
                 Destroy(gameObject);
             }
 
-
+            yield return new WaitForSeconds(_time_BeforeHideHUD); 
+            HideHUDVisual(); 
             yield return null;
         }
 
