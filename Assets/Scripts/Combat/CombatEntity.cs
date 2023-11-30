@@ -382,10 +382,15 @@ namespace Vanaring
         /// <summary>
         /// Apply Stun will be called from EnergyOverflowHandler 
         /// </summary>
-        public virtual void ApplyStun(   )
-        {
-            _ailmentHandler.LogicApplyAilment( AilmentLocator.Instance.GetAilmentObject(AilmentLocator.AilmentType.Stun).FactorizeAilment(this,1) ) ; 
+        public virtual void ApplyStun( )
+        { 
             GetEventBroadcaster().InvokeEvent(this,"OnEntityStun");
+        }
+
+        public void ApplyAilment(Ailment ailment)
+        {
+            _ailmentHandler.LogicApplyAilment(ailment);
+
         }
 
         public virtual void ApplyOverflow()

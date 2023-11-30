@@ -49,7 +49,8 @@ namespace Vanaring
 
         public enum AilmentType
         {
-            Stun 
+            Stun, 
+            Shock
         }
     }
 }

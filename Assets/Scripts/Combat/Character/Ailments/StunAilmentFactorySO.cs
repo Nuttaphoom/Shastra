@@ -38,14 +38,13 @@ namespace Vanaring
         {
             this._dataType = dataType;
             this._basicDataInfo = basicInfo;
-            this._basicDataInfo.header = "somethingggg";
+            _entity.ApplyStun();
         }
         
         public override IEnumerator AilmentRecover()
         {
            yield return DirectorManager.Instance.PlayTimelineCoroutine(_basicDataInfo.RecoverTimelineInfo, new List<GameObject>() {_entity.gameObject})  ;
             _entity.GetComponent<CombatEntityAnimationHandler>().DeAttachVFXFromMeshComponent("STARSTUNAILMENT", "HEAD");
-
             yield return _entity.GetComponent<EnergyOverflowHandler>().ResetOverflow() ;
 
         }
@@ -59,6 +58,7 @@ namespace Vanaring
 
         public override void OnApplyAilment()
         {
+            _entity.ApplyStun(); 
             _entity.GetComponent<CombatEntityAnimationHandler>().AttachVFXToMeshComponent(_dataType.GeStarCircleStunVFX, "HEAD", "STARSTUNAILMENT"); 
         }
     }

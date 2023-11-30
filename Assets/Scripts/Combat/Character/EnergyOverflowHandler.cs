@@ -15,7 +15,7 @@ namespace Vanaring
     public class EnergyOverflowHandler : MonoBehaviour
     {
         [SerializeField]
-        private StunAilmentAppilerRuntimeEffectFactorySO _stunApplier;
+        private AilmentAppilerRuntimeEffectFactorySO _stunApplier;
  
         private CombatEntity _combatEntity;
 

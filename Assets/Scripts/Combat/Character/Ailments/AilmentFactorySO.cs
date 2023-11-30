@@ -93,7 +93,6 @@ namespace Vanaring
         private ActorActionFactory _action;
         public ActorActionFactory Action => _action;
 
-        public string header; 
         [SerializeField]
         private TimelineInfo _recoverTimelineInfo;
         public TimelineInfo RecoverTimelineInfo => _recoverTimelineInfo;
