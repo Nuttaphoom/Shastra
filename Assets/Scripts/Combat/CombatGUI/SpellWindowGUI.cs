@@ -93,7 +93,12 @@ namespace Vanaring  {
 
             _spellSocket.gameObject.SetActive(false);
             spellLogText.text = spellSocketGUIList[currentSelectedIndex].GetSpellDescription();
-            spellSocketGUIList[currentSelectedIndex].HightlightedButton();
+            if (!spellSocketGUIList[currentSelectedIndex].IsEnergySufficeientToUseThisSpell())
+            {
+                notificationBox.SetActive(true);
+                spellSocketGUIList[currentSelectedIndex].RedHightlightedButton();
+            }
+            else { spellSocketGUIList[currentSelectedIndex].HightlightedButton(); }
         }
         public override void ReceiveKeysFromWindowManager(KeyCode key)
         {
