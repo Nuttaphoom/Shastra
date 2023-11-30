@@ -94,10 +94,12 @@ namespace Vanaring
         public void RestoreVMCameraState()
         {
             Camera.main.GetComponent<CinemachineBrain>().ActiveVirtualCamera.VirtualCameraGameObject.SetActive(false);
-            Camera.main.GetComponent<CinemachineBrain>().ActiveVirtualCamera.LookAt = _oldAimPoint ;
 
             _savedVMCamera.gameObject.SetActive(true);
+            _savedVMCamera.GetComponent<CinemachineVirtualCamera>().LookAt = _oldAimPoint; 
         }
+
+
 
         #region GENERATOR
         public void GenerateEntityAttacher(List<GameObject> _characterModelSetupList, List<GameObject> _enemyModelSetupList)

@@ -12,7 +12,6 @@ namespace Vanaring
     [RequireComponent (typeof(CombatEntityAnimationHandler))]
     public class AIEntity : CombatEntity
     {
-        [SerializeField]
         AIBehaviorHandler aiBehaviorHandler;
 
         

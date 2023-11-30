@@ -16,6 +16,7 @@ using Cinemachine;
 
 namespace Vanaring 
 {
+    [RequireComponent(typeof(EntityCameraManager))]
     [Serializable]
     public class CombatEntityAnimationHandler : MonoBehaviour
     {
