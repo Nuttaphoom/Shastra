@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Security.Cryptography;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -65,29 +67,82 @@ namespace Vanaring
             entity.UnSubOnAilmentRecoverEventChannel(NotifyAilmentRecover);
 
         }
+        #region TextShaping Comment 
+        public string GetAilmentBacklog(CombatEntity entity,Ailment ailment , bool takeControl, bool recover)
+        {
+            string comment = null;
+            if (takeControl)
+            {
+                comment =  ailment.GetOnTakeControlComment().GetComment(entity);
+            }
+            else if (recover)
+            {
+                comment = ailment.GetOnRecoverComment().GetComment(entity);
+            }
+            else
+                throw new Exception("TakeControl and Reocver both are false");
+
+            return comment; 
+
+        }
+
+        public string GetStatusEffectComment(EntityStatusEffectPair pair, bool onApplied)
+        {
+            CombatEntity entity = pair.Actor;
+            var action = pair.StatusEffectFactory;
+            string comment = null ;
+            
+            if (onApplied)
+                comment = action.GetCommentOnApplied.GetComment(entity);
+             
+            return comment; 
+        }
+        public string GetPerformedActionBacklog(EntityActionPair entityActionPair)
+        {
+            CombatEntity entity = entityActionPair.Actor;
+            ActorAction action = entityActionPair.PerformedAction;
+            string comment = action.GetDescription().FieldName;
+
+            return comment; 
+
+        }
+        #endregion
+
+        #region Ailment Comment Notifier 
         private void NotifyAilmentRecover(EntityAilmentEffectPair ailment)
         {
-            _combatBacklogDisplayer.DisplayAilmentBacklog(ailment,false,true);
+            string comment = GetAilmentBacklog(ailment.Actor, ailment.Ailment, false, true);
+
+            _combatBacklogDisplayer.EnqueueUtilityTab(comment);
 
         }
         private void NotifyAilmentControl(EntityAilmentEffectPair ailment)
         {
-            _combatBacklogDisplayer.DisplayAilmentBacklog(ailment,true,false);
+            string comment = GetAilmentBacklog(ailment.Actor, ailment.Ailment, true, false);
+            _combatBacklogDisplayer.EnqueueUtilityTab(comment);
 
         }
+        
+
+        #endregion
+
+
+
         private void NotifyOnStatusEffectApplied(EntityStatusEffectPair pair)
         {
-            _combatBacklogDisplayer.DisplayStatusEffectAppliedBacklog(pair);
+            string comment = GetStatusEffectComment(pair, true);
+
+            _combatBacklogDisplayer.EnqueueUtilityTab(comment);
+
         }
         private void NotifyOnEntityPerformAction(EntityActionPair entityActionPair)
         {
-            _combatBacklogDisplayer.DisplayPerformedActionBacklog(entityActionPair); 
+            string comment = GetPerformedActionBacklog(entityActionPair);
+
+            _combatBacklogDisplayer.EnqueueActionTab(comment); 
         }
       
     
-        public void NotifyString(string s)
-        {
-            _combatBacklogDisplayer.DisplayUtilityWithStringBacklog(s); 
-        }
+       
     }
 }

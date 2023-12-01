@@ -12,6 +12,7 @@ namespace Vanaring
 {
     public class AilmentHandler   
     {
+        private AilmentResistantHandler _ailmentResistantHandler; 
         private CombatEntity _user;
         private Ailment _currentAilment;
 
@@ -25,6 +26,7 @@ namespace Vanaring
                 _eventBroadcaster = new EventBroadcaster();
                 _eventBroadcaster.OpenChannel<EntityAilmentEffectPair>("OnAilmentControl");
                 _eventBroadcaster.OpenChannel<EntityAilmentEffectPair>("OnAilmentRecover");
+                _eventBroadcaster.OpenChannel<EntityAilmentApplierEffect>("OnAilmentApplied");
             }
 
             return _eventBroadcaster;
@@ -48,11 +50,14 @@ namespace Vanaring
         {
             GetEventBroadcaster().UnSubEvent<EntityAilmentEffectPair>(func, "OnAilmentRecover");
         }
+ 
 
         #endregion 
+
         public AilmentHandler(CombatEntity user)
         {
             _user = user;
+            _ailmentResistantHandler = new AilmentResistantHandler(user.CharacterSheet.ResistantData); 
         }
 
         public IEnumerator LogicApplyAilment(Ailment newAilment)

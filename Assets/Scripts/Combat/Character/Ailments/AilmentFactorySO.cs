@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Rendering;
+using static Vanaring.AilmentLocator;
 
 namespace Vanaring 
 {
@@ -51,6 +54,8 @@ namespace Vanaring
         public abstract bool ResistOverwrited();
 
     }
+ 
+   
 
     /// <summary>
     /// Ailment status effect will be completely different than normal status effect as it controls behavior of the patient 
@@ -76,10 +81,6 @@ namespace Vanaring
         {
             return _basicDataInfo.TakeControlComment;
         }
-
-
-
-
     }
 
     [Serializable]

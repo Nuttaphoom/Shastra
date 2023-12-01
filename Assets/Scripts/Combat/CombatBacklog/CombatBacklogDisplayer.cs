@@ -26,49 +26,18 @@ namespace Vanaring
         private Queue<IEnumerator> _displayUtilityTabQueue = new Queue<IEnumerator>();
 
 
+        public void EnqueueUtilityTab(string comment)
+        {
+            _displayUtilityTabQueue.Enqueue(DisplayUtilityTabCoroutine(comment));
+        }
+
+        public void EnqueueActionTab(string comment)
+        {
+            _displayActionTabQueue.Enqueue(DisplayActionTabCoroutine(comment));
+        }
 
         #region UtilityTabs
-        public void DisplayStatusEffectAppliedBacklog(EntityStatusEffectPair pair)
-        {
-            CombatEntity entity = pair.Actor;
-            var action = pair.StatusEffectFactory  ;
-            string comment = action.GetCommentOnApplied.GetComment(entity);
-            if (comment == null || comment == "")
-                return;
-
-
-            _displayUtilityTabQueue.Enqueue(DisplayUtilityTabCoroutine(comment));
-        }
-        public void DisplayAilmentBacklog(EntityAilmentEffectPair pair, bool takeControl ,bool recover)
-        {
-            string comment = null ;
-            if (takeControl)
-            {
-                comment = pair.Ailment.GetOnTakeControlComment().GetComment(pair.Actor);
-            }
-            else if (recover)
-            {
-                comment = pair.Ailment.GetOnRecoverComment().GetComment(pair.Actor);
-            }
-            else
-                throw new Exception("TakeControl and Reocver both are false") ;
-
-            if (comment == null || comment == "")
-                return;
-
-
-
-            _displayUtilityTabQueue.Enqueue(DisplayUtilityTabCoroutine(comment));
-        }
-
-        public void DisplayUtilityWithStringBacklog(string str)
-        {
-            if (str == "")
-                return; 
-
-            _displayUtilityTabQueue.Enqueue(DisplayUtilityTabCoroutine(str));
-
-        }
+       
         private void TryoToDisplayUtilityQueue()
         {
             if (_utilityTab.activeSelf)
@@ -89,19 +58,8 @@ namespace Vanaring
         }
         #endregion
 
-        #region ActionTab
-        public void DisplayPerformedActionBacklog(EntityActionPair entityActionPair)
-        {
-            CombatEntity entity = entityActionPair.Actor;
-            ActorAction action = entityActionPair.PerformedAction;
-            string comment = action.GetDescription().FieldName;
-            if (comment == null || comment == "")
-                return;
 
-
-            _displayActionTabQueue.Enqueue(DisplayActionTabCoroutine(comment));
-
-        }
+        #region ActionTabs
         private IEnumerator DisplayActionTabCoroutine(string displayedText)
         {
             _actionTab.SetActive(true); 
@@ -122,7 +80,6 @@ namespace Vanaring
             StartCoroutine(_displayActionTabQueue.Dequeue()) ; 
         }
         #endregion
-
 
 
         private void Update()

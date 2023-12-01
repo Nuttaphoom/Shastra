@@ -75,6 +75,7 @@ namespace Vanaring
         {
             _ailmentHandler.SubOnAilmentRecoverEventChannel(func);
         }
+ 
 
         public void SubOnAilmentControlEventChannel(UnityAction<EntityAilmentEffectPair> func)
         {
@@ -109,7 +110,7 @@ namespace Vanaring
         {
             GetEventBroadcaster().SubEvent(argc, "OnTakeControlLeave");
         }
-
+        
         public void UnSubOnStatusEffectApplied(UnityAction<EntityStatusEffectPair> func)
         {
             _statusEffectHandler.UnSubOnStatusEffectApplied(func);
@@ -139,7 +140,7 @@ namespace Vanaring
         {
             GetEventBroadcaster().UnSubEvent(argc, "OnTakeControlLeave");
         }
-
+      
         public void UnSubOnAilmentControlEventChannel(UnityAction<EntityAilmentEffectPair> func)
         {
             _ailmentHandler.UnSubOnAilmentControlEventChannel(func); 
@@ -197,15 +198,7 @@ namespace Vanaring
             yield return (_statusEffectHandler.ExecuteStatusRuntimeEffectCoroutine());
 
             
-            if (! ReadyForControl())
-            {
-                Debug.LogWarning("Remove this line, we should be clear with when or how to zoom in and notify backlog like " +
-                    "'this character is freezed'  . a character should have its own finite state of frezzing, overflowing, stun, etc");
-
-                Debug.LogWarning("another problem is that this assume the character is recover exactly on this stage, or the camera won't be focus to this character"); 
-                FindObjectOfType<CombatBacklogNotification>().NotifyString(_characterSheet.CharacterName + " is exhaunted") ; 
-                //yield return _combatEntityAnimationHandler.SelfZoomCameraSequnece(); 
-            }
+           
         }
 
         public virtual IEnumerator TurnLeave()
