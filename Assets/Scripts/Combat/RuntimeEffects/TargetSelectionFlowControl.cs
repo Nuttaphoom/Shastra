@@ -249,22 +249,21 @@ namespace Vanaring
                     {
                         yield return EnergySimulation(selectedEntity, actorAction);
                     }
+
                     _targetSelectionGUI.SelectTargetPointer(_selectingTarget);
 
                     _enemyHUDWindowManager.DisplayEnemyHUD(_selectingTarget);
+
                     if (actorAction.GetTargetSelector().TargetAllyTeam)
                     {
-                        Debug.Log("hmm there");
-                        if (CombatReferee.Instance.GetCompetatorSide(caster) == ECompetatorSide.Ally)
-                        {
-                            Debug.Log("almost there");
-                            Debug.Log(_selectingTarget.Count + " is selected");
-                            if (_selectingTarget.Count == 1)
-                            {
-                                Debug.Log("there");
-                                _selectingTarget[0].GetComponent<EntityCameraManager>().EnableFaceCamera();
-                            }
-                        }
+                        if (CombatReferee.Instance.GetCompetatorSide(caster) != ECompetatorSide.Ally)
+                            continue;
+
+                        if (_selectingTarget.Count != 1)
+                            continue;
+                        
+                        _selectingTarget[0].GetComponent<EntityCameraManager>().EnableFaceCamera();
+                        _validTargets = ArrangeEntityListInXAxis(_validTargets);
                     }
                     else
                     {
