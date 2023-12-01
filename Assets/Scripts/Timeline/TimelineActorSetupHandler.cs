@@ -120,8 +120,17 @@ namespace Vanaring
     
         public void DestroyTimelineElement()
         {
-            for (int i = _destroyedWithTimeline.Count - 1 ;i >= 0; i--)
-               Destroy( _destroyedWithTimeline[i] ) ;
+            Destroy(_casterTransform.gameObject); 
+            for (int i = _targetTransform.Count - 1; i >= 0 ; i--)
+            {
+                Destroy(_targetTransform[i].gameObject);
+            }
+
+            for (int i = _destroyedWithTimeline.Count - 1; i >= 0; i--)
+            {
+                if (_destroyedWithTimeline[i] != null) 
+                    Destroy(_destroyedWithTimeline[i]);
+            }
             
             _destroyedWithTimeline.Clear();
 

@@ -309,6 +309,7 @@ GameObject:
   - component: {fileID: 3183956409549396090}
   - component: {fileID: 230340289741595676}
   - component: {fileID: 8091564974255038199}
+  - component: {fileID: 4949649627718088338}
   m_Layer: 0
   m_Name: StrayGhost
   m_TagString: Untagged
@@ -365,11 +366,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _visualMesh: {fileID: 1380964054971269540}
-  _vfxPos: {fileID: 76209274940009860}
   _guiPos: {fileID: 6538828595972744590}
   _deadVisualEffect: {fileID: 1482325246012760531}
   _deadAnimationTrigger: NONE
-  _actionCamera: {fileID: 0}
+  _spawnVisualEffect: {fileID: 0}
+  _head_position: {fileID: 0}
+  _vfxPos: {fileID: 76209274940009860}
 --- !u!114 &3183956409549396090
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -382,7 +384,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6f06dcf6a8a85b42919ac9ba2d646b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _statusEffectFactory: {fileID: 11400000, guid: 711b3fdb8207def469538edd1bc5e13b, type: 2}
+  _stunApplier: {fileID: 0}
   _star_circle_stunVFX: {fileID: 1896424223492851964, guid: 668a03f329378ea4ca20210476625358, type: 3}
   _actionAnimationInfo:
     _casterVFXEntity:
@@ -398,7 +400,7 @@ MonoBehaviour:
     SelfTrigerID: 
     TargetTrigerID: 
     _isProjectile: 0
-  _above_head_transform: {fileID: 3240901259003009513}
+  _zoomToSelfAction: {fileID: 0}
 --- !u!114 &230340289741595676
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -436,86 +438,26 @@ MonoBehaviour:
     _invokeOrder: 0
     _actions:
     - _actionFactory: {fileID: 11400000, guid: 6ac4a95938ffa8d418ff985afad004ef, type: 2}
-      _possibility: 1
+      _possibility: 0.75
+    - _actionFactory: {fileID: 11400000, guid: 6ac4a95938ffa8d418ff985afad004ef, type: 2}
+      _possibility: 0.25
     _priority: 1111
     _comboHandler:
       _combo: 0
       _breakOnStun: 0
-  - _behaviorDescription: 'Phase 1 : HP is more than 50%'
-    OR: 0
-    AND: 1
-    _behaviorCondition:
-    - {fileID: 11400000, guid: 6e8099e63ecd9fb4fa315b03c86c4314, type: 2}
-    - {fileID: 11400000, guid: be1fae307d6613a4089bac45eaca5a85, type: 2}
-    _invokeOrder: 1
-    _actions:
-    - _actionFactory: {fileID: 11400000, guid: 68460ba663dac254db694d0d0a4879f4, type: 2}
-      _possibility: 1
-    - _actionFactory: {fileID: 11400000, guid: 305b4391a8a79b043b172a56bd99e8f6, type: 2}
-      _possibility: 1
-    - _actionFactory: {fileID: 11400000, guid: 6ac4a95938ffa8d418ff985afad004ef, type: 2}
-      _possibility: 1
-    _priority: 3
-    _comboHandler:
-      _combo: 1
-      _breakOnStun: 0
-  - _behaviorDescription: 'Phase 1 : HP is more than 50% but can''t spawn'
-    OR: 0
-    AND: 1
-    _behaviorCondition:
-    - {fileID: 11400000, guid: 6e8099e63ecd9fb4fa315b03c86c4314, type: 2}
-    _invokeOrder: 1
-    _actions:
-    - _actionFactory: {fileID: 11400000, guid: b3804f44d756b6846a25846624466128, type: 2}
-      _possibility: 1
-    - _actionFactory: {fileID: 11400000, guid: 305b4391a8a79b043b172a56bd99e8f6, type: 2}
-      _possibility: 1
-    - _actionFactory: {fileID: 11400000, guid: 6ac4a95938ffa8d418ff985afad004ef, type: 2}
-      _possibility: 1
-    _priority: 2
-    _comboHandler:
-      _combo: 1
-      _breakOnStun: 0
-  - _behaviorDescription: 'Phase 2 : HP is less than 50%'
-    OR: 0
-    AND: 1
-    _behaviorCondition:
-    - {fileID: 11400000, guid: d3727bcf82879ae499b71a82f632b1a5, type: 2}
-    - {fileID: 11400000, guid: be1fae307d6613a4089bac45eaca5a85, type: 2}
-    _invokeOrder: 1
-    _actions:
-    - _actionFactory: {fileID: 11400000, guid: 68460ba663dac254db694d0d0a4879f4, type: 2}
-      _possibility: 1
-    - _actionFactory: {fileID: 11400000, guid: 6d613c4a62da6f745b2aa8768ff50f93, type: 2}
-      _possibility: 1
-    - _actionFactory: {fileID: 11400000, guid: 6d613c4a62da6f745b2aa8768ff50f93, type: 2}
-      _possibility: 1
-    - _actionFactory: {fileID: 11400000, guid: 8a15e0c4e3c3e114990ed47eb1ed9f95, type: 2}
-      _possibility: 1
-    _priority: 101
-    _comboHandler:
-      _combo: 1
-      _breakOnStun: 1
-  - _behaviorDescription: 'Phase 2 : HP is less than 50% but can''t spawn'
-    OR: 0
-    AND: 1
-    _behaviorCondition:
-    - {fileID: 11400000, guid: d3727bcf82879ae499b71a82f632b1a5, type: 2}
-    - {fileID: 11400000, guid: be1fae307d6613a4089bac45eaca5a85, type: 2}
-    _invokeOrder: 1
-    _actions:
-    - _actionFactory: {fileID: 11400000, guid: b3804f44d756b6846a25846624466128, type: 2}
-      _possibility: 1
-    - _actionFactory: {fileID: 11400000, guid: 6d613c4a62da6f745b2aa8768ff50f93, type: 2}
-      _possibility: 1
-    - _actionFactory: {fileID: 11400000, guid: 6d613c4a62da6f745b2aa8768ff50f93, type: 2}
-      _possibility: 1
-    - _actionFactory: {fileID: 11400000, guid: 8a15e0c4e3c3e114990ed47eb1ed9f95, type: 2}
-      _possibility: 1
-    _priority: 101
-    _comboHandler:
-      _combo: 1
-      _breakOnStun: 1
+--- !u!114 &4949649627718088338
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8010838884609612702}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39d58b15e4014a1428c8f38af2777f5e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _faceCamera: {fileID: 0}
 --- !u!1 &8149838307054936125
 GameObject:
   m_ObjectHideFlags: 0
@@ -610,7 +552,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: ec70e7254e499d64282b28c0bd0ddc39, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 1.29
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: ec70e7254e499d64282b28c0bd0ddc39, type: 3}
       propertyPath: m_LocalPosition.z

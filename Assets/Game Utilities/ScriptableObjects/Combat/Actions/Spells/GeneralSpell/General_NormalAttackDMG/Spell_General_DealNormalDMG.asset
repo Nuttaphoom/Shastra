@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2f5d27031a83ca845945ea045c3f11b6, type: 3}
-  m_Name: Spell_ASha_DealNormalDMG_MultipleTargets
+  m_Name: Spell_General_DealNormalDMG
   m_EditorClassIdentifier: 
   _description:
-    _fieldName: Heavy Slashes
+    _fieldName: Attack
     _fieldDescription: Apply <b>normal</b> damage to a target
-    _fieldImage: {fileID: 21300000, guid: db089e60338a024409779b3e539a84a7, type: 3}
+    _fieldImage: {fileID: 21300000, guid: 5a206e28e997b6848bae9ab916fe636c, type: 3}
   _targetSelector:
-    _maxTargetSize: 3
+    _maxTargetSize: 1
     _targetCaster: 0
     _targetAlly: 0
     _targetOppose: 1
@@ -26,16 +26,13 @@ MonoBehaviour:
     _signalEffectBindings:
     - _signalType: 1
       _runtimeEffects:
-      - {fileID: 11400000, guid: dffae794de2bd484c80e8ae417e67ce3, type: 2}
-    - _signalType: 2
-      _runtimeEffects:
-      - {fileID: 11400000, guid: 4353efef9cea6fd4babac94a922c3456, type: 2}
+      - {fileID: 11400000, guid: 677a4d5870ddff746a3a9e1c14ed8591, type: 2}
     _actionTimelineSetting:
       _trackToChangeName:
       - Caster
-    _timeLineActorSetupPrefab: {fileID: -8615740222444698358, guid: 7ca3900753f10e742a155df6bc36a95c, type: 3}
+    _timeLineActorSetupPrefab: {fileID: -8615740222444698358, guid: 4234c7184a582d14e8985a1fd109c8e5, type: 3}
   _comment:
     _comment: 
   _requiredEnergy:
     _side: 0
-    _amount: 1
+    _amount: 0

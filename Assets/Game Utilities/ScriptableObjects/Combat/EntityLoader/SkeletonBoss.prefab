@@ -309,6 +309,7 @@ GameObject:
   - component: {fileID: 3183956409549396090}
   - component: {fileID: 230340289741595676}
   - component: {fileID: 8091564974255038199}
+  - component: {fileID: 4949649627718088338}
   m_Layer: 0
   m_Name: SkeletonBoss
   m_TagString: Untagged
@@ -350,7 +351,6 @@ MonoBehaviour:
   _spellCaster: {fileID: 230340289741595676}
   _itemUser: {fileID: 0}
   _combatEntityAnimationHandler: {fileID: 2524119204172734917}
-  aiBehaviorHandler: {fileID: 8091564974255038199}
 --- !u!114 &2524119204172734917
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -412,7 +412,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _magicalEnergy:
-    _darkDefaultAmount: 2
+    _darkDefaultAmount: 3
     _lightDefaultAmount: 0
   _balancedEnergyStyle: 0
 --- !u!114 &8091564974255038199
@@ -484,7 +484,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: be1fae307d6613a4089bac45eaca5a85, type: 2}
     _invokeOrder: 1
     _actions:
-    - _actionFactory: {fileID: 11400000, guid: 68460ba663dac254db694d0d0a4879f4, type: 2}
+    - _actionFactory: {fileID: 11400000, guid: 7d2d43a5d65714c4c9ba450ffb097f65, type: 2}
       _possibility: 1
     - _actionFactory: {fileID: 11400000, guid: 6d613c4a62da6f745b2aa8768ff50f93, type: 2}
       _possibility: 1
@@ -516,6 +516,19 @@ MonoBehaviour:
     _comboHandler:
       _combo: 1
       _breakOnStun: 1
+--- !u!114 &4949649627718088338
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8010838884609612702}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39d58b15e4014a1428c8f38af2777f5e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _faceCamera: {fileID: 0}
 --- !u!1 &8149838307054936125
 GameObject:
   m_ObjectHideFlags: 0

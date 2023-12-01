@@ -220,7 +220,7 @@ namespace Vanaring
 
             foreach (var actionInstance in _actions)
             {
-                if (total + rand <= actionInstance.Posibility)
+                if (rand <= actionInstance.Posibility + total)
                     return actionInstance.ActionFactory;
 
                 total += actionInstance.Posibility;
