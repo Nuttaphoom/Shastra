@@ -50,9 +50,21 @@ namespace Vanaring
         {
             GetEventBroadcaster().UnSubEvent<EntityAilmentEffectPair>(func, "OnAilmentRecover");
         }
- 
 
-        #endregion 
+        public void SubOnOnAilmentAppliedEventChannel(UnityAction<EntityAilmentApplierEffect> func)
+        {
+            GetEventBroadcaster().SubEvent<EntityAilmentApplierEffect>(func, "OnAilmentApplied");
+
+        }
+        public void UnSubOnOnAilmentAppliedEventChannel(UnityAction<EntityAilmentApplierEffect> func)
+        {
+            GetEventBroadcaster().UnSubEvent<EntityAilmentApplierEffect>(func, "OnAilmentApplied");
+
+        }
+
+
+
+        #endregion
 
         public AilmentHandler(CombatEntity user)
         {
@@ -62,24 +74,36 @@ namespace Vanaring
 
         public IEnumerator LogicApplyAilment(Ailment newAilment)
         {
+            EntityAilmentApplierEffect applierEventData = new EntityAilmentApplierEffect() {
+                AilmentEffectPair = new EntityAilmentEffectPair() {   Actor = _user, Ailment = newAilment }, 
+                ResistantBlocked = false , 
+                SucessfullyAttach = false  };
+ 
+
             if (_ailmentResistantHandler.ResistantToAilment(newAilment.GetAilmentType()))
-                goto End  ; 
+            {
+                applierEventData.ResistantBlocked = true ;
+                goto End;
+            }
 
             if (_currentAilment != null)
             {
-                if (! newAilment.ShouldOverwritedOthers())
-                    goto End;
-
-                if (_currentAilment.ResistOverwrited())
-                    goto End;
+                if (!newAilment.ShouldOverwritedOthers() || _currentAilment.ResistOverwrited())
+                {
+                    goto End; 
+                }
 
                 yield return _currentAilment.AilmentRecover();
             }
 
             _currentAilment = newAilment ;
+            applierEventData.SucessfullyAttach = true;
             _currentAilment.OnApplyAilment();
 
-            End:
+        End:
+
+            GetEventBroadcaster().InvokeEvent(applierEventData, "OnAilmentApplied");
+
             yield return null;
 
         }

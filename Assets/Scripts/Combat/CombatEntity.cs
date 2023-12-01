@@ -110,7 +110,12 @@ namespace Vanaring
         {
             GetEventBroadcaster().SubEvent(argc, "OnTakeControlLeave");
         }
-        
+        public void SubOnOnAilmentAppliedEventChannel(UnityAction<EntityAilmentApplierEffect> func)
+        {
+            _ailmentHandler.SubOnOnAilmentAppliedEventChannel(func);
+
+        }
+
         public void UnSubOnStatusEffectApplied(UnityAction<EntityStatusEffectPair> func)
         {
             _statusEffectHandler.UnSubOnStatusEffectApplied(func);
@@ -146,12 +151,18 @@ namespace Vanaring
             _ailmentHandler.UnSubOnAilmentControlEventChannel(func); 
         }
 
-
-
         public void UnSubOnAilmentRecoverEventChannel(UnityAction<EntityAilmentEffectPair> func)
         {
             _ailmentHandler.UnSubOnAilmentRecoverEventChannel(func);
         }
+
+     
+        public void UnSubOnOnAilmentAppliedEventChannel(UnityAction<EntityAilmentApplierEffect> func)
+        {
+            _ailmentHandler.UnSubOnOnAilmentAppliedEventChannel(func);
+
+        }
+
         #endregion
 
         protected virtual void Awake()
