@@ -71,6 +71,11 @@ namespace Vanaring
         {
             return true ;
         }
+
+        public override AilmentLocator.AilmentType GetAilmentType()
+        {
+            return AilmentLocator.AilmentType.Stun;
+        }
     }
 
     [Serializable]

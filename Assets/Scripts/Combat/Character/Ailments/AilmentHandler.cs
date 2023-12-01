@@ -62,6 +62,9 @@ namespace Vanaring
 
         public IEnumerator LogicApplyAilment(Ailment newAilment)
         {
+            if (_ailmentResistantHandler.ResistantToAilment(newAilment.GetAilmentType()))
+                goto End  ; 
+
             if (_currentAilment != null)
             {
                 if (! newAilment.ShouldOverwritedOthers())

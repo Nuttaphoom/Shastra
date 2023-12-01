@@ -47,15 +47,19 @@ namespace Vanaring
 
         public abstract void OnApplyAilment(); 
         public abstract IEnumerator SetEntityAction();
-        public abstract IEnumerator AilmentRecover(); 
-        public abstract Comment GetOnTakeControlComment();
-        public abstract Comment GetOnRecoverComment();
+        public abstract IEnumerator AilmentRecover();
         public abstract bool ShouldOverwritedOthers();
         public abstract bool ResistOverwrited();
+        public abstract AilmentLocator.AilmentType GetAilmentType(); 
 
+
+        #region Comments 
+        public abstract Comment GetOnTakeControlComment();
+        public abstract Comment GetOnRecoverComment();
+        #endregion
     }
- 
-   
+
+
 
     /// <summary>
     /// Ailment status effect will be completely different than normal status effect as it controls behavior of the patient 

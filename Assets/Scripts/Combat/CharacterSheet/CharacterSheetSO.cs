@@ -32,7 +32,7 @@ namespace Vanaring
         public int GetHP => _HP;
         public string CharacterName => _characterName;
         public int GetATK => _ATK;
-        public AilmentResistantDataInfo ResistantData;
+        public AilmentResistantDataInfo ResistantData => _ailmentResistantDataInfo ;
     }
 
     

@@ -68,6 +68,11 @@ namespace Vanaring
         {
             return false; 
         }
+
+        public override AilmentLocator.AilmentType GetAilmentType()
+        {
+            return AilmentLocator.AilmentType.Paralized;
+        }
     }
 
 
