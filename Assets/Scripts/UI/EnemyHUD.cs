@@ -191,7 +191,7 @@ namespace Vanaring
         }
         public void DisplayEnergyBreakSlotOnTarget(RuntimeMangicalEnergy.EnergySide side, int amount)
         {
-            int highlightAmount = amount;
+            int highlightAmount = Mathf.Abs(amount); ;
             foreach (Image slot in highlightSlotList)
             {
                 slot.gameObject.SetActive(false);
