@@ -41,6 +41,7 @@ namespace Vanaring
         //    }
         //}
 
+       
         public void DisplayEnemyHUD(List<CombatEntity> entities)
         {
             if (entities.Count <= 0)

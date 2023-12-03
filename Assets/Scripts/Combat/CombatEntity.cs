@@ -369,7 +369,6 @@ namespace Vanaring
             foreach (CombatEntity target in targets)
             {
                 target.LogicHurt(this, inputDmg);
-                GetEventBroadcaster().InvokeEvent(inputDmg, "OnAttack");
             }
 
         }

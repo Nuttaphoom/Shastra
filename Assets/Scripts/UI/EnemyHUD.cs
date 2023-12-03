@@ -61,8 +61,8 @@ namespace Vanaring
         public void Init(CombatEntity owner)
         {
             _owner = owner;
-            _owner.SpellCaster.SubOnModifyEnergy(OnEnergyModified);
-            _owner.SubOnDamageVisualEvent(OnHPModified);
+
+            SubAllEvents(); 
 
             hpVal = _owner.StatsAccumulator.GetHPAmount();
             hpImage.fillAmount = hpVal / _owner.StatsAccumulator.GetPeakHPAmount();
@@ -99,20 +99,36 @@ namespace Vanaring
             }
         }
 
+        
         private void OnEnable()
         {
             if (_owner == null)
-                return;  
+                return;
 
-            _owner.SpellCaster.SubOnModifyEnergy(OnEnergyModified);
-            _owner.SubOnDamageVisualEvent(OnHPModified);
+            SubAllEvents();
         }
 
         private void OnDisable()
         {
+            UnSubAllEvents();
+        }
+
+        private void SubAllEvents()
+        {
+            Debug.Log("sub all events"); 
+            _owner.SpellCaster.SubOnModifyEnergy(OnEnergyModified);
+            _owner.SubOnDamageVisualEvent(OnHPModified);
+            _owner.SpellCaster.SubOnSimulateEnergy(SimulateDisplayEnergyBreakSlotOnTarget);
+        }
+
+        private void UnSubAllEvents()
+        {
             _owner.SpellCaster.UnSubOnModifyEnergy(OnEnergyModified);
             _owner.UnSubOnDamageVisualEvent(OnHPModified);
+            _owner.SpellCaster.UnSubOnSimulateEnergy(SimulateDisplayEnergyBreakSlotOnTarget);
         }
+
+    
 
         #region Energy
         /// <summary>
@@ -189,9 +205,13 @@ namespace Vanaring
                 }
             }
         }
-        public void DisplayEnergyBreakSlotOnTarget(RuntimeMangicalEnergy.EnergySide side, int amount)
+
+        public void SimulateDisplayEnergyBreakSlotOnTarget(EnergyModifyerEffectPair effectPiar )
         {
-            int highlightAmount = Mathf.Abs(amount); ;
+            Debug.Log("simualte display energy breakSlotOnTarget"); 
+            int highlightAmount = Mathf.Abs(effectPiar.Amount)  ;
+            RuntimeMangicalEnergy.EnergySide side = effectPiar.EnergySide; 
+
             foreach (Image slot in highlightSlotList)
             {
                 slot.gameObject.SetActive(false);
@@ -233,6 +253,8 @@ namespace Vanaring
                 }
             }
         }
+
+
         private void OnEnergyModified(CombatEntity caster, RuntimeMangicalEnergy.EnergySide side, int val)
         {
             if(val == 0)
