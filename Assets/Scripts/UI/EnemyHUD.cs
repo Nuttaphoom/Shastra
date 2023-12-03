@@ -86,7 +86,7 @@ namespace Vanaring
             {
                 DisplayEnergySlot(RuntimeMangicalEnergy.EnergySide.DarkEnergy, maxLight, maxDark, false);
             }
-            
+            //DisplayEnergyBreakSlotOnTarget(RuntimeMangicalEnergy.EnergySide.DarkEnergy, 2);
 
             enemyName.text = _owner.CharacterSheet.CharacterName.ToString();
         }
@@ -189,16 +189,50 @@ namespace Vanaring
                 }
             }
         }
-        public void DisplayEnergyBreakSlotOnTarget(int energySize, int amount)
+        public void DisplayEnergyBreakSlotOnTarget(RuntimeMangicalEnergy.EnergySide side, int amount)
         {
-            int curEnergy = _owner.SpellCaster.GetEnergyAmount(RuntimeMangicalEnergy.EnergySide.LightEnergy);
-            if(curEnergy == 0)
+            int highlightAmount = amount;
+            foreach (Image slot in highlightSlotList)
             {
-                return;
+                slot.gameObject.SetActive(false);
             }
-
+            if (maxLight > maxDark && side == RuntimeMangicalEnergy.EnergySide.LightEnergy)
+            {
+                if (lightScale <= 0)
+                {
+                    return;
+                }
+                else
+                {
+                    for (int i = highlightSlotList.Count - 1 ; i <= 0; i--)
+                    {
+                        if(i >= 0 && highlightAmount > 0)
+                        {
+                            highlightSlotList[i].gameObject.SetActive(true);
+                            highlightAmount--;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                if (darkScale <= 0)
+                {
+                    return;
+                }
+                else
+                {
+                    for (int i = highlightSlotList.Count - 1; i >= 0; i--)
+                    {
+                        if (i >= 0 && highlightAmount > 0)
+                        {
+                            highlightSlotList[i].gameObject.SetActive(true);
+                            highlightAmount--;
+                        }
+                    }
+                }
+            }
         }
-
         private void OnEnergyModified(CombatEntity caster, RuntimeMangicalEnergy.EnergySide side, int val)
         {
             if(val == 0)
@@ -215,8 +249,6 @@ namespace Vanaring
             {
                 DisplayEnergySlot(RuntimeMangicalEnergy.EnergySide.DarkEnergy, lightScale, darkScale, true);
             }
-            //StartCoroutine(OnModifyEnergyVisualUpdateCoroutine(caster, side, val));
-
         }
 
         private IEnumerator SlotBreak(int maxSlot, int curScale)

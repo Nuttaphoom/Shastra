@@ -50,6 +50,8 @@ namespace Vanaring
         private Animator animator;
         [SerializeField]
         private List<float> slotBarRatios;
+        [SerializeField]
+        private GameObject characterArrow;
 
         private bool isCanTurn;
         private bool isSelected;
@@ -91,7 +93,7 @@ namespace Vanaring
             _combatEntity = combatEntity;
             _combatEntity.SubOnDamageVisualEvent(OnHPModified);
             _combatEntity.SpellCaster.SubOnModifyEnergy(OnEnergyModified);
-
+            characterArrow.SetActive(false);
             _characterSheetSO = _combatEntity.CharacterSheet;
             characterImg.sprite = _characterSheetSO.GetCharacterIcon;
             isCanTurn = false;
@@ -143,11 +145,13 @@ namespace Vanaring
         public void ToggleExpandSizeUI()
         {
             gameObject.transform.localScale = new Vector3(1.2f, 1.2f, 1.2f);
+            characterArrow.SetActive(true);
         }
 
         public void ToggleShrinkSizeGUI()
         {
             gameObject.transform.localScale = new Vector3(0.9f, 0.9f, 0.9f);
+            characterArrow.SetActive(false);
         }
 
         #region STAT
@@ -167,7 +171,7 @@ namespace Vanaring
 
         private void OnHPModified(int damage)
         {
-            
+            //animator.SetTrigger("Hit");
             hpVal = _combatEntity.StatsAccumulator.GetHPAmount();
             float hptemp = maxHpVal == 0 ? (hpVal == 0 ? 1 : hpVal) : maxHpVal;
             UpdateHPScaleGUI();
