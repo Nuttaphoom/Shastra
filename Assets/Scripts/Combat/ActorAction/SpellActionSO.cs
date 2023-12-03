@@ -26,10 +26,17 @@ namespace Vanaring
 
     public class SpellAbilityRuntime : ActorAction
     {
-        private EnergyModifierData _energyModifier;
+        private int _requiredEnergy;
+        private RuntimeMangicalEnergy.EnergySide _requiredSide ; 
         public SpellAbilityRuntime(EnergyModifierData energyModifier, CombatEntity caster, ActorActionFactory factory) : base(factory,caster)
         {
-            _energyModifier = energyModifier;
+            _requiredEnergy = energyModifier.Amount; 
+            _requiredSide = energyModifier.Side;
+            
+            
+            if (_requiredEnergy > 0)
+                 _requiredEnergy = -1 * _requiredEnergy; 
+            
         }
 
         public override IEnumerator PreActionPerform()
@@ -39,7 +46,7 @@ namespace Vanaring
 
         public override IEnumerator PostActionPerform()
         {
-            _caster.SpellCaster.ModifyEnergy(_energyModifier.Side, _energyModifier.Amount);
+            _caster.SpellCaster.ModifyEnergy(_requiredSide, _requiredEnergy );
             yield return null;
         }
 

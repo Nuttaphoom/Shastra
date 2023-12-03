@@ -45,8 +45,11 @@ namespace Vanaring
         protected AilmentHandler _ailmentHandler; 
 
 
+        /// <summary>
+        /// TODO : these IsDead, Is.... variables should be removed
+        /// </summary>
         private bool _isDead = false ;
-        private bool _isExhausted = true ; 
+        private bool _isExhausted = true ;
 
         public bool IsDead => _isDead;
         public bool IsExhausted => _isExhausted;
@@ -378,13 +381,7 @@ namespace Vanaring
             yield return _combatEntityAnimationHandler.DestroyVisualMesh();
         }
 
-        /// <summary>
-        /// Apply Stun will be called from EnergyOverflowHandler 
-        /// </summary>
-        public virtual void ApplyStun( )
-        { 
-            GetEventBroadcaster().InvokeEvent(this,"OnEntityStun");
-        }
+ 
 
         public IEnumerator ApplyAilment(Ailment ailment)
         {

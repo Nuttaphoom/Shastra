@@ -38,11 +38,11 @@ namespace Vanaring
 
         public override IEnumerator ExecuteRuntimeCoroutine(CombatEntity owner)
         {
-            foreach (CombatEntity target in _targets)
-            {
-                if (target is CombatEntity)
-                    target.ApplyStun( ) ;
-            }
+            //foreach (CombatEntity target in _targets)
+            //{
+            //    if (target is CombatEntity)
+            //        target.ApplyStun( ) ;
+            //}
 
             yield return null;
         }
