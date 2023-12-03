@@ -58,6 +58,9 @@ namespace Vanaring
         private void Awake()
         {
             Instance = this;
+            if (_targetSelectionDisplayer == null)
+                throw new Exception("_targetSelectionDisplayer need to be assigned ! "); 
+             
             _targetSelectionGUI.Initialize(_targetSelectionDisplayer);
         }
 
@@ -71,12 +74,15 @@ namespace Vanaring
             {
                 foreach (CombatEntity target in CombatReferee.Instance.GetCompetatorsBySide(side))
                 {
-                    if (targetSelector.CorrectTarget(caster, target))
+                    if (! targetSelector.CorrectTarget(caster, target))
+                        continue;   
+                    
+                    if (target.IsDead)
+                        continue; 
+
+                    if (!_validTargets.Contains(target))
                     {
-                        if (!_validTargets.Contains(target))
-                        {
-                            _validTargets.Add(target);
-                        }
+                        _validTargets.Add(target);
                     }
                 }
             }
@@ -159,39 +165,39 @@ namespace Vanaring
                 _forceStop = true;
             }
         }
-        public IEnumerator InitializeTargetSelectionSchemeWithoutSelect(List<CombatEntity> _targets)
-        {
-            if (_activlySelecting)
-                throw new Exception("Try to active selection scheme while it is already active");
+        //public IEnumerator InitializeTargetSelectionSchemeWithoutSelect(List<CombatEntity> _targets)
+        //{
+        //    if (_activlySelecting)
+        //        throw new Exception("Try to active selection scheme while it is already active");
 
-            _activlySelecting = true;
-            ValidateData();
+        //    _activlySelecting = true;
+        //    ValidateData();
 
-            foreach (var v in _targets)
-            {
-                _validTargets.Add(v);
-            }
+        //    foreach (var v in _targets)
+        //    {
+        //        _validTargets.Add(v);
+        //    }
 
-            transform.DOMove(Vector3.zero, 3.0f);
-            while (true)
-            {
-                if (_forceStop)
-                {
-                    _forceStop = false;
-                    ColorfulLogger.LogWithColor("Cancel Target Selection", Color.green);
-                    goto End;
-                }
+        //    transform.DOMove(Vector3.zero, 3.0f);
+        //    while (true)
+        //    {
+        //        if (_forceStop)
+        //        {
+        //            _forceStop = false;
+        //            ColorfulLogger.LogWithColor("Cancel Target Selection", Color.green);
+        //            goto End;
+        //        }
 
-                //_targetSelectionGUI.SelectTargetPointer(_validTargets[_currentSelectIndex]);
+        //        //_targetSelectionGUI.SelectTargetPointer(_validTargets[_currentSelectIndex]);
 
-                yield return _validTargets[_currentSelectIndex];
+        //        yield return _validTargets[_currentSelectIndex];
 
-            }
+        //    }
 
-        End:
-            _targetSelectionGUI.EndSelectionScheme();
-            _activlySelecting = false;
-        }
+        //End:
+        //    _targetSelectionGUI.EndSelectionScheme();
+        //    _activlySelecting = false;
+        //}
         public IEnumerator InitializeActionTargetSelectionScheme(CombatEntity caster, ActorAction actorAction, bool randomTarget = false)
         {
             //ColorfulLogger.LogWithColor("Start target selection with " + actorAction , Color.green);
@@ -224,15 +230,14 @@ namespace Vanaring
                 _selectingTarget.Clear();
 
                 _selectingTarget.Add(_validTargets[_currentSelectIndex]);
-  
+
+         
+
                 if (_validTargets.Count <= actorAction.GetTargetSelector().MaxTarget)
                 {
                     _selectingTarget.Clear();
                     for (int i = 0; i < _validTargets.Count; i++)
                         _selectingTarget.Add(_validTargets[i]);
-
-                    //Re organize it 
-
                 }
 
                 if (randomTarget)
@@ -240,20 +245,36 @@ namespace Vanaring
                     _currentSelectIndex = UnityEngine.Random.Range(0, _validTargets.Count);
                     _selectedTarget.Add(_validTargets[_currentSelectIndex]);
                     _validTargets.RemoveAt(_currentSelectIndex);
-                    _currentSelectIndex = 0; 
+                    _currentSelectIndex = 0;
                     continue;
                 }
-                if (! randomTarget)
+                else
                 {
+
                     foreach (CombatEntity selectedEntity in _selectingTarget)
                     {
                         yield return EnergySimulation(selectedEntity, actorAction);
                     }
+
                     _targetSelectionGUI.SelectTargetPointer(_selectingTarget);
-                    
+
                     _enemyHUDWindowManager.DisplayEnemyHUD(_selectingTarget);
 
-                    CameraSetUPManager.Instance.SetLookAtTarget(_selectingTarget[0].GetComponent<CombatEntityAnimationHandler>().GetGUISpawnTransform()) ;
+                    if (actorAction.GetTargetSelector().TargetAllyTeam)
+                    {
+                        if (CombatReferee.Instance.GetCompetatorSide(caster) != ECompetatorSide.Ally)
+                            continue;
+
+                        if (_selectingTarget.Count != 1)
+                            continue;
+                        
+                        _selectingTarget[0].GetComponent<EntityCameraManager>().EnableShoulderCamera();
+                        _validTargets = ArrangeEntityListInXAxis(_validTargets);
+                    }
+                    else
+                    {
+                        CameraSetUPManager.Instance.SetLookAtTarget(_selectingTarget[0].GetComponent<CombatEntityAnimationHandler>().GetGUISpawnTransform());
+                    }
                 }
 
                 yield return new WaitForEndOfFrame();

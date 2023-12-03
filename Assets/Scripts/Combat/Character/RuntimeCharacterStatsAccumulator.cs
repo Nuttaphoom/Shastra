@@ -16,7 +16,7 @@ namespace Vanaring
 
     public enum ECharacterStatType
     {
-        HP,ATK, Stunt 
+        HP,ATK   
     }
 
     public class RuntimeCharacterStatsAccumulator  
@@ -26,8 +26,7 @@ namespace Vanaring
         {
             _characterStats.Add(ECharacterStatType.HP, new RuntimeStat(_entityStatsSO.GetHP, _entityStatsSO.GetHP));
             _characterStats.Add(ECharacterStatType.ATK, new RuntimeStat(VanaringMathConst.InfinityValue ,_entityStatsSO.GetATK)) ;
-            _characterStats.Add(ECharacterStatType.Stunt, new RuntimeStat(1,0));
-
+ 
 
         }
 
@@ -76,21 +75,11 @@ namespace Vanaring
 
         #region StuntManipulationMethod 
 
-        public void ApplyStun()
-        {
-            _characterStats[ECharacterStatType.Stunt].ResetIncreasedValue() ; 
-            _characterStats[ECharacterStatType.Stunt].ModifyValue(1) ; 
-        } 
+        
 
-        public void RemoveStunt()
-        {
-            _characterStats[ECharacterStatType.Stunt].ResetIncreasedValue();
-        }
+    
 
-        public bool IsStunt()
-        {
-            return  _characterStats[ECharacterStatType.Stunt].GetStatValue() == 1; 
-        }
+       
 
         public IEnumerator ResetTemporaryIncreasedValue()
         {

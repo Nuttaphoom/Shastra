@@ -134,38 +134,38 @@ namespace Vanaring
             HightLightButton(_currentSelectedWindow);
         }
 
-        private IEnumerator TargettingTarget()
-        {
-            CombatEntity selectedEntity = null ;
-            List<CombatEntity> entities = CombatReferee.Instance.GetCompetatorsBySide(ECompetatorSide.Hostile); 
-            for (int i = 0;  i < entities.Count; i++)
-            {
-                if (entities[i].IsDead)
-                {
-                    entities.RemoveAt(i);
-                    i--; 
-                } 
-            }
-            IEnumerator coroutine = (TargetSelectionFlowControl.Instance.InitializeTargetSelectionSchemeWithoutSelect(entities));
-            while (coroutine.MoveNext())
-            {
-                if (coroutine.Current != null)
-                {
-                    if (coroutine.Current is (CombatEntity))
-                    {
-                        if (selectedEntity != coroutine.Current as CombatEntity)
-                        {
+        //private IEnumerator TargettingTarget()
+        //{
+        //    CombatEntity selectedEntity = null ;
+        //    List<CombatEntity> entities = CombatReferee.Instance.GetCompetatorsBySide(ECompetatorSide.Hostile); 
+        //    for (int i = 0;  i < entities.Count; i++)
+        //    {
+        //        if (entities[i].IsDead)
+        //        {
+        //            entities.RemoveAt(i);
+        //            i--; 
+        //        } 
+        //    }
+        //    IEnumerator coroutine = (TargetSelectionFlowControl.Instance.InitializeTargetSelectionSchemeWithoutSelect(entities));
+        //    while (coroutine.MoveNext())
+        //    {
+        //        if (coroutine.Current != null)
+        //        {
+        //            if (coroutine.Current is (CombatEntity))
+        //            {
+        //                if (selectedEntity != coroutine.Current as CombatEntity)
+        //                {
 
-                            selectedEntity = coroutine.Current as CombatEntity;
-                            TargetInfoWindowManager.instance.ShowCombatEntityInfoUI(selectedEntity);
-                        }
-                    }
-                }
-                yield return null;
-            }
+        //                    selectedEntity = coroutine.Current as CombatEntity;
+        //                    TargetInfoWindowManager.instance.ShowCombatEntityInfoUI(selectedEntity);
+        //                }
+        //            }
+        //        }
+        //        yield return null;
+        //    }
 
-            TargetInfoWindowManager.instance.HideCombatEntityInfoUI() ;
-        }
+        //    TargetInfoWindowManager.instance.HideCombatEntityInfoUI() ;
+        //}
         public override void OnWindowDisplay(CombatGraphicalHandler graophicalHandler)
         {
             for (int i = 0; i < _buttons.Count; i++)
@@ -177,7 +177,7 @@ namespace Vanaring
             HightLightButton(_currentSelectedWindow);  
              
             CentralInputReceiver.Instance().AddInputReceiverIntoStack(this);
-            _targetingCoroutine = StartCoroutine(TargettingTarget());
+            //_targetingCoroutine = StartCoroutine(TargettingTarget());
             SetGraphicMenuActive(true);
 
         }

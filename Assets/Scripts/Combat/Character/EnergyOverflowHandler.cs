@@ -15,7 +15,7 @@ namespace Vanaring
     public class EnergyOverflowHandler : MonoBehaviour
     {
         [SerializeField]
-        private StatusEffectApplierFactorySO _statusEffectFactory ;
+        private AilmentAppilerRuntimeEffectFactorySO _stunApplier;
  
         private CombatEntity _combatEntity;
 
@@ -26,9 +26,6 @@ namespace Vanaring
  
         [SerializeField]
         ActionAnimationInfo _actionAnimationInfo;
-
-        [SerializeField]
-        private Transform _above_head_transform;
 
         private GameObject _starVFX_Instantied ;
 
@@ -51,41 +48,41 @@ namespace Vanaring
                 yield return Overflow( ) ;
         }
 
-        public IEnumerator PostActionOverflowResolve()
-        {
-            if (_spellCasterHandler.IsEnergyOverflow())
-            {
-                if (!_isOverflow)
-                {
-                    _isOverflow = true;
+        //public IEnumerator PostActionOverflowResolve()
+        //{
+        //    if (_spellCasterHandler.IsEnergyOverflow())
+        //    {
+        //        if (!_isOverflow)
+        //        {
+        //            _isOverflow = true;
 
-                    ColorfulLogger.LogWithColor(_combatEntity + " Overflow", Color.yellow);
+        //            ColorfulLogger.LogWithColor(_combatEntity + " Overflow", Color.yellow);
 
-                    RuntimeEffect effect = _statusEffectFactory.Factorize(new List<CombatEntity>() { _combatEntity });
-                    StartCoroutine(effect.ExecuteRuntimeCoroutine(_combatEntity));
+        //            RuntimeEffect effect = _stunApplier.Factorize(new List<CombatEntity>() { _combatEntity });
+        //            StartCoroutine(effect.ExecuteRuntimeCoroutine(_combatEntity));
 
-                    _combatEntity.LogicHurt(null, _combatEntity.StatsAccumulator.GetATKAmount());
-                    _combatEntity.ApplyOverflow();
+        //            _combatEntity.LogicHurt(null, _combatEntity.StatsAccumulator.GetATKAmount());
+        //            _combatEntity.ApplyOverflow();
 
-                    List<IEnumerator> _iEnumerator = new List<IEnumerator>(); 
+        //            List<IEnumerator> _iEnumerator = new List<IEnumerator>(); 
 
-                    if (!_combatEntity.IsDead)
-                    {
-                        _iEnumerator.Add((_combatEntity.CombatEntityAnimationHandler.PlayVFXActionAnimation<string>(_actionAnimationInfo.CasterVfxEntity, VisualStunApplier, "Stunt")));
-                        _starVFX_Instantied = Instantiate(_star_circle_stunVFX, _above_head_transform);
-                        _starVFX_Instantied.transform.position = _above_head_transform.position;
-                    }
-                    else
-                    {
-                        _iEnumerator .Add (_combatEntity.VisualHurt(null, "Die"));
-                    }
+        //            if (!_combatEntity.IsDead)
+        //            {
+        //                _iEnumerator.Add((_combatEntity.CombatEntityAnimationHandler.PlayVFXActionAnimation<string>(_actionAnimationInfo.CasterVfxEntity, VisualStunApplier, "Stunt")));
+        //                _starVFX_Instantied = Instantiate(_star_circle_stunVFX, _above_head_transform);
+        //                _starVFX_Instantied.transform.position = _above_head_transform.position;
+        //            }
+        //            else
+        //            {
+        //                _iEnumerator .Add (_combatEntity.VisualHurt(null, "Die"));
+        //            }
 
-                    _iEnumerator.Add ( (_zoomToSelfAction.FactorizeRuntimeAction(_combatEntity)).PerformAction() ) ;
+        //            _iEnumerator.Add ( (_zoomToSelfAction.FactorizeRuntimeAction(_combatEntity)).PerformAction() ) ;
 
-                    yield return new WaitAll(this,_iEnumerator.ToArray() );
-                }
-            } 
-        }
+        //            yield return new WaitAll(this,_iEnumerator.ToArray() );
+        //        }
+        //    } 
+        //}
 
         
         public IEnumerator Overflow()
@@ -94,27 +91,30 @@ namespace Vanaring
             {
                 _isOverflow = true; 
 
-                RuntimeEffect effect = _statusEffectFactory.Factorize(new List<CombatEntity>() { _combatEntity });
+                RuntimeEffect effect = _stunApplier.Factorize(new List<CombatEntity>() { _combatEntity });
                 StartCoroutine(effect.ExecuteRuntimeCoroutine(_combatEntity));
-
-                _combatEntity.LogicHurt(null, _combatEntity.StatsAccumulator.GetATKAmount());
+                
+                //_combatEntity.LogicHurt(null, _combatEntity.StatsAccumulator.GetATKAmount());
                 _combatEntity.ApplyOverflow();
 
                 if (!_combatEntity.IsDead)
                 {
-                    yield return (_combatEntity.CombatEntityAnimationHandler.PlayVFXActionAnimation<string>(_actionAnimationInfo.CasterVfxEntity, VisualStunApplier, "Stunt"));
-                    _starVFX_Instantied = Instantiate(_star_circle_stunVFX, _above_head_transform);
-                    _starVFX_Instantied.transform.position = _above_head_transform.position;
+                    //yield return (_combatEntity.CombatEntityAnimationHandler.PlayVFXActionAnimation<string>(_actionAnimationInfo.CasterVfxEntity, VisualStunApplier, "Stunt"));
+                    yield return VisualStunApplier("Stunt") ; 
+
                 }
                 else
                 {
-                    yield return (_combatEntity.VisualHurt(null, "Die"));
-                }
+                    //yield return (_combatEntity.VisualHurt(null, "Die"));
+                } 
             }
+
+            yield return null; 
         }
 
         public IEnumerator ResetOverflow()
         {
+            Debug.Log("reset overflow"); 
             List<IEnumerator> _iEnumerator = new List<IEnumerator>();
 
             if (_starVFX_Instantied != null)
@@ -138,12 +138,15 @@ namespace Vanaring
         private IEnumerator VisualStunApplier(string s)
         {
             StartCoroutine(RunnintOverheatVisualEffect()); 
-            yield return (_combatEntity.VisualHurt(null, "Stun"));
+            yield return (_combatEntity.VisualHurt("Stun"));
 
         }
 
         private IEnumerator RunnintOverheatVisualEffect()
         {
+            //_starVFX_Instantied = Instantiate(_star_circle_stunVFX, _above_head_transform);
+            //_starVFX_Instantied.transform.position = _above_head_transform.position;
+
             yield return new WaitForSecondsRealtime(0.2f); 
             Time.timeScale = 0.25f;
 

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -25,26 +26,18 @@ namespace Vanaring
         private Queue<IEnumerator> _displayUtilityTabQueue = new Queue<IEnumerator>();
 
 
-
-        #region UtilityTabs
-        public void DisplayStatusEffectAppliedBacklog(EntityStatusEffectPair pair)
+        public void EnqueueUtilityTab(string comment)
         {
-            CombatEntity entity = pair.Actor;
-            var action = pair.StatusEffectFactory  ;
-            //string comment = action.GetActionComment().GetComment(entity) ;
-            //if (comment == null || comment == "")
-            //    return; 
-
-            string comment = action.GetCommentOnApplied.GetComment(entity) ;
-
             _displayUtilityTabQueue.Enqueue(DisplayUtilityTabCoroutine(comment));
         }
 
-        public void DisplayUtilityWithStringBacklog(string str)
+        public void EnqueueActionTab(string comment)
         {
-            _displayUtilityTabQueue.Enqueue(DisplayUtilityTabCoroutine(str));
-
+            _displayActionTabQueue.Enqueue(DisplayActionTabCoroutine(comment));
         }
+
+        #region UtilityTabs
+       
         private void TryoToDisplayUtilityQueue()
         {
             if (_utilityTab.activeSelf)
@@ -65,20 +58,8 @@ namespace Vanaring
         }
         #endregion
 
-        #region ActionTab
-        public void DisplayPerformedActionBacklog(EntityActionPair entityActionPair)
-        {
-            CombatEntity entity = entityActionPair.Actor;
-            ActorAction action = entityActionPair.PerformedAction;
-            //string comment = action.GetActionComment().GetComment(entity) ;
-            //if (comment == null || comment == "")
-            //    return; 
 
-            string comment = action.GetDescription().FieldName;
-
-            _displayActionTabQueue.Enqueue(DisplayActionTabCoroutine(comment));
-
-        }
+        #region ActionTabs
         private IEnumerator DisplayActionTabCoroutine(string displayedText)
         {
             _actionTab.SetActive(true); 
@@ -99,7 +80,6 @@ namespace Vanaring
             StartCoroutine(_displayActionTabQueue.Dequeue()) ; 
         }
         #endregion
-
 
 
         private void Update()

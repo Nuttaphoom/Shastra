@@ -138,7 +138,7 @@ namespace Vanaring
                     break; 
                  
                 if ((action = _actor.GetActionRuntimeEffect()) == null) 
-                    yield return _actor.GetAction();
+                    yield return _actor.GetAction() ;
 
                 else
                 {

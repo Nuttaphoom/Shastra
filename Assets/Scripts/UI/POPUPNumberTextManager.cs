@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -44,35 +45,45 @@ namespace Vanaring
         private DestroyOnTimer _outputDMGTimerPrefab;
         [SerializeField]
         private DestroyOnTimer _outputHealTimerPrefab;
+        [SerializeField]
+        private DestroyOnTimer _normalTimerPrefab; 
         // Start is called before the first frame update
 
-        public void DisplayDPOPUPText(int accumulatedDMG, int accumulatedHP, CombatEntity showToThisEntity )
+        public void DisplayDPOPUPDamageHealText(int accumulatedDMG, int accumulatedHP, CombatEntity showToThisEntity )
         {
+            GameObject textObj; 
+
             if (accumulatedDMG > 0)
             {
-                _outputDMGTimerPrefab.gameObject.SetActive(true);
-                var v = MonoBehaviour.Instantiate(_outputDMGTimerPrefab, transform);
-                v.GetComponent<TextMeshProUGUI>().text = accumulatedDMG.ToString();
-                v.transform.position = UISpaceSingletonHandler.ObjectToUISpace(showToThisEntity.CombatEntityAnimationHandler.GetGUISpawnTransform());
+                textObj = InstantiatedTextPrefab(_outputDMGTimerPrefab.gameObject, accumulatedDMG.ToString(), showToThisEntity);
+                textObj.gameObject.SetActive(true);
+                AddNewEntityToTextList(showToThisEntity, textObj.gameObject);
 
-                AddNewEntityToTextList(showToThisEntity, v.gameObject);
-
-                _outputDMGTimerPrefab.gameObject.SetActive(false);
             }
 
             if (accumulatedHP > 0)
             {
-                _outputHealTimerPrefab.gameObject.SetActive(true);
-                var vv = MonoBehaviour.Instantiate(_outputHealTimerPrefab, transform);
-                vv.GetComponent<TextMeshProUGUI>().text = accumulatedHP.ToString();
-                vv.transform.position = UISpaceSingletonHandler.ObjectToUISpace(showToThisEntity.CombatEntityAnimationHandler.GetGUISpawnTransform());
-                
-                vv.gameObject.SetActive(true);
+                textObj = InstantiatedTextPrefab(_outputHealTimerPrefab.gameObject, accumulatedHP.ToString(), showToThisEntity);
+                textObj.gameObject.SetActive(true);
+                AddNewEntityToTextList(showToThisEntity, textObj.gameObject);
 
-                AddNewEntityToTextList(showToThisEntity, vv.gameObject);
-
-                _outputHealTimerPrefab.gameObject.SetActive(false) ;
             }
+        }
+
+        public void DisplayPOPUPText(CombatEntity showToThisEntity, string s)
+        {
+            var textObj = InstantiatedTextPrefab(_normalTimerPrefab.gameObject, s, showToThisEntity);
+            textObj.gameObject.SetActive(true);
+            AddNewEntityToTextList(showToThisEntity, textObj.gameObject);
+        }
+
+        public GameObject InstantiatedTextPrefab(GameObject template, string text, CombatEntity showToThisEntity)
+        {
+            GameObject ret = MonoBehaviour.Instantiate(template, transform);
+            ret.GetComponent<TextMeshProUGUI>().text = text; 
+            ret.transform.position = UISpaceSingletonHandler.ObjectToUISpace(showToThisEntity.CombatEntityAnimationHandler.GetGUISpawnTransform());
+
+            return ret; 
         }
 
         private void AddNewEntityToTextList(CombatEntity showToThisEntity, GameObject textGO)

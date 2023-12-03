@@ -26,8 +26,8 @@ namespace Vanaring
         private TextMeshProUGUI enemyName;
 
         [Header("Energy bar value")]
-        private float lightScale = 1;
-        private float darkScale = 1;
+        private int lightScale = 1;
+        private int darkScale = 1;
 
         [SerializeField] private Image lightImage;
 
@@ -43,6 +43,8 @@ namespace Vanaring
         [SerializeField] private Image darkSlotImg;
         private Color defaultSlotColor;
         private List<Image> energySlotList = new List<Image>();
+        private int maxLight = 0;
+        private int maxDark = 0;
         [SerializeField] private GameObject horizontalLayout;
         [SerializeField] private TextMeshProUGUI lightTmpText;
         [SerializeField] private TextMeshProUGUI darkTmpText;
@@ -50,6 +52,11 @@ namespace Vanaring
         [SerializeField] private List<Image> darkSlotList;
         [SerializeField] private List<Image> lightSlotList;
         [SerializeField] private List<Image> highlightSlotList;
+
+        #region ConstantValue
+        const float _time_BeforeHideHUD = 1.0f ;
+
+        #endregion
 
         public void Init(CombatEntity owner)
         {
@@ -65,11 +72,21 @@ namespace Vanaring
 
             lightScale = _owner.SpellCaster.GetEnergyAmount(RuntimeMangicalEnergy.EnergySide.LightEnergy);
             darkScale = _owner.SpellCaster.GetEnergyAmount(RuntimeMangicalEnergy.EnergySide.DarkEnergy);
+            maxLight = _owner.SpellCaster.GetPeakEnergyAmout(RuntimeMangicalEnergy.EnergySide.LightEnergy);
+            maxDark = _owner.SpellCaster.GetPeakEnergyAmout(RuntimeMangicalEnergy.EnergySide.DarkEnergy);
 
             lightTmpText.text = lightScale.ToString();
             darkTmpText.text = darkScale.ToString();
 
-            InitEnergySlot();
+            if (maxLight > maxDark)
+            {
+                DisplayEnergySlot(RuntimeMangicalEnergy.EnergySide.LightEnergy, maxLight, maxDark, false);
+            }
+            else
+            {
+                DisplayEnergySlot(RuntimeMangicalEnergy.EnergySide.DarkEnergy, maxLight, maxDark, false);
+            }
+            //DisplayEnergyBreakSlotOnTarget(RuntimeMangicalEnergy.EnergySide.DarkEnergy, 2);
 
             enemyName.text = _owner.CharacterSheet.CharacterName.ToString();
         }
@@ -104,68 +121,134 @@ namespace Vanaring
         /// <param name="caster"></param>
         /// <param name="side"></param>
         /// <param name="val" ></param>
-        private void InitEnergySlot()
+        private void DisplayEnergySlot(RuntimeMangicalEnergy.EnergySide side, int lightVal, int darkVal, bool isBreak)
         {
             foreach (Image slot in highlightSlotList)
             {
                 slot.gameObject.SetActive(false);
             }
-            if (_owner.SpellCaster.GetPeakEnergyAmout(RuntimeMangicalEnergy.EnergySide.LightEnergy) > 0)
+            if (lightVal >= 0 && side == RuntimeMangicalEnergy.EnergySide.LightEnergy)
             {
-                foreach (Image slot in lightSlotList)
-                {
-                    slot.gameObject.SetActive(true);
-                    
-                }
                 for (int i = 0; i < lightSlotList.Count; i++)
                 {
-                    if(i < _owner.SpellCaster.GetPeakEnergyAmout(RuntimeMangicalEnergy.EnergySide.LightEnergy)){
+                    if(lightVal <= 0 && !isBreak)
+                    {
+                        break;
+                    }
+                    if(i < lightVal)
+                    {
+                        lightSlotList[i].gameObject.SetActive(true);
                         lightSlotList[i].color = Color.white;
                     }
                     else
                     {
-                        lightSlotList[i].color = Color.black;
+                        if (isBreak && i < maxLight)
+                        {
+                            Color defaultColor = lightSlotList[i].color;
+                            defaultColor.a = 0.0f;
+                            lightSlotList[i].color = defaultColor;
+                        }
+                        else
+                        {
+                            lightSlotList[i].gameObject.SetActive(true);
+                            lightSlotList[i].color = Color.black;
+                        }
+                        
                     }
                 }
             }
 
-            if (_owner.SpellCaster.GetPeakEnergyAmout(RuntimeMangicalEnergy.EnergySide.DarkEnergy) > 0)
+            if (darkVal >= 0 && side == RuntimeMangicalEnergy.EnergySide.DarkEnergy)
             {
-                foreach (Image slot in darkSlotList)
-                {
-                    slot.gameObject.SetActive(true);
-                }
                 for (int i = 0; i < darkSlotList.Count; i++)
                 {
-                    if (i < _owner.SpellCaster.GetPeakEnergyAmout(RuntimeMangicalEnergy.EnergySide.DarkEnergy))
+                    if (darkVal <= 0 && !isBreak)
                     {
+                        break;
+                    }
+                    if (i < darkVal)
+                    {
+                        darkSlotList[i].gameObject.SetActive(true);
                         darkSlotList[i].color = Color.white;
                     }
                     else
                     {
-                        darkSlotList[i].color = Color.black;
+                        if (isBreak && i < maxDark)
+                        {
+                            Color defaultColor = darkSlotList[i].color;
+                            defaultColor.a = 0.0f;
+                            darkSlotList[i].color = defaultColor;
+                        }
+                        else
+                        {
+                            darkSlotList[i].gameObject.SetActive(true);
+                            darkSlotList[i].color = Color.black;
+                        }
                     }
 
                 }
             }
         }
-        public void DisplayEnergyBreakSlotOnTarget(int energySize, int amount)
+        public void DisplayEnergyBreakSlotOnTarget(RuntimeMangicalEnergy.EnergySide side, int amount)
         {
-            int curEnergy = _owner.SpellCaster.GetEnergyAmount(RuntimeMangicalEnergy.EnergySide.LightEnergy);
-            if(curEnergy == 0)
+            int highlightAmount = Mathf.Abs(amount); ;
+            foreach (Image slot in highlightSlotList)
             {
-                return;
+                slot.gameObject.SetActive(false);
             }
-
+            if (maxLight > maxDark && side == RuntimeMangicalEnergy.EnergySide.LightEnergy)
+            {
+                if (lightScale <= 0)
+                {
+                    return;
+                }
+                else
+                {
+                    for (int i = highlightSlotList.Count - 1 ; i <= 0; i--)
+                    {
+                        if(i >= 0 && highlightAmount > 0)
+                        {
+                            highlightSlotList[i].gameObject.SetActive(true);
+                            highlightAmount--;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                if (darkScale <= 0)
+                {
+                    return;
+                }
+                else
+                {
+                    for (int i = highlightSlotList.Count - 1; i >= 0; i--)
+                    {
+                        if (i >= 0 && highlightAmount > 0)
+                        {
+                            highlightSlotList[i].gameObject.SetActive(true);
+                            highlightAmount--;
+                        }
+                    }
+                }
+            }
         }
-
         private void OnEnergyModified(CombatEntity caster, RuntimeMangicalEnergy.EnergySide side, int val)
         {
             if(val == 0)
                 return;
-
-            StartCoroutine(OnModifyEnergyVisualUpdateCoroutine(caster, side, val));
-
+           
+            lightScale = _owner.SpellCaster.GetEnergyAmount(RuntimeMangicalEnergy.EnergySide.LightEnergy);
+            darkScale = _owner.SpellCaster.GetEnergyAmount(RuntimeMangicalEnergy.EnergySide.DarkEnergy);
+            Debug.Log(lightScale + " " + darkScale);
+            if (maxLight > maxDark)
+            {
+                DisplayEnergySlot(RuntimeMangicalEnergy.EnergySide.LightEnergy, lightScale, darkScale, true);
+            }
+            else
+            {
+                DisplayEnergySlot(RuntimeMangicalEnergy.EnergySide.DarkEnergy, lightScale, darkScale, true);
+            }
         }
 
         private IEnumerator SlotBreak(int maxSlot, int curScale)
@@ -265,7 +348,8 @@ namespace Vanaring
                 Destroy(gameObject);
             }
 
-
+            yield return new WaitForSeconds(_time_BeforeHideHUD); 
+            HideHUDVisual(); 
             yield return null;
         }
 

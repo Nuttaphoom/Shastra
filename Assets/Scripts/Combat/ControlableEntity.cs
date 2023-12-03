@@ -11,7 +11,6 @@ namespace Vanaring
 {
     public class ControlableEntity : CombatEntity , ICameraAttacher
     {
- 
         [Header("Right now we manually assign valid action, TODO : Load from Database")]
         [SerializeField]
         private ControlableEntityActionsRegistry _controlableEntityActionRegistry;
@@ -23,13 +22,21 @@ namespace Vanaring
 
         public override IEnumerator GetAction()
         {
-            yield return null;
+            if (_ailmentHandler.DoesAilmentOccur())
+            {
+                yield return _ailmentHandler.AlimentControlGetAction();
+            }
+            else
+            {
+                EnableCamera();
+
+                yield return null;
+            }
         }
 
         public override IEnumerator TakeControl()
         {
             yield return base.TakeControl();
-            EnableCamera();
         }
 
         public override IEnumerator TakeControlLeave()

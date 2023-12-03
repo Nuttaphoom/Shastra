@@ -19,28 +19,12 @@ namespace Vanaring
         [Header("Image")]
         [SerializeField]
         private Image characterImg;
-        [SerializeField]
-        private Image _highlightTurn;
-        [SerializeField]
-        private Image _turnStatusImage;
 
         [Header("BarScaler")]
         [SerializeField]
         private Image hpBar;
         [SerializeField]
         private Image secondHpBar;
-        //[SerializeField]
-        //private Image lightBar;
-        //[SerializeField]
-        //private Image secondLightBar;
-        //[SerializeField]
-        //private Image darkBar;
-        //[SerializeField]
-        //private Image secondDarkBar;
-        //[SerializeField]
-        //private GameObject darkGroup;
-        //[SerializeField]
-        //private GameObject lightGroup;
         [SerializeField]
         private GameObject verticalLayout;
         [SerializeField]
@@ -50,14 +34,12 @@ namespace Vanaring
         [SerializeField]
         private Image energySlot;
         private List<Image> energySlotList = new List<Image>();
+        [SerializeField]
+        private Image curveMask;
 
         [Header("TextMeshPro")]
         [SerializeField]
         private TextMeshProUGUI characterName;
-        //[SerializeField]
-        //private TextMeshProUGUI lightNumText;
-        //[SerializeField]
-        //private TextMeshProUGUI darkNumText;
         [SerializeField]
         private TextMeshProUGUI hpNumText;
 
@@ -66,6 +48,10 @@ namespace Vanaring
         private CharacterStatusWindowManager _statusWindow;
         [SerializeField]
         private Animator animator;
+        [SerializeField]
+        private List<float> slotBarRatios;
+        [SerializeField]
+        private GameObject characterArrow;
 
         private bool isCanTurn;
         private bool isSelected;
@@ -86,12 +72,6 @@ namespace Vanaring
         {
             lightVal = 50;
             darkVal = 50;
-
-            //if (lightNumText != null && darkNumText != null)
-            //{
-            //    lightNumText.text = lightVal.ToString();
-            //    darkNumText.text = darkVal.ToString();
-            //}
         }
         private void OnEnable()
         {
@@ -113,15 +93,11 @@ namespace Vanaring
             _combatEntity = combatEntity;
             _combatEntity.SubOnDamageVisualEvent(OnHPModified);
             _combatEntity.SpellCaster.SubOnModifyEnergy(OnEnergyModified);
-
+            characterArrow.SetActive(false);
             _characterSheetSO = _combatEntity.CharacterSheet;
             characterImg.sprite = _characterSheetSO.GetCharacterIcon;
             isCanTurn = false;
             isSelected = false;
-            //lightBar.fillAmount = 0.5f;
-            //darkBar.fillAmount = 0.5f;
-            _turnStatusImage.gameObject.SetActive(false);
-            _highlightTurn.gameObject.SetActive(false);
             characterName.text = _characterSheetSO.CharacterName;
             hpVal = _combatEntity.StatsAccumulator.GetHPAmount();
             maxHpVal = _combatEntity.StatsAccumulator.GetHPAmount();
@@ -136,44 +112,46 @@ namespace Vanaring
 
         private void InitEnergySlot()
         {
-            for (int i = 0; i < _combatEntity.SpellCaster.GetEnergyAmount(RuntimeMangicalEnergy.EnergySide.LightEnergy); i++)
-            {
-                Image slot = Instantiate(energySlot, verticalLayout.transform);
-                Color lightColor = lightSlot.color;
-                slot.color = lightColor;
-                slot.gameObject.SetActive(true);
-                energySlotList.Add(slot);
-;           }
-            for (int i = 0; i < _combatEntity.SpellCaster.GetEnergyAmount(RuntimeMangicalEnergy.EnergySide.DarkEnergy); i++)
-            {
-                Image slot = Instantiate(energySlot, verticalLayout.transform);
-                Color lightColor = darkSlot.color;
-                slot.color = lightColor;
-                slot.gameObject.SetActive(true);
-                energySlotList.Add(slot);
-            }
+            curveMask.fillAmount = slotBarRatios[_combatEntity.SpellCaster.GetEnergyAmount(RuntimeMangicalEnergy.EnergySide.DarkEnergy)];
+//            for (int i = 0; i < _combatEntity.SpellCaster.GetEnergyAmount(RuntimeMangicalEnergy.EnergySide.LightEnergy); i++)
+//            {
+//                Image slot = Instantiate(energySlot, verticalLayout.transform);
+//                Color lightColor = lightSlot.color;
+//                slot.color = lightColor;
+//                slot.gameObject.SetActive(true);
+//                energySlotList.Add(slot);
+//;           }
+//            for (int i = 0; i < _combatEntity.SpellCaster.GetEnergyAmount(RuntimeMangicalEnergy.EnergySide.DarkEnergy); i++)
+//            {
+//                Image slot = Instantiate(energySlot, verticalLayout.transform);
+//                Color lightColor = darkSlot.color;
+//                slot.color = lightColor;
+//                slot.gameObject.SetActive(true);
+//                energySlotList.Add(slot);
+//            }
 
         }
 
         #region TurnStatus
-        public void ToggleTurnStatusDisplay(bool b)
-        {
-            _turnStatusImage.gameObject.SetActive(b);
-        }
+        //public void ToggleTurnStatusDisplay(bool b)
+        //{
+        //    _turnStatusImage.gameObject.SetActive(b);
+        //}
         #endregion
         public void ToggleOnTurnHighlightDisplay(bool b)
-        {
-            _highlightTurn.gameObject.SetActive(b);            
+        {     
         }
 
         public void ToggleExpandSizeUI()
         {
             gameObject.transform.localScale = new Vector3(1.2f, 1.2f, 1.2f);
+            characterArrow.SetActive(true);
         }
 
         public void ToggleShrinkSizeGUI()
         {
             gameObject.transform.localScale = new Vector3(0.9f, 0.9f, 0.9f);
+            characterArrow.SetActive(false);
         }
 
         #region STAT
@@ -193,7 +171,7 @@ namespace Vanaring
 
         private void OnHPModified(int damage)
         {
-            
+            //animator.SetTrigger("Hit");
             hpVal = _combatEntity.StatsAccumulator.GetHPAmount();
             float hptemp = maxHpVal == 0 ? (hpVal == 0 ? 1 : hpVal) : maxHpVal;
             UpdateHPScaleGUI();
@@ -204,28 +182,26 @@ namespace Vanaring
 
         private void OnEnergyModified(CombatEntity caster, RuntimeMangicalEnergy.EnergySide side, int val)
         {
-
-            if (side == RuntimeMangicalEnergy.EnergySide.LightEnergy)
-            {
-                //Debug.Log("Player spell:" + caster.SpellCaster.GetEnergyAmount(RuntimeMangicalEnergy.EnergySide.LightEnergy));
-                for (int i = 0; i < caster.SpellCaster.GetEnergyAmount(RuntimeMangicalEnergy.EnergySide.LightEnergy); i++)
-                {
-                    Color slotColor = lightSlot.color;
-                    energySlotList[i].color = slotColor;
-                }
-                //Increase Light
-                //LightScaleIncrease(val);
-            }
-            else
-            {
-                for (int i = caster.SpellCaster.GetEnergyAmount(RuntimeMangicalEnergy.EnergySide.LightEnergy) + caster.SpellCaster.GetEnergyAmount(RuntimeMangicalEnergy.EnergySide.DarkEnergy)-1; i >= caster.SpellCaster.GetEnergyAmount(RuntimeMangicalEnergy.EnergySide.LightEnergy); i--)
-                {
-                    Color slotColor = darkSlot.color;
-                    energySlotList[i].color = slotColor;
-                }
-                //Increase Dark
-                //DarkScaleIncrease(val);
-            }
+            Debug.Log(caster.name + " " + side + "= " + val);
+            curveMask.fillAmount = slotBarRatios[_combatEntity.SpellCaster.GetEnergyAmount(RuntimeMangicalEnergy.EnergySide.DarkEnergy)];
+            //if (side == RuntimeMangicalEnergy.EnergySide.LightEnergy)
+            //{
+            //    for (int i = 0; i < caster.SpellCaster.GetEnergyAmount(RuntimeMangicalEnergy.EnergySide.LightEnergy); i++)
+            //    {
+            //        Color slotColor = lightSlot.color;
+            //        energySlotList[i].color = slotColor;
+            //    }
+            //    //LightScaleIncrease(val);
+            //}
+            //else
+            //{
+            //    for (int i = caster.SpellCaster.GetEnergyAmount(RuntimeMangicalEnergy.EnergySide.LightEnergy) + caster.SpellCaster.GetEnergyAmount(RuntimeMangicalEnergy.EnergySide.DarkEnergy)-1; i >= caster.SpellCaster.GetEnergyAmount(RuntimeMangicalEnergy.EnergySide.LightEnergy); i--)
+            //    {
+            //        Color slotColor = darkSlot.color;
+            //        energySlotList[i].color = slotColor;
+            //    }
+            //    //DarkScaleIncrease(val);
+            //}
         }
 
         //public void LightScaleIncrease(int val)

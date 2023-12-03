@@ -41,9 +41,12 @@ namespace Vanaring
 
         private POPUPNumberTextHandler _dmgOutputPopHanlder;
 
+        [SerializeField]
+        protected AilmentHandler _ailmentHandler; 
+
 
         private bool _isDead = false ;
-        private bool _isExhausted = false ; 
+        private bool _isExhausted = true ; 
 
         public bool IsDead => _isDead;
         public bool IsExhausted => _isExhausted;
@@ -64,21 +67,26 @@ namespace Vanaring
                 _eventBroadcaster.OpenChannel<CombatEntity>("OnTakeControl");
                 _eventBroadcaster.OpenChannel<CombatEntity>("OnTakeControlLeave");
                 _eventBroadcaster.OpenChannel<EntityActionPair>("OnPerformAction");
-                _eventBroadcaster.OpenChannel<CombatEntity>("OnEntityStun");
             }
 
             return _eventBroadcaster;
+        }
+
+        public void SubOnAilmentRecoverEventChannel(UnityAction<EntityAilmentEffectPair> func)
+        {
+            _ailmentHandler.SubOnAilmentRecoverEventChannel(func);
+        }
+ 
+        public void SubOnAilmentControlEventChannel(UnityAction<EntityAilmentEffectPair> func)
+        {
+            _ailmentHandler.SubOnAilmentControlEventChannel(func);
         }
 
         public void SubOnStatusEffectApplied(UnityAction<EntityStatusEffectPair> func) 
         {
             _statusEffectHandler.SubOnStatusEffectApplied(func); 
         }
-
-        public void SubOnEntityStunEvent(UnityAction<CombatEntity> argc)
-        {
-            GetEventBroadcaster().SubEvent(argc, "OnEntityStun") ;
-        }
+  
         public void SubOnDamageVisualEvent(UnityAction<int> argc)
         {
             GetEventBroadcaster().SubEvent(argc, "OnDamage");
@@ -102,15 +110,17 @@ namespace Vanaring
         {
             GetEventBroadcaster().SubEvent(argc, "OnTakeControlLeave");
         }
+        public void SubOnOnAilmentAppliedEventChannel(UnityAction<EntityAilmentApplierEffect> func)
+        {
+            _ailmentHandler.SubOnOnAilmentAppliedEventChannel(func);
+
+        }
 
         public void UnSubOnStatusEffectApplied(UnityAction<EntityStatusEffectPair> func)
         {
             _statusEffectHandler.UnSubOnStatusEffectApplied(func);
         }
-        public void UnSubOnEntityStunEvent(UnityAction<CombatEntity> argc)
-        {
-            GetEventBroadcaster().UnSubEvent(argc, "OnEntityStun");
-        }
+    
         public void UnSubOnPerformAction(UnityAction<EntityActionPair> argc)
         {
             GetEventBroadcaster().UnSubEvent(argc, "OnPerformAction");
@@ -135,10 +145,29 @@ namespace Vanaring
         {
             GetEventBroadcaster().UnSubEvent(argc, "OnTakeControlLeave");
         }
+      
+        public void UnSubOnAilmentControlEventChannel(UnityAction<EntityAilmentEffectPair> func)
+        {
+            _ailmentHandler.UnSubOnAilmentControlEventChannel(func); 
+        }
+
+        public void UnSubOnAilmentRecoverEventChannel(UnityAction<EntityAilmentEffectPair> func)
+        {
+            _ailmentHandler.UnSubOnAilmentRecoverEventChannel(func);
+        }
+
+     
+        public void UnSubOnOnAilmentAppliedEventChannel(UnityAction<EntityAilmentApplierEffect> func)
+        {
+            _ailmentHandler.UnSubOnOnAilmentAppliedEventChannel(func);
+
+        }
+
         #endregion
-        
+
         protected virtual void Awake()
         {
+            _ailmentHandler = new AilmentHandler(this); 
             _dmgOutputPopHanlder = new POPUPNumberTextHandler(this); 
             _runtimeCharacterStatsAccumulator = new RuntimeCharacterStatsAccumulator(_characterSheet);
             _energyOverflowHandler = GetComponent<EnergyOverflowHandler>();
@@ -158,7 +187,8 @@ namespace Vanaring
         // Take control and leave control should have its own space 
         public virtual IEnumerator TakeControl()
         {
-            GetEventBroadcaster().InvokeEvent(this, "OnTakeControl");
+            GetEventBroadcaster().InvokeEvent(this, "OnTakeControl"); 
+
             yield return null;
         }
         public virtual IEnumerator TakeControlLeave()
@@ -170,21 +200,17 @@ namespace Vanaring
 
         public virtual IEnumerator TurnEnter()
         {
+            _isExhausted = false;
+
             if (_statusEffectHandler == null)
                 throw new Exception("Status Effect Handler hasn't never been init");
 
             yield return (_statusEffectHandler.ExecuteStatusRuntimeEffectCoroutine());
 
-            
-            if (! ReadyForControl())
-            {
-                Debug.LogWarning("Remove this line, we should be clear with when or how to zoom in and notify backlog like " +
-                    "'this character is freezed'  . a character should have its own finite state of frezzing, overflowing, stun, etc");
+            yield return _ailmentHandler.CheckForExpiration();
 
-                Debug.LogWarning("another problem is that this assume the character is recover exactly on this stage, or the camera won't be focus to this character"); 
-                FindObjectOfType<CombatBacklogNotification>().NotifyString(_characterSheet.CharacterName + " is exhaunted") ; 
-                //yield return _combatEntityAnimationHandler.SelfZoomCameraSequnece(); 
-            }
+            _ailmentHandler.ProgressAlimentTTL();
+
         }
 
         public virtual IEnumerator TurnLeave()
@@ -198,7 +224,7 @@ namespace Vanaring
          
         public bool ReadyForControl()
         {
-            return !_runtimeCharacterStatsAccumulator.IsStunt() && !IsDead && !IsExhausted;
+            return  !IsDead && !IsExhausted;
         }
 
 
@@ -218,9 +244,6 @@ namespace Vanaring
         {
             _actionQueue.Enqueue(actorAction);
         }
-
-
-  
 
         /// <summary>
         /// Invoked before this character perform any action
@@ -245,14 +268,11 @@ namespace Vanaring
                 yield return action.PostActionPerform();
 
             }
-
-
         }
 
         public IEnumerator OnPostPerformAction()
         {
-            //1 Check stun 
-            yield return _energyOverflowHandler.PostActionOverflowResolve();  
+    
             //2. check status effect 
             yield return _statusEffectHandler.RunStatusEffectExpiredScheme();
         }
@@ -283,9 +303,7 @@ namespace Vanaring
             trueDmg = -trueDmg;
 
             _runtimeCharacterStatsAccumulator.ModifyHPStat(trueDmg);
-
-            ColorfulLogger.LogWithColor(gameObject.name + "is hit with " + trueDmg + " remaining HP : " + _runtimeCharacterStatsAccumulator.GetHPAmount(), Color.red);
-
+    
             _dmgOutputPopHanlder.AccumulateDMG(inputdmg); 
 
             if (_runtimeCharacterStatsAccumulator.GetHPAmount() <= 0)
@@ -293,15 +311,16 @@ namespace Vanaring
                 _isDead = true;
             }
 
+            StartCoroutine(VisualHurt( "Hurt")) ;
+
         }
+
         public void LogicHeal(int amount)
         {
             int increasedAmoubnt = StatsAccumulator.ModifyHPStat(amount);
-
             _dmgOutputPopHanlder.AccumulateHP(amount);
 
             StartCoroutine(VisualHeal()); 
-
         }
 
         public IEnumerator VisualHeal(string animationTrigger = "No Animation")
@@ -309,7 +328,7 @@ namespace Vanaring
             GetEventBroadcaster().InvokeEvent<int>((int)0, "OnHeal");
             yield return null; 
         }
-        public IEnumerator VisualHurt(CombatEntity attacker , string animationTrigger = "No Animation" )
+        public IEnumerator VisualHurt(string animationTrigger = "No Animation" )
         {
             bool _callingDeadScheme = false;
 
@@ -350,9 +369,9 @@ namespace Vanaring
             foreach (CombatEntity target in targets)
             {
                 target.LogicHurt(this, inputDmg);
-
                 GetEventBroadcaster().InvokeEvent(inputDmg, "OnAttack");
             }
+
         }
 
         public IEnumerator DeadVisualClear()
@@ -363,10 +382,15 @@ namespace Vanaring
         /// <summary>
         /// Apply Stun will be called from EnergyOverflowHandler 
         /// </summary>
-        public virtual void ApplyStun()
-        {
-            StatsAccumulator.ApplyStun();
+        public virtual void ApplyStun( )
+        { 
             GetEventBroadcaster().InvokeEvent(this,"OnEntityStun");
+        }
+
+        public IEnumerator ApplyAilment(Ailment ailment)
+        {
+            yield return _ailmentHandler.LogicApplyAilment(ailment);
+
         }
 
         public virtual void ApplyOverflow()
@@ -374,17 +398,5 @@ namespace Vanaring
             _statusEffectHandler.StunBreakStatusEffect(this);
         }
         #endregion
-
-     
-
-        /// <summary>
-        /// this function is invoked in every character after certain action is applied
-        /// </summary>
-        /// <returns></returns>
-
-
-
-
-
     }
 }

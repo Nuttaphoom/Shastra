@@ -55,15 +55,6 @@ namespace Vanaring
  
             yield return caster.LogicAttack(_targets, _damagScaling ) ;
 
-            ////2 Visual 
-            List<IEnumerator> coroutines = new List<IEnumerator>();
-            foreach (var target in _targets)
-            {
-                coroutines.Add(target.VisualHurt(caster, "Hurt") ) ;
-            }
-
-            yield return new WaitAll(caster,coroutines.ToArray());
-
         }
 
        

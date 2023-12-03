@@ -51,7 +51,6 @@ namespace Vanaring
         }
         public void SubOnCompetitorEnterCombat(UnityAction<CombatEntity> argc)
         {
-            Debug.Log("sub on entity enter combat");
             GetEventBroadcaster().SubEvent<CombatEntity>(argc, "OnCompetitorEnterCombat");
         }
      
@@ -274,9 +273,11 @@ namespace Vanaring
             for (int i = _competators.Count - 1; i >= 0; i--)
             {
                 if (_competators[i].Competator.IsDead)
-                {
+                {                    
+                    //No need to remove from the main list if it was player'
+                    if (_competators[i].Side == ECompetatorSide.Ally)
+                        continue; 
 
-                    //No need to remove from the main list if it was player's
                     _entityLoader.ReleasePosition(_competators[i].Competator);
                     _competators.RemoveAt(i);
                 }

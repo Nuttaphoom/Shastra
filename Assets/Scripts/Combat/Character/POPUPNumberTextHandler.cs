@@ -18,6 +18,8 @@ namespace Vanaring
             _entity = _owner;
             _entity.SubOnDamageVisualEvent(OnHPATKVisualUpdate);
             _entity.SubOnHealVisualEvent(OnHPATKVisualUpdate);
+            _entity.SubOnOnAilmentAppliedEventChannel(OnAilmentAppliedAttemp);
+
         }
 
 
@@ -25,12 +27,24 @@ namespace Vanaring
         {
             _entity.UnSubOnDamageVisualEvent(OnHPATKVisualUpdate);
             _entity.UnSubOnHealVisualEvent(OnHPATKVisualUpdate);
+            _entity.UnSubOnOnAilmentAppliedEventChannel(OnAilmentAppliedAttemp);
         }
 
+        private void OnAilmentAppliedAttemp(EntityAilmentApplierEffect data)
+        {
+            Debug.Log("Attemp ");
+            if (! data.SucessfullyAttach )
+            {
+                if (data.ResistantBlocked)
+                {
+                    POPUPNumberTextManager.Instance.DisplayPOPUPText(_entity, "RESIST");
+                }
+            }
+        }
 
         private void OnHPATKVisualUpdate(int DONTUSE)
         {
-            POPUPNumberTextManager.Instance.DisplayDPOPUPText(_accumulatedDMG, _accumulatedHP, _entity);
+            POPUPNumberTextManager.Instance.DisplayDPOPUPDamageHealText(_accumulatedDMG, _accumulatedHP, _entity);
             _accumulatedDMG = 0;
             _accumulatedHP = 0;
         }

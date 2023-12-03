@@ -309,6 +309,7 @@ GameObject:
   - component: {fileID: 3183956409549396090}
   - component: {fileID: 230340289741595676}
   - component: {fileID: 8091564974255038199}
+  - component: {fileID: 4949649627718088338}
   m_Layer: 0
   m_Name: SkeletonBoss
   m_TagString: Untagged
@@ -350,7 +351,6 @@ MonoBehaviour:
   _spellCaster: {fileID: 230340289741595676}
   _itemUser: {fileID: 0}
   _combatEntityAnimationHandler: {fileID: 2524119204172734917}
-  aiBehaviorHandler: {fileID: 0}
 --- !u!114 &2524119204172734917
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -364,12 +364,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _visualMesh: {fileID: 1405229934396778697}
-  _vfxPos: {fileID: 76209274940009860}
   _guiPos: {fileID: 6538828595972744590}
   _deadVisualEffect: {fileID: 1482325246012760531}
   _deadAnimationTrigger: NONE
   _spawnVisualEffect: {fileID: 0}
-  _zoomToSelfAction: {fileID: 11400000, guid: 31aa7ca7a2df3bd4e94f0fd15a4cf420, type: 2}
+  _head_position: {fileID: 3240901259003009513}
+  _vfxPos: {fileID: 76209274940009860}
 --- !u!114 &3183956409549396090
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -382,7 +382,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6f06dcf6a8a85b42919ac9ba2d646b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _statusEffectFactory: {fileID: 11400000, guid: 711b3fdb8207def469538edd1bc5e13b, type: 2}
+  _stunApplier: {fileID: 11400000, guid: 44ab23f9915d32149bfb54543cb3c2e9, type: 2}
   _star_circle_stunVFX: {fileID: 1896424223492851964, guid: 668a03f329378ea4ca20210476625358, type: 3}
   _actionAnimationInfo:
     _casterVFXEntity:
@@ -398,7 +398,6 @@ MonoBehaviour:
     SelfTrigerID: 
     TargetTrigerID: 
     _isProjectile: 0
-  _above_head_transform: {fileID: 3240901259003009513}
   _zoomToSelfAction: {fileID: 11400000, guid: 31aa7ca7a2df3bd4e94f0fd15a4cf420, type: 2}
 --- !u!114 &230340289741595676
 MonoBehaviour:
@@ -413,7 +412,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _magicalEnergy:
-    _darkDefaultAmount: 2
+    _darkDefaultAmount: 3
     _lightDefaultAmount: 0
   _balancedEnergyStyle: 0
 --- !u!114 &8091564974255038199
@@ -458,7 +457,7 @@ MonoBehaviour:
       _possibility: 1
     _priority: 3
     _comboHandler:
-      _combo: 1
+      _combo: 0
       _breakOnStun: 0
   - _behaviorDescription: 'Phase 1 : HP is more than 50% but can''t spawn'
     OR: 0
@@ -475,7 +474,7 @@ MonoBehaviour:
       _possibility: 1
     _priority: 2
     _comboHandler:
-      _combo: 1
+      _combo: 0
       _breakOnStun: 0
   - _behaviorDescription: 'Phase 2 : HP is less than 50%'
     OR: 0
@@ -485,7 +484,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: be1fae307d6613a4089bac45eaca5a85, type: 2}
     _invokeOrder: 1
     _actions:
-    - _actionFactory: {fileID: 11400000, guid: 68460ba663dac254db694d0d0a4879f4, type: 2}
+    - _actionFactory: {fileID: 11400000, guid: 7d2d43a5d65714c4c9ba450ffb097f65, type: 2}
       _possibility: 1
     - _actionFactory: {fileID: 11400000, guid: 6d613c4a62da6f745b2aa8768ff50f93, type: 2}
       _possibility: 1
@@ -517,6 +516,19 @@ MonoBehaviour:
     _comboHandler:
       _combo: 1
       _breakOnStun: 1
+--- !u!114 &4949649627718088338
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8010838884609612702}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39d58b15e4014a1428c8f38af2777f5e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _faceCamera: {fileID: 0}
 --- !u!1 &8149838307054936125
 GameObject:
   m_ObjectHideFlags: 0

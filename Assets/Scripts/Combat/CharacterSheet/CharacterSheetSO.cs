@@ -20,14 +20,20 @@ namespace Vanaring
         [SerializeField]
         private int _ATK;
 
+        [Header("Ailment Resistant")]
+        [SerializeField]
+        private AilmentResistantDataInfo _ailmentResistantDataInfo ; 
+
         [Header("Character Sprite")]
         [SerializeField]
         private Sprite _characterIconGUI;
+
 
         public Sprite GetCharacterIcon => _characterIconGUI;
         public int GetHP => _HP;
         public string CharacterName => _characterName;
         public int GetATK => _ATK;
+        public AilmentResistantDataInfo ResistantData => _ailmentResistantDataInfo ;
     }
 
     
