@@ -83,6 +83,12 @@ namespace Vanaring  {
                         displayingSpellIndexList.Add(i);
                     }
                     newSocket.UnHighlightedButton();
+                    if (!newSocket.IsEnergySufficeientToUseThisSpell())
+                    {
+                        //notificationBox.SetActive(true);
+                        newSocket.FadeBlackButton(true);
+                    }
+                    else { newSocket.FadeBlackButton(false); }
                     i++;
                 }
                 DisplayArrowIndicator();
@@ -93,12 +99,8 @@ namespace Vanaring  {
 
             _spellSocket.gameObject.SetActive(false);
             spellLogText.text = spellSocketGUIList[currentSelectedIndex].GetSpellDescription();
-            if (!spellSocketGUIList[currentSelectedIndex].IsEnergySufficeientToUseThisSpell())
-            {
-                notificationBox.SetActive(true);
-                spellSocketGUIList[currentSelectedIndex].RedHightlightedButton();
-            }
-            else { spellSocketGUIList[currentSelectedIndex].HightlightedButton(); }
+            spellSocketGUIList[currentSelectedIndex].HightlightedButton();
+            //DisplaySocketHighlight();
         }
         public override void ReceiveKeysFromWindowManager(KeyCode key)
         {
@@ -163,21 +165,8 @@ namespace Vanaring  {
             }
             spellSocketGUIList[currentSelectedIndex].UnHighlightedButton();
             currentSelectedIndex++;
-            if (spellLogText == null)
-            {
-                Debug.Log("null 1");
-            }
-            if (spellSocketGUIList[currentSelectedIndex] == null)
-            {
-                Debug.Log("null 2"); 
-            }
+            DisplaySocketHighlight();
             spellLogText.text = spellSocketGUIList[currentSelectedIndex].GetSpellDescription();
-            if (!spellSocketGUIList[currentSelectedIndex].IsEnergySufficeientToUseThisSpell())
-            {
-                notificationBox.SetActive(true);
-                spellSocketGUIList[currentSelectedIndex].RedHightlightedButton();
-            }
-            else { spellSocketGUIList[currentSelectedIndex].HightlightedButton(); }
             UpdateIndexFocusOnInputCall();
             DisplayArrowIndicator();
         }
@@ -203,15 +192,27 @@ namespace Vanaring  {
             }
             spellSocketGUIList[currentSelectedIndex].UnHighlightedButton();
             currentSelectedIndex--;
+            DisplaySocketHighlight();
             spellLogText.text = spellSocketGUIList[currentSelectedIndex].GetSpellDescription();
+            UpdateIndexFocusOnInputCall();
+            DisplayArrowIndicator();
+        }
+        private void DisplaySocketHighlight()
+        {
             if (!spellSocketGUIList[currentSelectedIndex].IsEnergySufficeientToUseThisSpell())
             {
                 notificationBox.SetActive(true);
                 spellSocketGUIList[currentSelectedIndex].RedHightlightedButton();
             }
             else { spellSocketGUIList[currentSelectedIndex].HightlightedButton(); }
-            UpdateIndexFocusOnInputCall();
-            DisplayArrowIndicator();
+            if (spellLogText == null)
+            {
+                Debug.Log("null 1");
+            }
+            if (spellSocketGUIList[currentSelectedIndex] == null)
+            {
+                Debug.Log("null 2");
+            }
         }
         private void DisplayArrowIndicator()
         {
@@ -268,6 +269,10 @@ namespace Vanaring  {
             }
             //Debug.Log("FocusUpMin: " + spellIndexFocusUpMin + " FocusUpMax: " + spellIndexFocusUpMax);
             //Debug.Log("FocusDownMin: " + spellIndexFocusDownMin + " FocusDownMax: " + spellIndexFocusDownMax);
+        }
+        private void ReloadSocketHighlight()
+        {
+
         }
     }
 }

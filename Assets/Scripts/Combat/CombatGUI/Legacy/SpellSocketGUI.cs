@@ -134,19 +134,24 @@ namespace Vanaring
 
         public void HightlightedButton()
         {
-            _fadeBlack.gameObject.SetActive(false);
+            //_fadeBlack.gameObject.SetActive(false);
             highlightImage.SetActive(true);
+        }
+
+        public void FadeBlackButton(bool black)
+        {
+            _fadeBlack.gameObject.SetActive(black);
         }
 
         public void RedHightlightedButton()
         {
-            _fadeBlack.gameObject.SetActive(true);
+            //_fadeBlack.gameObject.SetActive(true);
             unhighlightImage.SetActive(true);
         }
 
         public void UnHighlightedButton()
         {
-            _fadeBlack.gameObject.SetActive(true);
+            //_fadeBlack.gameObject.SetActive(true);
             highlightImage.SetActive(false);
             unhighlightImage.SetActive(false);
         }

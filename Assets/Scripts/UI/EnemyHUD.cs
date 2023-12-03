@@ -119,7 +119,7 @@ namespace Vanaring
             {
                 slot.gameObject.SetActive(false);
             }
-            if (lightVal >= 0)
+            if (lightVal > 0)
             {
                 foreach (Image slot in lightSlotList)
                 {
@@ -134,7 +134,7 @@ namespace Vanaring
                     }
                     else
                     {
-                        if (isBreak)
+                        if (isBreak && i < maxLight)
                         {
                             Color defaultColor = lightSlotList[i].color;
                             defaultColor.a = 0.0f;
@@ -149,7 +149,7 @@ namespace Vanaring
                 }
             }
 
-            if (darkVal >= 0)
+            if (darkVal > 0)
             {
                 foreach (Image slot in darkSlotList)
                 {
