@@ -22,16 +22,14 @@ namespace Vanaring
 
         public override IEnumerator GetAction()
         {
-            yield return _ailmentHandler.CheckForExpiration();
-
-            _ailmentHandler.ProgressAlimentTTL();
-
             if (_ailmentHandler.DoesAilmentOccur())
             {
                 yield return _ailmentHandler.AlimentControlGetAction();
             }
             else
             {
+                EnableCamera();
+
                 yield return null;
             }
         }
@@ -39,7 +37,6 @@ namespace Vanaring
         public override IEnumerator TakeControl()
         {
             yield return base.TakeControl();
-            EnableCamera();
         }
 
         public override IEnumerator TakeControlLeave()
