@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Vanaring 
@@ -16,11 +17,12 @@ namespace Vanaring
         [SerializeField]
         private EnergyModifierData _requiredEnergy;
 
-        public EnergyModifierData RequiredEnergy => _requiredEnergy;
+        public RuntimeMangicalEnergy.EnergySide RequiredSide => _requiredEnergy.Side ;
+        public int RequiredAmout => _requiredEnergy.Amount > 0 ? (_requiredEnergy.Amount * -1 ) : (_requiredEnergy.Amount) ; 
 
         public override ActorAction FactorizeRuntimeAction(CombatEntity caster)
         {
-            return new SpellAbilityRuntime(RequiredEnergy, caster, this);
+            return new SpellAbilityRuntime(RequiredSide, RequiredAmout, caster, this);
         }
     }
 
@@ -28,10 +30,10 @@ namespace Vanaring
     {
         private int _requiredEnergy;
         private RuntimeMangicalEnergy.EnergySide _requiredSide ; 
-        public SpellAbilityRuntime(EnergyModifierData energyModifier, CombatEntity caster, ActorActionFactory factory) : base(factory,caster)
+        public SpellAbilityRuntime(RuntimeMangicalEnergy.EnergySide  side, int amt, CombatEntity caster, ActorActionFactory factory) : base(factory,caster)
         {
-            _requiredEnergy = energyModifier.Amount; 
-            _requiredSide = energyModifier.Side;
+            _requiredEnergy = amt ; 
+            _requiredSide = side ;
             
             
             if (_requiredEnergy > 0)

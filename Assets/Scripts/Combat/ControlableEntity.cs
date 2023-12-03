@@ -48,6 +48,8 @@ namespace Vanaring
         public override IEnumerator TurnEnter()
         {
             yield return base.TurnEnter();
+
+
         }
 
         public override IEnumerator TurnLeave()

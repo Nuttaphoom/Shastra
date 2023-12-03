@@ -182,7 +182,6 @@ namespace Vanaring
 
         private void OnEnergyModified(CombatEntity caster, RuntimeMangicalEnergy.EnergySide side, int val)
         {
-            Debug.Log(caster.name + " " + side + "= " + val);
             curveMask.fillAmount = slotBarRatios[_combatEntity.SpellCaster.GetEnergyAmount(RuntimeMangicalEnergy.EnergySide.DarkEnergy)];
             //if (side == RuntimeMangicalEnergy.EnergySide.LightEnergy)
             //{

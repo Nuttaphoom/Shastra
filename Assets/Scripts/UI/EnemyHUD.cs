@@ -115,7 +115,6 @@ namespace Vanaring
 
         private void SubAllEvents()
         {
-            Debug.Log("sub all events"); 
             _owner.SpellCaster.SubOnModifyEnergy(OnEnergyModified);
             _owner.SubOnDamageVisualEvent(OnHPModified);
             _owner.SpellCaster.SubOnSimulateEnergy(SimulateDisplayEnergyBreakSlotOnTarget);
@@ -208,7 +207,6 @@ namespace Vanaring
 
         public void SimulateDisplayEnergyBreakSlotOnTarget(EnergyModifyerEffectPair effectPiar )
         {
-            Debug.Log("simualte display energy breakSlotOnTarget"); 
             int highlightAmount = Mathf.Abs(effectPiar.Amount)  ;
             RuntimeMangicalEnergy.EnergySide side = effectPiar.EnergySide; 
 

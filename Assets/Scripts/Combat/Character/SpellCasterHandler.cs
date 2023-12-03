@@ -90,17 +90,17 @@ namespace Vanaring
         {
             // we use opposited side of Required energy to check because if spell display Dark 3 to cast, meaning we will need 
             //at least Light 3 to cast the spell
-            RuntimeMangicalEnergy.EnergySide side; 
-            if (spell.RequiredEnergy.Side == RuntimeMangicalEnergy.EnergySide.DarkEnergy)
-            {
-                side = RuntimeMangicalEnergy.EnergySide.LightEnergy;
-            }
-            else //if (spell.RequiredEnergy.Side == RuntimeMangicalEnergy.EnergySide.LightEnergy)
-            {
-                side = RuntimeMangicalEnergy.EnergySide.DarkEnergy; 
-            }
-
-            return GetEnergyAmount(side) > spell.RequiredEnergy.Amount;
+            RuntimeMangicalEnergy.EnergySide side = spell.RequiredSide; 
+            //if (== RuntimeMangicalEnergy.EnergySide.DarkEnergy)
+            //{
+            //    side = RuntimeMangicalEnergy.EnergySide.LightEnergy;
+            //}
+            //else //if (spell.RequiredEnergy.Side == RuntimeMangicalEnergy.EnergySide.LightEnergy)
+            //{
+            //    side = RuntimeMangicalEnergy.EnergySide.DarkEnergy; 
+            //}
+            //Debug.Log(GetEnergyAmount(side) + " - " + MathF.Abs(spell.RequiredAmout));
+            return  ( GetEnergyAmount(side) - MathF.Abs(spell.RequiredAmout ) ) > 0;
         }
         public int GetEnergyAmount(RuntimeMangicalEnergy.EnergySide side)
         {
@@ -123,7 +123,7 @@ namespace Vanaring
                 OnModifyEnergy?.Invoke(_combatEntity, oppositeSide, -modValue);
             }
 
-
+            Debug.Log(gameObject + " L : " + _magicalEnergy.GetEnergy(RuntimeMangicalEnergy.EnergySide.LightEnergy) + " D : " + _magicalEnergy.GetEnergy(RuntimeMangicalEnergy.EnergySide.DarkEnergy));
             OnModifyEnergy?.Invoke(_combatEntity, side, modValue);
 
         }
