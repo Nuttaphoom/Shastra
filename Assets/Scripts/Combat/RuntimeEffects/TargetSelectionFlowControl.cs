@@ -71,12 +71,15 @@ namespace Vanaring
             {
                 foreach (CombatEntity target in CombatReferee.Instance.GetCompetatorsBySide(side))
                 {
-                    if (targetSelector.CorrectTarget(caster, target))
+                    if (! targetSelector.CorrectTarget(caster, target))
+                        continue;   
+                    
+                    if (target.IsDead)
+                        continue; 
+
+                    if (!_validTargets.Contains(target))
                     {
-                        if (!_validTargets.Contains(target))
-                        {
-                            _validTargets.Add(target);
-                        }
+                        _validTargets.Add(target);
                     }
                 }
             }
