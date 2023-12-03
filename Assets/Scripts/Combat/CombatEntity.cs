@@ -71,12 +71,12 @@ namespace Vanaring
 
             return _eventBroadcaster;
         }
+
         public void SubOnAilmentRecoverEventChannel(UnityAction<EntityAilmentEffectPair> func)
         {
             _ailmentHandler.SubOnAilmentRecoverEventChannel(func);
         }
  
-
         public void SubOnAilmentControlEventChannel(UnityAction<EntityAilmentEffectPair> func)
         {
             _ailmentHandler.SubOnAilmentControlEventChannel(func);
@@ -244,9 +244,6 @@ namespace Vanaring
             _actionQueue.Enqueue(actorAction);
         }
 
-
-  
-
         /// <summary>
         /// Invoked before this character perform any action
         /// </summary>
@@ -270,8 +267,6 @@ namespace Vanaring
                 yield return action.PostActionPerform();
 
             }
-
-
         }
 
         public IEnumerator OnPostPerformAction()
@@ -402,17 +397,5 @@ namespace Vanaring
             _statusEffectHandler.StunBreakStatusEffect(this);
         }
         #endregion
-
-     
-
-        /// <summary>
-        /// this function is invoked in every character after certain action is applied
-        /// </summary>
-        /// <returns></returns>
-
-
-
-
-
     }
 }
