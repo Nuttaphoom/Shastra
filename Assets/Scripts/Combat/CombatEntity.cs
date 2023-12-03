@@ -205,11 +205,12 @@ namespace Vanaring
             if (_statusEffectHandler == null)
                 throw new Exception("Status Effect Handler hasn't never been init");
 
-
             yield return (_statusEffectHandler.ExecuteStatusRuntimeEffectCoroutine());
 
-            
-           
+            yield return _ailmentHandler.CheckForExpiration();
+
+            _ailmentHandler.ProgressAlimentTTL();
+
         }
 
         public virtual IEnumerator TurnLeave()
