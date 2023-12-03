@@ -48,8 +48,9 @@ namespace Vanaring
         public abstract void OnApplyAilment(); 
         public abstract IEnumerator SetEntityAction();
         public abstract IEnumerator AilmentRecover();
-        public abstract bool ShouldOverwritedOthers();
-        public abstract bool ResistOverwrited();
+        public abstract IEnumerator OnAilmentOverwritten(); 
+        public abstract bool ShouldOverwrittenOthers();
+        public abstract bool ResistOverwritten();
         public abstract AilmentLocator.AilmentType GetAilmentType(); 
 
 

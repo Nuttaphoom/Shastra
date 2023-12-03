@@ -58,6 +58,9 @@ namespace Vanaring
         private void Awake()
         {
             Instance = this;
+            if (_targetSelectionDisplayer == null)
+                throw new Exception("_targetSelectionDisplayer need to be assigned ! "); 
+             
             _targetSelectionGUI.Initialize(_targetSelectionDisplayer);
         }
 
@@ -265,7 +268,7 @@ namespace Vanaring
                         if (_selectingTarget.Count != 1)
                             continue;
                         
-                        _selectingTarget[0].GetComponent<EntityCameraManager>().EnableFaceCamera();
+                        _selectingTarget[0].GetComponent<EntityCameraManager>().EnableShoulderCamera();
                         _validTargets = ArrangeEntityListInXAxis(_validTargets);
                     }
                     else

@@ -59,12 +59,12 @@ namespace Vanaring
             _entity.GetComponent<CombatEntityAnimationHandler>().AttachVFXToMeshComponent(_dataType.GetParalizedStayVFX, "CENTERMESH", "SHOCKSAILMENTVFX");
         }
 
-        public override bool ShouldOverwritedOthers()
+        public override bool ShouldOverwrittenOthers()
         {
             return false; 
         }
 
-        public override bool ResistOverwrited()
+        public override bool ResistOverwritten()
         {
             return false; 
         }
@@ -72,6 +72,11 @@ namespace Vanaring
         public override AilmentLocator.AilmentType GetAilmentType()
         {
             return AilmentLocator.AilmentType.Paralized;
+        }
+
+        public override IEnumerator OnAilmentOverwritten()
+        {
+            throw new NotImplementedException();
         }
     }
 

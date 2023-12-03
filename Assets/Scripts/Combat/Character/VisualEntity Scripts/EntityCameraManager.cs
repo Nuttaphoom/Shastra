@@ -10,10 +10,16 @@ namespace Vanaring
         [SerializeField]
         private CinemachineVirtualCamera _faceCamera;
 
+        [SerializeField]
+        private CinemachineVirtualCamera _shoulderCam ;
         public void EnableFaceCamera()
         {
-            Debug.Log("enable face cam");
             CameraSetUPManager.Instance.EnableCamera(_faceCamera); 
+        }
+
+        public void EnableShoulderCamera()
+        {
+            CameraSetUPManager.Instance.EnableCamera(_shoulderCam);
         }
     }
 }

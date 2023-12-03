@@ -88,12 +88,12 @@ namespace Vanaring
 
             if (_currentAilment != null)
             {
-                if (!newAilment.ShouldOverwritedOthers() || _currentAilment.ResistOverwrited())
+                if (!newAilment.ShouldOverwrittenOthers() || _currentAilment.ResistOverwritten())
                 {
                     goto End; 
                 }
 
-                yield return _currentAilment.AilmentRecover();
+                yield return _currentAilment.OnAilmentOverwritten();
             }
 
             _currentAilment = newAilment ;

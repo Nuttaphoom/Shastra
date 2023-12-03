@@ -62,12 +62,12 @@ namespace Vanaring
             _entity.GetComponent<CombatEntityAnimationHandler>().AttachVFXToMeshComponent(_dataType.GeStarCircleStunVFX, "HEAD", "STARSTUNAILMENT"); 
         }
 
-        public override bool ShouldOverwritedOthers()
+        public override bool ShouldOverwrittenOthers()
         {
             return true ;
         }
 
-        public override bool ResistOverwrited()
+        public override bool ResistOverwritten()
         {
             return true ;
         }
@@ -75,6 +75,11 @@ namespace Vanaring
         public override AilmentLocator.AilmentType GetAilmentType()
         {
             return AilmentLocator.AilmentType.Stun;
+        }
+
+        public override IEnumerator OnAilmentOverwritten()
+        {
+            throw new NotImplementedException();
         }
     }
 
