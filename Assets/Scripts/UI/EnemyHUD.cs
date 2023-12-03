@@ -78,7 +78,15 @@ namespace Vanaring
             lightTmpText.text = lightScale.ToString();
             darkTmpText.text = darkScale.ToString();
 
-            DisplayEnergySlot(maxLight, maxDark, false);
+            if (maxLight > maxDark)
+            {
+                DisplayEnergySlot(RuntimeMangicalEnergy.EnergySide.LightEnergy, maxLight, maxDark, false);
+            }
+            else
+            {
+                DisplayEnergySlot(RuntimeMangicalEnergy.EnergySide.DarkEnergy, maxLight, maxDark, false);
+            }
+            
 
             enemyName.text = _owner.CharacterSheet.CharacterName.ToString();
         }
@@ -113,23 +121,23 @@ namespace Vanaring
         /// <param name="caster"></param>
         /// <param name="side"></param>
         /// <param name="val" ></param>
-        private void DisplayEnergySlot(int lightVal, int darkVal, bool isBreak)
+        private void DisplayEnergySlot(RuntimeMangicalEnergy.EnergySide side, int lightVal, int darkVal, bool isBreak)
         {
             foreach (Image slot in highlightSlotList)
             {
                 slot.gameObject.SetActive(false);
             }
-            if (lightVal > 0)
+            if (lightVal >= 0 && side == RuntimeMangicalEnergy.EnergySide.LightEnergy)
             {
-                foreach (Image slot in lightSlotList)
-                {
-                    slot.gameObject.SetActive(true);
-                    
-                }
                 for (int i = 0; i < lightSlotList.Count; i++)
                 {
+                    if(lightVal <= 0 && !isBreak)
+                    {
+                        break;
+                    }
                     if(i < lightVal)
                     {
+                        lightSlotList[i].gameObject.SetActive(true);
                         lightSlotList[i].color = Color.white;
                     }
                     else
@@ -142,6 +150,7 @@ namespace Vanaring
                         }
                         else
                         {
+                            lightSlotList[i].gameObject.SetActive(true);
                             lightSlotList[i].color = Color.black;
                         }
                         
@@ -149,16 +158,17 @@ namespace Vanaring
                 }
             }
 
-            if (darkVal > 0)
+            if (darkVal >= 0 && side == RuntimeMangicalEnergy.EnergySide.DarkEnergy)
             {
-                foreach (Image slot in darkSlotList)
-                {
-                    slot.gameObject.SetActive(true);
-                }
                 for (int i = 0; i < darkSlotList.Count; i++)
                 {
+                    if (darkVal <= 0 && !isBreak)
+                    {
+                        break;
+                    }
                     if (i < darkVal)
                     {
+                        darkSlotList[i].gameObject.SetActive(true);
                         darkSlotList[i].color = Color.white;
                     }
                     else
@@ -171,6 +181,7 @@ namespace Vanaring
                         }
                         else
                         {
+                            darkSlotList[i].gameObject.SetActive(true);
                             darkSlotList[i].color = Color.black;
                         }
                     }
@@ -196,7 +207,14 @@ namespace Vanaring
             lightScale = _owner.SpellCaster.GetEnergyAmount(RuntimeMangicalEnergy.EnergySide.LightEnergy);
             darkScale = _owner.SpellCaster.GetEnergyAmount(RuntimeMangicalEnergy.EnergySide.DarkEnergy);
             Debug.Log(lightScale + " " + darkScale);
-            DisplayEnergySlot(lightScale, darkScale, true);
+            if (maxLight > maxDark)
+            {
+                DisplayEnergySlot(RuntimeMangicalEnergy.EnergySide.LightEnergy, lightScale, darkScale, true);
+            }
+            else
+            {
+                DisplayEnergySlot(RuntimeMangicalEnergy.EnergySide.DarkEnergy, lightScale, darkScale, true);
+            }
             //StartCoroutine(OnModifyEnergyVisualUpdateCoroutine(caster, side, val));
 
         }
