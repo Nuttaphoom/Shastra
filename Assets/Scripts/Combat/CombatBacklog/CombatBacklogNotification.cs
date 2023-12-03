@@ -113,13 +113,16 @@ namespace Vanaring
         {
             string comment = GetAilmentBacklog(ailment.Actor, ailment.Ailment, false, true);
 
-            _combatBacklogDisplayer.EnqueueUtilityTab(comment);
+            if (comment != "")
+                _combatBacklogDisplayer.EnqueueUtilityTab(comment);
 
         }
         private void NotifyAilmentControl(EntityAilmentEffectPair ailment)
         {
             string comment = GetAilmentBacklog(ailment.Actor, ailment.Ailment, true, false);
-            _combatBacklogDisplayer.EnqueueUtilityTab(comment);
+            
+            if (comment != "")
+                _combatBacklogDisplayer.EnqueueUtilityTab(comment);
 
         }
         
@@ -132,14 +135,16 @@ namespace Vanaring
         {
             string comment = GetStatusEffectComment(pair, true);
 
-            _combatBacklogDisplayer.EnqueueUtilityTab(comment);
+            if (comment != "")
+                _combatBacklogDisplayer.EnqueueUtilityTab(comment);
 
         }
         private void NotifyOnEntityPerformAction(EntityActionPair entityActionPair)
         {
             string comment = GetPerformedActionBacklog(entityActionPair);
-
-            _combatBacklogDisplayer.EnqueueActionTab(comment); 
+            
+            if (comment != "")
+                _combatBacklogDisplayer.EnqueueActionTab(comment); 
         }
       
     

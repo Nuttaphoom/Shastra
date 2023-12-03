@@ -1,4 +1,6 @@
 
+using System;
+
 namespace Vanaring 
 {
    public static class VanaringMathConst
@@ -19,5 +21,22 @@ namespace Vanaring
             }
             return (int) (inputDmg * mul );
         }
+
+        /// <summary>
+        /// TODO : finish Accurency system 
+        /// </summary>
+        /// <param name="accurency_percent"></param>
+        /// <param name="dodge_percent"></param>
+        /// <returns></returns>
+        public static bool IsActionSucessfullyHit(float accurency_percent, float dodge_percent)
+        {
+            float hitDice = UnityEngine.Random.Range(0, accurency_percent);
+            float dodgeDice = UnityEngine.Random.Range(0, dodge_percent);
+
+            return (hitDice > dodgeDice);
+
+        }
     }
+
+   
 }

@@ -22,11 +22,12 @@ namespace Vanaring
 
         [Header("Ailment Resistant")]
         [SerializeField]
-        private AilmentResistantDataInfo _ailmentResistantDataInfo ;
+        private AilmentResistantDataInfo _ailmentResistantDataInfo ; 
 
         [Header("Character Sprite")]
         [SerializeField]
         private Sprite _characterIconGUI;
+
 
         public Sprite GetCharacterIcon => _characterIconGUI;
         public int GetHP => _HP;
