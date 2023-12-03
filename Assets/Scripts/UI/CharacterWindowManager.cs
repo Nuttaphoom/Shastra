@@ -6,14 +6,12 @@ namespace Vanaring
 {
     public class CharacterWindowManager : MonoBehaviour
     {
-        [SerializeField]
-        private CombatEntity _combatEntity;
+        //private CombatEntity _combatEntity;
         [SerializeField]
         private CharacterSocketGUI _templatePrefab;
         [SerializeField]
         private Transform _socketVerticalLayout;
-        [SerializeField]
-        private GameObject _entities;
+        //private GameObject _entities;
         private List<CombatEntity> entities = new List<CombatEntity>();
 
         private List<CharacterSocketGUI> characterSocketList = new List<CharacterSocketGUI>();
@@ -23,15 +21,11 @@ namespace Vanaring
         private void Start()
         {
             entities = CombatReferee.Instance.GetCompetatorsBySide(ECompetatorSide.Ally);
-            //Debug.Log(entities.Count);
 
-            for (int i = 0; i < entities.Count; i++)
+            for (int i = entities.Count-1; i >= 0; i--)
             {
-                //CharacterSocketGUI newSocket = Instantiate(_templatePrefab, _templatePrefab.transform.position, _templatePrefab.transform.rotation);
                 CharacterSocketGUI newSocket = Instantiate(_templatePrefab, _socketVerticalLayout.transform);
-                //CombatEntity _cet = _entities.transform.GetChild(i).GetComponent<CombatEntity>();
                 CombatEntity _cet = entities[i];
-                //newSocket.transform.parent = _socketVerticalLayout.transform;
                 newSocket.transform.localScale = _templatePrefab.transform.localScale;
                 newSocket.Init(_cet);
                 characterSocketList.Add(newSocket);
