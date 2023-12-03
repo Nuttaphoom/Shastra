@@ -302,7 +302,6 @@ namespace Vanaring
             trueDmg = -trueDmg;
 
             _runtimeCharacterStatsAccumulator.ModifyHPStat(trueDmg);
-
     
             _dmgOutputPopHanlder.AccumulateDMG(inputdmg); 
 
@@ -311,15 +310,16 @@ namespace Vanaring
                 _isDead = true;
             }
 
+            StartCoroutine(VisualHurt( "Hurt")) ;
+
         }
+
         public void LogicHeal(int amount)
         {
             int increasedAmoubnt = StatsAccumulator.ModifyHPStat(amount);
-
             _dmgOutputPopHanlder.AccumulateHP(amount);
 
             StartCoroutine(VisualHeal()); 
-
         }
 
         public IEnumerator VisualHeal(string animationTrigger = "No Animation")
@@ -327,7 +327,7 @@ namespace Vanaring
             GetEventBroadcaster().InvokeEvent<int>((int)0, "OnHeal");
             yield return null; 
         }
-        public IEnumerator VisualHurt(CombatEntity attacker , string animationTrigger = "No Animation" )
+        public IEnumerator VisualHurt(string animationTrigger = "No Animation" )
         {
             bool _callingDeadScheme = false;
 
@@ -368,9 +368,9 @@ namespace Vanaring
             foreach (CombatEntity target in targets)
             {
                 target.LogicHurt(this, inputDmg);
-
                 GetEventBroadcaster().InvokeEvent(inputDmg, "OnAttack");
             }
+
         }
 
         public IEnumerator DeadVisualClear()
