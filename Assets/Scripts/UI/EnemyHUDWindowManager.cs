@@ -40,6 +40,14 @@ namespace Vanaring
             }
         }
 
+        public void RemoveSlotBreakHighlightOnHUD()
+        {
+            foreach (EnemyHUD hud in GetAllInstantiatedHUD())
+            {
+                hud.ClearBreakSlotHighlight();
+            }
+        }
+
         public void DisableEnemyHUD()
         {
             foreach (var hud in GetAllInstantiatedHUD()) {

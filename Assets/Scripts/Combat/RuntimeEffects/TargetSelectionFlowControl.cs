@@ -158,6 +158,7 @@ namespace Vanaring
                 else if (key == (KeyCode.Q))
                 {
                     ForceStop();
+                    _enemyHUDWindowManager.RemoveSlotBreakHighlightOnHUD();
                 }
             }
         }
