@@ -123,7 +123,6 @@ namespace Vanaring
                 OnModifyEnergy?.Invoke(_combatEntity, oppositeSide, -modValue);
             }
 
-            Debug.Log(gameObject + " L : " + _magicalEnergy.GetEnergy(RuntimeMangicalEnergy.EnergySide.LightEnergy) + " D : " + _magicalEnergy.GetEnergy(RuntimeMangicalEnergy.EnergySide.DarkEnergy));
             OnModifyEnergy?.Invoke(_combatEntity, side, modValue);
 
         }

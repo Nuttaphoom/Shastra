@@ -56,6 +56,7 @@ namespace Vanaring
 
         public override void OnApplyAilment()
         {
+            Debug.Log("apply paralized");
             _entity.GetComponent<CombatEntityAnimationHandler>().AttachVFXToMeshComponent(_dataType.GetParalizedStayVFX, "CENTERMESH", "SHOCKSAILMENTVFX");
         }
 
