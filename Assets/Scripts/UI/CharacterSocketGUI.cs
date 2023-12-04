@@ -132,12 +132,14 @@ namespace Vanaring
 
         public void DisplayArrowOnTargetCharacter()
         {
-            characterArrow.SetActive(true);
+            if (! characterArrow.activeSelf)
+                characterArrow.SetActive(true);
         }
 
         public void HideArrowOnTargetCharacter()
         {
-            characterArrow.SetActive(false);
+            if (characterArrow.activeSelf) 
+                characterArrow.SetActive(false);
         }
 
         #region STAT

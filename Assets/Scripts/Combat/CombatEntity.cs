@@ -323,12 +323,12 @@ namespace Vanaring
             int increasedAmoubnt = StatsAccumulator.ModifyHPStat(amount);
             _dmgOutputPopHanlder.AccumulateHP(amount);
 
-            StartCoroutine(VisualHeal()); 
+            StartCoroutine(VisualHeal(amount)); 
         }
 
-        public IEnumerator VisualHeal(string animationTrigger = "No Animation")
+        public IEnumerator VisualHeal(int healAmount  )
         {
-            GetEventBroadcaster().InvokeEvent<int>((int)0, "OnHeal");
+            GetEventBroadcaster().InvokeEvent<int>((int)healAmount, "OnHeal");
             yield return null; 
         }
         public IEnumerator VisualHurt(string animationTrigger = "No Animation" )

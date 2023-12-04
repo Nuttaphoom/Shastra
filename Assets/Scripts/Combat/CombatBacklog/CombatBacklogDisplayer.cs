@@ -25,14 +25,27 @@ namespace Vanaring
         private Queue<IEnumerator> _displayActionTabQueue = new Queue<IEnumerator>();
         private Queue<IEnumerator> _displayUtilityTabQueue = new Queue<IEnumerator>();
 
+        /// <summary>
+        /// used for checking displaying duplicated comment 
+        /// </summary>
+        private List<string> _queuingComment = new List<string>();
+
 
         public void EnqueueUtilityTab(string comment)
         {
+            if (_queuingComment.Contains(comment) ) 
+                return;
+
+            _queuingComment.Add(comment);
             _displayUtilityTabQueue.Enqueue(DisplayUtilityTabCoroutine(comment));
         }
 
         public void EnqueueActionTab(string comment)
         {
+            if (_queuingComment.Contains(comment))
+                return;
+
+            _queuingComment.Add(comment);
             _displayActionTabQueue.Enqueue(DisplayActionTabCoroutine(comment));
         }
 
@@ -55,6 +68,7 @@ namespace Vanaring
             yield return new WaitForSecondsRealtime(_displayIntervalInSecond);
             _utilityTab.SetActive(false);
             _utilityTabTMP.text = "";
+            _queuingComment.Remove(displayedText);
         }
         #endregion
 
@@ -69,6 +83,8 @@ namespace Vanaring
             yield return new WaitForSecondsRealtime(_displayIntervalInSecond);
             _actionTab.SetActive(false);
             _actionTabTMP.text = "" ;
+            _queuingComment.Remove(displayedText);
+
 
         }
 

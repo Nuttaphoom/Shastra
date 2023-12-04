@@ -31,7 +31,7 @@ namespace Vanaring
         private List<CombatEntity> _selectingTarget = new List<CombatEntity>(); 
 
         public static TargetSelectionFlowControl Instance;
-
+        CharacterWindowManager _characterWindowManager; 
         private bool _activlySelecting = false;
 
         private int _currentSelectIndex = 0;
@@ -59,8 +59,10 @@ namespace Vanaring
         {
             Instance = this;
             if (_targetSelectionDisplayer == null)
-                throw new Exception("_targetSelectionDisplayer need to be assigned ! "); 
-             
+                throw new Exception("_targetSelectionDisplayer need to be assigned ! ");
+
+            _characterWindowManager = FindObjectOfType<CharacterWindowManager>(); 
+
             _targetSelectionGUI.Initialize(_targetSelectionDisplayer);
         }
 
@@ -260,7 +262,9 @@ namespace Vanaring
                     _targetSelectionGUI.SelectTargetPointer(_selectingTarget);
 
                     _enemyHUDWindowManager.DisplayEnemyHUD(_selectingTarget);
-                    
+
+                    _characterWindowManager.DisplayArrowOnTargetCharacter(_selectingTarget);
+
                     foreach (CombatEntity selectedEntity in _selectingTarget)
                     {
                         yield return EnergySimulation(selectedEntity, actorAction);
@@ -289,7 +293,8 @@ namespace Vanaring
 
             _enemyHUDWindowManager.DisableEnemyHUD();
             _targetSelectionGUI.EndSelectionScheme();
-            
+            _characterWindowManager.HideAllArrowTargetCharacter(); 
+
             if (_selectedTarget.Count > 0)
             { 
                 actorAction.SetActionTarget(_selectedTarget);

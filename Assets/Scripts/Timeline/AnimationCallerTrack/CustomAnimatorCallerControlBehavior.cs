@@ -23,12 +23,18 @@ namespace Vanaring
             if (!firstTime)
             {
                 firstTime = true;
-                
+
                 if (playerData is Transform)
-                    _entity = (playerData as Transform).gameObject.GetComponent<CombatEntity>() ;
+                    _entity = (playerData as Transform).gameObject.GetComponent<CombatEntity>();
 
                 else if (playerData is GameObject)
                     _entity = (playerData as GameObject).gameObject.GetComponent<CombatEntity>();
+                else
+                {
+                    Debug.Log(playerData.ToString());
+                    throw new Exception("_entity can not be assigned");
+                }
+
 
                 if (_entity == null)
                 {

@@ -60,5 +60,7 @@ namespace Vanaring
         {
             _accumulatedHP += hp; 
         }
+
+        
     }
 }

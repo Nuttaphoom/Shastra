@@ -23,7 +23,6 @@ namespace Vanaring
 
         public bool ResistantToAilment(AilmentType type)
         {
-            Debug.Log("type : " + type + "resistant is " + _runtime_ailmentResistant_data_dict[type]);
             return _runtime_ailmentResistant_data_dict[type];
         }
     }
