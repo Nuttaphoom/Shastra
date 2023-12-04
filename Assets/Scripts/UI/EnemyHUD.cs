@@ -118,6 +118,7 @@ namespace Vanaring
             _owner.SpellCaster.SubOnModifyEnergy(OnEnergyModified);
             _owner.SubOnDamageVisualEvent(OnHPModified);
             _owner.SpellCaster.SubOnSimulateEnergy(SimulateDisplayEnergyBreakSlotOnTarget);
+            _owner.SubOnHealVisualEvent(OnHPModified);
         }
 
         private void UnSubAllEvents()
@@ -125,6 +126,7 @@ namespace Vanaring
             _owner.SpellCaster.UnSubOnModifyEnergy(OnEnergyModified);
             _owner.UnSubOnDamageVisualEvent(OnHPModified);
             _owner.SpellCaster.UnSubOnSimulateEnergy(SimulateDisplayEnergyBreakSlotOnTarget);
+            _owner.UnSubOnHealVisualEvent(OnHPModified);
         }
 
     
@@ -333,6 +335,14 @@ namespace Vanaring
         }
         public void ClearBreakSlotHighlight()
         {
+            Debug.Log("Clear Break Slot");
+            foreach (Image slot in highlightSlotList)
+            {
+                if (slot.gameObject.activeSelf)
+                {
+                    slot.gameObject.SetActive(false);
+                }
+            }
             foreach (Image slot in highlightSlotList)
             {
                 slot.gameObject.SetActive(false);

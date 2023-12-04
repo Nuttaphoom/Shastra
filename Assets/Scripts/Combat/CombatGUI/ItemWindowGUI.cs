@@ -54,6 +54,7 @@ namespace Vanaring
         }
         public override void LoadWindowData(CombatEntity entity)
         {
+            int tmpItemIndex = 0;
             ClearData();
             _itemSocketTemplate.gameObject.SetActive(true);
             itemIndexFocusUpMin = 0;
@@ -65,7 +66,7 @@ namespace Vanaring
             foreach (ItemAbilityRuntime item in entity.ItemUser.Items)
             {
                 ItemSocketGUI newSocket = Instantiate(_itemSocketTemplate, itemTranform.transform) ;
-                newSocket.Init(item, entity);
+                newSocket.Init(item, entity, entity.ItemUser.ItemsAmount[tmpItemIndex]);
                 newSocket.transform.SetAsFirstSibling();
                 itemSocketGUIList.Add(newSocket);
                 if (itemSocketGUIList.Count > 3)
@@ -89,6 +90,7 @@ namespace Vanaring
                 return;
             }
             _itemSocketTemplate.gameObject.SetActive(false);
+            itemLogText.text = itemSocketGUIList[currentSelectedIndex].GetItemDescription();
             itemSocketGUIList[0].HightlightedButton();
         }
         private void ScrollToNext()
