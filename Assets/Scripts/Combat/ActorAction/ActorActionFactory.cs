@@ -140,10 +140,7 @@ namespace Vanaring
             _actionSignal.SetUpActorsSetting(actors);
         }
     
-        public Comment GetActionComment()
-        {
-            return _actionComment;
-        }
+    
         public void SetActionTarget(List<CombatEntity> targets)
         {
             _targets = new List<CombatEntity>();
