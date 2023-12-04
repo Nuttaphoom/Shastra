@@ -45,8 +45,11 @@ namespace Vanaring
         protected AilmentHandler _ailmentHandler; 
 
 
+        /// <summary>
+        /// TODO : these IsDead, Is.... variables should be removed
+        /// </summary>
         private bool _isDead = false ;
-        private bool _isExhausted = true ; 
+        private bool _isExhausted = true ;
 
         public bool IsDead => _isDead;
         public bool IsExhausted => _isExhausted;
@@ -291,9 +294,9 @@ namespace Vanaring
         #endregion
 
         #region Combat Methods 
-        public IEnumerator ApplyNewEffect(StatusRuntimeEffectFactorySO factory, CombatEntity applier)
+        public IEnumerator ApplyNewEffect(StatusRuntimeEffectFactorySO  statusEffect, StatusEffectApplierRuntimeEffect applierFactory, CombatEntity applier)
         {
-            yield return _statusEffectHandler.ApplyNewEffect(factory, applier); 
+            yield return _statusEffectHandler.ApplyNewEffect(statusEffect,applierFactory, applier); 
         }
 
         public void LogicHurt(CombatEntity attacker, int inputdmg)
@@ -369,7 +372,6 @@ namespace Vanaring
             foreach (CombatEntity target in targets)
             {
                 target.LogicHurt(this, inputDmg);
-                GetEventBroadcaster().InvokeEvent(inputDmg, "OnAttack");
             }
 
         }
@@ -379,13 +381,7 @@ namespace Vanaring
             yield return _combatEntityAnimationHandler.DestroyVisualMesh();
         }
 
-        /// <summary>
-        /// Apply Stun will be called from EnergyOverflowHandler 
-        /// </summary>
-        public virtual void ApplyStun( )
-        { 
-            GetEventBroadcaster().InvokeEvent(this,"OnEntityStun");
-        }
+ 
 
         public IEnumerator ApplyAilment(Ailment ailment)
         {

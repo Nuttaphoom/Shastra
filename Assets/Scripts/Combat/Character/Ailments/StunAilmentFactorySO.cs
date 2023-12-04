@@ -38,7 +38,6 @@ namespace Vanaring
         {
             this._dataType = dataType;
             this._basicDataInfo = basicInfo;
-            _entity.ApplyStun();
         }
         
         public override IEnumerator AilmentRecover()
@@ -58,7 +57,6 @@ namespace Vanaring
 
         public override void OnApplyAilment()
         {
-            _entity.ApplyStun(); 
             _entity.GetComponent<CombatEntityAnimationHandler>().AttachVFXToMeshComponent(_dataType.GeStarCircleStunVFX, "HEAD", "STARSTUNAILMENT"); 
         }
 

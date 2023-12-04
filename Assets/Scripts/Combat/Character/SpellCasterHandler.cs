@@ -1,4 +1,5 @@
 ﻿using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,6 +21,10 @@ namespace Vanaring
     [Serializable]
     public class SpellCasterHandler : MonoBehaviour, ISimulationApplier<RuntimeMangicalEnergy.EnergySide, int, Null>
     {
+        
+
+
+
         [SerializeField]
         private RuntimeMangicalEnergy _magicalEnergy;
 
@@ -27,7 +32,7 @@ namespace Vanaring
 
         private CombatEntity _combatEntity;
 
-        private RuntimeMangicalEnergy _simulateMagicalEnergy = null;
+        private RuntimeMangicalEnergy _simulateMagicalEnergy = null ;
 
         [Header("Balanced Style will synchonize")]
         [SerializeField]
@@ -38,6 +43,35 @@ namespace Vanaring
             _combatEntity = GetComponent<CombatEntity>();
             _magicalEnergy.Init(this); 
         }
+
+        #region GetEventBroadcaster Methods 
+        private EventBroadcaster _eventBroadcaster;
+        private EventBroadcaster GetEventBroadcaster()
+        {
+            if (_eventBroadcaster == null)
+            {
+                _eventBroadcaster = new EventBroadcaster();
+
+                _eventBroadcaster.OpenChannel<EnergyModifyerEffectPair>("OnSimulateEnergy");
+                //_eventBroadcaster.OpenChannel<EnergyModifyerEffectPair>("OnModifyEnergy");
+            }
+
+            return _eventBroadcaster;
+        }
+
+
+        public void SubOnSimulateEnergy(UnityAction<EnergyModifyerEffectPair> func)
+        {
+            GetEventBroadcaster().SubEvent<EnergyModifyerEffectPair>(func, "OnSimulateEnergy");
+        }
+        public void UnSubOnSimulateEnergy(UnityAction<EnergyModifyerEffectPair> func)
+        {
+            GetEventBroadcaster().UnSubEvent<EnergyModifyerEffectPair>(func, "OnSimulateEnergy");
+        }
+
+
+        #endregion
+
 
         #region Event Sub
         public void SubOnModifyEnergy(UnityAction<CombatEntity, RuntimeMangicalEnergy.EnergySide, int> argc)
@@ -56,17 +90,17 @@ namespace Vanaring
         {
             // we use opposited side of Required energy to check because if spell display Dark 3 to cast, meaning we will need 
             //at least Light 3 to cast the spell
-            RuntimeMangicalEnergy.EnergySide side; 
-            if (spell.RequiredEnergy.Side == RuntimeMangicalEnergy.EnergySide.DarkEnergy)
-            {
-                side = RuntimeMangicalEnergy.EnergySide.LightEnergy;
-            }
-            else //if (spell.RequiredEnergy.Side == RuntimeMangicalEnergy.EnergySide.LightEnergy)
-            {
-                side = RuntimeMangicalEnergy.EnergySide.DarkEnergy; 
-            }
-
-            return GetEnergyAmount(side) > spell.RequiredEnergy.Amount;
+            RuntimeMangicalEnergy.EnergySide side = spell.RequiredSide; 
+            //if (== RuntimeMangicalEnergy.EnergySide.DarkEnergy)
+            //{
+            //    side = RuntimeMangicalEnergy.EnergySide.LightEnergy;
+            //}
+            //else //if (spell.RequiredEnergy.Side == RuntimeMangicalEnergy.EnergySide.LightEnergy)
+            //{
+            //    side = RuntimeMangicalEnergy.EnergySide.DarkEnergy; 
+            //}
+            //Debug.Log(GetEnergyAmount(side) + " - " + MathF.Abs(spell.RequiredAmout));
+            return  ( GetEnergyAmount(side) - MathF.Abs(spell.RequiredAmout ) ) > 0;
         }
         public int GetEnergyAmount(RuntimeMangicalEnergy.EnergySide side)
         {
@@ -88,7 +122,6 @@ namespace Vanaring
                 _magicalEnergy.ModifyEnergy(-modValue, oppositeSide);
                 OnModifyEnergy?.Invoke(_combatEntity, oppositeSide, -modValue);
             }
-
 
             OnModifyEnergy?.Invoke(_combatEntity, side, modValue);
 
@@ -144,16 +177,14 @@ namespace Vanaring
         #endregion
 
         #region Interface 
-        public void Simulate(RuntimeMangicalEnergy.EnergySide argc, int argv, Null arga = null)
+        public void Simulate(RuntimeMangicalEnergy.EnergySide modSide, int amount , Null arga = null)
         {
-
             if (_simulateMagicalEnergy == null)
-            {
                 _simulateMagicalEnergy = new RuntimeMangicalEnergy(_magicalEnergy);
-            }
 
+            GetEventBroadcaster().InvokeEvent(new EnergyModifyerEffectPair() { EnergySide = modSide, Amount = amount }, "OnSimulateEnergy");
 
-            _simulateMagicalEnergy.ModifyEnergy(argv, argc);
+            _simulateMagicalEnergy.ModifyEnergy(amount, modSide);
         }
 
         public bool CheckSimulation()
@@ -167,6 +198,9 @@ namespace Vanaring
 
             return ret ;  
         }
+
+        
+
         #endregion
 
         #region GETTER

@@ -64,6 +64,9 @@ namespace Vanaring
             if (_events.TryGetValue(key, out var eventChannel))
             {
                 eventChannel.InvokeEvent(data);
+            }else
+            {
+                throw new Exception(key + " channel can not be found"); 
             }
         }
     }
@@ -121,6 +124,7 @@ namespace Vanaring
     {
         public CombatEntity Actor ;
         public StatusRuntimeEffectFactorySO StatusEffectFactory ;
+        public StatusEffectApplierRuntimeEffect ApplierFactory ;
     }
     public struct EntityAilmentEffectPair
     {
@@ -132,6 +136,12 @@ namespace Vanaring
         public EntityAilmentEffectPair AilmentEffectPair;
         public bool SucessfullyAttach;
         public bool ResistantBlocked;
+    }
+    
+    public struct EnergyModifyerEffectPair
+    {
+        public RuntimeMangicalEnergy.EnergySide EnergySide;
+        public int Amount; 
     }
     #endregion
 }

@@ -115,11 +115,16 @@ namespace Vanaring
         /// <param name="action"></param>
         private IEnumerator EnergySimulation(CombatEntity target, ActorAction action)
         {
-            yield return action.Simulate(target);
+            if (!target.SpellCaster.IsEnergyOverflow())
+            {
+                //Debug.Log("simulate energy");
+                yield return action.Simulate(target);
 
-            if (target.SpellCaster.CheckSimulation())
-                _targetSelectionGUI.SelectBreakTarget(target); 
-            
+                if (target.SpellCaster.CheckSimulation())
+                {
+                    _targetSelectionGUI.SelectBreakTarget(target);
+                }
+            }
         }
 
         #region Public Method
@@ -250,15 +255,15 @@ namespace Vanaring
                 }
                 else
                 {
+                    //need to display every ui first before doing anythign 
+                    _targetSelectionGUI.SelectTargetPointer(_selectingTarget);
 
+                    _enemyHUDWindowManager.DisplayEnemyHUD(_selectingTarget);
+                    
                     foreach (CombatEntity selectedEntity in _selectingTarget)
                     {
                         yield return EnergySimulation(selectedEntity, actorAction);
                     }
-
-                    _targetSelectionGUI.SelectTargetPointer(_selectingTarget);
-
-                    _enemyHUDWindowManager.DisplayEnemyHUD(_selectingTarget);
 
                     if (actorAction.GetTargetSelector().TargetAllyTeam)
                     {

@@ -65,6 +65,13 @@ MonoBehaviour:
     GateFit: 2
     FocusDistance: 10
     m_SensorSize: {x: 1, y: 1}
+    Iso: 200
+    ShutterSpeed: 0.005
+    Aperture: 16
+    BladeCount: 5
+    Curvature: {x: 2, y: 11}
+    BarrelClipping: 0.25
+    Anamorphism: 0
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -107,6 +114,7 @@ GameObject:
   - component: {fileID: 5316214738416383884}
   - component: {fileID: 2204014745875076915}
   - component: {fileID: 6051969092220927293}
+  - component: {fileID: -1147599256226493948}
   m_Layer: 0
   m_Name: cm
   m_TagString: Untagged
@@ -180,11 +188,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd6043bde05a7fc4cba197d06915c1e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Damping: {x: 0, y: 0, z: 4.1}
-  ShoulderOffset: {x: 4.5, y: 0, z: -0.65}
-  VerticalArmLength: 1.5
-  CameraSide: 0.58
-  CameraDistance: 1.5
+  Damping: {x: 0, y: 0, z: 0}
+  ShoulderOffset: {x: 4.5, y: 0, z: 0}
+  VerticalArmLength: 1.14
+  CameraSide: 0.5
+  CameraDistance: 2.28
   CameraCollisionFilter:
     serializedVersion: 2
     m_Bits: 0
@@ -209,3 +217,27 @@ MonoBehaviour:
   m_AmplitudeGain: 0.5
   m_FrequencyGain: 0.5
   mNoiseOffsets: {x: 169.00073, y: -730.098, z: -327.953}
+--- !u!114 &-1147599256226493948
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8934888704583121149}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd6043bde05a7fc4cba197d06915c1e3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Damping: {x: 0.1, y: 0.5, z: 0.3}
+  ShoulderOffset: {x: 0.5, y: -0.4, z: 0}
+  VerticalArmLength: 0.4
+  CameraSide: 1
+  CameraDistance: 2
+  CameraCollisionFilter:
+    serializedVersion: 2
+    m_Bits: 0
+  IgnoreTag: 
+  CameraRadius: 0.2
+  DampingIntoCollision: 0
+  DampingFromCollision: 2
