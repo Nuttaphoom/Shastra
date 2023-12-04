@@ -15,9 +15,13 @@ namespace Vanaring
     {
         [SerializeField]
         private List<StatusRuntimeEffectFactorySO> _effects;
+
+        [SerializeField]
+        private Comment _comment_on_applied;
+
         public override RuntimeEffect Factorize(List<CombatEntity> targets)
         {
-            StatusEffectApplierRuntimeEffect retEffect = new StatusEffectApplierRuntimeEffect(_effects);
+            StatusEffectApplierRuntimeEffect retEffect = new StatusEffectApplierRuntimeEffect(this,_effects);
             foreach (CombatEntity target in targets)
                 retEffect.AssignTarget(target);
 
@@ -28,18 +32,22 @@ namespace Vanaring
         {
             
         }
+
+        public Comment GetCommentOnApplied => _comment_on_applied;
+
     }
 
 
     public class StatusEffectApplierRuntimeEffect : RuntimeEffect
     {
-        [SerializeField]
         protected List<StatusRuntimeEffectFactorySO> _effects;
+        private Comment _comment_on_applied;
 
 
-        public StatusEffectApplierRuntimeEffect( List<StatusRuntimeEffectFactorySO> effects)
+        public StatusEffectApplierRuntimeEffect(StatusEffectApplierFactorySO applierSO, List<StatusRuntimeEffectFactorySO> effects)
         {
             _effects = effects;
+            _comment_on_applied = applierSO.GetCommentOnApplied; 
         }
 
         public override IEnumerator ExecuteRuntimeCoroutine(CombatEntity caster)
@@ -50,7 +58,7 @@ namespace Vanaring
                 foreach (StatusRuntimeEffectFactorySO effect in _effects)
                 {
                     StatusRuntimeEffectFactorySO eff = effect;
-                    coroutines.Add(target.ApplyNewEffect(effect, caster)); 
+                    coroutines.Add(target.ApplyNewEffect(effect,this, caster)); 
                 }
 
                 yield return new WaitAll(caster,coroutines.ToArray());
@@ -59,10 +67,11 @@ namespace Vanaring
             yield return null; 
         }
 
-        protected virtual IEnumerator ApplyEffectCoroutine(StatusRuntimeEffectFactorySO effect, CombatEntity target, CombatEntity applier)
-        {
-            yield return target.ApplyNewEffect(effect, applier);
-        }
+        public Comment GetCommentOnApplied => _comment_on_applied;
+
+
+
+
     }
 
 }

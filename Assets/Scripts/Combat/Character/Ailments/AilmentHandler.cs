@@ -127,9 +127,7 @@ namespace Vanaring
             {
                 if (_currentAilment.AlimentExpired())
                 {
-                    Debug.Log("check for expiration");
                     yield return _currentAilment.AilmentRecover();
-                    Debug.Log("current ailment type is " + _currentAilment.GetType()) ;
                     _currentAilment = null;
                 }
             }

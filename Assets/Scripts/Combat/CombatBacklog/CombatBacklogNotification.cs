@@ -89,7 +89,7 @@ namespace Vanaring
         public string GetStatusEffectComment(EntityStatusEffectPair pair, bool onApplied)
         {
             CombatEntity entity = pair.Actor;
-            var action = pair.StatusEffectFactory;
+            var action = pair.ApplierFactory;
             string comment = null ;
             
             if (onApplied)

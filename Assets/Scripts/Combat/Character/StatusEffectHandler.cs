@@ -104,14 +104,15 @@ namespace Vanaring
             effect.OnStatusEffectApplied(applier) ; 
         }
 
-        public IEnumerator ApplyNewEffect(StatusRuntimeEffectFactorySO factory, CombatEntity applier )
+        public IEnumerator ApplyNewEffect(StatusRuntimeEffectFactorySO statusEffectFactory, StatusEffectApplierRuntimeEffect applierFactory, CombatEntity applier)
         {
-            LogicApplyNewEffect(factory, applier);
+            LogicApplyNewEffect(statusEffectFactory, applier);
 
             GetEventBroadcaster().InvokeEvent(new EntityStatusEffectPair()
             {
                 Actor = applier,
-                StatusEffectFactory = factory
+                StatusEffectFactory = statusEffectFactory, 
+                ApplierFactory = applierFactory 
             }, "OnStatusEffectApplied") ;
 
             //create Status UI

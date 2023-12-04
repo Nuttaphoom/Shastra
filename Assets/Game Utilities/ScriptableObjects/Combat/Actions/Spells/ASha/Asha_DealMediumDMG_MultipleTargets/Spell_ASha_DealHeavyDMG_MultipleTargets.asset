@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2f5d27031a83ca845945ea045c3f11b6, type: 3}
-  m_Name: Spell_Boxer_DealHighDMG
+  m_Name: Spell_ASha_DealHeavyDMG_MultipleTargets
   m_EditorClassIdentifier: 
   _description:
-    _fieldName: Soul Slash
-    _fieldDescription: Apply <b>normal</b> damage to a target
+    _fieldName: Divine Slashes
+    _fieldDescription: Deal <b>Medium</b> 2 LIGHT damage to all targets
     _fieldImage: {fileID: 21300000, guid: db089e60338a024409779b3e539a84a7, type: 3}
   _targetSelector:
-    _maxTargetSize: 1
+    _maxTargetSize: 3
     _targetCaster: 0
     _targetAlly: 0
     _targetOppose: 1
@@ -26,16 +26,16 @@ MonoBehaviour:
     _signalEffectBindings:
     - _signalType: 1
       _runtimeEffects:
-      - {fileID: 11400000, guid: 08e8baf5b174acb44af738406031e742, type: 2}
+      - {fileID: 11400000, guid: ecc19d0526fa0d842974464e6ddfcc09, type: 2}
     - _signalType: 2
       _runtimeEffects:
-      - {fileID: 11400000, guid: 9d36a969e753cdf44a7b7b9b75803e79, type: 2}
+      - {fileID: 11400000, guid: 5b89b623ce285ff4a87bdd5ef157641c, type: 2}
     _actionTimelineSetting:
       _trackToChangeName:
       - Caster
-    _timeLineActorSetupPrefab: {fileID: -8615740222444698358, guid: 8988040c144a7694e89ece080b1c25d9, type: 3}
+    _timeLineActorSetupPrefab: {fileID: -8615740222444698358, guid: 86a55ebe411e0a943b80e71edd9aa1d4, type: 3}
   _comment:
     _comment: 
   _requiredEnergy:
-    _side: 1
+    _side: 0
     _amount: 2

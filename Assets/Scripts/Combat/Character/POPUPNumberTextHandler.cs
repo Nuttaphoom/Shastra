@@ -32,12 +32,14 @@ namespace Vanaring
 
         private void OnAilmentAppliedAttemp(EntityAilmentApplierEffect data)
         {
-            Debug.Log("Attemp ");
             if (! data.SucessfullyAttach )
             {
                 if (data.ResistantBlocked)
                 {
                     POPUPNumberTextManager.Instance.DisplayPOPUPText(_entity, "RESIST");
+                }else
+                {
+                    POPUPNumberTextManager.Instance.DisplayPOPUPText(_entity, "MISS") ;
                 }
             }
         }

@@ -294,9 +294,9 @@ namespace Vanaring
         #endregion
 
         #region Combat Methods 
-        public IEnumerator ApplyNewEffect(StatusRuntimeEffectFactorySO factory, CombatEntity applier)
+        public IEnumerator ApplyNewEffect(StatusRuntimeEffectFactorySO  statusEffect, StatusEffectApplierRuntimeEffect applierFactory, CombatEntity applier)
         {
-            yield return _statusEffectHandler.ApplyNewEffect(factory, applier); 
+            yield return _statusEffectHandler.ApplyNewEffect(statusEffect,applierFactory, applier); 
         }
 
         public void LogicHurt(CombatEntity attacker, int inputdmg)
