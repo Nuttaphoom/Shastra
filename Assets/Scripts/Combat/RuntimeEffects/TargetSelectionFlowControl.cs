@@ -115,12 +115,16 @@ namespace Vanaring
         /// <param name="action"></param>
         private IEnumerator EnergySimulation(CombatEntity target, ActorAction action)
         {
-            //Debug.Log("simulate energy");
-            yield return action.Simulate(target);
+            if (!target.SpellCaster.IsEnergyOverflow())
+            {
+                //Debug.Log("simulate energy");
+                yield return action.Simulate(target);
 
-            if (target.SpellCaster.CheckSimulation())
-                _targetSelectionGUI.SelectBreakTarget(target); 
-            
+                if (target.SpellCaster.CheckSimulation())
+                {
+                    _targetSelectionGUI.SelectBreakTarget(target);
+                }
+            }
         }
 
         #region Public Method
