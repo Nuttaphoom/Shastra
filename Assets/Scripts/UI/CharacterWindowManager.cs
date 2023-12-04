@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Vanaring 
@@ -59,6 +60,33 @@ namespace Vanaring
                 }
             }
         }
+        #endregion
+
+        #region Arrow Pointer 
+        public void DisplayArrowOnTargetCharacter(List<CombatEntity> entities)
+        {
+            for (int i = 0; i < combatEntityList.Count; i++)
+            {
+                if (entities.Contains(combatEntityList[i]))
+                {
+                    //characterSocketList[i].ToggleTurnStatusDisplay(true);
+                    characterSocketList[i].DisplayArrowOnTargetCharacter();
+                }else
+                {
+                    characterSocketList[i].HideArrowOnTargetCharacter() ; 
+                }
+            }
+        }
+
+        public void HideAllArrowTargetCharacter()
+        {
+            for (int i  = 0; i < characterSocketList.Count; i++)
+            {
+                characterSocketList[i].HideArrowOnTargetCharacter(); 
+            }
+        }
+
+       
         #endregion
 
         #region HighlightSet
