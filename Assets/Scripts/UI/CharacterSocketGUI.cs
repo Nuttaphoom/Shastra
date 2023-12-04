@@ -145,12 +145,20 @@ namespace Vanaring
         public void ToggleExpandSizeUI()
         {
             gameObject.transform.localScale = new Vector3(1.2f, 1.2f, 1.2f);
-            characterArrow.SetActive(true);
         }
 
         public void ToggleShrinkSizeGUI()
         {
             gameObject.transform.localScale = new Vector3(0.9f, 0.9f, 0.9f);
+        }
+
+        public void DisplayArrowOnTargetCharacter()
+        {
+            characterArrow.SetActive(true);
+        }
+
+        public void HideArrowOnTargetCharacter()
+        {
             characterArrow.SetActive(false);
         }
 
