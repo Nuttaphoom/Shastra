@@ -104,7 +104,6 @@ namespace Vanaring
         {
             if (_owner == null)
                 return;
-
             SubAllEvents();
         }
 
@@ -271,51 +270,55 @@ namespace Vanaring
             }
         }
 
-        private IEnumerator SlotBreak(int maxSlot, int curScale)
-        {
-            //Debug.Log("max= " + maxSlot + " cur= " + curScale);
-            for (int i = maxSlot-1; i >= 0; i--)
-            {
-                if (i+1 > curScale)
-                {
-                    //Break
-                    Color curColor = energySlotList[i].color;
-                    curColor.a = 0.3f;
-                    energySlotList[i].color = curColor;
-                }
-                else
-                {
-                    //Stay
-                    Color curColor = energySlotList[i].color;
-                    curColor.a = 1.0f;
-                    energySlotList[i].color = curColor;
-                }
-                yield return new WaitForSeconds(0.1f);
-            }
-            yield return null;
-        }
+        //private IEnumerator SlotBreak(int maxSlot, int curScale)
+        //{
+        //    //Debug.Log("max= " + maxSlot + " cur= " + curScale);
+        //    for (int i = maxSlot-1; i >= 0; i--)
+        //    {
+        //        if (i+1 > curScale)
+        //        {
+        //            //Break
+        //            Color curColor = energySlotList[i].color;
+        //            curColor.a = 0.3f;
+        //            energySlotList[i].color = curColor;
+        //        }
+        //        else
+        //        {
+        //            //Stay
+        //            Color curColor = energySlotList[i].color;
+        //            curColor.a = 1.0f;
+        //            energySlotList[i].color = curColor;
+        //        }
+        //        yield return new WaitForSeconds(0.1f);
+        //    }
+        //    yield return null;
+        //}
 
-        private IEnumerator SlotRecovery()
-        {
-            int i = 0;
-            foreach (Image slot in energySlotList)
-            {
-                //Set recovery pop
-                Color curColor = energySlotList[i].color;
-                curColor.a = 1.0f;
-                curColor = Color.white;
-                energySlotList[i].color = curColor;
-                yield return new WaitForSeconds(0.1f);
-                //Set default sprite
-                defaultSlotColor.a = 1.0f;
-                energySlotList[i].color = defaultSlotColor;
-                i++;
-            }
-            yield return null;
-        }
+        //private IEnumerator SlotRecovery()
+        //{
+        //    int i = 0;
+        //    foreach (Image slot in energySlotList)
+        //    {
+        //        //Set recovery pop
+        //        Color curColor = energySlotList[i].color;
+        //        curColor.a = 1.0f;
+        //        curColor = Color.white;
+        //        energySlotList[i].color = curColor;
+        //        yield return new WaitForSeconds(0.1f);
+        //        //Set default sprite
+        //        defaultSlotColor.a = 1.0f;
+        //        energySlotList[i].color = defaultSlotColor;
+        //        i++;
+        //    }
+        //    yield return null;
+        //}
 
         public void HideHUDVisual()
         {
+            foreach (Image slot in highlightSlotList)
+            {
+                slot.gameObject.SetActive(false);
+            }
             if (!_visualMesh.activeSelf)
                 return; 
 
@@ -324,6 +327,10 @@ namespace Vanaring
 
         public void DisplayHUDVisual()
         {
+            foreach (Image slot in highlightSlotList)
+            {
+                slot.gameObject.SetActive(false);
+            }
             if (_visualMesh.activeSelf)
                 return; 
 
@@ -373,47 +380,47 @@ namespace Vanaring
             yield return null;
         }
 
-        private IEnumerator OnModifyEnergyVisualUpdateCoroutine(CombatEntity caster, RuntimeMangicalEnergy.EnergySide side, int val)
-        {
-            DisplayHUDVisual();
+        //private IEnumerator OnModifyEnergyVisualUpdateCoroutine(CombatEntity caster, RuntimeMangicalEnergy.EnergySide side, int val)
+        //{
+        //    DisplayHUDVisual();
 
-            if (side == RuntimeMangicalEnergy.EnergySide.LightEnergy)
-            {
-                if (_owner.SpellCaster.GetEnergyAmount(RuntimeMangicalEnergy.EnergySide.LightEnergy) + val >= 0)
-                {
-                    lightScale += val;
-                    lightTmpText.text = lightScale.ToString();
-                    if (val < 0)
-                    {
-                        yield return (SlotBreak(_owner.SpellCaster.GetPeakEnergyAmout(RuntimeMangicalEnergy.EnergySide.LightEnergy), (int)lightScale));
-                    }
-                    else
-                    {
-                        yield return (SlotRecovery());
-                    }
-                }
-            }
-            else
-            {
-                if (_owner.SpellCaster.GetEnergyAmount(RuntimeMangicalEnergy.EnergySide.DarkEnergy) + val >= 0)
-                {
-                    darkScale += val;
-                    darkTmpText.text = darkScale.ToString();
-                    if (val < 0)
-                    {
-                        yield return (SlotBreak(_owner.SpellCaster.GetPeakEnergyAmout(RuntimeMangicalEnergy.EnergySide.DarkEnergy), (int)darkScale));
-                    }
-                    else
-                    {
-                        yield return (SlotRecovery());
-                    }
-                }
-            }
+        //    if (side == RuntimeMangicalEnergy.EnergySide.LightEnergy)
+        //    {
+        //        if (_owner.SpellCaster.GetEnergyAmount(RuntimeMangicalEnergy.EnergySide.LightEnergy) + val >= 0)
+        //        {
+        //            lightScale += val;
+        //            lightTmpText.text = lightScale.ToString();
+        //            if (val < 0)
+        //            {
+        //                yield return (SlotBreak(_owner.SpellCaster.GetPeakEnergyAmout(RuntimeMangicalEnergy.EnergySide.LightEnergy), (int)lightScale));
+        //            }
+        //            else
+        //            {
+        //                yield return (SlotRecovery());
+        //            }
+        //        }
+        //    }
+        //    else
+        //    {
+        //        if (_owner.SpellCaster.GetEnergyAmount(RuntimeMangicalEnergy.EnergySide.DarkEnergy) + val >= 0)
+        //        {
+        //            darkScale += val;
+        //            darkTmpText.text = darkScale.ToString();
+        //            if (val < 0)
+        //            {
+        //                yield return (SlotBreak(_owner.SpellCaster.GetPeakEnergyAmout(RuntimeMangicalEnergy.EnergySide.DarkEnergy), (int)darkScale));
+        //            }
+        //            else
+        //            {
+        //                yield return (SlotRecovery());
+        //            }
+        //        }
+        //    }
 
-            yield return new WaitForSeconds(0.5f); 
+        //    yield return new WaitForSeconds(0.5f); 
 
-            HideHUDVisual(); 
-        }
+        //    HideHUDVisual(); 
+        //}
         #endregion
     }
 }

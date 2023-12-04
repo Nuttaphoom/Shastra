@@ -12,35 +12,6 @@ namespace Vanaring
         [SerializeField] private EnemyHUD enemyHudTemplate;
         private List<EnemyHUD> enemyHUDList = new List<EnemyHUD>();
         private Dictionary<CombatEntity, EnemyHUD> instantiatedEnemyHUD = new Dictionary<CombatEntity, EnemyHUD>();
-
-        //Display what reference(list) want to
-        //public void DisplayEnemyHUD(List<CombatEntity> entities)
-        //{
-
-        //    if(entities.Count < 1)
-        //    {
-        //        Debug.Log("No enemy on field/detect");
-        //        return;
-        //    }
-        //    if(enemyHUDList.Count > 0)
-        //    {
-        //        Debug.Log(enemyHUDList.Count);
-        //        DisableEnemyHUD();
-        //        SelectHUDToDisplay(entities);
-        //    }
-        //    else    //Create new instead
-        //    {
-        //        foreach (CombatEntity entity in entities)
-        //        {
-        //            EnemyHUD newEnemyHUD = Instantiate(enemyHudTemplate, transform);
-        //            newEnemyHUD.Init(entity);
-        //            SetUITransform(newEnemyHUD, entity);
-        //            enemyHUDList.Add(newEnemyHUD);
-        //            //newEnemyHUD.gameObject.SetActive(false);
-        //        }
-        //    }
-        //}
-
        
         public void DisplayEnemyHUD(List<CombatEntity> entities)
         {
@@ -55,12 +26,6 @@ namespace Vanaring
                 hud.HideHUDVisual();
             }
 
-            //foreach (var key in instantiatedEnemyHUD.Keys)
-            //{
-            //    if (!entities.Contains(key))
-            //        instantiatedEnemyHUD[key].HideHUDVisual(); // .SetActive(false);
-            //}
-
             foreach (var combatEntity in entities)
             {
                 if (!instantiatedEnemyHUD.ContainsKey(combatEntity))
@@ -73,7 +38,6 @@ namespace Vanaring
                 instantiatedEnemyHUD[combatEntity].DisplayHUDVisual()  ;
                 
             }
-
         }
 
         public void DisableEnemyHUD()
