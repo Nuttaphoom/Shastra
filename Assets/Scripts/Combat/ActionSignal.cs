@@ -24,13 +24,15 @@ namespace Vanaring
         public ActionTimelineSettingStruct(ActionTimelineSettingStruct copied)
         {
             _trackToChangeName = new List<string>();
-            _timelienActors = new List<Transform>();   
+            _timelienActors = new List<Transform>();
 
+            //Debug.Log(" copied._trackToChangeName : " + copied._trackToChangeName);
+            //Debug.Log(" copied._timelienActors : " + copied._timelienActors);
             foreach (var trackName in copied._trackToChangeName)
                 _trackToChangeName.Add(trackName); 
 
-            foreach (var transform in copied._timelienActors)  
-                _timelienActors.Add(transform) ; 
+            //foreach (var transform in copied._timelienActors)  
+            //    _timelienActors.Add(transform) ; 
         }
 
         public void AddActors(GameObject actor)
