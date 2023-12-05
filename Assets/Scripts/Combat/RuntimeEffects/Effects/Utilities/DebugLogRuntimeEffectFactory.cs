@@ -22,10 +22,7 @@ namespace Vanaring
             return retEffect ;
         }
 
-        public override void SimulateEnergyModifier(CombatEntity target)
-        {
-            return; 
-        }
+    
     }
 
     public  class DebugLogRuntimeEffect : RuntimeEffect 

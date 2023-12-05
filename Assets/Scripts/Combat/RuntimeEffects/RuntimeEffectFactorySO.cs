@@ -9,7 +9,10 @@ namespace Vanaring
 {
     public abstract class RuntimeEffectFactorySO : ScriptableObject
     {
-        public abstract void SimulateEnergyModifier(CombatEntity target)  ; 
+        public virtual void SimulateEnergyModifier(CombatEntity target)
+        {
+            target.SpellCaster.Simulate(RuntimeMangicalEnergy.EnergySide.LightEnergy, 0);
+        }
         public abstract RuntimeEffect Factorize( List<CombatEntity> targets)  ;
 
         protected RuntimeEffect SetUpRuntimeEffect(RuntimeEffect effect,List<CombatEntity> targets)

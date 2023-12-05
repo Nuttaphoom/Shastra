@@ -75,10 +75,7 @@ namespace Vanaring
         public string StatusDescription => _statusEffectDescription.FieldDescription;
         public string StatusName => _statusEffectDescription.FieldName;
         public Sprite StatusImage => _statusEffectDescription.FieldImage; 
-        public override void SimulateEnergyModifier(CombatEntity target)
-        {
-
-        }
+        
     }
 
 

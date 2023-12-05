@@ -25,10 +25,6 @@ namespace Vanaring
             return SetUpRuntimeEffect(new AttackRuntimeEffect(_damagScaling, realDmg   ), targets); 
         }
 
-        public override void SimulateEnergyModifier(CombatEntity combatEntity)
-        {
-            //combatEntity.SpellCaster.Simulate(RuntimeMangicalEnergy.EnergySide.LightEnergy, 100, null); 
-        }
     }
 
     public class AttackRuntimeEffect : RuntimeEffect
