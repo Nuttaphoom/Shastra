@@ -50,9 +50,6 @@ namespace Vanaring
 
             _runtimeItemsAmount = ItemInventory.instance.GetItemInventoryAmount;
 
-
-            Debug.Log("item inventory : " + _itemInventory);
-            Debug.Log("amount : " + _runtimeItemsAmount);
             foreach (ItemActionFactorySO factory in _itemInventory)
             {
                 _runtimeItems.Add(factory.FactorizeRuntimeAction(_combatEntity) as ItemAbilityRuntime);

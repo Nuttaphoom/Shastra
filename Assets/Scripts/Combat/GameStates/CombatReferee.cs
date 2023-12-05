@@ -264,9 +264,38 @@ namespace Vanaring
 
             ResolveEntityDead(); 
 
+            if (CombatEnd() == 1)
+                MockUpGameOverDisplay.Instance.GameWinDisplay(); 
+            else if (CombatEnd() == 2)
+                MockUpGameOverDisplay.Instance.GameOverDisplay(); 
+            
+
             SetActiveActors();
             
             yield return SwitchControl(null, GetCurrentActor());
+
+        }
+
+        private int CombatEnd()
+        {
+            for (int i = 0;  i< GetCompetatorsBySide(ECompetatorSide.Ally).Count; i++)
+            {
+                var comp = GetCompetatorsBySide(ECompetatorSide.Ally)[i];
+
+                if (!comp.IsDead)
+                {
+                    break;
+                }
+
+                else if (i == GetCompetatorsBySide(ECompetatorSide.Ally).Count - 1)
+                    return 2; 
+
+            }
+
+            if (GetCompetatorsBySide(ECompetatorSide.Hostile).Count == 0)
+                return  1;  
+
+            return 0 ; 
         }
 
         private void ResolveEntityDead()

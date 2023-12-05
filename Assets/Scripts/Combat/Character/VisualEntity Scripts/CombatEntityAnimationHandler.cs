@@ -168,6 +168,7 @@ namespace Vanaring
             Transform parent = GetAttachmentFromName(whereToAttach) ;
      
             var newVFX = Instantiate(vfxPrefab, parent);
+
             newVFX.name = vfxName;
             newVFX.transform.position = parent.position;
             newVFX.transform.rotation = parent.rotation; 
