@@ -25,14 +25,6 @@ namespace Vanaring
         private Image hpBar;
         [SerializeField]
         private Image secondHpBar;
-        [SerializeField]
-        private GameObject verticalLayout;
-        [SerializeField]
-        private Image lightSlot;
-        [SerializeField]
-        private Image darkSlot;
-        [SerializeField]
-        private Image energySlot;
         private List<Image> energySlotList = new List<Image>();
         [SerializeField]
         private Image curveMask;
@@ -50,6 +42,8 @@ namespace Vanaring
         private Animator animator;
         [SerializeField]
         private List<float> slotBarRatios;
+        [SerializeField]
+        private List<Image> fadeBlackImageList = new List<Image>();
         [SerializeField]
         private GameObject characterArrow;
 
@@ -79,6 +73,7 @@ namespace Vanaring
             {
                 _combatEntity.SubOnDamageVisualEvent(OnHPModified);
                 _combatEntity.SpellCaster.SubOnModifyEnergy(OnEnergyModified);
+                _combatEntity.SubOnHealVisualEvent(OnHPModified);
             }
         }
 
@@ -86,6 +81,7 @@ namespace Vanaring
         {
             _combatEntity.UnSubOnDamageVisualEvent(OnHPModified);
             _combatEntity.SpellCaster.UnSubOnModifyEnergy(OnEnergyModified);
+            _combatEntity.UnSubOnHealVisualEvent(OnHPModified);
         }
 
         public void Init(CombatEntity combatEntity)
@@ -93,6 +89,7 @@ namespace Vanaring
             _combatEntity = combatEntity;
             _combatEntity.SubOnDamageVisualEvent(OnHPModified);
             _combatEntity.SpellCaster.SubOnModifyEnergy(OnEnergyModified);
+            _combatEntity.SubOnHealVisualEvent(OnHPModified);
             characterArrow.SetActive(false);
             _characterSheetSO = _combatEntity.CharacterSheet;
             characterImg.sprite = _characterSheetSO.GetCharacterIcon;
@@ -104,8 +101,6 @@ namespace Vanaring
             secondHpBar.fillAmount = (float)hpVal / maxHpVal;
             UpdateHPScaleGUI();
             animator = GetComponent<Animator>();
-
-            //_combatEntity.GetStatusEffectHandler().SubOnStatusVisualEvent(_statusWindow.ShowStatusIconUI);
             InitEnergySlot();
 
         }
@@ -113,23 +108,6 @@ namespace Vanaring
         private void InitEnergySlot()
         {
             curveMask.fillAmount = slotBarRatios[_combatEntity.SpellCaster.GetEnergyAmount(RuntimeMangicalEnergy.EnergySide.DarkEnergy)];
-//            for (int i = 0; i < _combatEntity.SpellCaster.GetEnergyAmount(RuntimeMangicalEnergy.EnergySide.LightEnergy); i++)
-//            {
-//                Image slot = Instantiate(energySlot, verticalLayout.transform);
-//                Color lightColor = lightSlot.color;
-//                slot.color = lightColor;
-//                slot.gameObject.SetActive(true);
-//                energySlotList.Add(slot);
-//;           }
-//            for (int i = 0; i < _combatEntity.SpellCaster.GetEnergyAmount(RuntimeMangicalEnergy.EnergySide.DarkEnergy); i++)
-//            {
-//                Image slot = Instantiate(energySlot, verticalLayout.transform);
-//                Color lightColor = darkSlot.color;
-//                slot.color = lightColor;
-//                slot.gameObject.SetActive(true);
-//                energySlotList.Add(slot);
-//            }
-
         }
 
         #region TurnStatus
@@ -167,22 +145,27 @@ namespace Vanaring
         #region STAT
         private void UpdateHPScaleGUI()
         {
+            Debug.Log("HP: " + hpVal);
             hpBar.fillAmount = (float)hpVal / maxHpVal;
             //hpNumText.text = "HP " + hpVal.ToString() + "/" + maxHpVal.ToString();
             hpNumText.text = hpVal.ToString();
             //animator.Play("CharacterIconGotHit");
         }
 
-        private void UpdateEnergyScaleGUI()
-        {
-            //lightBar.fillAmount = (int.Parse(lightNumText.text) / maxEnergyVal);
-            //darkBar.fillAmount = (maxEnergyVal/100) - lightBar.fillAmount;
-        }
-
         private void OnHPModified(int damage)
         {
             //animator.SetTrigger("Hit");
+            Debug.Log("Modifying");
             hpVal = _combatEntity.StatsAccumulator.GetHPAmount();
+            if(hpVal <= 0)
+            {
+                foreach (Image image in fadeBlackImageList)
+                {
+                    Color grayColor = image.color;
+                    grayColor = new Color(80.0f / 255.0f, 80.0f / 255.0f, 80.0f / 255.0f);
+                    image.color = grayColor;
+                }
+            }
             float hptemp = maxHpVal == 0 ? (hpVal == 0 ? 1 : hpVal) : maxHpVal;
             UpdateHPScaleGUI();
 

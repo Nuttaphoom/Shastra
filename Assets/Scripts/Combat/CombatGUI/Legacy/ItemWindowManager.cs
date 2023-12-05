@@ -84,7 +84,7 @@ namespace Vanaring
                 newSocketObject.transform.SetAsFirstSibling();
 
                 ItemSocketGUI newSocket = newSocketObject.GetComponent<ItemSocketGUI>();
-                newSocket.Init(_itemInventoryData[i], _combatEntity);
+                //newSocket.Init(_itemInventoryData[i], _combatEntity);
                 newSocket.SetNumberOfItem(_itemInventoryAmount[i]);
                 _itemSocketGUI.Add(newSocket); 
                 _GUIinventory.Add(newSocket);

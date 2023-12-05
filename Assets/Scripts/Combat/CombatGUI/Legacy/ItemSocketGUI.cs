@@ -16,7 +16,7 @@ namespace Vanaring
         [SerializeField]
         private Button _actionButton ;
         [SerializeField]
-        private TextMeshProUGUI _textMeshProUGUI ;
+        private TextMeshProUGUI _itemNameText ;
         [SerializeField]
         private TextMeshProUGUI _itemDescription;
         [SerializeField]
@@ -44,18 +44,19 @@ namespace Vanaring
         private Color _defaultColor;
 
         private bool _init = false; 
-        public void Init(ItemAbilityRuntime item, CombatEntity combatEntity)
+        public void Init(ItemAbilityRuntime item, CombatEntity combatEntity, int amount)
         {
+            
             _init  = true; 
             _item = item;
             this._caster = combatEntity;
             _actionButton.onClick.AddListener(ChooseItem) ;
-
-            _textMeshProUGUI.text = item.ItemName.ToString() ;
+            _itemNameText.text = item.ItemName.ToString();
             _itemDescription.text = item.ItemDescrption.ToString();
             //_itemIcon.sprite = item.ItemSprite;
             _itemName = item.ItemName.ToString();
-            _itemAmount = 1;
+            _itemAmount = amount;
+            _textMeshProNum.text = "x" + _itemAmount.ToString();
         }
 
         public string GetItemDescription()
@@ -84,7 +85,7 @@ namespace Vanaring
         {
             if (_init)
             {
-                Debug.Log("is  init");
+                Debug.Log("is init");
             }
             if (_caster == null)
             {

@@ -45,6 +45,7 @@ namespace Vanaring
         private List<Image> energySlotList = new List<Image>();
         private int maxLight = 0;
         private int maxDark = 0;
+        private bool isSlotBreakDisplay = false;
         [SerializeField] private GameObject horizontalLayout;
         [SerializeField] private TextMeshProUGUI lightTmpText;
         [SerializeField] private TextMeshProUGUI darkTmpText;
@@ -117,6 +118,7 @@ namespace Vanaring
             _owner.SpellCaster.SubOnModifyEnergy(OnEnergyModified);
             _owner.SubOnDamageVisualEvent(OnHPModified);
             _owner.SpellCaster.SubOnSimulateEnergy(SimulateDisplayEnergyBreakSlotOnTarget);
+            _owner.SubOnHealVisualEvent(OnHPModified);
         }
 
         private void UnSubAllEvents()
@@ -124,6 +126,7 @@ namespace Vanaring
             _owner.SpellCaster.UnSubOnModifyEnergy(OnEnergyModified);
             _owner.UnSubOnDamageVisualEvent(OnHPModified);
             _owner.SpellCaster.UnSubOnSimulateEnergy(SimulateDisplayEnergyBreakSlotOnTarget);
+            _owner.UnSubOnHealVisualEvent(OnHPModified);
         }
 
     
@@ -207,23 +210,23 @@ namespace Vanaring
         public void SimulateDisplayEnergyBreakSlotOnTarget(EnergyModifyerEffectPair effectPiar )
         {
             int highlightAmount = Mathf.Abs(effectPiar.Amount)  ;
-            RuntimeMangicalEnergy.EnergySide side = effectPiar.EnergySide; 
-
+            RuntimeMangicalEnergy.EnergySide side = effectPiar.EnergySide;
             foreach (Image slot in highlightSlotList)
             {
                 slot.gameObject.SetActive(false);
             }
             if (maxLight > maxDark && side == RuntimeMangicalEnergy.EnergySide.LightEnergy)
             {
+                //Debug.Log("Display Light");
                 if (lightScale <= 0)
                 {
                     return;
                 }
                 else
                 {
-                    for (int i = highlightSlotList.Count - 1 ; i <= 0; i--)
+                    for (int i = highlightSlotList.Count - 1 ; i >= 0; i--)
                     {
-                        if(i >= 0 && highlightAmount > 0)
+                        if(i >= 0 && highlightAmount > 0 && i < lightScale)
                         {
                             highlightSlotList[i].gameObject.SetActive(true);
                             highlightAmount--;
@@ -231,8 +234,9 @@ namespace Vanaring
                     }
                 }
             }
-            else
+            if (maxDark > maxLight && side == RuntimeMangicalEnergy.EnergySide.DarkEnergy)
             {
+                //Debug.Log("Display Dark");
                 if (darkScale <= 0)
                 {
                     return;
@@ -241,7 +245,7 @@ namespace Vanaring
                 {
                     for (int i = highlightSlotList.Count - 1; i >= 0; i--)
                     {
-                        if (i >= 0 && highlightAmount > 0)
+                        if (i >= 0 && highlightAmount > 0 && i < darkScale)
                         {
                             highlightSlotList[i].gameObject.SetActive(true);
                             highlightAmount--;
@@ -314,26 +318,34 @@ namespace Vanaring
 
         public void HideHUDVisual()
         {
-            foreach (Image slot in highlightSlotList)
-            {
-                slot.gameObject.SetActive(false);
-            }
             if (!_visualMesh.activeSelf)
-                return; 
-
+                return;
+            
+            isSlotBreakDisplay = false;
             _visualMesh.gameObject.SetActive(false); 
         }
 
         public void DisplayHUDVisual()
         {
+            if (_visualMesh.activeSelf)
+                return;
+            isSlotBreakDisplay = true;
+            _visualMesh.gameObject.SetActive(true); 
+        }
+        public void ClearBreakSlotHighlight()
+        {
+            Debug.Log("Clear Break Slot");
+            foreach (Image slot in highlightSlotList)
+            {
+                if (slot.gameObject.activeSelf)
+                {
+                    slot.gameObject.SetActive(false);
+                }
+            }
             foreach (Image slot in highlightSlotList)
             {
                 slot.gameObject.SetActive(false);
             }
-            if (_visualMesh.activeSelf)
-                return; 
-
-            _visualMesh.gameObject.SetActive(true); 
         }
          
         #endregion
