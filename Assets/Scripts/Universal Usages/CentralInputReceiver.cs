@@ -25,6 +25,7 @@ namespace Vanaring
             InputSystem.onAnyButtonPress
                  .Call(ctrl => TransmitInput(ctrl.name));
 
+
             _keycodeCache = new Dictionary<char, KeyCode>();
             _receiverStack = new Stack<IInputReceiver>(); 
         } 
