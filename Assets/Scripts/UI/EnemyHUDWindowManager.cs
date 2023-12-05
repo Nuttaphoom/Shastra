@@ -22,10 +22,8 @@ namespace Vanaring
                 return;
 
             foreach (EnemyHUD hud in GetAllInstantiatedHUD())
-            {
                 hud.HideHUDVisual();
-            }
-
+            
             foreach (var combatEntity in entities)
             {
                 if (!instantiatedEnemyHUD.ContainsKey(combatEntity))
@@ -36,7 +34,6 @@ namespace Vanaring
                 }
                  
                 instantiatedEnemyHUD[combatEntity].DisplayHUDVisual()  ;
-                
             }
         }
 
