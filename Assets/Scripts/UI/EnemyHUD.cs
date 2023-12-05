@@ -334,7 +334,6 @@ namespace Vanaring
         }
         public void ClearBreakSlotHighlight()
         {
-            Debug.Log("Clear Break Slot");
             foreach (Image slot in highlightSlotList)
             {
                 if (slot.gameObject.activeSelf)

@@ -145,7 +145,6 @@ namespace Vanaring
         #region STAT
         private void UpdateHPScaleGUI()
         {
-            Debug.Log("HP: " + hpVal);
             hpBar.fillAmount = (float)hpVal / maxHpVal;
             //hpNumText.text = "HP " + hpVal.ToString() + "/" + maxHpVal.ToString();
             hpNumText.text = hpVal.ToString();
@@ -155,7 +154,6 @@ namespace Vanaring
         private void OnHPModified(int damage)
         {
             //animator.SetTrigger("Hit");
-            Debug.Log("Modifying");
             hpVal = _combatEntity.StatsAccumulator.GetHPAmount();
             if(hpVal <= 0)
             {
