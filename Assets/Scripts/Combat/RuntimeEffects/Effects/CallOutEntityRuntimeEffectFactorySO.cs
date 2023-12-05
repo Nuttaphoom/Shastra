@@ -30,10 +30,7 @@ namespace Vanaring
             return SetUpRuntimeEffect(new CallOutEntityRuntimeEffect(_entitiesData), targets);
         }
 
-        public override void SimulateEnergyModifier(CombatEntity combatEntity)
-        {
-            //combatEntity.SpellCaster.Simulate(RuntimeMangicalEnergy.EnergySide.LightEnergy, 100, null); 
-        }
+       
     }
 
     public class CallOutEntityRuntimeEffect : RuntimeEffect

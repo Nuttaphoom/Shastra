@@ -40,13 +40,19 @@ namespace Vanaring
         [SerializeField]
         private Transform _head_position ;
 
+
+        [Header("Use for specially set where (CastTransform, TarTransform) position will be set to #Can leave blank")]
         [SerializeField]
-        public Transform _vfxPos;
+        public Transform _timelineAnimationRootLocation ;
 
         #region GETTER
         public Vector3 GetEntityTimelineAnimationLocation()
         {
-            return GetGUISpawnTransform().position  ;
+            if (_timelineAnimationRootLocation == null)
+            {
+                return GetGUISpawnTransform().position;
+            }
+            return _timelineAnimationRootLocation.position  ;
         }
         public GameObject GetVisualMesh()
         {
@@ -56,13 +62,7 @@ namespace Vanaring
             }
             return _visualMesh;
         }
-        public Vector3 GetVFXSpawnPos()
-        {
-            if (_vfxPos == null || _vfxPos.position == null )
-                throw new Exception("VFX Spawn Position of " + gameObject.name + "hasn't never been assigned");
-            
-            return _vfxPos.position ;
-        }
+     
 
         public Transform GetGUISpawnTransform()
         {
@@ -71,6 +71,10 @@ namespace Vanaring
             
             return _guiPos ;
         }
+
+        
+
+      
         #endregion
         private Animator _animator;
         private void Awake()
@@ -97,14 +101,7 @@ namespace Vanaring
         }
 
          
-        public IEnumerator PlayVFXActionAnimation<T>(VFXEntity vfxEntity,  VFXCallbackHandler<T>.VFXCallback  argc  , T pam)
-        {
-
-            VFXCallbackHandler<T> callbackHandler = new VFXCallbackHandler<T>(GetComponent<CombatEntity>(),
-                vfxEntity , GetVFXSpawnPos(),  argc  );
-
-            yield return (callbackHandler.PlayVFX(pam));
-        }
+        
 
         public IEnumerator DestroyVisualMesh()
         {
@@ -192,7 +189,7 @@ namespace Vanaring
 
             else if (whereToAttach == "CENTERMESH")
             {
-                return _vfxPos;
+                return _visualMesh.transform;
             }
             else
             {

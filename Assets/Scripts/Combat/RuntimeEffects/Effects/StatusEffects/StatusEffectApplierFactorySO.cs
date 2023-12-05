@@ -28,10 +28,7 @@ namespace Vanaring
             return retEffect;
         }
 
-        public override void SimulateEnergyModifier(CombatEntity target)
-        {
-            
-        }
+       
 
         public Comment GetCommentOnApplied => _comment_on_applied;
 

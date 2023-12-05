@@ -20,10 +20,7 @@ namespace Vanaring
             return retEffect;
         }
 
-        public override void SimulateEnergyModifier(CombatEntity target)
-        {
-            throw new System.NotImplementedException();
-        }
+ 
     }
 
 
