@@ -23,6 +23,7 @@ namespace Vanaring
 
         [SerializeField]
         private GameObject _vfxPrefabTemplate;
+
         private GameObject instantiatedVFXCircle;
 
         Transform _parent;

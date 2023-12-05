@@ -259,7 +259,6 @@ namespace Vanaring
            
             lightScale = _owner.SpellCaster.GetEnergyAmount(RuntimeMangicalEnergy.EnergySide.LightEnergy);
             darkScale = _owner.SpellCaster.GetEnergyAmount(RuntimeMangicalEnergy.EnergySide.DarkEnergy);
-            Debug.Log(lightScale + " " + darkScale);
             if (maxLight > maxDark)
             {
                 DisplayEnergySlot(RuntimeMangicalEnergy.EnergySide.LightEnergy, lightScale, darkScale, true);

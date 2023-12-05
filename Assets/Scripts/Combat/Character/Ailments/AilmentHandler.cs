@@ -127,10 +127,10 @@ namespace Vanaring
             {
                 if (_currentAilment.AlimentExpired())
                 {
+                    _eventBroadcaster.InvokeEvent(new EntityAilmentEffectPair() { Actor = _user, Ailment = _currentAilment }, "OnAilmentRecover");
+
                     yield return _currentAilment.AilmentRecover();
 
-                    _eventBroadcaster.OpenChannel<EntityAilmentEffectPair>("OnAilmentRecover");
-                    _eventBroadcaster.InvokeEvent(new EntityAilmentEffectPair() { Actor = _user, Ailment = _currentAilment} , "OnAilmentRecover");
                     _currentAilment = null;
                 }
             }

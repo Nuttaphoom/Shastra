@@ -114,7 +114,6 @@ namespace Vanaring
 
         public IEnumerator ResetOverflow()
         {
-            Debug.Log("reset overflow"); 
             List<IEnumerator> _iEnumerator = new List<IEnumerator>();
 
             if (_starVFX_Instantied != null)
