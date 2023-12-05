@@ -120,6 +120,7 @@ namespace Vanaring
         private void NotifyAilmentControl(EntityAilmentEffectPair ailment)
         {
             string comment = GetAilmentBacklog(ailment.Actor, ailment.Ailment, true, false);
+
             if (comment != "")
                 _combatBacklogDisplayer.EnqueueUtilityTab(comment);
 

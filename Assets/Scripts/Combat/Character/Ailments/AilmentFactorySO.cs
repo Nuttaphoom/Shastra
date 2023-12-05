@@ -84,7 +84,7 @@ namespace Vanaring
         }
         public override Comment GetOnRecoverComment()
         {
-            return _basicDataInfo.TakeControlComment;
+            return _basicDataInfo.RecoverComment ;
         }
     }
 
@@ -97,7 +97,7 @@ namespace Vanaring
 
         [SerializeField]
         private Comment _comment_Reocver;
-        public Comment RecoverComment => _comment_TakeControl;
+        public Comment RecoverComment => _comment_Reocver;
 
         [SerializeField]
         private ActorActionFactory _action;
