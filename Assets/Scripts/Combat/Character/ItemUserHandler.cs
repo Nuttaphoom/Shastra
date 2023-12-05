@@ -47,7 +47,12 @@ namespace Vanaring
         private void FactorizeItemInInventory()
         {
             _itemInventory = ItemInventory.instance.GetItemInventoryAbility;
+
             _runtimeItemsAmount = ItemInventory.instance.GetItemInventoryAmount;
+
+
+            Debug.Log("item inventory : " + _itemInventory);
+            Debug.Log("amount : " + _runtimeItemsAmount);
             foreach (ItemActionFactorySO factory in _itemInventory)
             {
                 _runtimeItems.Add(factory.FactorizeRuntimeAction(_combatEntity) as ItemAbilityRuntime);

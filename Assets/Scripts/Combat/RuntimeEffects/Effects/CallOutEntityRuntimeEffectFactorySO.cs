@@ -3,7 +3,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using UnityEditor.TerrainTools;
 using UnityEngine;
 using UnityEngine.Experimental.GlobalIllumination;
 using static UnityEngine.EventSystems.EventTrigger;

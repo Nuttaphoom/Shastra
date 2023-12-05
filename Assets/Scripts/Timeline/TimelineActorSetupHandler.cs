@@ -82,7 +82,7 @@ namespace Vanaring
             if (targetSelectedAmount == 0)
                 return; 
 
-            Transform newLookAt = Instantiate(_targetTransform[0].transform) ;
+            Transform newLookAt = Instantiate(new GameObject().transform) ;
 
             Vector3 averagePos = _targetTransform[0].transform.position ;
 
@@ -99,7 +99,9 @@ namespace Vanaring
             newLookAt.position = averagePos; 
 
             _virtualCameraToChangeLookAt.LookAt = newLookAt; // [index];
-            newLookAt.gameObject.SetActive(true); 
+            newLookAt.gameObject.SetActive(true);
+
+            _destroyedWithTimeline.Add(newLookAt.gameObject) ;
         }
 
         private void SetUpCasterTargetTransform(Transform owner, GameObject objectWithIndex)

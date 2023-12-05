@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.Drawing.Printing;
 using System.Numerics;
 using System.Runtime.InteropServices;
-using Unity.PlasticSCM.Editor.UI;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;

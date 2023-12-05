@@ -498,9 +498,9 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 1d753732fc2416f4d9a541a1aff41dbe, type: 2}
     _invokeOrder: 0
     _actions:
-    - _actionFactory: {fileID: 11400000, guid: 6ac4a95938ffa8d418ff985afad004ef, type: 2}
+    - _actionFactory: {fileID: 11400000, guid: 1483fad09cb7f9a46abab07929ebbf3c, type: 2}
       _possibility: 1
-    _priority: -10
+    _priority: -100
     _comboHandler:
       _combo: 0
       _breakOnStun: 0
@@ -514,10 +514,6 @@ MonoBehaviour:
     _actions:
     - _actionFactory: {fileID: 11400000, guid: 68460ba663dac254db694d0d0a4879f4, type: 2}
       _possibility: 1
-    - _actionFactory: {fileID: 11400000, guid: 305b4391a8a79b043b172a56bd99e8f6, type: 2}
-      _possibility: 1
-    - _actionFactory: {fileID: 11400000, guid: 6ac4a95938ffa8d418ff985afad004ef, type: 2}
-      _possibility: 1
     _priority: 3
     _comboHandler:
       _combo: 1
@@ -530,14 +526,14 @@ MonoBehaviour:
     _invokeOrder: 1
     _actions:
     - _actionFactory: {fileID: 11400000, guid: b3804f44d756b6846a25846624466128, type: 2}
-      _possibility: 1
+      _possibility: 0.4
     - _actionFactory: {fileID: 11400000, guid: 305b4391a8a79b043b172a56bd99e8f6, type: 2}
-      _possibility: 1
+      _possibility: 0.3
     - _actionFactory: {fileID: 11400000, guid: 6ac4a95938ffa8d418ff985afad004ef, type: 2}
-      _possibility: 1
+      _possibility: 0.3
     _priority: 2
     _comboHandler:
-      _combo: 1
+      _combo: 0
       _breakOnStun: 0
   - _behaviorDescription: 'Phase 2 : HP is less than 50%'
     OR: 0
@@ -553,7 +549,7 @@ MonoBehaviour:
       _possibility: 1
     - _actionFactory: {fileID: 11400000, guid: 6d613c4a62da6f745b2aa8768ff50f93, type: 2}
       _possibility: 1
-    - _actionFactory: {fileID: 11400000, guid: 8a15e0c4e3c3e114990ed47eb1ed9f95, type: 2}
+    - _actionFactory: {fileID: 11400000, guid: 1483fad09cb7f9a46abab07929ebbf3c, type: 2}
       _possibility: 1
     _priority: 102
     _comboHandler:
@@ -573,7 +569,7 @@ MonoBehaviour:
       _possibility: 1
     - _actionFactory: {fileID: 11400000, guid: 6d613c4a62da6f745b2aa8768ff50f93, type: 2}
       _possibility: 1
-    - _actionFactory: {fileID: 11400000, guid: 8a15e0c4e3c3e114990ed47eb1ed9f95, type: 2}
+    - _actionFactory: {fileID: 11400000, guid: 1483fad09cb7f9a46abab07929ebbf3c, type: 2}
       _possibility: 1
     _priority: 101
     _comboHandler:
@@ -713,6 +709,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Skeleton_Mesh
       objectReference: {fileID: 0}
+    - target: {fileID: 4638535940344525852, guid: 03a5c6752b9e9c24091df9f82a74cb54, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 9e107c83fabff8b419df67e5936f27fd, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:

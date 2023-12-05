@@ -131,7 +131,11 @@ namespace Vanaring
         }
         private IEnumerator SetUpNewCombatEncounter()
         {
-            Debug.LogWarning("Need to properly load ally" );
+
+            // Call the GenerateEntityAttacher method with the lists
+            CameraSetUPManager.Instance.GenerateEntityAttacher(GetCompetatorsBySide(ECompetatorSide.Ally).Select(c => c.gameObject).ToList(), GetCompetatorsBySide(ECompetatorSide.Hostile).Select(c => c.gameObject).ToList());
+
+
             foreach (CombatEntity entity in GetCompetatorsBySide(ECompetatorSide.Ally))
                 GetEventBroadcaster().InvokeEvent<CombatEntity>(entity, "OnCompetitorEnterCombat");
 
@@ -155,9 +159,7 @@ namespace Vanaring
                 _competators.Add(c);
             }
 
-            // Call the GenerateEntityAttacher method with the lists
-            CameraSetUPManager.Instance.GenerateEntityAttacher(GetCompetatorsBySide(ECompetatorSide.Ally).Select(c => c.gameObject).ToList(), GetCompetatorsBySide(ECompetatorSide.Hostile).Select(c => c.gameObject).ToList());
-
+            
             
             yield return null; 
         }
