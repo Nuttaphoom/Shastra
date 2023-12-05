@@ -498,7 +498,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 1d753732fc2416f4d9a541a1aff41dbe, type: 2}
     _invokeOrder: 0
     _actions:
-    - _actionFactory: {fileID: 11400000, guid: 1483fad09cb7f9a46abab07929ebbf3c, type: 2}
+    - _actionFactory: {fileID: 11400000, guid: 6ac4a95938ffa8d418ff985afad004ef, type: 2}
       _possibility: 1
     _priority: -100
     _comboHandler:
@@ -516,7 +516,7 @@ MonoBehaviour:
       _possibility: 1
     _priority: 3
     _comboHandler:
-      _combo: 1
+      _combo: 0
       _breakOnStun: 0
   - _behaviorDescription: 'Phase 1 : HP is more than 50% but can''t spawn'
     OR: 0
@@ -545,12 +545,6 @@ MonoBehaviour:
     _actions:
     - _actionFactory: {fileID: 11400000, guid: 7d2d43a5d65714c4c9ba450ffb097f65, type: 2}
       _possibility: 1
-    - _actionFactory: {fileID: 11400000, guid: 6d613c4a62da6f745b2aa8768ff50f93, type: 2}
-      _possibility: 1
-    - _actionFactory: {fileID: 11400000, guid: 6d613c4a62da6f745b2aa8768ff50f93, type: 2}
-      _possibility: 1
-    - _actionFactory: {fileID: 11400000, guid: 1483fad09cb7f9a46abab07929ebbf3c, type: 2}
-      _possibility: 1
     _priority: 102
     _comboHandler:
       _combo: 1
@@ -560,7 +554,6 @@ MonoBehaviour:
     AND: 1
     _behaviorCondition:
     - {fileID: 11400000, guid: d3727bcf82879ae499b71a82f632b1a5, type: 2}
-    - {fileID: 11400000, guid: be1fae307d6613a4089bac45eaca5a85, type: 2}
     _invokeOrder: 1
     _actions:
     - _actionFactory: {fileID: 11400000, guid: b3804f44d756b6846a25846624466128, type: 2}
