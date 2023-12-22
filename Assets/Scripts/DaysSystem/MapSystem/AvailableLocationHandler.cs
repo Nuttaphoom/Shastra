@@ -18,7 +18,7 @@ namespace Vanaring
             private LocationSO _location;
 
             [SerializeField]
-            private List<LocationSelectionCommandCenter> _selectionCommandCenter;
+            private List<LocationSelectionCommandRegister> _selectionCommandCenter;
 
             public LocationSO GetLocationSO
             {

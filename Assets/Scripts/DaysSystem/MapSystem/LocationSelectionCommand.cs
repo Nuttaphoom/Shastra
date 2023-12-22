@@ -9,7 +9,7 @@ using NaughtyAttributes;
 namespace Vanaring
 {
     [Serializable]
-    public class LocationSelectionCommandCenter  
+    public class LocationSelectionCommandRegister
     {
         [SerializeField]
         private ELoadLocationCommandType _commandType;
