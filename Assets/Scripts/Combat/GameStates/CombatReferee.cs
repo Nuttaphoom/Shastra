@@ -101,6 +101,7 @@ namespace Vanaring
        
         private void Awake()
         {
+            Debug.Log(PersistentActiveDayDatabase.Instance ) ; 
             Instance = this; 
 
             _currentSide = ECompetatorSide.Ally;
@@ -264,10 +265,10 @@ namespace Vanaring
 
             ResolveEntityDead(); 
 
-            if (CombatEnd() == 1)
-                MockUpGameOverDisplay.Instance.GameWinDisplay(); 
-            else if (CombatEnd() == 2)
-                MockUpGameOverDisplay.Instance.GameOverDisplay(); 
+            //if (CombatEnd() == 1)
+            //    MockUpGameOverDisplay.Instance.GameWinDisplay(); 
+            //else if (CombatEnd() == 2)
+            //    MockUpGameOverDisplay.Instance.GameOverDisplay(); 
             
 
             SetActiveActors();
@@ -276,27 +277,27 @@ namespace Vanaring
 
         }
 
-        private int CombatEnd()
-        {
-            for (int i = 0;  i< GetCompetatorsBySide(ECompetatorSide.Ally).Count; i++)
-            {
-                var comp = GetCompetatorsBySide(ECompetatorSide.Ally)[i];
+        //private int CombatEnd()
+        //{
+        //    for (int i = 0;  i< GetCompetatorsBySide(ECompetatorSide.Ally).Count; i++)
+        //    {
+        //        var comp = GetCompetatorsBySide(ECompetatorSide.Ally)[i];
 
-                if (!comp.IsDead)
-                {
-                    break;
-                }
+        //        if (!comp.IsDead)
+        //        {
+        //            break;
+        //        }
 
-                else if (i == GetCompetatorsBySide(ECompetatorSide.Ally).Count - 1)
-                    return 2; 
+        //        else if (i == GetCompetatorsBySide(ECompetatorSide.Ally).Count - 1)
+        //            return 2; 
 
-            }
+        //    }
 
-            if (GetCompetatorsBySide(ECompetatorSide.Hostile).Count == 0)
-                return  1;  
+        //    if (GetCompetatorsBySide(ECompetatorSide.Hostile).Count == 0)
+        //        return  1;  
 
-            return 0 ; 
-        }
+        //    return 0 ; 
+        //}
 
         private void ResolveEntityDead()
         {
