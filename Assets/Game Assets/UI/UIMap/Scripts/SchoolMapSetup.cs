@@ -13,7 +13,7 @@ namespace Vanaring
             public string name;
             public Sprite locationIcon;
             public List<BaseLocationSelectionCommand> commandList;
-            public PinGUI _pinLocation;
+            public LocationName location;
         }
         public Pin[] mapPinList;
         [SerializeField]
@@ -21,33 +21,69 @@ namespace Vanaring
         private List<PinGUI> pinObject;
         [SerializeField]
         private PinGUI pinTemplate;
+        RuntimeDayData dayDataTmp;
 
         private void Start()
         {
-            LoadPin(PersistentActiveDayDatabase.Instance.GetActiveDayData);
+            //LoadPin(PersistentActiveDayDatabase.Instance.GetActiveDayData);
+            LoadAllPin(dayDataTmp);
         }
 
-        private void LoadPin(RuntimeDayData dayData)
+        private void LoadActiveLocation()
         {
-            List<LocationSO> locationList = dayData.GetAvailableLocation();
-            LocationName location = locationList[0].LocationName;
+            //Load from LocationScript
+        }
+
+        //
+        private void LoadAllPin(RuntimeDayData dayData)
+        {
+            //List<LocationSO> locationList = dayData.GetAvailableLocation();
+            //LocationName location = locationList[0].LocationName;
+
+            LoadActiveLocation();
+            LoadMapBackground();
+
             //Instantiate PinTemplates
             pinObject = new List<PinGUI>();
-            foreach (Transform pinTransform in pinTransformList)
+            int locationIndex = 0;
+            foreach (Pin pin in mapPinList)
             {
-                PinGUI newPin = Instantiate(pinTemplate, pinTransform);
-                newPin.Init();
+                switch (pin.location)
+                {
+                    case LocationName.Front_Gate:
+                        locationIndex = 0;
+                        break;
+                    case LocationName.Library:
+                        locationIndex = 1;
+                        break;
+                    case LocationName.Stadium:
+                        locationIndex = 2;
+                        break;
+                    case LocationName.Cottage:
+                        locationIndex = 3;
+                        break;
+                    default:
+                        Debug.LogError("Non setup tranform index");
+                        break;
+                }
+                PinGUI newPin = Instantiate(pinTemplate, pinTransformList[locationIndex]);
+                newPin.Init(pin.locationIcon);
                 pinObject.Add(newPin);
             }
 
-            
-            List<BaseLocationSelectionCommand> commandList = dayData.FactorizeCommandActionWithinLocation(locationList[0]);
 
-            foreach (BaseLocationSelectionCommand command in commandList)
-            {
-                Sprite news = command.GetActionIconSprite;
-                command.ExecuteCommand();
-            }
+            //List<BaseLocationSelectionCommand> commandList = dayData.FactorizeCommandActionWithinLocation(locationList[0]);
+
+            //foreach (BaseLocationSelectionCommand command in commandList)
+            //{
+            //    Sprite news = command.GetActionIconSprite;
+            //    command.ExecuteCommand();
+            //}
+        }
+
+        private void LoadMapBackground()
+        {
+            //Need Day/Night time data
         }
     }
 }

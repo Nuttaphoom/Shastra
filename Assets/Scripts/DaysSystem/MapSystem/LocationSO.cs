@@ -16,6 +16,8 @@ namespace Vanaring
     public enum LocationName
     {
         Front_Gate, 
-        Library
+        Library,
+        Stadium,
+        Cottage
     }
 }
