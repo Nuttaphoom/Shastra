@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -29,7 +30,7 @@ namespace Vanaring
             }
             else if (_firstSceneToLoad.GetSceneType() == SceneDataSO.GameSceneType.Location)
             {
-                PersistentSceneLoader.Instance.LoadLocation(_firstSceneToLoad); 
+                PersistentSceneLoader.Instance.LoadLocation<int>(_firstSceneToLoad,2); 
             }
         }
 

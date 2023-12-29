@@ -14,13 +14,23 @@ namespace Vanaring
         private string _sceneToLoad;
 
         #region Load Location 
-        public void LoadLocation(SceneDataSO sceneSO)
+        public void LoadLocation<T>(SceneDataSO sceneSO, T transferedData) where T : struct
         {
             if (_isLoading)
                 return ;
 
             _isLoading = true;
             _sceneToLoad = sceneSO.GetSceneName();
+           
+            GameObject newObject = new GameObject(""+sceneSO.name + " data container") ;
+
+            newObject.AddComponent<LoaderDataContainer>() ; 
+
+            var loaderDataUser = new LoaderDataUser<T>(transferedData) ;
+
+            newObject.GetComponent<LoaderDataContainer>().SetDataUser(loaderDataUser);
+
+            DontDestroyOnLoad(newObject); 
 
             if (_currentLoadedLocationScene != null)
             {
@@ -29,6 +39,8 @@ namespace Vanaring
             {
                 LoadNewScene(); 
             }
+
+
 
         }
 
@@ -43,7 +55,7 @@ namespace Vanaring
         private void OnCompleteLoadedNewLocationScene(AsyncOperation asy)
         {
             _currentLoadedLocationScene = _sceneToLoad;
-            Debug.Log(_currentLoadedLocationScene); 
+            //Debug.Log(_currentLoadedLocationScene); 
             SceneManager.SetActiveScene(SceneManager.GetSceneByName(_currentLoadedLocationScene));
             _isLoading = false;
         }

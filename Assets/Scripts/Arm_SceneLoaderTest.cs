@@ -14,7 +14,13 @@ namespace Vanaring
         {
             if (Input.GetKeyDown(KeyCode.W))
             {
-                _loadLocationCommand.ExecuteCommand(); 
+                _loadLocationCommand.ExecuteCommand();
+            }
+            if (Input.GetKeyDown(KeyCode.S))
+            {
+                Debug.Log(FindObjectOfType<LoaderDataContainer>() );
+                Debug.Log(FindObjectOfType<LoaderDataContainer>().GetData  );
+                Debug.Log( (FindObjectOfType<LoaderDataContainer>().GetData as LoaderDataUser<int> ).GetData() );
             }
         }
 
