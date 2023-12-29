@@ -10,7 +10,7 @@ namespace Vanaring.Assets.Scripts.Utilities
     public class PersistentInstantiatedObject<BaseType> : MonoBehaviour where BaseType : MonoBehaviour
     {
         [SerializeReference]
-        private static BaseType _instance;
+        protected static BaseType _instance;
 
         public static BaseType Instance
         {
@@ -18,17 +18,23 @@ namespace Vanaring.Assets.Scripts.Utilities
             {
                 if (_instance == null)
                 {
-                    _instance = CreateInstance();
+                    if (FindObjectOfType<BaseType>() == null)
+                        _instance = CreateInstance();
+
+                    else
+                        _instance = FindObjectOfType<BaseType>(); 
                 }
 
                 return _instance;
             }
         }
 
+       
+
         private static BaseType CreateInstance()
         {
             var go = new GameObject(""+ typeof(BaseType) );
-            DontDestroyOnLoad(go);
+            DontDestroyOnLoad(go); 
             var component = go.AddComponent<BaseType>();
             return component;
         }

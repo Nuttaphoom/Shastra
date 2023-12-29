@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,12 +8,23 @@ using UnityEngine;
 
 namespace Vanaring 
 {
-    public class LoaderDataContainer : MonoBehaviour 
+    public class LoaderDataContainer : MonoBehaviour
     {
-        [SerializeField] 
-        private object _data ;
-        public object GetData => _data ;
+        [SerializeField]
+        private object _data;
 
+        public object UseDataInContainer()
+        {
+            StartCoroutine(DataUsedCompletion());
+            return _data;
+        }
+
+        private IEnumerator DataUsedCompletion()
+        {
+            yield return new WaitForSecondsRealtime(2.0f);
+
+            Destroy(gameObject);
+        }
         public void SetDataUser<T> (LoaderDataUser<T> loaderDataUser) where T : struct
         {
             _data = loaderDataUser; 

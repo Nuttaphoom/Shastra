@@ -22,7 +22,7 @@ namespace Vanaring
             _isLoading = true;
             _sceneToLoad = sceneSO.GetSceneName();
            
-            GameObject newObject = new GameObject(""+sceneSO.name + " data container") ;
+            GameObject newObject = new GameObject(""+sceneSO.name + " Data Container") ;
 
             newObject.AddComponent<LoaderDataContainer>() ; 
 

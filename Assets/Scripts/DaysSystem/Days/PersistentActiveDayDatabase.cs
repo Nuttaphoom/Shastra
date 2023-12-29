@@ -24,7 +24,8 @@ namespace Vanaring
 
         public void SetActiveDayData(RuntimeDayData value)
         {
-            runtimeDayData = value; 
+            runtimeDayData = value;
+
         }
     }
 }

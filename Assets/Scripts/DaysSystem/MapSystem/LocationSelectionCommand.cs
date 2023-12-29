@@ -14,17 +14,17 @@ namespace Vanaring
         [SerializeField]
         private ELoadLocationCommandType _commandType;
 
-        [SerializeField,AllowNesting,NaughtyAttributes.ShowIf("_commandType", ELoadLocationCommandType.LoadScene)] 
-        private LoadClassroomCommand _loadLocationCommand;
+        [SerializeField,AllowNesting,NaughtyAttributes.ShowIf("_commandType", ELoadLocationCommandType.LoadLocation)] 
+        private LoadLocationCommand _loadLocationCommand;
         
         //[SerializeField,AllowNesting, NaughtyAttributes.ShowIf("_commandType", ELoadLocationCommandType.LoadCutscene)]
         //private LoadCutsceneCommand _loadCutsceneCommand;
     
         public BaseLocationSelectionCommand FactorizeLocationSelectionCommand()
         {
-            if (_commandType == ELoadLocationCommandType.LoadScene)
+            if (_commandType == ELoadLocationCommandType.LoadLocation)
             {
-                return new LoadClassroomCommand(_loadLocationCommand); 
+                return new LoadLocationCommand(_loadLocationCommand); 
             } 
 
             throw new Exception("_commandType is never set "); 
@@ -34,7 +34,7 @@ namespace Vanaring
     public enum ELoadLocationCommandType
     {
         None,
-        LoadScene ,
+        LoadLocation,
        
     }
 
@@ -54,46 +54,23 @@ namespace Vanaring
     {
         [SerializeField]
         protected SceneDataSO _sceneField;
-
-
     }
-    [Serializable]
-    public class LoadLocationMenuCommand : LoadSceneCommand
-    {
-        [SerializeField]
-        private LoadLocationMenuCommandData data; 
-
-        public LoadLocationMenuCommand(LoadLocationMenuCommand copied)
-        {
-            data = copied.data; 
-        }
-        public override void ExecuteCommand()
-        {
-
-        }
-
-        public struct LoadLocationMenuCommandData
-        {
-            List<LoadSceneCommand> commmand; 
-        }
-
-       
-    }
+    
 
 
     [Serializable]
-    public class LoadClassroomCommand : LoadSceneCommand
+    public class LoadLocationCommand : LoadSceneCommand
     {
-        public LoadClassroomCommand(LoadClassroomCommand copied)
+        public LoadLocationCommand(LoadLocationCommand copied)
         {
-
+            _sceneField = copied._sceneField; 
         }
         public override void ExecuteCommand()
         {
-            PersistentSceneLoader.Instance.LoadLocation<ClassroomLoadData>(_sceneField,new ClassroomLoadData() ) ; 
+            PersistentSceneLoader.Instance.LoadLocation<LoadLocationCommandData>(_sceneField,new LoadLocationCommandData() ) ; 
         }
 
-        public struct ClassroomLoadData
+        public struct LoadLocationCommandData
         {
 
         }

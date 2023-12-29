@@ -57,14 +57,24 @@ namespace Vanaring
 
         public List<BaseLocationSelectionCommand> FactorizeCommandActionWithinLocation(LocationSO location)
         {
+            List<BaseLocationSelectionCommand> ret = new List<BaseLocationSelectionCommand>(); 
             foreach (var info in _locationInfos)
             {
                 if (! info.IsCorrectLocation(location))
                     continue;
 
+                if (ret.Count > 0)
+                    throw new Exception("Multiple matching location with " + info.GetLocationSO.LocationName);
 
-                return info.FactorizeCommandLocation ; 
+
+                foreach (var command in info.FactorizeCommandLocation)
+                {
+                    ret.Add(command);
+                }
             }
+
+            if (ret.Count > 0)
+                return ret; 
 
             throw new Exception("Location " + location + " is not in the day database"); 
 
