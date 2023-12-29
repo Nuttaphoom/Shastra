@@ -17,7 +17,7 @@ namespace Vanaring
             return _availableLocationHandler.GetAvailableLocation(); //.Select(info => info.GetLocationSO).ToList();
         }
 
-        public List<BaseLocationSelectionCommand> FactorizeCommandActionWithinLocation(LocationSO location)
+        public List<BaseLocationActionCommand> FactorizeCommandActionWithinLocation(LocationSO location)
         {
             return _availableLocationHandler.FactorizeCommandActionWithinLocation(location);
         }

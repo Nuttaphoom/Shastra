@@ -10,12 +10,14 @@ namespace Vanaring
         private List<RuntimeLocation> _runtimeLocations; 
 
         public RuntimeDayData( DayDataSO dayData) {
+
             _runtimeLocations = new List<RuntimeLocation>(); 
 
-            foreach (var v in dayData.GetAvailableLocation())
+            foreach (var locationSO in dayData.GetAvailableLocation())
             {
-                Debug.Log(" count : " + dayData.FactorizeCommandActionWithinLocation(v).Count); 
-                _runtimeLocations.Add(v.FactorizeRuntimeLocation(dayData.FactorizeCommandActionWithinLocation(v))) ;
+                List<BaseLocationActionCommand> actionWithinLocation = dayData.FactorizeCommandActionWithinLocation(locationSO); 
+                var runtimeLocation = locationSO.FactorizeRuntimeLocation(actionWithinLocation);
+                _runtimeLocations.Add(runtimeLocation) ;
             }
         }
 

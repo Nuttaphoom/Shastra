@@ -18,7 +18,7 @@ namespace Vanaring
             private LocationSO _location;
 
             [SerializeField]
-            private List<LocationSelectionCommandRegister> _selectionCommandCenter;
+            private List<LocationActionCommandRegister> _selectionCommandCenter;
 
             public LocationSO GetLocationSO
             {
@@ -30,10 +30,10 @@ namespace Vanaring
 
             }
 
-            public  List<BaseLocationSelectionCommand>  FactorizeCommandLocation  
+            public  List<BaseLocationActionCommand>  FactorizeCommandLocation  
             {
                 get {
-                    List<BaseLocationSelectionCommand> ret = new List<BaseLocationSelectionCommand>();
+                    List<BaseLocationActionCommand> ret = new List<BaseLocationActionCommand>();
                     foreach (var commandCenter in _selectionCommandCenter)
                         ret.Add(commandCenter.FactorizeLocationSelectionCommand( ) ); 
                     
@@ -55,9 +55,9 @@ namespace Vanaring
             return _locationInfos.Select(info => info.GetLocationSO).ToList();
         }
 
-        public List<BaseLocationSelectionCommand> FactorizeCommandActionWithinLocation(LocationSO location)
+        public List<BaseLocationActionCommand> FactorizeCommandActionWithinLocation(LocationSO location)
         {
-            List<BaseLocationSelectionCommand> ret = new List<BaseLocationSelectionCommand>(); 
+            List<BaseLocationActionCommand> ret = new List<BaseLocationActionCommand>(); 
             foreach (var info in _locationInfos)
             {
                 if (! info.IsCorrectLocation(location))

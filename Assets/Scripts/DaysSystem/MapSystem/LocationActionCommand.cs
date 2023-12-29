@@ -9,7 +9,7 @@ using NaughtyAttributes;
 namespace Vanaring
 {
     [Serializable]
-    public class LocationSelectionCommandRegister
+    public class LocationActionCommandRegister
     {
         [SerializeField]
         private ELoadLocationCommandType _commandType;
@@ -20,7 +20,7 @@ namespace Vanaring
         //[SerializeField,AllowNesting, NaughtyAttributes.ShowIf("_commandType", ELoadLocationCommandType.LoadCutscene)]
         //private LoadCutsceneCommand _loadCutsceneCommand;
     
-        public BaseLocationSelectionCommand FactorizeLocationSelectionCommand()
+        public BaseLocationActionCommand FactorizeLocationSelectionCommand()
         {
             if (_commandType == ELoadLocationCommandType.LoadLocation)
             {
@@ -38,7 +38,7 @@ namespace Vanaring
        
     }
 
-    public abstract class BaseLocationSelectionCommand
+    public abstract class BaseLocationActionCommand
     {
         [SerializeField]
         private Sprite _actionIconAsset; 
@@ -50,7 +50,7 @@ namespace Vanaring
 
 
     [Serializable]
-    public abstract class LoadSceneCommand : BaseLocationSelectionCommand
+    public abstract class LoadSceneCommand : BaseLocationActionCommand
     {
         [SerializeField]
         protected SceneDataSO _sceneField;

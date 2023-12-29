@@ -18,7 +18,7 @@ namespace Vanaring
         public SceneDataSO SceneData => _sceneData;
         public LocationName LocationName { get { return _locationName; } }
 
-        public RuntimeLocation FactorizeRuntimeLocation(List<BaseLocationSelectionCommand> actionWithinLocation)
+        public RuntimeLocation FactorizeRuntimeLocation(List<BaseLocationActionCommand> actionWithinLocation)
         {
             return new RuntimeLocation(this, actionWithinLocation); 
         }
@@ -27,15 +27,15 @@ namespace Vanaring
     }
     public struct LoadLocationMenuCommandData
     {
-        public List<BaseLocationSelectionCommand> action_on_this_location;
+        public List<BaseLocationActionCommand> action_on_this_location;
     }
 
     public class RuntimeLocation
     {
         private LocationName _locationName;
         private SceneDataSO _sceneData;
-        private List<BaseLocationSelectionCommand> actionOnLocation;
-        public RuntimeLocation(LocationSO data, List<BaseLocationSelectionCommand> actionOnLocation)
+        private List<BaseLocationActionCommand> actionOnLocation;
+        public RuntimeLocation(LocationSO data, List<BaseLocationActionCommand> actionOnLocation)
         {
             this._locationName = data.LocationName;
             this._sceneData = data.SceneData;
@@ -47,7 +47,7 @@ namespace Vanaring
                 throw new Exception("location name is null");
 
             LoadLocationMenuCommandData data = new LoadLocationMenuCommandData();
-            data.action_on_this_location = new List<BaseLocationSelectionCommand>();
+            data.action_on_this_location = new List<BaseLocationActionCommand>();
 
             foreach (var actionCommand in actionOnLocation)
                 data.action_on_this_location.Add(actionCommand);
