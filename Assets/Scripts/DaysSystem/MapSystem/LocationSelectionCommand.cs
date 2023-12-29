@@ -15,20 +15,17 @@ namespace Vanaring
         private ELoadLocationCommandType _commandType;
 
         [SerializeField,AllowNesting,NaughtyAttributes.ShowIf("_commandType", ELoadLocationCommandType.LoadLocation)] 
-        private LoadLocationCommand _loadLocationCommand;
+        private LoadClassroomCommand _loadLocationCommand;
         
-        [SerializeField,AllowNesting, NaughtyAttributes.ShowIf("_commandType", ELoadLocationCommandType.LoadCutscene)]
-        private LoadCutsceneCommand _loadCutsceneCommand;
+        //[SerializeField,AllowNesting, NaughtyAttributes.ShowIf("_commandType", ELoadLocationCommandType.LoadCutscene)]
+        //private LoadCutsceneCommand _loadCutsceneCommand;
     
         public BaseLocationSelectionCommand FactorizeLocationSelectionCommand()
         {
             if (_commandType == ELoadLocationCommandType.LoadLocation)
             {
-                return new LoadLocationCommand(_loadLocationCommand); 
-            }else if (_commandType == ELoadLocationCommandType.LoadCutscene)
-            {
-                return new LoadCutsceneCommand(_loadCutsceneCommand);
-            }
+                return new LoadClassroomCommand(_loadLocationCommand); 
+            } 
 
             throw new Exception("_commandType is never set "); 
         }
@@ -38,7 +35,7 @@ namespace Vanaring
     {
         None,
         LoadLocation ,
-        LoadCutscene 
+       
     }
 
     public abstract class BaseLocationSelectionCommand
@@ -53,29 +50,24 @@ namespace Vanaring
 
 
     [Serializable]
-    public class LoadLocationCommand : BaseLocationSelectionCommand
+    public abstract class LoadLocationCommand : BaseLocationSelectionCommand
     {
-        public LoadLocationCommand(LoadLocationCommand copied)
-        {
+        [SerializeField]
+        protected SceneDataSO _sceneField;
 
-        }
-        public override void ExecuteCommand()
-        {
-            throw new System.NotImplementedException();
-        }
+
     }
 
     [Serializable]
-    public class LoadCutsceneCommand : BaseLocationSelectionCommand
+    public class LoadClassroomCommand : LoadLocationCommand
     {
-        public string test2; 
-        public  LoadCutsceneCommand(LoadCutsceneCommand copied)
+        public LoadClassroomCommand(LoadClassroomCommand copied)
         {
 
         }
         public override void ExecuteCommand()
         {
-            throw new System.NotImplementedException();
+            PersistentSceneLoader.Instance.LoadLocation(_sceneField) ; 
         }
     }
 }
