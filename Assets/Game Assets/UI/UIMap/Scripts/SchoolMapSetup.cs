@@ -22,33 +22,24 @@ namespace Vanaring
         [SerializeField]
         private PinGUI pinTemplate;
         RuntimeDayData dayDataTmp;
+        private List<RuntimeLocation> availableLocationList;
 
-        private void Start()
+        private void Awake()
         {
+            availableLocationList = PersistentActiveDayDatabase.Instance.GetActiveDayData.GetAvailableLocation();
             //LoadPin(PersistentActiveDayDatabase.Instance.GetActiveDayData);
             LoadAllPin(dayDataTmp);
         }
-
-        private void LoadActiveLocation()
-        {
-            //Load from LocationScript
-        }
-
-        //
         private void LoadAllPin(RuntimeDayData dayData)
         {
-            //List<LocationSO> locationList = dayData.GetAvailableLocation();
-            //LocationName location = locationList[0].LocationName;
-
-            LoadActiveLocation();
             LoadMapBackground();
 
             //Instantiate PinTemplates
             pinObject = new List<PinGUI>();
             int locationIndex = 0;
-            foreach (Pin pin in mapPinList)
+            foreach (RuntimeLocation location in availableLocationList)
             {
-                switch (pin.location)
+                switch (location.LocationName)
                 {
                     case LocationName.Front_Gate:
                         locationIndex = 0;
@@ -66,19 +57,10 @@ namespace Vanaring
                         Debug.LogError("Non setup tranform index");
                         break;
                 }
-                PinGUI newPin = Instantiate(pinTemplate, pinTransformList[locationIndex]);
-                newPin.Init(pin.locationIcon);
+                PinGUI newPin = Instantiate(pinTemplate, pinTransformList[locationIndex]);         
+                newPin.Init(location);
                 pinObject.Add(newPin);
             }
-
-
-            //List<BaseLocationSelectionCommand> commandList = dayData.FactorizeCommandActionWithinLocation(locationList[0]);
-
-            //foreach (BaseLocationSelectionCommand command in commandList)
-            //{
-            //    Sprite news = command.GetActionIconSprite;
-            //    command.ExecuteCommand();
-            //}
         }
 
         private void LoadMapBackground()

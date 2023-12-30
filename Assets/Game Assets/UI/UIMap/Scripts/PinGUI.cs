@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using UnityEngine.Events;
+using TMPro;
 
 namespace Vanaring
 {
@@ -21,6 +22,8 @@ namespace Vanaring
         private Sprite loadCutsceneIcon;
         [SerializeField]
         private Sprite loadLocationIcon;
+        [SerializeField]
+        private TextMeshProUGUI locationNameText;
 
         private Transform horizontalLayout;
         private List<BaseLocationActionCommand> commandList;
@@ -28,15 +31,17 @@ namespace Vanaring
         //[SerializeField]
         //private List<LocationSelectionCommandRegister> baseCommand;
 
-        public void Init(Sprite image) {
+        public void Init(RuntimeLocation location) {
 
             //foreach (LocationSelectionCommandRegister command in baseCommand)
             //{
             //    commandList.Add(command.FactorizeLocationSelectionCommand());
             //}
             EventWindow.SetActive(false);
-            InitEventButton();
-            pinImage.sprite = image;
+            //InitEventButton();
+            pinImage.sprite = location.LocationIcon;
+            locationNameText.text = location.LocationName.ToString();
+            gameObject.GetComponent<Button>().onClick.AddListener(() => location.LoadThisLocation());
         }
 
         private void InitEventButton()

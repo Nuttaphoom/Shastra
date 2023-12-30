@@ -15,6 +15,9 @@ namespace Vanaring
         [SerializeField]
         private SceneDataSO _sceneData ;
 
+        [SerializeField]
+        private Sprite _locationIcon;
+        public Sprite LocationIcon => _locationIcon;
         public SceneDataSO SceneData => _sceneData;
         public LocationName LocationName { get { return _locationName; } }
 
@@ -35,12 +38,18 @@ namespace Vanaring
         private LocationName _locationName;
         private SceneDataSO _sceneData;
         private List<BaseLocationActionCommand> actionOnLocation;
+        private Sprite _locationIcon;
         public RuntimeLocation(LocationSO data, List<BaseLocationActionCommand> actionOnLocation)
         {
             this._locationName = data.LocationName;
             this._sceneData = data.SceneData;
             this.actionOnLocation = actionOnLocation;
+            this._locationIcon = data.LocationIcon;
         }
+
+        public LocationName LocationName { get { return _locationName; } }
+        public Sprite LocationIcon { get { return _locationIcon; } }
+
         public void LoadThisLocation()
         {
             if (_locationName == LocationName.Null)
@@ -62,6 +71,7 @@ namespace Vanaring
         Front_Gate, 
         Library,
         Stadium,
-        Cottage
+        Cottage,
+        SchoolMap
     }
 }
