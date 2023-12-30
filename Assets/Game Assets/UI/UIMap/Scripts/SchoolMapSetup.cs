@@ -12,7 +12,7 @@ namespace Vanaring
         {
             public string name;
             public Sprite locationIcon;
-            public List<BaseLocationSelectionCommand> commandList;
+            public List<BaseLocationActionCommand> commandList;
             public LocationName location;
         }
         public Pin[] mapPinList;

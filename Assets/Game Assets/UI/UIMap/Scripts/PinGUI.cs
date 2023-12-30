@@ -23,10 +23,10 @@ namespace Vanaring
         private Sprite loadLocationIcon;
 
         private Transform horizontalLayout;
-        private List<BaseLocationSelectionCommand> commandList;
+        private List<BaseLocationActionCommand> commandList;
 
-        [SerializeField]
-        private List<LocationSelectionCommandRegister> baseCommand;
+        //[SerializeField]
+        //private List<LocationSelectionCommandRegister> baseCommand;
 
         public void Init(Sprite image) {
 
@@ -47,11 +47,11 @@ namespace Vanaring
                 return;
             }
             _eventButton.gameObject.SetActive(true);
-            foreach (BaseLocationSelectionCommand command in commandList)
+            foreach (BaseLocationActionCommand command in commandList)
             {
                 Button newEventButton = Instantiate(_eventButton, horizontalLayout);
                 newEventButton.onClick.AddListener(() => command.ExecuteCommand());
-                if(command is LoadCutsceneCommand)
+                if(command is LoadSceneCommand)
                 {
                     newEventButton.GetComponent<Image>().sprite = loadCutsceneIcon;
                 }
