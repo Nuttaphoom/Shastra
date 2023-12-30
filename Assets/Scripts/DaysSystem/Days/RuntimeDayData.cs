@@ -4,22 +4,28 @@ using UnityEngine;
 
 namespace Vanaring
 {
+    [SerializeField] 
     public class RuntimeDayData    
     {
-        private DayDataSO _dayDataSO;
+        private List<RuntimeLocation> _runtimeLocations; 
 
-        public RuntimeDayData(ref DayDataSO dayData) { 
-            _dayDataSO = dayData; 
+        public RuntimeDayData( DayDataSO dayData) {
+
+            _runtimeLocations = new List<RuntimeLocation>(); 
+
+            foreach (var locationSO in dayData.GetAvailableLocation())
+            {
+                List<BaseLocationActionCommand> actionWithinLocation = dayData.FactorizeCommandActionWithinLocation(locationSO); 
+                var runtimeLocation = locationSO.FactorizeRuntimeLocation(actionWithinLocation);
+                _runtimeLocations.Add(runtimeLocation) ;
+            }
         }
 
-        public List<LocationSO> GetAvailableLocation()
+        public List<RuntimeLocation> GetAvailableLocation()
         {
-            return _dayDataSO.GetAvailableLocation();  
+            return _runtimeLocations; 
         }
 
-        public List<BaseLocationSelectionCommand> FactorizeCommandActionWithinLocation(LocationSO location)
-        {
-            return _dayDataSO.FactorizeCommandActionWithinLocation(location);
-        }
+    
     }
 }

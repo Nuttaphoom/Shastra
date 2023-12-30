@@ -9,22 +9,22 @@ using NaughtyAttributes;
 namespace Vanaring
 {
     [Serializable]
-    public class LocationSelectionCommandRegister
+    public class LocationActionCommandRegister
     {
         [SerializeField]
         private ELoadLocationCommandType _commandType;
 
         [SerializeField,AllowNesting,NaughtyAttributes.ShowIf("_commandType", ELoadLocationCommandType.LoadLocation)] 
-        private LoadClassroomCommand _loadLocationCommand;
+        private LoadLocationCommand _loadLocationCommand;
         
         //[SerializeField,AllowNesting, NaughtyAttributes.ShowIf("_commandType", ELoadLocationCommandType.LoadCutscene)]
         //private LoadCutsceneCommand _loadCutsceneCommand;
     
-        public BaseLocationSelectionCommand FactorizeLocationSelectionCommand()
+        public BaseLocationActionCommand FactorizeLocationSelectionCommand()
         {
             if (_commandType == ELoadLocationCommandType.LoadLocation)
             {
-                return new LoadClassroomCommand(_loadLocationCommand); 
+                return new LoadLocationCommand(_loadLocationCommand); 
             } 
 
             throw new Exception("_commandType is never set "); 
@@ -34,11 +34,11 @@ namespace Vanaring
     public enum ELoadLocationCommandType
     {
         None,
-        LoadLocation ,
+        LoadLocation,
        
     }
 
-    public abstract class BaseLocationSelectionCommand
+    public abstract class BaseLocationActionCommand
     {
         [SerializeField]
         private Sprite _actionIconAsset; 
@@ -50,24 +50,29 @@ namespace Vanaring
 
 
     [Serializable]
-    public abstract class LoadLocationCommand : BaseLocationSelectionCommand
+    public abstract class LoadSceneCommand : BaseLocationActionCommand
     {
         [SerializeField]
         protected SceneDataSO _sceneField;
-
-
     }
+    
+
 
     [Serializable]
-    public class LoadClassroomCommand : LoadLocationCommand
+    public class LoadLocationCommand : LoadSceneCommand
     {
-        public LoadClassroomCommand(LoadClassroomCommand copied)
+        public LoadLocationCommand(LoadLocationCommand copied)
         {
-
+            _sceneField = copied._sceneField; 
         }
         public override void ExecuteCommand()
         {
-            PersistentSceneLoader.Instance.LoadLocation(_sceneField) ; 
+            PersistentSceneLoader.Instance.LoadLocation<LoadLocationCommandData>(_sceneField,new LoadLocationCommandData() ) ; 
+        }
+
+        public struct LoadLocationCommandData
+        {
+
         }
     }
 }
