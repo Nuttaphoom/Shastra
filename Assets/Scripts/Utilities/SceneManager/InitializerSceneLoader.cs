@@ -17,7 +17,6 @@ namespace Vanaring
         [SerializeField]
         private SceneDataSO _persistantScene;
 
- 
         private void Start()
         {
             SceneManager.LoadSceneAsync(_persistantScene.GetSceneName(), LoadSceneMode.Additive).completed += OnLoadAsync;
@@ -40,9 +39,6 @@ namespace Vanaring
         }
         private void OnLoadAsync(AsyncOperation asy)
         {
-            
-
-            return; 
             if (_firstSceneToLoad.GetSceneType() == SceneDataSO.GameSceneType.Menu)
             {
                 throw new System.Exception("still not implement loading menu functionality"); 

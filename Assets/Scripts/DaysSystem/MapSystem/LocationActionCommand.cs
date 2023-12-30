@@ -66,8 +66,8 @@ namespace Vanaring
             _sceneField = copied._sceneField; 
         }
         public override void ExecuteCommand()
-        {
-            PersistentSceneLoader.Instance.LoadLocation<LoadLocationCommandData>(_sceneField,new LoadLocationCommandData() ) ; 
+        { 
+            PersistentSceneLoader.Instance.LoadLocation<LoadLocationCommandData>(_sceneField, new LoadLocationCommandData()) ; 
         }
 
         public struct LoadLocationCommandData
