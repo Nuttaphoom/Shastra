@@ -41,9 +41,14 @@ namespace Vanaring
     public abstract class BaseLocationActionCommand
     {
         [SerializeField]
-        private Sprite _actionIconAsset; 
+        private Sprite _actionIconAsset;
 
-        public Sprite GetActionIconSprite => _actionIconAsset;  
+        public BaseLocationActionCommand(BaseLocationActionCommand copied)
+        {
+            _actionIconAsset = copied._actionIconAsset;
+        }
+
+        public Sprite GetActionIconSprite => _actionIconAsset;
 
         public abstract void ExecuteCommand () ;
     }
@@ -52,6 +57,10 @@ namespace Vanaring
     [Serializable]
     public abstract class LoadSceneCommand : BaseLocationActionCommand
     {
+        public LoadSceneCommand(LoadSceneCommand copied): base(copied)
+        {
+
+        }
         [SerializeField]
         protected SceneDataSO _sceneField;
     }
@@ -61,7 +70,7 @@ namespace Vanaring
     [Serializable]
     public class LoadLocationCommand : LoadSceneCommand
     {
-        public LoadLocationCommand(LoadLocationCommand copied)
+        public LoadLocationCommand(LoadLocationCommand copied): base(copied)
         {
             _sceneField = copied._sceneField; 
         }

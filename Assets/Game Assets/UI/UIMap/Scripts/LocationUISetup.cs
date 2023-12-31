@@ -29,10 +29,9 @@ namespace Vanaring
                 GameObject newActionButton = Instantiate(actionButton, verticalLayout.transform);
                 newActionButton.SetActive(true);
                 newActionButton.GetComponent<Button>().onClick.AddListener(() => PerformAction(action));
-                //newActionButton.GetComponent<Image>().sprite = action.GetActionIconSprite;
-                //Debug.Log(action.GetActionIconSprite.name);
+                //Debug.Log(action.GetTestString);
+                newActionButton.GetComponent<Image>().sprite = action.GetActionIconSprite;
                 actionButtonList.Add(newActionButton);
-                
             }
         }
 
