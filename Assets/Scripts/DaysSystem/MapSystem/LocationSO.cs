@@ -49,6 +49,7 @@ namespace Vanaring
 
         public LocationName LocationName { get { return _locationName; } }
         public Sprite LocationIcon { get { return _locationIcon; } }
+        public List<BaseLocationActionCommand> ActionOnLocation  { get { return actionOnLocation; } }
 
         public void LoadThisLocation()
         {
