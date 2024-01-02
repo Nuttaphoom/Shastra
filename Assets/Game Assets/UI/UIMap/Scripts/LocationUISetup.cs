@@ -14,6 +14,7 @@ namespace Vanaring
         private List<GameObject> actionButtonList = new List<GameObject>();
         [SerializeField] private GameObject confirmPanel;
         [SerializeField] private Button confirmButton;
+        [SerializeField] private Button mapButton;
 
         private void Start()
         {
