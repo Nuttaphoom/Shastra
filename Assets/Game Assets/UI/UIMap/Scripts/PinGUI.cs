@@ -56,14 +56,14 @@ namespace Vanaring
             {
                 Button newEventButton = Instantiate(_eventButton, horizontalLayout);
                 newEventButton.onClick.AddListener(() => command.ExecuteCommand());
-                if(command is LoadSceneCommand)
-                {
-                    newEventButton.GetComponent<Image>().sprite = loadCutsceneIcon;
-                }
-                else if(command is LoadLocationCommand)
-                {
-                    newEventButton.GetComponent<Image>().sprite = loadLocationIcon;
-                }
+                //if(command is LoadSceneCommand)
+                //{
+                //    newEventButton.GetComponent<Image>().sprite = loadCutsceneIcon;
+                //}
+                //else if(command is LoadLocationCommand)
+                //{
+                //    newEventButton.GetComponent<Image>().sprite = loadLocationIcon;
+                //}
                 
             }
         }
