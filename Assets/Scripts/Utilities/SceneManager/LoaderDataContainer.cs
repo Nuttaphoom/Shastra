@@ -25,7 +25,7 @@ namespace Vanaring
 
             Destroy(gameObject);
         }
-        public void SetDataUser<T> (LoaderDataUser<T> loaderDataUser) where T : struct
+        public void SetDataUser<T> (LoaderDataUser<T> loaderDataUser) 
         {
             _data = loaderDataUser; 
         }

@@ -23,10 +23,12 @@ namespace Vanaring
         Hostile
     }
 
-    public class CombatReferee : MonoBehaviour   
+    public class CombatReferee : MonoBehaviour
     {
         #region EventBroadcaster
-        private EventBroadcaster _eventBroadcaster ;
+        private EventBroadcaster _eventBroadcaster;
+
+         
         private EventBroadcaster GetEventBroadcaster()
         {
             if (_eventBroadcaster == null)

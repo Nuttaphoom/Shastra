@@ -9,16 +9,19 @@ namespace Vanaring
     [Serializable]
     public  class ActivityActionCommand : BaseLocationActionCommand
     {
+        [Header("Scene with activity inside it")]
+        [SerializeField]
+        private SceneDataSO _sceneDataSO ; 
         public ActivityActionCommand(ActivityActionCommand copied)
         {
-            //_sceneField = copied._sceneField; 
+            _sceneDataSO = copied._sceneDataSO;
         }
         public override void ExecuteCommand()
         {
-            //PersistentSceneLoader.Instance.LoadLocation<LoadLocationCommandData>(_sceneField, new LoadLocationCommandData()) ; 
+            PersistentSceneLoader.Instance.LoadLocation(_sceneDataSO, new ActivitySceneDataStruct()) ; 
         }
 
-        public struct LoadLocationCommandData
+        public struct ActivitySceneDataStruct 
         {
 
         }
