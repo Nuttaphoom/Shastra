@@ -9,18 +9,16 @@ using Vanaring.Assets.Scripts.Utilities;
 
 namespace Vanaring 
 {
-    public class PersistentDaySetupHandler: PersistentInstantiatedObject<PersistentDaySetupHandler>
+    public class DaySetupHandler: MonoBehaviour
     {
         [SerializeField]
         private SemesterDataSO _activeSemester;
 
         private int _currentDate = 0 ;
         
-
         private void Awake()
         {
-            PersistentDaySetupHandler.Instance.NewDayBegin(); 
-
+            NewDayBegin(); 
         }
  
         public void NewDayBegin()

@@ -14,17 +14,17 @@ namespace Vanaring
         [SerializeField]
         private ELoadLocationCommandType _commandType;
 
-        [SerializeField,AllowNesting,NaughtyAttributes.ShowIf("_commandType", ELoadLocationCommandType.LoadLocation)] 
-        private LoadLocationCommand _loadLocationCommand;
+        [SerializeField,AllowNesting,NaughtyAttributes.ShowIf("_commandType", ELoadLocationCommandType.Activity)] 
+        private ActivityActionCommand _loadLocationCommand;
         
         //[SerializeField,AllowNesting, NaughtyAttributes.ShowIf("_commandType", ELoadLocationCommandType.LoadCutscene)]
         //private LoadCutsceneCommand _loadCutsceneCommand;
     
         public BaseLocationActionCommand FactorizeLocationSelectionCommand()
         {
-            if (_commandType == ELoadLocationCommandType.LoadLocation)
+            if (_commandType == ELoadLocationCommandType.Activity)
             {
-                return new LoadLocationCommand(_loadLocationCommand); 
+                return new ActivityActionCommand(_loadLocationCommand); 
             } 
 
             throw new Exception("_commandType is never set "); 
@@ -34,7 +34,7 @@ namespace Vanaring
     public enum ELoadLocationCommandType
     {
         None,
-        LoadLocation,
+        Activity,
        
     }
 
@@ -49,30 +49,14 @@ namespace Vanaring
     }
 
 
-    [Serializable]
-    public abstract class LoadSceneCommand : BaseLocationActionCommand
-    {
-        [SerializeField]
-        protected SceneDataSO _sceneField;
-    }
+    //[Serializable]
+    //public abstract class LoadSceneCommand : BaseLocationActionCommand
+    //{
+    //    [SerializeField]
+    //    protected SceneDataSO _sceneField;
+    //}
     
 
 
-    [Serializable]
-    public class LoadLocationCommand : LoadSceneCommand
-    {
-        public LoadLocationCommand(LoadLocationCommand copied)
-        {
-            _sceneField = copied._sceneField; 
-        }
-        public override void ExecuteCommand()
-        { 
-            PersistentSceneLoader.Instance.LoadLocation<LoadLocationCommandData>(_sceneField, new LoadLocationCommandData()) ; 
-        }
-
-        public struct LoadLocationCommandData
-        {
-
-        }
-    }
+  
 }

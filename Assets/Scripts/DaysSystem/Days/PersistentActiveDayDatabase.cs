@@ -11,6 +11,8 @@ namespace Vanaring
         [SerializeReference]
         private RuntimeDayData runtimeDayData = null;
 
+        private DailyActionParticipationHandler _dailyActionParticipationHandler ; 
+
         public RuntimeDayData GetActiveDayData
         {
             get
@@ -26,6 +28,7 @@ namespace Vanaring
         {
             runtimeDayData = value;
 
+            _dailyActionParticipationHandler = new DailyActionParticipationHandler(); 
         }
     }
 }
