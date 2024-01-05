@@ -7,8 +7,7 @@ namespace Vanaring
 {
     public class Arm_SceneLoaderTest : MonoBehaviour
     {
-        [SerializeField]
-        private LoadLocationCommand _loadLocationCommand;
+     
 
         private void Update()
         {
