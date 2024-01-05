@@ -15,6 +15,8 @@ namespace Vanaring
         [SerializeField] private GameObject confirmPanel;
         [SerializeField] private Button confirmButton;
         [SerializeField] private Button mapButton;
+        [SerializeField]
+        private SceneDataSO _mapSceneToLoad;
 
         private void Start()
         {
@@ -34,6 +36,7 @@ namespace Vanaring
                 newActionButton.GetComponent<Image>().sprite = action.GetActionIconSprite;
                 actionButtonList.Add(newActionButton);
             }
+            mapButton.onClick.AddListener(() => PersistentSceneLoader.Instance.LoadLocation<int>(_mapSceneToLoad, 0));
         }
 
         private void PerformAction(BaseLocationActionCommand action)

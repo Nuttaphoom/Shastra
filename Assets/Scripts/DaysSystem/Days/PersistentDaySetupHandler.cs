@@ -15,7 +15,6 @@ namespace Vanaring
         private SemesterDataSO _activeSemester;
 
         private int _currentDate = 0 ;
-        
 
         private void Awake()
         {
