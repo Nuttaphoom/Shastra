@@ -9,7 +9,6 @@ namespace Vanaring.Assets.Scripts.DaysSystem.SchoolAction
 
     public interface ISchoolAction 
     {
-        public void PrePerformActivity();
         public void OnPerformAcivity(); 
         public void PostPerformActivity(); 
     }

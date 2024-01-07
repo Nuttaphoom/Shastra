@@ -15,6 +15,12 @@ namespace Vanaring
         [SerializeField]
         private PlayableDirector _director;
 
+        [SerializeField]
+        private PersonalityTraitRewardDisplayer _rewardDisplayer ;
+        private void Start()
+        {
+            OnPerformAcivity();
+        }
         public void OnPerformAcivity()
         {
             StartCoroutine(StartPlayingTimeline()); 
@@ -37,18 +43,12 @@ namespace Vanaring
 
         public void PostPerformActivity()
         {
-            Debug.Log("Post Perform activity"); 
+            Debug.Log("Post Perform activity");
+
+            StartCoroutine(_rewardDisplayer.DisplayRewardUICoroutine() ) ; 
         }
 
-        public void PrePerformActivity()
-        {
-            throw new NotImplementedException();
-        }
-
-        private void Start()
-        {
-            OnPerformAcivity(); 
-        }
+        
 
     }
 }
