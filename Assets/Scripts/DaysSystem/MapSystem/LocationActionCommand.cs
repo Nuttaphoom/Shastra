@@ -43,8 +43,12 @@ namespace Vanaring
         [SerializeField]
         private Sprite _actionIconAsset; 
 
-        public Sprite GetActionIconSprite => _actionIconAsset;  
+        public Sprite GetActionIconSprite => _actionIconAsset;
 
+        public BaseLocationActionCommand(BaseLocationActionCommand copied)
+        {
+            _actionIconAsset = copied._actionIconAsset; 
+        }
         public abstract void ExecuteCommand () ;
     }
 
