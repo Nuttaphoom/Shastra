@@ -47,12 +47,12 @@ namespace Vanaring
                     case LocationName.Library:
                         locationIndex = 1;
                         break;
-                    case LocationName.Stadium:
-                        locationIndex = 2;
-                        break;
-                    case LocationName.Cottage:
-                        locationIndex = 3;
-                        break;
+                    //case LocationName.Stadium:
+                    //    locationIndex = 2;
+                    //    break;
+                    //case LocationName.Cottage:
+                    //    locationIndex = 3;
+                    //    break;
                     default:
                         Debug.LogError("Non setup tranform index");
                         break;

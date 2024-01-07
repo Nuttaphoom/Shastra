@@ -14,7 +14,7 @@ namespace Vanaring
 
         private string _currentLoadedLocationScene ;
         private string _sceneToLoad;
-        private TransitionObject transitionScreen;
+        private TransitionObject transitionScreenObj;
         [SerializeField]
         private TransitionSceneManager transitionManager;
 
@@ -44,7 +44,7 @@ namespace Vanaring
                 UnloadLocation(); 
             }else
             {
-                LoadNewScene(); 
+                BeginLoadScene(); 
             }
         }
 
@@ -53,51 +53,59 @@ namespace Vanaring
             if (_currentLoadedLocationScene != null)
                 SceneManager.UnloadSceneAsync(_currentLoadedLocationScene);
 
-            LoadNewScene() ;
+            BeginLoadScene() ;
         }
 
-        private void OnCompleteLoadedNewLocationScene(AsyncOperation asy)
+        public void OnCompleteLoadedNewLocationScene(AsyncOperation asy)
         {
             _currentLoadedLocationScene = _sceneToLoad;
             //Debug.Log(_currentLoadedLocationScene); 
             SceneManager.SetActiveScene(SceneManager.GetSceneByName(_currentLoadedLocationScene));
             _isLoading = false;
+            
         }
 
         public void CreateTransitionScene()
         {
-            if(transitionScreen == null)
+            if(transitionScreenObj == null)
             {
-                TransitionObject newTsm = Instantiate(transitionManager.TransitionObj, gameObject.transform);
-                newTsm.name = "TestTSm";
-                newTsm.Init(transitionManager);
-                transitionManager.SetTransitionObj(newTsm);
-                //StartCoroutine(CreateTransitionSceneObj());
+                transitionScreenObj = Instantiate(transitionManager.TransitionObj, gameObject.transform);
+                transitionScreenObj.name = "-- TransitionScreen ----------";
+                transitionManager.SetTransitionObj(transitionScreenObj);
+                transitionScreenObj.Init(transitionManager);
             }
+            
         }
 
         public IEnumerator CreateTransitionSceneObj()
         {
             transitionManager.SetTransitionObj(Instantiate(transitionManager.TransitionObj, gameObject.transform)); 
-            //transitionScreen = Instantiate(transitionObjTemplate, gameObject.transform);
-            //transitionScreen.Init();
             yield return new WaitForEndOfFrame();
         }
 
         #endregion
 
 
-        private void LoadNewScene()
+        private void BeginLoadScene()
         {
             if (_sceneToLoad == null)
                 throw new System.Exception("_sceneToLoad is null");
 
-            //AsyncOperation asy = SceneManager.LoadSceneAsync(_sceneToLoad, LoadSceneMode.Additive);
+            CreateTransitionScene();
+            transitionManager.TransitionObj.SubOnSceneLoaderBegin(LoadNewScene);
+            StartCoroutine(LoadDelayTimer());
+        }
+
+        private IEnumerator LoadDelayTimer() {
+            yield return new WaitForSeconds(2.5f);
+            LoadNewScene(null);
+        }
+
+        private void LoadNewScene(Null n)
+        {
+            //Debug.Log("Fade in complete");
+            transitionManager.TransitionObj.UnSubOnSceneLoaderBegin(LoadNewScene);
             StartCoroutine(transitionManager.LoadSceneAsync(_sceneToLoad));
-
-
-            //asy.completed += OnCompleteLoadedNewLocationScene;
-
         }
     }
 
@@ -120,13 +128,12 @@ namespace Vanaring
         {
             transitionObj = t;
         }
-        //public trans
-
         public IEnumerator LoadSceneAsync(string sceneToLoad)
         {
             AsyncOperation operation = SceneManager.LoadSceneAsync(sceneToLoad, LoadSceneMode.Additive);
 
-            PersistentSceneLoader.Instance.CreateTransitionScene();
+            //PersistentSceneLoader.Instance.CreateTransitionScene();
+
 
             while (!operation.isDone)
             {
@@ -137,6 +144,8 @@ namespace Vanaring
                 yield return null;
             }
             GetEventBroadcaster().InvokeEvent<Null>(null, "OnSceneLoaderComplete");
+            PersistentSceneLoader.Instance.OnCompleteLoadedNewLocationScene(operation);
+            yield return new WaitForEndOfFrame();
         }
 
         private EventBroadcaster GetEventBroadcaster()

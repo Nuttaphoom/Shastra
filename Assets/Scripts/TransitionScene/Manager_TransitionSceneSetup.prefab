@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8631955958448979020}
   - component: {fileID: 8420090706302788343}
   m_Layer: 5
-  m_Name: Loading_Casvas
+  m_Name: Loading_Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -61,7 +61,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 100
   m_TargetDisplay: 0
 --- !u!114 &8631955958448979020
 MonoBehaviour:
@@ -115,7 +115,7 @@ GameObject:
   - component: {fileID: 2171874384265689993}
   - component: {fileID: 2319700087210751714}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: Title
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -169,10 +169,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Shastra
+  m_text: SHASTRA
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 7f93520f8d4301248888502f408c516b, type: 2}
+  m_sharedMaterial: {fileID: 387305717881168762, guid: 7f93520f8d4301248888502f408c516b, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -249,6 +249,7 @@ GameObject:
   - component: {fileID: 5423690360333353116}
   - component: {fileID: 1282750094255116035}
   - component: {fileID: 6393841078341064726}
+  - component: {fileID: 2497110012652713566}
   m_Layer: 5
   m_Name: LoadingImageBG
   m_TagString: Untagged
@@ -299,23 +300,36 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.591301, g: 0.5943396, b: 0.19904771, a: 1}
-  m_RaycastTarget: 1
+  m_Color: {r: 0.5660378, g: 0.5660378, b: 0.5660378, a: 1}
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: d11b47f0168987b4e9466bb40a604277, type: 3}
-  m_Type: 0
+  m_Sprite: {fileID: 21300000, guid: edd4d04b2a701c64dade7bff336e7b87, type: 3}
+  m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1
-  m_FillMethod: 4
+  m_FillMethod: 2
   m_FillAmount: 1
-  m_FillClockwise: 1
+  m_FillClockwise: 0
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &2497110012652713566
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2628191324584625476}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31a19414c41e5ae4aae2af33fee712f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ShowMaskGraphic: 1
 --- !u!1 &4818933731158234619
 GameObject:
   m_ObjectHideFlags: 0
@@ -383,7 +397,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 5a206e28e997b6848bae9ab916fe636c, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 90457f11bb89dae4e9c7ef02eb64b263, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -485,7 +499,7 @@ MonoBehaviour:
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 0
-  m_FillAmount: 0.029
+  m_FillAmount: 0
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
@@ -526,7 +540,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
   m_AnchoredPosition: {x: 13.299988, y: 0}
-  m_SizeDelta: {x: 713.6497, y: 50}
+  m_SizeDelta: {x: 622.956, y: 50}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!222 &9001203745774916257
 CanvasRenderer:
@@ -556,7 +570,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Tips: Null Tip Null Tip Null Tip Null Tip Null Tip Null Tip'
+  m_text: 'Tips: Accumulating trait points not only allows you to gain new spells
+    but also increases your relationship with your friends Don''t forget it!.'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

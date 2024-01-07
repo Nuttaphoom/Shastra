@@ -11,17 +11,13 @@ namespace Vanaring
     public class TransitionSceneSO : ScriptableObject
     {
         [SerializeField]
-        private SceneDataSO _sceneData;
-
+        private Sprite loadingScreenSprite;
         [SerializeField]
-        private List<Sprite> screenImageList = new List<Sprite>();
+        private string tipText;
         [SerializeField]
-        private List<string> tipTexts = new List<string>();
-        [SerializeField]
-        private List<Sprite> loadingIconList = new List<Sprite>();
-        public SceneDataSO SceneData => _sceneData;
-        public List<string> TipText => tipTexts;
-        public List<Sprite> ScreenImage => screenImageList;
+        private Sprite loadingIcon;
+        public string TipText => tipText;
+        public Sprite ScreenImage => loadingScreenSprite;
     }
 }
 

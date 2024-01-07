@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using TMPro;
 using Unity.VisualScripting;
+using UnityEngine.Events;
 
 namespace Vanaring
 {
@@ -20,21 +21,24 @@ namespace Vanaring
         private Image loadingScreenImage;
         public Image loadingBarFill;
         private TransitionSceneManager _tsm;
-
-        private void Awake()
-        {
-        }
-        private void OnDisable()
-        {
-            
-        }
-
+        private EventBroadcaster _eventBroadCaster;
         public void Init(TransitionSceneManager tsm)
         {
             _tsm = tsm;
             _tsm.SubOnSceneLoaderOperation(OnSceneProgressBarLoading);
             _tsm.SubOnSceneLoaderComplete(Startcou);
             transitionCanvas.SetActive(true);
+            StartCoroutine(FadeInBackground());
+        }
+
+        private EventBroadcaster GetEventBroadcaster()
+        {
+            if (_eventBroadCaster == null)
+            {
+                _eventBroadCaster = new EventBroadcaster();
+                _eventBroadCaster.OpenChannel<Null>("OnSceneLoaderBegin");
+            }
+            return _eventBroadCaster;
         }
 
         private void OnSceneProgressBarLoading(float val)
@@ -46,18 +50,46 @@ namespace Vanaring
             loadingBarFill.fillAmount = val;
         }
 
+        private IEnumerator FadeInBackground()
+        {
+            loadingScreenImage.fillAmount = 0;
+            while (loadingScreenImage.fillAmount < 1)
+            {
+                loadingScreenImage.fillAmount += Time.deltaTime * 5;
+                yield return new WaitForSeconds(0.007f);
+            }
+            //Debug.Log("Fade-in obj complete");
+            GetEventBroadcaster().InvokeEvent<Null>(null, "OnSceneLoaderBegin");
+        }
+
         private IEnumerator DestroyAfterTransition()
         {
-            transitionCanvas.SetActive(false);
             _tsm.UnSubOnSceneLoaderOperation(OnSceneProgressBarLoading);
-            yield return new WaitForSeconds(2.0f);
+            yield return new WaitForSeconds(1.0f);
+
+            while (loadingScreenImage.fillAmount > 0)
+            {
+                loadingScreenImage.fillAmount -= Time.deltaTime * 5;
+                yield return new WaitForSeconds(0.007f);
+            }
+            transitionCanvas.SetActive(false);
+            Destroy(gameObject);
             _tsm.UnSubOnSceneLoaderComplete(Startcou);
-            Debug.Log("Destroy transition");
+            //Debug.Log("Destroy transition");
         }
 
         private void Startcou(Null n)
         {
             StartCoroutine(DestroyAfterTransition());
+        }
+
+        public void SubOnSceneLoaderBegin(UnityAction<Null> argc)
+        {
+            GetEventBroadcaster().SubEvent(argc, "OnSceneLoaderBegin");
+        }
+        public void UnSubOnSceneLoaderBegin(UnityAction<Null> argc)
+        {
+            GetEventBroadcaster().SubEvent(argc, "OnSceneLoaderBegin");
         }
 
         //private IEnumerator RandomTip()
