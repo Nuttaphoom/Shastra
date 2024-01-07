@@ -19,11 +19,11 @@ namespace Vanaring
 
         protected GameObject _rewardPanel; 
         public abstract IEnumerator DisplayRewardUICoroutine() ;
-        public abstract IEnumerator SettingUpRewardDisplayPanel(); 
+        public abstract IEnumerator SettingUpRewardDisplayPanel(RewardPanelType rewardDisplayGOTemplate); 
         protected IEnumerator CreateRewardDisplayPanel()
         {
             _rewardPanel = MonoBehaviour.Instantiate(_rewardDisplayGOTemplate.gameObject);
-            yield return SettingUpRewardDisplayPanel();
+            yield return SettingUpRewardDisplayPanel(_rewardPanel.GetComponent<RewardPanelType>());
         }
     } 
 
