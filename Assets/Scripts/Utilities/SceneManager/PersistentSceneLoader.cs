@@ -68,12 +68,17 @@ namespace Vanaring
         {
             if(transitionScreen == null)
             {
-                StartCoroutine(CreateTransitionSceneObj());
+                TransitionObject newTsm = Instantiate(transitionManager.TransitionObj, gameObject.transform);
+                newTsm.name = "TestTSm";
+                newTsm.Init(transitionManager);
+                transitionManager.SetTransitionObj(newTsm);
+                //StartCoroutine(CreateTransitionSceneObj());
             }
         }
 
         public IEnumerator CreateTransitionSceneObj()
         {
+            transitionManager.SetTransitionObj(Instantiate(transitionManager.TransitionObj, gameObject.transform)); 
             //transitionScreen = Instantiate(transitionObjTemplate, gameObject.transform);
             //transitionScreen.Init();
             yield return new WaitForEndOfFrame();
@@ -87,9 +92,11 @@ namespace Vanaring
             if (_sceneToLoad == null)
                 throw new System.Exception("_sceneToLoad is null");
 
-            AsyncOperation asy = SceneManager.LoadSceneAsync(_sceneToLoad, LoadSceneMode.Additive);
-            
-            asy.completed += OnCompleteLoadedNewLocationScene;
+            //AsyncOperation asy = SceneManager.LoadSceneAsync(_sceneToLoad, LoadSceneMode.Additive);
+            StartCoroutine(transitionManager.LoadSceneAsync(_sceneToLoad));
+
+
+            //asy.completed += OnCompleteLoadedNewLocationScene;
 
         }
     }
@@ -102,17 +109,22 @@ namespace Vanaring
 
         [SerializeField]
         private TransitionObject transitionObjTemplate;
+        private TransitionObject transitionObj;
 
         private EventBroadcaster _eventBroadCaster;
 
         public TransitionSceneSO TransitionSO => _transitionSceneSO;
+        public TransitionObject TransitionObj => transitionObjTemplate;
         //public TransitionObject  transitionObjTemplate;
-
+        public void SetTransitionObj(TransitionObject t)
+        {
+            transitionObj = t;
+        }
         //public trans
 
-        private IEnumerator LoadSceneAsync(SceneDataSO sceneSO)
+        public IEnumerator LoadSceneAsync(string sceneToLoad)
         {
-            AsyncOperation operation = SceneManager.LoadSceneAsync(sceneSO.GetSceneName());
+            AsyncOperation operation = SceneManager.LoadSceneAsync(sceneToLoad, LoadSceneMode.Additive);
 
             PersistentSceneLoader.Instance.CreateTransitionScene();
 
@@ -120,7 +132,7 @@ namespace Vanaring
             {
                 float progressVal = Mathf.Clamp01(operation.progress / 0.9f);
 
-                GetEventBroadcaster().InvokeEvent<float>(progressVal, "OnSceneLoaderOperation");
+                GetEventBroadcaster().InvokeEvent<float>(progressVal, "OnSceneLoaderProgress");
 
                 yield return null;
             }

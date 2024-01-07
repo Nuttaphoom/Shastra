@@ -24,20 +24,17 @@ namespace Vanaring
         private void Awake()
         {
         }
-
-        private void OnEnable()
-        {
-            _tsm.SubOnSceneLoaderOperation(OnSceneProgressBarLoading);
-            _tsm.SubOnSceneLoaderComplete((Null n) => { });
-        }
         private void OnDisable()
         {
-            _tsm.UnSubOnSceneLoaderOperation(OnSceneProgressBarLoading);
+            
         }
 
-        public void Init()
+        public void Init(TransitionSceneManager tsm)
         {
+            _tsm = tsm;
             _tsm.SubOnSceneLoaderOperation(OnSceneProgressBarLoading);
+            _tsm.SubOnSceneLoaderComplete(Startcou);
+            transitionCanvas.SetActive(true);
         }
 
         private void OnSceneProgressBarLoading(float val)
@@ -49,16 +46,25 @@ namespace Vanaring
             loadingBarFill.fillAmount = val;
         }
 
-        private void DestoyOnFinish(Null n)
+        private IEnumerator DestroyAfterTransition()
         {
-            Destroy(this);
+            transitionCanvas.SetActive(false);
+            _tsm.UnSubOnSceneLoaderOperation(OnSceneProgressBarLoading);
+            yield return new WaitForSeconds(2.0f);
+            _tsm.UnSubOnSceneLoaderComplete(Startcou);
+            Debug.Log("Destroy transition");
+        }
+
+        private void Startcou(Null n)
+        {
+            StartCoroutine(DestroyAfterTransition());
         }
 
         //private IEnumerator RandomTip()
         //{
         //    while (true)
         //    {
-        //        int ranText = Random.Range(0, _transitionSO.TipText.Count-1);
+        //        int ranText = Random.Range(0, _transitionSO.TipText.Count - 1);
         //        _tiptext.text = _transitionSO.TipText[ranText];
         //        yield return new WaitForSeconds(3.0f);
         //    }
