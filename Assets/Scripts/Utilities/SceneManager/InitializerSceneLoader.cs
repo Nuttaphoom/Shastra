@@ -17,34 +17,9 @@ namespace Vanaring
         [SerializeField]
         private SceneDataSO _persistantScene;
 
-        //[SerializeField]
-        //private TransitionSceneSO _transitionSceneSO;
-
-        ////private TransitionManager transitionManager;
-
-        //private EventBroadcaster _eventBroadCaster;
-
-        //private EventBroadcaster GetEventBroadcaster()
-        //{
-        //    if(_eventBroadCaster == null)
-        //    {
-        //        _eventBroadCaster = new EventBroadcaster();
-        //        _eventBroadCaster.OpenChannel<SceneDataSO>("OnSceneLoaderBegin");
-        //    }
-        //    return _eventBroadCaster;
-        //}
-
         private void Start()
         {
-            //_eventBroadCaster.InvokeEvent<SceneDataSO>(_firstSceneToLoad, "OnSceneLoaderBegin");
-            //InitializerSceneLoader.in.GetEventBroadcaster().SubEvent<SceneDataSO>(Func, "OnSceneLoaderBegin");
             SceneManager.LoadSceneAsync(_persistantScene.GetSceneName(), LoadSceneMode.Additive).completed += OnLoadAsync;
-            
-        }
-
-        public void Func(SceneDataSO a)
-        {
-
         }
 
         private void Update()

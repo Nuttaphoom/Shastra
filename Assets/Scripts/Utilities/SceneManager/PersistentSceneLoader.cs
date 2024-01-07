@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 using Vanaring.Assets.Scripts.Utilities;
 
@@ -12,6 +14,9 @@ namespace Vanaring
 
         private string _currentLoadedLocationScene ;
         private string _sceneToLoad;
+        private TransitionObject transitionScreen;
+        [SerializeField]
+        private TransitionSceneManager transitionManager;
 
         #region Load Location 
         public void LoadLocation<T>(SceneDataSO sceneSO, T transferedData  )  
@@ -41,9 +46,6 @@ namespace Vanaring
             {
                 LoadNewScene(); 
             }
-
-
-
         }
 
         private void UnloadLocation()
@@ -62,6 +64,21 @@ namespace Vanaring
             _isLoading = false;
         }
 
+        public void CreateTransitionScene()
+        {
+            if(transitionScreen == null)
+            {
+                StartCoroutine(CreateTransitionSceneObj());
+            }
+        }
+
+        public IEnumerator CreateTransitionSceneObj()
+        {
+            //transitionScreen = Instantiate(transitionObjTemplate, gameObject.transform);
+            //transitionScreen.Init();
+            yield return new WaitForEndOfFrame();
+        }
+
         #endregion
 
 
@@ -71,11 +88,74 @@ namespace Vanaring
                 throw new System.Exception("_sceneToLoad is null");
 
             AsyncOperation asy = SceneManager.LoadSceneAsync(_sceneToLoad, LoadSceneMode.Additive);
+            
             asy.completed += OnCompleteLoadedNewLocationScene;
 
         }
+    }
 
+    [System.Serializable]
+    public class TransitionSceneManager
+    {
+        [SerializeField]
+        private TransitionSceneSO _transitionSceneSO;
 
+        [SerializeField]
+        private TransitionObject transitionObjTemplate;
 
+        private EventBroadcaster _eventBroadCaster;
+
+        public TransitionSceneSO TransitionSO => _transitionSceneSO;
+        //public TransitionObject  transitionObjTemplate;
+
+        //public trans
+
+        private IEnumerator LoadSceneAsync(SceneDataSO sceneSO)
+        {
+            AsyncOperation operation = SceneManager.LoadSceneAsync(sceneSO.GetSceneName());
+
+            PersistentSceneLoader.Instance.CreateTransitionScene();
+
+            while (!operation.isDone)
+            {
+                float progressVal = Mathf.Clamp01(operation.progress / 0.9f);
+
+                GetEventBroadcaster().InvokeEvent<float>(progressVal, "OnSceneLoaderOperation");
+
+                yield return null;
+            }
+            GetEventBroadcaster().InvokeEvent<Null>(null, "OnSceneLoaderComplete");
+        }
+
+        private EventBroadcaster GetEventBroadcaster()
+        {
+            if (_eventBroadCaster == null)
+            {
+                _eventBroadCaster = new EventBroadcaster();
+                _eventBroadCaster.OpenChannel<float>("OnSceneLoaderProgress");
+                _eventBroadCaster.OpenChannel<Null>("OnSceneLoaderComplete");
+            }
+            return _eventBroadCaster;
+        }
+
+        public void SubOnSceneLoaderOperation(UnityAction<float> argc)
+        {
+            GetEventBroadcaster().SubEvent(argc, "OnSceneLoaderProgress");
+        }
+
+        public void SubOnSceneLoaderComplete(UnityAction<Null> argc)
+        {
+            GetEventBroadcaster().SubEvent(argc, "OnSceneLoaderComplete");
+        }
+
+        public void UnSubOnSceneLoaderOperation(UnityAction<float> argc)
+        {
+            GetEventBroadcaster().UnSubEvent(argc, "OnSceneLoaderProgress");
+        }
+
+        public void UnSubOnSceneLoaderComplete(UnityAction<Null> argc)
+        {
+            GetEventBroadcaster().UnSubEvent(argc, "OnSceneLoaderComplete");
+        }
     }
 }

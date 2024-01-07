@@ -154,7 +154,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _firstSceneToLoad: {fileID: 11400000, guid: c25cba436c3d35446bed298ccf1e1e8f, type: 2}
   _persistantScene: {fileID: 11400000, guid: 72e91af8d365c9543b0d6118ac14f33b, type: 2}
-  _transitionSceneSO: {fileID: 11400000, guid: 6771a672302e30d4abf5a653e7af457f, type: 2}
 --- !u!4 &61159582
 Transform:
   m_ObjectHideFlags: 0
@@ -170,3 +169,50 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1229838676
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1229838677}
+  - component: {fileID: 1229838678}
+  m_Layer: 0
+  m_Name: PersistentSceneLoader
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1229838677
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1229838676}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 783.5291, y: 580.3387, z: 35.007816}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1229838678
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1229838676}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25361589cb0ba0549b9ebe613ca8d615, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  transitionManager:
+    _transitionSceneSO: {fileID: 11400000, guid: 6771a672302e30d4abf5a653e7af457f, type: 2}
+    transitionObjTemplate: {fileID: 658191101696354253, guid: 77163a88f4c179b49b229bf59bcfe865, type: 3}

@@ -190,7 +190,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7099734876907746350}
-  - component: {fileID: 4609009773289856118}
   m_Layer: 0
   m_Name: Manager_SceneSetup
   m_TagString: Untagged
@@ -213,23 +212,6 @@ Transform:
   m_Father: {fileID: 4318473660437155382}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4609009773289856118
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2708174337550928982}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e15891a6bd08e2446924f9c3fbfacf06, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  transitionCanvas: {fileID: 607713250130814859}
-  _transitionSO: {fileID: 11400000, guid: 6771a672302e30d4abf5a653e7af457f, type: 2}
-  _tiptext: {fileID: 7203255423133020992}
-  loadingScreenImage: {fileID: 6393841078341064726}
-  loadingBarFill: {fileID: 1599540227908978987}
 --- !u!1 &3544901662853826714
 GameObject:
   m_ObjectHideFlags: 0
@@ -683,6 +665,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4318473660437155382}
+  - component: {fileID: 658191101696354253}
   m_Layer: 0
   m_Name: ------ Transition Scene Manager ------------------------------
   m_TagString: Untagged
@@ -707,6 +690,23 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &658191101696354253
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6938332074071700384}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e15891a6bd08e2446924f9c3fbfacf06, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  transitionCanvas: {fileID: 6938332074071700384}
+  _transitionSO: {fileID: 11400000, guid: 6771a672302e30d4abf5a653e7af457f, type: 2}
+  _tiptext: {fileID: 7203255423133020992}
+  loadingScreenImage: {fileID: 6393841078341064726}
+  loadingBarFill: {fileID: 1599540227908978987}
 --- !u!1 &7237663993480325583
 GameObject:
   m_ObjectHideFlags: 0
@@ -829,7 +829,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4609009773289856118}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: Vanaring.LoadingScene, Assembly-CSharp
         m_MethodName: LoadScene
         m_Mode: 3
