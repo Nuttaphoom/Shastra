@@ -13,12 +13,19 @@ namespace Vanaring
     {
         [SerializeField]
         private GameObject transitionCanvas;
+
         [SerializeField]
         private TransitionSceneSO _transitionSO;
+
         [SerializeField]
         private TextMeshProUGUI _tiptext;
+
+        [SerializeField]
+        private Image gfxScreen;
+
         [SerializeField]
         private Image loadingScreenImage;
+
         public Image loadingBarFill;
         private TransitionSceneManager _tsm;
         private EventBroadcaster _eventBroadCaster;
@@ -52,10 +59,10 @@ namespace Vanaring
 
         private IEnumerator FadeInBackground()
         {
-            loadingScreenImage.fillAmount = 0;
-            while (loadingScreenImage.fillAmount < 1)
+            gfxScreen.fillAmount = 0;
+            while (gfxScreen.fillAmount < 1)
             {
-                loadingScreenImage.fillAmount += Time.deltaTime * 5;
+                gfxScreen.fillAmount += Time.deltaTime * 5;
                 yield return new WaitForSeconds(0.007f);
             }
             //Debug.Log("Fade-in obj complete");
@@ -67,9 +74,9 @@ namespace Vanaring
             _tsm.UnSubOnSceneLoaderOperation(OnSceneProgressBarLoading);
             yield return new WaitForSeconds(1.0f);
 
-            while (loadingScreenImage.fillAmount > 0)
+            while (gfxScreen.fillAmount > 0)
             {
-                loadingScreenImage.fillAmount -= Time.deltaTime * 5;
+                gfxScreen.fillAmount -= Time.deltaTime * 5;
                 yield return new WaitForSeconds(0.007f);
             }
             transitionCanvas.SetActive(false);

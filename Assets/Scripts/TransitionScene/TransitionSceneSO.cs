@@ -10,14 +10,28 @@ namespace Vanaring
     [CreateAssetMenu(fileName = "TransitionSceneSO", menuName = "ScriptableObject/Scene/TransitionSceneSO")]
     public class TransitionSceneSO : ScriptableObject
     {
+
         [SerializeField]
-        private Sprite loadingScreenSprite;
+        private TransitionObject transitionObjPrefab;
+
+        //[SerializeField]
+        //private Sprite loadingScreenSprite;
+        
+        //[SerializeField]
+        //private Sprite loadingIcon;
+        
+
+        [Header("Tip information")]
         [SerializeField]
         private string tipText;
+
+        [Header("Time setup")]
         [SerializeField]
-        private Sprite loadingIcon;
+        private float plusDelayTime;
+        [SerializeField]
+        private float speedMultiply = 1;
         public string TipText => tipText;
-        public Sprite ScreenImage => loadingScreenSprite;
+        //public Sprite ScreenImage => loadingScreenSprite;
     }
 }
 
