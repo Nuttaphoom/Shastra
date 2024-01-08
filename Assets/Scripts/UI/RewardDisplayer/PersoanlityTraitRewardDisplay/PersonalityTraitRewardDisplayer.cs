@@ -8,14 +8,13 @@ namespace Vanaring
 {
     public struct PersoanlityRewardData
     {
-
+        public int x; 
     }
     [Serializable]
     public class PersonalityTraitRewardDisplayer : BaseRewardDisplayer<PersoanlityRewardData, PersonalityRewardDisplayerPanel>
     {
-        public override IEnumerator DisplayRewardUICoroutine()
+        public override IEnumerator DisplayRewardUICoroutine(PersoanlityRewardData rewardType_DONTUSETHISONE_ORYOUAREGAY)
         {
-
             yield return CreateRewardDisplayPanel() ;  
         }
 
