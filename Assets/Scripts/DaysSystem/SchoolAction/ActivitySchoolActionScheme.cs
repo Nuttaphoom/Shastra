@@ -45,7 +45,7 @@ namespace Vanaring
         {
             Debug.Log("Post Perform activity");
 
-            StartCoroutine(_rewardDisplayer.DisplayRewardUICoroutine() ) ; 
+            StartCoroutine(_rewardDisplayer.DisplayRewardUICoroutine(new PersoanlityRewardData() ) ) ; 
         }
 
         

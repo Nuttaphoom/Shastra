@@ -12,13 +12,13 @@ namespace Vanaring
     public abstract class BaseRewardDisplayer<RewardType, RewardPanelType> where RewardPanelType : BaseRewardDisplayerPanel 
     {  
         [SerializeField]
-        private RewardPanelType _rewardDisplayGOTemplate ;
+        protected RewardPanelType _rewardDisplayGOTemplate ;
 
         [SerializeField]
-        private RewardType _rewardType;
+        protected RewardType _rewardType;
 
         protected GameObject _rewardPanel; 
-        public abstract IEnumerator DisplayRewardUICoroutine() ;
+        public abstract IEnumerator DisplayRewardUICoroutine(RewardType rewardType) ;
         public abstract IEnumerator SettingUpRewardDisplayPanel(RewardPanelType rewardDisplayGOTemplate); 
         protected IEnumerator CreateRewardDisplayPanel()
         {

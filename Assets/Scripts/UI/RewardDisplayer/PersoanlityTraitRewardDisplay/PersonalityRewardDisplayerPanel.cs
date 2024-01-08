@@ -6,7 +6,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TMPro;
-using UnityEngine; 
+using UnityEngine;
+using UnityEngine.Playables;
 
 namespace Vanaring 
 {
@@ -21,25 +22,24 @@ namespace Vanaring
         [Header("From now are temp value TODO : Delete this and get these value from backen database")]
         private float gotoValue = 1207.2f;
 
-        
-
         public override void ForceSetUpNumber()
         {
-            throw new NotImplementedException();
+            _uiAnimationDone = true;
+
         }
 
         public override void OnContinueButtonClick()
         {
-            if (IsSettingUpSucessfully) 
-                Debug.Log("Go back to other scene") ; 
-            
+            if (IsSettingUpSucessfully)
+                Debug.Log("Go back to other scene");
+
             else
-                _uiAnimationDone = true ; 
-            
+                ForceSetUpNumber(); 
         }
 
         public override IEnumerator SettingUpNumber()
         {
+           
             float currentTime = 0f; // Variable to keep track of the time passed
             float startValue = 0f; // Starting value of i
             float endValue = gotoValue; // Target value of i
