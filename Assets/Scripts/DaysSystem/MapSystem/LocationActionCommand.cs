@@ -50,6 +50,7 @@ namespace Vanaring
             _actionIconAsset = copied._actionIconAsset; 
         }
         public abstract void ExecuteCommand () ;
+
     }
 
 

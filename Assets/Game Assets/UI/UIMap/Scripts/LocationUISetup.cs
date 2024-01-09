@@ -26,7 +26,18 @@ namespace Vanaring
         private void Init()
         {
             //RuntimeLocation d = PersistentActiveDayDatabase.Instance.GetActiveDayData.GetAvailableLocation()[1];
-            actionCommandList = (FindObjectOfType<LoaderDataContainer>().UseDataInContainer() as LoaderDataUser<LoadLocationMenuCommandData>).GetData().action_on_this_location;
+            //var loaderDataContainer = (FindObjectOfType<LoaderDataContainer>() ) ;
+
+            LoadLocationMenuCommandData currentLocationSO = PersistentSceneLoader.Instance.ExtractLastSavedData<LoadLocationMenuCommandData>().GetData(); //(loaderDataContainer.UseDataInContainer() as LoaderDataUser<LoadLocationMenuCommandData>).GetData() ; //.action_on_this_location;
+
+            foreach (var location in PersistentActiveDayDatabase.Instance.GetActiveDayData.GetAvailableLocation()) {
+                if (! location.IsSameLocation(currentLocationSO.LocationName))
+                    continue;
+                
+                actionCommandList = location.ActionOnLocation ;
+                break; 
+            }
+
             foreach (BaseLocationActionCommand action in actionCommandList)
             {
                 GameObject newActionButton = Instantiate(actionButton, verticalLayout.transform);

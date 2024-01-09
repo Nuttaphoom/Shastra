@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 
-namespace Vanaring.Assets.Scripts.Utilities
+namespace Vanaring 
 {
     public class PersistentInstantiatedObject<BaseType> : MonoBehaviour where BaseType : MonoBehaviour
     {

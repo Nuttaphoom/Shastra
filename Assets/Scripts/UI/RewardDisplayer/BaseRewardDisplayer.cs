@@ -18,12 +18,23 @@ namespace Vanaring
         protected RewardType _rewardType;
 
         protected GameObject _rewardPanel; 
+
         public abstract IEnumerator DisplayRewardUICoroutine(RewardType rewardType) ;
         public abstract IEnumerator SettingUpRewardDisplayPanel(RewardPanelType rewardDisplayGOTemplate); 
         protected IEnumerator CreateRewardDisplayPanel()
         {
             _rewardPanel = MonoBehaviour.Instantiate(_rewardDisplayGOTemplate.gameObject);
             yield return SettingUpRewardDisplayPanel(_rewardPanel.GetComponent<RewardPanelType>());
+
+            while (_rewardPanel.GetComponent<RewardPanelType>().IsFinishingDisplayUI == false )
+            {
+                yield return new WaitForEndOfFrame(); 
+            }
+
+            PersistentActiveDayDatabase.Instance.GetDayProgressionHandler.OnPostPerformSchoolAction(); 
+
+
+
         }
     } 
 

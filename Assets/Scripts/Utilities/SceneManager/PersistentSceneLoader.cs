@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
-using Vanaring.Assets.Scripts.Utilities;
+using Vanaring; 
+using Vanaring_Utility_Tool;
 
 namespace Vanaring
 {
@@ -18,36 +20,58 @@ namespace Vanaring
         [SerializeField]
         private TransitionSceneManager transitionManager;
 
+        private SceneDataSO _last_visisted_location;
+        private LoaderDataUser loaderDataUser;
+
         #region Load Location 
+
+        /// <summary>
+        /// Functionality to load and unload previous scene 
+        /// </summary>
+        /// <param name="sceneSO"></param>
+
+        public void LoadLastVisitedLocation()
+        {
+            LoadLocation<Null>(_last_visisted_location,
+                 null );
+        }
+        public LoaderDataUser<T> ExtractLastSavedData<T>()
+        {
+            return loaderDataUser as LoaderDataUser<T>;
+        }
+
         public void LoadLocation<T>(SceneDataSO sceneSO, T transferedData  )  
         {
-            if (_isLoading)
-                return ;
-
-            _isLoading = true;
-            _sceneToLoad = sceneSO.GetSceneName();
 
             if (transferedData != null)
             {
-                GameObject newObject = new GameObject("" + sceneSO.name + " Data Container");
-
-                newObject.AddComponent<LoaderDataContainer>();
-
-                var loaderDataUser = new LoaderDataUser<T>(transferedData);
-
-                newObject.GetComponent<LoaderDataContainer>().SetDataUser(loaderDataUser);
-
-                DontDestroyOnLoad(newObject);
+                 loaderDataUser = new LoaderDataUser<T>(transferedData);
             }
+
+            _last_visisted_location =  (sceneSO); 
+
+            LoadGeneralScene(sceneSO) ;
+
+
+        }
+        public void LoadGeneralScene(SceneDataSO sceneSO)
+        {
+            if (_isLoading)
+                return;
+
+            _isLoading = true;
+
+            _sceneToLoad = sceneSO.GetSceneName();
+
             if (_currentLoadedLocationScene != null)
             {
-                UnloadLocation(); 
-            }else
+                UnloadLocation();
+            }
+            else
             {
-                BeginLoadScene(); 
+                BeginLoadScene();
             }
         }
-
         private void UnloadLocation()
         {
             if (_currentLoadedLocationScene != null)
@@ -178,5 +202,8 @@ namespace Vanaring
         {
             GetEventBroadcaster().UnSubEvent(argc, "OnSceneLoaderComplete");
         }
+
+        
     }
 }
+ 

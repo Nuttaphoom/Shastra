@@ -19,7 +19,10 @@ namespace Vanaring
             _remainingAction = _maxActionPoint; 
         } 
 
-        public void DecreaseActionPoint(int point) {  
+        public void DecreaseActionPoint(int point) {
+            if (point < 0)
+                point = (int) MathF.Abs(point); 
+
             _remainingAction -= point;
 
             if (_remainingAction < 0)
@@ -34,6 +37,11 @@ namespace Vanaring
         public bool IsOutOfActionPoint()
         {
             return _remainingAction <= 0; 
+        }
+
+        public void ResetDayAction()
+        {
+            _remainingAction = _maxActionPoint; 
         }
     }
 }

@@ -31,7 +31,7 @@ namespace Vanaring
         public override void OnContinueButtonClick()
         {
             if (IsSettingUpSucessfully)
-                Debug.Log("Go back to other scene");
+                _displayingUIDone = true; 
 
             else
                 ForceSetUpNumber(); 
@@ -54,10 +54,7 @@ namespace Vanaring
                 // Calculate the value of i between start and end over time
                 float i = Mathf.Lerp(startValue, endValue, currentTime / _animationDuration);
 
-                Debug.Log("i : " + i);
-                Debug.Log("endvalue : " + endValue);
-
-                Debug.Log("otoValue : " + gotoValue);
+             
                 _testTextUGUI.text = i.ToString(); // Update the UI or perform actions with the current value of i
 
                 yield return null; // Wait for the next frame

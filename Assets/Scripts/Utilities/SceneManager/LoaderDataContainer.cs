@@ -8,35 +8,44 @@ using UnityEngine;
 
 namespace Vanaring 
 {
-    public class LoaderDataContainer : MonoBehaviour
-    {
-        [SerializeField]
-        private object _data;
+    //public class LoaderDataContainer : MonoBehaviour
+    //{
+    //    private object _data;
 
-        public object UseDataInContainer()
-        {
-            StartCoroutine(DataUsedCompletion());
-            return _data;
-        }
+    //    //public object UseDataInContainer()
+    //    //{
+    //    //    if (_data == null)
+    //    //        throw new Exception("_data is null");
 
-        private IEnumerator DataUsedCompletion()
-        {
-            yield return new WaitForSecondsRealtime(2.0f);
+    //    //    StartCoroutine(DataUsedCompletion());
+            
+    //    //    return _data;
+    //    //}
 
-            Destroy(gameObject);
-        }
-        public void SetDataUser<T> (LoaderDataUser<T> loaderDataUser) 
-        {
-            _data = loaderDataUser; 
-        }
-    }
+    //    public void TestStuff()
+    //    {
+
+    //    }
+    //    private IEnumerator DataUsedCompletion()
+    //    {
+    //        yield return new WaitForSecondsRealtime(2.0f);
+
+    //        Destroy(gameObject);
+    //    }
+    //    public void SetDataUser<T> (LoaderDataUser<T> loaderDataUser) 
+    //    {
+    //        _data = loaderDataUser;
+    //        Debug.Log("Set data useer as " + typeof(T)); 
+
+    //    }
+    //}
 
     public class LoaderDataUser
     {
 
     }
 
-    public class LoaderDataUser<T>
+    public class LoaderDataUser<T> : LoaderDataUser
     {
         private T _data; 
         public LoaderDataUser(T data) {
@@ -45,6 +54,8 @@ namespace Vanaring
 
         public T GetData()
         {
+            if (_data == null)
+                throw new Exception("_Data is null");
             return _data; 
         }
     }

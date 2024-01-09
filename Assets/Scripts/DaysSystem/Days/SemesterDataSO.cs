@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 
-namespace Vanaring.Assets.Scripts.DaysSystem.Days
+namespace Vanaring 
 {
     [CreateAssetMenu(fileName = "SemesterDataSO", menuName = "ScriptableObject/DaySystem/SemesterDataSO")]
     public class SemesterDataSO : ScriptableObject

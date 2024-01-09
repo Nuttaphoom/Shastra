@@ -2,34 +2,47 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Security.Permissions;
 using UnityEngine;
-using Vanaring.Assets.Scripts.Utilities;
 
 namespace Vanaring
 {
     public class PersistentActiveDayDatabase : PersistentInstantiatedObject<PersistentActiveDayDatabase>
     {
         [SerializeReference]
-        private RuntimeDayData runtimeDayData = null;
+        private RuntimeDayData _runtimeDayData = null;
 
-    
-        private DailyActionParticipationHandler _dailyActionParticipationHandler ; 
+        private DayProgressionHandler _dayProgressionHandler;
+
+
+        public void SetActiveDayData(RuntimeDayData value)
+        {
+            _runtimeDayData = value;
+            GetDayProgressionHandler.NewDayBegin(); 
+        }
+
+
+
+        #region Getter 
+        public DayProgressionHandler GetDayProgressionHandler
+        {
+            get
+            {
+                if (_dayProgressionHandler == null)
+                    _dayProgressionHandler = new DayProgressionHandler();
+
+                return _dayProgressionHandler;
+            }
+        }
 
         public RuntimeDayData GetActiveDayData
         {
             get
             {
-                if (runtimeDayData == null)
-                    throw new System.Exception("runtimeDayData is null"); 
+                if (_runtimeDayData == null)
+                    throw new System.Exception("RuntimeDayData is null");
 
-                return runtimeDayData;
+                return _runtimeDayData; 
             }
         }
-
-        public void SetActiveDayData(RuntimeDayData value)
-        {
-            runtimeDayData = value;
-
-            _dailyActionParticipationHandler = new DailyActionParticipationHandler(); 
-        }
+        #endregion
     }
 }

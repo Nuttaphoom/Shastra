@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using static UnityEditor.FilePathAttribute;
 
@@ -28,9 +29,10 @@ namespace Vanaring
 
 
     }
+
     public struct LoadLocationMenuCommandData
     {
-        public List<BaseLocationActionCommand> action_on_this_location;
+        public LocationName LocationName; 
     }
 
     public class RuntimeLocation
@@ -57,12 +59,17 @@ namespace Vanaring
                 throw new Exception("location name is null");
 
             LoadLocationMenuCommandData data = new LoadLocationMenuCommandData();
-            data.action_on_this_location = new List<BaseLocationActionCommand>();
+            data.LocationName = LocationName; 
 
-            foreach (var actionCommand in actionOnLocation)
-                data.action_on_this_location.Add(actionCommand);
+            //foreach (var actionCommand in actionOnLocation)
+            //    data.action_on_this_location.Add(actionCommand);
 
             PersistentSceneLoader.Instance.LoadLocation<LoadLocationMenuCommandData>(_sceneData, data);
+        }
+
+        public bool IsSameLocation (LocationName name)
+        {
+            return (name == LocationName) ;
         }
     }
 
