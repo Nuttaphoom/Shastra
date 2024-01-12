@@ -43,6 +43,10 @@ namespace Vanaring
         //private float goTraitVal2;
         //private float goTraitVal3;
         //private float goTraitVal4;
+        private int charmVal;
+        private int kindnessVal;
+        private int knowledgeVal;
+        private int proficiencyVal;
         [SerializeField]
         private PlayableDirector introDirector;
 
@@ -52,6 +56,11 @@ namespace Vanaring
         public void SetPersonalDataReceive(PersonalityRewardData prd)
         {
             _personalityReward = prd;
+            PersonalityTrait personalityTrait = PersistentPlayerPersonalDataManager.Instance.player_personalityTrait;
+            charmVal = personalityTrait.GetStat(Trait.Trait_Type.Charm);
+            kindnessVal = personalityTrait.GetStat(Trait.Trait_Type.Kindness);
+            knowledgeVal = personalityTrait.GetStat(Trait.Trait_Type.Knowledge);
+            proficiencyVal = personalityTrait.GetStat(Trait.Trait_Type.Proficiency);
             //curTraitVal1 = _personalityReward.CurTrait1;
             //curTraitVal2 = _personalityReward.CurTrait2;
             //curTraitVal3 = _personalityReward.CurTrait3;

@@ -14,7 +14,7 @@ namespace Vanaring
         [SerializeField]
         private Trait.Trait_Type trait;
 
-        private PersonalityTrait player_personalityTrait;
+        public PersonalityTrait player_personalityTrait;
 
         private void Awake()
         {
