@@ -45,10 +45,8 @@ namespace Vanaring
         {
             Debug.Log("Post Perform activity");
 
-            StartCoroutine(_rewardDisplayer.DisplayRewardUICoroutine(new PersoanlityRewardData() ) ) ; 
+            StartCoroutine(_rewardDisplayer.DisplayRewardUICoroutine(new PersonalityRewardData() ) ) ; 
+            //finish display(done)(close window) -> (update backend/load new scene)(Potae) -> Persistent
         }
-
-        
-
     }
 }
