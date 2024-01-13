@@ -17,6 +17,10 @@ namespace Vanaring
         [SerializeField]
         private TraitIndex[] personalityTraitStat;
 
+        [Tooltip("Exp point for the level eg. level 1 would have to use amount of exp in element1 to upgrade to level2.")]
+        [SerializeField]
+        private int[] trait_require_exp;
+
         public int GetStat(Trait.Trait_Type type)
         {
             int value = -1;
@@ -40,6 +44,37 @@ namespace Vanaring
             }
 
             return value;
+
+        }
+
+        public int GetTraitCurrentRequireExp(Trait.Trait_Type type)
+        {
+            int value = -1;
+            foreach (TraitIndex data in personalityTraitStat)
+            {
+                if (data.type != type)
+                {
+                    continue;
+                }
+                // check in case of duplicate type in array
+                if (value != -1)
+                {
+                    throw new Exception("Multiple Trait.Trait_Type: " + type + " in Array");
+                }
+                value = data.value;
+            }
+            // check in case of Cant find the type in array
+            if (value == -1)
+            {
+                throw new Exception("Trait.Trait_Type: " + type + " not valid");
+            }
+            // check if current level is too much in the SO
+            if (value >= trait_require_exp.Length)
+            {
+                throw new Exception("trait_require_exp: on level " + value + " is not valid!");
+            }
+
+            return trait_require_exp[value];
 
         }
     }
