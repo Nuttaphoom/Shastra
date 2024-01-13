@@ -47,35 +47,19 @@ namespace Vanaring
 
         }
 
-        public int GetTraitCurrentRequireExp(Trait.Trait_Type type)
+        public int GetTraitRequireExpSize()
         {
-            int value = -1;
-            foreach (TraitIndex data in personalityTraitStat)
-            {
-                if (data.type != type)
-                {
-                    continue;
-                }
-                // check in case of duplicate type in array
-                if (value != -1)
-                {
-                    throw new Exception("Multiple Trait.Trait_Type: " + type + " in Array");
-                }
-                value = data.value;
-            }
-            // check in case of Cant find the type in array
-            if (value == -1)
-            {
-                throw new Exception("Trait.Trait_Type: " + type + " not valid");
-            }
-            // check if current level is too much in the SO
-            if (value >= trait_require_exp.Length)
-            {
-                throw new Exception("trait_require_exp: on level " + value + " is not valid!");
-            }
+            return trait_require_exp.Length;
+        }
 
-            return trait_require_exp[value];
-
+        public int GetTraitRequireExp(int level)
+        {
+            // check if current level is valid or not in the SO
+            if (level >= trait_require_exp.Length || level < 0)
+            {
+                throw new Exception("trait_require_exp: on level " + level + " is not valid!");
+            }
+            return trait_require_exp[level];
         }
     }
 }
