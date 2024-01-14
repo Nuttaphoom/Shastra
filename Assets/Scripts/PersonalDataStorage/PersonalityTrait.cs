@@ -23,7 +23,7 @@ namespace Vanaring
 
             for (int i = 0; i < personalityTraitSO.GetTraitRequireExpSize(); i++)
             {
-                Debug.Log( i + " : " + personalityTraitSO.GetTraitRequireExp(i));
+                //Debug.Log( i + " : " + personalityTraitSO.GetTraitRequireExp(i));
                 trait_require_exp.Add(personalityTraitSO.GetTraitRequireExp(i));
             }
         }

@@ -30,42 +30,49 @@ namespace Vanaring
         private Image traitGauge4;
         [SerializeField]
         private GameObject levelUpPanel;
+        [SerializeField]
+        private TextMeshProUGUI expReqText;
         private PersonalityRewardData _personalityReward;
-        //private float curTraitVal1;
-        //private float curTraitVal2;
-        //private float curTraitVal3;
-        //private float curTraitVal4;
-        //private float curTraitLvl1;
-        //private float curTraitLvl2;
-        //private float curTraitLvl3;
-        //private float curTraitLvl4;
-        //private float goTraitVal1;
-        //private float goTraitVal2;
-        //private float goTraitVal3;
-        //private float goTraitVal4;
         private int charmVal;
         private int kindnessVal;
         private int knowledgeVal;
         private int proficiencyVal;
+        private float expReqVal;
         [SerializeField]
         private PlayableDirector introDirector;
+        private PersonalityTrait personalityTrait;
+        private Trait.Trait_Type trait;
 
         [Header("From now are temp value TODO : Delete this and get these value from backen database")]
-        private float gotoValue = 1207.2f;
+        private float gotoValue = 1000.0f;
 
         public void SetPersonalDataReceive(PersonalityRewardData prd)
         {
             _personalityReward = prd;
-            PersonalityTrait personalityTrait = PersistentPlayerPersonalDataManager.Instance.player_personalityTrait;
+            personalityTrait = PersistentPlayerPersonalDataManager.Instance.player_personalityTrait;
+
+
+            expReqVal = personalityTrait.GetCurrentTraitRequireEXP(0);
+
             charmVal = personalityTrait.GetStat(Trait.Trait_Type.Charm);
             kindnessVal = personalityTrait.GetStat(Trait.Trait_Type.Kindness);
             knowledgeVal = personalityTrait.GetStat(Trait.Trait_Type.Knowledge);
             proficiencyVal = personalityTrait.GetStat(Trait.Trait_Type.Proficiency);
+            //Stat = lvl, ExpReq = exp need;
+            //Debug.Log("charmVal stat: " + charmVal);
+            //Debug.Log("Charm req: " + personalityTrait.GetCurrentTraitRequireEXP(Trait.Trait_Type.Charm));
+            //personalityTrait.SetStat(Trait.Trait_Type.Charm, 2);
+            
             //curTraitVal1 = _personalityReward.CurTrait1;
             //curTraitVal2 = _personalityReward.CurTrait2;
             //curTraitVal3 = _personalityReward.CurTrait3;
             //curTraitVal4 = _personalityReward.CurTrait4;
         }
+
+        //Get trait reward obtain each type
+        //Get current trait value
+        //Get exp req for each one
+
 
         public override void ForceSetUpNumber()
         {
@@ -87,7 +94,11 @@ namespace Vanaring
             float currentTime = 0f;
             float startValue = 0f;
             float endValue = gotoValue;
-            float nextLvlVal = 200;
+            float curExpGain = 0f;
+            float previ = 0;
+            float i = 0;
+            expReqVal = personalityTrait.GetCurrentTraitRequireEXP(Trait.Trait_Type.Charm);
+            //curExpGain = //current exp has;
             introDirector.Play();
             while(introDirector.state == PlayState.Playing)
             {
@@ -101,48 +112,50 @@ namespace Vanaring
 
                 currentTime += Time.deltaTime;
 
-                float i = Mathf.Lerp(startValue, endValue, currentTime / _animationDuration);
+                previ = i;
+                i = Mathf.Lerp(startValue, endValue, currentTime / _animationDuration);
+                curExpGain += (i - previ);
 
-                //Debug.Log(i);
-
-                CovertValueToGaugeRange(i, 1000, traitGauge1);
-                CovertValueToGaugeRange(i, 500, traitGauge2);
-                CovertValueToGaugeRange(i, 700, traitGauge3);
-                CovertValueToGaugeRange(i, 2000, traitGauge4);
+                int toExp = personalityTrait.GetCurrentTraitRequireEXP(Trait.Trait_Type.Charm);
+                expReqText.text = curExpGain + "/" + toExp.ToString();
+                traitGauge1.fillAmount = (float)Math.Floor(curExpGain) / toExp;
 
                 _testTextUGUI.text = i.ToString();
 
-
-                if(i > nextLvlVal)
+                if (Math.Floor(curExpGain) >= expReqVal) //level up
                 {
+                    Debug.Log(curExpGain + ", " + Math.Floor(curExpGain));
+                    curExpGain = curExpGain - expReqVal;
+                    Debug.Log("Lvl trait up to: " + (personalityTrait.GetStat(Trait.Trait_Type.Charm) + 1).ToString());
                     yield return DisplayLevelUp();
-                    nextLvlVal += nextLvlVal;
+                    personalityTrait.SetStat(Trait.Trait_Type.Charm, personalityTrait.GetStat(Trait.Trait_Type.Charm) + 1);   //plus level by 1
+                    expReqVal = personalityTrait.GetCurrentTraitRequireEXP(Trait.Trait_Type.Charm);
+                    expReqText.text = curExpGain + "/" + expReqVal.ToString();
+                    traitGauge1.fillAmount = (float)Math.Floor(curExpGain) / expReqVal;
                 }
-
                 yield return null;
             }
-
             //Snap to finish
             _testTextUGUI.text = gotoValue.ToString();
-            CovertValueToGaugeRange(gotoValue, 1000, traitGauge1);
-            CovertValueToGaugeRange(gotoValue, 500, traitGauge2);
-            CovertValueToGaugeRange(gotoValue, 700, traitGauge3);
-            CovertValueToGaugeRange(gotoValue, 2000, traitGauge4);
+            //CovertValueToGaugeRange(gotoValue, 1000, traitGauge1);
+            //CovertValueToGaugeRange(gotoValue, 500, traitGauge2);
+            //CovertValueToGaugeRange(gotoValue, 700, traitGauge3);
+            //CovertValueToGaugeRange(gotoValue, 2000, traitGauge4);
         }
 
         private void CovertValueToGaugeRange(float inputVal ,int maxVal, Image gauage)
         {
-            float convertedNumber = Mathf.FloorToInt(inputVal) % maxVal;
+            float convertedNumber = inputVal % maxVal;
+            //float convertedNumber = Mathf.FloorToInt(inputVal) % maxVal;
             gauage.fillAmount = convertedNumber / maxVal;
         }
 
         private IEnumerator DisplayLevelUp()
         {
             levelUpPanel.SetActive(true);
-            Debug.Log("Lvl up");
-            yield return new WaitForSeconds(2.0f);
+
+            yield return new WaitForSeconds(0.1f);
             levelUpPanel.SetActive(false);
-            //Debug.Log("next");
         }
     }
 }
