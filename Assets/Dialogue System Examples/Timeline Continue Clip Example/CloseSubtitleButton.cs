@@ -10,5 +10,10 @@ public class CloseSubtitleButton : MonoBehaviour
         Sequencer.Message("ClosedSubtitle");
     }
 
-     
+    public void HideSubtitleText()
+    {
+        Sequencer.Message("ClosedSubtitle");
+    }
+
+
 }

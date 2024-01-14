@@ -8,8 +8,7 @@ namespace Vanaring
     [Serializable] 
     public class CutsceneDirector : MonoBehaviour
     {
-        [SerializeField] 
-        private CutsceneDirectorSO _sceneDataSO;  
+         
 
         public IEnumerator PlayCutscene()
         {

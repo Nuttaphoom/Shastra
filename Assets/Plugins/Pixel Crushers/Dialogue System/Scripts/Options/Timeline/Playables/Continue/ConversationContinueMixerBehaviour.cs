@@ -7,6 +7,9 @@ using UnityEngine;
 using UnityEngine.Playables;
 using System.Collections.Generic;
 using UnityEngine.Timeline;
+using UnityEngine.UI;
+using UnityEngine.UIElements;
+using Image = UnityEngine.UI.Image;
 
 namespace PixelCrushers.DialogueSystem
 {
@@ -15,7 +18,7 @@ namespace PixelCrushers.DialogueSystem
     {
 
         private HashSet<int> played = new HashSet<int>();
-
+ 
         // NOTE: This function is called at runtime and edit time.  Keep that in mind when setting the values of properties.
         public override void ProcessFrame(Playable playable, FrameData info, object playerData)
         {
@@ -46,12 +49,14 @@ namespace PixelCrushers.DialogueSystem
                                         {
                                             if (standardDialogueUI.conversationUIElements.subtitlePanels[j] == null) continue;
                                             standardDialogueUI.conversationUIElements.subtitlePanels[j].ClearText();
+                                            standardDialogueUI.conversationUIElements.subtitlePanels[j].portraitImage.sprite = null;
                                         }
                                     }
                                     else if (0 <= input.clearPanelNumber && input.clearPanelNumber < standardDialogueUI.conversationUIElements.subtitlePanels.Length &&
                                         standardDialogueUI.conversationUIElements.subtitlePanels[input.clearPanelNumber] != null)
                                     {
                                         standardDialogueUI.conversationUIElements.subtitlePanels[input.clearPanelNumber].ClearText();
+                                        standardDialogueUI.conversationUIElements.subtitlePanels[input.clearPanelNumber].Close() ;// = null; 
                                     }
                                 }
                                 break;
