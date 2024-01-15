@@ -6,21 +6,31 @@ using UnityEngine;
 
 namespace Vanaring
 {
-    public struct PersoanlityRewardData
+    public struct PersonalityRewardData
     {
-        public int x; 
+        private int rewardTrait1;
+        private int rewardTrait2;
+        private int rewardTrait3;
+        private int rewardTrait4;
+        public int RewardTrait1 => rewardTrait1;
+        public int RewardTrait2 => rewardTrait2;
+        public int RewardTrait3 => rewardTrait3;
+        public int RewardTrait4 => rewardTrait4;
+
     }
     [Serializable]
-    public class PersonalityTraitRewardDisplayer : BaseRewardDisplayer<PersoanlityRewardData, PersonalityRewardDisplayerPanel>
+    public class PersonalityTraitRewardDisplayer : BaseRewardDisplayer<PersonalityRewardData, PersonalityRewardDisplayerPanel>
     {
-        public override IEnumerator DisplayRewardUICoroutine(PersoanlityRewardData rewardType_DONTUSETHISONE_ORYOUAREGAY)
+        private PersonalityRewardData _prd;
+        public override IEnumerator DisplayRewardUICoroutine(PersonalityRewardData rewardType_DONTUSETHISONE_ORYOUAREGAY)
         {
-            Debug.Log("display reward ui coroutine");
+            _prd = rewardType_DONTUSETHISONE_ORYOUAREGAY;
             yield return CreateRewardDisplayPanel() ;  
         }
 
         public override IEnumerator SettingUpRewardDisplayPanel(PersonalityRewardDisplayerPanel personalityRewardDisplayerPanel)
         {
+            personalityRewardDisplayerPanel.SetPersonalDataReceive(_prd);
             yield return (personalityRewardDisplayerPanel.SettingUpNumber() ) ; 
         }
     }
