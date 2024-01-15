@@ -8,15 +8,6 @@ namespace Vanaring
 {
     public struct PersonalityRewardData
     {
-        private int curTrait1;
-        private int curTrait2;
-        private int curTrait3;
-        private int curTrait4;
-        public int CurTrait1 => curTrait1;
-        public int CurTrait2 => curTrait2;                      //+5exp
-        public int CurTrait3 => curTrait3;                  //10exp -> 15exp
-        public int CurTrait4 => curTrait4;
-
         private int rewardTrait1;
         private int rewardTrait2;
         private int rewardTrait3;
