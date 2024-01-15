@@ -6,6 +6,7 @@
 using UnityEngine;
 using UnityEngine.Playables;
 using System.Collections.Generic;
+using UnityEngine.Windows;
 
 namespace PixelCrushers.DialogueSystem
 {
@@ -18,20 +19,30 @@ namespace PixelCrushers.DialogueSystem
         // NOTE: This function is called at runtime and edit time.  Keep that in mind when setting the values of properties.
         public override void ProcessFrame(Playable playable, FrameData info, object playerData)
         {
+            
             GameObject trackBinding = playerData as GameObject;
 
             Transform actorTransform = (trackBinding != null) ? trackBinding.transform : null;
 
             int inputCount = playable.GetInputCount();
-
+            
             for (int i = 0; i < inputCount; i++)
             {
                 float inputWeight = playable.GetInputWeight(i);
                 if (inputWeight > 0.001f && !played.Contains(i))
                 {
+ 
                     played.Add(i);
                     ScriptPlayable<StartConversationBehaviour> inputPlayable = (ScriptPlayable<StartConversationBehaviour>)playable.GetInput(i);
                     StartConversationBehaviour input = inputPlayable.GetBehaviour();
+
+                    if (input.endConversationClip)
+                    {
+                        DialogueManager.StopConversation(); 
+                        continue;
+                    }
+
+ 
                     if (Application.isPlaying)
                     {
                         if (input.exclusive)
@@ -44,6 +55,7 @@ namespace PixelCrushers.DialogueSystem
                         }
                         else
                         {
+                            Debug.Log("start conversation in frame processing");
                             DialogueManager.StartConversation(input.conversation, actorTransform, input.conversant);
                         }
                     }

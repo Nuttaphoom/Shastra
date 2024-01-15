@@ -29,6 +29,9 @@ namespace PixelCrushers.DialogueSystem
 
         [Tooltip("Stop any active conversations before starting this one.")]
         public bool exclusive = false;
+ 
+        [Tooltip("[Arm] : End conversation clip just stop current active conversation and should be called everytime the conversation ends")]
+        public bool endConversationClip = false;
 
         public string GetEditorDialogueText()
         {

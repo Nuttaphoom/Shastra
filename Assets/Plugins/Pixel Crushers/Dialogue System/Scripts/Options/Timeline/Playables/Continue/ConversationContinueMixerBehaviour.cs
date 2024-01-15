@@ -49,15 +49,14 @@ namespace PixelCrushers.DialogueSystem
                                         {
                                             if (standardDialogueUI.conversationUIElements.subtitlePanels[j] == null) continue;
                                             standardDialogueUI.conversationUIElements.subtitlePanels[j].ClearText();
-                                            standardDialogueUI.conversationUIElements.subtitlePanels[j].portraitImage.sprite = null;
-                                            standardDialogueUI.conversationUIElements.SetActive(false);
+                                            //standardDialogueUI.conversationUIElements.SetActive(false);
                                         }
                                     }
                                     else if (0 <= input.clearPanelNumber && input.clearPanelNumber < standardDialogueUI.conversationUIElements.subtitlePanels.Length &&
                                         standardDialogueUI.conversationUIElements.subtitlePanels[input.clearPanelNumber] != null)
                                     {
                                         standardDialogueUI.conversationUIElements.subtitlePanels[input.clearPanelNumber].ClearText();
-                                        standardDialogueUI.conversationUIElements.subtitlePanels[input.clearPanelNumber].Close() ;// = null; 
+                                        standardDialogueUI.conversationUIElements.subtitlePanels[input.clearPanelNumber].Close() ; 
                                         standardDialogueUI.conversationUIElements.SetActive(false) ; 
                                     }
                                 }

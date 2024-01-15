@@ -267,7 +267,18 @@ namespace PixelCrushers.DialogueSystem
         /// <value>
         /// <c>true</c> if the conversation is active; otherwise, <c>false</c>.
         /// </value>
-        public bool isConversationActive { get { return isAlternateConversationActive || ((m_conversationController != null) && m_conversationController.isActive); } }
+        public bool isConversationActive {
+            get {
+                if (isAlternateConversationActive)
+                    Debug.Log("Case 1");
+                if (((m_conversationController != null) && m_conversationController.isActive))
+                    Debug.Log("Case 2");
+                
+
+
+                return isAlternateConversationActive || ((m_conversationController != null) && m_conversationController.isActive); 
+            } 
+        }
 
         /// <summary>
         /// Set true to make isConversationActive report true even if a regular conversation isn't currently active.

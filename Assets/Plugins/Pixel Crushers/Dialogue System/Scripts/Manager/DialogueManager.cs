@@ -486,7 +486,8 @@ namespace PixelCrushers.DialogueSystem
         /// </example>
         public static void StartConversation(string title, Transform actor, Transform conversant)
         {
-            if (!hasInstance) return;
+            if (!hasInstance) return; 
+
             instance.StartConversation(title, actor, conversant);
         }
 

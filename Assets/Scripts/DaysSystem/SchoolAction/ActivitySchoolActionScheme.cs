@@ -13,7 +13,7 @@ namespace Vanaring
     public class ActivitySchoolActionScheme : MonoBehaviour, ISchoolAction
     {
         [SerializeField]
-        private PlayableDirector _director;
+        private CutsceneDirector _director;
 
         [SerializeField]
         private PersonalityTraitRewardDisplayer _rewardDisplayer ;
@@ -28,14 +28,7 @@ namespace Vanaring
 
         public IEnumerator StartPlayingTimeline()
         {
-            _director.Play();
-
-            while (_director.state == PlayState.Playing)
-            {
-                yield return new WaitForEndOfFrame();
-            }
-
-            yield return null ;
+            yield return _director.PlayCutscene(); 
 
             PostPerformActivity(); 
 
