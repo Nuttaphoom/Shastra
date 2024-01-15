@@ -1884,7 +1884,7 @@ PlayableDirector:
   m_Enabled: 1
   serializedVersion: 3
   m_PlayableAsset: {fileID: 11400000, guid: ea525611c7861094da5897f8aa5c221c, type: 2}
-  m_InitialState: 1
+  m_InitialState: 0
   m_WrapMode: 2
   m_DirectorUpdateMode: 1
   m_InitialTime: 0
@@ -2292,6 +2292,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1862144129}
+  - component: {fileID: 1862144130}
   m_Layer: 0
   m_Name: ActivitySchoolActionScheme ----------
   m_TagString: Untagged
@@ -2314,6 +2315,21 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1862144130
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1862144127}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0b1c4c4e7b39f449886e2c51b70da31, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _director: {fileID: 1543056458}
+  _rewardDisplayer:
+    _rewardDisplayGOTemplate: {fileID: 1597678473033070770, guid: abc7affd616e0b74d96a0864c3f88ee2, type: 3}
 --- !u!1 &1026974125120598
 GameObject:
   m_ObjectHideFlags: 0

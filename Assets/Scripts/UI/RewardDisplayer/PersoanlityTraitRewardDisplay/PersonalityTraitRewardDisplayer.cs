@@ -15,6 +15,7 @@ namespace Vanaring
     {
         public override IEnumerator DisplayRewardUICoroutine(PersoanlityRewardData rewardType_DONTUSETHISONE_ORYOUAREGAY)
         {
+            Debug.Log("display reward ui coroutine");
             yield return CreateRewardDisplayPanel() ;  
         }
 

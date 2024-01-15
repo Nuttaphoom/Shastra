@@ -50,6 +50,7 @@ namespace PixelCrushers.DialogueSystem
                                             if (standardDialogueUI.conversationUIElements.subtitlePanels[j] == null) continue;
                                             standardDialogueUI.conversationUIElements.subtitlePanels[j].ClearText();
                                             standardDialogueUI.conversationUIElements.subtitlePanels[j].portraitImage.sprite = null;
+                                            standardDialogueUI.conversationUIElements.SetActive(false);
                                         }
                                     }
                                     else if (0 <= input.clearPanelNumber && input.clearPanelNumber < standardDialogueUI.conversationUIElements.subtitlePanels.Length &&
@@ -57,6 +58,7 @@ namespace PixelCrushers.DialogueSystem
                                     {
                                         standardDialogueUI.conversationUIElements.subtitlePanels[input.clearPanelNumber].ClearText();
                                         standardDialogueUI.conversationUIElements.subtitlePanels[input.clearPanelNumber].Close() ;// = null; 
+                                        standardDialogueUI.conversationUIElements.SetActive(false) ; 
                                     }
                                 }
                                 break;

@@ -8,8 +8,6 @@ namespace Vanaring
     [Serializable] 
     public class CutsceneDirector : MonoBehaviour
     {
-         
-
         public IEnumerator PlayCutscene()
         {
             yield return null; 
