@@ -15,7 +15,7 @@ namespace Vanaring
     public abstract class ActorActionFactory : ScriptableObject
     {
         [SerializeField]
-        protected DescriptionBaseField _description;
+        protected DescriptionBaseField _actiondescription;
 
         [SerializeField]
         protected TargetSelector _targetSelector;
@@ -31,12 +31,12 @@ namespace Vanaring
 
         #region GETTER
         public TargetSelector TargetSelect => _targetSelector;
-        public string AbilityName => _description.FieldName;
-        public string Desscription => _description.FieldDescription;
-        public Sprite AbilityImage => _description.FieldImage;
+        public string AbilityName => _actiondescription.FieldName;
+        public string Desscription => _actiondescription.FieldDescription;
+        public Sprite AbilityImage => _actiondescription.FieldImage;
 
         public ActionSignal ActionSignal => _actionSignal;
-        public DescriptionBaseField DescriptionBaseField => _description; 
+        public DescriptionBaseField DescriptionBaseField => _actiondescription; 
         public Comment GetActionComment => _comment; 
 
         #endregion
