@@ -14,24 +14,18 @@ namespace Vanaring
         [SerializeField]
         private TransitionObject transitionObjPrefab;
 
-        //[SerializeField]
-        //private Sprite loadingScreenSprite;
-        
-        //[SerializeField]
-        //private Sprite loadingIcon;
-        
-
         [Header("Tip information")]
         [SerializeField]
         private string tipText;
 
         [Header("Time setup")]
         [SerializeField]
-        private float plusDelayTime;
-        [SerializeField]
+        private float loadingDelayTime;
         private float speedMultiply = 1;
         public string TipText => tipText;
         //public Sprite ScreenImage => loadingScreenSprite;
+        public TransitionObject GetTransitionObject => transitionObjPrefab;
+        public float GetDelayLoadingTime => loadingDelayTime;
     }
 }
 

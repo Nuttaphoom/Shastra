@@ -21,16 +21,16 @@ namespace Vanaring
         {
             private int level;
             public int Getlevel() { return level; }
-            private int currentexp;
-            public int GetCurrentexp() { return currentexp; }
+            private float currentexp;
+            public float GetCurrentexp() { return currentexp; }
 
-            public Trait_Data(int level, int currentexp)
+            public Trait_Data(int level, float currentexp)
             {
                 this.level = level;
                 this.currentexp = currentexp;
             }
 
-            public void SetTraitData(int level, int currentexp)
+            public void SetTraitData(int level, float currentexp)
             {
                 this.level = level;
                 this.currentexp = currentexp;

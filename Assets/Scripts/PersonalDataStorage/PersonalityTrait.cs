@@ -29,7 +29,7 @@ namespace Vanaring
             }
         }
 
-        public void SetStat(Trait.Trait_Type type, int level, int exp)
+        public void SetStat(Trait.Trait_Type type, int level, float exp)
         {
             traits[type].SetTraitData(level, exp);
         }
@@ -54,7 +54,7 @@ namespace Vanaring
             return trait_require_exp[traits[type].Getlevel()];
         }
 
-        public int GetCurrentTraitEXP(Trait.Trait_Type type)
+        public float GetCurrentTraitEXP(Trait.Trait_Type type)
         {
             // Warning of forgot adding new type to Base SO
             if (!traits.ContainsKey(type))

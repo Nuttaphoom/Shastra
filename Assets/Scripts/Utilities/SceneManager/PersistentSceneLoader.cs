@@ -95,18 +95,10 @@ namespace Vanaring
             {
                 transitionScreenObj = Instantiate(transitionManager.TransitionObj, gameObject.transform);
                 transitionScreenObj.name = "-- TransitionScreen ----------";
-                transitionManager.SetTransitionObj(transitionScreenObj);
+                //transitionManager.SetTransitionObj(transitionScreenObj);
                 transitionScreenObj.Init(transitionManager);
             }
-            
         }
-
-        public IEnumerator CreateTransitionSceneObj()
-        {
-            transitionManager.SetTransitionObj(Instantiate(transitionManager.TransitionObj, gameObject.transform)); 
-            yield return new WaitForEndOfFrame();
-        }
-
         #endregion
 
 
@@ -127,7 +119,6 @@ namespace Vanaring
 
         private void LoadNewScene(Null n)
         {
-            //Debug.Log("Fade in complete");
             transitionManager.TransitionObj.UnSubOnSceneLoaderBegin(LoadNewScene);
             StartCoroutine(transitionManager.LoadSceneAsync(_sceneToLoad));
         }
@@ -138,26 +129,13 @@ namespace Vanaring
     {
         [SerializeField]
         private TransitionSceneSO _transitionSceneSO;
-
-        [SerializeField]
-        private TransitionObject transitionObjTemplate;
-        private TransitionObject transitionObj;
-
         private EventBroadcaster _eventBroadCaster;
-
         public TransitionSceneSO TransitionSO => _transitionSceneSO;
-        public TransitionObject TransitionObj => transitionObjTemplate;
-        //public TransitionObject  transitionObjTemplate;
-        public void SetTransitionObj(TransitionObject t)
-        {
-            transitionObj = t;
-        }
+        public TransitionObject TransitionObj => _transitionSceneSO.GetTransitionObject;
+
         public IEnumerator LoadSceneAsync(string sceneToLoad)
         {
             AsyncOperation operation = SceneManager.LoadSceneAsync(sceneToLoad, LoadSceneMode.Additive);
-
-            //PersistentSceneLoader.Instance.CreateTransitionScene();
-
 
             while (!operation.isDone)
             {
@@ -202,8 +180,6 @@ namespace Vanaring
         {
             GetEventBroadcaster().UnSubEvent(argc, "OnSceneLoaderComplete");
         }
-
-        
     }
 }
  
