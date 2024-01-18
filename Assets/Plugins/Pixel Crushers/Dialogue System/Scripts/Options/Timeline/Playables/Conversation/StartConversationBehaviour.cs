@@ -1,3 +1,4 @@
+// Recompile at 10/1/2567 19:46:46
 #if USE_TIMELINE
 #if UNITY_2017_1_OR_NEWER
 // Copyright (c) Pixel Crushers. All rights reserved.
@@ -28,6 +29,9 @@ namespace PixelCrushers.DialogueSystem
 
         [Tooltip("Stop any active conversations before starting this one.")]
         public bool exclusive = false;
+ 
+        [Tooltip("[Arm] : End conversation clip just stop current active conversation and should be called everytime the conversation ends")]
+        public bool endConversationClip = false;
 
         public string GetEditorDialogueText()
         {

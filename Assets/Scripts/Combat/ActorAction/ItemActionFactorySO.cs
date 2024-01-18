@@ -16,7 +16,6 @@ namespace Vanaring
 
         public override ActorAction FactorizeRuntimeAction(CombatEntity user)
         {
-            
             return new ItemAbilityRuntime(user,this, user.ItemUser  ) ;
         }
     }

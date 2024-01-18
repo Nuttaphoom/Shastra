@@ -17,6 +17,9 @@ namespace Vanaring
         [HideInInspector]
         public PersonalityTrait player_personalityTrait;
 
+        [SerializeField]
+        private Backpack _backpack; 
+        
         private void Awake()
         {
             // TO DO : 

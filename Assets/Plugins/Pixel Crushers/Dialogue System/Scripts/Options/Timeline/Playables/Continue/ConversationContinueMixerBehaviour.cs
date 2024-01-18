@@ -1,3 +1,4 @@
+// Recompile at 10/1/2567 19:46:46
 #if USE_TIMELINE
 #if UNITY_2017_1_OR_NEWER
 // Copyright (c) Pixel Crushers. All rights reserved.
@@ -6,6 +7,9 @@ using UnityEngine;
 using UnityEngine.Playables;
 using System.Collections.Generic;
 using UnityEngine.Timeline;
+using UnityEngine.UI;
+using UnityEngine.UIElements;
+using Image = UnityEngine.UI.Image;
 
 namespace PixelCrushers.DialogueSystem
 {
@@ -14,7 +18,7 @@ namespace PixelCrushers.DialogueSystem
     {
 
         private HashSet<int> played = new HashSet<int>();
-
+ 
         // NOTE: This function is called at runtime and edit time.  Keep that in mind when setting the values of properties.
         public override void ProcessFrame(Playable playable, FrameData info, object playerData)
         {
@@ -45,12 +49,15 @@ namespace PixelCrushers.DialogueSystem
                                         {
                                             if (standardDialogueUI.conversationUIElements.subtitlePanels[j] == null) continue;
                                             standardDialogueUI.conversationUIElements.subtitlePanels[j].ClearText();
+                                            //standardDialogueUI.conversationUIElements.SetActive(false);
                                         }
                                     }
                                     else if (0 <= input.clearPanelNumber && input.clearPanelNumber < standardDialogueUI.conversationUIElements.subtitlePanels.Length &&
                                         standardDialogueUI.conversationUIElements.subtitlePanels[input.clearPanelNumber] != null)
                                     {
                                         standardDialogueUI.conversationUIElements.subtitlePanels[input.clearPanelNumber].ClearText();
+                                        standardDialogueUI.conversationUIElements.subtitlePanels[input.clearPanelNumber].Close() ; 
+                                        standardDialogueUI.conversationUIElements.SetActive(false) ; 
                                     }
                                 }
                                 break;
