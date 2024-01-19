@@ -6,36 +6,48 @@ using UnityEngine.SceneManagement;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine.Events;
+using UnityEngine.Playables;
 
 namespace Vanaring
 {
     public class TransitionObject : MonoBehaviour
     {
-        [SerializeField]
-        private GameObject transitionCanvas;
-
+        [Header("Scriptable Object")]
         [SerializeField]
         private TransitionSceneSO _transitionSO;
 
+        [Header("Canvas Component")]
+        [SerializeField]
+        private GameObject transitionCanvas;
         [SerializeField]
         private TextMeshProUGUI _tiptext;
-
         [SerializeField]
         private Image gfxScreen;
 
+        [Header("Director")]
         [SerializeField]
-        private Image loadingScreenImage;
+        private PlayableDirector fadeInDirector;
+        [SerializeField]
+        private PlayableDirector fadeOutDirector;
+
+        [Header("Customize")]
+        private float delayLoadingTime;
 
         public Image loadingBarFill;
         private TransitionSceneManager _tsm;
         private EventBroadcaster _eventBroadCaster;
+
+
         public void Init(TransitionSceneManager tsm)
         {
             _tsm = tsm;
+            delayLoadingTime = _transitionSO.GetDelayLoadingTime;
             _tsm.SubOnSceneLoaderOperation(OnSceneProgressBarLoading);
             _tsm.SubOnSceneLoaderComplete(Startcou);
             transitionCanvas.SetActive(true);
-            StartCoroutine(FadeInBackground());
+            StartCoroutine(FadeInTransition());
+            fadeInDirector.Play();
+            //System should tell the timeline to play
         }
 
         private EventBroadcaster GetEventBroadcaster()
@@ -57,37 +69,36 @@ namespace Vanaring
             loadingBarFill.fillAmount = val;
         }
 
-        private IEnumerator FadeInBackground()
+        private IEnumerator FadeInTransition()
         {
             gfxScreen.fillAmount = 0;
-            while (gfxScreen.fillAmount < 1)
-            {
-                gfxScreen.fillAmount += Time.deltaTime * 5;
-                yield return new WaitForSeconds(0.007f);
-            }
-            //Debug.Log("Fade-in obj complete");
+            while (fadeInDirector.state == PlayState.Playing)
+                yield return new WaitForEndOfFrame();
+            Debug.Log("finish fade-in");
+            fadeInDirector.Stop();
             GetEventBroadcaster().InvokeEvent<Null>(null, "OnSceneLoaderBegin");
         }
 
-        private IEnumerator DestroyAfterTransition()
+        private IEnumerator FadeOutTransition()
         {
             _tsm.UnSubOnSceneLoaderOperation(OnSceneProgressBarLoading);
-            yield return new WaitForSeconds(1.0f);
-
-            while (gfxScreen.fillAmount > 0)
-            {
-                gfxScreen.fillAmount -= Time.deltaTime * 5;
-                yield return new WaitForSeconds(0.007f);
-            }
+            yield return new WaitForSeconds(delayLoadingTime);
+            Debug.Log("Load scene finish");
+            fadeOutDirector.Play();
+            while (fadeOutDirector.state == PlayState.Playing)
+                yield return new WaitForEndOfFrame();
+            Debug.Log("finish fade-out");
+            fadeOutDirector.Stop();
+            GetEventBroadcaster().InvokeEvent<Null>(null, "OnSceneLoaderBegin");
             transitionCanvas.SetActive(false);
             Destroy(gameObject);
             _tsm.UnSubOnSceneLoaderComplete(Startcou);
-            //Debug.Log("Destroy transition");
+            yield return null;
         }
 
         private void Startcou(Null n)
         {
-            StartCoroutine(DestroyAfterTransition());
+            StartCoroutine(FadeOutTransition());
         }
 
         public void SubOnSceneLoaderBegin(UnityAction<Null> argc)
@@ -98,25 +109,5 @@ namespace Vanaring
         {
             GetEventBroadcaster().SubEvent(argc, "OnSceneLoaderBegin");
         }
-
-        //private IEnumerator RandomTip()
-        //{
-        //    while (true)
-        //    {
-        //        int ranText = Random.Range(0, _transitionSO.TipText.Count - 1);
-        //        _tiptext.text = _transitionSO.TipText[ranText];
-        //        yield return new WaitForSeconds(3.0f);
-        //    }
-        //}
-
-        //private IEnumerator RandomBG()
-        //{
-        //    while (true)
-        //    {
-        //        int ranText = Random.Range(0, _transitionSO.ScreenImage.Count - 1);
-        //        loadingScreenImage.sprite = _transitionSO.ScreenImage[ranText];
-        //        yield return new WaitForSeconds(10.0f);
-        //    }
-        //}
     }
 }
