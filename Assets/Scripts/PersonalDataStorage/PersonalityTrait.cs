@@ -7,13 +7,14 @@ namespace Vanaring
 {
     public class PersonalityTrait
     {
-        private Dictionary<Trait.Trait_Type, int> traits = new Dictionary<Trait.Trait_Type, int>();
+        private Dictionary<Trait.Trait_Type, Trait.Trait_Data> traits = new Dictionary<Trait.Trait_Type, Trait.Trait_Data>();
         private List<int> trait_require_exp = new List<int>();
         public PersonalityTrait(PersonalityTraitSO personalityTraitSO)
         {
             foreach (Trait.Trait_Type type in Enum.GetValues(typeof(Trait.Trait_Type)))
             {
-                traits[type] = personalityTraitSO.GetStat(type);
+                // TEMP : Setting start exp with 0
+                traits[type] = new Trait.Trait_Data(personalityTraitSO.GetStat(type), 0);
             }
 
             if (trait_require_exp.Count > 0)
@@ -28,12 +29,12 @@ namespace Vanaring
             }
         }
 
-        public void SetStat(Trait.Trait_Type type, int value)
+        public void SetStat(Trait.Trait_Type type, int level, int exp)
         {
-            traits[type] = value;
+            traits[type].SetTraitData(level, exp);
         }
 
-        public int GetStat(Trait.Trait_Type type)
+        public Trait.Trait_Data GetStat(Trait.Trait_Type type)
         {
             // Warning of forgot adding new type to Base SO
             if (!traits.ContainsKey(type))
@@ -50,7 +51,17 @@ namespace Vanaring
             {
                 throw new Exception("Trait.Trait_Type don't have this type: " + type);
             }
-            return trait_require_exp[traits[type]];
+            return trait_require_exp[traits[type].Getlevel()];
+        }
+
+        public int GetCurrentTraitEXP(Trait.Trait_Type type)
+        {
+            // Warning of forgot adding new type to Base SO
+            if (!traits.ContainsKey(type))
+            {
+                throw new Exception("Trait.Trait_Type don't have this type: " + type);
+            }
+            return traits[type].GetCurrentexp();
         }
     }
 }
