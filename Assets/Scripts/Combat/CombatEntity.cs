@@ -18,7 +18,7 @@ namespace Vanaring
     [RequireComponent(typeof(SpellCasterHandler))]
     public abstract class CombatEntity : MonoBehaviour, ITurnState, IDamagable, IAttackter
     {
-        [Header("Right now we manually assign CharacterSheet, TO DO : Make it loaded from the main database")]
+        //[Header("Right now we manually assign CharacterSheet, TO DO : Make it loaded from the main database")]
         [SerializeField]
         private CharacterSheetSO _characterSheet;
 

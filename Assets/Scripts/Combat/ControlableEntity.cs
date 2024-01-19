@@ -11,7 +11,6 @@ namespace Vanaring
 {
     public class ControlableEntity : CombatEntity , ICameraAttacher
     {
-        [Header("Right now we manually assign valid action, TODO : Load from Database")]
         [SerializeField]
         private ControlableEntityActionsRegistry _controlableEntityActionRegistry;
 
