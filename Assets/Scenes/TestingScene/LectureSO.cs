@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 namespace Vanaring
 {
@@ -13,5 +14,16 @@ namespace Vanaring
         public int maxPoint = 1000;
         [SerializeField]
         public List<LectureChechpoint> Checkpoint = new List<LectureChechpoint>();
+        [SerializeField]
+        public List<LectureRequieBoost> lectureRequieBoosts = new List<LectureRequieBoost>();
+    }
+
+    [Serializable]
+    public class LectureRequieBoost
+    {
+        [SerializeField]
+        private Trait.Trait_Type trait;
+        [SerializeField]
+        private int requirelevel;
     }
 }

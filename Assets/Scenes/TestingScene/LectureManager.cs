@@ -15,16 +15,51 @@ namespace Vanaring
         [SerializeField]
         private List<LectureSO> lectures = new List<LectureSO>();
 
+        private List<ProgressData> tempSaveProgress = new List<ProgressData>();
+
         private List<LectureSubjectRuntime> lectureRuntimes = new List<LectureSubjectRuntime>();
+
+        private void Awake()
+        {
+            //if (lectureRuntimes.Count > 0)
+            //{
+            //    foreach (LectureSO lectureSO in lectures)
+            //    {
+            //        LectureSubjectRuntime lectureSubjectRuntime = gameObject.AddComponent<LectureSubjectRuntime>();
+            //        lectureSubjectRuntime.InitData(lectureSO);
+            //        lectureRuntimes.Add(lectureSubjectRuntime);
+            //    }
+            //}
+        }
+
+        [ContextMenu("Load Scene")]
+        public void LoadScene()
+        {
+            UnityEngine.SceneManagement.SceneManager.LoadScene("PotaeTesterScene");
+        }
 
         [ContextMenu("Init Runtime")]
         public void initLectureRuntime()
         {
-            foreach (LectureSO lectureSO in lectures)
+            if(lectureRuntimes.Count > 0)
             {
                 // TO DO: prevent multiple ADD
-                lectureRuntimes.Add(new LectureSubjectRuntime(lectureSO));
+                return;
             }
+
+            for (int i = 0; i < lectures.Count; i++)
+            {
+                // TO DO: prevent multiple ADD
+                if (tempSaveProgress.Count > 0)
+                {
+                    lectureRuntimes.Add(new LectureSubjectRuntime(lectures[i], tempSaveProgress[i]));
+                }
+                else 
+                {
+                    lectureRuntimes.Add(new LectureSubjectRuntime(lectures[i]));
+                }
+            }
+
         }
 
         [ContextMenu("IncreaseExpGAM")]
@@ -60,9 +95,19 @@ namespace Vanaring
 
         public object CaptureState()
         {
+            List<ProgressData> tempProgress = new List<ProgressData>();
+            foreach (LectureSubjectRuntime LectureSubjectRuntime in lectureRuntimes)
+            {
+                ProgressData progressData;
+
+                progressData.progessPoint = LectureSubjectRuntime.CurrentPoint;
+
+                tempProgress.Add(progressData);
+            }
+
             return new SaveData
             {
-                savelectureRuntimes = lectureRuntimes
+                savedProgress = tempProgress
             };
         }
 
@@ -70,27 +115,48 @@ namespace Vanaring
         {
             var saveData = (SaveData)state;
 
-            lectureRuntimes = saveData.savelectureRuntimes;
+            tempSaveProgress = saveData.savedProgress;
+        }
+
+        [Serializable]
+        public struct ProgressData
+        {
+            public int progessPoint;
         }
 
         [Serializable]
         private struct SaveData
         {
-            public List<LectureSubjectRuntime> savelectureRuntimes;
+            public List<ProgressData> savedProgress;
         }
     }
 
     public class LectureSubjectRuntime
     {
+        [SerializeField]
         private string lectureName = "";
+        [SerializeField]
         private int currentPoint = -1;
+        [SerializeField]
         private int maxPoint = -1;
+        [SerializeField]
         private List<LectureChechpoint> checkpoint = new List<LectureChechpoint>();
 
-        public LectureSubjectRuntime(LectureSO lectureSO, int currentProgress = 0)
+        public LectureSubjectRuntime()
+        {
+        }
+
+        public LectureSubjectRuntime(LectureSO lectureSO)
         {
             lectureName = lectureSO.LectureName;
-            currentPoint = currentProgress;
+            currentPoint = 0;
+            maxPoint = lectureSO.maxPoint;
+            checkpoint = lectureSO.Checkpoint;
+        }
+        public LectureSubjectRuntime(LectureSO lectureSO, LectureManager.ProgressData currentProgress)
+        {
+            lectureName = lectureSO.LectureName;
+            currentPoint = currentProgress.progessPoint;
             maxPoint = lectureSO.maxPoint;
             checkpoint = lectureSO.Checkpoint;
         }
