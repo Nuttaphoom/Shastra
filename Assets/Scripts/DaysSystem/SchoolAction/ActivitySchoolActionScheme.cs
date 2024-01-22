@@ -17,6 +17,10 @@ namespace Vanaring
 
         [SerializeField]
         private PersonalityTraitRewardDisplayer _rewardDisplayer ;
+
+        [SerializeField]
+        private PersonalityRewardData _personalityReward;
+
         private void Start()
         {
             OnPerformAcivity();
@@ -37,7 +41,6 @@ namespace Vanaring
         public void PostPerformActivity()
         {
             Debug.Log("Post Perform activity");
-
             StartCoroutine(_rewardDisplayer.DisplayRewardUICoroutine(new PersonalityRewardData() ) ) ; 
             //finish display(done)(close window) -> (update backend/load new scene)(Potae) -> Persistent
         }

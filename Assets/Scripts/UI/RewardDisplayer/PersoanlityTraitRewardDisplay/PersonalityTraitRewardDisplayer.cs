@@ -6,6 +6,7 @@ using UnityEngine;
 
 namespace Vanaring
 {
+    [Serializable]
     public struct PersonalityRewardData
     {
         private int rewardTrait1;
