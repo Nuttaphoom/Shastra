@@ -17,6 +17,7 @@ namespace Vanaring
         [SerializeField] private Button mapButton;
         [SerializeField]
         private SceneDataSO _mapSceneToLoad;
+        [SerializeField] private Button testButton;
 
         private void Start()
         {
@@ -40,12 +41,12 @@ namespace Vanaring
 
             foreach (BaseLocationActionCommand action in actionCommandList)
             {
-                GameObject newActionButton = Instantiate(actionButton, verticalLayout.transform);
-                newActionButton.SetActive(true);
-                newActionButton.GetComponent<Button>().onClick.AddListener(() => PerformAction(action));
-                //Debug.Log(action.GetTestString);
-                newActionButton.GetComponent<Image>().sprite = action.GetActionIconSprite;
-                actionButtonList.Add(newActionButton);
+                //GameObject newActionButton = Instantiate(actionButton, verticalLayout.transform);
+                //newActionButton.SetActive(true);
+                //newActionButton.GetComponent<Button>().onClick.AddListener(() => PerformAction(action));
+                testButton.onClick.AddListener(() => PerformAction(action));
+                //newActionButton.GetComponent<Image>().sprite = action.GetActionIconSprite;
+                //actionButtonList.Add(newActionButton);
             }
             mapButton.onClick.AddListener(() => PersistentSceneLoader.Instance.LoadLocation<int>(_mapSceneToLoad, 0));
         }
