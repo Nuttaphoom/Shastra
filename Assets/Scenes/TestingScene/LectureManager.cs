@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using UnityEngine.Events;
 
 namespace Vanaring
 {
@@ -15,21 +16,16 @@ namespace Vanaring
         [SerializeField]
         private List<LectureSO> lectures = new List<LectureSO>();
 
-        private List<ProgressData> tempSaveProgress = new List<ProgressData>();
+        private List<ProgressData> localSaveProgress = new List<ProgressData>();
 
-        private List<LectureSubjectRuntime> lectureRuntimes = new List<LectureSubjectRuntime>();
+        static private List<LectureSubjectRuntime> lectureRuntimes = new List<LectureSubjectRuntime>();
 
         private void Awake()
         {
-            //if (lectureRuntimes.Count > 0)
-            //{
-            //    foreach (LectureSO lectureSO in lectures)
-            //    {
-            //        LectureSubjectRuntime lectureSubjectRuntime = gameObject.AddComponent<LectureSubjectRuntime>();
-            //        lectureSubjectRuntime.InitData(lectureSO);
-            //        lectureRuntimes.Add(lectureSubjectRuntime);
-            //    }
-            //}
+            if (lectureRuntimes.Count > 0)
+                return;
+
+            InitLectureRuntime();
         }
 
         [ContextMenu("Load Scene")]
@@ -39,38 +35,30 @@ namespace Vanaring
         }
 
         [ContextMenu("Init Runtime")]
-        public void initLectureRuntime()
+        public void InitLectureRuntime()
         {
             if(lectureRuntimes.Count > 0)
             {
-                // TO DO: prevent multiple ADD
                 return;
             }
 
-            for (int i = 0; i < lectures.Count; i++)
+            foreach (LectureSO lectureSO in lectures)
             {
-                // TO DO: prevent multiple ADD
-                if (tempSaveProgress.Count > 0)
+                bool lectureAdded = false;
+                foreach (ProgressData progressData in localSaveProgress)
                 {
-                    lectureRuntimes.Add(new LectureSubjectRuntime(lectures[i], tempSaveProgress[i]));
+                    if (progressData.lectureName == lectureSO.LectureName)
+                    {
+                        lectureRuntimes.Add(new LectureSubjectRuntime(lectureSO, progressData));
+                        lectureAdded = true;
+                    }
                 }
-                else 
+                if (!lectureAdded)
                 {
-                    lectureRuntimes.Add(new LectureSubjectRuntime(lectures[i]));
+                    lectureRuntimes.Add(new LectureSubjectRuntime(lectureSO));
                 }
             }
 
-        }
-
-        [ContextMenu("IncreaseExpGAM")]
-        public void IncreaseExpGAM()
-        {
-            IncreaseExp("GAM300");
-        }
-        [ContextMenu("IncreaseExpLOL")]
-        public void IncreaseExpLOL()
-        {
-            IncreaseExp("LOL800");
         }
 
         public void IncreaseExp(string LectureName)
@@ -80,19 +68,70 @@ namespace Vanaring
                 if (LectureSubjectRuntime.LectureName == LectureName)
                 {
                     LectureSubjectRuntime.RecievePoint(increaseAmount);
+                    GetEventBroadcaster().InvokeEvent<int>(increaseAmount, "OnReceiveExp");
+                    if (LectureSubjectRuntime.SetRecieveReward())
+                    {
+                        GetEventBroadcaster().InvokeEvent<List<string>>(LectureSubjectRuntime.GetRecievedReward(), "OnUnlockReward");
+                    }
                 }
             }
         }
 
-        [ContextMenu("Print Runtime")]
-        public void PrintLectureRuntime()
+        //[ContextMenu("IncreaseGAM")]
+        //public void IncreaseGAM()
+        //{
+        //    IncreaseExp("GAM300");
+        //}
+        //[ContextMenu("IncreaseLOL")]
+        //public void IncreaseLOL()
+        //{
+        //    IncreaseExp("LOL800");
+        //}
+
+        //[ContextMenu("Print Runtime")]
+        //public void PrintLectureRuntime()
+        //{
+        //    foreach (LectureSubjectRuntime LectureSubjectRuntime in lectureRuntimes)
+        //    {
+        //        LectureSubjectRuntime.PrintData();
+        //    }
+        //}
+
+        #region GetEventBroadcaster Methods 
+
+        private EventBroadcaster _eventBroadcaster;
+        private EventBroadcaster GetEventBroadcaster()
         {
-            foreach (LectureSubjectRuntime LectureSubjectRuntime in lectureRuntimes)
+            if (_eventBroadcaster == null)
             {
-                LectureSubjectRuntime.PrintData();
+                _eventBroadcaster = new EventBroadcaster();
+
+                _eventBroadcaster.OpenChannel<int>("OnReceiveExp");
+                _eventBroadcaster.OpenChannel<List<string>>("OnUnlockReward");
             }
+
+            return _eventBroadcaster;
+        }
+        public void SubOnReceiveExpEvent(UnityAction<int> argc)
+        {
+            GetEventBroadcaster().SubEvent(argc, "OnReceiveExp");
+        }
+        public void SubOnUnlockRewardEvent(UnityAction<List<string>> argc)
+        {
+            GetEventBroadcaster().SubEvent(argc, "OnUnlockReward");
+        }
+        public void UnSubOnReceiveExpEvent(UnityAction<int> argc)
+        {
+            GetEventBroadcaster().UnSubEvent(argc, "OnReceiveExp");
+        }
+        public void UnSubOnUnlockRewardEvent(UnityAction<List<string>> argc)
+        {
+            GetEventBroadcaster().UnSubEvent(argc, "OnUnlockReward");
         }
 
+        #endregion
+
+        #region Save System
         public object CaptureState()
         {
             List<ProgressData> tempProgress = new List<ProgressData>();
@@ -100,6 +139,7 @@ namespace Vanaring
             {
                 ProgressData progressData;
 
+                progressData.lectureName = LectureSubjectRuntime.LectureName;
                 progressData.progessPoint = LectureSubjectRuntime.CurrentPoint;
 
                 tempProgress.Add(progressData);
@@ -115,12 +155,13 @@ namespace Vanaring
         {
             var saveData = (SaveData)state;
 
-            tempSaveProgress = saveData.savedProgress;
+            localSaveProgress = saveData.savedProgress;
         }
 
         [Serializable]
         public struct ProgressData
         {
+            public string lectureName;
             public int progessPoint;
         }
 
@@ -129,6 +170,8 @@ namespace Vanaring
         {
             public List<ProgressData> savedProgress;
         }
+
+        #endregion
     }
 
     public class LectureSubjectRuntime
@@ -141,6 +184,8 @@ namespace Vanaring
         private int maxPoint = -1;
         [SerializeField]
         private List<LectureChechpoint> checkpoint = new List<LectureChechpoint>();
+
+        private List<string> recievedReward = new List<string>();
 
         public LectureSubjectRuntime()
         {
@@ -168,11 +213,12 @@ namespace Vanaring
             if (currentPoint > maxPoint)
                 currentPoint = maxPoint;
 
-            PrintReward();
+            //GetReward();
         }
 
-        public void PrintReward()
+        public bool SetRecieveReward()
         {
+            bool getReward = false;
             foreach (LectureChechpoint lectureChechpoint in checkpoint)
             {
                 if (lectureChechpoint.Received == true)
@@ -182,15 +228,24 @@ namespace Vanaring
                 else if (currentPoint >= lectureChechpoint.RequirePoint)
                 {
                     lectureChechpoint.SetReceived(true);
-                    Debug.Log("Reward : " + lectureChechpoint.Reward);
+                    recievedReward.Add(lectureChechpoint.Reward);
+                    getReward = true;
                 }
             }
+            return getReward;
         }
 
-        public void PrintData()
+        public List<string> GetRecievedReward()
         {
-            Debug.Log(LectureName + "," + currentPoint + "," + maxPoint);
+            List<string> temp = recievedReward;
+            recievedReward.Clear();
+            return temp;
         }
+
+        //public void PrintData()
+        //{
+        //    Debug.Log(LectureName + "," + currentPoint + "," + maxPoint);
+        //}
 
         #region Getter
         public string LectureName => lectureName;
