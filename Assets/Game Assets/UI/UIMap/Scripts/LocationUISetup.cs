@@ -15,9 +15,11 @@ namespace Vanaring
         [SerializeField] private GameObject confirmPanel;
         [SerializeField] private Button confirmButton;
         [SerializeField] private Button mapButton;
+        [SerializeField] private TextMeshProUGUI confirmText;
         [SerializeField]
         private SceneDataSO _mapSceneToLoad;
-        [SerializeField] private Button testButton;
+        //[SerializeField] private Button testButton;
+        [SerializeField] private List<Transform> buttonTransform = new List<Transform>();
 
         private void Start()
         {
@@ -38,22 +40,39 @@ namespace Vanaring
                 actionCommandList = location.ActionOnLocation ;
                 break; 
             }
-
+            //actionButton.GetComponent<Image>().alphaHitTestMinimumThreshold = 0.1f;
+            int i = 0;
             foreach (BaseLocationActionCommand action in actionCommandList)
             {
-                //GameObject newActionButton = Instantiate(actionButton, verticalLayout.transform);
-                //newActionButton.SetActive(true);
-                //newActionButton.GetComponent<Button>().onClick.AddListener(() => PerformAction(action));
-                testButton.onClick.AddListener(() => PerformAction(action));
-                //newActionButton.GetComponent<Image>().sprite = action.GetActionIconSprite;
-                //actionButtonList.Add(newActionButton);
+                
+                GameObject newActionButton = Instantiate(actionButton, buttonTransform[i]);
+                newActionButton.SetActive(true);
+
+                Image[] images = newActionButton.GetComponentsInChildren<Image>(true);
+                foreach (Image img in images)
+                {
+                    img.sprite = action.GetActionIconSprite;
+                }
+                Button actualButton = newActionButton.GetComponentInChildren<Button>(true);
+                actualButton.onClick.AddListener(() => PerformAction(action));
+                actualButton.GetComponent<Image>().sprite = action.GetActionIconSprite;  
+                
+                TextMeshProUGUI[] textComponents = newActionButton.GetComponentsInChildren<TextMeshProUGUI>(true);
+                textComponents[0].text = action.GetActionName;
+                textComponents[1].text = action.GetActionDescription;
+
+                actionButtonList.Add(newActionButton);
+                i++;
             }
+            actionButton.SetActive(false);
             mapButton.onClick.AddListener(() => PersistentSceneLoader.Instance.LoadLocation<int>(_mapSceneToLoad, 0));
         }
 
         private void PerformAction(BaseLocationActionCommand action)
         {
             OpenPanel();
+            string ct = string.Format("{0} at the library?\nThis action will consume <color=#FF0000FF>1 time slot</color>, are you sure to perform this action ? ", action.GetActionDescription);
+            confirmText.text = ct;
             confirmButton.onClick.AddListener(() => action.ExecuteCommand());
         }
 

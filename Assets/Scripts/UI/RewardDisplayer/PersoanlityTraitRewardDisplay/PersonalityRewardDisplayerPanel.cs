@@ -46,11 +46,10 @@ namespace Vanaring
 
         [Header("From now are temp value TODO : Delete this and get these value from backen database")]
         private float gotoValue = 1669.0f;
-        private float trait1Reward = 1000.0f;
+        private float trait1Reward = 999.0f;
         private float trait2Reward = 200.0f;
-        private float trait3Reward = 0.0f;
-        private float trait4Reward = 0.0f;
-
+        private float trait3Reward = 20.0f;
+        private float trait4Reward = 399.0f;
 
         [SerializeField] private TextMeshProUGUI levelCharmText;
         [SerializeField] private TextMeshProUGUI levelKindText;
@@ -61,11 +60,7 @@ namespace Vanaring
         {
             _personalityReward = prd;
             personalityTrait = PersistentPlayerPersonalDataManager.Instance.player_personalityTrait;
-
-            //charmVal = personalityTrait.GetStat(Trait.Trait_Type.Charm);
-            //kindnessVal = personalityTrait.GetStat(Trait.Trait_Type.Kindness);
-            //knowledgeVal = personalityTrait.GetStat(Trait.Trait_Type.Knowledge);
-            //proficiencyVal = personalityTrait.GetStat(Trait.Trait_Type.Proficiency);
+            levelUpPanel.SetActive(false);
         }
 
         public override void ForceSetUpNumber()
@@ -89,13 +84,13 @@ namespace Vanaring
             {
                 yield return new WaitForEndOfFrame();
             }
-
+            
             StartCoroutine(GuageDisplay(personalityTrait.GetStat(Trait.Trait_Type.Charm).GetCurrentexp(), trait1Reward, Trait.Trait_Type.Charm, traitGauge1, levelCharmText));
             StartCoroutine(GuageDisplay(personalityTrait.GetStat(Trait.Trait_Type.Kindness).GetCurrentexp(), trait2Reward, Trait.Trait_Type.Kindness, traitGauge2, levelKindText));
-            StartCoroutine(GuageDisplay(personalityTrait.GetStat(Trait.Trait_Type.Knowledge).GetCurrentexp(), 0.0f, Trait.Trait_Type.Knowledge, traitGauge3, levelKnowText));
-            StartCoroutine(GuageDisplay(personalityTrait.GetStat(Trait.Trait_Type.Proficiency).GetCurrentexp(), 0.0f, Trait.Trait_Type.Proficiency, traitGauge4, levelProfText));
+            StartCoroutine(GuageDisplay(personalityTrait.GetStat(Trait.Trait_Type.Knowledge).GetCurrentexp(), trait3Reward, Trait.Trait_Type.Knowledge, traitGauge3, levelKnowText));
+            StartCoroutine(GuageDisplay(personalityTrait.GetStat(Trait.Trait_Type.Proficiency).GetCurrentexp(), trait4Reward, Trait.Trait_Type.Proficiency, traitGauge4, levelProfText));
             yield return new WaitForSeconds(_animationDuration);
-            
+
             //Snap to finish
             _testTextUGUI.text = gotoValue.ToString();
             if (isHasReward)
@@ -113,7 +108,7 @@ namespace Vanaring
             float previ = 0;
             float i = 0;
             float expReqVal = personalityTrait.GetCurrentTraitRequireEXP(type);
-            int curLv = personalityTrait.GetStat(type).Getlevel();
+
             while (currentTime < _animationDuration)
             {
                 if (IsSettingUpSucessfully)
@@ -128,21 +123,14 @@ namespace Vanaring
                 //expReqText.text = curExpGain + "/" + personalityTrait.GetCurrentTraitRequireEXP(Trait.Trait_Type.Charm).ToString();
                 gauge.fillAmount = (float)Math.Floor(curExpGain) / personalityTrait.GetCurrentTraitRequireEXP(type);
 
-                //_testTextUGUI.text = i.ToString();
-
                 if (Math.Floor(curExpGain) >= expReqVal) //level up condition
                 {
                     Debug.Log(curExpGain + ", " + Math.Floor(curExpGain));
                     curExpGain = curExpGain - expReqVal;
-                    //Debug.Log("Lvl trait " + type.ToString() + " up to: " + (personalityTrait.GetStat(type).Getlevel() + 1).ToString());
-
-
-                    //yield return DisplayLevelUp();
+                    Debug.Log("Lvl trait " + type.ToString() + " up to: " + (personalityTrait.GetStat(type).Getlevel() + 1).ToString());
 
                     isHasReward = true;
-                    curLv = personalityTrait.GetStat(type).Getlevel() + 1;
-                    Debug.Log(curLv);
-                    personalityTrait.SetStat(type, curLv, curExpGain);   //plus level by 1
+                    personalityTrait.SetStat(type, personalityTrait.GetStat(type).Getlevel()+1, curExpGain);   //plus level by 1
                     lvText.text = personalityTrait.GetStat(type).Getlevel().ToString();
                     expReqVal = personalityTrait.GetCurrentTraitRequireEXP(type);   //set to next lvl
                     //expReqText.text = curExpGain + "/" + expReqVal.ToString();
@@ -157,8 +145,10 @@ namespace Vanaring
         {
             levelUpPanel.SetActive(true);
             
-            yield return new WaitForSeconds(2.0f);
-            //levelUpPanel.SetActive(false);
+            yield return new WaitForSeconds(5.0f);
+            levelUpPanel.SetActive(false);
         }
+
+
     }
 }

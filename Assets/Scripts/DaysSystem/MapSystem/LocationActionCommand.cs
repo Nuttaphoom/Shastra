@@ -49,10 +49,14 @@ namespace Vanaring
         
 
         public Sprite GetActionIconSprite => _actionIconAsset;
+        public string GetActionName => _actionName;
+        public string GetActionDescription => _actionDescription;
 
         public BaseLocationActionCommand(BaseLocationActionCommand copied)
         {
-            _actionIconAsset = copied._actionIconAsset; 
+            _actionIconAsset = copied._actionIconAsset;
+            _actionName = copied._actionName;
+            _actionDescription = copied._actionDescription;
         }
         public abstract void ExecuteCommand () ;
 
