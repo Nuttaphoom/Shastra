@@ -34,22 +34,19 @@ namespace Vanaring
         [SerializeField]
         private TextMeshProUGUI expReqText;
         private PersonalityRewardData _personalityReward;
-        private int charmVal;
-        private int kindnessVal;
-        private int knowledgeVal;
-        private int proficiencyVal;
         
         [SerializeField]
         private PlayableDirector introDirector;
         private PersonalityTrait personalityTrait;
-        private Trait.Trait_Type trait;
 
+        /// <Temp>
         [Header("From now are temp value TODO : Delete this and get these value from backen database")]
         private float gotoValue = 1669.0f;
         private float trait1Reward = 999.0f;
         private float trait2Reward = 200.0f;
         private float trait3Reward = 20.0f;
         private float trait4Reward = 399.0f;
+        /// </Temp>
 
         [SerializeField] private TextMeshProUGUI levelCharmText;
         [SerializeField] private TextMeshProUGUI levelKindText;
@@ -105,7 +102,6 @@ namespace Vanaring
             float startValue = 0f;
             float endValue = rewardVal;
             float curExpGain = currentVal;
-            float previ = 0;
             float i = 0;
             float expReqVal = personalityTrait.GetCurrentTraitRequireEXP(type);
 
@@ -116,7 +112,7 @@ namespace Vanaring
 
                 currentTime += Time.deltaTime;
 
-                previ = i;
+                float previ = i;
                 i = Mathf.Lerp(startValue, endValue, currentTime / _animationDuration);
                 curExpGain += (i - previ);
 
