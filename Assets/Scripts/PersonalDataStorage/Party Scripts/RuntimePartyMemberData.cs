@@ -12,11 +12,24 @@ namespace Vanaring
         [SerializeField]
         private CharacterSheetSO _characterSheetSO;
 
-        private SpellRegister _spellRegister; 
+        private PartyMemberActionRegister _memberActionRegister; 
 
-        public void SetUpRuntimePartyMemberData()
+        public void SetUpRuntimePartyMemberData(List<string> spellUniqueKeys)
         {
-            _spellRegister.LoadSpellFromDatabase(new List<string>() );
+            _memberActionRegister = new PartyMemberActionRegister(); 
+
+            _memberActionRegister.LoadSpellFromDatabase(spellUniqueKeys);
+        }
+
+        public List<SpellActionSO> GetRegisteredSpellActionSO
+        {
+            get
+            {
+                if (_memberActionRegister == null)
+                    throw new Exception("_memberActionRegister is null : RuntimePartyMemberData have never been properly set up");
+               
+                return _memberActionRegister.GetRegisteredSpell(); 
+            }
         }
 
         public bool IsThisPartyMember(string characterName)

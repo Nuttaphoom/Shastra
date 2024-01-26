@@ -22,6 +22,10 @@ namespace Vanaring
             {
                 databaseSO.GenerateId();
             }
+            if (GUILayout.Button("Remove Duplicated Elements"))
+            {
+                databaseSO.RemoveDuplicatedRecord(); 
+            }
         }
     }
 }
