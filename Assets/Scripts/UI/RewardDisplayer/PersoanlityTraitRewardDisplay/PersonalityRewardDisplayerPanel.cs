@@ -56,9 +56,10 @@ namespace Vanaring
         [SerializeField] private TextMeshProUGUI levelKnowText;
         [SerializeField] private TextMeshProUGUI levelProfText;
 
-        public void SetPersonalDataReceive(PersonalityRewardData prd)
+        public void SetPersonalDataReceive(List<PersonalityRewardData> prd)
         {
-            _personalityReward = prd;
+            //Arm : I comment this line for you, please remove the comment and adjust it to suit your needs
+            //_personalityReward = prd;
             personalityTrait = PersistentPlayerPersonalDataManager.Instance.player_personalityTrait;
             levelUpPanel.SetActive(false);
         }

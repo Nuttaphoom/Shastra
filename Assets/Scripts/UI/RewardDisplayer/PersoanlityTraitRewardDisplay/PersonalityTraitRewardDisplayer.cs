@@ -9,21 +9,18 @@ namespace Vanaring
     [Serializable]
     public struct PersonalityRewardData
     {
-        private int rewardTrait1;
-        private int rewardTrait2;
-        private int rewardTrait3;
-        private int rewardTrait4;
-        public int RewardTrait1 => rewardTrait1;
-        public int RewardTrait2 => rewardTrait2;
-        public int RewardTrait3 => rewardTrait3;
-        public int RewardTrait4 => rewardTrait4;
+        [SerializeField]
+        private Trait.Trait_Type _rewardTrait ;
 
+        [SerializeField]
+        private int _rewardAmount; 
     }
+
     [Serializable]
     public class PersonalityTraitRewardDisplayer : BaseRewardDisplayer<PersonalityRewardData, PersonalityRewardDisplayerPanel>
     {
-        private PersonalityRewardData _prd;
-        public override IEnumerator DisplayRewardUICoroutine(PersonalityRewardData rewardType_DONTUSETHISONE_ORYOUAREGAY)
+        private List<PersonalityRewardData> _prd;
+        public override IEnumerator DisplayRewardUICoroutine(List<PersonalityRewardData> rewardType_DONTUSETHISONE_ORYOUAREGAY)
         {
             _prd = rewardType_DONTUSETHISONE_ORYOUAREGAY;
             yield return CreateRewardDisplayPanel() ;  
