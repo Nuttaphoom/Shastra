@@ -17,7 +17,7 @@ namespace Vanaring
         }
 
         // Trait_Data only contain trait data such as level and currentexp
-        public struct Trait_Data
+        public class Trait_Data
         {
             private int level;
             public int Getlevel() { return level; }

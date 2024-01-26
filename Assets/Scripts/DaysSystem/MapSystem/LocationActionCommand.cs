@@ -41,13 +41,22 @@ namespace Vanaring
     public abstract class BaseLocationActionCommand
     {
         [SerializeField]
-        private Sprite _actionIconAsset; 
+        private string _actionName;
+        [SerializeField]
+        private string _actionDescription;
+        [SerializeField]
+        private Sprite _actionIconAsset;
+        
 
         public Sprite GetActionIconSprite => _actionIconAsset;
+        public string GetActionName => _actionName;
+        public string GetActionDescription => _actionDescription;
 
         public BaseLocationActionCommand(BaseLocationActionCommand copied)
         {
-            _actionIconAsset = copied._actionIconAsset; 
+            _actionIconAsset = copied._actionIconAsset;
+            _actionName = copied._actionName;
+            _actionDescription = copied._actionDescription;
         }
         public abstract void ExecuteCommand () ;
 
