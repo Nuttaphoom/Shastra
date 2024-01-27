@@ -31,7 +31,7 @@ namespace Vanaring
                     "The system should be loaded only 1 time when the save is loaded, and modified the SpellAction thoughtout the lifetime of application, " +
                     "and save the uniqueID when the game is saved");
 
-            yield return LoadSpellDatabaseOP();
+            LoadSpellDatabaseOP();
 
             _registeredSpellActions = new List<SpellActionSO>() ;
 
@@ -39,19 +39,14 @@ namespace Vanaring
             {
                _registeredSpellActions.Add( m_spellDatabase.GetRecord(uniqueID[i]) ) ;
             }
+
+            yield return null ;
         }
 
-        private IEnumerator LoadSpellDatabaseOP()
-        {
-            AsyncOperationHandle<SpellDatabaseSO> _spellDatabaseOpHandle = Addressables.LoadAssetAsync<SpellDatabaseSO>(_spellDatabaseAddress);
-
-            while (!_spellDatabaseOpHandle.IsDone)
-                yield return new WaitForEndOfFrame();
-
-            if (_spellDatabaseOpHandle.Status != AsyncOperationStatus.Succeeded)
-                throw new Exception("SpellDatabase is NOT successfully loaded") ;
-
-            m_spellDatabase = _spellDatabaseOpHandle.Result;
+        private void LoadSpellDatabaseOP()
+        { 
+            m_spellDatabase = PersistentAddressableResourceLoader.Instance.LoadResourceOperation<SpellDatabaseSO>(_spellDatabaseAddress);
+            
         }
 
       

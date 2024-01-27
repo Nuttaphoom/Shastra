@@ -497,7 +497,7 @@ Light:
   serializedVersion: 10
   m_Type: 1
   m_Shape: 0
-  m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
+  m_Color: {r: 0.9811321, g: 0, b: 0.15239194, a: 1}
   m_Intensity: 1
   m_Range: 10
   m_SpotAngle: 30
@@ -953,6 +953,10 @@ MonoBehaviour:
   _director: {fileID: 1543056460}
   _rewardDisplayer:
     _rewardDisplayGOTemplate: {fileID: 1597678473033070770, guid: abc7affd616e0b74d96a0864c3f88ee2, type: 3}
+    _rewardType:
+      _rewardTrait: 0
+      _rewardAmount: 0
+  _personalityRewards: []
 --- !u!1001 &4697634246290121482
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1069,6 +1073,10 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4581549826683329384, guid: 0d97125695059784da5b5a45f4ffdb06, type: 3}
+      propertyPath: m_prefabs.Array.data[0]
+      value: 
+      objectReference: {fileID: 1787654973930346, guid: 84938ad6d3c96144c8ad1ac3960acc83, type: 3}
     - target: {fileID: 5137272225934021392, guid: 0d97125695059784da5b5a45f4ffdb06, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -1206,7 +1214,8 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 9222029510993262681, guid: 0d97125695059784da5b5a45f4ffdb06, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0d97125695059784da5b5a45f4ffdb06, type: 3}
