@@ -19,7 +19,7 @@ namespace Vanaring
 
         protected GameObject _rewardPanel; 
 
-        public abstract IEnumerator DisplayRewardUICoroutine(RewardType rewardType) ;
+        public abstract IEnumerator DisplayRewardUICoroutine(List<RewardType> rewardType) ;
         public abstract IEnumerator SettingUpRewardDisplayPanel(RewardPanelType rewardDisplayGOTemplate); 
         protected IEnumerator CreateRewardDisplayPanel()
         {

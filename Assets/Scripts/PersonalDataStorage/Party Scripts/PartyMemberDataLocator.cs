@@ -6,9 +6,8 @@ using UnityEngine;
 namespace Vanaring
 {
     [Serializable]
-    public class PartyMemberDataLocator :  ISaveable
+    public class PartyMemberDataLocator 
     {
-
         [SerializeField] 
         private List<RuntimePartyMemberData> _partyMemberData;
 
@@ -20,6 +19,19 @@ namespace Vanaring
         public void RestoreState(object state)
         {
             throw new System.NotImplementedException();
+        }
+
+        public RuntimePartyMemberData GetRuntimeData(string memberName)
+        {
+            foreach (var member in _partyMemberData)
+            {
+                if (!member.IsThisPartyMember(memberName))
+                    continue;
+
+                return member; 
+            }
+
+            throw new System.Exception("member " + memberName + "couldn't be found within PartyMemberData"); 
         }
     }
 }

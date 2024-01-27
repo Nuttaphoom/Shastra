@@ -29,6 +29,9 @@ namespace Vanaring
         {
             // TO DO : 
             player_personalityTrait = new PersonalityTrait(player_personalityTraitSO);
+
+            List<string> load_spelUniqueKey_of_Asha_here = new List<string>(); 
+            _partyDataLocator.GetRuntimeData("Asha").SetUpRuntimePartyMemberData(load_spelUniqueKey_of_Asha_here); 
         }
 
         //private void Update()

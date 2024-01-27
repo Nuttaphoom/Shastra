@@ -15,8 +15,7 @@ namespace Vanaring
         [SerializeField]
         private List<DatabaseKeyPair> _records;
  
-        [Tooltip("Generate ID for any unregistered record stored in this database")]
-        [ContextMenu("Generate Id")]
+ 
         public  void GenerateId()
         {
             Debug.Log("Generating ID"); 
@@ -37,13 +36,19 @@ namespace Vanaring
             }
         }
 
+        
         public void RemoveDuplicatedRecord()
         {
             for (int i = 0; i <  _records.Count; i++)
             {
                 for (int j = i + 1 ; j < _records.Count; j++)
                 {
-                    if (_records[i].GetRecorded() == _records[j].GetRecorded()) 
+                    if (_records[i].GetRecorded() == _records[j].GetRecorded())
+                    {
+                        _records.RemoveAt(j);
+                        i = 0;
+                        break; 
+                    }
 
                 }
             }
