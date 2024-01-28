@@ -16,10 +16,9 @@ namespace Vanaring
         private Image filledBar;
         [SerializeField]
         private Image rewardIcon;
+        [SerializeField]
+        private LectureManager lectureMananger;
 
-        private float firstReward = 0.4f;
-        private float secondReward = 0.7f;
-        private float thirdReward = 1.0f;
         [SerializeField]
         private float[] rewardScore;
         private List<Image> rewardIconList = new List<Image>();
@@ -27,6 +26,9 @@ namespace Vanaring
         private void Start()
         {
             StartCoroutine(SettingUpNumber());
+            lectureMananger.SubOnReceiveExpEvent(ReceiveEXPIncrease);
+            lectureMananger.SubOnUnlockRewardEvent(ReceiveRewardStringList);
+            
         }
 
         public override void ForceSetUpNumber()
@@ -43,6 +45,24 @@ namespace Vanaring
                 ForceSetUpNumber();
         }
 
+        private void ReceiveEXPIncrease(int amount)
+        {
+            Debug.Log("Increase Amount: " + amount);
+        }
+
+        private void ReceiveRewardStringList(List<string> rewardList)
+        {
+            if (rewardList.Count <= 0)
+            {
+                return;
+            }
+            Debug.Log("Reward receive amount: " + rewardList.Count);
+            foreach (string reward in rewardList)
+            {
+                Debug.Log("Reward" + reward);
+            }
+        }
+
         public override IEnumerator SettingUpNumber()
         {
             foreach (float score in rewardScore)
@@ -54,7 +74,7 @@ namespace Vanaring
                 double scaled = Math.Floor(scale - 200);
                 newRewardIcon.rectTransform.localPosition = new Vector3((float)scaled, -24.0f, 0f);
                 rewardIconList.Add(newRewardIcon);
-                Debug.Log(scale);
+                //Debug.Log(scale);
             }
             yield return new WaitForEndOfFrame();
             introDirector.Play();
@@ -62,6 +82,7 @@ namespace Vanaring
             {
                 yield return new WaitForEndOfFrame();
             }
+            lectureMananger.IncreaseExp("GAM300");
             rewardIcon.gameObject.SetActive(false);
             int reachScoreIndex = 0;
             while (filledBar.fillAmount < 1)
@@ -70,7 +91,7 @@ namespace Vanaring
                 if ((filledBar.fillAmount * 100) >= rewardScore[reachScoreIndex])
                 {
                     rewardIconList[reachScoreIndex].gameObject.GetComponent<Animator>().enabled = true;
-                    Debug.Log("Reach Reward");
+                    //Debug.Log("Reach Reward");
                     if (reachScoreIndex < rewardScore.Length - 1)
                     {
                         reachScoreIndex++;
@@ -79,6 +100,8 @@ namespace Vanaring
                 yield return new WaitForSeconds(0.01f);
                 
             }
+            lectureMananger.UnSubOnReceiveExpEvent(ReceiveEXPIncrease);
+            lectureMananger.UnSubOnUnlockRewardEvent(ReceiveRewardStringList);
             //throw new System.NotImplementedException();
         }
     }
