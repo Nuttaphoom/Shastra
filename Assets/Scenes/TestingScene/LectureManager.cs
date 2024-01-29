@@ -14,6 +14,7 @@ namespace Vanaring
         private int increaseAmount = 100;
 
         // Lecture to study 
+        [SerializeField]
         private List<LectureSO> lectures = new List<LectureSO>();
 
         [SerializeField] 
@@ -40,13 +41,13 @@ namespace Vanaring
         [ContextMenu("Init Runtime")]
         public void InitLectureRuntime()
         {
-            lectureToStudy = (PersistentSceneLoader.Instance.ExtractSavedData<LectureSO>(PersistentSceneLoader.Instance.GetStackLoadedDataScene().GetSceneID())).GetData()   ;
+            //lectureToStudy = (PersistentSceneLoader.Instance.ExtractSavedData<LectureSO>(PersistentSceneLoader.Instance.GetStackLoadedDataScene().GetSceneID())).GetData()   ;
 
-            if (lectureToStudy == null)
-                throw new Exception("lectureToStudy is null") ;
+            //if (lectureToStudy == null)
+            //    throw new Exception("lectureToStudy is null") ;
 
-            if (! lectures.Contains(lectureToStudy))
-                lectures.Add(lectureToStudy);
+            //if (! lectures.Contains(lectureToStudy))
+            //    lectures.Add(lectureToStudy);
             
             if (lectureRuntimes.Count > 0)
                 return;

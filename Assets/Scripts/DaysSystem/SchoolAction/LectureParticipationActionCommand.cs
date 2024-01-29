@@ -42,6 +42,11 @@ namespace Vanaring
             PersistentSceneLoader.Instance.LoadGeneralScene(_sceneDataSO);
         }
 
+        public void OnSelectLecture(LectureSO lecture)
+        {
+
+
+        }
         
 
 
