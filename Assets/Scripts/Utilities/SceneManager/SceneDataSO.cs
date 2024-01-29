@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 namespace Vanaring
@@ -14,6 +16,8 @@ namespace Vanaring
         [SerializeField]
         private SceneField _sceneField;
 
+        string uniqueID = "" ;
+
         public string GetSceneName()
         {
             return _sceneField;
@@ -22,6 +26,13 @@ namespace Vanaring
         public GameSceneType GetSceneType()
         {
             return _gameSceneType;
+        }
+
+        public string GetSceneID()
+        {
+            if (uniqueID == null || uniqueID == "") 
+                uniqueID = Guid.NewGuid().ToString();
+            return uniqueID;
         }
 
         public enum GameSceneType

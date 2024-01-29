@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using UnityEngine.Events;
+using System.Data;
 
 namespace Vanaring
 {
@@ -12,9 +13,11 @@ namespace Vanaring
         [SerializeField]
         private int increaseAmount = 100;
 
-        // Use this for testing now
-        [SerializeField]
+        // Lecture to study 
         private List<LectureSO> lectures = new List<LectureSO>();
+
+        [SerializeField] 
+        private LectureSO lectureToStudy ; 
 
         private List<ProgressData> localSaveProgress = new List<ProgressData>();
 
@@ -37,10 +40,17 @@ namespace Vanaring
         [ContextMenu("Init Runtime")]
         public void InitLectureRuntime()
         {
-            if(lectureRuntimes.Count > 0)
-            {
+            lectureToStudy = (PersistentSceneLoader.Instance.ExtractSavedData<LectureSO>(PersistentSceneLoader.Instance.GetStackLoadedDataScene().GetSceneID())).GetData()   ;
+
+            if (lectureToStudy == null)
+                throw new Exception("lectureToStudy is null") ;
+
+            if (! lectures.Contains(lectureToStudy))
+                lectures.Add(lectureToStudy);
+            
+            if (lectureRuntimes.Count > 0)
                 return;
-            }
+            
 
             foreach (LectureSO lectureSO in lectures)
             {

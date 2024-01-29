@@ -15,20 +15,39 @@ namespace Vanaring
         private bool _isLoading;
 
         private string _currentLoadedLocationScene ;
-        private string _sceneToLoad;
+        private SceneDataSO _sceneToLoad;
         private TransitionObject transitionScreenObj;
         [SerializeField]
         private TransitionSceneManager transitionManager;
 
         private SceneDataSO _last_visisted_location;
-        private LoaderDataUser loaderDataUser;
+        private LoaderDataUser _last_visisted_loaderDataUser;
 
+        /// <summary>
+        /// Scene index of the user of the data 
+        /// if scene A create Object for scene B, key will be the index of scene B 
+        /// </summary>
+        private Dictionary<string, LoaderDataUser> _userDataScene = new Dictionary<string, LoaderDataUser>(); 
+
+        private Stack<SceneDataSO> _stackLoadedSceneData = new Stack<SceneDataSO>()  ;
+
+        #region GETTER
+        public SceneDataSO GetStackLoadedDataScene()
+        {
+            if (_stackLoadedSceneData.TryPeek(out SceneDataSO sceneData))
+                return sceneData;
+
+            throw new System.Exception("StackLoadedSceneData is null"); 
+        }
+
+        #endregion
         #region Load Location 
 
         /// <summary>
         /// Functionality to load and unload previous scene 
         /// </summary>
         /// <param name="sceneSO"></param>
+
 
         public void LoadLastVisitedLocation()
         {
@@ -37,23 +56,46 @@ namespace Vanaring
         }
         public LoaderDataUser<T> ExtractLastSavedData<T>()
         {
-            return loaderDataUser as LoaderDataUser<T>;
+            return _last_visisted_loaderDataUser as LoaderDataUser<T>;
+        }
+        public LoaderDataUser<T> ExtractSavedData<T>(string uniqueID)
+        {
+            if (!_userDataScene.ContainsKey(uniqueID))
+                throw new System.Exception("_userDataSccene doesn't contain " + uniqueID);
+
+            //var ret = _userDataScene[uniqueID];
+            //////_userDataScene.Remove(uniqueID);
+
+            Debug.Log("uniqueID extracted : " + uniqueID); 
+            if (_userDataScene[uniqueID] == null)
+                throw new System.Exception("ret is null");
+
+            return _userDataScene[uniqueID] as LoaderDataUser<T>;
         }
 
         public void LoadLocation<T>(SceneDataSO sceneSO, T transferedData  )  
         {
-
-            if (transferedData != null)
-            {
-                 loaderDataUser = new LoaderDataUser<T>(transferedData);
-            }
-
+            _last_visisted_loaderDataUser =  CreateLoaderDataUser(sceneSO.GetSceneID(),transferedData); 
+         
             _last_visisted_location =  (sceneSO); 
 
             LoadGeneralScene(sceneSO) ;
-
-
         }
+
+        public LoaderDataUser CreateLoaderDataUser<T>(string id ,T transferedData)
+        {
+            if (transferedData != null)
+            {
+                LoaderDataUser<T> user = new LoaderDataUser<T>(transferedData);
+                
+                _userDataScene.Add(id, user);
+
+                return user;
+            }
+
+            return null; 
+        }
+
         public void LoadGeneralScene(SceneDataSO sceneSO)
         {
             if (_isLoading)
@@ -61,7 +103,7 @@ namespace Vanaring
 
             _isLoading = true;
 
-            _sceneToLoad = sceneSO.GetSceneName();
+            _sceneToLoad = sceneSO  ;
 
             if (_currentLoadedLocationScene != null)
             {
@@ -82,7 +124,7 @@ namespace Vanaring
 
         public void OnCompleteLoadedNewLocationScene(AsyncOperation asy)
         {
-            _currentLoadedLocationScene = _sceneToLoad;
+            _currentLoadedLocationScene = _sceneToLoad.GetSceneName() ;
             //Debug.Log(_currentLoadedLocationScene); 
             SceneManager.SetActiveScene(SceneManager.GetSceneByName(_currentLoadedLocationScene));
             _isLoading = false;
@@ -119,6 +161,8 @@ namespace Vanaring
 
         private void LoadNewScene(Null n)
         {
+            _stackLoadedSceneData.Push(_sceneToLoad);
+
             transitionManager.TransitionObj.UnSubOnSceneLoaderBegin(LoadNewScene);
             StartCoroutine(transitionManager.LoadSceneAsync(_sceneToLoad));
         }
@@ -133,9 +177,9 @@ namespace Vanaring
         public TransitionSceneSO TransitionSO => _transitionSceneSO;
         public TransitionObject TransitionObj => _transitionSceneSO.GetTransitionObject;
 
-        public IEnumerator LoadSceneAsync(string sceneToLoad)
+        public IEnumerator LoadSceneAsync(SceneDataSO sceneToLoad)
         {
-            AsyncOperation operation = SceneManager.LoadSceneAsync(sceneToLoad, LoadSceneMode.Additive);
+            AsyncOperation operation = SceneManager.LoadSceneAsync(sceneToLoad.GetSceneName(), LoadSceneMode.Additive);
 
             while (!operation.isDone)
             {
@@ -146,6 +190,7 @@ namespace Vanaring
                 yield return null;
             }
             GetEventBroadcaster().InvokeEvent<Null>(null, "OnSceneLoaderComplete");
+            
             PersistentSceneLoader.Instance.OnCompleteLoadedNewLocationScene(operation);
             yield return new WaitForEndOfFrame();
         }
