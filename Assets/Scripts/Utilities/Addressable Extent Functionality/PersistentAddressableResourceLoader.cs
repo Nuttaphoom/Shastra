@@ -25,5 +25,21 @@ namespace Vanaring
             return opHandler.Result;
         }
 
+        public ResourcceType LoadResourceOperation<ResourcceType>(AssetReference address)
+        {
+            AsyncOperationHandle<ResourcceType> opHandler = Addressables.LoadAssetAsync<ResourcceType>(address);
+
+            // Wait until the operation is done
+            opHandler.WaitForCompletion();
+
+            if (opHandler.Status != AsyncOperationStatus.Succeeded)
+            {
+                throw new Exception("Resource is NOT successfully loaded");
+            }
+
+            // Return the result
+            return opHandler.Result;
+        }
+
     }
 }

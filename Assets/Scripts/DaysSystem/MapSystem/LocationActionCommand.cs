@@ -16,16 +16,20 @@ namespace Vanaring
 
         [SerializeField,AllowNesting,NaughtyAttributes.ShowIf("_commandType", ELoadLocationCommandType.Activity)] 
         private ActivityActionCommand _loadLocationCommand;
-        
-        //[SerializeField,AllowNesting, NaughtyAttributes.ShowIf("_commandType", ELoadLocationCommandType.LoadCutscene)]
-        //private LoadCutsceneCommand _loadCutsceneCommand;
-    
+
+        [SerializeField, AllowNesting, NaughtyAttributes.ShowIf("_commandType", ELoadLocationCommandType.LectureParticipation)]
+        private LectureParticipationActionCommand _lectureParticipationActionCommand;
+
         public BaseLocationActionCommand FactorizeLocationSelectionCommand()
         {
             if (_commandType == ELoadLocationCommandType.Activity)
             {
-                return new ActivityActionCommand(_loadLocationCommand); 
-            } 
+                return new ActivityActionCommand(_loadLocationCommand);
+            }
+            else if (_commandType == ELoadLocationCommandType.LectureParticipation)
+            {
+                return new LectureParticipationActionCommand(_lectureParticipationActionCommand);
+            }
 
             throw new Exception("_commandType is never set "); 
         }
@@ -35,6 +39,7 @@ namespace Vanaring
     {
         None,
         Activity,
+        LectureParticipation,
        
     }
 
