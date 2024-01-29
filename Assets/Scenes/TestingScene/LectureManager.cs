@@ -71,6 +71,7 @@ namespace Vanaring
                     GetEventBroadcaster().InvokeEvent<int>(increaseAmount, "OnReceiveExp");
                     if (LectureSubjectRuntime.SetRecieveReward())
                     {
+                        Debug.Log("real Get: " + LectureSubjectRuntime.GetRecievedReward().Count);
                         GetEventBroadcaster().InvokeEvent<List<string>>(LectureSubjectRuntime.GetRecievedReward(), "OnUnlockReward");
                     }
                 }
@@ -237,7 +238,11 @@ namespace Vanaring
 
         public List<string> GetRecievedReward()
         {
-            List<string> temp = recievedReward;
+            List<string> temp = new List<string>();
+            foreach (string rew in recievedReward)
+            {
+                temp.Add(rew);
+            }
             recievedReward.Clear();
             return temp;
         }
