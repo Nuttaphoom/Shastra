@@ -190,6 +190,7 @@ namespace Vanaring
 
         public LectureSubjectRuntime()
         {
+
         }
 
         public LectureSubjectRuntime(LectureSO lectureSO)

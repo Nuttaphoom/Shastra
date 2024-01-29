@@ -43,5 +43,8 @@ namespace Vanaring
         {
             _remainingAction = _maxActionPoint; 
         }
+
+        public int GetRemaiingActionPoint() => _remainingAction; 
+        public int GetMaxActionPoint() => _maxActionPoint; 
     }
 }

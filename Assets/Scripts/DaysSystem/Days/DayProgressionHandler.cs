@@ -40,6 +40,13 @@ namespace Vanaring
             
         }
 
+        private int GetCurrentDayTime()
+        {
+            return _dailyActionParticipationHandler.GetMaxActionPoint() - _dailyActionParticipationHandler.GetRemaiingActionPoint(); 
+        }
+
+        
+
         
         
 
