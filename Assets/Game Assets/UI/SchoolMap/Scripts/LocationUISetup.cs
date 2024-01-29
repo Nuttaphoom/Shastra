@@ -40,13 +40,33 @@ namespace Vanaring
                 actionCommandList = location.ActionOnLocation ;
                 break; 
             }
-            //actionButton.GetComponent<Image>().alphaHitTestMinimumThreshold = 0.1f;
             int i = 0;
             foreach (BaseLocationActionCommand action in actionCommandList)
             {
                 
                 GameObject newActionButton = Instantiate(actionButton, buttonTransform[i]);
                 newActionButton.SetActive(true);
+                Button button = newActionButton.GetComponentInChildren<Button>();
+                if (button != null)
+                {
+                    Image buttonImage = button.GetComponent<Image>();
+                    buttonImage.alphaHitTestMinimumThreshold = 0.1f;
+
+                    // Check if the Image component is found
+                    if (buttonImage != null)
+                    {
+                        // Now you can work with the Image component (e.g., change sprite, color, etc.)
+                        // Example: buttonImage.color = Color.red;
+                    }
+                    else
+                    {
+                        Debug.LogError("Image component not found in the Button game object.");
+                    }
+                }
+                else
+                {
+                    Debug.LogError("Button game object not found within child GameObjects.");
+                }
 
                 Image[] images = newActionButton.GetComponentsInChildren<Image>(true);
                 foreach (Image img in images)
