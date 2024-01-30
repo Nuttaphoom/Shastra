@@ -17,9 +17,16 @@ namespace Vanaring
         [SerializeField]
         protected RewardType _rewardType;
 
-        protected GameObject _rewardPanel; 
+        protected GameObject _rewardPanel;
 
-        public abstract IEnumerator DisplayRewardUICoroutine(List<RewardType> rewardType) ;
+        public virtual IEnumerator DisplayRewardUICoroutine(List<RewardType> rewardType)
+        {
+            yield return null; 
+        }
+        public virtual IEnumerator DisplayRewardUICoroutine(RewardType rewardType)
+        {
+            yield return null;
+        }
         public abstract IEnumerator SettingUpRewardDisplayPanel(RewardPanelType rewardDisplayGOTemplate); 
         protected IEnumerator CreateRewardDisplayPanel()
         {

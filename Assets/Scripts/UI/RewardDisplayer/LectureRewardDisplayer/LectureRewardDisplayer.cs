@@ -1,21 +1,34 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace Vanaring
 {
-    public class LectureRewardDisplayer : MonoBehaviour
+    [Serializable]
+    public struct LectureRewardStruct
     {
-        // Start is called before the first frame update
-        void Start()
+        public int maxEXP;
+        public int currentEXP;
+        //string reward 
+        public int gainedEXP; 
+    }
+
+    [Serializable]
+    public class LectureRewardDisplayer : BaseRewardDisplayer<LectureRewardStruct, LectureRewardDisplayerPenel>
+    {
+        private LectureRewardStruct _lectureRewardStruct; 
+        //private List<PersonalityRewardData> _personalityRewardDatas;
+        public override IEnumerator DisplayRewardUICoroutine(LectureRewardStruct rewardType)
         {
-        
+            //_personalityRewardDatas = rewardType;
+            yield return CreateRewardDisplayPanel();
         }
 
-        // Update is called once per frame
-        void Update()
+        public override IEnumerator SettingUpRewardDisplayPanel(LectureRewardDisplayerPenel personalityRewardDisplayerPanel)
         {
-        
+            personalityRewardDisplayerPanel.ReceiveRewardDetail(_lectureRewardStruct);
+            yield return (personalityRewardDisplayerPanel.SettingUpNumber());
         }
     }
 }

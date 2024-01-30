@@ -24,12 +24,10 @@ namespace Vanaring
 
         public IEnumerator PlayCutscene()
         {
-            Debug.Log("play cutscene");
             _director.Play();
 
             while (_director.state == PlayState.Playing) 
                 yield return new WaitForEndOfFrame();
-            Debug.Log("finish cutscene");
 
         }
     }

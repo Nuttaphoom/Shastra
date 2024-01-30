@@ -4,21 +4,30 @@ using UnityEngine;
 using System;
 using UnityEngine.Events;
 using System.Data;
+using Vanaring.Assets.Scripts.DaysSystem.SchoolAction;
+using Language.Lua;
+using static UnityEditor.PlayerSettings;
+using static UnityEngine.InputSystem.LowLevel.InputStateHistory;
+using Unity.VisualScripting;
+using UnityEngine.SocialPlatforms.Impl;
 
 namespace Vanaring
 {
-    public class LectureManager : MonoBehaviour, ISaveable
+    public class LectureManager : MonoBehaviour, ISaveable, ISchoolAction
     {
-        // For testing only
         [SerializeField]
-        private int increaseAmount = 100;
+        private LectureRewardDisplayer _rewardDisplayer ; 
+        //the default increased amount 
+        private const int increaseAmount = 1;
+
+        [SerializeField]
+        private CutsceneDirector _director; 
 
         // Lecture to study 
-        [SerializeField]
+    
         private List<LectureSO> lectures = new List<LectureSO>();
 
-        [SerializeField] 
-        private LectureSO lectureToStudy ; 
+        private LectureSO _lectureToStudy ; 
 
         private List<ProgressData> localSaveProgress = new List<ProgressData>();
 
@@ -30,28 +39,29 @@ namespace Vanaring
                 return;
 
             InitLectureRuntime();
+
+            OnPerformAcivity(); 
         }
 
-        [ContextMenu("Load Scene")]
-        public void LoadScene()
-        {
-            UnityEngine.SceneManagement.SceneManager.LoadScene("PotaeTesterScene");
-        }
+        ////[ContextMenu("Load Scene")]
+        //public void LoadScene()
+        //{
+        //    UnityEngine.SceneManagement.SceneManager.LoadScene("PotaeTesterScene");
+        //}
 
-        [ContextMenu("Init Runtime")]
+        //[ContextMenu("Init Runtime")]
         public void InitLectureRuntime()
         {
-            //lectureToStudy = (PersistentSceneLoader.Instance.ExtractSavedData<LectureSO>(PersistentSceneLoader.Instance.GetStackLoadedDataScene().GetSceneID())).GetData()   ;
+            _lectureToStudy = (PersistentSceneLoader.Instance.ExtractSavedData<LectureSO>(PersistentSceneLoader.Instance.GetStackLoadedDataScene().GetSceneID())).GetData();
 
-            //if (lectureToStudy == null)
-            //    throw new Exception("lectureToStudy is null") ;
+            if (_lectureToStudy == null)
+                throw new Exception("lectureToStudy is null");
 
-            //if (! lectures.Contains(lectureToStudy))
-            //    lectures.Add(lectureToStudy);
-            
+            if (!lectures.Contains(_lectureToStudy))
+                lectures.Add(_lectureToStudy );
+
             if (lectureRuntimes.Count > 0)
                 return;
-            
 
             foreach (LectureSO lectureSO in lectures)
             {
@@ -72,76 +82,28 @@ namespace Vanaring
 
         }
 
+        public int CalculateReceivedReward()
+        {
+            return increaseAmount;
+        }
+
         public void IncreaseExp(string LectureName)
         {
             foreach (LectureSubjectRuntime LectureSubjectRuntime in lectureRuntimes)
             {
                 if (LectureSubjectRuntime.LectureName == LectureName)
                 {
-                    LectureSubjectRuntime.RecievePoint(increaseAmount);
-                    GetEventBroadcaster().InvokeEvent<int>(increaseAmount, "OnReceiveExp");
+                    LectureSubjectRuntime.RecievePoint(CalculateReceivedReward()) 
+                        ;
                     if (LectureSubjectRuntime.SetRecieveReward())
                     {
                         Debug.Log("real Get: " + LectureSubjectRuntime.GetRecievedReward().Count);
-                        GetEventBroadcaster().InvokeEvent<List<string>>(LectureSubjectRuntime.GetRecievedReward(), "OnUnlockReward");
                     }
                 }
             }
         }
 
-        //[ContextMenu("IncreaseGAM")]
-        //public void IncreaseGAM()
-        //{
-        //    IncreaseExp("GAM300");
-        //}
-        //[ContextMenu("IncreaseLOL")]
-        //public void IncreaseLOL()
-        //{
-        //    IncreaseExp("LOL800");
-        //}
-
-        //[ContextMenu("Print Runtime")]
-        //public void PrintLectureRuntime()
-        //{
-        //    foreach (LectureSubjectRuntime LectureSubjectRuntime in lectureRuntimes)
-        //    {
-        //        LectureSubjectRuntime.PrintData();
-        //    }
-        //}
-
-        #region GetEventBroadcaster Methods 
-
-        private EventBroadcaster _eventBroadcaster;
-        private EventBroadcaster GetEventBroadcaster()
-        {
-            if (_eventBroadcaster == null)
-            {
-                _eventBroadcaster = new EventBroadcaster();
-
-                _eventBroadcaster.OpenChannel<int>("OnReceiveExp");
-                _eventBroadcaster.OpenChannel<List<string>>("OnUnlockReward");
-            }
-
-            return _eventBroadcaster;
-        }
-        public void SubOnReceiveExpEvent(UnityAction<int> argc)
-        {
-            GetEventBroadcaster().SubEvent(argc, "OnReceiveExp");
-        }
-        public void SubOnUnlockRewardEvent(UnityAction<List<string>> argc)
-        {
-            GetEventBroadcaster().SubEvent(argc, "OnUnlockReward");
-        }
-        public void UnSubOnReceiveExpEvent(UnityAction<int> argc)
-        {
-            GetEventBroadcaster().UnSubEvent(argc, "OnReceiveExp");
-        }
-        public void UnSubOnUnlockRewardEvent(UnityAction<List<string>> argc)
-        {
-            GetEventBroadcaster().UnSubEvent(argc, "OnUnlockReward");
-        }
-
-        #endregion
+      
 
         #region Save System
         public object CaptureState()
@@ -183,6 +145,40 @@ namespace Vanaring
             public List<ProgressData> savedProgress;
         }
 
+        #endregion
+
+        #region ISchoolAction Methods 
+        public void OnPerformAcivity()
+        {
+            StartCoroutine(StartPlayingTimeline());
+        }
+
+        public IEnumerator StartPlayingTimeline()
+        {
+            yield return _director.PlayCutscene();
+
+            PostPerformActivity();
+        }
+
+        public void PostPerformActivity()
+        {
+            foreach (LectureSubjectRuntime lectureRuntime in lectureRuntimes)
+            {
+                if (lectureRuntime.LectureName == _lectureToStudy.LectureName) 
+                    continue; 
+               
+                var reward = new LectureRewardStruct()
+                {
+                    maxEXP = lectureRuntime.MaxPoint,
+                    currentEXP = lectureRuntime.CurrentPoint ,
+                    gainedEXP = CalculateReceivedReward()
+                };
+
+                StartCoroutine(_rewardDisplayer.DisplayRewardUICoroutine(reward));
+
+                break; 
+            }
+        }
         #endregion
     }
 

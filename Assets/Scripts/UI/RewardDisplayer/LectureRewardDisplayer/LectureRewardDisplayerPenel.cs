@@ -31,6 +31,11 @@ namespace Vanaring
             
         }
 
+        public void ReceiveRewardDetail(LectureRewardStruct reward)
+        {
+
+        }
+
         public override void ForceSetUpNumber()
         {
             _uiAnimationDone = true;
