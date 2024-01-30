@@ -10,6 +10,8 @@ using static UnityEditor.PlayerSettings;
 using static UnityEngine.InputSystem.LowLevel.InputStateHistory;
 using Unity.VisualScripting;
 using UnityEngine.SocialPlatforms.Impl;
+using System.Diagnostics.Eventing.Reader;
+using Vanaring;
 
 namespace Vanaring
 {
@@ -27,6 +29,7 @@ namespace Vanaring
     
         private List<LectureSO> lectures = new List<LectureSO>();
 
+        [SerializeField] 
         private LectureSO _lectureToStudy ; 
 
         private List<ProgressData> localSaveProgress = new List<ProgressData>();
@@ -162,18 +165,22 @@ namespace Vanaring
 
         public void PostPerformActivity()
         {
+
             foreach (LectureSubjectRuntime lectureRuntime in lectureRuntimes)
             {
-                if (lectureRuntime.LectureName == _lectureToStudy.LectureName) 
-                    continue; 
-               
+
+                if (lectureRuntime.LectureName != _lectureToStudy.LectureName) 
+                    continue;
+
                 var reward = new LectureRewardStruct()
                 {
                     maxEXP = lectureRuntime.MaxPoint,
-                    currentEXP = lectureRuntime.CurrentPoint ,
-                    gainedEXP = CalculateReceivedReward()
-                };
+                    currentEXP = lectureRuntime.CurrentPoint,
+                    gainedEXP = CalculateReceivedReward(),
+                    rewardData = lectureRuntime.GetEventReward()   
+                }; 
 
+             
                 StartCoroutine(_rewardDisplayer.DisplayRewardUICoroutine(reward));
 
                 break; 
@@ -193,8 +200,8 @@ namespace Vanaring
         [SerializeField]
         private List<LectureChechpoint> checkpoint = new List<LectureChechpoint>();
 
-        private List<string> recievedReward = new List<string>();
-
+        private List<EventReward> recievedReward = new List<EventReward>();
+        
         public LectureSubjectRuntime()
         {
 
@@ -244,15 +251,25 @@ namespace Vanaring
             return getReward;
         }
 
-        public List<string> GetRecievedReward()
+        public List<EventReward> GetRecievedReward()
         {
-            List<string> temp = new List<string>();
-            foreach (string rew in recievedReward)
+            List<EventReward> temp = new List<EventReward>();
+            foreach (var rew in recievedReward)
             {
                 temp.Add(rew);
             }
             recievedReward.Clear();
             return temp;
+        }
+
+        public List<EventReward> GetEventReward()
+        {
+            List<EventReward> ret = new List<EventReward>(); 
+            foreach (var point in checkpoint)
+            {
+                ret.Add(point.Reward); 
+            } 
+            return ret ; 
         }
 
         //public void PrintData()

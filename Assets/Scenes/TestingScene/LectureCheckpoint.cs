@@ -11,7 +11,7 @@ namespace Vanaring
         [SerializeField]
         private int cp_requirepoint;
         [SerializeField]
-        private string cp_reward;
+        private EventReward cp_reward;
 
         [NonSerialized]
         private bool cp_received;
@@ -19,7 +19,7 @@ namespace Vanaring
         public void SetReceived(bool fact) { cp_received = fact; }
 
         public int RequirePoint => cp_requirepoint;
-        public string Reward => cp_reward;
+        public EventReward Reward => cp_reward;
         public bool Received => cp_received;
     }
 }

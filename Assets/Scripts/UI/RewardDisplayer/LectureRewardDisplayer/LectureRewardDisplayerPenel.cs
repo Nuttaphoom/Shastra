@@ -26,8 +26,8 @@ namespace Vanaring
         private void Start()
         {
             StartCoroutine(SettingUpNumber());
-            lectureMananger.SubOnReceiveExpEvent(ReceiveEXPIncrease);
-            lectureMananger.SubOnUnlockRewardEvent(ReceiveRewardStringList);
+            //lectureMananger.SubOnReceiveExpEvent(ReceiveEXPIncrease);
+            //lectureMananger.SubOnUnlockRewardEvent(ReceiveRewardStringList);
             
         }
 
@@ -105,8 +105,8 @@ namespace Vanaring
                 yield return new WaitForSeconds(0.01f);
                 
             }
-            lectureMananger.UnSubOnReceiveExpEvent(ReceiveEXPIncrease);
-            lectureMananger.UnSubOnUnlockRewardEvent(ReceiveRewardStringList);
+            //lectureMananger.UnSubOnReceiveExpEvent(ReceiveEXPIncrease);
+            //lectureMananger.UnSubOnUnlockRewardEvent(ReceiveRewardStringList);
             //throw new System.NotImplementedException();
         }
     }

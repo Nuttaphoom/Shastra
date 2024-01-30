@@ -7,11 +7,12 @@ using System.Text;
 using System.Threading.Tasks;
 using Unity.VisualScripting;
 using UnityEngine;
+ 
 
 namespace Vanaring 
 { 
     [CreateAssetMenu(fileName = "Spell Ability", menuName = "ScriptableObject/Combat/SpellAbility")]
-    public class SpellActionSO : ActorActionFactory 
+    public class SpellActionSO : ActorActionFactory , IRewardable
     {
         [Header("===Require Energy amount before casting===")]
         [SerializeField]
@@ -23,6 +24,20 @@ namespace Vanaring
         public override ActorAction FactorizeRuntimeAction(CombatEntity caster)
         {
             return new SpellAbilityRuntime(RequiredSide, RequiredAmout, caster, this);
+        }
+
+        public RewardData GetRewardData()
+        {
+            return new RewardData()
+            {
+                RewardName = DescriptionBaseField.FieldName,
+                RewardIcon = DescriptionBaseField.FieldImage  
+            };
+        }
+
+        public void SubmitReward()
+        {
+            throw new NotImplementedException();
         }
     }
 

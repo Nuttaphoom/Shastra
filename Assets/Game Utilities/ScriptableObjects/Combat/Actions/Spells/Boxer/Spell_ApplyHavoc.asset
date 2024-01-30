@@ -12,14 +12,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f5d27031a83ca845945ea045c3f11b6, type: 3}
   m_Name: Spell_ApplyHavoc
   m_EditorClassIdentifier: 
-  _description:
-    _fieldName: Curse Within
-    _fieldDescription: Apply a <b>Havoc</b> to a target.
-    _fieldImage: {fileID: 21300000, guid: 19cdb1e1017773147adaeef96f5b63b9, type: 3}
-  _effect: {fileID: 11400000, guid: 94c616b30a16b7a44bbc72b904bb3301, type: 2}
+  _actiondescription:
+    _fieldName: Apply Havoc Spell
+    _fieldDescription: 
+    _fieldImage: {fileID: 0}
+  _targetSelector:
+    _maxTargetSize: 1
+    _targetCaster: 0
+    _targetAlly: 0
+    _targetOppose: 0
+    _targetSelf: 0
+  _actionSignal:
+    _signalEffectBindings: []
+    _actionTimelineSetting:
+      _trackToChangeName: []
+    _timeLineActorSetupPrefab: {fileID: 0}
+  _comment:
+    _comment: 
   _requiredEnergy:
     _side: 0
-    _amount: 10
-  _energyModifier:
-    _side: 1
     _amount: 10

@@ -11,7 +11,8 @@ namespace Vanaring
         public int maxEXP;
         public int currentEXP;
         //string reward 
-        public int gainedEXP; 
+        public int gainedEXP;
+        public List<EventReward> rewardData;
     }
 
     [Serializable]

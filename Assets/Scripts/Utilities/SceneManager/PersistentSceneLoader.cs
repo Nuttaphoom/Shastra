@@ -66,7 +66,6 @@ namespace Vanaring
             //var ret = _userDataScene[uniqueID];
             //////_userDataScene.Remove(uniqueID);
 
-            Debug.Log("uniqueID extracted : " + uniqueID); 
             if (_userDataScene[uniqueID] == null)
                 throw new System.Exception("ret is null");
 

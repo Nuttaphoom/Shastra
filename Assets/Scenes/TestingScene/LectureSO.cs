@@ -16,6 +16,8 @@ namespace Vanaring
         public List<LectureChechpoint> Checkpoint = new List<LectureChechpoint>();
         [SerializeField]
         public List<LectureRequieBoost> lectureRequieBoosts = new List<LectureRequieBoost>();
+
+ 
     }
 
     [Serializable]
