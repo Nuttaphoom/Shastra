@@ -165,8 +165,9 @@ namespace Vanaring
                     maxEXP = lectureRuntime.MaxPoint,
                     currentEXP = lectureRuntime.CurrentPoint,
                     gainedEXP = CalculateReceivedEXPPoint(),
-                    allRewardData = lectureRuntime.GetEventReward(), 
-                    alreadyReceivedRewardData = lectureRuntime.GetAlreadyRecievedReward() 
+                    allRewardData = lectureRuntime.GetEventReward(),
+                    alreadyReceivedRewardData = lectureRuntime.GetAlreadyRecievedReward(), 
+                    checkpoints = lectureRuntime.GetCheckPoints , 
                 }; 
 
              
@@ -189,7 +190,13 @@ namespace Vanaring
         [SerializeField]
         private List<LectureChechpoint> checkpoint = new List<LectureChechpoint>();
 
-        
+        public List<LectureChechpoint> GetCheckPoints
+        {
+            get
+            {
+                return checkpoint;
+            }
+        }
         public LectureSubjectRuntime()
         {
 
