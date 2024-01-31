@@ -12,6 +12,7 @@ namespace Vanaring
         public int currentEXP;
         //string reward 
         public int gainedEXP;
+        public List<LectureChechpoint> checkpoints ; 
         public List<EventReward> allRewardData;
         public List<EventReward> alreadyReceivedRewardData;
     }
