@@ -82,11 +82,11 @@ namespace Vanaring
                 //
                 
                 newRewardButton.gameObject.SetActive(true);
-                float scale = (score / 100.0f) * 360.0f;
-                double scaled = Math.Floor(scale - 200);
+                //float scale = (score / 100.0f) * 360.0f;
+                //double scaled = Math.Floor(scale - 200);
                 string rewardName = reward.GetRewardData.RewardName;
                 newRewardButton.GetComponent<Image>().sprite = reward.GetRewardData.RewardIcon;
-                newRewardButton.GetComponent<Image>().rectTransform.localPosition = new Vector3((float)scaled, -24.0f, 0f);
+                //newRewardButton.GetComponent<Image>().rectTransform.localPosition = new Vector3((float)scaled, -24.0f, 0f);
                 rewardIconList.Add(newRewardButton);
                 //Debug.Log(scale);
             }
