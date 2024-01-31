@@ -26,8 +26,8 @@ namespace Vanaring
         public void LoadLocalSaveForCharacters()
         {
             //loading unique key of action here 
-            List<string> load_spelUniqueKey_of_Asha_here = new List<string>();
-            GetRuntimeData("Asha").SetUpRuntimePartyMemberData(load_spelUniqueKey_of_Asha_here);
+            //List<string> load_spelUniqueKey_of_Asha_here = new List<string>();
+            //GetRuntimeData("Asha").SetUpRuntimePartyMemberData(load_spelUniqueKey_of_Asha_here);
         }
     }
 }
