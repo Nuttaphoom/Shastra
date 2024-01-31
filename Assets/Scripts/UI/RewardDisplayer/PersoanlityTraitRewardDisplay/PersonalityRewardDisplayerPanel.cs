@@ -21,19 +21,20 @@ namespace Vanaring
         private float _animationDuration = 3.0f;
         private List<Trait.Trait_Type> traitRewardShowList = new List<Trait.Trait_Type>();
 
+        [Header("TraitGauge")]
         [SerializeField] private Image traitGauge1;
         [SerializeField] private Image traitGauge2;
         [SerializeField] private Image traitGauge3;
         [SerializeField] private Image traitGauge4;
-
-        [SerializeField] private GameObject levelUpPanel;
-        [SerializeField] private TextMeshProUGUI levelUpText;
-        [SerializeField] private TextMeshProUGUI levelUpRewardText;
-
         [SerializeField] private TextMeshProUGUI levelCharmText;
         [SerializeField] private TextMeshProUGUI levelKindText;
         [SerializeField] private TextMeshProUGUI levelKnowText;
         [SerializeField] private TextMeshProUGUI levelProfText;
+
+        [Header("TraitRewardPanel")]
+        [SerializeField] private GameObject levelUpPanel;
+        [SerializeField] private TextMeshProUGUI levelUpText;
+        [SerializeField] private TextMeshProUGUI levelUpRewardText;
 
         private List<PersonalityRewardData> _personalityRewardList;
         

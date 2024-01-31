@@ -15,25 +15,30 @@ namespace Vanaring
         [SerializeField]
         private Image filledBar;
         [SerializeField]
-        private Image rewardIcon;
+        private Button rewardIcon;
         [SerializeField]
         private LectureManager lectureMananger;
 
         [SerializeField]
         private float[] rewardScore;
-        private List<Image> rewardIconList = new List<Image>();
+        private List<Button> rewardIconList = new List<Button>();
+        private List<EventReward> lectureRewardList = new List<EventReward>();
+        private List<EventReward> obtainedLectureRewardList = new List<EventReward>();
+        private LectureRewardStruct lectureRewardData;
 
         private void Start()
         {
-            StartCoroutine(SettingUpNumber());
-            //lectureMananger.SubOnReceiveExpEvent(ReceiveEXPIncrease);
-            //lectureMananger.SubOnUnlockRewardEvent(ReceiveRewardStringList);
-            
+
         }
 
-        public void ReceiveRewardDetail(LectureRewardStruct reward)
+        public void ReceiveRewardDetail(LectureRewardStruct rewardData)
         {
-
+            lectureRewardData = rewardData;
+            filledBar.fillAmount = lectureRewardData.currentEXP/ lectureRewardData.maxEXP;
+            lectureRewardList = lectureRewardData.allRewardData;
+            Sprite rewardIcon = lectureRewardList[0].GetRewardData.RewardIcon;
+            string rewardName = lectureRewardList[0].GetRewardData.RewardName;
+            //rewardData.gainedEXP;
         }
 
         public override void ForceSetUpNumber()
@@ -70,25 +75,31 @@ namespace Vanaring
 
         public override IEnumerator SettingUpNumber()
         {
-            foreach (float score in rewardScore)
+            //Generate RewardButton according to score
+            foreach (EventReward reward in lectureRewardList)
             {
-
-                Image newRewardIcon = Instantiate(rewardIcon, filledBar.transform);
-                newRewardIcon.gameObject.SetActive(true);
+                Button newRewardButton = Instantiate(rewardIcon, filledBar.transform);
+                //
+                
+                newRewardButton.gameObject.SetActive(true);
                 float scale = (score / 100.0f) * 360.0f;
                 double scaled = Math.Floor(scale - 200);
-                newRewardIcon.rectTransform.localPosition = new Vector3((float)scaled, -24.0f, 0f);
-                rewardIconList.Add(newRewardIcon);
+                string rewardName = reward.GetRewardData.RewardName;
+                newRewardButton.GetComponent<Image>().sprite = reward.GetRewardData.RewardIcon;
+                newRewardButton.GetComponent<Image>().rectTransform.localPosition = new Vector3((float)scaled, -24.0f, 0f);
+                rewardIconList.Add(newRewardButton);
                 //Debug.Log(scale);
             }
             yield return new WaitForEndOfFrame();
+
             introDirector.Play();
             while (introDirector.state == PlayState.Playing)
             {
                 yield return new WaitForEndOfFrame();
             }
-            //lectureMananger.IncreaseExp("GAM300");
             rewardIcon.gameObject.SetActive(false);
+
+            //Play RewardButton;
             int reachScoreIndex = 0;
             while (filledBar.fillAmount < 1)
             {
@@ -102,12 +113,8 @@ namespace Vanaring
                         reachScoreIndex++;
                     }
                 }
-                yield return new WaitForSeconds(0.01f);
-                
+                yield return new WaitForSeconds(0.01f); 
             }
-            //lectureMananger.UnSubOnReceiveExpEvent(ReceiveEXPIncrease);
-            //lectureMananger.UnSubOnUnlockRewardEvent(ReceiveRewardStringList);
-            //throw new System.NotImplementedException();
         }
     }
 }
