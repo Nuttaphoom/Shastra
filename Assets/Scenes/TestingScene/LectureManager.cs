@@ -27,7 +27,7 @@ namespace Vanaring
 
         // Lecture to study 
     
-        private List<LectureSO> lectures = new List<LectureSO>();
+        //private List<LectureSO> lectures = new List<LectureSO>();
 
         [SerializeField] 
         private LectureSO _lectureToStudy ; 
@@ -58,30 +58,26 @@ namespace Vanaring
             _lectureToStudy = (PersistentSceneLoader.Instance.ExtractSavedData<LectureSO>(PersistentSceneLoader.Instance.GetStackLoadedDataScene().GetSceneID())).GetData();
 
             if (_lectureToStudy == null)
-                throw new Exception("lectureToStudy is null");
-
-            if (!lectures.Contains(_lectureToStudy))
-                lectures.Add(_lectureToStudy );
+                throw new Exception("lectureToStudy is null") ;
 
             if (lectureRuntimes.Count > 0)
                 return;
 
-            foreach (LectureSO lectureSO in lectures)
+            bool lectureAdded = false; 
+            foreach (ProgressData progressData in localSaveProgress)
             {
-                bool lectureAdded = false;
-                foreach (ProgressData progressData in localSaveProgress)
+                if (progressData.lectureName == _lectureToStudy.LectureName)
                 {
-                    if (progressData.lectureName == lectureSO.LectureName)
-                    {
-                        lectureRuntimes.Add(new LectureSubjectRuntime(lectureSO, progressData));
-                        lectureAdded = true;
-                    }
-                }
-                if (!lectureAdded)
-                {
-                    lectureRuntimes.Add(new LectureSubjectRuntime(lectureSO));
+                    lectureRuntimes.Add(new LectureSubjectRuntime(_lectureToStudy, progressData));
+                    lectureAdded = true;
                 }
             }
+            if (!lectureAdded)
+            {
+                lectureRuntimes.Add(new LectureSubjectRuntime(_lectureToStudy));
+            }
+
+         
 
         }
 

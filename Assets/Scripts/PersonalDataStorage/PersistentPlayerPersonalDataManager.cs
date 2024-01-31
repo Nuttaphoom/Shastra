@@ -11,9 +11,6 @@ namespace Vanaring
         [SerializeField]
         private PersonalityTraitSO player_personalityTraitSO;
 
-        //[SerializeField]
-        //private Trait.Trait_Type trait;
-
         [HideInInspector]
         public PersonalityTrait player_personalityTrait;
 

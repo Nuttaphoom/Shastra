@@ -14,8 +14,7 @@ namespace Vanaring
     {
         [SerializeField]
         private List<DatabaseKeyPair> _records;
- 
- 
+
         public  void GenerateId()
         {
             Debug.Log("Generating ID"); 
@@ -36,7 +35,6 @@ namespace Vanaring
             }
         }
 
-        
         public void RemoveDuplicatedRecord()
         {
             for (int i = 0; i <  _records.Count; i++)

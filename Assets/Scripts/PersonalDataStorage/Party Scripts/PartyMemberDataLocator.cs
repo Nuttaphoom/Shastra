@@ -11,15 +11,6 @@ namespace Vanaring
         [SerializeField] 
         private List<RuntimePartyMemberData> _partyMemberData;
 
-        public object CaptureState()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public void RestoreState(object state)
-        {
-            throw new System.NotImplementedException();
-        }
 
         public RuntimePartyMemberData GetRuntimeData(string memberName)
         {

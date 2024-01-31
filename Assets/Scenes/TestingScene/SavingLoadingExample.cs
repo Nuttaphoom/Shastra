@@ -55,7 +55,7 @@ namespace Vanaring
         {
             foreach (var saveable in FindObjectsOfType<SaveableEntity>())
             {
-                state[saveable.Id] = saveable.CaptureState();
+                state[saveable.Id] = saveable.CaptureState() ;
             }
         }
 

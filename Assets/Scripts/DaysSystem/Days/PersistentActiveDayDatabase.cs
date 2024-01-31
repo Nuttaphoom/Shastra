@@ -8,10 +8,9 @@ namespace Vanaring
     public class PersistentActiveDayDatabase : PersistentInstantiatedObject<PersistentActiveDayDatabase>
     {
         [SerializeReference]
-        private RuntimeDayData _runtimeDayData = null;
+        private RuntimeDayData _runtimeDayData = null; 
 
         private DayProgressionHandler _dayProgressionHandler;
-
 
         public void SetActiveDayData(RuntimeDayData value)
         {

@@ -12,12 +12,13 @@ namespace Vanaring
         [SerializeField]
         private CharacterSheetSO _characterSheetSO;
 
-        private PartyMemberActionRegister _memberActionRegister; 
+        private PartyMemberActionRegister _memberActionRegister ;
+
+        private int _level = 1 ;
 
         public void SetUpRuntimePartyMemberData(List<string> spellUniqueKeys)
         {
             _memberActionRegister = new PartyMemberActionRegister(); 
-
             _memberActionRegister.LoadSpellFromDatabase(spellUniqueKeys);
         }
 

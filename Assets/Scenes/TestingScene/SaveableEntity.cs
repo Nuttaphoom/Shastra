@@ -9,7 +9,17 @@ namespace Vanaring
     {
         [SerializeField] private string id = string.Empty;
 
-        public string Id => id;
+        public string fileName = "EMPTY";
+        public string Id
+        {
+            get
+            {
+                if (id == string.Empty)
+                    throw new Exception("DONT FORGET TO GENERATING ID"); 
+
+                return id;
+            }
+        }
 
         [ContextMenu("Generate Id")]
         private void GenerateId() => id = Guid.NewGuid().ToString();
