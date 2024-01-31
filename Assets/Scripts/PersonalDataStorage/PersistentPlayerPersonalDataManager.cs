@@ -5,7 +5,7 @@ using System;
 
 namespace Vanaring
 {
-    public class PersistentPlayerPersonalDataManager : PersistentInstantiatedObject<PersistentPlayerPersonalDataManager>
+    public class PersistentPlayerPersonalDataManager : PersistentInstantiatedObject<PersistentPlayerPersonalDataManager> 
     {
         // TEMP : Manually Load data from SO for now 
         [SerializeField]
@@ -20,16 +20,17 @@ namespace Vanaring
         [SerializeField]
         private Backpack _backpack;
 
-
-
+        private struct TEST
+        {
+  
+        }
         private void Awake()
         {
             // TO DO : 
             player_personalityTrait = new PersonalityTrait(player_personalityTraitSO);
 
-            List<string> load_spelUniqueKey_of_Asha_here = new List<string>(); 
 
-            _partyDataLocator.GetRuntimeData("Asha").SetUpRuntimePartyMemberData(load_spelUniqueKey_of_Asha_here); 
+            _partyDataLocator.LoadLocalSaveForCharacters(); 
         }
 
         //private void Update()

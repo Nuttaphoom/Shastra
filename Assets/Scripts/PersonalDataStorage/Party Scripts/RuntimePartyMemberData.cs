@@ -16,7 +16,9 @@ namespace Vanaring
 
         private int _level = 1 ;
 
-        public void SetUpRuntimePartyMemberData(List<string> spellUniqueKeys)
+        
+
+        public void SetUpRuntimePartyMemberData(List<string> spellUniqueKeys, int level)
         {
             _memberActionRegister = new PartyMemberActionRegister(); 
             _memberActionRegister.LoadSpellFromDatabase(spellUniqueKeys);

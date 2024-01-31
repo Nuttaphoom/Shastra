@@ -23,12 +23,13 @@ namespace Vanaring
         private const int increaseAmount = 1;
 
         [SerializeField]
-        private CutsceneDirector _director; 
+        private CutsceneDirector _director;
 
         // Lecture to study 
-    
+
         //private List<LectureSO> lectures = new List<LectureSO>();
 
+        [Header("DONT ASSIGN ANYTHING")] 
         [SerializeField] 
         private LectureSO _lectureToStudy ; 
 

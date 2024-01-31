@@ -6,6 +6,7 @@ using Unity.VisualScripting;
 using Unity.Collections;
 using System.Security.Permissions;
 using JetBrains.Annotations;
+using System.Xml;
 
 namespace Vanaring
 {
@@ -63,6 +64,18 @@ namespace Vanaring
             throw new Exception("" + uniqueID+ "could not be found in database of type " +typeof(RecordType));
         }
 
+        public string GetRecordKey(RecordType type)
+        {
+            foreach (var pair in _records)
+            {
+                if (pair.GetRecorded() == type)
+                    return pair.GetKey(); 
+            }
+
+            throw new Exception("" + type + "could not be found in database of type " + typeof(RecordType));
+
+        }
+
         [Serializable]
         private class DatabaseKeyPair
         {
@@ -91,6 +104,11 @@ namespace Vanaring
             public RecordType GetRecorded()
             {
                 return _recorded; 
+            }
+
+            public string GetKey()
+            {
+                return _key; 
             }
 
             public bool IsContainRecorded()
