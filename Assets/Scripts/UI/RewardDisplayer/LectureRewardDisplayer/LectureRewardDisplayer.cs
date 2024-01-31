@@ -12,7 +12,8 @@ namespace Vanaring
         public int currentEXP;
         //string reward 
         public int gainedEXP;
-        public List<EventReward> rewardData;
+        public List<EventReward> allRewardData;
+        public List<EventReward> alreadyReceivedRewardData;
     }
 
     [Serializable]

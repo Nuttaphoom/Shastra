@@ -14,14 +14,15 @@ namespace Vanaring
 
         private PartyMemberActionRegister _memberActionRegister ;
 
-        private int _level = 1 ;
-
-        
+        private int _level = 100 ;
 
         public void SetUpRuntimePartyMemberData(List<string> spellUniqueKeys, int level)
         {
-            _memberActionRegister = new PartyMemberActionRegister(); 
+            Debug.Log("set up character for member name : " + _characterSheetSO.CharacterName);
+            _memberActionRegister = new PartyMemberActionRegister();
             _memberActionRegister.LoadSpellFromDatabase(spellUniqueKeys);
+            _level = level;
+            
         }
 
         public List<SpellActionSO> GetRegisteredSpellActionSO
@@ -35,10 +36,20 @@ namespace Vanaring
             }
         }
 
+        public void UnlockSpellActionSO(SpellActionSO spellActionSO)
+        {
+            if (_memberActionRegister == null)
+                throw new Exception("_memberActionRegister is null : RuntimePartyMemberData have never been properly set up");
+
+            _memberActionRegister.UnlockSpellAction(spellActionSO) ;
+        }
+
         public bool IsThisPartyMember(string characterName)
         {
             return (characterName == GetMemberName()); 
         }
+
+      
         public string GetMemberName() => _characterSheetSO.CharacterName; 
 
     }

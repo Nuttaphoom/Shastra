@@ -16,7 +16,11 @@ namespace Vanaring
         [NonSerialized]
         private bool cp_received;
 
-        public void SetReceived(bool fact) { cp_received = fact; }
+        public void ReceiveReward() { 
+            cp_received = true ;
+            cp_reward.GetEventRewards.SubmitReward(); 
+            
+        }
 
         public int RequirePoint => cp_requirepoint;
         public EventReward Reward => cp_reward;

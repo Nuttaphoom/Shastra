@@ -87,7 +87,7 @@ namespace Vanaring
             {
                 yield return new WaitForEndOfFrame();
             }
-            lectureMananger.IncreaseExp("GAM300");
+            //lectureMananger.IncreaseExp("GAM300");
             rewardIcon.gameObject.SetActive(false);
             int reachScoreIndex = 0;
             while (filledBar.fillAmount < 1)

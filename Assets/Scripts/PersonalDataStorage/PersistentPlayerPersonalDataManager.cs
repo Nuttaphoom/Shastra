@@ -20,45 +20,28 @@ namespace Vanaring
         [SerializeField]
         private Backpack _backpack;
 
-        private struct TEST
+        #region GETTER 
+        public PartyMemberDataLocator PartyMemberDataLocator
         {
-  
+            get
+            {
+                if (_partyDataLocator == null)
+                    throw new Exception("PartyDataLocator is null"); 
+
+                return _partyDataLocator;
+            }
         }
+
+        #endregion
+
         private void Awake()
         {
             // TO DO : 
             player_personalityTrait = new PersonalityTrait(player_personalityTraitSO);
 
-
             _partyDataLocator.LoadLocalSaveForCharacters(); 
         }
 
-        //private void Update()
-        //{
-        //    if (Input.GetKeyDown(KeyCode.E))
-        //    {
-        //        Debug.Log(trait + " : " + player_personalityTrait.GetStat(trait));
-        //    }
-        //    if (Input.GetKeyDown(KeyCode.R))
-        //    {
-        //        player_personalityTrait.SetStat(trait, player_personalityTrait.GetStat(trait) - 1);
-        //        Debug.Log(trait + " : " + player_personalityTrait.GetStat(trait));
-        //    }
-        //    if (Input.GetKeyDown(KeyCode.T))
-        //    {
-        //        Debug.Log("Change : " + trait);
-        //        trait++;
-        //        if ((int)trait >= System.Enum.GetValues(typeof(Trait.Trait_Type)).Length)
-        //        {
-        //            trait = 0;
-        //        }
-        //        Debug.Log("To : " + trait);
-        //    }
-        //    if (Input.GetKeyDown(KeyCode.Y))
-        //    {
-        //        player_personalityTrait.SetStat(trait, player_personalityTrait.GetStat(trait) + 1);
-        //        Debug.Log(trait + " : " + player_personalityTrait.GetStat(trait));
-        //    }
-        //}
+         
     }
 }

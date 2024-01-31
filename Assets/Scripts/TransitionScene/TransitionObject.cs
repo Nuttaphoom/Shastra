@@ -74,7 +74,7 @@ namespace Vanaring
             gfxScreen.fillAmount = 0;
             while (fadeInDirector.state == PlayState.Playing)
                 yield return new WaitForEndOfFrame();
-            Debug.Log("finish fade-in");
+            //Debug.Log("finish fade-in");
             fadeInDirector.Stop();
             GetEventBroadcaster().InvokeEvent<Null>(null, "OnSceneLoaderBegin");
         }
@@ -83,11 +83,11 @@ namespace Vanaring
         {
             _tsm.UnSubOnSceneLoaderOperation(OnSceneProgressBarLoading);
             yield return new WaitForSeconds(delayLoadingTime);
-            Debug.Log("Load scene finish");
+            //Debug.Log("Load scene finish");
             fadeOutDirector.Play();
             while (fadeOutDirector.state == PlayState.Playing)
                 yield return new WaitForEndOfFrame();
-            Debug.Log("finish fade-out");
+            //Debug.Log("finish fade-out");
             fadeOutDirector.Stop();
             GetEventBroadcaster().InvokeEvent<Null>(null, "OnSceneLoaderBegin");
             transitionCanvas.SetActive(false);

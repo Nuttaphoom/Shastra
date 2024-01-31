@@ -20,7 +20,7 @@ namespace Vanaring
         [SerializeField]
         private LectureRewardDisplayer _rewardDisplayer ; 
         //the default increased amount 
-        private const int increaseAmount = 1;
+        private const int increaseAmount = 150 ;
 
         [SerializeField]
         private CutsceneDirector _director;
@@ -43,15 +43,9 @@ namespace Vanaring
                 return;
 
             InitLectureRuntime();
-
+            IncreaseExp(); 
             OnPerformAcivity(); 
         }
-
-        ////[ContextMenu("Load Scene")]
-        //public void LoadScene()
-        //{
-        //    UnityEngine.SceneManagement.SceneManager.LoadScene("PotaeTesterScene");
-        //}
 
         //[ContextMenu("Init Runtime")]
         public void InitLectureRuntime()
@@ -76,34 +70,31 @@ namespace Vanaring
             if (!lectureAdded)
             {
                 lectureRuntimes.Add(new LectureSubjectRuntime(_lectureToStudy));
-            }
+            } 
+
+
 
          
 
         }
 
-        public int CalculateReceivedReward()
+        public int CalculateReceivedEXPPoint()
         {
+            //Potae add personality trait multiplier here
             return increaseAmount;
         }
 
-        public void IncreaseExp(string LectureName)
+        public void IncreaseExp()
         {
             foreach (LectureSubjectRuntime LectureSubjectRuntime in lectureRuntimes)
             {
-                if (LectureSubjectRuntime.LectureName == LectureName)
+                if (LectureSubjectRuntime.LectureName == _lectureToStudy.LectureName)
                 {
-                    LectureSubjectRuntime.RecievePoint(CalculateReceivedReward()) 
-                        ;
-                    if (LectureSubjectRuntime.SetRecieveReward())
-                    {
-                        Debug.Log("real Get: " + LectureSubjectRuntime.GetRecievedReward().Count);
-                    }
+                    LectureSubjectRuntime.RecievePoint(CalculateReceivedEXPPoint());  
+                    LectureSubjectRuntime.CalculateRecievedEventReward();
                 }
             }
         }
-
-      
 
         #region Save System
         public object CaptureState()
@@ -173,8 +164,9 @@ namespace Vanaring
                 {
                     maxEXP = lectureRuntime.MaxPoint,
                     currentEXP = lectureRuntime.CurrentPoint,
-                    gainedEXP = CalculateReceivedReward(),
-                    rewardData = lectureRuntime.GetEventReward()   
+                    gainedEXP = CalculateReceivedEXPPoint(),
+                    allRewardData = lectureRuntime.GetEventReward(), 
+                    alreadyReceivedRewardData = lectureRuntime.GetAlreadyRecievedReward() 
                 }; 
 
              
@@ -197,7 +189,6 @@ namespace Vanaring
         [SerializeField]
         private List<LectureChechpoint> checkpoint = new List<LectureChechpoint>();
 
-        private List<EventReward> recievedReward = new List<EventReward>();
         
         public LectureSubjectRuntime()
         {
@@ -222,41 +213,41 @@ namespace Vanaring
         public void RecievePoint(int amount)
         {
             currentPoint += amount;
-
+            Debug.Log("Current Point : " + currentPoint); 
             if (currentPoint > maxPoint)
                 currentPoint = maxPoint;
 
             //GetReward();
         }
 
-        public bool SetRecieveReward()
+        public void CalculateRecievedEventReward()
         {
-            bool getReward = false;
+            foreach (LectureChechpoint lectureChechpoint in checkpoint)
+            {
+                Debug.Log("calcuate reward");
+                if (lectureChechpoint.Received == true)
+                    continue;
+
+                if (currentPoint >= lectureChechpoint.RequirePoint)
+                {
+                    Debug.Log("receive reward"); 
+                    lectureChechpoint.ReceiveReward();
+                }
+            }
+        }
+
+        public List<EventReward> GetAlreadyRecievedReward()
+        {
+            List<EventReward> ret = new List<EventReward>();
+
             foreach (LectureChechpoint lectureChechpoint in checkpoint)
             {
                 if (lectureChechpoint.Received == true)
-                {
-                    continue;
-                }
-                else if (currentPoint >= lectureChechpoint.RequirePoint)
-                {
-                    lectureChechpoint.SetReceived(true);
-                    recievedReward.Add(lectureChechpoint.Reward);
-                    getReward = true;
-                }
-            }
-            return getReward;
-        }
+                    ret.Add(lectureChechpoint.Reward);
 
-        public List<EventReward> GetRecievedReward()
-        {
-            List<EventReward> temp = new List<EventReward>();
-            foreach (var rew in recievedReward)
-            {
-                temp.Add(rew);
             }
-            recievedReward.Clear();
-            return temp;
+             
+            return ret;
         }
 
         public List<EventReward> GetEventReward()
@@ -269,10 +260,7 @@ namespace Vanaring
             return ret ; 
         }
 
-        //public void PrintData()
-        //{
-        //    Debug.Log(LectureName + "," + currentPoint + "," + maxPoint);
-        //}
+       
 
         #region Getter
         public string LectureName => lectureName;

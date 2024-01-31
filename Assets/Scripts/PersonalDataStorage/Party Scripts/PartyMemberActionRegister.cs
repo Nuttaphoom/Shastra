@@ -9,7 +9,7 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace Vanaring
 {
-    public class PartyMemberActionRegister : MonoBehaviour
+    public class PartyMemberActionRegister    
     {
         private const string _spellDatabaseAddress = "SpellDatabaseSOAddress" ; 
 
@@ -24,7 +24,7 @@ namespace Vanaring
         /// <param name="uniqueID"></param>
         /// <exception cref="System.Exception"></exception>
         /// <exception cref="NotImplementedException"></exception>
-        public IEnumerator LoadSpellFromDatabase(List<string> uniqueID)
+        public void LoadSpellFromDatabase(List<string> uniqueID)
         {
             if (_registeredSpellActions != null)
                 throw new System.Exception("Try to laod spell from data base multiple time.This isn't allowed. " +
@@ -40,7 +40,15 @@ namespace Vanaring
                _registeredSpellActions.Add( m_spellDatabase.GetRecord(uniqueID[i]) ) ;
             }
 
-            yield return null ;
+        }
+
+        public void UnlockSpellAction(SpellActionSO spellToUnlock)
+        {
+            if (_registeredSpellActions == null)
+                throw new Exception("_registerSpellActions is null"); 
+            //Dont forget to save all of the _registeredSpellActions again when application ends of saved
+            _registeredSpellActions.Add(spellToUnlock) ;
+            Debug.Log("RegisteredSpellAction.Count : " + _registeredSpellActions.Count);
         }
 
         private void LoadSpellDatabaseOP()

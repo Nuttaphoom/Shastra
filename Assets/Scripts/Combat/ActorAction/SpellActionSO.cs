@@ -37,7 +37,8 @@ namespace Vanaring
 
         public void SubmitReward()
         {
-            throw new NotImplementedException();
+            Debug.Log("Submit reward as " + DescriptionBaseField.FieldName);
+            PersistentPlayerPersonalDataManager.Instance.PartyMemberDataLocator.GetProtagonistRuntimeData.UnlockSpellActionSO(this);
         }
     }
 
