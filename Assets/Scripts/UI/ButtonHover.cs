@@ -10,7 +10,7 @@ namespace Vanaring
     {
         public GameObject windowObject; // Reference to your window UI object
         [SerializeField]
-        private GameObject _button;
+        private Button _button;
 
         private bool isHovering = false;
 
@@ -28,12 +28,14 @@ namespace Vanaring
 
         public void OnPointerEnter(PointerEventData eventData)
         {
+            Debug.Log("enter");
             isHovering = true;
             windowObject.SetActive(true);
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
+            Debug.Log("exit");
             isHovering = false;
             windowObject.SetActive(false);
         }

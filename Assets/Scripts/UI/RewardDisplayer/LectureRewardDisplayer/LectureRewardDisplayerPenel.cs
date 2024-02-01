@@ -5,10 +5,11 @@ using UnityEngine.Playables;
 using UnityEngine.UI;
 using Unity.Mathematics;
 using System;
+using UnityEngine.EventSystems;
 
 namespace Vanaring
 {
-    public class LectureRewardDisplayerPenel : BaseRewardDisplayerPanel
+    public class LectureRewardDisplayerPenel : BaseRewardDisplayerPanel //, IPointerEnterHandler, IPointerExitHandler
     {
         [SerializeField]
         private PlayableDirector introDirector;
@@ -19,12 +20,9 @@ namespace Vanaring
         [SerializeField]
         private LectureManager lectureMananger;
 
-        [SerializeField]
-        private float[] rewardScore;
-        private List<Button> rewardIconList = new List<Button>();
-        private List<EventReward> lectureRewardList = new List<EventReward>();
+        private List<Button> rewardButtonList = new List<Button>();
         private List<EventReward> obtainedLectureRewardList = new List<EventReward>();
-        private LectureRewardStruct lectureRewardData;
+        private LectureRewardStruct lectureProgressBarData;
 
         private void Start()
         {
@@ -33,11 +31,13 @@ namespace Vanaring
 
         public void ReceiveRewardDetail(LectureRewardStruct rewardData)
         {
-            lectureRewardData = rewardData;
-            filledBar.fillAmount = lectureRewardData.currentEXP/ lectureRewardData.maxEXP;
-            lectureRewardList = lectureRewardData.allRewardData;
-            Sprite rewardIcon = lectureRewardList[0].GetRewardData.RewardIcon;
-            string rewardName = lectureRewardList[0].GetRewardData.RewardName;
+            lectureProgressBarData = rewardData;
+            filledBar.fillAmount = lectureProgressBarData.currentEXP/ lectureProgressBarData.maxEXP;
+            
+
+            Sprite rewardIcon = lectureProgressBarData.allRewardData[0].GetRewardData.RewardIcon;
+            string rewardName = lectureProgressBarData.allRewardData[0].GetRewardData.RewardName;
+            LectureChechpoint checkpoints = lectureProgressBarData.checkpoints[0];
             //rewardData.gainedEXP;
         }
 
@@ -76,19 +76,21 @@ namespace Vanaring
         public override IEnumerator SettingUpNumber()
         {
             //Generate RewardButton according to score
-            foreach (EventReward reward in lectureRewardList)
+            int rewardIndex = 0;
+            foreach (LectureChechpoint checkPoint in lectureProgressBarData.checkpoints)
             {
                 Button newRewardButton = Instantiate(rewardIcon, filledBar.transform);
-                //
-                
                 newRewardButton.gameObject.SetActive(true);
-                //float scale = (score / 100.0f) * 360.0f;
-                //double scaled = Math.Floor(scale - 200);
-                string rewardName = reward.GetRewardData.RewardName;
-                newRewardButton.GetComponent<Image>().sprite = reward.GetRewardData.RewardIcon;
-                //newRewardButton.GetComponent<Image>().rectTransform.localPosition = new Vector3((float)scaled, -24.0f, 0f);
-                rewardIconList.Add(newRewardButton);
-                //Debug.Log(scale);
+
+                double iconXPos = Math.Floor(((checkPoint.RequirePoint / 100.0f) * 360.0f) - 200);
+                //newRewardButton.GetComponent<Image>().rectTransform.localPosition = new Vector3((float)iconXPos, -24.0f, 0f);
+
+                string rewardName = lectureProgressBarData.allRewardData[rewardIndex].GetRewardData.RewardName;
+
+                newRewardButton.GetComponent<Image>().sprite = lectureProgressBarData.allRewardData[rewardIndex].GetRewardData.RewardIcon;
+
+                rewardButtonList.Add(newRewardButton);
+                rewardIndex++;
             }
             yield return new WaitForEndOfFrame();
 
@@ -101,14 +103,19 @@ namespace Vanaring
 
             //Play RewardButton;
             int reachScoreIndex = 0;
-            while (filledBar.fillAmount < 1)
+            if(lectureProgressBarData.checkpoints[reachScoreIndex].RequirePoint < lectureProgressBarData.currentEXP)
+            {
+                reachScoreIndex++;
+            }
+            filledBar.fillAmount = lectureProgressBarData.maxEXP;
+            while (filledBar.fillAmount < (lectureProgressBarData.gainedEXP + lectureProgressBarData.currentEXP) / lectureProgressBarData.maxEXP)
             {
                 filledBar.fillAmount += 1 * Time.deltaTime;
-                if ((filledBar.fillAmount * 100) >= rewardScore[reachScoreIndex])
+                if (filledBar.fillAmount >= lectureProgressBarData.checkpoints[reachScoreIndex].RequirePoint)
                 {
-                    rewardIconList[reachScoreIndex].gameObject.GetComponent<Animator>().enabled = true;
+                    rewardButtonList[reachScoreIndex].gameObject.GetComponent<Animator>().enabled = true;
                     //Debug.Log("Reach Reward");
-                    if (reachScoreIndex < rewardScore.Length - 1)
+                    if (reachScoreIndex < lectureProgressBarData.checkpoints.Count - 1)
                     {
                         reachScoreIndex++;
                     }
@@ -116,5 +123,15 @@ namespace Vanaring
                 yield return new WaitForSeconds(0.01f); 
             }
         }
+
+        //public void OnPointerEnter(PointerEventData eventData)
+        //{
+        //    throw new NotImplementedException();
+        //}
+
+        //public void OnPointerExit(PointerEventData eventData)
+        //{
+        //    throw new NotImplementedException();
+        //}
     }
 }
