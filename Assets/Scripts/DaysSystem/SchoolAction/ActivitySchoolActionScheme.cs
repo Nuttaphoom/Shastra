@@ -16,13 +16,18 @@ namespace Vanaring
         private CutsceneDirector _director;
 
         [SerializeField]
-        private PersonalityTraitRewardDisplayer _rewardDisplayer ;
+        private PersonalityTraitRewardDisplayer _rewardDisplayer;
 
-        [SerializeField] 
-        public List<PersonalityRewardData> _personalityRewards;
+        List<PersonalityRewardData> _personalityRewards;
+
 
         private void Start()
         {
+            _personalityRewards = PersistentSceneLoader.Instance.ExtractSavedData<List<PersonalityRewardData>>(PersistentSceneLoader.Instance.GetStackLoadedDataScene().GetSceneID()).GetData();
+            
+            if (_personalityRewards == null)
+                throw new Exception("_personalityRewards is null");
+
             OnPerformAcivity();
         }
         public void OnPerformAcivity()

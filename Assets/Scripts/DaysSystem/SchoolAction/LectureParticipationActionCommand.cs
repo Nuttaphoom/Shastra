@@ -25,7 +25,11 @@ namespace Vanaring
         public LectureParticipationActionCommand(LectureParticipationActionCommand copied) : base(copied)
         {
             this._lecture_to_participate = copied._lecture_to_participate; 
-            this._lectureSceenDataSO = copied._lectureSceenDataSO;  
+            this._lectureSceenDataSO = copied._lectureSceenDataSO;
+
+            if (_lecture_to_participate == null)
+                throw new Exception("_lecture_to_participated is null");
+
         }
         public override void ExecuteCommand()
         {
@@ -33,9 +37,6 @@ namespace Vanaring
 
             if (_sceneDataSO == null)
                 throw new Exception(_lectureSceenDataSO + "resource can not be loaded");
-
-            if (_lecture_to_participate == null)
-                throw new Exception("_lecture_to_participated is null"); 
 
             PersistentSceneLoader.Instance.CreateLoaderDataUser<LectureSO>(_sceneDataSO.GetSceneID(), _lecture_to_participate);
 
