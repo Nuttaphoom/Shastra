@@ -24,7 +24,7 @@ namespace Vanaring
         //private List<PersonalityRewardData> _personalityRewardDatas;
         public override IEnumerator DisplayRewardUICoroutine(LectureRewardStruct rewardType)
         {
-            //_personalityRewardDatas = rewardType;
+            _lectureRewardStruct = rewardType;
             yield return CreateRewardDisplayPanel();
         }
 

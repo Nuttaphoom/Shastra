@@ -3,12 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using TMPro;
 
 namespace Vanaring 
 {
     public class ButtonHover : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
         public GameObject windowObject; // Reference to your window UI object
+        [SerializeField]
+        private TextMeshProUGUI desText;
+        [SerializeField]
+        private Image iconImage;
         [SerializeField]
         private Button _button;
 
@@ -38,6 +43,12 @@ namespace Vanaring
             Debug.Log("exit");
             isHovering = false;
             windowObject.SetActive(false);
+        }
+
+        public void InitWindow(string newText, Sprite newIcon)
+        {
+            desText.text = newText;
+            iconImage.sprite = newIcon;
         }
     }
 }
