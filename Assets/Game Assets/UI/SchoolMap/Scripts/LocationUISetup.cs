@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.Playables;
 
 namespace Vanaring
 {
@@ -28,7 +29,7 @@ namespace Vanaring
         private void Start()
         {
             Init();
-            _lectureSelectPanel = PersistentAddressableResourceLoader.Instance.LoadResourceOperation<GameObject>("LectureSelectPanel");
+            //_lectureSelectPanel = PersistentAddressableResourceLoader.Instance.LoadResourceOperation<GameObject>("LectureSelectPanel");
         }
 
         private void Init()
@@ -57,7 +58,8 @@ namespace Vanaring
                 Button actualButton = newActionButton.GetComponentInChildren<Button>(true);
                 if (action is LectureParticipationActionCommand)
                 {
-                    actualButton.onClick.AddListener(() => PerformAction(action));
+                    tmpLectureButton.onClick.AddListener(() => PerformAction(action));
+                    actualButton.onClick.AddListener(OpenLecturePanel);
                 }
                 if (action is ActivityActionCommand)
                 {
@@ -90,7 +92,6 @@ namespace Vanaring
         public void OpenPanel()
         {
             confirmPanel.SetActive(true);
-            _lectureSelectPanel.SetActive(true);
         }
 
         private void OpenLecturePanel()
