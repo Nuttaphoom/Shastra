@@ -20,7 +20,7 @@ namespace Vanaring
         [SerializeField]
         private LectureRewardDisplayer _rewardDisplayer ; 
         //the default increased amount 
-        private const int increaseAmount = 150 ;
+        private const int increaseAmount = 750 ;
 
         [SerializeField]
         private CutsceneDirector _director;
