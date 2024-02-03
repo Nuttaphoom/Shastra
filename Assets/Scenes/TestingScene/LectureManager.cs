@@ -50,7 +50,7 @@ namespace Vanaring
         [ContextMenu("Init Runtime")]
         public void InitLectureRuntime()
         {
-            //_lectureToStudy = (PersistentSceneLoader.Instance.ExtractSavedData<LectureSO>(PersistentSceneLoader.Instance.GetStackLoadedDataScene().GetSceneID())).GetData();
+            _lectureToStudy = (PersistentSceneLoader.Instance.ExtractSavedData<LectureSO>(PersistentSceneLoader.Instance.GetStackLoadedDataScene().GetSceneID())).GetData();
 
             if (_lectureToStudy == null)
                 throw new Exception("lectureToStudy is null") ;
