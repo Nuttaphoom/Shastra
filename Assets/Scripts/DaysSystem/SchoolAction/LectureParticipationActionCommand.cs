@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 
@@ -12,41 +13,50 @@ namespace Vanaring
     [Serializable]
     public class LectureParticipationActionCommand : BaseLocationActionCommand
     {
-        [Header("Scene with lecture inside it")]
-        [SerializeField]
-        private AssetReference _lectureSceenDataSO  ;
+        [Serializable]
+        public struct ParticpationLectureData
+        {
+            [SerializeField] 
+            private LectureSO _availableLecture ;
 
-        [SerializeField]
-        private LectureSO _lecture_to_participate ; 
+            [Header("Scene with lecture inside it")]
+            [SerializeField]
+            private AssetReference _lectureSceenDataSO;
 
-        private SceneDataSO _sceneDataSO;
+            public LectureSO GetAvailableLecture => _availableLecture ;
 
-        private string address = "TestLectureSceneDataSO" ;
+            public AssetReference GetSceneDataRef => _lectureSceenDataSO; 
+        }
+
+        [SerializeField] 
+        private List<ParticpationLectureData> _availableLecture; 
+
         public LectureParticipationActionCommand(LectureParticipationActionCommand copied) : base(copied)
         {
-            this._lecture_to_participate = copied._lecture_to_participate; 
-            this._lectureSceenDataSO = copied._lectureSceenDataSO;
-
-            if (_lecture_to_participate == null)
-                throw new Exception("_lecture_to_participated is null");
+            this._availableLecture = copied._availableLecture ; 
+         
+            if (this._availableLecture == null)
+                throw new Exception("_availableLecture is null");
 
         }
         public override void ExecuteCommand()
         {
-            _sceneDataSO = PersistentAddressableResourceLoader.Instance.LoadResourceOperation<SceneDataSO>(_lectureSceenDataSO); 
+            //Aome need to Display lecrture selection UI 
 
-            if (_sceneDataSO == null)
-                throw new Exception(_lectureSceenDataSO + "resource can not be loaded");
-
-            PersistentSceneLoader.Instance.CreateLoaderDataUser<LectureSO>(_sceneDataSO.GetSceneID(), _lecture_to_participate);
-
-            PersistentSceneLoader.Instance.LoadGeneralScene(_sceneDataSO);
         }
 
-        public void OnSelectLecture(LectureSO lecture)
+        /// <summary>
+        /// Call when user selects a Lecture to participate 
+        /// </summary>
+        /// <param name="lecture"></param>
+
+        public void OnSelectLecture(ParticpationLectureData lecture)
         {
+            SceneDataSO sceneDataSO = PersistentAddressableResourceLoader.Instance.LoadResourceOperation<SceneDataSO>(lecture.GetSceneDataRef);
 
+            PersistentSceneLoader.Instance.CreateLoaderDataUser<LectureSO>(sceneDataSO.GetSceneID(), lecture.GetAvailableLecture) ;
 
+            PersistentSceneLoader.Instance.LoadGeneralScene(sceneDataSO);
         }
         
 
