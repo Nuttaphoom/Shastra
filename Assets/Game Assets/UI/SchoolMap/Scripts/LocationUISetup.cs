@@ -9,7 +9,6 @@ namespace Vanaring
 {
     public class LocationUISetup : MonoBehaviour
     {
-        [SerializeField] private GameObject verticalLayout;
         [SerializeField] private GameObject actionButton;
         private List<BaseLocationActionCommand> actionCommandList = new List<BaseLocationActionCommand>();
         private List<GameObject> actionButtonList = new List<GameObject>();

@@ -68,11 +68,12 @@ namespace Vanaring
         public override IEnumerator SettingUpNumber()
         {
             introDirector.Play();
-            while(introDirector.state == PlayState.Playing)
-            {
-                yield return new WaitForEndOfFrame();
-            }
-
+            //while(introDirector.state == PlayState.Playing)
+            //{
+            //    yield return new WaitForEndOfFrame();
+            //}
+            yield return new WaitForSeconds(1.0f);
+            introDirector.Stop();
             foreach (PersonalityRewardData traitReward in _personalityRewardList)
             {
                 switch (traitReward.RewardTraitType)
