@@ -29,7 +29,7 @@ namespace Vanaring
         }
 
         [SerializeField] 
-        private List<ParticpationLectureData> _availableLecture; 
+        private List<ParticpationLectureData> _availableLecture;
 
         public LectureParticipationActionCommand(LectureParticipationActionCommand copied) : base(copied)
         {
@@ -41,8 +41,8 @@ namespace Vanaring
         }
         public override void ExecuteCommand()
         {
-            //Aome need to Display lecrture selection UI 
-
+            GameObject panel = MonoBehaviour.Instantiate(PersistentAddressableResourceLoader.Instance.LoadResourceOperation<GameObject>("LectureSelectPanel"));
+            panel.GetComponent<LectureSelectPanel>().InitPanel(_availableLecture, this);
         }
 
         /// <summary>
@@ -52,6 +52,7 @@ namespace Vanaring
 
         public void OnSelectLecture(ParticpationLectureData lecture)
         {
+            Debug.Log("On Selct");
             SceneDataSO sceneDataSO = PersistentAddressableResourceLoader.Instance.LoadResourceOperation<SceneDataSO>(lecture.GetSceneDataRef);
 
             PersistentSceneLoader.Instance.CreateLoaderDataUser<LectureSO>(sceneDataSO.GetSceneID(), lecture.GetAvailableLecture) ;

@@ -57,8 +57,10 @@ namespace Vanaring
                 Button actualButton = newActionButton.GetComponentInChildren<Button>(true);
                 if (action is LectureParticipationActionCommand)
                 {
-                    tmpLectureButton.onClick.AddListener(() => PerformAction(action));
-                    actualButton.onClick.AddListener(OpenLecturePanel);
+                    //tmpLectureButton.onClick.AddListener(() => PerformAction(action));
+                    actualButton.onClick.AddListener(() => action.ExecuteCommand());
+                    LectureParticipationActionCommand a = (LectureParticipationActionCommand)action;
+                    //LectureParticipationActionCommand.ParticpationLectureData s = a.GetAvailableLecture;
                 }
                 if (action is ActivityActionCommand)
                 {
