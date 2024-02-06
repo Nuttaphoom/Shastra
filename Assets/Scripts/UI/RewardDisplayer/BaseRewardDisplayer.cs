@@ -33,15 +33,18 @@ namespace Vanaring
             _rewardPanel = MonoBehaviour.Instantiate(_rewardDisplayGOTemplate.gameObject);
             yield return SettingUpRewardDisplayPanel(_rewardPanel.GetComponent<RewardPanelType>());
 
-            while (_rewardPanel.GetComponent<RewardPanelType>().IsFinishingDisplayUI == false )
+            yield return WaitUntilDisplayFinish(); 
+
+            PersistentActiveDayDatabase.Instance.GetDayProgressionHandler.OnPostPerformSchoolAction();
+
+        }
+
+        private IEnumerator WaitUntilDisplayFinish()
+        {
+            while (_rewardPanel.GetComponent<RewardPanelType>().IsFinishingDisplayUI == false)
             {
-                yield return new WaitForEndOfFrame(); 
+                yield return new WaitForEndOfFrame();
             }
-
-            PersistentActiveDayDatabase.Instance.GetDayProgressionHandler.OnPostPerformSchoolAction(); 
-
-
-
         }
     } 
 
