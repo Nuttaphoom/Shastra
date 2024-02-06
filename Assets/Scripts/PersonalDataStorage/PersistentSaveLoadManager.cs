@@ -23,14 +23,6 @@ namespace Vanaring
             }
         }
 
-        //private void Save()
-        //{
-        //    var state = LoadFile();
-
-        //    CaptureState(state);
-        //    SaveFile(state);
-        //}
-
         [ContextMenu("Load All")]
         private void LoadAll()
         {
@@ -42,12 +34,6 @@ namespace Vanaring
                 RestoreState(state, path);
             }
         }
-        //private void Load()
-        //{
-        //    var state = LoadFile();
-
-        //    RestoreState(state);
-        //}
 
         private Dictionary<string, object> LoadFile(string filePath)
         {
@@ -111,7 +97,7 @@ namespace Vanaring
 
         private string FileNameToPath(string fileName)
         {
-            string path = Application.persistentDataPath + "/" + fileName;
+            string path = Application.persistentDataPath + "/" + fileName + ".txt";
             return path;
         }
     }

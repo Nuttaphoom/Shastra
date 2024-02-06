@@ -47,7 +47,7 @@ namespace Vanaring
             OnPerformAcivity(); 
         }
 
-        [ContextMenu("Init Runtime")]
+        //[ContextMenu("Init Runtime")]
         public void InitLectureRuntime()
         {
             _lectureToStudy = (PersistentSceneLoader.Instance.ExtractSavedData<LectureSO>(PersistentSceneLoader.Instance.GetStackLoadedDataScene().GetSceneID())).GetData();
