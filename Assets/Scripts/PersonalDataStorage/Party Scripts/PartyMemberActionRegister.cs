@@ -25,12 +25,11 @@ namespace Vanaring
         /// <exception cref="System.Exception"></exception>
         /// <exception cref="NotImplementedException"></exception>
         
-        public PartyMemberActionRegister()
-        {
-            LoadSpellDatabaseOP(); 
-        }
+    
         public void LoadSpellFromDatabase(List<string> uniqueID)
         {
+            LoadSpellDatabaseOP();
+
             if (_registeredSpellActions != null)
                 throw new System.Exception("Try to laod spell from data base multiple time.This isn't allowed. " +
                     "The system should be loaded only 1 time when the save is loaded, and modified the SpellAction thoughtout the lifetime of application, " +

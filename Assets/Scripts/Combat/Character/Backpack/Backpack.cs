@@ -41,12 +41,7 @@ namespace Vanaring
         private List<BackpackItemData> _backpackItemSO   ;
 
         private InventoryDatabaseSO m_inventoryDatabase;
-
-        public Backpack()
-        {
-            LoadItemDatabaseOP();
-        }
-
+ 
         public void SaveBackpackItems()
         {
             //Save the Unique id from all of the BackpackItemData in _backpackItemSO
@@ -62,6 +57,8 @@ namespace Vanaring
 
         public void LoadBackpackItemFromDatabase(List<string> uniqueID)
         {
+            LoadItemDatabaseOP();
+
             if (_backpackItemSO != null)
                 throw new System.Exception("Try to laod spell from data base multiple time.This isn't allowed. " +
                     "The system should be loaded only 1 time when the save is loaded, and modified the SpellAction thoughtout the lifetime of application, " +
