@@ -103,8 +103,8 @@ namespace Vanaring
         {
             _combatEntity = entities;
 
-            characterName.text = _combatEntity.CharacterSheet.CharacterName;
-            targetIcon.sprite = _combatEntity.CharacterSheet.GetCharacterIcon;
+            characterName.text = _combatEntity.CombatCharacterSheet.CharacterName;
+            targetIcon.sprite = _combatEntity.CombatCharacterSheet.GetCharacterIcon;
             hpNumText.text = _combatEntity.StatsAccumulator.GetHPAmount().ToString();
             lightNumText.text = _combatEntity.SpellCaster.GetEnergyAmount(RuntimeMangicalEnergy.EnergySide.LightEnergy).ToString();
             darkNumText.text = _combatEntity.SpellCaster.GetEnergyAmount(RuntimeMangicalEnergy.EnergySide.DarkEnergy).ToString();

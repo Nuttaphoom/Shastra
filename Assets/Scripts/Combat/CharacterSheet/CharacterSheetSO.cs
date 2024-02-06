@@ -12,28 +12,8 @@ namespace Vanaring
         [SerializeField]
         private string _characterName = "No name"; 
 
-        [Header("Peak HP of this entity")]
-        [SerializeField]
-        private int _HP;
-
-        [Header("Default ATK of this entity")]
-        [SerializeField]
-        private int _ATK;
-
-        [Header("Ailment Resistant")]
-        [SerializeField]
-        private AilmentResistantDataInfo _ailmentResistantDataInfo ; 
-
-        [Header("Character Sprite")]
-        [SerializeField]
-        private Sprite _characterIconGUI;
-
-
-        public Sprite GetCharacterIcon => _characterIconGUI;
-        public int GetHP => _HP;
         public string CharacterName => _characterName;
-        public int GetATK => _ATK;
-        public AilmentResistantDataInfo ResistantData => _ailmentResistantDataInfo ;
+
     }
 
     

@@ -20,7 +20,7 @@ namespace Vanaring
     {
         //[Header("Right now we manually assign CharacterSheet, TO DO : Make it loaded from the main database")]
         [SerializeField]
-        private CharacterSheetSO _characterSheet;
+        private CombatCharacterSheetSO _characterSheet;
 
         [SerializeField]
         protected SpellCasterHandler _spellCaster;
@@ -286,7 +286,7 @@ namespace Vanaring
         public RuntimeCharacterStatsAccumulator StatsAccumulator => _runtimeCharacterStatsAccumulator;
         public SpellCasterHandler SpellCaster => _spellCaster;
         public ItemUserHandler ItemUser => _itemUser;
-        public CharacterSheetSO CharacterSheet => _characterSheet; 
+        public CombatCharacterSheetSO CombatCharacterSheet => _characterSheet; 
 
         public CombatEntityAnimationHandler CombatEntityAnimationHandler => _combatEntityAnimationHandler;
 

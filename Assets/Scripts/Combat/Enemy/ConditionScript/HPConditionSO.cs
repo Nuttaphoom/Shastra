@@ -24,7 +24,7 @@ namespace Vanaring
 
         public override bool ConditionsMet(CombatEntity aiEntity)
         {
-            float maxHP = aiEntity.CharacterSheet.GetHP;
+            float maxHP = aiEntity.CombatCharacterSheet.GetHP;
             float currHP = aiEntity.StatsAccumulator.GetHPAmount();
 
             float result = (currHP * 100.0f / maxHP);
