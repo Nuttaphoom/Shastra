@@ -13,9 +13,11 @@ namespace Vanaring
         [SerializeField]
         private TextMeshProUGUI desText;
         [SerializeField]
-        private Image iconImage;
+        private Image iconImageDetail;
         [SerializeField]
         private Button _button;
+        [SerializeField]
+        private Animator animator;
 
         private bool isHovering = false;
 
@@ -33,22 +35,21 @@ namespace Vanaring
 
         public void OnPointerEnter(PointerEventData eventData)
         {
-            Debug.Log("enter");
+            animator.Play("LectureRewardDetailSlideUp");
             isHovering = true;
             windowObject.SetActive(true);
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
-            Debug.Log("exit");
+            animator.Play("LectureRewardDetailSlideDown");
             isHovering = false;
-            windowObject.SetActive(false);
         }
 
-        public void InitWindow(string newText, Sprite newIcon)
+        public void InitWindowDetail(string newText, Sprite newIcon)
         {
             desText.text = newText;
-            iconImage.sprite = newIcon;
+            iconImageDetail.sprite = newIcon;
         }
     }
 }

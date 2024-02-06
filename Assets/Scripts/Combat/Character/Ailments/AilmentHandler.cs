@@ -69,7 +69,7 @@ namespace Vanaring
         public AilmentHandler(CombatEntity user)
         {
             _user = user;
-            _ailmentResistantHandler = new AilmentResistantHandler(user.CharacterSheet.ResistantData); 
+            _ailmentResistantHandler = new AilmentResistantHandler(user.CombatCharacterSheet.ResistantData); 
         }
 
         public IEnumerator LogicApplyAilment(Ailment newAilment)

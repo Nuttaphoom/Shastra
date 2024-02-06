@@ -9,7 +9,7 @@ namespace Vanaring
     public class LectureSO : ScriptableObject
     {
         [SerializeField]
-        public string LectureName = "GAM300";
+        private string LectureName = "GAM300";
         [SerializeField]
         public int maxPoint = 1000;
         [SerializeField]
@@ -17,7 +17,13 @@ namespace Vanaring
         [SerializeField]
         public List<LectureRequieBoost> lectureRequieBoosts = new List<LectureRequieBoost>();
 
- 
+        [SerializeField] 
+        private DescriptionBaseField description ;
+
+        public Sprite GetLectureLogoIcon => description.FieldImage;
+        public string GetLectureName => description.FieldName;
+        public string GetLectureDestcription => description.FieldDescription; 
+    
     }
 
     [Serializable]

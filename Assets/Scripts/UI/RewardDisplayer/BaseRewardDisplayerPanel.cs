@@ -13,6 +13,7 @@ namespace Vanaring
         protected bool _uiAnimationDone = false; 
         public abstract IEnumerator SettingUpNumber();
         public abstract void ForceSetUpNumber();
+
         protected bool _displayingUIDone = false; 
         public void DestroySelf()
         {

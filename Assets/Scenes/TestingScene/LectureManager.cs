@@ -61,7 +61,7 @@ namespace Vanaring
             bool lectureAdded = false; 
             foreach (ProgressData progressData in localSaveProgress)
             {
-                if (progressData.lectureName == _lectureToStudy.LectureName)
+                if (progressData.lectureName == _lectureToStudy.GetLectureName)
                 {
                     lectureRuntimes.Add(new LectureSubjectRuntime(_lectureToStudy, progressData));
                     lectureAdded = true;
@@ -88,7 +88,7 @@ namespace Vanaring
         {
             foreach (LectureSubjectRuntime LectureSubjectRuntime in lectureRuntimes)
             {
-                if (LectureSubjectRuntime.LectureName == _lectureToStudy.LectureName)
+                if (LectureSubjectRuntime.LectureName == _lectureToStudy.GetLectureName)
                 {
                     LectureSubjectRuntime.RecievePoint(CalculateReceivedEXPPoint());  
                     LectureSubjectRuntime.CalculateRecievedEventReward();
@@ -157,7 +157,7 @@ namespace Vanaring
             foreach (LectureSubjectRuntime lectureRuntime in lectureRuntimes)
             {
 
-                if (lectureRuntime.LectureName != _lectureToStudy.LectureName) 
+                if (lectureRuntime.LectureName != _lectureToStudy.GetLectureName) 
                     continue;
 
                 var reward = new LectureRewardStruct()
@@ -204,14 +204,14 @@ namespace Vanaring
 
         public LectureSubjectRuntime(LectureSO lectureSO)
         {
-            lectureName = lectureSO.LectureName;
+            lectureName = lectureSO.GetLectureName;
             currentPoint = 0;
             maxPoint = lectureSO.maxPoint;
             checkpoint = lectureSO.Checkpoint;
         }
         public LectureSubjectRuntime(LectureSO lectureSO, LectureManager.ProgressData currentProgress)
         {
-            lectureName = lectureSO.LectureName;
+            lectureName = lectureSO.GetLectureName;
             currentPoint = currentProgress.progessPoint;
             maxPoint = lectureSO.maxPoint;
             checkpoint = lectureSO.Checkpoint;
