@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
+using Vanaring.Assets.Scripts.Utilities.StringConstant;
 
 namespace Vanaring 
 {
@@ -12,6 +13,7 @@ namespace Vanaring
     {
         [SerializeField]
         private BackpackItemSO _backpackItem;
+
 
         [SerializeField]
         private int _amount;
@@ -36,27 +38,65 @@ namespace Vanaring
         [Header("TODO : make this non-SerializeField later")]
         [Tooltip("manually assign BackpackItem  for testing")]
         [SerializeField]
-        private List<BackpackItemData> _backpackItemSO = new List<BackpackItemData>() ;
+        private List<BackpackItemData> _backpackItemSO   ;
 
+        private InventoryDatabaseSO m_inventoryDatabase;
 
         public Backpack()
         {
-            LoadBackpackItemFromLocal(); 
+            LoadItemDatabaseOP();
         }
 
-        public void LoadBackpackItemFromLocal()
+        public void SaveBackpackItems()
         {
-            //TODO : Load Data from the local and assign it to _backpackItemSO
+            //Save the Unique id from all of the BackpackItemData in _backpackItemSO
+            //Duplicate element is allowed in the local save file 
+            //for emaple, list of uniqueID saved in the local might be 
+            //ITEM_1, ITEM_2, ITEM_1 => this indicates that ITEM_A amount equal to 2 
+            //Getting Address of the record in database =>
+            //m_inventoryDatabase.GetRecordKey(_backpackItemSO[0].GetBackpackItem());
+
+
+
         }
+
+        public void LoadBackpackItemFromDatabase(List<string> uniqueID)
+        {
+            if (_backpackItemSO != null)
+                throw new System.Exception("Try to laod spell from data base multiple time.This isn't allowed. " +
+                    "The system should be loaded only 1 time when the save is loaded, and modified the SpellAction thoughtout the lifetime of application, " +
+                    "and save the uniqueID when the game is saved");
+
+            _backpackItemSO = new List<BackpackItemData>(); 
+
+            for (int i = 0; i < uniqueID.Count; i++)
+            {
+                AddItemIntoBackpack(m_inventoryDatabase.GetRecord(uniqueID[i]), 1);
+            }
+
+        }
+
+        private void LoadItemDatabaseOP()
+        {
+            if (m_inventoryDatabase != null)
+                return; 
+
+            m_inventoryDatabase = PersistentAddressableResourceLoader.Instance.LoadResourceOperation<InventoryDatabaseSO>(DatabaseAddressLocator.GetInventoryDatabaseAddress);
+        }
+
+      
 
         public void AddItemIntoBackpack(BackpackItemSO itemSO, int amount)
         {
+            if ( _backpackItemSO == null)
+                _backpackItemSO = new List<BackpackItemData>();
+            
             for (int i = 0; i < _backpackItemSO.Count; i++)
             {
                 if (_backpackItemSO[i].GetBackpackItem().GetDescriptionBaseField().FieldName == itemSO.GetDescriptionBaseField().FieldName)
                 {
                     // Update the item at index i
-                    _backpackItemSO[i].ModifyAmount(amount);// += amount;
+                    _backpackItemSO[i].ModifyAmount(amount); 
                     return;
                 }
             }
@@ -65,7 +105,6 @@ namespace Vanaring
             backpackItemData.SetBackpackItem(itemSO);
             backpackItemData.ModifyAmount(amount);
             _backpackItemSO.Add(backpackItemData);
-            return; 
         }
 
         public void RemoveItemFromBackpack(BackpackItemSO itemSO, int amount)
@@ -76,6 +115,9 @@ namespace Vanaring
                 {
                     // Update the item at index i
                     _backpackItemSO[i].ModifyAmount(-(int) MathF.Abs(amount));// += amount;
+                    if (_backpackItemSO[i].GetItemAmount() <= 0)
+                        _backpackItemSO.RemoveAt(i);
+
                     return;
                 }
             }

@@ -12,13 +12,18 @@ namespace Vanaring
     public class CombatUseableItemSO :  BackpackItemSO 
     {
         [SerializeField]
-        private ItemActionFactorySO _itemActionFactory; 
+        private ItemActionFactorySO _itemActionFactory;
+
+
         public override DescriptionBaseField GetDescriptionBaseField()
         {
             return _itemActionFactory.DescriptionBaseField; 
         }
 
-        
+
+        #region GETTER 
+        public ItemActionFactorySO ItemActionFactory => _itemActionFactory;
+        #endregion
 
 
     }

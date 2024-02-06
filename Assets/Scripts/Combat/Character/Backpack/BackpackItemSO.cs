@@ -9,8 +9,6 @@ namespace Vanaring
 {
     public abstract class BackpackItemSO : ScriptableObject
     {
-        public abstract DescriptionBaseField GetDescriptionBaseField(); 
-
-
+        public abstract DescriptionBaseField GetDescriptionBaseField();
     }
 }
