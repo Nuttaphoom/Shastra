@@ -6,12 +6,12 @@ using System.Xml.Linq;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
+using Vanaring.Assets.Scripts.Utilities.StringConstant;
 
 namespace Vanaring
 {
     public class PartyMemberActionRegister    
     {
-        private const string _spellDatabaseAddress = "SpellDatabaseSOAddress" ; 
 
         private List<SpellActionSO> _registeredSpellActions ;
 
@@ -24,6 +24,11 @@ namespace Vanaring
         /// <param name="uniqueID"></param>
         /// <exception cref="System.Exception"></exception>
         /// <exception cref="NotImplementedException"></exception>
+        
+        public PartyMemberActionRegister()
+        {
+            LoadSpellDatabaseOP(); 
+        }
         public void LoadSpellFromDatabase(List<string> uniqueID)
         {
             if (_registeredSpellActions != null)
@@ -31,14 +36,22 @@ namespace Vanaring
                     "The system should be loaded only 1 time when the save is loaded, and modified the SpellAction thoughtout the lifetime of application, " +
                     "and save the uniqueID when the game is saved");
 
-            LoadSpellDatabaseOP();
-
             _registeredSpellActions = new List<SpellActionSO>() ;
 
             for (int i = 0; i < uniqueID.Count; i++)
             {
                _registeredSpellActions.Add( m_spellDatabase.GetRecord(uniqueID[i]) ) ;
             }
+
+        }
+
+        public void SaveSpellActionData()
+        {
+            //Save the Unique id from all of the SpellActionSO in _registeredSpellActions
+            //Getting Address of the record in database =>
+            //m_spellDatabase.GetRecordKey(_registeredSpellActions[0]);
+
+
 
         }
 
@@ -53,9 +66,11 @@ namespace Vanaring
 
         private void LoadSpellDatabaseOP()
         { 
-            m_spellDatabase = PersistentAddressableResourceLoader.Instance.LoadResourceOperation<SpellDatabaseSO>(_spellDatabaseAddress);
+            m_spellDatabase = PersistentAddressableResourceLoader.Instance.LoadResourceOperation<SpellDatabaseSO>(DatabaseAddressLocator.GetSpellDatabaseAddress);
             
         }
+
+
 
       
         public List<SpellActionSO> GetRegisteredSpell()
