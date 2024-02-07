@@ -47,7 +47,7 @@ namespace Vanaring
             OnPerformAcivity(); 
         }
 
-        //[ContextMenu("Init Runtime")]
+        [ContextMenu("Init Runtime")]
         public void InitLectureRuntime()
         {
             _lectureToStudy = (PersistentSceneLoader.Instance.ExtractSavedData<LectureSO>(PersistentSceneLoader.Instance.GetStackLoadedDataScene().GetSceneID())).GetData();
@@ -71,11 +71,6 @@ namespace Vanaring
             {
                 lectureRuntimes.Add(new LectureSubjectRuntime(_lectureToStudy));
             } 
-
-
-
-         
-
         }
 
         public int CalculateReceivedEXPPoint()
@@ -93,6 +88,15 @@ namespace Vanaring
                     LectureSubjectRuntime.RecievePoint(CalculateReceivedEXPPoint());  
                     LectureSubjectRuntime.CalculateRecievedEventReward();
                 }
+            }
+        }
+
+        [ContextMenu("Print Debug Lecture")]
+        public void PrintDebugLecture()
+        {
+            foreach (LectureSubjectRuntime LectureSubjectRuntime in lectureRuntimes)
+            {
+                LectureSubjectRuntime.PrintDebug();
             }
         }
 
@@ -267,7 +271,10 @@ namespace Vanaring
             return ret ; 
         }
 
-       
+        public void PrintDebug()
+        {
+            Debug.Log(lectureName + ", " + currentPoint + ", " + maxPoint);
+        }
 
         #region Getter
         public string LectureName => lectureName;

@@ -11,7 +11,7 @@ namespace Vanaring
         private List<string> savePath = new List<string>();
 
         [ContextMenu("Save All")]
-        private void SaveAll()
+        public void SaveAll()
         {
             GetFilesPath();
             foreach (string path in savePath)
@@ -23,8 +23,16 @@ namespace Vanaring
             }
         }
 
+        public void Save(string filepath)
+        {
+            var state = LoadFile(filepath);
+
+            CaptureState(state, filepath);
+            SaveFile(state, filepath);
+        }
+
         [ContextMenu("Load All")]
-        private void LoadAll()
+        public void LoadAll()
         {
             GetFilesPath();
             foreach (string path in savePath)
@@ -33,6 +41,13 @@ namespace Vanaring
 
                 RestoreState(state, path);
             }
+        }
+
+        public void Load(string filepath)
+        {
+            var state = LoadFile(filepath);
+
+            RestoreState(state, filepath);
         }
 
         private Dictionary<string, object> LoadFile(string filePath)

@@ -9,7 +9,7 @@ using Vanaring.Assets.Scripts.Utilities.StringConstant;
 namespace Vanaring 
 {
     [Serializable]
-    public struct BackpackItemData
+    public class BackpackItemData
     {
         [SerializeField]
         private BackpackItemSO _backpackItem;
@@ -42,32 +42,33 @@ namespace Vanaring
 
         private InventoryDatabaseSO m_inventoryDatabase;
  
-        public void SaveBackpackItems()
-        {
-            //Save the Unique id from all of the BackpackItemData in _backpackItemSO
-            //Duplicate element is allowed in the local save file 
-            //for emaple, list of uniqueID saved in the local might be 
-            //ITEM_1, ITEM_2, ITEM_1 => this indicates that ITEM_A amount equal to 2 
-            //Getting Address of the record in database =>
-            //m_inventoryDatabase.GetRecordKey(_backpackItemSO[0].GetBackpackItem());
+        //public void SaveBackpackItems()
+        //{
+        //    //Save the Unique id from all of the BackpackItemData in _backpackItemSO
+        //    //Duplicate element is allowed in the local save file 
+        //    //for emaple, list of uniqueID saved in the local might be 
+        //    //ITEM_1, ITEM_2, ITEM_1 => this indicates that ITEM_A amount equal to 2 
+        //    //Getting Address of the record in database =>
+        //    //m_inventoryDatabase.GetRecordKey(_backpackItemSO[0].GetBackpackItem());
 
 
 
-        }
+        //}
 
         public void LoadBackpackItemFromDatabase(List<string> uniqueID)
         {
             LoadItemDatabaseOP();
 
-            if (_backpackItemSO != null)
-                throw new System.Exception("Try to laod spell from data base multiple time.This isn't allowed. " +
-                    "The system should be loaded only 1 time when the save is loaded, and modified the SpellAction thoughtout the lifetime of application, " +
-                    "and save the uniqueID when the game is saved");
+            //if (_backpackItemSO != null)
+            //    throw new System.Exception("Try to laod spell from data base multiple time.This isn't allowed. " +
+            //        "The system should be loaded only 1 time when the save is loaded, and modified the SpellAction thoughtout the lifetime of application, " +
+            //        "and save the uniqueID when the game is saved");
 
-            _backpackItemSO = new List<BackpackItemData>(); 
+            //_backpackItemSO = new List<BackpackItemData>(); 
 
             for (int i = 0; i < uniqueID.Count; i++)
             {
+                
                 AddItemIntoBackpack(m_inventoryDatabase.GetRecord(uniqueID[i]), 1);
             }
 
@@ -97,7 +98,6 @@ namespace Vanaring
                     return;
                 }
             }
-
             BackpackItemData backpackItemData = new BackpackItemData();
             backpackItemData.SetBackpackItem(itemSO);
             backpackItemData.ModifyAmount(amount);
@@ -120,6 +120,36 @@ namespace Vanaring
             }
         }
 
+        #region Save System
+
+        public object CaptureState()
+        {
+            if (m_inventoryDatabase == null)
+            {
+                LoadItemDatabaseOP();
+            }
+
+            List<string> keys = new List<string>();
+            foreach (BackpackItemData backpackItem in _backpackItemSO)
+            {
+                for (int i = 0; i < backpackItem.GetItemAmount(); i++)
+                {
+                    keys.Add(m_inventoryDatabase.GetRecordKey(backpackItem.GetBackpackItem()));
+                }
+            }
+            
+            return keys;
+        }
+
+        public void RestoreState(object state)
+        {
+            List<string> saveData = (List<string>)state;
+
+            LoadBackpackItemFromDatabase(saveData);
+            //_partyDataLocator.RestoreState(saveData.savePartyDataLocator);
+        }
+
+        #endregion
 
     }
 }

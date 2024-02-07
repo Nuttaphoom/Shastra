@@ -10,9 +10,10 @@ using Vanaring.Assets.Scripts.Utilities.StringConstant;
 
 namespace Vanaring
 {
+    [Serializable]
     public class PartyMemberActionRegister    
     {
-
+        [SerializeField]
         private List<SpellActionSO> _registeredSpellActions ;
 
         private SpellDatabaseSO m_spellDatabase ;
@@ -30,12 +31,12 @@ namespace Vanaring
         {
             LoadSpellDatabaseOP();
 
-            if (_registeredSpellActions != null)
-                throw new System.Exception("Try to laod spell from data base multiple time.This isn't allowed. " +
-                    "The system should be loaded only 1 time when the save is loaded, and modified the SpellAction thoughtout the lifetime of application, " +
-                    "and save the uniqueID when the game is saved");
+            //if (_registeredSpellActions != null)
+            //    throw new System.Exception("Try to load spell from data base multiple time.This isn't allowed. " +
+            //        "The system should be loaded only 1 time when the save is loaded, and modified the SpellAction thoughtout the lifetime of application, " +
+            //        "and save the uniqueID when the game is saved");
 
-            _registeredSpellActions = new List<SpellActionSO>() ;
+            //_registeredSpellActions = new List<SpellActionSO>() ;
 
             for (int i = 0; i < uniqueID.Count; i++)
             {
@@ -44,15 +45,17 @@ namespace Vanaring
 
         }
 
-        public void SaveSpellActionData()
-        {
-            //Save the Unique id from all of the SpellActionSO in _registeredSpellActions
-            //Getting Address of the record in database =>
-            //m_spellDatabase.GetRecordKey(_registeredSpellActions[0]);
-
-
-
-        }
+        //public object SaveSpellActionData()
+        //{
+        //    //Save the Unique id from all of the SpellActionSO in _registeredSpellActions
+        //    //Getting Address of the record in database =>
+        //    List<string> keys = new List<string>();
+        //    foreach (SpellActionSO spellSO in _registeredSpellActions)
+        //    {
+        //        keys.Add(m_spellDatabase.GetRecordKey(spellSO));
+        //    }
+        //    return keys;
+        //}
 
         public void UnlockSpellAction(SpellActionSO spellToUnlock)
         {
@@ -69,9 +72,6 @@ namespace Vanaring
             
         }
 
-
-
-      
         public List<SpellActionSO> GetRegisteredSpell()
         {
             if (_registeredSpellActions == null)
@@ -80,6 +80,32 @@ namespace Vanaring
             return _registeredSpellActions ; 
         }
 
-        
+
+        #region Save System
+        public object CaptureState()
+        {
+            if (m_spellDatabase == null)
+            {
+                LoadSpellDatabaseOP();
+            }
+
+            List<string> keys = new List<string>();
+            foreach (SpellActionSO spellSO in _registeredSpellActions)
+            {
+                keys.Add(m_spellDatabase.GetRecordKey(spellSO));
+            }
+
+            return keys;
+        }
+
+        public void RestoreState(object state)
+        {
+            var saveData = (List<string>)state;
+
+            LoadSpellFromDatabase(saveData);
+        }
+
+        #endregion
+
     }
 }

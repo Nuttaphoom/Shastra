@@ -11,7 +11,7 @@ namespace Vanaring
     {
         [SerializeField]
         private CharacterSheetSO _characterSheetSO;
-
+        [SerializeField]
         private PartyMemberActionRegister _memberActionRegister ;
 
         private int _level = 100 ;
@@ -50,7 +50,22 @@ namespace Vanaring
         }
 
       
-        public string GetMemberName() => _characterSheetSO.CharacterName; 
+        public string GetMemberName() => _characterSheetSO.CharacterName;
+
+        #region Save System
+        public object CaptureState()
+        {
+            return _memberActionRegister.CaptureState();
+        }
+
+        public void RestoreState(object state)
+        {
+            var saveData = (List<string>)state;
+
+            _memberActionRegister.RestoreState(saveData);
+        }
+
+        #endregion
 
     }
 }
