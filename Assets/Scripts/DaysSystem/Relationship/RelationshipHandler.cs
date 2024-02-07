@@ -5,12 +5,18 @@ using System.Text;
 using System.Threading.Tasks;
 using Unity.VisualScripting;
 using Vanaring.Assets.Scripts.Utilities.StringConstant;
+using UnityEngine; 
 
 namespace Vanaring 
 {
+    [Serializable]
     public class RelationshipHandler
     {
-        private CharacterSheetDatabaseSO m_characterSheetDatabase;
+
+
+        private CharacterSheetDatabaseSO m_characterSheetDatabase ;
+
+        [SerializeField]
         private List<RuntimeCharacterRelationshipStatus> characterRelationshipStatuses = new List<RuntimeCharacterRelationshipStatus>(); 
         
         public RelationshipHandler()
@@ -22,10 +28,10 @@ namespace Vanaring
         {
             LoadCharacterDatabaseOP();
 
-            if (characterRelationshipStatuses != null)
-                throw new System.Exception("Try to laod spell from data base multiple time.This isn't allowed. " +
-                    "The system should be loaded only 1 time when the save is loaded, and modified the SpellAction thoughtout the lifetime of application, " +
-                    "and save the uniqueID when the game is saved");
+            //if (characterRelationshipStatuses != null)
+            //    throw new System.Exception("Try to laod spell from data base multiple time.This isn't allowed. " +
+            //        "The system should be loaded only 1 time when the save is loaded, and modified the SpellAction thoughtout the lifetime of application, " +
+            //        "and save the uniqueID when the game is saved");
 
             characterRelationshipStatuses = new List<RuntimeCharacterRelationshipStatus>();
 
@@ -44,12 +50,29 @@ namespace Vanaring
 
             m_characterSheetDatabase = PersistentAddressableResourceLoader.Instance.LoadResourceOperation<CharacterSheetDatabaseSO>(DatabaseAddressLocator.GetCharacterSheetDatabaseAddress);
         }
+
+        private void ProgressRelationship(string characterName, int exp = 1)
+        {
+            foreach (var status in characterRelationshipStatuses)
+            {
+                if (!status.IsTheSameCharacter(characterName))
+                {
+                    status.ProgressRelationship(exp);
+                    return;
+                }
+            }
+
+            return; 
+        }
     }
 
+    [Serializable]
     public class RuntimeCharacterRelationshipStatus
     {
+        [SerializeField]
         private RelationshipUEXPSystem _expSystem;
 
+        [SerializeField] 
         private CharacterSheetSO _characterSheetSO;
         public RuntimeCharacterRelationshipStatus(CharacterSheetSO cs)
         {
@@ -57,10 +80,15 @@ namespace Vanaring
 
             _expSystem = new RelationshipUEXPSystem();
 
-            _expSystem.SubOnLevelUp(OnlevelUp);  
+            _expSystem.SubOnLevelUp(OnlevelUp);
 
         }
-        
+        ~RuntimeCharacterRelationshipStatus()
+        {
+            _expSystem.UnSubOnLevelUp(OnlevelUp);
+
+        }
+
         #region GETTER
 
         public int GetCurrentEXP
@@ -77,10 +105,9 @@ namespace Vanaring
         #endregion
 
 
-        ~RuntimeCharacterRelationshipStatus()
+        public bool IsTheSameCharacter(string characterName)
         {
-            _expSystem.UnSubOnLevelUp(OnlevelUp);
-
+            return characterName == _characterSheetSO.CharacterName; 
         }
 
         public void ProgressRelationship(float exp)

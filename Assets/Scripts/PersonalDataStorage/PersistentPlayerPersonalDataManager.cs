@@ -18,6 +18,12 @@ namespace Vanaring
         private PartyMemberDataLocator _partyDataLocator;
 
         [SerializeField]
+        private RelationshipHandler _relationshipHandler;
+
+        /// <summary>
+        /// TODO : Make this class none-serialized
+        /// </summary>
+        [SerializeField]
         private Backpack _backpack;
 
         #region GETTER 
@@ -32,13 +38,18 @@ namespace Vanaring
             }
         }
 
+        public RelationshipHandler RelationshipHandler { get { return _relationshipHandler; } }  
+         
+       
+
         #endregion
 
         private void Awake()
         {
             // TO DO : 
             player_personalityTrait = new PersonalityTrait(player_personalityTraitSO);
-
+            _relationshipHandler = new RelationshipHandler() ;
+            _relationshipHandler.LoadRelationStatusFromDatabase(); 
             //PersistentSaveLoadManager.Instance.Load("PlayerPersonalData");
             //_partyDataLocator.RestoreState(); 
         }
