@@ -14,7 +14,7 @@ namespace Vanaring
     public abstract class BaseDatabaseSO<RecordType> : ScriptableObject where RecordType : ScriptableObject
     {
         [SerializeField]
-        private List<DatabaseKeyPair> _records;
+        protected List<DatabaseKeyPair> _records;
 
         public  void GenerateId()
         {
@@ -77,7 +77,7 @@ namespace Vanaring
         }
 
         [Serializable]
-        private class DatabaseKeyPair
+        protected class DatabaseKeyPair
         {
             [SerializeField]
             private RecordType _recorded ;

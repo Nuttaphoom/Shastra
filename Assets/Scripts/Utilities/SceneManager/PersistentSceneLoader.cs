@@ -52,11 +52,21 @@ namespace Vanaring
         public void LoadLastVisitedLocation()
         {
             LoadLocation<Null>(_last_visisted_location,
-                 null );
+                null); 
+
+            ;
         }
         public LoaderDataUser<T> ExtractLastSavedData<T>()
         {
+            if (_last_visisted_loaderDataUser == null)
+                throw new System.Exception("_last_visisted_loaderDataUser is null"); 
+
             return _last_visisted_loaderDataUser as LoaderDataUser<T>;
+        }
+
+        public bool ContainLastVisitedLocationData()
+        {
+            return _last_visisted_loaderDataUser == null;
         }
         public LoaderDataUser<T> ExtractSavedData<T>(string uniqueID)
         {
@@ -75,7 +85,9 @@ namespace Vanaring
         public void LoadLocation<T>(SceneDataSO sceneSO, T transferedData  )  
         {
             ColorfulLogger.LogWithColor("Load Location", Color.red); 
-            _last_visisted_loaderDataUser =  CreateLoaderDataUser(sceneSO.GetSceneID(),transferedData); 
+
+            if (transferedData != null)            
+                _last_visisted_loaderDataUser =  CreateLoaderDataUser(sceneSO.GetSceneID(),transferedData); 
          
             _last_visisted_location =  (sceneSO); 
 

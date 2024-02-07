@@ -33,7 +33,9 @@ namespace Vanaring
 
         private void Init()
         {
-            LoadLocationMenuCommandData currentLocationSO = PersistentSceneLoader.Instance.ExtractLastSavedData<LoadLocationMenuCommandData>().GetData(); //(loaderDataContainer.UseDataInContainer() as LoaderDataUser<LoadLocationMenuCommandData>).GetData() ; //.action_on_this_location;
+
+             LoadLocationMenuCommandData currentLocationSO = PersistentSceneLoader.Instance.ExtractLastSavedData<LoadLocationMenuCommandData>().GetData(); 
+            //(loaderDataContainer.UseDataInContainer() as LoaderDataUser<LoadLocationMenuCommandData>).GetData() ; //.action_on_this_location;
 
             foreach (var location in PersistentActiveDayDatabase.Instance.GetActiveDayData.GetAvailableLocation()) {
                 if (! location.IsSameLocation(currentLocationSO.LocationName))
