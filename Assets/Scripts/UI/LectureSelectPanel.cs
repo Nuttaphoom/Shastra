@@ -11,9 +11,13 @@ namespace Vanaring
     {
         [SerializeField] private List<Button> lectureButtonList = new List<Button>();
         [SerializeField] private List<TextMeshProUGUI> lectureNameList = new List<TextMeshProUGUI>();
+        [SerializeField] private List<TextMeshProUGUI> lectureDesList = new List<TextMeshProUGUI>();
         [SerializeField] private List<Image> lectureIconList = new List<Image>();
         [SerializeField] private TextMeshProUGUI pageText;
+        [SerializeField] private GameObject nextButton;
+        [SerializeField] private GameObject prevButton;
         private int pageCount = 1;
+        private int maxPage = 1;
         private LectureParticipationActionCommand action;
         private List<LectureParticipationActionCommand.ParticpationLectureData> availableLectures;
         public void InitPanel(List<LectureParticipationActionCommand.ParticpationLectureData> availableLectures, LectureParticipationActionCommand action)
@@ -24,60 +28,75 @@ namespace Vanaring
 
             double count = Math.Ceiling(availableLectures.Count / 3.0f);
             pageText.text = "Page 1/" + count;
-            pageCount = (int)count;
+            maxPage = (int)count;
 
-            foreach (Button button in lectureButtonList)
-            {
-                button.gameObject.SetActive(false);
-                button.onClick.RemoveAllListeners();
-            }
-            Debug.Log(availableLectures.Count);
-            for (int i = 0; i < availableLectures.Count; i++)
-            {
-                int currentIndex = i;
-                lectureButtonList[i].onClick.AddListener(() => action.OnSelectLecture(availableLectures[currentIndex]));
-                lectureButtonList[i].gameObject.SetActive(true);
-                lectureNameList[i].text = availableLectures[i].GetAvailableLecture.GetLectureName;
-            }
-            
+            CalculatePageButton();
+            GenerateLectureButton();
         }
         public void NextPage()
         {
-            pageCount++;
-            foreach (Button button in lectureButtonList)
+            if (pageCount < maxPage)
             {
-                button.gameObject.SetActive(false);
-                button.onClick.RemoveAllListeners();
+                pageCount++;
+                pageText.text = "Page " + pageCount + "/" + maxPage;
+                CalculatePageButton();
             }
-            for (int i = (pageCount * 3) - 3; i < (pageCount * 3); i++)
-            {
-                if(i < availableLectures.Count)
-                {
-                    int currentIndex = i;
-                    lectureButtonList[i].onClick.AddListener(() => action.OnSelectLecture(availableLectures[currentIndex]));
-                    lectureButtonList[i].gameObject.SetActive(true);
-                    lectureNameList[i].text = availableLectures[i].GetAvailableLecture.GetLectureName;
-                }
-            }
+            GenerateLectureButton();
         }
 
         public void PreviousPage()
         {
-            pageCount--;
+            if (pageCount > 1)
+            {
+                pageCount--;
+                pageText.text = "Page " + pageCount + "/" + maxPage;
+                CalculatePageButton();
+            }
+            GenerateLectureButton();
+        }
+
+        private void GenerateLectureButton()
+        {
             foreach (Button button in lectureButtonList)
             {
                 button.gameObject.SetActive(false);
                 button.onClick.RemoveAllListeners();
             }
+            int buttonIndex = 0;
             for (int i = (pageCount * 3) - 3; i < (pageCount * 3); i++)
             {
                 if (i < availableLectures.Count)
                 {
                     int currentIndex = i;
-                    lectureButtonList[i].onClick.AddListener(() => action.OnSelectLecture(availableLectures[currentIndex]));
-                    lectureButtonList[i].gameObject.SetActive(true);
-                    lectureNameList[i].text = availableLectures[i].GetAvailableLecture.GetLectureName;
+                    lectureButtonList[buttonIndex].onClick.AddListener(() => action.OnSelectLecture(availableLectures[currentIndex]));
+                    lectureButtonList[buttonIndex].gameObject.SetActive(true);
+                    lectureNameList[buttonIndex].text = availableLectures[i].GetAvailableLecture.GetLectureName;
+                    lectureDesList[buttonIndex].text = availableLectures[i].GetAvailableLecture.GetLectureDestcription;
+                    lectureIconList[buttonIndex].sprite = availableLectures[i].GetAvailableLecture.GetLectureLogoIcon;
                 }
+                buttonIndex++;
+            }
+        }
+
+        private void CalculatePageButton()
+        {
+            prevButton.SetActive(false);
+            nextButton.SetActive(false);
+            if (pageCount == 1)
+            {
+                prevButton.SetActive(false);
+            }
+            else
+            {
+                prevButton.SetActive(true);
+            }
+            if (pageCount == maxPage)
+            {
+                nextButton.SetActive(false);
+            }
+            else
+            {
+                nextButton.SetActive(true);
             }
         }
     }
