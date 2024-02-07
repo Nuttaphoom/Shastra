@@ -26,14 +26,7 @@ namespace Vanaring
                 if ( record.GetRecorded() as CombatCharacterSheetSO != null)  
                     ret.Add(record.GetRecorded() as CombatCharacterSheetSO);
             }
-            //for (int i = 0; i < ret.Count;  i++)
-            //{
-            //    if (ret[i] == null)
-            //    {
-            //        ret.RemoveAt(i);
-            //        i--; 
-            //    }
-            //}
+       
              
             return ret;
         }
