@@ -37,7 +37,7 @@ namespace Vanaring
                 int currentIndex = i;
                 lectureButtonList[i].onClick.AddListener(() => action.OnSelectLecture(availableLectures[currentIndex]));
                 lectureButtonList[i].gameObject.SetActive(true);
-                lectureNameList[i].text = availableLectures[i].GetAvailableLecture.LectureName;
+                lectureNameList[i].text = availableLectures[i].GetAvailableLecture.GetLectureName;
             }
             
         }
@@ -56,7 +56,7 @@ namespace Vanaring
                     int currentIndex = i;
                     lectureButtonList[i].onClick.AddListener(() => action.OnSelectLecture(availableLectures[currentIndex]));
                     lectureButtonList[i].gameObject.SetActive(true);
-                    lectureNameList[i].text = availableLectures[i].GetAvailableLecture.LectureName;
+                    lectureNameList[i].text = availableLectures[i].GetAvailableLecture.GetLectureName;
                 }
             }
         }
@@ -76,7 +76,7 @@ namespace Vanaring
                     int currentIndex = i;
                     lectureButtonList[i].onClick.AddListener(() => action.OnSelectLecture(availableLectures[currentIndex]));
                     lectureButtonList[i].gameObject.SetActive(true);
-                    lectureNameList[i].text = availableLectures[i].GetAvailableLecture.LectureName;
+                    lectureNameList[i].text = availableLectures[i].GetAvailableLecture.GetLectureName;
                 }
             }
         }

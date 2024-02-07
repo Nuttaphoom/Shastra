@@ -56,7 +56,7 @@ namespace Vanaring
         private float maxEnergyVal = 100;
         private float lightVal = 50;
         private float darkVal = 50;
-        private CharacterSheetSO _characterSheetSO;
+        private CombatCharacterSheetSO _characterSheetSO;
 
         
 
@@ -91,7 +91,7 @@ namespace Vanaring
             _combatEntity.SpellCaster.SubOnModifyEnergy(OnEnergyModified);
             _combatEntity.SubOnHealVisualEvent(OnHPModified);
             characterArrow.SetActive(false);
-            _characterSheetSO = _combatEntity.CharacterSheet;
+            _characterSheetSO = _combatEntity.CombatCharacterSheet;
             characterImg.sprite = _characterSheetSO.GetCharacterIcon;
             isCanTurn = false;
             isSelected = false;

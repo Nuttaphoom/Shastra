@@ -30,7 +30,7 @@ namespace Vanaring
 
         [SerializeField] 
         private List<ParticpationLectureData> _availableLecture;
-
+ 
         public LectureParticipationActionCommand(LectureParticipationActionCommand copied) : base(copied)
         {
             this._availableLecture = copied._availableLecture ; 

@@ -42,8 +42,6 @@ namespace Vanaring
         private PlayableDirector introDirector;
         private PersonalityTrait personalityTrait;
 
-        
-
         public void SetPersonalDataReceive(List<PersonalityRewardData> personalRewardDataList)
         {
             _personalityRewardList = personalRewardDataList;

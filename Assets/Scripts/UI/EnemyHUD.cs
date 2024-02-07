@@ -89,7 +89,7 @@ namespace Vanaring
             }
             //DisplayEnergyBreakSlotOnTarget(RuntimeMangicalEnergy.EnergySide.DarkEnergy, 2);
 
-            enemyName.text = _owner.CharacterSheet.CharacterName.ToString();
+            enemyName.text = _owner.CombatCharacterSheet.CharacterName.ToString();
         }
 
         private void Update()
