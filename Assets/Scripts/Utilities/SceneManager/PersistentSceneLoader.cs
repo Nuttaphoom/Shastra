@@ -100,6 +100,9 @@ namespace Vanaring
             {
                 LoaderDataUser<T> user = new LoaderDataUser<T>(transferedData);
                 
+                if (_userDataScene.ContainsKey(id))
+                    _userDataScene.Remove(id); 
+
                 _userDataScene.Add(id, user);
 
                 return user;

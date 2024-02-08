@@ -9,6 +9,7 @@ using UnityEngine.Events;
 using UnityEngine; 
 namespace Vanaring 
 {
+    [Serializable]
     public abstract class BaseUEXPSystem
     {
         [SerializeField] 

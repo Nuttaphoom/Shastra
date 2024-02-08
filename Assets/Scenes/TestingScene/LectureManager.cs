@@ -39,9 +39,6 @@ namespace Vanaring
 
         private void Awake()
         {
-            if (lectureRuntimes.Count > 0)
-                return;
-
             InitLectureRuntime();
             IncreaseExp(); 
             OnPerformAcivity(); 
@@ -55,10 +52,12 @@ namespace Vanaring
             if (_lectureToStudy == null)
                 throw new Exception("lectureToStudy is null") ;
 
-            if (lectureRuntimes.Count > 0)
-                return;
+
+            if (ContainLectureInLectureRuntime(_lectureToStudy))
+                return; 
 
             bool lectureAdded = false; 
+
             foreach (ProgressData progressData in localSaveProgress)
             {
                 if (progressData.lectureName == _lectureToStudy.GetLectureName)
@@ -73,13 +72,13 @@ namespace Vanaring
             } 
         }
 
-        public int CalculateReceivedEXPPoint()
+        private int CalculateReceivedEXPPoint()
         {
             //Potae add personality trait multiplier here
             return increaseAmount;
         }
 
-        public void IncreaseExp()
+        private void IncreaseExp()
         {
             foreach (LectureSubjectRuntime LectureSubjectRuntime in lectureRuntimes)
             {
@@ -91,14 +90,14 @@ namespace Vanaring
             }
         }
 
-        [ContextMenu("Print Debug Lecture")]
-        public void PrintDebugLecture()
-        {
-            foreach (LectureSubjectRuntime LectureSubjectRuntime in lectureRuntimes)
-            {
-                LectureSubjectRuntime.PrintDebug();
-            }
-        }
+        //[ContextMenu("Print Debug Lecture")]
+        //public void PrintDebugLecture()
+        //{
+        //    foreach (LectureSubjectRuntime LectureSubjectRuntime in lectureRuntimes)
+        //    {
+        //        LectureSubjectRuntime.PrintDebug();
+        //    }
+        //}
 
         #region Save System
         public object CaptureState()
@@ -181,6 +180,17 @@ namespace Vanaring
             }
         }
         #endregion
+
+        private bool ContainLectureInLectureRuntime(LectureSO conernedLecture)
+        {
+            foreach (LectureSubjectRuntime lectureRuntime in lectureRuntimes)
+            {
+                if (lectureRuntime.LectureName == conernedLecture.GetLectureName)
+                    return true;
+            }
+
+            return false;
+        }
     }
 
     public class LectureSubjectRuntime
@@ -224,7 +234,6 @@ namespace Vanaring
         public void RecievePoint(int amount)
         {
             currentPoint += amount;
-            Debug.Log("Current Point : " + currentPoint); 
             if (currentPoint > maxPoint)
                 currentPoint = maxPoint;
 
@@ -235,13 +244,11 @@ namespace Vanaring
         {
             foreach (LectureChechpoint lectureChechpoint in checkpoint)
             {
-                Debug.Log("calcuate reward");
                 if (lectureChechpoint.Received == true)
                     continue;
 
                 if (currentPoint >= lectureChechpoint.RequirePoint)
                 {
-                    Debug.Log("receive reward"); 
                     lectureChechpoint.ReceiveReward();
                 }
             }

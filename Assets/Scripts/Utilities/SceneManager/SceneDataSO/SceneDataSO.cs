@@ -6,10 +6,11 @@ using UnityEngine;
 
 namespace Vanaring
 {
-    [CreateAssetMenu(fileName = "SceneSO", menuName = "ScriptableObject/SceneSO")]
+    [CreateAssetMenu(fileName = "SceneSO", menuName = "ScriptableObject/SceneData/SceneSO")]
 
     public class SceneDataSO  : ScriptableObject
     {
+        
         [SerializeField]
         private GameSceneType _gameSceneType;
 

@@ -2,14 +2,37 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Vanaring.Assets.Scripts.Utilities.StringConstant;
 
 namespace Vanaring
 {
     [Serializable]
     public class PartyMemberDataLocator  
     {
+        private CharacterSheetDatabaseSO m_characterSheetDatabase;
+
+
         [SerializeField] 
         private List<RuntimePartyMemberData> _partyMemberData;
+        public void InitializeRuntimeMemberData()
+        {
+            if (_partyMemberData != null)
+                return;
+
+            LoadCharacterDatabaseOP();
+
+            _partyMemberData = new List<RuntimePartyMemberData>();
+            
+            foreach (var partyMemberData in m_characterSheetDatabase.GetNormalCharacterShhets())
+            {
+                RuntimePartyMemberData runtimePartyMemberData = new RuntimePartyMemberData();
+                runtimePartyMemberData.SetUpRuntimePartyMemberData(partyMemberData);
+                _partyMemberData.Add(runtimePartyMemberData); 
+            }
+
+        }
+
+        #region GETTER
         public RuntimePartyMemberData GetRuntimeData(string memberName)
         {
             foreach (var member in _partyMemberData)
@@ -39,6 +62,8 @@ namespace Vanaring
             }
         }
 
+        #endregion
+
         //public void LoadLocalSaveForCharacters()
         //{
         //    foreach (var member in _partyMemberData)
@@ -49,6 +74,19 @@ namespace Vanaring
         //    List<string> load_spelUniqueKey_of_Asha_here = new List<string>();
         //    //GetRuntimeData("Asha").SetUpRuntimePartyMemberData(load_spelUniqueKey_of_Asha_here);
         //}
+
+
+        /// <summary>
+        /// DO NOT CALL LOADING OPERATION IN CONSTRUCTOR 
+        /// </summary>
+        private void LoadCharacterDatabaseOP()
+        {
+            if (m_characterSheetDatabase != null)
+                return;
+
+            m_characterSheetDatabase = PersistentAddressableResourceLoader.Instance.LoadResourceOperation<CharacterSheetDatabaseSO>(DatabaseAddressLocator.GetCharacterSheetDatabaseAddress);
+        }
+
 
         #region Save System
         public object CaptureState()
@@ -67,6 +105,8 @@ namespace Vanaring
 
         public void RestoreState(object state)
         {
+            InitializeRuntimeMemberData(); 
+             
             Dictionary<string, List<string>> saveData = (Dictionary<string, List<string>>)state;
 
             foreach (KeyValuePair<string, List<string>> data in saveData) // loop through both
