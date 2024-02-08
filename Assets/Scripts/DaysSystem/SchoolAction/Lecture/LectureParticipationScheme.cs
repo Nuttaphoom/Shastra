@@ -15,7 +15,7 @@ using Vanaring;
 
 namespace Vanaring
 {
-    public class LectureManager : MonoBehaviour, ISaveable, ISchoolAction
+    public class LectureParticipationScheme : MonoBehaviour, ISaveable, ISchoolAction
     {
         [SerializeField]
         private LectureRewardDisplayer _rewardDisplayer ; 
@@ -223,7 +223,7 @@ namespace Vanaring
             maxPoint = lectureSO.maxPoint;
             checkpoint = lectureSO.Checkpoint;
         }
-        public LectureSubjectRuntime(LectureSO lectureSO, LectureManager.ProgressData currentProgress)
+        public LectureSubjectRuntime(LectureSO lectureSO, LectureParticipationScheme.ProgressData currentProgress)
         {
             lectureName = lectureSO.GetLectureName;
             currentPoint = currentProgress.progessPoint;

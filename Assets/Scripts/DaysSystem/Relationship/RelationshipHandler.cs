@@ -17,8 +17,7 @@ namespace Vanaring
 
         private CharacterSheetDatabaseSO m_characterSheetDatabase ;
 
-
-        
+        #region Public Methods
         public RelationshipHandler()
         {
 
@@ -35,7 +34,8 @@ namespace Vanaring
 
             characterRelationshipStatuses = new List<RuntimeCharacterRelationshipStatus>();
 
-            foreach ( var characterSheet in m_characterSheetDatabase.GetNormalCharacterShhets()) {
+            foreach (var characterSheet in m_characterSheetDatabase.GetNormalCharacterShhets())
+            {
                 characterRelationshipStatuses.Add(new RuntimeCharacterRelationshipStatus(characterSheet));
             }
         }
@@ -54,6 +54,50 @@ namespace Vanaring
             return;
         }
 
+        public int GetCurrentRelationshipEXP(string characterName)
+        {
+            foreach (var runtimeStatus in characterRelationshipStatuses)
+            {
+                if (runtimeStatus.IsTheSameCharacter(characterName))
+                {
+                    return runtimeStatus.GetCurrentEXP;
+                }
+            }
+
+            throw new Exception("Given character name " + characterName + " couldn't be found in the runtime relationship status");
+        }
+
+        public int GetCurrentBondLevel(string characterName)
+        {
+            foreach (var runtimeStatus in characterRelationshipStatuses)
+            {
+                if (runtimeStatus.IsTheSameCharacter(characterName))
+                {
+                    return runtimeStatus.GetCurrentLevel ;
+                }
+            }
+
+            throw new Exception("Given character name " + characterName + " couldn't be found in the runtime relationship status");
+        }
+
+        public bool IsReadyForHangout(string characterName)
+        {
+            foreach (var runtimeStatus in characterRelationshipStatuses)
+            {
+                if (runtimeStatus.IsTheSameCharacter(characterName))
+                {
+                    return runtimeStatus.GetCurrentEXP == runtimeStatus.GetEXPCap ;
+                }
+            }
+
+            throw new Exception(characterName + " couldn't be found in characterRelationshipStatuses"); 
+        }
+        #endregion
+
+
+
+
+
         /// <summary>
         /// DO NOT CALL LOADING OPERATION IN CONSTRUCTOR 
         /// </summary>
@@ -64,6 +108,8 @@ namespace Vanaring
 
             m_characterSheetDatabase = PersistentAddressableResourceLoader.Instance.LoadResourceOperation<CharacterSheetDatabaseSO>(DatabaseAddressLocator.GetCharacterSheetDatabaseAddress);
         }
+
+       
 
 
     }
@@ -101,6 +147,27 @@ namespace Vanaring
                     throw new Exception("_expSystem is null"); 
 
                 return _expSystem.GetCurrentLevel; 
+            }
+        }
+        public float GetEXPCap
+        {
+            get
+            {
+                if (_expSystem == null)
+                    throw new Exception("_expSystem is null");
+
+                return _expSystem.GetEXPCap();
+            }
+        }
+
+        public int GetCurrentLevel
+        {
+            get
+            {
+                if (_expSystem == null)
+                    throw new Exception("_expSystem is null"); 
+
+                return _expSystem.GetCurrentLevel ;
             }
         }
 

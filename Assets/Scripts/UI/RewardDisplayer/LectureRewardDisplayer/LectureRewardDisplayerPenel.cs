@@ -18,7 +18,7 @@ namespace Vanaring
         [SerializeField]
         private LectureRewardButtonObject rewardButton;
         [SerializeField]
-        private LectureManager lectureMananger;
+        private LectureParticipationScheme lectureMananger;
 
         private List<LectureRewardButtonObject> rewardButtonList = new List<LectureRewardButtonObject>();
         private LectureRewardStruct lectureProgressBarData;
@@ -81,9 +81,7 @@ namespace Vanaring
                 reachScoreIndex++;
             }
             float animationTime = Time.deltaTime * 0.001f;
-            Debug.Log("Gain: " + lectureProgressBarData.gainedEXP + " Cur: " + lectureProgressBarData.currentEXP);
-            Debug.Log((float)(lectureProgressBarData.gainedEXP + lectureProgressBarData.currentEXP));
-            Debug.Log(lectureProgressBarData.maxEXP);
+
             float finalScore = (float)(lectureProgressBarData.gainedEXP + lectureProgressBarData.currentEXP) / lectureProgressBarData.maxEXP;
             if(finalScore > 1.0f)
             {
@@ -109,7 +107,6 @@ namespace Vanaring
                 }
                 yield return new WaitForSeconds(animationTime); 
             }
-            Debug.Log("Fisnish Animate");
         }
 
         private void GetReward()

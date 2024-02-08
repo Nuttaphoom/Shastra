@@ -64,10 +64,17 @@ namespace Vanaring
                     LectureParticipationActionCommand a = (LectureParticipationActionCommand)action;
                     //LectureParticipationActionCommand.ParticpationLectureData s = a.GetAvailableLecture;
                 }
-                if (action is ActivityActionCommand)
+                if (action is ActivityActionCommand  )
                 {
                     actualButton.onClick.AddListener(() => PerformAction(action));
+                } 
+
+                if (action is NPCBondingActionCommand)
+                {
+                    //TODO : Instead of executing command, creating the Relationship detail instead
+                    actualButton.onClick.AddListener(() => action.ExecuteCommand()); 
                 }
+                
                 
                 actualButton.GetComponent<Image>().sprite = action.GetActionIconSprite;  
                 

@@ -20,7 +20,7 @@ namespace Vanaring
 
         public BaseUEXPSystem()
         {
-            _currentLevel = 0;
+            _currentLevel = 1 ;
             _currentEXP = 0;
         }
 

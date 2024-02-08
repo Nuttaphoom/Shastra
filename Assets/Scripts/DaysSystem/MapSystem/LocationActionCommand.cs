@@ -20,6 +20,10 @@ namespace Vanaring
         [SerializeField, AllowNesting, NaughtyAttributes.ShowIf("_commandType", ELoadLocationCommandType.LectureParticipation)]
         private LectureParticipationActionCommand _lectureParticipationActionCommand;
 
+        [SerializeField, AllowNesting, NaughtyAttributes.ShowIf("_commandType", ELoadLocationCommandType.Bonding)]
+        private NPCBondingActionCommand _npcBondingActionCommand ;
+
+
         public BaseLocationActionCommand FactorizeLocationSelectionCommand()
         {
             if (_commandType == ELoadLocationCommandType.Activity)
@@ -29,6 +33,9 @@ namespace Vanaring
             else if (_commandType == ELoadLocationCommandType.LectureParticipation)
             {
                 return new LectureParticipationActionCommand(_lectureParticipationActionCommand);
+            }else if (_commandType == ELoadLocationCommandType.Bonding)
+            {
+                return new NPCBondingActionCommand(_npcBondingActionCommand); 
             }
 
             throw new Exception("_commandType is never set "); 
@@ -40,11 +47,14 @@ namespace Vanaring
         None,
         Activity,
         LectureParticipation,
+        Bonding,
        
     }
 
     public abstract class BaseLocationActionCommand
     {
+        [Header("General Information of Event")]
+
         [SerializeField]
         private string _actionName;
         [SerializeField]
