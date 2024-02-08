@@ -38,20 +38,23 @@ namespace Vanaring
             }
         }
 
-        public RelationshipHandler RelationshipHandler { get { return _relationshipHandler; } }  
-         
-       
-
+        public RelationshipHandler RelationshipHandler { get { return _relationshipHandler; } }
         #endregion
+
 
         private void Awake()
         {
             // TO DO : 
             player_personalityTrait = new PersonalityTrait(player_personalityTraitSO);
             _relationshipHandler = new RelationshipHandler() ;
-            _relationshipHandler.LoadRelationStatusFromDatabase(); 
+            _partyDataLocator = new PartyMemberDataLocator() ;  
+
+            //TODO : Transfer this function into save/load system
+            _relationshipHandler.LoadRelationStatusFromDatabase() ; 
+            _partyDataLocator.InitializeRuntimeMemberData();
+
             //PersistentSaveLoadManager.Instance.Load("PlayerPersonalData");
-            //_partyDataLocator.RestoreState(); 
+
         }
 
         #region Save System

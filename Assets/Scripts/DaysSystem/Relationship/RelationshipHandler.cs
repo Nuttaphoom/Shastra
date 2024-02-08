@@ -12,12 +12,12 @@ namespace Vanaring
     [Serializable]
     public class RelationshipHandler
     {
-
+        [SerializeField]
+        private List<RuntimeCharacterRelationshipStatus> characterRelationshipStatuses = new List<RuntimeCharacterRelationshipStatus>();
 
         private CharacterSheetDatabaseSO m_characterSheetDatabase ;
 
-        [SerializeField]
-        private List<RuntimeCharacterRelationshipStatus> characterRelationshipStatuses = new List<RuntimeCharacterRelationshipStatus>(); 
+
         
         public RelationshipHandler()
         {
@@ -40,6 +40,20 @@ namespace Vanaring
             }
         }
 
+        public void ProgressRelationship(string characterName, int exp = 1)
+        {
+            foreach (var status in characterRelationshipStatuses)
+            {
+                if (!status.IsTheSameCharacter(characterName))
+                {
+                    status.ProgressRelationship(exp);
+                    return;
+                }
+            }
+
+            return;
+        }
+
         /// <summary>
         /// DO NOT CALL LOADING OPERATION IN CONSTRUCTOR 
         /// </summary>
@@ -51,19 +65,7 @@ namespace Vanaring
             m_characterSheetDatabase = PersistentAddressableResourceLoader.Instance.LoadResourceOperation<CharacterSheetDatabaseSO>(DatabaseAddressLocator.GetCharacterSheetDatabaseAddress);
         }
 
-        private void ProgressRelationship(string characterName, int exp = 1)
-        {
-            foreach (var status in characterRelationshipStatuses)
-            {
-                if (!status.IsTheSameCharacter(characterName))
-                {
-                    status.ProgressRelationship(exp);
-                    return;
-                }
-            }
 
-            return; 
-        }
     }
 
     [Serializable]

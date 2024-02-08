@@ -7,6 +7,7 @@ using Unity.VisualScripting;
 
 namespace Vanaring
 {
+    [Serializable]
     public class RelationshipUEXPSystem : BaseUEXPSystem
     {
     

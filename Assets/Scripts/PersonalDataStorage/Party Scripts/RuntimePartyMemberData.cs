@@ -16,12 +16,11 @@ namespace Vanaring
 
         private int _level = 100 ;
 
-        public void SetUpRuntimePartyMemberData(List<string> spellUniqueKeys, int level)
+        public void SetUpRuntimePartyMemberData(CharacterSheetSO sheet)
         {
-            Debug.Log("set up character for member name : " + _characterSheetSO.CharacterName);
+            _characterSheetSO = sheet ; 
             _memberActionRegister = new PartyMemberActionRegister();
-            _memberActionRegister.LoadSpellFromDatabase(spellUniqueKeys);
-            _level = level;
+            //_memberActionRegister.LoadSpellFromDatabase(spellUniqueKeys);
             
         }
 
@@ -51,6 +50,7 @@ namespace Vanaring
 
       
         public string GetMemberName() => _characterSheetSO.CharacterName;
+        
 
         #region Save System
         public object CaptureState()
