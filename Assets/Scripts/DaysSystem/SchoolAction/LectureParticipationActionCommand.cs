@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
+using Vanaring.Assets.Scripts.Utilities.Cutscene_System;
 
 namespace Vanaring
 {
@@ -14,18 +15,18 @@ namespace Vanaring
     public class LectureParticipationActionCommand : BaseLocationActionCommand
     {
         [Serializable]
-        public struct ParticpationLectureData
+        public class ParticpationLectureData
         {
             [SerializeField] 
             private LectureSO _availableLecture ;
 
-            [Header("Scene with lecture inside it")]
-            [SerializeField]
-            private AssetReference _lectureSceenDataSO;
+            [SerializeField] 
+            private CutsceneContainerSO _cutsceneContainerSO ;
+
 
             public LectureSO GetAvailableLecture => _availableLecture ;
 
-            public AssetReference GetSceneDataRef => _lectureSceenDataSO; 
+            public AssetReference GetSceneDataRef => _cutsceneContainerSO.GetCutsceneSceneRef ; 
         }
 
         [SerializeField] 
@@ -52,8 +53,7 @@ namespace Vanaring
 
         public void OnSelectLecture(ParticpationLectureData lecture)
         {
-            Debug.Log("On Selct");
-            SceneDataSO sceneDataSO = PersistentAddressableResourceLoader.Instance.LoadResourceOperation<SceneDataSO>(lecture.GetSceneDataRef);
+            CutsceneSceneDataSO sceneDataSO = PersistentAddressableResourceLoader.Instance.LoadResourceOperation<CutsceneSceneDataSO>(lecture.GetSceneDataRef);
 
             PersistentSceneLoader.Instance.CreateLoaderDataUser<LectureSO>(sceneDataSO.GetSceneID(), lecture.GetAvailableLecture) ;
 

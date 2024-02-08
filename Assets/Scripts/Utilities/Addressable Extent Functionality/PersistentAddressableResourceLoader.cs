@@ -34,7 +34,7 @@ namespace Vanaring
 
             if (opHandler.Status != AsyncOperationStatus.Succeeded)
             {
-                throw new Exception("Resource is NOT successfully loaded");
+                throw new Exception("Resource is NOT successfully loaded with given address " + address) ;
             }
 
             // Return the result
