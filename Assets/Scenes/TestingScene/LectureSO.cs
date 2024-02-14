@@ -22,7 +22,8 @@ namespace Vanaring
 
         public Sprite GetLectureLogoIcon => description.FieldImage;
         public string GetLectureName => description.FieldName;
-        public string GetLectureDestcription => description.FieldDescription; 
+        public string GetLectureDestcription => description.FieldDescription;
+        public List<LectureRequieBoost> GetBooster => lectureRequieBoosts;
     
     }
 
@@ -33,5 +34,9 @@ namespace Vanaring
         private Trait.Trait_Type trait;
         [SerializeField]
         private int requirelevel;
+
+        public Trait.Trait_Type GetTrait => trait;
+        public int RequireLevel => requirelevel;
+    
     }
 }

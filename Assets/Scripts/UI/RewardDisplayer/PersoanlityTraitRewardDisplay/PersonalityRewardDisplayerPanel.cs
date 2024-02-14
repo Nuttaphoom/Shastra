@@ -46,7 +46,7 @@ namespace Vanaring
         public void SetPersonalDataReceive(List<PersonalityRewardData> personalRewardDataList)
         {
             _personalityRewardList = personalRewardDataList;
-            personalityTrait = PersistentPlayerPersonalDataManager.Instance.player_personalityTrait;
+            personalityTrait = PersistentPlayerPersonalDataManager.Instance.GetPersonalityTrait ;
             levelCharmText.text = personalityTrait.GetStat(Trait.Trait_Type.Charm).Getlevel().ToString();
             levelKindText.text = personalityTrait.GetStat(Trait.Trait_Type.Kindness).Getlevel().ToString();
             levelKnowText.text = personalityTrait.GetStat(Trait.Trait_Type.Knowledge).Getlevel().ToString();

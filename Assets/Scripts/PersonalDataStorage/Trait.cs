@@ -17,6 +17,7 @@ namespace Vanaring
         }
 
         // Trait_Data only contain trait data such as level and currentexp
+        [Serializable]
         public class Trait_Data
         {
             private int level;

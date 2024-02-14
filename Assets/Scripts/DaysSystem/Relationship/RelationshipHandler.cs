@@ -44,7 +44,7 @@ namespace Vanaring
         {
             foreach (var status in characterRelationshipStatuses)
             {
-                if (!status.IsTheSameCharacter(characterName))
+                if ( status.IsTheSameCharacter(characterName))
                 {
                     status.ProgressRelationship(exp);
                     return;
@@ -96,8 +96,6 @@ namespace Vanaring
 
 
 
-
-
         /// <summary>
         /// DO NOT CALL LOADING OPERATION IN CONSTRUCTOR 
         /// </summary>
@@ -130,7 +128,8 @@ namespace Vanaring
 
             _expSystem.SubOnLevelUp(OnlevelUp);
 
-        }
+        } 
+        
         ~RuntimeCharacterRelationshipStatus()
         {
             _expSystem.UnSubOnLevelUp(OnlevelUp);
@@ -138,7 +137,6 @@ namespace Vanaring
         }
 
         #region GETTER
-
         public int GetCurrentEXP
         {
             get
@@ -186,7 +184,7 @@ namespace Vanaring
 
         private void OnlevelUp(int curLevel)
         {
-
+            Debug.Log("Level Up to " + curLevel) ; 
         }
         
     }
