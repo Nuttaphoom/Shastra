@@ -10,44 +10,76 @@ namespace Vanaring
     { 
         private List<string> savePath = new List<string>();
 
-        [ContextMenu("Save All")]
-        public void SaveAll()
+        private Dictionary<string, Dictionary<string, object>> temporaryLoader = new Dictionary<string, Dictionary<string, object>>();
+
+        [ContextMenu("Save to Disc")]
+        public void SaveToDisc()
+        {
+            LoadToTemp();
+            foreach (string path in savePath)
+            {
+                //var state = LoadFile(path);
+
+                //CaptureState(state, path);
+                SaveFile(temporaryLoader[path], path);
+            }
+        }
+
+        public void CaptureToTemp()
         {
             GetFilesPath();
             foreach (string path in savePath)
             {
-                var state = LoadFile(path);
-
-                CaptureState(state, path);
-                SaveFile(state, path);
+                CaptureState(path);
             }
         }
 
-        public void Save(string filepath)
-        {
-            var state = LoadFile(filepath);
+        //public void Save(string filepath)
+        //{
+        //    var state = LoadFile(filepath);
 
-            CaptureState(state, filepath);
-            SaveFile(state, filepath);
-        }
+        //    CaptureState(state, filepath);
+        //    SaveFile(state, filepath);
+        //}
 
-        [ContextMenu("Load All")]
-        public void LoadAll()
+        [ContextMenu("Load to Temp")]
+        public void LoadToTemp()
         {
             GetFilesPath();
             foreach (string path in savePath)
             {
-                var state = LoadFile(path);
-
-                RestoreState(state, path);
+                Dictionary<string, object> state = LoadFile(path);
+                AddDataToTemp(path, state);
             }
         }
 
-        public void Load(string filepath)
+        [ContextMenu("Restore From Temp")]
+        public void RestoreFromTemp(float nothing)
         {
-            var state = LoadFile(filepath);
+            GetFilesPath();
+            foreach (string path in savePath)
+            {
+                RestoreState(path);
+            }
+        }
 
-            RestoreState(state, filepath);
+        //public void Load(string filepath)
+        //{
+        //    var state = LoadFile(filepath);
+
+        //    RestoreState(state, filepath);
+        //}
+
+        public void AddDataToTemp(string path, Dictionary<string, object> state)
+        {
+            if (temporaryLoader.ContainsKey(path) == true)
+            {
+                temporaryLoader[path] = state;
+            }
+            else
+            {
+                temporaryLoader.Add(path, state);
+            }
         }
 
         private Dictionary<string, object> LoadFile(string filePath)
@@ -85,25 +117,26 @@ namespace Vanaring
             }
         }
 
-        private void CaptureState(Dictionary<string, object> state, string filepath)
+        private void CaptureState(/*Dictionary<string, object> state,*/ string filepath)
         {
             foreach (var saveable in FindObjectsOfType<SaveableEntity>())
             {
                 if (filepath != FileNameToPath(saveable.fileName))
                     continue;
 
-                state[saveable.Id] = saveable.CaptureState();
+                temporaryLoader[filepath][saveable.Id] = saveable.CaptureState();
+                //state[saveable.Id] = saveable.CaptureState();
             }
         }
 
-        private void RestoreState(Dictionary<string, object> state, string filepath)
+        private void RestoreState(/*Dictionary<string, object> state, */string filepath)
         {
             foreach (var saveable in FindObjectsOfType<SaveableEntity>())
             {
                 if (filepath != FileNameToPath(saveable.fileName))
                     continue;
 
-                if (state.TryGetValue(saveable.Id, out object value))
+                if (temporaryLoader[filepath].TryGetValue(saveable.Id, out object value))
                 {
                     saveable.RestoreState(value);
                 }
