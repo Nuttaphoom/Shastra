@@ -164,7 +164,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -1161,22 +1161,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4620b55a3e1dba14d91f66da9f1438c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lectureButtonList: []
+  lectureButtonList:
+  - {fileID: 8252003239158788333}
+  - {fileID: 42622967046218903}
+  - {fileID: 3483390204771965673}
   lectureNameList:
-  - {fileID: 3315933345429742419}
-  - {fileID: 7863339240324494708}
-  - {fileID: 7277916331817025045}
+  - {fileID: 8133839087301975525}
+  - {fileID: 6785099925801519504}
+  - {fileID: 5213928695855417696}
   lectureDesList:
   - {fileID: 326708840729750669}
   - {fileID: 3124843567424086667}
   - {fileID: 7849156914637871791}
   lectureIconList:
-  - {fileID: 3641269159353903041}
-  - {fileID: 128112677124144592}
-  - {fileID: 7595780348809597329}
+  - {fileID: 6238913376729113468}
+  - {fileID: 6577377143972925850}
+  - {fileID: 5310665958344105337}
   pageText: {fileID: 1946167820513896873}
   nextButton: {fileID: 4822773816656429336}
   prevButton: {fileID: 9094547585179944421}
+  gfx: {fileID: 0}
 --- !u!320 &1235588995418991598
 PlayableDirector:
   m_ObjectHideFlags: 0
@@ -1202,6 +1206,8 @@ PlayableDirector:
     value: {fileID: 2738217259651952775}
   - key: {fileID: -8634183667590540195, guid: 32794f69840b7f7499e1f87c0ee9f036, type: 2}
     value: {fileID: 5840656416331480813}
+  - key: {fileID: 676593049649971865, guid: 32794f69840b7f7499e1f87c0ee9f036, type: 2}
+    value: {fileID: 6725329783537690285}
   m_ExposedReferences:
     m_References: []
 --- !u!1 &1156946078359033337
@@ -2021,7 +2027,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -2107,6 +2113,7 @@ MonoBehaviour:
   confirmButton: {fileID: 2001258867958044868}
   mapButton: {fileID: 5970795539215295104}
   confirmText: {fileID: 830396998659267259}
+  worldSpaceButtonGroup: {fileID: 6725329783537690285}
   _mapSceneToLoad: {fileID: 11400000, guid: c25cba436c3d35446bed298ccf1e1e8f, type: 2}
   _lectureSelectPanel: {fileID: 1047944434829752413}
   tmpLectureButton: {fileID: 8252003239158788333}
@@ -5286,7 +5293,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &6275131184962195091
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6802,7 +6809,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4654190532378455557
 Transform:
   m_ObjectHideFlags: 0
@@ -6810,8 +6817,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6725329783537690285}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -8, y: 0, z: 0}
+  m_LocalRotation: {x: 0.0019084561, y: -0.050854698, z: 0.0002719253, w: 0.99870425}
+  m_LocalPosition: {x: -0.56, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -6820,7 +6827,7 @@ Transform:
   - {fileID: 4480057165088676645}
   m_Father: {fileID: 7936412638909753951}
   m_RootOrder: -1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0.22, y: -5.83, z: 0.02}
 --- !u!95 &5840656416331480813
 Animator:
   serializedVersion: 5
