@@ -194,6 +194,7 @@ namespace Vanaring
 
         public IEnumerator LoadSceneAsync(SceneDataSO sceneToLoad)
         {
+            PersistentSaveLoadManager.Instance.CaptureToTemp();
             AsyncOperation operation = SceneManager.LoadSceneAsync(sceneToLoad.GetSceneName(), LoadSceneMode.Additive);
 
             while (!operation.isDone)
@@ -205,7 +206,8 @@ namespace Vanaring
                 yield return null;
             }
             GetEventBroadcaster().InvokeEvent<Null>(null, "OnSceneLoaderComplete");
-            
+            PersistentSaveLoadManager.Instance.RestoreFromTemp();
+
             PersistentSceneLoader.Instance.OnCompleteLoadedNewLocationScene(operation);
             yield return new WaitForEndOfFrame();
         }

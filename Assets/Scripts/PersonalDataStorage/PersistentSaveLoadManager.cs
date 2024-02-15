@@ -7,7 +7,10 @@ using System.Runtime.Serialization.Formatters.Binary;
 namespace Vanaring
 {
     public class PersistentSaveLoadManager : PersistentInstantiatedObject<PersistentSaveLoadManager>
-    { 
+    {
+        [SerializeField]
+        private List<string> listOfFileName = new List<string>(); // temp assign all save filename in the whole game
+
         private List<string> savePath = new List<string>();
 
         private Dictionary<string, Dictionary<string, object>> temporaryLoader = new Dictionary<string, Dictionary<string, object>>();
@@ -27,11 +30,17 @@ namespace Vanaring
 
         public void CaptureToTemp()
         {
-            GetFilesPath();
+            //GetFilesPath();
             foreach (string path in savePath)
             {
                 CaptureState(path);
             }
+        }
+
+        private void Awake()
+        {
+            GetFilesPath();
+            LoadToTemp();
         }
 
         //public void Save(string filepath)
@@ -45,7 +54,7 @@ namespace Vanaring
         [ContextMenu("Load to Temp")]
         public void LoadToTemp()
         {
-            GetFilesPath();
+            //GetFilesPath();
             foreach (string path in savePath)
             {
                 Dictionary<string, object> state = LoadFile(path);
@@ -54,9 +63,9 @@ namespace Vanaring
         }
 
         [ContextMenu("Restore From Temp")]
-        public void RestoreFromTemp(float nothing)
+        public void RestoreFromTemp()
         {
-            GetFilesPath();
+            //GetFilesPath();
             foreach (string path in savePath)
             {
                 RestoreState(path);
@@ -107,9 +116,9 @@ namespace Vanaring
 
         private void GetFilesPath()
         {
-            foreach (SaveableEntity saveable in FindObjectsOfType<SaveableEntity>())
+            foreach (string fileName in listOfFileName)
             {
-                string path = FileNameToPath(saveable.fileName);
+                string path = FileNameToPath(fileName);
                 if (savePath.Contains(path))
                     continue;
 
