@@ -60,17 +60,14 @@ namespace Vanaring
                 Button actualButton = newActionButton.GetComponentInChildren<Button>(true);
                 if (action is LectureParticipationActionCommand)
                 {
-                    //tmpLectureButton.onClick.AddListener(() => PerformAction(action));
                     actualButton.onClick.AddListener(() => action.ExecuteCommand());
                     LectureParticipationActionCommand a = (LectureParticipationActionCommand)action;
                     worldSpaceButtonGroup.SetActive(false);
-                    //LectureParticipationActionCommand.ParticpationLectureData s = a.GetAvailableLecture;
                 }
                 if (action is ActivityActionCommand  )
                 {
                     actualButton.onClick.AddListener(() => PerformAction(action));
                 } 
-
                 if (action is NPCBondingActionCommand)
                 {
                     //TODO : Instead of executing command, creating the Relationship detail instead
