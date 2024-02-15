@@ -16,6 +16,7 @@ namespace Vanaring
         [SerializeField] private Button confirmButton;
         [SerializeField] private Button mapButton;
         [SerializeField] private TextMeshProUGUI confirmText;
+        [SerializeField] private GameObject worldSpaceButtonGroup;
         [SerializeField]
         private SceneDataSO _mapSceneToLoad;
         [SerializeField]
@@ -62,6 +63,7 @@ namespace Vanaring
                     //tmpLectureButton.onClick.AddListener(() => PerformAction(action));
                     actualButton.onClick.AddListener(() => action.ExecuteCommand());
                     LectureParticipationActionCommand a = (LectureParticipationActionCommand)action;
+                    worldSpaceButtonGroup.SetActive(false);
                     //LectureParticipationActionCommand.ParticpationLectureData s = a.GetAvailableLecture;
                 }
                 if (action is ActivityActionCommand  )
