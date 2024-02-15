@@ -20,6 +20,7 @@ namespace Vanaring
         [SerializeField]
         private float _animationDuration = 3.0f;
         private List<Trait.Trait_Type> traitRewardShowList = new List<Trait.Trait_Type>();
+        private int coroutineRunningCount = 0;
 
         [Header("TraitGauge")]
         [SerializeField] private Image traitGauge1;
@@ -45,7 +46,11 @@ namespace Vanaring
         public void SetPersonalDataReceive(List<PersonalityRewardData> personalRewardDataList)
         {
             _personalityRewardList = personalRewardDataList;
-            personalityTrait = PersistentPlayerPersonalDataManager.Instance.player_personalityTrait;
+            personalityTrait = PersistentPlayerPersonalDataManager.Instance.GetPersonalityTrait ;
+            levelCharmText.text = personalityTrait.GetStat(Trait.Trait_Type.Charm).Getlevel().ToString();
+            levelKindText.text = personalityTrait.GetStat(Trait.Trait_Type.Kindness).Getlevel().ToString();
+            levelKnowText.text = personalityTrait.GetStat(Trait.Trait_Type.Knowledge).Getlevel().ToString();
+            levelProfText.text = personalityTrait.GetStat(Trait.Trait_Type.Proficiency).Getlevel().ToString();
             levelUpPanel.SetActive(false);
         }
 
@@ -94,8 +99,12 @@ namespace Vanaring
                         break;
                 }
                 Debug.Log(traitReward.RewardTraitType + ": " + traitReward.RewardAmount.ToString());
+                coroutineRunningCount++;
             }
-            yield return new WaitForSeconds(_animationDuration);
+            while(coroutineRunningCount > 0)
+            {
+                yield return null;
+            }
             //Snap
             if (traitRewardShowList.Count > 0)
             {
@@ -117,15 +126,20 @@ namespace Vanaring
             while (currentTime < _animationDuration)
             {
                 if (IsSettingUpSucessfully)
-                    break;
+                {
+                    currentTime += 1.0f;
+                }
+                else
+                {
+                    currentTime += Time.deltaTime;
+                }
 
-                currentTime += Time.deltaTime;
+                    //break;
 
                 float previ = i;
                 i = Mathf.Lerp(startValue, endValue, currentTime / _animationDuration);
                 curExpGain += (i - previ);
 
-                //expReqText.text = curExpGain + "/" + personalityTrait.GetCurrentTraitRequireEXP(Trait.Trait_Type.Charm).ToString();
                 gauge.fillAmount = (float)Math.Floor(curExpGain) / personalityTrait.GetCurrentTraitRequireEXP(type);
 
                 if (Math.Floor(curExpGain) >= expReqVal) //level up condition
@@ -135,11 +149,9 @@ namespace Vanaring
                     Debug.Log("Lvl trait " + type.ToString() + " up to: " + (personalityTrait.GetStat(type).Getlevel() + 1).ToString());
 
                     isTraitHasReward = true;
-                    //Image test = Instantiate(stamp, gauge.GetComponentInChildren<HorizontalLayoutGroup>().transform);
                     personalityTrait.SetStat(type, personalityTrait.GetStat(type).Getlevel()+1, curExpGain);   //plus level by 1
                     lvText.text = personalityTrait.GetStat(type).Getlevel().ToString();
                     expReqVal = personalityTrait.GetCurrentTraitRequireEXP(type);   //set to next lvl
-                    //expReqText.text = curExpGain + "/" + expReqVal.ToString();
                     gauge.fillAmount = (float)Math.Floor(curExpGain) / expReqVal;
                 }
                 
@@ -147,9 +159,9 @@ namespace Vanaring
             }
             if (isTraitHasReward)
             {
-                //Debug.Log("has");
                 traitRewardShowList.Add(type);
             }
+            coroutineRunningCount--;
         }
         private IEnumerator DisplayLevelUp(List<Trait.Trait_Type> displayTraitRewardList)
         {
@@ -163,8 +175,6 @@ namespace Vanaring
                 {
                     yield return new WaitForEndOfFrame();
                 }
-                //yield return new WaitForSeconds(3.5f);
-                //levelUpPanel.SetActive(false);
             }
             traitRewardShowList.Clear();
             yield return null;

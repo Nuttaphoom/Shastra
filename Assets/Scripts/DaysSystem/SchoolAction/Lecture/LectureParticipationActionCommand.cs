@@ -31,7 +31,9 @@ namespace Vanaring
 
         [SerializeField] 
         private List<ParticpationLectureData> _availableLecture;
- 
+        private GameObject popUpPanel;
+
+
         public LectureParticipationActionCommand(LectureParticipationActionCommand copied) : base(copied)
         {
             this._availableLecture = copied._availableLecture ; 
@@ -42,8 +44,12 @@ namespace Vanaring
         }
         public override void ExecuteCommand()
         {
-            GameObject panel = MonoBehaviour.Instantiate(PersistentAddressableResourceLoader.Instance.LoadResourceOperation<GameObject>("LectureSelectPanel"));
-            panel.GetComponent<LectureSelectPanel>().InitPanel(_availableLecture, this);
+            if(popUpPanel != null){
+                popUpPanel.GetComponent<LectureSelectPanel>().OpenPanel();
+                return;
+            }
+            popUpPanel = MonoBehaviour.Instantiate(PersistentAddressableResourceLoader.Instance.LoadResourceOperation<GameObject>("LectureSelectPanel"));
+            popUpPanel.GetComponent<LectureSelectPanel>().InitPanel(_availableLecture, this);
         }
 
         /// <summary>

@@ -16,6 +16,7 @@ namespace Vanaring
         [SerializeField] private TextMeshProUGUI pageText;
         [SerializeField] private GameObject nextButton;
         [SerializeField] private GameObject prevButton;
+        [SerializeField] private GameObject gfx;
         private int pageCount = 1;
         private int maxPage = 1;
         private LectureParticipationActionCommand action;
@@ -98,6 +99,11 @@ namespace Vanaring
             {
                 nextButton.SetActive(true);
             }
+        }
+
+        public void OpenPanel()
+        {
+            gfx.SetActive(true);
         }
     }
 }

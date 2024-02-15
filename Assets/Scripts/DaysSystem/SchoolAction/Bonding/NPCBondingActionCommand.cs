@@ -24,7 +24,6 @@ namespace Vanaring
         {
             _characterRelationshipDataSO = copied._characterRelationshipDataSO;
             _npcBondingScheme = new NPCBondingScheme(); 
- 
         }
 
         public override void ExecuteCommand()

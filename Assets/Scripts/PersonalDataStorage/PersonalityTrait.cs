@@ -2,12 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using Unity.VisualScripting;
 
 namespace Vanaring
 {
+    [Serializable]
     public class PersonalityTrait
     {
+        [SerializeField]
         private Dictionary<Trait.Trait_Type, Trait.Trait_Data> traits = new Dictionary<Trait.Trait_Type, Trait.Trait_Data>();
+
+        [SerializeField] 
         private List<int> trait_require_exp = new List<int>();
         public PersonalityTrait(PersonalityTraitSO personalityTraitSO)
         {
@@ -28,6 +33,7 @@ namespace Vanaring
                 trait_require_exp.Add(personalityTraitSO.GetTraitRequireExp(i));
             }
         }
+
 
         public void SetStat(Trait.Trait_Type type, int level, float exp)
         {

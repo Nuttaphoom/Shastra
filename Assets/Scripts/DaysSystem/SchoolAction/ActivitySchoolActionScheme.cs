@@ -49,5 +49,10 @@ namespace Vanaring
             StartCoroutine(_rewardDisplayer.DisplayRewardUICoroutine(_personalityRewards) ) ; 
             //finish display(done)(close window) -> (update backend/load new scene)(Potae) -> Persistent
         }
+
+        public void SubmitActionReward()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
