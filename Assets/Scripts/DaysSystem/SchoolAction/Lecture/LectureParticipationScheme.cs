@@ -21,6 +21,7 @@ namespace Vanaring
         private LectureRewardDisplayer _rewardDisplayer ; 
         //the default increased amount 
         private const int increaseAmount = 150 ;
+        private const int statsBootsModifer = 2; 
 
         [SerializeField]
         private CutsceneDirector _director;
@@ -40,7 +41,6 @@ namespace Vanaring
         private void Awake()
         {
             InitLectureRuntime();
-            IncreaseExp(); 
             OnPerformAcivity(); 
         }
 
@@ -72,10 +72,19 @@ namespace Vanaring
             } 
         }
 
-        private int CalculateReceivedEXPPoint()
+        private int CalculateReceivedEXPPoint(LectureSO calculatedBootsLecture)
         {
             //Potae add personality trait multiplier here
-            return increaseAmount;
+
+            foreach (LectureRequieBoost booster in calculatedBootsLecture.GetBooster) {
+
+                //If booster condition doesn't match 
+                if (PersistentPlayerPersonalDataManager.Instance.GetPersonalityTrait.GetStat(booster.GetTrait).GetCurrentexp() < (float)booster.RequireLevel)
+                    return increaseAmount; 
+
+            }
+            
+            return increaseAmount * statsBootsModifer ;
         }
 
         private void IncreaseExp()
@@ -84,7 +93,7 @@ namespace Vanaring
             {
                 if (LectureSubjectRuntime.LectureName == _lectureToStudy.GetLectureName)
                 {
-                    LectureSubjectRuntime.RecievePoint(CalculateReceivedEXPPoint());  
+                    LectureSubjectRuntime.RecievePoint(CalculateReceivedEXPPoint(_lectureToStudy));  
                     LectureSubjectRuntime.CalculateRecievedEventReward();
                 }
             }
@@ -156,6 +165,7 @@ namespace Vanaring
 
         public void PostPerformActivity()
         {
+            SubmitActionReward(); 
 
             foreach (LectureSubjectRuntime lectureRuntime in lectureRuntimes)
             {
@@ -167,7 +177,7 @@ namespace Vanaring
                 {
                     maxEXP = lectureRuntime.MaxPoint,
                     currentEXP = lectureRuntime.CurrentPoint,
-                    gainedEXP = CalculateReceivedEXPPoint(),
+                    gainedEXP = CalculateReceivedEXPPoint(_lectureToStudy),
                     allRewardData = lectureRuntime.GetEventReward(),
                     alreadyReceivedRewardData = lectureRuntime.GetAlreadyRecievedReward(), 
                     checkpoints = lectureRuntime.GetCheckPoints , 
@@ -190,6 +200,11 @@ namespace Vanaring
             }
 
             return false;
+        }
+
+        public void SubmitActionReward()
+        {
+            IncreaseExp();
         }
     }
 

@@ -173,6 +173,8 @@ MonoBehaviour:
     - _characterSheetSO: {fileID: 11400000, guid: bdf69885820d48e4f86ed5e1990ada08, type: 2}
       _memberActionRegister:
         _registeredSpellActions: []
+  _relationshipHandler:
+    characterRelationshipStatuses: []
   _backpack:
     _backpackItemSO: []
 --- !u!4 &62941623
@@ -188,7 +190,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &568739102
 GameObject:
@@ -283,7 +285,7 @@ Transform:
   - {fileID: 1911934440}
   - {fileID: 568739103}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &947123847
 MonoBehaviour:
@@ -297,76 +299,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea2e18bd231538f47a6abb6abd743f37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &1301047454
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1301047455}
-  - component: {fileID: 1301047456}
-  - component: {fileID: 1301047457}
-  m_Layer: 0
-  m_Name: LectureManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!4 &1301047455
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1301047454}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1301047456
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1301047454}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8b91dc345fef5b74ab52b95021d5269d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _rewardDisplayer:
-    _rewardDisplayGOTemplate: {fileID: 0}
-    _rewardType:
-      maxEXP: 0
-      currentEXP: 0
-      gainedEXP: 0
-      checkpoints: []
-      allRewardData: []
-      alreadyReceivedRewardData: []
-  _director: {fileID: 0}
-  _lectureToStudy: {fileID: 11400000, guid: 6f1290713704a9b42aaae006a366b378, type: 2}
---- !u!114 &1301047457
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1301047454}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 751d8fe0d7d7a2c4f93fccb76f7f4fe1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  id: c40396ac-92a4-4204-9a23-e98154ceb1a8
-  fileName: Lecture.txt
 --- !u!1 &1576246786
 GameObject:
   m_ObjectHideFlags: 0
@@ -546,7 +478,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1614000549
 GameObject:

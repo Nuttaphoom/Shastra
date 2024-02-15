@@ -11,8 +11,8 @@ namespace Vanaring
         [SerializeField]
         private PersonalityTraitSO player_personalityTraitSO;
 
-        [HideInInspector]
-        public PersonalityTrait player_personalityTrait;
+        [SerializeField]
+        private PersonalityTrait player_personalityTrait;
 
         [SerializeField]
         private PartyMemberDataLocator _partyDataLocator;
@@ -37,6 +37,11 @@ namespace Vanaring
                 return _partyDataLocator;
             }
         }
+
+        public PersonalityTrait GetPersonalityTrait {  get
+            {
+                return player_personalityTrait; 
+            } }
 
         public RelationshipHandler RelationshipHandler { get { return _relationshipHandler; } }
         #endregion

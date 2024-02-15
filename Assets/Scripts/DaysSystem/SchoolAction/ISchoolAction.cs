@@ -10,6 +10,11 @@ namespace Vanaring.Assets.Scripts.DaysSystem.SchoolAction
     public interface ISchoolAction 
     {
         public void OnPerformAcivity(); 
-        public void PostPerformActivity(); 
+        
+        //Submit reward and than display the reward
+        public void PostPerformActivity();
+
+        //Called in the PostPerformActivity 
+        public void SubmitActionReward(); 
     }
 }
