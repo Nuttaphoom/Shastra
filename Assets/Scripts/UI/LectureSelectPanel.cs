@@ -103,7 +103,7 @@ namespace Vanaring
 
         public void OpenPanel()
         {
-            gfx.SetActive(true);
+            gameObject.SetActive(true);
         }
     }
 }
