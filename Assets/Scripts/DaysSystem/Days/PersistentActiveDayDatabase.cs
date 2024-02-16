@@ -15,14 +15,15 @@ namespace Vanaring
 
         private void Awake()
         {
-            ProgressDayCoroutine() ; 
+            _dayProgressionHandler.ProgressToNextDay()  ; 
         } 
 
-        public IEnumerator ProgressDayCoroutine()
-        {
-            _runtimeDayData = GetDayProgressionHandler.NewDayBegin(); 
+  
 
-            yield return null; 
+        public void SetUpNextDay(RuntimeDayData data)
+        {
+            _runtimeDayData = data; 
+
         }
 
         #region Getter 

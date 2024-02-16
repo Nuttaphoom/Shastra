@@ -37,7 +37,7 @@ namespace Vanaring
 
             // Display Normal Character Sheets
             GUILayout.Label("Normal Character Sheets:");
-            foreach (var characterSheet in databaseSO.GetNormalCharacterShhets())
+            foreach (var characterSheet in databaseSO.GetNormalCharacterSheets())
             {
                 EditorGUILayout.ObjectField(characterSheet, typeof(CharacterSheetSO), false);
             }

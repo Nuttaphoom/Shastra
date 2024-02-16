@@ -15,6 +15,8 @@ namespace Vanaring
         public List<LectureChechpoint> checkpoints ; 
         public List<EventReward> allRewardData;
         public List<EventReward> alreadyReceivedRewardData;
+        public List<LectureRequieBoost> boostLecture;
+        
     }
 
     [Serializable]

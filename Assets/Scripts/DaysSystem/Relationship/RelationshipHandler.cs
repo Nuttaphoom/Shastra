@@ -34,7 +34,7 @@ namespace Vanaring
 
             characterRelationshipStatuses = new List<RuntimeCharacterRelationshipStatus>();
 
-            foreach (var characterSheet in m_characterSheetDatabase.GetNormalCharacterShhets())
+            foreach (var characterSheet in m_characterSheetDatabase.GetNormalCharacterSheets())
             {
                 characterRelationshipStatuses.Add(new RuntimeCharacterRelationshipStatus(characterSheet));
             }
@@ -91,6 +91,19 @@ namespace Vanaring
             }
 
             throw new Exception(characterName + " couldn't be found in characterRelationshipStatuses"); 
+        }
+        
+        public int GetRelationshipCapEXP(String characterName)
+        {
+            foreach (var runtimeStatus in characterRelationshipStatuses)
+            {
+                if (runtimeStatus.IsTheSameCharacter(characterName))
+                {
+                    return (int) runtimeStatus.GetEXPCap ;
+                }
+            }
+
+            throw new Exception(characterName + " couldn't be found in characterRelationshipStatuses");
         }
         #endregion
 

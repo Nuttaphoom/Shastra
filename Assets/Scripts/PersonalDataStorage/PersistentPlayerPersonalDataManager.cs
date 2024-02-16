@@ -13,7 +13,7 @@ namespace Vanaring
 
         [SerializeField]
         private PersonalityTrait player_personalityTrait;
-
+        
         [SerializeField]
         private PartyMemberDataLocator _partyDataLocator;
 

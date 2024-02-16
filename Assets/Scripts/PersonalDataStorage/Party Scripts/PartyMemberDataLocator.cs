@@ -23,7 +23,7 @@ namespace Vanaring
 
             _partyMemberData = new List<RuntimePartyMemberData>();
             
-            foreach (var partyMemberData in m_characterSheetDatabase.GetNormalCharacterShhets())
+            foreach (var partyMemberData in m_characterSheetDatabase.GetNormalCharacterSheets())
             {
                 RuntimePartyMemberData runtimePartyMemberData = new RuntimePartyMemberData();
                 runtimePartyMemberData.SetUpRuntimePartyMemberData(partyMemberData);
@@ -96,6 +96,9 @@ namespace Vanaring
             {
                 string characterName = member.GetMemberName();
                 List<string> captureState = (List<string>)member.CaptureState();
+
+                if (!saveData.ContainsKey(characterName)) // temp skip for duplicate Asha?????
+                    continue;
 
                 saveData.Add(characterName, captureState);
             }
