@@ -51,6 +51,11 @@ namespace Vanaring
             transform.transform.localScale = new Vector3(1.2f, 1.2f, 1.2f);
         }
 
+        public void ShrinkButton(RectTransform transform)
+        {
+            transform.transform.localScale = Vector3.one;
+        }
+
         public void OnPointerEnter(PointerEventData eventData)
         {
             //ExpandUp();
