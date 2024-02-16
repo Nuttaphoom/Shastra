@@ -92,6 +92,19 @@ namespace Vanaring
 
             throw new Exception(characterName + " couldn't be found in characterRelationshipStatuses"); 
         }
+        
+        public int GetRelationshipCapEXP(String characterName)
+        {
+            foreach (var runtimeStatus in characterRelationshipStatuses)
+            {
+                if (runtimeStatus.IsTheSameCharacter(characterName))
+                {
+                    return (int) runtimeStatus.GetEXPCap ;
+                }
+            }
+
+            throw new Exception(characterName + " couldn't be found in characterRelationshipStatuses");
+        }
         #endregion
 
 

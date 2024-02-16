@@ -13,6 +13,7 @@ namespace Vanaring
         {
             public Trait.Trait_Type type;
             public int value;
+            public Sprite personalityTraitSprite;
         }
         [SerializeField]
         private TraitIndex[] personalityTraitStat;
@@ -45,6 +46,31 @@ namespace Vanaring
 
             return value;
 
+        }
+
+        public Sprite GetTraitImage(Trait.Trait_Type type)
+        {
+            Sprite value = null ;
+            foreach (TraitIndex data in personalityTraitStat)
+            {
+                if (data.type != type)
+                {
+                    continue;
+                }
+                // check in case of duplicate type in array
+                if (value != null)
+                {
+                    throw new Exception("Multiple Trait.Trait_Type: " + type + " in Array");
+                }
+                value = data.personalityTraitSprite ;
+            }
+            // check in case of Cant find the type in array
+            if (value == null)
+            {
+                throw new Exception("Trait.Trait_Type: " + type + " not valid");
+            }
+
+            return value;
         }
 
         public int GetTraitRequireExpSize()

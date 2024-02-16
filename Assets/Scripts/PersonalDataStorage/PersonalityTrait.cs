@@ -19,7 +19,7 @@ namespace Vanaring
             foreach (Trait.Trait_Type type in Enum.GetValues(typeof(Trait.Trait_Type)))
             {
                 // TEMP : Setting start exp with 0
-                traits[type] = new Trait.Trait_Data(personalityTraitSO.GetStat(type), 0);
+                traits[type] = new Trait.Trait_Data(personalityTraitSO.GetStat(type), 0, personalityTraitSO.GetTraitImage(type));
             }
 
             if (trait_require_exp.Count > 0)
