@@ -28,9 +28,11 @@ namespace Vanaring
             }
         }
 
+        [ContextMenu("Capture To Temp")]
         public void CaptureToTemp()
         {
-            //GetFilesPath();
+            Debug.Log("CaptureToTemp");
+
             foreach (string path in savePath)
             {
                 CaptureState(path);
@@ -42,14 +44,6 @@ namespace Vanaring
             GetFilesPath();
             LoadToTemp();
         }
-
-        //public void Save(string filepath)
-        //{
-        //    var state = LoadFile(filepath);
-
-        //    CaptureState(state, filepath);
-        //    SaveFile(state, filepath);
-        //}
 
         [ContextMenu("Load to Temp")]
         public void LoadToTemp()
@@ -65,25 +59,22 @@ namespace Vanaring
         [ContextMenu("Restore From Temp")]
         public void RestoreFromTemp()
         {
-            //GetFilesPath();
+            Debug.Log("RestoreFromTemp");
+
             foreach (string path in savePath)
             {
                 RestoreState(path);
             }
         }
 
-        //public void Load(string filepath)
-        //{
-        //    var state = LoadFile(filepath);
-
-        //    RestoreState(state, filepath);
-        //}
-
         public void AddDataToTemp(string path, Dictionary<string, object> state)
         {
             if (temporaryLoader.ContainsKey(path) == true)
             {
-                temporaryLoader[path] = state;
+                foreach (var data in state)
+                {
+                    temporaryLoader[path][data.Key] = data.Value;
+                }
             }
             else
             {
@@ -140,14 +131,18 @@ namespace Vanaring
 
         private void RestoreState(/*Dictionary<string, object> state, */string filepath)
         {
+            
             foreach (var saveable in FindObjectsOfType<SaveableEntity>())
             {
                 if (filepath != FileNameToPath(saveable.fileName))
                     continue;
 
-                if (temporaryLoader[filepath].TryGetValue(saveable.Id, out object value))
+                if (temporaryLoader.TryGetValue(filepath, out Dictionary<string, object> data))
                 {
-                    saveable.RestoreState(value);
+                    if (data.TryGetValue(saveable.Id, out object value))
+                    {
+                        saveable.RestoreState(value);
+                    }
                 }
             }
         }

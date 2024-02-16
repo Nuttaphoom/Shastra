@@ -36,12 +36,12 @@ namespace Vanaring
 
         private List<ProgressData> localSaveProgress = new List<ProgressData>();
 
-        static private List<LectureSubjectRuntime> lectureRuntimes = new List<LectureSubjectRuntime>();
+        private List<LectureSubjectRuntime> lectureRuntimes = new List<LectureSubjectRuntime>();
 
-        private void Awake()
+        private void Start()
         {
             InitLectureRuntime();
-            OnPerformAcivity(); 
+            OnPerformAcivity();
         }
 
         [ContextMenu("Init Runtime")]

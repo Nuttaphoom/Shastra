@@ -168,6 +168,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player_personalityTraitSO: {fileID: 11400000, guid: 08ca07f11f7dcef4a92b3cd1796e326f, type: 2}
+  player_personalityTrait:
+    trait_require_exp: 
   _partyDataLocator:
     _partyMemberData:
     - _characterSheetSO: {fileID: 11400000, guid: bdf69885820d48e4f86ed5e1990ada08, type: 2}
@@ -465,7 +467,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b60e4d40ee2e0c4aa586e6fad911753, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  listOfFileName: []
+  listOfFileName:
+  - Lecture
+  - level
+  - PlayerPersonalData
 --- !u!4 &1599007388
 Transform:
   m_ObjectHideFlags: 0

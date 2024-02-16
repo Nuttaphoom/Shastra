@@ -164,6 +164,7 @@ namespace Vanaring
             if (_sceneToLoad == null)
                 throw new System.Exception("_sceneToLoad is null");
 
+            PersistentSaveLoadManager.Instance.CaptureToTemp();
             CreateTransitionScene();
             transitionManager.TransitionObj.SubOnSceneLoaderBegin(LoadNewScene);
             StartCoroutine(LoadDelayTimer());
@@ -194,7 +195,6 @@ namespace Vanaring
 
         public IEnumerator LoadSceneAsync(SceneDataSO sceneToLoad)
         {
-            PersistentSaveLoadManager.Instance.CaptureToTemp();
             AsyncOperation operation = SceneManager.LoadSceneAsync(sceneToLoad.GetSceneName(), LoadSceneMode.Additive);
 
             while (!operation.isDone)
