@@ -33,7 +33,7 @@ namespace Vanaring
             _dailyActionParticipationHandler.ResetDayAction();
 
             DayDataSO dayDataSO = PersistentAddressableResourceLoader.Instance.LoadResourceOperation<SemesterDataSO>(_activeSemester).GetDayData(_currentDate) ;
-            RuntimeDayData newDayData = new RuntimeDayData(dayDataSO);
+            RuntimeDayData newDayData = new RuntimeDayData(dayDataSO) ;
 
             _currentDate++;
 

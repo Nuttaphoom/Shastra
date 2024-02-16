@@ -28,11 +28,17 @@ namespace Vanaring
 
         public override void ExecuteCommand()
         {
-            if (PersistentPlayerPersonalDataManager.Instance.RelationshipHandler.IsReadyForHangout(_characterRelationshipDataSO.GetCharacterName)  ) {
-                PlayHangoutScheme();         
-            }else {
-                PlayBondingScheme(); 
-            }
+            PersistentPlayerPersonalDataManager.Instance.RelationshipHandler.GetCurrentBondLevel(_characterRelationshipDataSO.GetCharacterName) ;
+
+            PersistentPlayerPersonalDataManager.Instance.RelationshipHandler.GetRelationshipCapEXP(_characterRelationshipDataSO.GetCharacterName);
+            
+            //TODO : Aome need to display relatioship ui here 
+
+            //if (PersistentPlayerPersonalDataManager.Instance.RelationshipHandler.IsReadyForHangout(_characterRelationshipDataSO.GetCharacterName)  ) {
+            //    PlayHangoutScheme();         
+            //}else {
+            //    PlayBondingScheme(); 
+            //}
 
             return; 
         }
@@ -47,7 +53,7 @@ namespace Vanaring
             Debug.Log("Bonding Scheme"); 
    
 
-            _npcBondingScheme.PlayingBondingScheme(_characterRelationshipDataSO); 
+           _npcBondingScheme.PlayingBondingScheme(_characterRelationshipDataSO); 
         }
     }
 }

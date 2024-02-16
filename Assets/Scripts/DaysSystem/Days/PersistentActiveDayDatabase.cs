@@ -15,7 +15,7 @@ namespace Vanaring
 
         private void Awake()
         {
-            ProgressDayCoroutine() ; 
+            StartCoroutine(ProgressDayCoroutine()) ; 
         } 
 
         public IEnumerator ProgressDayCoroutine()

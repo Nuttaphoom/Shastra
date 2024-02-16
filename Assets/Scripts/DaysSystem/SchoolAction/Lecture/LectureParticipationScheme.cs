@@ -181,6 +181,7 @@ namespace Vanaring
                     allRewardData = lectureRuntime.GetEventReward(),
                     alreadyReceivedRewardData = lectureRuntime.GetAlreadyRecievedReward(), 
                     checkpoints = lectureRuntime.GetCheckPoints , 
+                    boostLecture = _lectureToStudy.GetBooster 
                 }; 
 
              
