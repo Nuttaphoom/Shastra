@@ -34,7 +34,7 @@ namespace Vanaring
 
             characterRelationshipStatuses = new List<RuntimeCharacterRelationshipStatus>();
 
-            foreach (var characterSheet in m_characterSheetDatabase.GetNormalCharacterShhets())
+            foreach (var characterSheet in m_characterSheetDatabase.GetNormalCharacterSheets())
             {
                 characterRelationshipStatuses.Add(new RuntimeCharacterRelationshipStatus(characterSheet));
             }

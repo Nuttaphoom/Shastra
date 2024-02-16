@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.NetworkInformation;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,18 +24,36 @@ namespace Vanaring
 
         private DailyActionParticipationHandler _dailyActionParticipationHandler;
 
-        public AssetReferenceT<SceneDataSO> DayProgressionScene ;
+        public AssetReferenceT<EssentialSceneDataSO> DayProgressionSceneAddress ;
+        public AssetReferenceT<SceneDataSO> DormSceneAddress ;
 
         private void LoadDayProgressionScene()
         {
             //Load to map instead forn now
             //TODO : Load the day progression scene displaying what is previous day and what's next day, and than load the dorm scene
+
+            //Right now just load the correspond scene 
+            LoadCorrespondScene();
+
         }
 
-        public RuntimeDayData NewDayBegin()
-        {
-            PersistentSceneLoader.Instance.LoadLastVisitedLocation();
 
+        /// <summary>
+        /// This is either Dorm scene or special cutscene before starting the scene 
+        /// </summary>
+        private void LoadCorrespondScene()
+        {
+            SceneDataSO dayDataSO = PersistentAddressableResourceLoader.Instance.LoadResourceOperation<SceneDataSO>(DormSceneAddress);
+
+            PersistentSceneLoader.Instance.LoadGeneralScene(dayDataSO);
+        }
+
+        private void ClearDayData()
+        {
+            PersistentSceneLoader.Instance.ClearUserDataOfTempVisitedLocationData();
+        } 
+        public void ProgressToNextDay()
+        {
             if (_dailyActionParticipationHandler == null)
                 _dailyActionParticipationHandler = new DailyActionParticipationHandler(); 
 
@@ -44,7 +64,7 @@ namespace Vanaring
 
             _currentDate++;
 
-            return newDayData; 
+            PersistentActiveDayDatabase.Instance.SetUpNextDay(newDayData);
         }
 
         public void OnPostPerformSchoolAction()
@@ -53,12 +73,19 @@ namespace Vanaring
 
             ///No remaining action point => start new day 
             if (_dailyActionParticipationHandler.IsOutOfActionPoint())
-                throw new NotImplementedException( "new day begin function won't work yet" ) ;
+            {
+                ClearDayData();
+                ProgressToNextDay();
+                LoadDayProgressionScene();
+                
+
+            }
+
 
             //Action remains
-            else 
+            else
             {
-                PersistentSceneLoader.Instance.LoadLastVisitedLocation(); 
+                PersistentSceneLoader.Instance.LoadLastVisitedLocation();
             }
 
         }

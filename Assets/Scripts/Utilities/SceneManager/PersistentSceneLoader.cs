@@ -218,10 +218,12 @@ namespace Vanaring
 
                 yield return null;
             }
-            GetEventBroadcaster().InvokeEvent<Null>(null, "OnSceneLoaderComplete");
             PersistentSaveLoadManager.Instance.RestoreFromTemp();
 
             PersistentSceneLoader.Instance.OnCompleteLoadedNewLocationScene(operation);
+
+            GetEventBroadcaster().InvokeEvent<Null>(null, "OnSceneLoaderComplete");
+           
             yield return new WaitForEndOfFrame();
         }
 

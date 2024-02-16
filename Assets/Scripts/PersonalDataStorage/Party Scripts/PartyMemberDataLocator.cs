@@ -23,7 +23,7 @@ namespace Vanaring
 
             _partyMemberData = new List<RuntimePartyMemberData>();
             
-            foreach (var partyMemberData in m_characterSheetDatabase.GetNormalCharacterShhets())
+            foreach (var partyMemberData in m_characterSheetDatabase.GetNormalCharacterSheets())
             {
                 RuntimePartyMemberData runtimePartyMemberData = new RuntimePartyMemberData();
                 runtimePartyMemberData.SetUpRuntimePartyMemberData(partyMemberData);

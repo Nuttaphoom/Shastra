@@ -9,7 +9,7 @@ namespace Vanaring
     [CreateAssetMenu(fileName = "CharacterSheetLocatorSO", menuName = "ScriptableObject/Database/CharacterSheetLocatorSO")]
     public class CharacterSheetDatabaseSO : BaseDatabaseSO<CharacterSheetSO>
     {
-        public List<CharacterSheetSO> GetNormalCharacterShhets()
+        public List<CharacterSheetSO> GetNormalCharacterSheets()
         {
             var ret = new List<CharacterSheetSO>(); 
             foreach (var record in _records) {
