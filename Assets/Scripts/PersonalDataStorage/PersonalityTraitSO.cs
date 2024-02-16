@@ -67,7 +67,8 @@ namespace Vanaring
             // check in case of Cant find the type in array
             if (value == null)
             {
-                throw new Exception("Trait.Trait_Type: " + type + " not valid");
+                Debug.LogWarning("image for " + type + " not valid");
+                //throw new Exception("Trait.Trait_Type: " + type + " not valid");
             }
 
             return value;
