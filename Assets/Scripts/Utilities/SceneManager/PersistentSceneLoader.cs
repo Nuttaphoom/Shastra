@@ -20,7 +20,10 @@ namespace Vanaring
         [SerializeField]
         private TransitionSceneManager transitionManager;
 
-        private SceneDataSO _last_visisted_location;
+        //For loading last visisted location scene 
+        private SceneDataSO _last_visisted_location; 
+    
+        //For extract last vissted location save data user 
         private LoaderDataUser _last_visisted_loaderDataUser;
 
         /// <summary>
@@ -29,6 +32,7 @@ namespace Vanaring
         /// </summary>
         private Dictionary<string, LoaderDataUser> _userDataScene = new Dictionary<string, LoaderDataUser>(); 
 
+        //Renenber last scene to load, this include both Location and general scene 
         private Stack<SceneDataSO> _stackLoadedSceneData = new Stack<SceneDataSO>()  ;
 
         #region GETTER
@@ -56,6 +60,19 @@ namespace Vanaring
 
             ;
         }
+
+
+        /// <summary>
+        /// Clear data related to last visiste location only 
+        /// No need to clear _userDataScene and _stackLoadedSceneData
+        /// </summary>
+        public void ClearUserDataOfTempVisitedLocationData()
+        {
+            _last_visisted_loaderDataUser = null;
+            _last_visisted_location = null; 
+            
+
+        }
         public LoaderDataUser<T> ExtractLastSavedData<T>()
         {
             if (_last_visisted_loaderDataUser == null)
@@ -64,10 +81,6 @@ namespace Vanaring
             return _last_visisted_loaderDataUser as LoaderDataUser<T>;
         }
 
-        public bool ContainLastVisitedLocationData()
-        {
-            return _last_visisted_loaderDataUser == null;
-        }
         public LoaderDataUser<T> ExtractSavedData<T>(string uniqueID)
         {
             if (!_userDataScene.ContainsKey(uniqueID))

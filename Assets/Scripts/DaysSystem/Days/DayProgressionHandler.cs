@@ -24,9 +24,16 @@ namespace Vanaring
 
         public AssetReferenceT<SceneDataSO> DayProgressionScene ;
 
+        private void LoadDayProgressionScene()
+        {
+            //Load to map instead forn now
+            //TODO : Load the day progression scene displaying what is previous day and what's next day, and than load the dorm scene
+        }
 
         public RuntimeDayData NewDayBegin()
         {
+            PersistentSceneLoader.Instance.LoadLastVisitedLocation();
+
             if (_dailyActionParticipationHandler == null)
                 _dailyActionParticipationHandler = new DailyActionParticipationHandler(); 
 
