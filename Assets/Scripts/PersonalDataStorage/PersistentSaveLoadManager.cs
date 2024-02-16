@@ -7,7 +7,10 @@ using System.Runtime.Serialization.Formatters.Binary;
 namespace Vanaring
 {
     public class PersistentSaveLoadManager : PersistentInstantiatedObject<PersistentSaveLoadManager>
-    { 
+    {
+        [SerializeField]
+        private List<string> listOfFileName = new List<string>(); // temp assign all save filename in the whole game
+
         private List<string> savePath = new List<string>();
 
         private Dictionary<string, Dictionary<string, object>> temporaryLoader = new Dictionary<string, Dictionary<string, object>>();
@@ -25,27 +28,27 @@ namespace Vanaring
             }
         }
 
+        [ContextMenu("Capture To Temp")]
         public void CaptureToTemp()
         {
-            GetFilesPath();
+            Debug.Log("CaptureToTemp");
+
             foreach (string path in savePath)
             {
                 CaptureState(path);
             }
         }
 
-        //public void Save(string filepath)
-        //{
-        //    var state = LoadFile(filepath);
-
-        //    CaptureState(state, filepath);
-        //    SaveFile(state, filepath);
-        //}
+        private void Awake()
+        {
+            GetFilesPath();
+            LoadToTemp();
+        }
 
         [ContextMenu("Load to Temp")]
         public void LoadToTemp()
         {
-            GetFilesPath();
+            //GetFilesPath();
             foreach (string path in savePath)
             {
                 Dictionary<string, object> state = LoadFile(path);
@@ -54,27 +57,24 @@ namespace Vanaring
         }
 
         [ContextMenu("Restore From Temp")]
-        public void RestoreFromTemp(float nothing)
+        public void RestoreFromTemp()
         {
-            GetFilesPath();
+            Debug.Log("RestoreFromTemp");
+
             foreach (string path in savePath)
             {
                 RestoreState(path);
             }
         }
 
-        //public void Load(string filepath)
-        //{
-        //    var state = LoadFile(filepath);
-
-        //    RestoreState(state, filepath);
-        //}
-
         public void AddDataToTemp(string path, Dictionary<string, object> state)
         {
             if (temporaryLoader.ContainsKey(path) == true)
             {
-                temporaryLoader[path] = state;
+                foreach (var data in state)
+                {
+                    temporaryLoader[path][data.Key] = data.Value;
+                }
             }
             else
             {
@@ -107,9 +107,9 @@ namespace Vanaring
 
         private void GetFilesPath()
         {
-            foreach (SaveableEntity saveable in FindObjectsOfType<SaveableEntity>())
+            foreach (string fileName in listOfFileName)
             {
-                string path = FileNameToPath(saveable.fileName);
+                string path = FileNameToPath(fileName);
                 if (savePath.Contains(path))
                     continue;
 
@@ -131,14 +131,18 @@ namespace Vanaring
 
         private void RestoreState(/*Dictionary<string, object> state, */string filepath)
         {
+            
             foreach (var saveable in FindObjectsOfType<SaveableEntity>())
             {
                 if (filepath != FileNameToPath(saveable.fileName))
                     continue;
 
-                if (temporaryLoader[filepath].TryGetValue(saveable.Id, out object value))
+                if (temporaryLoader.TryGetValue(filepath, out Dictionary<string, object> data))
                 {
-                    saveable.RestoreState(value);
+                    if (data.TryGetValue(saveable.Id, out object value))
+                    {
+                        saveable.RestoreState(value);
+                    }
                 }
             }
         }

@@ -97,6 +97,9 @@ namespace Vanaring
                 string characterName = member.GetMemberName();
                 List<string> captureState = (List<string>)member.CaptureState();
 
+                if (!saveData.ContainsKey(characterName)) // temp skip for duplicate Asha?????
+                    continue;
+
                 saveData.Add(characterName, captureState);
             }
 

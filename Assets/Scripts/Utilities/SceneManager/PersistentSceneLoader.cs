@@ -177,6 +177,7 @@ namespace Vanaring
             if (_sceneToLoad == null)
                 throw new System.Exception("_sceneToLoad is null");
 
+            PersistentSaveLoadManager.Instance.CaptureToTemp();
             CreateTransitionScene();
             transitionManager.TransitionObj.SubOnSceneLoaderBegin(LoadNewScene);
             StartCoroutine(LoadDelayTimer());
@@ -218,7 +219,8 @@ namespace Vanaring
                 yield return null;
             }
             GetEventBroadcaster().InvokeEvent<Null>(null, "OnSceneLoaderComplete");
-            
+            PersistentSaveLoadManager.Instance.RestoreFromTemp();
+
             PersistentSceneLoader.Instance.OnCompleteLoadedNewLocationScene(operation);
             yield return new WaitForEndOfFrame();
         }

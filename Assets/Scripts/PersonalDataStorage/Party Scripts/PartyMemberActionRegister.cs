@@ -93,9 +93,13 @@ namespace Vanaring
             }
 
             List<string> keys = new List<string>();
-            foreach (SpellActionSO spellSO in _registeredSpellActions)
+
+            if (_registeredSpellActions != null) // temp check for save load manager the first time before load 
             {
-                keys.Add(m_spellDatabase.GetRecordKey(spellSO));
+                foreach (SpellActionSO spellSO in _registeredSpellActions)
+                {
+                    keys.Add(m_spellDatabase.GetRecordKey(spellSO));
+                }
             }
 
             return keys;
