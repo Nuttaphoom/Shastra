@@ -24,13 +24,22 @@ namespace Vanaring
 
         private DailyActionParticipationHandler _dailyActionParticipationHandler;
 
-        public AssetReferenceT<EssentialSceneDataSO> DayProgressionSceneAddress ;
-        public AssetReferenceT<SceneDataSO> DormSceneAddress ;
+        [SerializeField]
+        private AssetReferenceT<EssentialSceneDataSO> DayProgressionSceneAddress ;
+        [SerializeField] 
+        private AssetReferenceT<SceneDataSO> DormSceneAddress ;
 
-        private void LoadDayProgressionScene()
+        [SerializeField]
+        private DayProgressionDisplayer _progressionDisplayer;  
+
+        public IEnumerator LoadDayProgressionScene()
         {
             //Load to map instead forn now
             //TODO : Load the day progression scene displaying what is previous day and what's next day, and than load the dorm scene
+            SceneDataSO dayDataSO = PersistentAddressableResourceLoader.Instance.LoadResourceOperation<SceneDataSO>(DayProgressionSceneAddress);
+            PersistentSceneLoader.Instance.LoadGeneralScene(dayDataSO);
+
+            yield return (_progressionDisplayer.DisplayRewardUICoroutine(new DayProgressionData())); 
 
             //Right now just load the correspond scene 
             LoadCorrespondScene();
@@ -54,6 +63,8 @@ namespace Vanaring
         } 
         public void ProgressToNextDay()
         {
+            ClearDayData();  
+
             if (_dailyActionParticipationHandler == null)
                 _dailyActionParticipationHandler = new DailyActionParticipationHandler(); 
 
@@ -65,6 +76,8 @@ namespace Vanaring
             _currentDate++;
 
             PersistentActiveDayDatabase.Instance.SetUpNextDay(newDayData);
+
+            LoadCorrespondScene(); 
         }
 
         public void OnPostPerformSchoolAction()
@@ -74,13 +87,8 @@ namespace Vanaring
             ///No remaining action point => start new day 
             if (_dailyActionParticipationHandler.IsOutOfActionPoint())
             {
-                ClearDayData();
-                ProgressToNextDay();
-                LoadDayProgressionScene();
-                
-
+                PersistentActiveDayDatabase.Instance.EndDay(); 
             }
-
 
             //Action remains
             else

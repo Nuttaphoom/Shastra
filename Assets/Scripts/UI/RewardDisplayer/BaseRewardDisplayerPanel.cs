@@ -15,16 +15,14 @@ namespace Vanaring
         public abstract void ForceSetUpNumber();
 
         protected bool _displayingUIDone = false; 
-        public void DestroySelf()
-        {
-            Destroy(gameObject);
-        }
-
+       
         public bool IsFinishingDisplayUI => _displayingUIDone;  
         public bool IsSettingUpSucessfully => _uiAnimationDone;
 
         #region PanelInteraction 
         public abstract void OnContinueButtonClick();
+
+        
 
         #endregion
     }

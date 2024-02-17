@@ -57,7 +57,7 @@ namespace Vanaring
             Debug.Log("Bonding Scheme"); 
    
 
-           _npcBondingScheme.PlayingBondingScheme(_characterRelationshipDataSO); 
+           _npcBondingScheme.PlayBondingScheme(_characterRelationshipDataSO); 
         }
     }
 }

@@ -36,7 +36,7 @@ namespace Vanaring
             yield return CreateRewardDisplayPanel() ;  
         }
 
-        public override IEnumerator SettingUpRewardDisplayPanel(PersonalityRewardDisplayerPanel personalityRewardDisplayerPanel)
+        protected override IEnumerator SettingUpRewardDisplayPanel(PersonalityRewardDisplayerPanel personalityRewardDisplayerPanel)
         {
             personalityRewardDisplayerPanel.SetPersonalDataReceive(_personalityRewardDatas);
             yield return (personalityRewardDisplayerPanel.SettingUpNumber() ) ; 
