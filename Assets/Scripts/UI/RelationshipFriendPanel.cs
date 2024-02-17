@@ -15,6 +15,7 @@ namespace Vanaring
         [SerializeField] private Button bondButton;
         [SerializeField] private TextMeshProUGUI friendName;
         [SerializeField] private TextMeshProUGUI friendDescription;
+        [SerializeField] private Image bondFilledBar;
 
         private CharacterRelationshipDataSO charRelationDataSO;
 
@@ -29,6 +30,7 @@ namespace Vanaring
         public void InitPanel(CharacterRelationshipDataSO so)
         {
             charRelationDataSO = so;
+            bondFilledBar.fillAmount = 0.5f;
             RemoveFriendButtonListener();
             friendName.text = charRelationDataSO.GetCharacterName;
             friendDescription.text = charRelationDataSO.GetCharacterName;
