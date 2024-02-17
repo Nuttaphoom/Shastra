@@ -71,10 +71,6 @@ namespace Vanaring
         public override IEnumerator SettingUpNumber()
         {
             introDirector.Play();
-            //while(introDirector.state == PlayState.Playing)
-            //{
-            //    yield return new WaitForEndOfFrame();
-            //}
             yield return new WaitForSeconds(1.0f);
             introDirector.Stop();
             foreach (PersonalityRewardData traitReward in _personalityRewardList)
@@ -133,9 +129,6 @@ namespace Vanaring
                 {
                     currentTime += Time.deltaTime;
                 }
-
-                    //break;
-
                 float previ = i;
                 i = Mathf.Lerp(startValue, endValue, currentTime / _animationDuration);
                 curExpGain += (i - previ);
@@ -170,7 +163,8 @@ namespace Vanaring
                 levelUpPanel.SetActive(true);
                 levelUpText.text = displayTraitRewardList[i].ToString() + " lv." 
                     + personalityTrait.GetStat(displayTraitRewardList[i]).Getlevel().ToString();
-                levelUpRewardText.text = displayTraitRewardList[i].ToString() + " upgrades to rank " + personalityTrait.GetStat(displayTraitRewardList[i]).Getlevel().ToString() + "!";
+                levelUpRewardText.text = displayTraitRewardList[i].ToString() + " upgrades to rank " + 
+                    personalityTrait.GetStat(displayTraitRewardList[i]).Getlevel().ToString() + "!";
                 while (levelUpPanel.activeSelf)
                 {
                     yield return new WaitForEndOfFrame();
