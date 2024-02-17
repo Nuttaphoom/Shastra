@@ -39,14 +39,16 @@ namespace Vanaring
         {
             yield return _director.PlayCutscene(); 
 
-            PostPerformActivity(); 
+            StartCoroutine(PostPerformActivity()) ; 
 
         }
 
-        public void PostPerformActivity()
+        public IEnumerator PostPerformActivity()
         {
-            Debug.Log("Post Perform activity");
-            StartCoroutine(_rewardDisplayer.DisplayRewardUICoroutine(_personalityRewards) ) ; 
+            yield return (_rewardDisplayer.DisplayRewardUICoroutine(_personalityRewards) ) ;
+
+            PersistentActiveDayDatabase.Instance.GetDayProgressionHandler.OnPostPerformSchoolAction();
+
             //finish display(done)(close window) -> (update backend/load new scene)(Potae) -> Persistent
         }
 

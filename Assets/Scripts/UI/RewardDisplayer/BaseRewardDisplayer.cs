@@ -27,7 +27,7 @@ namespace Vanaring
         {
             yield return null;
         }
-        public abstract IEnumerator SettingUpRewardDisplayPanel(RewardPanelType rewardDisplayGOTemplate); 
+        protected abstract IEnumerator SettingUpRewardDisplayPanel(RewardPanelType rewardDisplayGOTemplate); 
         protected IEnumerator CreateRewardDisplayPanel()
         {
             _rewardPanel = MonoBehaviour.Instantiate(_rewardDisplayGOTemplate.gameObject);
@@ -35,7 +35,6 @@ namespace Vanaring
 
             yield return WaitUntilDisplayFinish(); 
 
-            PersistentActiveDayDatabase.Instance.GetDayProgressionHandler.OnPostPerformSchoolAction();
 
         }
 

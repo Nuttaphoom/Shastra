@@ -28,9 +28,10 @@ namespace Vanaring
         {
             _lectureRewardStruct = rewardType;
             yield return CreateRewardDisplayPanel();
+
         }
 
-        public override IEnumerator SettingUpRewardDisplayPanel(LectureRewardDisplayerPenel personalityRewardDisplayerPanel)
+        protected override IEnumerator SettingUpRewardDisplayPanel(LectureRewardDisplayerPenel personalityRewardDisplayerPanel)
         {
             personalityRewardDisplayerPanel.ReceiveRewardDetail(_lectureRewardStruct);
             yield return (personalityRewardDisplayerPanel.SettingUpNumber());
