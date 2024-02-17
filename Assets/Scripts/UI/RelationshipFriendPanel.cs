@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.EventSystems;
+using UnityEngine.Events;
 
 namespace Vanaring
 {
@@ -14,7 +15,6 @@ namespace Vanaring
         [SerializeField] private Button bondButton;
         [SerializeField] private TextMeshProUGUI friendName;
         [SerializeField] private TextMeshProUGUI friendDescription;
-        [SerializeField] private Image eventBG;
 
         private CharacterRelationshipDataSO charRelationDataSO;
 
@@ -26,24 +26,51 @@ namespace Vanaring
         {
             
         }
-        public void Init(CharacterRelationshipDataSO so)
+        public void InitPanel(CharacterRelationshipDataSO so)
         {
             charRelationDataSO = so;
-            SetFriendButtonListener();
+            RemoveFriendButtonListener();
             friendName.text = charRelationDataSO.GetCharacterName;
             friendDescription.text = charRelationDataSO.GetCharacterName;
-            eventBG.sprite = null;
+            if(talkButton.onClick.GetPersistentEventCount() <= 0)
+            {
+                talkButton.interactable = false;
+                talkButton.GetComponent<EventTrigger>().enabled = false;
+            }
+            if (eventButton.onClick.GetPersistentEventCount() <= 0)
+            {
+                eventButton.interactable = false;
+                eventButton.GetComponent<EventTrigger>().enabled = false;
+            }
+            if (bondButton.onClick.GetPersistentEventCount() <= 0)
+            {
+                bondButton.interactable = false;
+                bondButton.GetComponent<EventTrigger>().enabled = false;
+            }
         }
 
-        private void SetFriendButtonListener()
+        private void RemoveFriendButtonListener()
         {
             talkButton.onClick.RemoveAllListeners();
             eventButton.onClick.RemoveAllListeners();
             bondButton.onClick.RemoveAllListeners();
+        }
 
-            talkButton.onClick.AddListener(() => gameObject.SetActive(false));
-            eventButton.onClick.AddListener(() => gameObject.SetActive(false));
-            bondButton.onClick.AddListener(() => gameObject.SetActive(false));
+        public void SetTalkButtonListener(UnityAction action)
+        {
+            talkButton.onClick.AddListener(action);
+            talkButton.GetComponent<EventTrigger>().enabled = true;
+        }
+
+        public void SetEventButtonListener(UnityAction action)
+        {
+            eventButton.onClick.AddListener(action);
+            eventButton.GetComponent<EventTrigger>().enabled = true;
+        }
+        public void SetBondButtonListener(UnityAction action)
+        {
+            bondButton.onClick.AddListener(action);
+            bondButton.GetComponent<EventTrigger>().enabled = true;
         }
 
         public void ExpandUp(RectTransform transform)
@@ -59,6 +86,11 @@ namespace Vanaring
         public void OnPointerEnter(PointerEventData eventData)
         {
             //ExpandUp();
+        }
+
+        public void OpenPanel()
+        {
+            gameObject.SetActive(true);
         }
     }
 }
