@@ -8,7 +8,7 @@ using UnityEngine.Events;
 
 namespace Vanaring
 {
-    public class RelationshipFriendPanel : MonoBehaviour, IPointerEnterHandler
+    public class RelationshipFriendPanel : MonoBehaviour
     {
         [SerializeField] private Button talkButton;
         [SerializeField] private Button eventButton;
@@ -19,14 +19,6 @@ namespace Vanaring
 
         private CharacterRelationshipDataSO charRelationDataSO;
 
-        private void Awake()
-        {
-            
-        }
-        private void Start()
-        {
-            
-        }
         public void InitPanel(CharacterRelationshipDataSO so)
         {
             charRelationDataSO = so;
@@ -34,20 +26,18 @@ namespace Vanaring
             RemoveFriendButtonListener();
             friendName.text = charRelationDataSO.GetCharacterName;
             friendDescription.text = charRelationDataSO.GetCharacterName;
-            if(talkButton.onClick.GetPersistentEventCount() <= 0)
+            DisableRelationshipButton(talkButton);
+            DisableRelationshipButton(eventButton);
+            DisableRelationshipButton(bondButton);
+        }
+
+        private void DisableRelationshipButton(Button button)
+        {
+            if (button.onClick.GetPersistentEventCount() <= 0)
             {
-                talkButton.interactable = false;
-                talkButton.GetComponent<EventTrigger>().enabled = false;
-            }
-            if (eventButton.onClick.GetPersistentEventCount() <= 0)
-            {
-                eventButton.interactable = false;
-                eventButton.GetComponent<EventTrigger>().enabled = false;
-            }
-            if (bondButton.onClick.GetPersistentEventCount() <= 0)
-            {
-                bondButton.interactable = false;
-                bondButton.GetComponent<EventTrigger>().enabled = false;
+                button.interactable = false;
+                button.GetComponent<EventTrigger>().enabled = false;
+                button.GetComponentInChildren<Image>().gameObject.SetActive(true);
             }
         }
 
@@ -62,17 +52,20 @@ namespace Vanaring
         {
             talkButton.onClick.AddListener(action);
             talkButton.GetComponent<EventTrigger>().enabled = true;
+            talkButton.GetComponentInChildren<Image>().gameObject.SetActive(false);
         }
 
         public void SetEventButtonListener(UnityAction action)
         {
             eventButton.onClick.AddListener(action);
             eventButton.GetComponent<EventTrigger>().enabled = true;
+            eventButton.GetComponentInChildren<Image>().gameObject.SetActive(false);
         }
         public void SetBondButtonListener(UnityAction action)
         {
             bondButton.onClick.AddListener(action);
             bondButton.GetComponent<EventTrigger>().enabled = true;
+            bondButton.GetComponentInChildren<Image>().gameObject.SetActive(false);
         }
 
         public void ExpandUp(RectTransform transform)
@@ -83,11 +76,6 @@ namespace Vanaring
         public void ShrinkButton(RectTransform transform)
         {
             transform.transform.localScale = Vector3.one;
-        }
-
-        public void OnPointerEnter(PointerEventData eventData)
-        {
-            //ExpandUp();
         }
 
         public void OpenPanel()
