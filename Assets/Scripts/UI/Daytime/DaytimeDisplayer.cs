@@ -11,9 +11,26 @@ namespace Vanaring
         [SerializeField]
         private TextMeshProUGUI dateText;
         [SerializeField]
+        private TextMeshProUGUI weekdayText;
+        [SerializeField]
         private TextMeshProUGUI dayTimeText;
         [SerializeField]
         private GameObject panel;
+
+        [SerializeField]
+        private Color mondayColor;
+        [SerializeField]
+        private Color tuedayColor;
+        [SerializeField]
+        private Color wednesdayColor;
+        [SerializeField]
+        private Color thurdayColor;
+        [SerializeField]
+        private Color fridayColor;
+        [SerializeField]
+        private Color saturdayColor;
+        [SerializeField]
+        private Color sundayColor;
 
         private int dayCount = 0;
         private int weekDay = 0; //max 6 mon,tue, etc.
@@ -75,7 +92,8 @@ namespace Vanaring
         [ContextMenu("ShowPanelDetail")]
         private void InitPanel()
         {
-            dateText.text = date + "/" + months[month] + " " + days[weekDay];
+            dateText.text = date + "/" + months[month];
+            weekdayText.text = days[weekDay];
             dayTimeText.text = dayTime[PersistentActiveDayDatabase.Instance.GetDayProgressionHandler.GetCurrentDayTime()].ToString();
             Debug.Log("Date: " + date + ", Month: " + months[month] + ", Day: " + days[weekDay]);
         }
