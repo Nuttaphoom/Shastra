@@ -26,6 +26,18 @@ namespace Vanaring
 
         }
 
+        public void EndDay()
+        {
+            StartCoroutine(EndDayCoroutine());
+        }
+
+        private IEnumerator EndDayCoroutine()
+        {
+            yield return _dayProgressionHandler.LoadDayProgressionScene();
+
+            _dayProgressionHandler.ProgressToNextDay();
+        }
+
         #region Getter 
         public DayProgressionHandler GetDayProgressionHandler
         {

@@ -160,10 +160,10 @@ namespace Vanaring
         {
             yield return _director.PlayCutscene();
 
-            PostPerformActivity();
+            yield return PostPerformActivity();
         }
 
-        public void PostPerformActivity()
+        public IEnumerator PostPerformActivity()
         {
             SubmitActionReward(); 
 
@@ -185,11 +185,17 @@ namespace Vanaring
                 }; 
 
              
-                StartCoroutine(_rewardDisplayer.DisplayRewardUICoroutine(reward));
+                yield return (_rewardDisplayer.DisplayRewardUICoroutine(reward));
 
-                break; 
+
             }
+
+            PersistentActiveDayDatabase.Instance.GetDayProgressionHandler.OnPostPerformSchoolAction();
+
+            yield return null; 
         }
+
+        
         #endregion
 
         private bool ContainLectureInLectureRuntime(LectureSO conernedLecture)

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,7 +14,14 @@ namespace Vanaring
     {
         private CharacterRelationshipDataSO _characterRelationshipDataSO;
         private BondingAnimationGO _bondingAnimationGO ;
-        private RelationshipHandler _relationshipHandler; 
+        private RelationshipHandler _relationshipHandler;
+
+        public void PlayBondingScheme(CharacterRelationshipDataSO characterRelationshipDataSO)
+        {
+            _characterRelationshipDataSO = characterRelationshipDataSO;
+            OnPerformAcivity();
+        }
+
         public void OnPerformAcivity()
         {
             _relationshipHandler = PersistentPlayerPersonalDataManager.Instance.RelationshipHandler;
@@ -23,19 +31,16 @@ namespace Vanaring
              
             _bondingAnimationGO = MonoBehaviour.Instantiate(_characterRelationshipDataSO.GetBondingAnimationGO(currentLevel, currentExp));
 
-           _bondingAnimationGO.StartCoroutine(_bondingAnimationGO.PlayCutscene(PostPerformActivity) ) ; 
+           _bondingAnimationGO.StartCoroutine(_bondingAnimationGO.PlayCutscene(this) ) ;
+
         }
 
-        public void PlayingBondingScheme(CharacterRelationshipDataSO characterRelationshipDataSO)
-        {
-            _characterRelationshipDataSO = characterRelationshipDataSO ;
-            OnPerformAcivity(); 
-        }
-
-        public void PostPerformActivity()
+        public IEnumerator PostPerformActivity()
         {
             //Display reward displayer 
-            SubmitActionReward(); 
+            SubmitActionReward() ; 
+
+            //Display action reward 
             throw new NotImplementedException();
         }
 
