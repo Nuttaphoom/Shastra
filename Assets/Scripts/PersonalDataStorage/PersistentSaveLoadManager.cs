@@ -21,9 +21,6 @@ namespace Vanaring
             LoadToTemp();
             foreach (string path in savePath)
             {
-                //var state = LoadFile(path);
-
-                //CaptureState(state, path);
                 SaveFile(temporaryLoader[path], path);
             }
         }
@@ -31,8 +28,6 @@ namespace Vanaring
         [ContextMenu("Capture To Temp")]
         public void CaptureToTemp()
         {
-            Debug.Log("CaptureToTemp");
-
             foreach (string path in savePath)
             {
                 CaptureState(path);
@@ -48,7 +43,6 @@ namespace Vanaring
         [ContextMenu("Load to Temp")]
         public void LoadToTemp()
         {
-            //GetFilesPath();
             foreach (string path in savePath)
             {
                 Dictionary<string, object> state = LoadFile(path);
@@ -59,8 +53,6 @@ namespace Vanaring
         [ContextMenu("Restore From Temp")]
         public void RestoreFromTemp()
         {
-            Debug.Log("RestoreFromTemp");
-
             foreach (string path in savePath)
             {
                 RestoreState(path);
