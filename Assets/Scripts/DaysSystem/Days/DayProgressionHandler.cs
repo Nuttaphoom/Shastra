@@ -28,7 +28,7 @@ namespace Vanaring
             {
                 if (_currentSemester == null)
                 {
-                    PersistentAddressableResourceLoader.Instance.LoadResourceOperation<SemesterDataSO>(_activeSemesterAddress);
+                    _currentSemester  = PersistentAddressableResourceLoader.Instance.LoadResourceOperation<SemesterDataSO>(_activeSemesterAddress);
                 }
                 return _currentSemester;
             }
@@ -93,7 +93,7 @@ namespace Vanaring
 
             _dailyActionParticipationHandler.ResetDayAction();
 
-            DayDataSO dayDataSO = PersistentAddressableResourceLoader.Instance.LoadResourceOperation<SemesterDataSO>(_activeSemester).GetDayData(_currentDate) ;
+            DayDataSO dayDataSO = GetSemesterDataSO.GetDayData(_currentDate) ;
             RuntimeDayData newDayData = new RuntimeDayData(dayDataSO) ;
 
             _currentDate++;
