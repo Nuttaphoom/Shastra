@@ -18,11 +18,27 @@ namespace Vanaring
     public class DayProgressionHandler
     {
         [SerializeField]
-        private AssetReferenceT<SemesterDataSO> _activeSemester;
+        private AssetReferenceT<SemesterDataSO> _activeSemesterAddress ;
+        private SemesterDataSO _currentSemester;
 
+        #region GETTER 
+        public SemesterDataSO GetSemesterDataSO
+        {
+            get
+            {
+                if (_currentSemester == null)
+                {
+                    PersistentAddressableResourceLoader.Instance.LoadResourceOperation<SemesterDataSO>(_activeSemesterAddress);
+                }
+                return _currentSemester;
+            }
+        }
+        #endregion
         private int _currentDate = 0;
 
         private DailyActionParticipationHandler _dailyActionParticipationHandler;
+
+ 
 
         [SerializeField]
         private AssetReferenceT<EssentialSceneDataSO> DayProgressionSceneAddress ;
@@ -30,7 +46,7 @@ namespace Vanaring
         private AssetReferenceT<SceneDataSO> DormSceneAddress ;
 
         [SerializeField]
-        private DayProgressionDisplayer _progressionDisplayer;  
+        private DayProgressionDisplayer _progressionDisplayer;
 
         public IEnumerator LoadDayProgressionScene()
         {
@@ -39,7 +55,14 @@ namespace Vanaring
             SceneDataSO dayDataSO = PersistentAddressableResourceLoader.Instance.LoadResourceOperation<SceneDataSO>(DayProgressionSceneAddress);
             PersistentSceneLoader.Instance.LoadGeneralScene(dayDataSO);
 
-            yield return (_progressionDisplayer.DisplayRewardUICoroutine(new DayProgressionData())); 
+            DayDataSO PreviousDayData  = GetSemesterDataSO.GetDayData(_currentDate);
+            DayDataSO NextDayData = GetSemesterDataSO.GetDayData(_currentDate + 1); 
+            yield return (_progressionDisplayer.DisplayRewardUICoroutine(new DayProgressionData() { 
+                NextDay = _currentDate + 1 , 
+                PreviousDay = _currentDate, 
+                NextDayDataSO = NextDayData  , 
+                PreviousDayDataSO = PreviousDayData 
+            })); 
 
             //Right now just load the correspond scene 
             LoadCorrespondScene();
