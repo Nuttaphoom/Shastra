@@ -195,6 +195,16 @@ namespace Vanaring
             transitionManager.TransitionObj.UnSubOnSceneLoaderBegin(LoadNewScene);
             StartCoroutine(transitionManager.LoadSceneAsync(_sceneToLoad));
         }
+
+        #region IAwakeable Call
+        public void CallIAwake()
+        {
+            foreach (var awakeable in FindObjectsOfType<IAwakeableEntity>())
+            {
+                awakeable.IAwake();
+            }
+        }
+        #endregion
     }
 
     [System.Serializable]
@@ -223,7 +233,9 @@ namespace Vanaring
             PersistentSceneLoader.Instance.OnCompleteLoadedNewLocationScene(operation);
 
             GetEventBroadcaster().InvokeEvent<Null>(null, "OnSceneLoaderComplete");
-           
+
+            PersistentSceneLoader.Instance.CallIAwake();
+
             yield return new WaitForEndOfFrame();
         }
 

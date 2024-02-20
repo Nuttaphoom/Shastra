@@ -127,6 +127,12 @@ namespace Vanaring
             Dictionary<string, object> savedData = new Dictionary<string, object>();
             foreach (RuntimeCharacterRelationshipStatus runtime in characterRelationshipStatuses)
             {
+                // temp fix for multiple asha character
+                if (savedData.ContainsKey(runtime.GetCharacterName))
+                {
+                    continue;
+                }
+
                 savedData.Add(runtime.GetCharacterName, runtime.CaptureState());
             }
 
