@@ -69,16 +69,20 @@ namespace Vanaring
         {
             public Dictionary<string, List<string>> savePartyDataLocator;
             public List<string> saveBackpackData;
+            public Dictionary<string, object> saveRelationshipHandler;
         }
 
         public object CaptureState()
         {
             Dictionary<string, List<string>> partyDataLocatorState = (Dictionary<string, List<string>>)_partyDataLocator.CaptureState();
             List<string> backpackState = (List<string>)_backpack.CaptureState();
+            Dictionary<string, object> relationshipHandlerState = (Dictionary<string, object>)_relationshipHandler.CaptureState();
             return new SaveData
             {
                 savePartyDataLocator = partyDataLocatorState,
-                saveBackpackData = backpackState
+                saveBackpackData = backpackState,
+                saveRelationshipHandler = relationshipHandlerState
+
             };
         }
 
@@ -88,6 +92,7 @@ namespace Vanaring
 
             _partyDataLocator.RestoreState(saveData.savePartyDataLocator);
             _backpack.RestoreState(saveData.saveBackpackData);
+            _relationshipHandler.RestoreState(saveData.saveRelationshipHandler);
         }
 
         #endregion

@@ -120,8 +120,28 @@ namespace Vanaring
             m_characterSheetDatabase = PersistentAddressableResourceLoader.Instance.LoadResourceOperation<CharacterSheetDatabaseSO>(DatabaseAddressLocator.GetCharacterSheetDatabaseAddress);
         }
 
-       
 
+        #region Save System
+        public Dictionary<string, object> CaptureState()
+        {
+            Dictionary<string, object> savedData = new Dictionary<string, object>();
+            foreach (RuntimeCharacterRelationshipStatus runtime in characterRelationshipStatuses)
+            {
+                savedData.Add(runtime.GetCharacterName, runtime.CaptureState());
+            }
+
+            return savedData;
+        }
+
+        public void RestoreState(Dictionary<string, object> states)
+        {
+            foreach (RuntimeCharacterRelationshipStatus runtime in characterRelationshipStatuses)
+            {
+                runtime.RestoreState(states[runtime.GetCharacterName]);
+            }
+        }
+
+        #endregion
 
     }
 
@@ -182,6 +202,17 @@ namespace Vanaring
             }
         }
 
+        public string GetCharacterName
+        {
+            get
+            {
+                if (_characterSheetSO.CharacterName == null)
+                    throw new Exception("_characterSheetSO.CharacterName is null");
+
+                return _characterSheetSO.CharacterName;
+            }
+        }
+
         #endregion
 
 
@@ -199,6 +230,19 @@ namespace Vanaring
         {
             Debug.Log("Level Up to " + curLevel) ; 
         }
-        
+
+        #region Save System
+        public object CaptureState()
+        {
+            return _expSystem.CaptureState();
+        }
+
+        public void RestoreState(object state)
+        {
+            _expSystem.RestoreState(state);
+        }
+
+        #endregion
+
     }
 }
