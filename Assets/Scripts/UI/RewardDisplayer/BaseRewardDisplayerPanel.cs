@@ -10,9 +10,25 @@ namespace Vanaring
 {
     public abstract class BaseRewardDisplayerPanel : MonoBehaviour
     {
+         
         protected bool _uiAnimationDone = false; 
-        public abstract IEnumerator SettingUpNumber();
-        public abstract void ForceSetUpNumber();
+        public virtual IEnumerator SettingUpNumber()
+        {
+            throw new NotImplementedException();
+        }
+        public virtual void ForceSetUpNumber()
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// This function doesn't require player to input 
+        /// any keys or interaction to the DisplayerPanel
+        /// </summary>
+        public virtual IEnumerator AutoRunDisplayerScheme()
+        {
+            throw new NotImplementedException();
+        }
 
         protected bool _displayingUIDone = false; 
        
@@ -20,9 +36,12 @@ namespace Vanaring
         public bool IsSettingUpSucessfully => _uiAnimationDone;
 
         #region PanelInteraction 
-        public abstract void OnContinueButtonClick();
+        public virtual void OnContinueButtonClick()
+        {
+            throw new NotImplementedException();
+        }
 
-        
+
 
         #endregion
     }

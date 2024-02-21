@@ -4,30 +4,47 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
- 
+using UnityEngine;
+using UnityEngine.Playables; 
+using UnityEngine.Timeline;
+using TMPro;
 
 namespace Vanaring
 {
     public class DayProgressionDisplayerPanel : BaseRewardDisplayerPanel
     {
         DayProgressionData progressionData = new DayProgressionData();
+
+        [SerializeField]
+        CutsceneDirector _directorManager;
+
+        [SerializeField]
+        private TextMeshProUGUI dayText; 
+        
         public void ReceiveDayProgressionDetail(DayProgressionData data)
         {
-            progressionData = data; 
-        }
-        public override void ForceSetUpNumber()
-        {
-            throw new NotImplementedException();
+            progressionData = data;
+
+            StartCoroutine(AutoRunDisplayerScheme()); 
         }
 
-        public override void OnContinueButtonClick()
+        public override IEnumerator AutoRunDisplayerScheme()
         {
-            throw new NotImplementedException();
+            yield return SettingUpNumber();
+            yield return _directorManager.PlayCutscene();
+            EndProgressionDisplay();
         }
-
         public override IEnumerator SettingUpNumber()
         {
-            throw new NotImplementedException();
+            dayText.text = "Test";
+            //Set up number here 
+            yield return null; 
+        }
+
+        private void EndProgressionDisplay()
+        {
+            _uiAnimationDone = true;
+            _displayingUIDone = true;
         }
     }
 }

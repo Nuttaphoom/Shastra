@@ -38,6 +38,16 @@ namespace Vanaring
 
         private DailyActionParticipationHandler _dailyActionParticipationHandler;
 
+        public DailyActionParticipationHandler GetDailyActionParticipationHandler
+        {
+            get
+            {
+                if (_dailyActionParticipationHandler == null)
+                    _dailyActionParticipationHandler = new DailyActionParticipationHandler();
+
+                return _dailyActionParticipationHandler; 
+            }
+        } 
  
 
         [SerializeField]
@@ -69,7 +79,6 @@ namespace Vanaring
 
         }
 
-
         /// <summary>
         /// This is either Dorm scene or special cutscene before starting the scene 
         /// </summary>
@@ -88,10 +97,7 @@ namespace Vanaring
         {
             ClearDayData();  
 
-            if (_dailyActionParticipationHandler == null)
-                _dailyActionParticipationHandler = new DailyActionParticipationHandler(); 
-
-            _dailyActionParticipationHandler.ResetDayAction();
+            GetDailyActionParticipationHandler.ResetDayAction();
 
             DayDataSO dayDataSO = GetSemesterDataSO.GetDayData(_currentDate) ;
             RuntimeDayData newDayData = new RuntimeDayData(dayDataSO) ;
@@ -105,7 +111,7 @@ namespace Vanaring
 
         public void OnPostPerformSchoolAction()
         {
-            _dailyActionParticipationHandler.DecreaseActionPoint(1);
+            GetDailyActionParticipationHandler.DecreaseActionPoint(1);
 
             ///No remaining action point => start new day 
             if (_dailyActionParticipationHandler.IsOutOfActionPoint())
@@ -128,7 +134,7 @@ namespace Vanaring
 
         public int GetCurrentDayTime()
         {
-            return _dailyActionParticipationHandler.GetMaxActionPoint() - _dailyActionParticipationHandler.GetRemaiingActionPoint(); 
+            return GetDailyActionParticipationHandler.GetMaxActionPoint() - _dailyActionParticipationHandler.GetRemaiingActionPoint(); 
         }
 
         

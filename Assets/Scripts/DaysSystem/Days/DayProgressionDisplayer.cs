@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Unity.VisualScripting;
-
+using UnityEngine; 
 namespace Vanaring 
 {
     public struct DayProgressionData
@@ -22,7 +22,9 @@ namespace Vanaring
         private DayProgressionData _dayProgressionData; 
         public override IEnumerator DisplayRewardUICoroutine(DayProgressionData data)
         {
-            _dayProgressionData  = data;
+            Debug.Log("displaying up reward ");
+
+            _dayProgressionData = data;
             yield return CreateRewardDisplayPanel();
 
 
@@ -30,6 +32,7 @@ namespace Vanaring
 
         protected override IEnumerator SettingUpRewardDisplayPanel(DayProgressionDisplayerPanel rewardDisplayGOTemplate)
         {
+            Debug.Log("Setting up reward ");
             rewardDisplayGOTemplate.ReceiveDayProgressionDetail(_dayProgressionData);
             yield return null;
         }
