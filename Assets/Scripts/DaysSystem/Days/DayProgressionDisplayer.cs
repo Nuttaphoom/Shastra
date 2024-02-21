@@ -10,8 +10,10 @@ namespace Vanaring
 {
     public struct DayProgressionData
     {
-        //int prevDay;
-        //int currentDay; 
+        public DayDataSO NextDayDataSO; 
+        public DayDataSO PreviousDayDataSO; 
+        public int NextDay ;
+        public int PreviousDay;
     }
 
     [Serializable]
