@@ -15,7 +15,7 @@ using Vanaring;
 
 namespace Vanaring
 {
-    public class LectureParticipationScheme : MonoBehaviour, ISaveable, ISchoolAction
+    public class LectureParticipationScheme : MonoBehaviour, ISaveable, ISchoolAction, IAwakeable
     {
         [SerializeField]
         private LectureRewardDisplayer _rewardDisplayer ; 
@@ -38,11 +38,11 @@ namespace Vanaring
 
         private List<LectureSubjectRuntime> lectureRuntimes = new List<LectureSubjectRuntime>();
 
-        private void Start()
-        {
-            InitLectureRuntime();
-            OnPerformAcivity();
-        }
+        //private void Start()
+        //{
+        //    InitLectureRuntime();
+        //    OnPerformAcivity();
+        //}
 
         [ContextMenu("Init Runtime")]
         public void InitLectureRuntime()
@@ -146,6 +146,15 @@ namespace Vanaring
         private struct SaveData
         {
             public List<ProgressData> savedProgress;
+        }
+
+        #endregion
+
+        #region IAwakeable Methods
+        void IAwakeable.IAwake()
+        {
+            InitLectureRuntime();
+            OnPerformAcivity();
         }
 
         #endregion
