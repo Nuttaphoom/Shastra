@@ -18,19 +18,7 @@ namespace Vanaring
         private GameObject panel;
 
         [SerializeField]
-        private Color mondayColor;
-        [SerializeField]
-        private Color tuedayColor;
-        [SerializeField]
-        private Color wednesdayColor;
-        [SerializeField]
-        private Color thurdayColor;
-        [SerializeField]
-        private Color fridayColor;
-        [SerializeField]
-        private Color saturdayColor;
-        [SerializeField]
-        private Color sundayColor;
+        private Color[] weekColor;
 
         private int dayCount = 0;
         private int weekDay = 0; //max 6 mon,tue, etc.
@@ -92,10 +80,11 @@ namespace Vanaring
         [ContextMenu("ShowPanelDetail")]
         private void InitPanel()
         {
-            dateText.text = date + "/" + months[month];
+            dateText.text = date + "/" + (month + 1);
             weekdayText.text = days[weekDay];
+            weekdayText.color = weekColor[weekDay];
             dayTimeText.text = dayTime[PersistentActiveDayDatabase.Instance.GetDayProgressionHandler.GetCurrentDayTime()].ToString();
-            Debug.Log("Date: " + date + ", Month: " + months[month] + ", Day: " + days[weekDay]);
+            Debug.Log("Date: " + date + ", Month: " + month+1 + ", Day: " + days[weekDay]);
         }
 
         public void OpenPanel(){

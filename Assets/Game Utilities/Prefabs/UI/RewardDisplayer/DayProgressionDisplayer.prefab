@@ -213,6 +213,8 @@ PlayableDirector:
     value: {fileID: 6879732188424904404}
   - key: {fileID: 2056538735224907523, guid: b3f23d20741a74c479c9d8f5759729ec, type: 2}
     value: {fileID: 4406889141912575847}
+  - key: {fileID: 4878616215345824136, guid: b3f23d20741a74c479c9d8f5759729ec, type: 2}
+    value: {fileID: 498124724979760179}
   m_ExposedReferences:
     m_References: []
 --- !u!114 &1073749793177509176
@@ -313,6 +315,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7644146477454536990}
   - component: {fileID: 7602276758362098133}
+  - component: {fileID: 498124724979760179}
   m_Layer: 0
   m_Name: DayProgressionDisplayer
   m_TagString: Untagged
@@ -351,6 +354,36 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _directorManager: {fileID: 1073749793177509176}
   dayText: {fileID: 1910796205080144439}
+--- !u!114 &498124724979760179
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5370751569842020291}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e52de21a22b6dd44c9cc19f810c65059, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Events:
+    m_Signals:
+    - {fileID: 11400000, guid: ed4a929724382db4993e7e3f3129b38f, type: 2}
+    m_Events:
+    - m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 7602276758362098133}
+          m_TargetAssemblyTypeName: Vanaring.DayProgressionDisplayerPanel, Assembly-CSharp
+          m_MethodName: SetupDayText
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &5916530709196428275
 GameObject:
   m_ObjectHideFlags: 0
@@ -423,7 +456,7 @@ MonoBehaviour:
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 1
-  m_FillAmount: 0.2
+  m_FillAmount: 0.5
   m_FillClockwise: 1
   m_FillOrigin: 1
   m_UseSpriteMesh: 0
@@ -812,7 +845,7 @@ MonoBehaviour:
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 1
-  m_FillAmount: 0.2
+  m_FillAmount: 0.5
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
