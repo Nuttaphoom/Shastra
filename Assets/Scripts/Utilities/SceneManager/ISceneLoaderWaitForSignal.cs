@@ -4,8 +4,8 @@ using UnityEngine;
 
 namespace Vanaring
 {
-    public interface IAwakeable
+    public interface ISceneLoaderWaitForSignal
     {
-        void IAwake();
+        IEnumerator OnNotifySceneLoadingComplete();
     }
 }

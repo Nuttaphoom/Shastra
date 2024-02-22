@@ -197,11 +197,14 @@ namespace Vanaring
         }
 
         #region IAwakeable Call
-        public void CallIAwake()
+        public IEnumerator NotifySceneLoadingComplete()
         {
-            foreach (var awakeable in FindObjectsOfType<IAwakeableEntity>())
+            foreach (var awakeable in FindObjectsOfType<MonoBehaviour>())
             {
-                awakeable.IAwake();
+                if (awakeable is ISceneLoaderWaitForSignal)
+                {
+                    yield return (awakeable as ISceneLoaderWaitForSignal).OnNotifySceneLoadingComplete();
+                }
             }
         }
         #endregion
@@ -230,11 +233,11 @@ namespace Vanaring
             }
             PersistentSaveLoadManager.Instance.RestoreFromTemp();
 
+            yield return PersistentSceneLoader.Instance.NotifySceneLoadingComplete();
+
             PersistentSceneLoader.Instance.OnCompleteLoadedNewLocationScene(operation);
 
             GetEventBroadcaster().InvokeEvent<Null>(null, "OnSceneLoaderComplete");
-
-            PersistentSceneLoader.Instance.CallIAwake();
 
             yield return new WaitForEndOfFrame();
         }

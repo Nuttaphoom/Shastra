@@ -15,7 +15,7 @@ using Vanaring;
 
 namespace Vanaring
 {
-    public class LectureParticipationScheme : MonoBehaviour, ISaveable, ISchoolAction, IAwakeable
+    public class LectureParticipationScheme : MonoBehaviour, ISaveable, ISchoolAction, ISceneLoaderWaitForSignal
     {
         [SerializeField]
         private LectureRewardDisplayer _rewardDisplayer ; 
@@ -151,10 +151,12 @@ namespace Vanaring
         #endregion
 
         #region IAwakeable Methods
-        void IAwakeable.IAwake()
+        IEnumerator ISceneLoaderWaitForSignal.OnNotifySceneLoadingComplete() 
         {
             InitLectureRuntime();
             OnPerformAcivity();
+
+            yield return null; 
         }
 
         #endregion
