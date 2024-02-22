@@ -22,7 +22,7 @@ namespace Vanaring
         public void InitPanel(CharacterRelationshipDataSO so)
         {
             charRelationDataSO = so;
-            bondFilledBar.fillAmount = 0.5f;
+            bondFilledBar.fillAmount = PersistentPlayerPersonalDataManager.Instance.RelationshipHandler.GetCurrentBondLevel(so.GetCharacterName)/5f;
             RemoveFriendButtonListener();
             friendName.text = charRelationDataSO.GetCharacterName;
             friendDescription.text = charRelationDataSO.GetCharacterName;

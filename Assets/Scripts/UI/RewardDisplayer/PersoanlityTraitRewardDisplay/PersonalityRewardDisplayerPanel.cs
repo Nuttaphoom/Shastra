@@ -31,6 +31,10 @@ namespace Vanaring
         [SerializeField] private TextMeshProUGUI levelKindText;
         [SerializeField] private TextMeshProUGUI levelKnowText;
         [SerializeField] private TextMeshProUGUI levelProfText;
+        [SerializeField] private Image charmIcon;
+        [SerializeField] private Image kindIcon;
+        [SerializeField] private Image knowIcon;
+        [SerializeField] private Image profIcon;
 
         [Header("TraitRewardPanel")]
         [SerializeField] private GameObject levelUpPanel;
@@ -47,6 +51,10 @@ namespace Vanaring
         {
             _personalityRewardList = personalRewardDataList;
             personalityTrait = PersistentPlayerPersonalDataManager.Instance.GetPersonalityTrait ;
+            charmIcon.sprite = personalityTrait.GetStat(Trait.Trait_Type.Charm).GetPersonalityTraitIcon;
+            charmIcon.sprite = personalityTrait.GetStat(Trait.Trait_Type.Kindness).GetPersonalityTraitIcon;
+            charmIcon.sprite = personalityTrait.GetStat(Trait.Trait_Type.Knowledge).GetPersonalityTraitIcon;
+            charmIcon.sprite = personalityTrait.GetStat(Trait.Trait_Type.Proficiency).GetPersonalityTraitIcon;
             levelCharmText.text = personalityTrait.GetStat(Trait.Trait_Type.Charm).Getlevel().ToString();
             levelKindText.text = personalityTrait.GetStat(Trait.Trait_Type.Kindness).Getlevel().ToString();
             levelKnowText.text = personalityTrait.GetStat(Trait.Trait_Type.Knowledge).Getlevel().ToString();
