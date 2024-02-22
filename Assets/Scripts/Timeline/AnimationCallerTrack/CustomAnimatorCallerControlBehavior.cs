@@ -1,7 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.VisualScripting;
+using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.Timeline;
@@ -36,12 +38,15 @@ namespace Vanaring
                 }
 
 
-                if (_entity == null)
+                if (_entity != null)
+                    _entity.StartCoroutine(_entity.GetComponent<CombatEntityAnimationHandler>().PlayTriggerAnimation(_triggerID));
+                else if ((playerData as GameObject).TryGetComponent(out Animator animator)){
+                    animator.SetTrigger(_triggerID); 
+                }else
                 {
-                    throw new Exception("Entity is null"); 
+                    throw new Exception("" + playerData.ToString() + "didn't has animator attached to it") ;
                 }
-
-                _entity.StartCoroutine(_entity.GetComponent<CombatEntityAnimationHandler>().PlayTriggerAnimation(_triggerID)); 
+                    
             }
         }
 
