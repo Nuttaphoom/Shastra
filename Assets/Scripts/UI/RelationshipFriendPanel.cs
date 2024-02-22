@@ -4,46 +4,68 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.EventSystems;
+using UnityEngine.Events;
 
 namespace Vanaring
 {
-    public class RelationshipFriendPanel : MonoBehaviour, IPointerEnterHandler
+    public class RelationshipFriendPanel : MonoBehaviour
     {
         [SerializeField] private Button talkButton;
         [SerializeField] private Button eventButton;
         [SerializeField] private Button bondButton;
         [SerializeField] private TextMeshProUGUI friendName;
         [SerializeField] private TextMeshProUGUI friendDescription;
-        [SerializeField] private Image eventBG;
+        [SerializeField] private Image bondFilledBar;
 
         private CharacterRelationshipDataSO charRelationDataSO;
 
-        private void Awake()
-        {
-            
-        }
-        private void Start()
-        {
-            
-        }
-        public void Init(CharacterRelationshipDataSO so)
+        public void InitPanel(CharacterRelationshipDataSO so)
         {
             charRelationDataSO = so;
-            SetFriendButtonListener();
+            bondFilledBar.fillAmount = PersistentPlayerPersonalDataManager.Instance.RelationshipHandler.GetCurrentBondLevel(so.GetCharacterName)/5f;
+            RemoveFriendButtonListener();
             friendName.text = charRelationDataSO.GetCharacterName;
             friendDescription.text = charRelationDataSO.GetCharacterName;
-            eventBG.sprite = null;
+            DisableRelationshipButton(talkButton);
+            DisableRelationshipButton(eventButton);
+            DisableRelationshipButton(bondButton);
         }
 
-        private void SetFriendButtonListener()
+        private void DisableRelationshipButton(Button button)
+        {
+            if (button.onClick.GetPersistentEventCount() <= 0)
+            {
+                button.interactable = false;
+                button.GetComponent<EventTrigger>().enabled = false;
+                button.GetComponentInChildren<Image>().gameObject.SetActive(true);
+            }
+        }
+
+        private void RemoveFriendButtonListener()
         {
             talkButton.onClick.RemoveAllListeners();
             eventButton.onClick.RemoveAllListeners();
             bondButton.onClick.RemoveAllListeners();
+        }
 
-            talkButton.onClick.AddListener(() => gameObject.SetActive(false));
-            eventButton.onClick.AddListener(() => gameObject.SetActive(false));
-            bondButton.onClick.AddListener(() => gameObject.SetActive(false));
+        public void SetTalkButtonListener(UnityAction action)
+        {
+            talkButton.onClick.AddListener(action);
+            talkButton.GetComponent<EventTrigger>().enabled = true;
+            talkButton.GetComponentInChildren<Image>().gameObject.SetActive(false);
+        }
+
+        public void SetEventButtonListener(UnityAction action)
+        {
+            eventButton.onClick.AddListener(action);
+            eventButton.GetComponent<EventTrigger>().enabled = true;
+            eventButton.GetComponentInChildren<Image>().gameObject.SetActive(false);
+        }
+        public void SetBondButtonListener(UnityAction action)
+        {
+            bondButton.onClick.AddListener(action);
+            bondButton.GetComponent<EventTrigger>().enabled = true;
+            bondButton.GetComponentInChildren<Image>().gameObject.SetActive(false);
         }
 
         public void ExpandUp(RectTransform transform)
@@ -51,9 +73,14 @@ namespace Vanaring
             transform.transform.localScale = new Vector3(1.2f, 1.2f, 1.2f);
         }
 
-        public void OnPointerEnter(PointerEventData eventData)
+        public void ShrinkButton(RectTransform transform)
         {
-            //ExpandUp();
+            transform.transform.localScale = Vector3.one;
+        }
+
+        public void OpenPanel()
+        {
+            gameObject.SetActive(true);
         }
     }
 }

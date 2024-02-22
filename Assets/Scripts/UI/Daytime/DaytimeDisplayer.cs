@@ -11,14 +11,20 @@ namespace Vanaring
         [SerializeField]
         private TextMeshProUGUI dateText;
         [SerializeField]
+        private TextMeshProUGUI weekdayText;
+        [SerializeField]
         private TextMeshProUGUI dayTimeText;
         [SerializeField]
         private GameObject panel;
+
+        [SerializeField]
+        private Color[] weekColor;
 
         private int dayCount = 0;
         private int weekDay = 0; //max 6 mon,tue, etc.
         private int month = 0; // max 11
         private int date = 1; //max 29
+        private int time = 0;
 
         private string[] months =
         {
@@ -29,8 +35,8 @@ namespace Vanaring
 
         private string[] days =
         {
-            "Monday", "Tuesday", "Wednesday", "Thursday",
-            "Friday", "Saturday", "Sunday"
+            "Mon", "Tue", "Wed", "Thu",
+            "Fri", "Sat", "Sun"
         };
 
         private string[] dayTime =
@@ -47,9 +53,9 @@ namespace Vanaring
             {
                 weekDay = 0;
             }
-            if (dayCount > 29)
+            if (date > 29)
             {
-                dayCount = 0;
+                date = 0;
                 month++;
             }
             if (month > 11)
@@ -59,17 +65,26 @@ namespace Vanaring
             InitPanel();
             //Debug.Log("Date: " + date + ", Month: " + months[month] + ", Day: " + days[weekDay]);
         }
+        public void AdvanceDayNight()
+        {
+            time++;
+        }
 
         private void Awake()
         {
             InitPanel();
-            Debug.Log("Date: " + date + ", Month: " + months[month] + ", Day: " + days[weekDay]);
+            
+            //Debug.Log(PersistentActiveDayDatabase.Instance.GetDayProgressionHandler.GetCurrentDayTime());
         }
 
+        [ContextMenu("ShowPanelDetail")]
         private void InitPanel()
         {
-            dateText.text = date + "/" + months[month] + " " + days[weekDay];
+            dateText.text = date + "/" + (month + 1);
+            weekdayText.text = days[weekDay];
+            weekdayText.color = weekColor[weekDay];
             dayTimeText.text = dayTime[PersistentActiveDayDatabase.Instance.GetDayProgressionHandler.GetCurrentDayTime()].ToString();
+            Debug.Log("Date: " + date + ", Month: " + month+1 + ", Day: " + days[weekDay]);
         }
 
         public void OpenPanel(){

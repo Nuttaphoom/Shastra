@@ -92,10 +92,11 @@ namespace Vanaring
             {
                 if (IsSettingUpSucessfully)
                 {
-                    animationTime = Time.deltaTime;
+                    filledBar.fillAmount = finalScore;
+                    animationTime = 0.001f;
                 }
                 filledBar.fillAmount += 0.001f;
-                if (filledBar.fillAmount >= lectureProgressBarData.checkpoints[reachScoreIndex].RequirePoint / 1000.0f)
+                while (filledBar.fillAmount >= lectureProgressBarData.checkpoints[reachScoreIndex].RequirePoint / 1000.0f)
                 {
                     rewardButtonList[reachScoreIndex].TriggerAnimation();
                     rewardButtonList[reachScoreIndex].GetButtonComponent.interactable = true;

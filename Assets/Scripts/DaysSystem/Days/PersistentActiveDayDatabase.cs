@@ -15,10 +15,17 @@ namespace Vanaring
 
         private void Awake()
         {
-            _dayProgressionHandler.ProgressToNextDay()  ; 
-        } 
+            TestSetUpFirstDay(); 
+        }
+        
+        private void TestSetUpFirstDay()
+        {
+            DayDataSO dayDataSO = _dayProgressionHandler.GetSemesterDataSO.GetDayData(0);
+            RuntimeDayData newDayData = new RuntimeDayData(dayDataSO);
 
-  
+            SetUpNextDay(newDayData);
+        }
+
 
         public void SetUpNextDay(RuntimeDayData data)
         {

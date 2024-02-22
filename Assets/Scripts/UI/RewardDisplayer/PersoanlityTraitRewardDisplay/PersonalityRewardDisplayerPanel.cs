@@ -31,6 +31,10 @@ namespace Vanaring
         [SerializeField] private TextMeshProUGUI levelKindText;
         [SerializeField] private TextMeshProUGUI levelKnowText;
         [SerializeField] private TextMeshProUGUI levelProfText;
+        [SerializeField] private Image charmIcon;
+        [SerializeField] private Image kindIcon;
+        [SerializeField] private Image knowIcon;
+        [SerializeField] private Image profIcon;
 
         [Header("TraitRewardPanel")]
         [SerializeField] private GameObject levelUpPanel;
@@ -47,6 +51,10 @@ namespace Vanaring
         {
             _personalityRewardList = personalRewardDataList;
             personalityTrait = PersistentPlayerPersonalDataManager.Instance.GetPersonalityTrait ;
+            charmIcon.sprite = personalityTrait.GetStat(Trait.Trait_Type.Charm).GetPersonalityTraitIcon;
+            charmIcon.sprite = personalityTrait.GetStat(Trait.Trait_Type.Kindness).GetPersonalityTraitIcon;
+            charmIcon.sprite = personalityTrait.GetStat(Trait.Trait_Type.Knowledge).GetPersonalityTraitIcon;
+            charmIcon.sprite = personalityTrait.GetStat(Trait.Trait_Type.Proficiency).GetPersonalityTraitIcon;
             levelCharmText.text = personalityTrait.GetStat(Trait.Trait_Type.Charm).Getlevel().ToString();
             levelKindText.text = personalityTrait.GetStat(Trait.Trait_Type.Kindness).Getlevel().ToString();
             levelKnowText.text = personalityTrait.GetStat(Trait.Trait_Type.Knowledge).Getlevel().ToString();
@@ -71,10 +79,6 @@ namespace Vanaring
         public override IEnumerator SettingUpNumber()
         {
             introDirector.Play();
-            //while(introDirector.state == PlayState.Playing)
-            //{
-            //    yield return new WaitForEndOfFrame();
-            //}
             yield return new WaitForSeconds(1.0f);
             introDirector.Stop();
             foreach (PersonalityRewardData traitReward in _personalityRewardList)
@@ -133,9 +137,6 @@ namespace Vanaring
                 {
                     currentTime += Time.deltaTime;
                 }
-
-                    //break;
-
                 float previ = i;
                 i = Mathf.Lerp(startValue, endValue, currentTime / _animationDuration);
                 curExpGain += (i - previ);
@@ -170,7 +171,8 @@ namespace Vanaring
                 levelUpPanel.SetActive(true);
                 levelUpText.text = displayTraitRewardList[i].ToString() + " lv." 
                     + personalityTrait.GetStat(displayTraitRewardList[i]).Getlevel().ToString();
-                levelUpRewardText.text = displayTraitRewardList[i].ToString() + " upgrades to rank " + personalityTrait.GetStat(displayTraitRewardList[i]).Getlevel().ToString() + "!";
+                levelUpRewardText.text = displayTraitRewardList[i].ToString() + " upgrades to rank " + 
+                    personalityTrait.GetStat(displayTraitRewardList[i]).Getlevel().ToString() + "!";
                 while (levelUpPanel.activeSelf)
                 {
                     yield return new WaitForEndOfFrame();

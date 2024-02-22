@@ -19,6 +19,8 @@ namespace Vanaring
 
         private NPCBondingScheme _npcBondingScheme;
 
+        private GameObject popUpPanel;
+
 
         public NPCBondingActionCommand(NPCBondingActionCommand copied) : base(copied)
         {
@@ -31,14 +33,16 @@ namespace Vanaring
             PersistentPlayerPersonalDataManager.Instance.RelationshipHandler.GetCurrentBondLevel(_characterRelationshipDataSO.GetCharacterName) ;
 
             PersistentPlayerPersonalDataManager.Instance.RelationshipHandler.GetRelationshipCapEXP(_characterRelationshipDataSO.GetCharacterName);
-            
+
             //TODO : Aome need to display relatioship ui here 
 
-            //if (PersistentPlayerPersonalDataManager.Instance.RelationshipHandler.IsReadyForHangout(_characterRelationshipDataSO.GetCharacterName)  ) {
-            //    PlayHangoutScheme();         
-            //}else {
-            //    PlayBondingScheme(); 
-            //}
+            if (popUpPanel != null)
+            {
+                popUpPanel.GetComponent<RelationshipFriendPanel>().OpenPanel();
+                return;
+            }
+            popUpPanel = MonoBehaviour.Instantiate(PersistentAddressableResourceLoader.Instance.LoadResourceOperation<GameObject>("RelationshipFriendPanel"));
+            popUpPanel.GetComponent<RelationshipFriendPanel>().InitPanel(_characterRelationshipDataSO);
 
             return; 
         }

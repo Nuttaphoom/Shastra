@@ -17,7 +17,5 @@ namespace Vanaring
         {
             return _dayDataSOO[date]; 
         }
-
-         
     }
 }
