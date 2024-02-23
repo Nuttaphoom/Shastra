@@ -30,9 +30,10 @@ namespace Vanaring
 
         public override void ExecuteCommand()
         {
-            PersistentPlayerPersonalDataManager.Instance.RelationshipHandler.GetCurrentBondLevel(_characterRelationshipDataSO.GetCharacterName) ;
+            RelationshipHandler _relationshipHandler = PersistentPlayerPersonalDataManager.Instance.RelationshipHandler; 
+            int bondLevel = _relationshipHandler.GetCurrentBondLevel(_characterRelationshipDataSO.GetCharacterName) ;
 
-            PersistentPlayerPersonalDataManager.Instance.RelationshipHandler.GetRelationshipCapEXP(_characterRelationshipDataSO.GetCharacterName);
+            int currentEXP =  _relationshipHandler.GetRelationshipCapEXP(_characterRelationshipDataSO.GetCharacterName);
 
             //TODO : Aome need to display relatioship ui here 
 
@@ -43,6 +44,12 @@ namespace Vanaring
             }
             popUpPanel = MonoBehaviour.Instantiate(PersistentAddressableResourceLoader.Instance.LoadResourceOperation<GameObject>("RelationshipFriendPanel"));
             popUpPanel.GetComponent<RelationshipFriendPanel>().InitPanel(_characterRelationshipDataSO);
+
+            if (! _relationshipHandler.IsReadyForHangout(_characterRelationshipDataSO.GetCharacterName))
+                popUpPanel.GetComponent <RelationshipFriendPanel>().SetBondButtonListener(PlayBondingScheme);
+            else 
+                popUpPanel.GetComponent<RelationshipFriendPanel>().SetEventButtonListener(PlayHangoutScheme);
+
 
             return; 
         }

@@ -51,21 +51,43 @@ namespace Vanaring
         public void SetTalkButtonListener(UnityAction action)
         {
             talkButton.onClick.AddListener(action);
-            talkButton.GetComponent<EventTrigger>().enabled = true;
-            talkButton.GetComponentInChildren<Image>().gameObject.SetActive(false);
+            talkButton.interactable = true;
+            for (int i = 0; i < talkButton.transform.childCount; i++)
+            {
+                Transform child = talkButton.transform.GetChild(i);
+                if (child.TryGetComponent(out Image image))
+                {
+                    image.gameObject.SetActive(false);
+                }
+            }
+    
         }
 
         public void SetEventButtonListener(UnityAction action)
         {
             eventButton.onClick.AddListener(action);
-            eventButton.GetComponent<EventTrigger>().enabled = true;
-            eventButton.GetComponentInChildren<Image>().gameObject.SetActive(false);
+            eventButton.interactable = true;
+            for (int i = 0; i < eventButton.transform.childCount; i++)
+            {
+                Transform child = eventButton.transform.GetChild(i);
+                if (child.TryGetComponent(out Image image))
+                {
+                    image.gameObject.SetActive(false);
+                }
+            }
+            
         }
         public void SetBondButtonListener(UnityAction action)
         {
             bondButton.onClick.AddListener(action);
-            bondButton.GetComponent<EventTrigger>().enabled = true;
-            bondButton.GetComponentInChildren<Image>().gameObject.SetActive(false);
+            bondButton.interactable = true ; 
+            for (int i = 0; i < bondButton.transform.childCount ; i++){
+                Transform child = bondButton.transform.GetChild(i); 
+                if (child.TryGetComponent(out Image image))
+                {
+                    image.gameObject.SetActive(false); 
+                }
+            }
         }
 
         public void ExpandUp(RectTransform transform)
