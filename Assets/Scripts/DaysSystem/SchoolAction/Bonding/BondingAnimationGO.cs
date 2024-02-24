@@ -16,8 +16,6 @@ namespace Vanaring
         [SerializeField]
         private CutsceneDirector _cutsceneDirector;
 
-        
-
         public IEnumerator PlayCutscene(NPCBondingScheme bondingScheme)
         {
             yield return _cutsceneDirector.PlayCutscene ();

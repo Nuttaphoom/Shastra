@@ -26,9 +26,10 @@ namespace Vanaring
         {
             _director.Play();
 
-            while (_director.state == PlayState.Playing) 
+            while (_director.state == PlayState.Playing)
+            {
                 yield return new WaitForEndOfFrame();
-
+            }
         }
     }
 }
