@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using TMPro;
 using UnityEngine.EventSystems;
 using UnityEngine.Events;
+using UnityEngine.Playables;
 
 namespace Vanaring
 {
@@ -16,6 +17,8 @@ namespace Vanaring
         [SerializeField] private TextMeshProUGUI friendName;
         [SerializeField] private TextMeshProUGUI friendDescription;
         [SerializeField] private Image bondFilledBar;
+        [SerializeField] private PlayableDirector outTimeline;
+        [SerializeField] private PlayableDirector inTimeline;
 
         private CharacterRelationshipDataSO charRelationDataSO;
 
@@ -63,8 +66,6 @@ namespace Vanaring
     
         }
 
-         
-
         public void SetEventButtonListener(UnityAction action)
         {
             eventButton.onClick.AddListener(action);
@@ -105,6 +106,15 @@ namespace Vanaring
         public void OpenPanel()
         {
             gameObject.SetActive(true);
+        }
+
+        public IEnumerator ClosePanel()
+        {
+            outTimeline.Play();
+            while (outTimeline.state == PlayState.Playing)
+            {
+                yield return new WaitForEndOfFrame();
+            }
         }
     }
 }
