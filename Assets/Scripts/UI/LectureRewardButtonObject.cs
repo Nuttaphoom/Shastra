@@ -16,6 +16,8 @@ namespace Vanaring
         private Animator anim;
         [SerializeField]
         private ButtonHover _buttonHover;
+        [SerializeField]
+        private TextMeshProUGUI rewardName;
 
         public Button GetButtonComponent => lectureRewardButton;
         public Image GetIconImage => rewardImage;
@@ -24,6 +26,7 @@ namespace Vanaring
         {
             _buttonHover.InitWindowDetail(newText, newIcon);
             rewardImage.sprite = newIcon;
+            rewardName.text = newText;
         }
         public void TriggerAnimation()
         {

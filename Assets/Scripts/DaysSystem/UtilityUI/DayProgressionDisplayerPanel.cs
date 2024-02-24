@@ -19,13 +19,47 @@ namespace Vanaring
         CutsceneDirector _directorManager;
 
         [SerializeField]
-        private TextMeshProUGUI dayText; 
-        
+        private TextMeshProUGUI dayText;
+
+        private string[] weekDays =
+        {
+            "Monday", "Tueday", "Wednesday", "Thursday",
+            "Friday", "Saturday", "Sunday"
+        };
+
         public void ReceiveDayProgressionDetail(DayProgressionData data)
         {
             progressionData = data;
-            dayText.text = "Day " + "<color=#FEFF94>" + (progressionData.PreviousDay + 1).ToString() + "</color>";
+            
+            dayText.text = weekDays[progressionData.PreviousDay % 6] + " <color=#FEFF94>" + GetOrdinalNumText((progressionData.PreviousDay + 1).ToString()) + "</color>";
             StartCoroutine(AutoRunDisplayerScheme()); 
+        }
+
+        private string GetOrdinalNumText(string dayCount)
+        {
+            string ordinalNumText = "";
+            if (!string.IsNullOrEmpty(dayCount))
+            {
+                char lastChar = dayCount[dayCount.Length - 1];
+
+                if (lastChar == '1')
+                {
+                    ordinalNumText = dayCount + "st";
+                }
+                else if (lastChar == '2')
+                {
+                    ordinalNumText = dayCount + "nd";
+                }
+                else if (lastChar == '3')
+                {
+                    ordinalNumText = dayCount + "rd";
+                }
+                else
+                {
+                    ordinalNumText = dayCount + "th";
+                }
+            }
+            return ordinalNumText;
         }
 
         public override IEnumerator AutoRunDisplayerScheme()
@@ -37,9 +71,6 @@ namespace Vanaring
         }
         public override IEnumerator SettingUpNumber()
         {
-            //Debug.Log("Prev day" + progressionData.PreviousDay.ToString());
-            //Debug.Log("Next day" + progressionData.NextDay.ToString());
-            
             yield return null; 
         }
 
@@ -51,7 +82,7 @@ namespace Vanaring
 
         public void SetupDayText()
         {
-            dayText.text = "Day " + "<color=#FEFF94>" + (progressionData.NextDay + 1).ToString() + "</color>";
+            dayText.text = weekDays[progressionData.NextDay % 6] + " <color=#FEFF94>" + GetOrdinalNumText((progressionData.NextDay + 1).ToString()) + "</color>";
         }
     }
 }

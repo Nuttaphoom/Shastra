@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using Unity.Mathematics;
 using System;
 using UnityEngine.EventSystems;
+using TMPro;
 
 namespace Vanaring
 {
@@ -19,6 +20,10 @@ namespace Vanaring
         private LectureRewardButtonObject rewardButton;
         [SerializeField]
         private LectureParticipationScheme lectureMananger;
+        [SerializeField] 
+        private TextMeshProUGUI traitBoostNameText;
+        [SerializeField]
+        private TextMeshProUGUI traitBoostLevelText;
 
         private List<LectureRewardButtonObject> rewardButtonList = new List<LectureRewardButtonObject>();
         private LectureRewardStruct lectureProgressBarData;
@@ -26,6 +31,8 @@ namespace Vanaring
         public void ReceiveRewardDetail(LectureRewardStruct rewardData)
         {
             lectureProgressBarData = rewardData;
+            traitBoostNameText.text = lectureProgressBarData.boostLecture[0].GetTrait.ToString();
+            traitBoostLevelText.text = lectureProgressBarData.boostLecture[0].RequireLevel.ToString();
             Debug.Log("Current exp: "+ lectureProgressBarData.currentEXP + " + Max: " + lectureProgressBarData.maxEXP);
             filledBar.fillAmount = (float)lectureProgressBarData.currentEXP / lectureProgressBarData.maxEXP;
         }
@@ -83,11 +90,14 @@ namespace Vanaring
             float animationTime = Time.deltaTime * 0.001f;
 
             float finalScore = (float)(lectureProgressBarData.gainedEXP + lectureProgressBarData.currentEXP) / lectureProgressBarData.maxEXP;
-            if(finalScore > 1.0f)
+            bool isMaxBar = false;
+            if (finalScore >= 1.0f)
             {
                 finalScore = 1.0f;
+                isMaxBar = true;
             }
             Debug.Log(finalScore);
+            
             while (filledBar.fillAmount < finalScore)
             {
                 if (IsSettingUpSucessfully)
@@ -105,9 +115,14 @@ namespace Vanaring
                     {
                         reachScoreIndex++;
                     }
+                    else
+                    {
+                        break;
+                    }
                 }
                 yield return new WaitForSeconds(animationTime); 
             }
+            _uiAnimationDone = true;
         }
 
         private void GetReward()
