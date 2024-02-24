@@ -80,6 +80,7 @@ namespace Vanaring
         Library,
         Stadium,
         Cottage,
-        SchoolMap
+        SchoolMap,
+        Dorm
     }
 }
