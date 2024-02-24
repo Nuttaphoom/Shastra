@@ -110,11 +110,15 @@ namespace Vanaring
 
         public IEnumerator ClosePanel()
         {
+            
             outTimeline.Play();
             while (outTimeline.state == PlayState.Playing)
             {
                 yield return new WaitForEndOfFrame();
             }
+
+
+            yield return null; 
         }
     }
 }

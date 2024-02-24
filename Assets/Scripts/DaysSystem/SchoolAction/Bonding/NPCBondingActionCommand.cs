@@ -1,9 +1,12 @@
 ﻿using NaughtyAttributes;
+using PixelCrushers.DialogueSystem;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using Vanaring.Assets.Scripts.DaysSystem.SchoolAction;
@@ -54,15 +57,27 @@ namespace Vanaring
             return; 
         }
 
-        private void PlayHangoutScheme()
-        {
-            Debug.Log("Play Hangout Scheme");
-        }
 
         private void PlayBondingScheme()
         {
-            Debug.Log("Bonding Scheme"); 
-   
+            popUpPanel.GetComponent<MonoBehaviour>().StartCoroutine(PlayBondingSchemeCoroutine() ) ;
+        }
+        private void PlayHangoutScheme()
+        {
+            popUpPanel.GetComponent<MonoBehaviour>().StartCoroutine(PlayHangoutSchemeCoroutine());
+        }
+
+        private IEnumerator PlayHangoutSchemeCoroutine()
+        {
+            Debug.Log("Play Hangout Scheme");
+            yield return null; 
+        }
+
+        private IEnumerator PlayBondingSchemeCoroutine()
+        {
+            yield return popUpPanel.GetOrAddComponent<RelationshipFriendPanel>().ClosePanel();
+
+            popUpPanel.SetActive(false); 
 
            _npcBondingScheme.PlayBondingScheme(_characterRelationshipDataSO); 
         }
