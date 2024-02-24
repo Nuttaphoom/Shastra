@@ -104,7 +104,6 @@ namespace Vanaring
        
         private void Awake()
         {
-            Debug.Log(PersistentActiveDayDatabase.Instance ) ; 
             Instance = this; 
 
             _currentSide = ECompetatorSide.Ally;

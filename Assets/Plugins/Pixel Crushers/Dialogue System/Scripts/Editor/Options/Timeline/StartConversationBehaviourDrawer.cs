@@ -28,7 +28,6 @@ namespace PixelCrushers.DialogueSystem
             SerializedProperty entryIDProp = property.FindPropertyRelative(nameof(StartConversationBehaviour.entryID));
             SerializedProperty exclusiveProp = property.FindPropertyRelative(nameof(StartConversationBehaviour.exclusive));
             SerializedProperty conversantProp = property.FindPropertyRelative(nameof(StartConversationBehaviour.conversant));
-            SerializedProperty endConversationClip  = property.FindPropertyRelative(nameof(StartConversationBehaviour.endConversationClip));
 
             Rect singleFieldRect = new Rect(position.x, position.y, position.width, EditorGUIUtility.singleLineHeight);
            
@@ -63,9 +62,7 @@ namespace PixelCrushers.DialogueSystem
 
             singleFieldRect.y += EditorGUIUtility.singleLineHeight;
             EditorGUI.PropertyField(singleFieldRect, exclusiveProp);
-
-            singleFieldRect.y += EditorGUIUtility.singleLineHeight;
-            EditorGUI.PropertyField(singleFieldRect, endConversationClip);
+ 
 
              
 
