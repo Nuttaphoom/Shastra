@@ -99,10 +99,11 @@ namespace Vanaring
 
             GetDailyActionParticipationHandler.ResetDayAction();
 
+            _currentDate++;
+
             DayDataSO dayDataSO = GetSemesterDataSO.GetDayData(_currentDate) ;
             RuntimeDayData newDayData = new RuntimeDayData(dayDataSO) ;
 
-            _currentDate++;
 
             PersistentActiveDayDatabase.Instance.SetUpNextDay(newDayData);
 
