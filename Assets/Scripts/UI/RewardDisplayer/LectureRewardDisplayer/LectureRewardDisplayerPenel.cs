@@ -40,7 +40,8 @@ namespace Vanaring
                 {
                     isLvReach = true;
                 }
-                newBonusTrait.Init(boost.GetTrait.ToString(), boost.RequireLevel.ToString(), isLvReach);
+                newBonusTrait.Init(boost.GetTrait.ToString(), boost.RequireLevel.ToString(),
+                    isLvReach, personalityTrait.GetStat(boost.GetTrait).Getlevel().ToString());
             }
             templateBonusTraitObj.gameObject.SetActive(false);
             Debug.Log("Current exp: "+ lectureProgressBarData.currentEXP + " + Max: " + lectureProgressBarData.maxEXP);
