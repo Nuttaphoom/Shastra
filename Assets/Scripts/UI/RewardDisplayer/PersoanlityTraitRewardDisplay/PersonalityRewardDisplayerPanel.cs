@@ -110,6 +110,7 @@ namespace Vanaring
             {
                 yield return null;
             }
+            _uiAnimationDone = true;
             //Snap
             if (traitRewardShowList.Count > 0)
             {
