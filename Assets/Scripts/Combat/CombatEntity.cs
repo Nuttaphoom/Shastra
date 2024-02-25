@@ -182,6 +182,11 @@ namespace Vanaring
         }
 
         #region Turn Handler Methods 
+        /// <summary>
+        /// Controlable load data from Database here 
+        /// Enemy will display spawning effect here 
+        /// </summary>
+        /// <returns></returns>
         public abstract IEnumerator InitializeEntityIntoCombat(); 
 
         public abstract IEnumerator GetAction();

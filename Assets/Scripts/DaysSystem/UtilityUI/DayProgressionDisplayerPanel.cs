@@ -66,7 +66,7 @@ namespace Vanaring
         {
             yield return new WaitForSeconds(2.0f);
             yield return SettingUpNumber();
-            yield return _directorManager.PlayCutscene();
+            yield return _directorManager.PlayCutscene(); 
             EndProgressionDisplay();
         }
         public override IEnumerator SettingUpNumber()

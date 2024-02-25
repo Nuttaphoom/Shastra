@@ -19,7 +19,7 @@ namespace Vanaring
         private LectureRewardDisplayer _rewardDisplayer ; 
         //the default increased amount 
         private const int increaseAmount = 150 ;
-        private const int statsBootsModifer = 2; 
+        private const int statsBootsModifer = 20 ; 
 
         [SerializeField]
         private CutsceneDirector _director;
@@ -67,22 +67,32 @@ namespace Vanaring
             if (!lectureAdded)
             {
                 lectureRuntimes.Add(new LectureSubjectRuntime(_lectureToStudy));
-            } 
+            }
         }
 
+        private int CalculateBonusEXPPoint(LectureSO calculatedBootsLecture)
+        {
+            int ret = 0 ; 
+            foreach (LectureRequieBoost booster in calculatedBootsLecture.GetBooster)
+            {
+                //If booster condition doesn't match 
+                if (PersistentPlayerPersonalDataManager.Instance.GetPersonalityTrait.GetStat(booster.GetTrait).GetCurrentexp() < (float)booster.RequireLevel)
+                    continue;
+
+                ret += statsBootsModifer; 
+
+            }
+
+            return ret ; 
+        }
         private int CalculateReceivedEXPPoint(LectureSO calculatedBootsLecture)
         {
             //Potae add personality trait multiplier here
+            int statsBootsModifer = CalculateBonusEXPPoint(calculatedBootsLecture);
 
-            foreach (LectureRequieBoost booster in calculatedBootsLecture.GetBooster) {
 
-                //If booster condition doesn't match 
-                if (PersistentPlayerPersonalDataManager.Instance.GetPersonalityTrait.GetStat(booster.GetTrait).GetCurrentexp() < (float)booster.RequireLevel)
-                    return increaseAmount; 
 
-            }
-            
-            return increaseAmount * statsBootsModifer ;
+            return increaseAmount + statsBootsModifer ;
         }
 
         private void IncreaseExp()
@@ -187,13 +197,15 @@ namespace Vanaring
                     maxEXP = lectureRuntime.MaxPoint,
                     currentEXP = lectureRuntime.CurrentPoint,
                     gainedEXP = CalculateReceivedEXPPoint(_lectureToStudy),
+                    bonusEXP =  CalculateBonusEXPPoint(_lectureToStudy), 
                     allRewardData = lectureRuntime.GetEventReward(),
                     alreadyReceivedRewardData = lectureRuntime.GetAlreadyRecievedReward(), 
                     checkpoints = lectureRuntime.GetCheckPoints , 
                     boostLecture = _lectureToStudy.GetBooster 
-                }; 
+                };
+                ColorfulLogger.LogWithColor("gained EXP is " + reward.gainedEXP, Color.blue) ;
+                ColorfulLogger.LogWithColor("bonus EXP is " + reward.bonusEXP, Color.blue);
 
-             
                 yield return (_rewardDisplayer.DisplayRewardUICoroutine(reward));
 
 

@@ -14,6 +14,7 @@ namespace Vanaring
         [SerializeField]
         private ControlableEntityActionsRegistry _controlableEntityActionRegistry;
 
+        
         public override IEnumerator InitializeEntityIntoCombat()
         {
             throw new NotImplementedException();

@@ -21,10 +21,6 @@ namespace Vanaring
     [Serializable]
     public class SpellCasterHandler : MonoBehaviour, ISimulationApplier<RuntimeMangicalEnergy.EnergySide, int, Null>
     {
-        
-
-
-
         [SerializeField]
         private RuntimeMangicalEnergy _magicalEnergy;
 
@@ -51,9 +47,7 @@ namespace Vanaring
             if (_eventBroadcaster == null)
             {
                 _eventBroadcaster = new EventBroadcaster();
-
                 _eventBroadcaster.OpenChannel<EnergyModifyerEffectPair>("OnSimulateEnergy");
-                //_eventBroadcaster.OpenChannel<EnergyModifyerEffectPair>("OnModifyEnergy");
             }
 
             return _eventBroadcaster;
@@ -71,7 +65,6 @@ namespace Vanaring
 
 
         #endregion
-
 
         #region Event Sub
         public void SubOnModifyEnergy(UnityAction<CombatEntity, RuntimeMangicalEnergy.EnergySide, int> argc)
@@ -172,8 +165,6 @@ namespace Vanaring
             SpellAbilityRuntime runtimeSpell = spellSO.FactorizeRuntimeAction(_combatEntity) as SpellAbilityRuntime;
             StartCoroutine(TargetSelectionFlowControl.Instance.InitializeActionTargetSelectionScheme(_combatEntity, runtimeSpell));
         }
-
- 
         #endregion
 
         #region Interface 

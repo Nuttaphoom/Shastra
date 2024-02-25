@@ -41,7 +41,7 @@ namespace Vanaring
             {
                 switch (location.LocationName)
                 {
-                    case LocationName.Front_Gate:
+                    case LocationName.Dorm:
                         locationIndex = 0;
                         break;
                     case LocationName.Library:
@@ -54,7 +54,7 @@ namespace Vanaring
                     //    locationIndex = 3;
                     //    break;
                     default:
-                        Debug.LogError("Non setup tranform index");
+                        Debug.LogError(location.LocationName + " hasn't been set in locationIndex");
                         break;
                 }
                 PinGUI newPin = Instantiate(pinTemplate, pinTransformList[locationIndex]);         

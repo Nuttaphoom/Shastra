@@ -22,6 +22,7 @@ namespace Vanaring
 
             //StartCoroutine(_botBehaviorHandler.CalculateNextBehavior());
         }
+
         public override IEnumerator InitializeEntityIntoCombat()
         {
             CombatEntityAnimationHandler.InstantlyHideVisualMesh();

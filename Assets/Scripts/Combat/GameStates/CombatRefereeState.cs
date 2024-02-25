@@ -131,9 +131,9 @@ namespace Vanaring
 
             while (true)
             {
-                //Asking for actor every frame
+                
                 _actor = _stateHandler.Referee.GetCurrentActor() ;
-                //No Actor left (Possibly, everyone is exhaunted) 
+
                 if (_actor == null)
                     break; 
                  
