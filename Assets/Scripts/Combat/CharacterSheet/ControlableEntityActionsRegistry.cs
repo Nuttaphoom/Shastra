@@ -20,5 +20,6 @@ namespace Vanaring
  
         public List<SpellActionSO> GetSpellAction => _spellActions ;  
         public List<WeaponActionSO> GetWeaponAction => _equipedWeaponAction ;
+
     }
 }

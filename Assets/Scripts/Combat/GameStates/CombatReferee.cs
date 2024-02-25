@@ -113,13 +113,32 @@ namespace Vanaring
 
         private void Start()
         {
-            StartCoroutine(BeginNewBattle()); 
+            StartCoroutine(InitializeCombat()); 
         }
 
         #region SettingUpRound
-        private IEnumerator BeginNewBattle()
+        private IEnumerator InitializeCombat()
         {
+            yield return LoadDataFromDatabase();
+            yield return PlayCombatIntroTimeline();
+            yield return BeginNewBattle();
+        }
 
+        private IEnumerator PlayCombatIntroTimeline()
+        {
+            Debug.LogWarning("No Combat Intro");
+            yield return null; 
+        }
+
+        private IEnumerator LoadDataFromDatabase()
+        {
+            //We garuntee that Player's side character is valid at this point 
+            
+            yield return null; 
+        }
+
+        private IEnumerator BeginNewBattle()
+        { 
             yield return SetUpNewCombatEncounter();
 
             yield return new WaitForSeconds(1.0f);
@@ -134,10 +153,8 @@ namespace Vanaring
         }
         private IEnumerator SetUpNewCombatEncounter()
         {
-
             // Call the GenerateEntityAttacher method with the lists
             CameraSetUPManager.Instance.GenerateEntityAttacher(GetCompetatorsBySide(ECompetatorSide.Ally).Select(c => c.gameObject).ToList(), GetCompetatorsBySide(ECompetatorSide.Hostile).Select(c => c.gameObject).ToList());
-
 
             foreach (CombatEntity entity in GetCompetatorsBySide(ECompetatorSide.Ally))
                 GetEventBroadcaster().InvokeEvent<CombatEntity>(entity, "OnCompetitorEnterCombat");

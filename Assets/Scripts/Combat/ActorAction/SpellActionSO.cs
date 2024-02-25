@@ -17,7 +17,6 @@ namespace Vanaring
         [Header("===Require Energy amount before casting===")]
         [SerializeField]
         private EnergyModifierData _requiredEnergy;
-
         public RuntimeMangicalEnergy.EnergySide RequiredSide => _requiredEnergy.Side ;
         public int RequiredAmout => _requiredEnergy.Amount > 0 ? (_requiredEnergy.Amount * -1 ) : (_requiredEnergy.Amount) ; 
 

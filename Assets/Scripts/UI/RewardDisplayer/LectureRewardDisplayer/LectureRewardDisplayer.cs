@@ -7,11 +7,13 @@ namespace Vanaring
 {
     [Serializable]
     public struct LectureRewardStruct
-    {
+    { 
         public int maxEXP;
         public int currentEXP;
-        //string reward 
+        //All of the EXP gained from every source
         public int gainedEXP;
+        //EXP gained from the bonus booster
+        public int bonusEXP;
         public List<LectureChechpoint> checkpoints ; 
         public List<EventReward> allRewardData;
         public List<EventReward> alreadyReceivedRewardData;
