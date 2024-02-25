@@ -6,8 +6,6 @@ using UnityEngine.Events;
 using System.Data;
 using Vanaring.Assets.Scripts.DaysSystem.SchoolAction;
 using Language.Lua;
-using static UnityEditor.PlayerSettings;
-using static UnityEngine.InputSystem.LowLevel.InputStateHistory;
 using Unity.VisualScripting;
 using UnityEngine.SocialPlatforms.Impl;
 using System.Diagnostics.Eventing.Reader;
