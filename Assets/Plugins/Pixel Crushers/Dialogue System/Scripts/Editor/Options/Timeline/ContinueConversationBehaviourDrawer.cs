@@ -15,7 +15,7 @@ namespace PixelCrushers.DialogueSystem
     {
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
-            int fieldCount = 4;
+            int fieldCount = 5;
             return fieldCount * EditorGUIUtility.singleLineHeight;
         }
 
@@ -24,6 +24,7 @@ namespace PixelCrushers.DialogueSystem
             SerializedProperty operationProp = property.FindPropertyRelative(nameof(ContinueConversationBehaviour.operation));
             SerializedProperty clearPanelNumberProp = property.FindPropertyRelative(nameof(ContinueConversationBehaviour.clearPanelNumber));
             SerializedProperty clearAllPanelsProp = property.FindPropertyRelative(nameof(ContinueConversationBehaviour.clearAllPanels));
+            SerializedProperty hideDialogueBoxAfterCompletion = property.FindPropertyRelative(nameof(ContinueConversationBehaviour.HideDialogueBoxAfterCompletion));
 
             Rect singleFieldRect = new Rect(position.x, position.y, position.width, EditorGUIUtility.singleLineHeight);
 
@@ -31,6 +32,9 @@ namespace PixelCrushers.DialogueSystem
             {
                 UpdateLength((ContinueConversationBehaviour.Operation)operationProp.enumValueIndex);
             }
+            
+            singleFieldRect.y += EditorGUIUtility.singleLineHeight  ;
+            EditorGUI.PropertyField(singleFieldRect, hideDialogueBoxAfterCompletion);
 
             singleFieldRect.y += EditorGUIUtility.singleLineHeight;
             EditorGUI.PropertyField(singleFieldRect, operationProp);
@@ -38,6 +42,7 @@ namespace PixelCrushers.DialogueSystem
             EditorGUI.PropertyField(singleFieldRect, clearPanelNumberProp);
             singleFieldRect.y += EditorGUIUtility.singleLineHeight;
             EditorGUI.PropertyField(singleFieldRect, clearAllPanelsProp);
+
         }
 
         private void UpdateLength(ContinueConversationBehaviour.Operation operation)

@@ -38,10 +38,13 @@ namespace Vanaring
         public IEnumerator PostPerformActivity()
         {
             //Display reward displayer 
-            SubmitActionReward() ; 
-
+            //SubmitActionReward() ;
+            yield return new WaitForSeconds(1);
+            PersistentActiveDayDatabase.Instance.GetDayProgressionHandler.OnPostPerformSchoolAction();
+            yield return null; 
+            //yield return null; 
             //Display action reward 
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         public void SubmitActionReward()

@@ -24,14 +24,20 @@ namespace PixelCrushers.DialogueSystem
 
             int inputCount = playable.GetInputCount();
 
+
             for (int i = 0; i < inputCount; i++)
             {
-                float inputWeight = playable.GetInputWeight(i);
+
+                float inputWeight = playable.GetInputWeight(i); 
+                
+
                 if (inputWeight > 0.001f && !played.Contains(i))
                 {
                     played.Add(i);
                     ScriptPlayable<StartConversationBehaviour> inputPlayable = (ScriptPlayable<StartConversationBehaviour>)playable.GetInput(i);
                     StartConversationBehaviour input = inputPlayable.GetBehaviour();
+
+                  
                     if (Application.isPlaying)
                     {
                         if (input.exclusive)
@@ -57,6 +63,7 @@ namespace PixelCrushers.DialogueSystem
                 {
                     played.Remove(i);
                 }
+                 
             }
         }
 

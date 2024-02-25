@@ -62,9 +62,9 @@ namespace PixelCrushers.DialogueSystem
 
             singleFieldRect.y += EditorGUIUtility.singleLineHeight;
             EditorGUI.PropertyField(singleFieldRect, exclusiveProp);
- 
 
-             
+     
+
 
 
         }

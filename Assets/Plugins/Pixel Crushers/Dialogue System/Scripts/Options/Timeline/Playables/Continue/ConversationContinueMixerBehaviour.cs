@@ -27,11 +27,16 @@ namespace PixelCrushers.DialogueSystem
             for (int i = 0; i < inputCount; i++)
             {
                 float inputWeight = playable.GetInputWeight(i);
+
+                var inputPlayable = (ScriptPlayable<ContinueConversationBehaviour>)playable.GetInput(i);
+                ContinueConversationBehaviour input = inputPlayable.GetBehaviour();
+
                 if (inputWeight > 0.001f && !played.Contains(i))
                 {
+                     
+
                     played.Add(i);
-                    var inputPlayable = (ScriptPlayable<ContinueConversationBehaviour>)playable.GetInput(i);
-                    ContinueConversationBehaviour input = inputPlayable.GetBehaviour();
+
                     if (Application.isPlaying)
                     {
                         switch (input.operation)
@@ -75,11 +80,22 @@ namespace PixelCrushers.DialogueSystem
                         }
                     }
                 }
-                else if (inputWeight <= 0.001f && played.Contains(i))
+                else if (inputWeight <= 0.001f && played.Contains(i)  )
                 {
+                    if (input.HideDialogueBoxAfterCompletion  ) {
+                        foreach (var subtitlePanel in  DialogueManager.instance.standardDialogueUI.conversationUIElements.subtitlePanels )
+                        {
+                            subtitlePanel.Close();
+                        } 
+                    }
+                     
                     played.Remove(i);
                 }
+
+
             }
+
+
         }
 
         private string GetEditorContinueText(Playable playable)

@@ -32,6 +32,7 @@ namespace PixelCrushers.DialogueSystem
         {
             return ScriptPlayable<ContinueConversationBehaviour>.Create(graph, template);
         }
+
     }
 }
 #endif

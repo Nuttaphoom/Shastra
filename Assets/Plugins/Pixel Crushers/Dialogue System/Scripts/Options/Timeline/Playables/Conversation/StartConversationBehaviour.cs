@@ -29,7 +29,7 @@ namespace PixelCrushers.DialogueSystem
 
         [Tooltip("Stop any active conversations before starting this one.")]
         public bool exclusive = false;
-
+ 
         public string GetEditorDialogueText()
         {
             var dialogueText = PreviewUI.GetDialogueText(conversation, jumpToSpecificEntry ? entryID : -1);
