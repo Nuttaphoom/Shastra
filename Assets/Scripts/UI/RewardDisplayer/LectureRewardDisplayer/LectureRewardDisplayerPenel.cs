@@ -20,10 +20,10 @@ namespace Vanaring
         private LectureRewardButtonObject rewardButton;
         [SerializeField]
         private LectureParticipationScheme lectureMananger;
-        [SerializeField] 
-        private TextMeshProUGUI traitBoostNameText;
         [SerializeField]
-        private TextMeshProUGUI traitBoostLevelText;
+        private BonusTraitObject templateBonusTraitObj;
+        [SerializeField]
+        private GameObject bonusVerticalLayout;
 
         private List<LectureRewardButtonObject> rewardButtonList = new List<LectureRewardButtonObject>();
         private LectureRewardStruct lectureProgressBarData;
@@ -31,8 +31,19 @@ namespace Vanaring
         public void ReceiveRewardDetail(LectureRewardStruct rewardData)
         {
             lectureProgressBarData = rewardData;
-            traitBoostNameText.text = lectureProgressBarData.boostLecture[0].GetTrait.ToString();
-            traitBoostLevelText.text = lectureProgressBarData.boostLecture[0].RequireLevel.ToString();
+            PersonalityTrait personalityTrait = PersistentPlayerPersonalDataManager.Instance.GetPersonalityTrait;
+            foreach (LectureRequieBoost boost in lectureProgressBarData.boostLecture)
+            {
+                BonusTraitObject newBonusTrait = Instantiate(templateBonusTraitObj, bonusVerticalLayout.transform);
+                bool isLvReach = false;
+                if(personalityTrait.GetStat(boost.GetTrait).Getlevel() >= boost.RequireLevel)
+                {
+                    isLvReach = true;
+                }
+                newBonusTrait.Init(boost.GetTrait.ToString(), boost.RequireLevel.ToString(),
+                    isLvReach, personalityTrait.GetStat(boost.GetTrait).Getlevel().ToString());
+            }
+            templateBonusTraitObj.gameObject.SetActive(false);
             Debug.Log("Current exp: "+ lectureProgressBarData.currentEXP + " + Max: " + lectureProgressBarData.maxEXP);
             filledBar.fillAmount = (float)lectureProgressBarData.currentEXP / lectureProgressBarData.maxEXP;
         }

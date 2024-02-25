@@ -38,7 +38,8 @@ namespace Vanaring
 
         [Header("TraitRewardPanel")]
         [SerializeField] private GameObject levelUpPanel;
-        [SerializeField] private TextMeshProUGUI levelUpText;
+        //[SerializeField] private TextMeshProUGUI levelUpText;
+        [SerializeField] private Image levelUpTraitIcon;
         [SerializeField] private TextMeshProUGUI levelUpRewardText;
 
         private List<PersonalityRewardData> _personalityRewardList;
@@ -52,9 +53,9 @@ namespace Vanaring
             _personalityRewardList = personalRewardDataList;
             personalityTrait = PersistentPlayerPersonalDataManager.Instance.GetPersonalityTrait ;
             charmIcon.sprite = personalityTrait.GetStat(Trait.Trait_Type.Charm).GetPersonalityTraitIcon;
-            charmIcon.sprite = personalityTrait.GetStat(Trait.Trait_Type.Kindness).GetPersonalityTraitIcon;
-            charmIcon.sprite = personalityTrait.GetStat(Trait.Trait_Type.Knowledge).GetPersonalityTraitIcon;
-            charmIcon.sprite = personalityTrait.GetStat(Trait.Trait_Type.Proficiency).GetPersonalityTraitIcon;
+            kindIcon.sprite = personalityTrait.GetStat(Trait.Trait_Type.Kindness).GetPersonalityTraitIcon;
+            knowIcon.sprite = personalityTrait.GetStat(Trait.Trait_Type.Knowledge).GetPersonalityTraitIcon;
+            profIcon.sprite = personalityTrait.GetStat(Trait.Trait_Type.Proficiency).GetPersonalityTraitIcon;
             levelCharmText.text = personalityTrait.GetStat(Trait.Trait_Type.Charm).Getlevel().ToString();
             levelKindText.text = personalityTrait.GetStat(Trait.Trait_Type.Kindness).Getlevel().ToString();
             levelKnowText.text = personalityTrait.GetStat(Trait.Trait_Type.Knowledge).Getlevel().ToString();
@@ -109,6 +110,7 @@ namespace Vanaring
             {
                 yield return null;
             }
+            _uiAnimationDone = true;
             //Snap
             if (traitRewardShowList.Count > 0)
             {
@@ -169,8 +171,9 @@ namespace Vanaring
             for (int i = 0; i < displayTraitRewardList.Count; i++)
             {
                 levelUpPanel.SetActive(true);
-                levelUpText.text = displayTraitRewardList[i].ToString() + " lv." 
-                    + personalityTrait.GetStat(displayTraitRewardList[i]).Getlevel().ToString();
+                levelUpTraitIcon.sprite = personalityTrait.GetStat(displayTraitRewardList[i]).GetPersonalityTraitIcon;
+                //levelUpText.text = displayTraitRewardList[i].ToString() + " lv." 
+                //    + personalityTrait.GetStat(displayTraitRewardList[i]).Getlevel().ToString();
                 levelUpRewardText.text = displayTraitRewardList[i].ToString() + " upgrades to rank " + 
                     personalityTrait.GetStat(displayTraitRewardList[i]).Getlevel().ToString() + "!";
                 while (levelUpPanel.activeSelf)
