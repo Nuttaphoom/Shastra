@@ -14,7 +14,6 @@ namespace Vanaring
         [SerializeField]
         private BackpackItemSO _backpackItem;
 
-
         [SerializeField]
         private int _amount;
 
@@ -134,7 +133,9 @@ namespace Vanaring
             {
                 for (int i = 0; i < backpackItem.GetItemAmount(); i++)
                 {
+                    Debug.Log("here surview"); 
                     keys.Add(m_inventoryDatabase.GetRecordKey(backpackItem.GetBackpackItem()));
+                    Debug.Log("end surview") ;
                 }
             }
             

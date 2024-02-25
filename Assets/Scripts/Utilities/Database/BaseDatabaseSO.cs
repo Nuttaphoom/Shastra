@@ -61,7 +61,7 @@ namespace Vanaring
                     return pair.GetRecorded();    
             }
 
-            throw new Exception("" + uniqueID+ "could not be found in database of type " +typeof(RecordType));
+            throw new Exception("" + uniqueID+ "could not be found in database of type " + typeof(RecordType));
         }
 
         public string GetRecordKey(RecordType type)

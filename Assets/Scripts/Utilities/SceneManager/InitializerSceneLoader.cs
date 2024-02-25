@@ -18,14 +18,12 @@ namespace Vanaring
 
         private void Start()
         {
-            Debug.LogAssertion("Start scene loader") ;
             SceneManager.LoadSceneAsync(_persistantScene.GetSceneName(), LoadSceneMode.Additive).completed += OnLoadAsync;
         }
 
         
         private void OnLoadAsync(AsyncOperation asy)
         {
-            Debug.LogAssertion("OnLoadAsync called");
             if (_firstSceneToLoad.GetSceneType() == SceneDataSO.GameSceneType.Menu)
             {
                 throw new System.Exception("still not implement loading menu functionality"); 

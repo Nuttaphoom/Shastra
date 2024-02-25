@@ -8,6 +8,7 @@ namespace Vanaring
     public class PersistentPlayerPersonalDataManager : PersistentInstantiatedObject<PersistentPlayerPersonalDataManager> , ISaveable
     {
         // TEMP : Manually Load data from SO for now 
+        [Header("These parameter should not be set in inspector")] 
         [SerializeField]
         private PersonalityTraitSO player_personalityTraitSO;
 
