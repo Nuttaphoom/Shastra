@@ -97,18 +97,10 @@ namespace Vanaring
             confirmButton.onClick.AddListener(() => action.ExecuteCommand());
             
         }
-
         public void OpenPanel()
         {
             confirmPanel.SetActive(true);
         }
-
-        private void OpenLecturePanel()
-        {
-            Debug.Log("Opn");
-            _lectureSelectPanel.SetActive(true);
-        }
-
         public void ClosePanel()
         {
             confirmPanel.SetActive(false);
