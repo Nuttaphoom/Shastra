@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Vanaring
 {
-    [CreateAssetMenu(fileName = "CharacterSheet", menuName = "ScriptableObject/Character/CombatCharacterSheet")]
+    [CreateAssetMenu(fileName = "CombatCharacterSheet", menuName = "ScriptableObject/Character/CombatCharacterSheet")]
 
     public class CombatCharacterSheetSO : CharacterSheetSO 
     {

@@ -71,5 +71,10 @@ namespace Vanaring
 
             aiBehaviorHandler.OnBehaviorOwnerStun(); 
         }
+
+        public override IEnumerator LoadDataFromDatabase()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

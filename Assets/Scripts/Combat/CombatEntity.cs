@@ -187,8 +187,9 @@ namespace Vanaring
         /// Enemy will display spawning effect here 
         /// </summary>
         /// <returns></returns>
-        public abstract IEnumerator InitializeEntityIntoCombat(); 
+        public abstract IEnumerator InitializeEntityIntoCombat();
 
+        public abstract IEnumerator LoadDataFromDatabase(); 
         public abstract IEnumerator GetAction();
 
         // Take control and leave control should have its own space 

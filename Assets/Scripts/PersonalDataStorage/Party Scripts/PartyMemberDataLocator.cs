@@ -94,9 +94,8 @@ namespace Vanaring
             Dictionary<string, List<string>> saveData = new Dictionary<string, List<string>>();
             foreach (var member in _partyMemberData)
             {
-                string characterName = member.GetMemberName();
+                string characterName = member.GetMemberName ;
                 List<string> captureState = (List<string>)member.CaptureState();
-
                 if (!saveData.ContainsKey(characterName)) // temp skip for duplicate Asha?????
                     continue;
 
@@ -111,9 +110,10 @@ namespace Vanaring
             InitializeRuntimeMemberData(); 
              
             Dictionary<string, List<string>> saveData = (Dictionary<string, List<string>>)state;
-
+            Debug.Log("restore state in PartyMemberDataLocater");
             foreach (KeyValuePair<string, List<string>> data in saveData) // loop through both
             {
+                Debug.Log("restore in PartyMemberDataLocator");
                 GetRuntimeData(data.Key).RestoreState(data.Value);
             }
         }
