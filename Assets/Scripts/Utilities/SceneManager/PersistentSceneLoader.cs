@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 using Vanaring; 
@@ -17,6 +18,8 @@ namespace Vanaring
         private string _currentLoadedLocationScene ;
         private SceneDataSO _sceneToLoad;
         private TransitionObject transitionScreenObj;
+
+
         [SerializeField]
         private TransitionSceneManager transitionManager;
 
@@ -45,42 +48,53 @@ namespace Vanaring
         }
 
         #endregion
+
         #region Load Location 
 
-        /// <summary>
-        /// Functionality to load and unload previous scene 
-        /// </summary>
-        /// <param name="sceneSO"></param>
+        //public void LoadLastVisitedLocation()
+        //{
+        //   LoadLocation<Null>(_last_visisted_location,
+        //        null); 
 
+        //    ;
+        //}
 
-        public void LoadLastVisitedLocation()
-        {
-            LoadLocation<Null>(_last_visisted_location,
-                null); 
-
-            ;
-        }
-
-
+        #region Public Methods
         /// <summary>
         /// Clear data related to last visiste location only 
         /// No need to clear _userDataScene and _stackLoadedSceneData
         /// </summary>
+        public void CreateTransitionScene()
+        {
+            if (transitionScreenObj == null)
+            {
+                transitionScreenObj = Instantiate(transitionManager.TransitionObj, gameObject.transform);
+                transitionScreenObj.name = "-- TransitionScreen ----------";
+                //transitionManager.SetTransitionObj(transitionScreenObj);
+                transitionScreenObj.Init(transitionManager);
+            }
+        }
+        public void OnCompleteLoadedNewLocationScene(AsyncOperation asy)
+        {
+            _currentLoadedLocationScene = _sceneToLoad.GetSceneName();
+            //Debug.Log(_currentLoadedLocationScene); 
+            SceneManager.SetActiveScene(SceneManager.GetSceneByName(_currentLoadedLocationScene));
+            _isLoading = false;
+
+        }
+
         public void ClearUserDataOfTempVisitedLocationData()
         {
             _last_visisted_loaderDataUser = null;
-            _last_visisted_location = null; 
-            
-
+            _last_visisted_location = null;
         }
         public LoaderDataUser<T> ExtractLastSavedData<T>()
         {
             if (_last_visisted_loaderDataUser == null)
-                throw new System.Exception("_last_visisted_loaderDataUser is null"); 
+                throw new System.Exception("_last_visisted_loaderDataUser is null");
 
             return _last_visisted_loaderDataUser as LoaderDataUser<T>;
         }
-
         public LoaderDataUser<T> ExtractSavedData<T>(string uniqueID)
         {
             if (!_userDataScene.ContainsKey(uniqueID))
@@ -94,36 +108,32 @@ namespace Vanaring
 
             return _userDataScene[uniqueID] as LoaderDataUser<T>;
         }
-
-        public void LoadLocation<T>(SceneDataSO sceneSO, T transferedData  )  
+        public void LoadLocation<T>(SceneDataSO sceneSO, T transferedData)
         {
-            ColorfulLogger.LogWithColor("Load Location", Color.red); 
 
-            if (transferedData != null)            
-                _last_visisted_loaderDataUser =  CreateLoaderDataUser(sceneSO.GetSceneID(),transferedData); 
-         
-            _last_visisted_location =  (sceneSO); 
+            if (transferedData != null)
+                _last_visisted_loaderDataUser = CreateLoaderDataUser(sceneSO.GetSceneID(), transferedData);
 
-            LoadGeneralScene(sceneSO) ;
+            _last_visisted_location = (sceneSO);
+
+            LoadGeneralScene(sceneSO);
         }
-
-        public LoaderDataUser CreateLoaderDataUser<T>(string id ,T transferedData)
+        public LoaderDataUser CreateLoaderDataUser<T>(string id, T transferedData)
         {
             if (transferedData != null)
             {
                 LoaderDataUser<T> user = new LoaderDataUser<T>(transferedData);
-                
+
                 if (_userDataScene.ContainsKey(id))
-                    _userDataScene.Remove(id); 
+                    _userDataScene.Remove(id);
 
                 _userDataScene.Add(id, user);
 
                 return user;
             }
 
-            return null; 
+            return null;
         }
-
         public void LoadGeneralScene(SceneDataSO sceneSO)
         {
             if (_isLoading)
@@ -131,7 +141,7 @@ namespace Vanaring
 
             _isLoading = true;
 
-            _sceneToLoad = sceneSO  ;
+            _sceneToLoad = sceneSO;
 
             if (_currentLoadedLocationScene != null)
             {
@@ -142,6 +152,8 @@ namespace Vanaring
                 BeginLoadScene();
             }
         }
+        #endregion
+
         private void UnloadLocation()
         {
             if (_currentLoadedLocationScene != null)
@@ -150,27 +162,22 @@ namespace Vanaring
             BeginLoadScene() ;
         }
 
-        public void OnCompleteLoadedNewLocationScene(AsyncOperation asy)
-        {
-            _currentLoadedLocationScene = _sceneToLoad.GetSceneName() ;
-            //Debug.Log(_currentLoadedLocationScene); 
-            SceneManager.SetActiveScene(SceneManager.GetSceneByName(_currentLoadedLocationScene));
-            _isLoading = false;
-            
-        }
-
-        public void CreateTransitionScene()
-        {
-            if(transitionScreenObj == null)
-            {
-                transitionScreenObj = Instantiate(transitionManager.TransitionObj, gameObject.transform);
-                transitionScreenObj.name = "-- TransitionScreen ----------";
-                //transitionManager.SetTransitionObj(transitionScreenObj);
-                transitionScreenObj.Init(transitionManager);
-            }
-        }
         #endregion
 
+        #region Load Specific Location 
+        [SerializeField]
+        private AssetReferenceT<SceneDataSO> _mapSceneDataAddress;
+
+        private SceneDataSO _mapSceneDataSO; 
+        public void LoadMapScene()
+        {
+            if (_mapSceneDataSO == null)
+                _mapSceneDataSO = PersistentAddressableResourceLoader.Instance.LoadResourceOperation<SceneDataSO>(_mapSceneDataAddress);
+
+            LoadGeneralScene(_mapSceneDataSO);
+        }
+
+        #endregion
 
         private void BeginLoadScene()
         {

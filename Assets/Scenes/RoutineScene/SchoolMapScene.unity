@@ -180,7 +180,7 @@ GameObject:
   - component: {fileID: 70396223}
   - component: {fileID: 70396222}
   m_Layer: 5
-  m_Name: Panel
+  m_Name: MapBG
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -333,6 +333,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 605fc156ac5273343ba757ca4b6c6b9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _mapImage: {fileID: 70396222}
   mapPinList: []
   pinTransformList:
   - {fileID: 114379380}
@@ -340,6 +341,24 @@ MonoBehaviour:
   - {fileID: 1653841321}
   - {fileID: 28644723}
   pinTemplate: {fileID: 5947484616777429148, guid: efe32d34b5b56c34b84ca591467147a5, type: 3}
+  _morningMapAddress:
+    m_AssetGUID: a8af7d7c237ebed4094ac9c776aa5ce7
+    m_SubObjectName: morningSchool
+    m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+    m_EditorAssetChanged: 1
+  _noonMapAddress:
+    m_AssetGUID: b671350d7b7406149bdabb2ab5ac0a21
+    m_SubObjectName: noonSchool
+    m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+    m_EditorAssetChanged: 1
+  _nightMapAddress:
+    m_AssetGUID: fdc198d01edf35b419d690816a859798
+    m_SubObjectName: eveningSchool
+    m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+    m_EditorAssetChanged: 1
 --- !u!1 &226194235
 GameObject:
   m_ObjectHideFlags: 0

@@ -19,7 +19,16 @@ namespace Vanaring
     {
         [SerializeField]
         private AssetReferenceT<SemesterDataSO> _activeSemesterAddress ;
+
         private SemesterDataSO _currentSemester;
+
+        [SerializeField]
+        private AssetReferenceT<EssentialSceneDataSO> DayProgressionSceneAddress;
+        [SerializeField]
+        private AssetReferenceT<SceneDataSO> DormSceneAddress;
+
+        [SerializeField]
+        private DayProgressionDisplayer _progressionDisplayer;
 
         #region GETTER 
         public SemesterDataSO GetSemesterDataSO
@@ -48,15 +57,6 @@ namespace Vanaring
                 return _dailyActionParticipationHandler; 
             }
         } 
- 
-
-        [SerializeField]
-        private AssetReferenceT<EssentialSceneDataSO> DayProgressionSceneAddress ;
-        [SerializeField] 
-        private AssetReferenceT<SceneDataSO> DormSceneAddress ;
-
-        [SerializeField]
-        private DayProgressionDisplayer _progressionDisplayer;
 
         public IEnumerator LoadDayProgressionScene()
         {
@@ -104,7 +104,6 @@ namespace Vanaring
             DayDataSO dayDataSO = GetSemesterDataSO.GetDayData(_currentDate) ;
             RuntimeDayData newDayData = new RuntimeDayData(dayDataSO) ;
 
-
             PersistentActiveDayDatabase.Instance.SetUpNextDay(newDayData);
 
             LoadCorrespondScene(); 
@@ -114,6 +113,7 @@ namespace Vanaring
         {
             GetDailyActionParticipationHandler.DecreaseActionPoint(1);
 
+            
             ///No remaining action point => start new day 
             if (_dailyActionParticipationHandler.IsOutOfActionPoint())
             {
@@ -123,26 +123,16 @@ namespace Vanaring
             //Action remains
             else
             {
-                PersistentSceneLoader.Instance.LoadLastVisitedLocation();
+                PersistentActiveDayDatabase.Instance.ProgressNextDaySession(); 
             }
 
         }
+    }
 
-        private void GetBackToLastVisitedLocationScene()
-        {
-            
-        }
-
-        public int GetCurrentDayTime()
-        {
-            return GetDailyActionParticipationHandler.GetMaxActionPoint() - _dailyActionParticipationHandler.GetRemaiingActionPoint(); 
-        }
-
-        
-
-        
-        
-
-       
+    public enum EDayTime
+    {
+        Morning = 0, 
+        Noon = 1,
+        Night = 2
     }
 }

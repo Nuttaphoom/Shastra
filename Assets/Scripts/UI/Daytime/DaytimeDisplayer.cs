@@ -65,16 +65,10 @@ namespace Vanaring
             InitPanel();
             //Debug.Log("Date: " + date + ", Month: " + months[month] + ", Day: " + days[weekDay]);
         }
-        public void AdvanceDayNight()
-        {
-            time++;
-        }
-
+    
         private void Awake()
         {
             InitPanel();
-            
-            //Debug.Log(PersistentActiveDayDatabase.Instance.GetDayProgressionHandler.GetCurrentDayTime());
         }
 
         [ContextMenu("ShowPanelDetail")]
@@ -83,8 +77,8 @@ namespace Vanaring
             dateText.text = date + "/" + (month + 1);
             weekdayText.text = days[weekDay];
             weekdayText.color = weekColor[weekDay];
-            dayTimeText.text = dayTime[PersistentActiveDayDatabase.Instance.GetDayProgressionHandler.GetCurrentDayTime()].ToString();
-            Debug.Log("Date: " + date + ", Month: " + month+1 + ", Day: " + days[weekDay]);
+            dayTimeText.text = dayTime[(int)PersistentActiveDayDatabase.Instance.GetCurrentDayTime()].ToString();
+            //Debug.Log("Date: " + date + ", Month: " + month+1 + ", Day: " + days[weekDay]);
         }
 
         public void OpenPanel(){

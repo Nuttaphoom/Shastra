@@ -18,11 +18,9 @@ namespace Vanaring
 
         public void SetUpRuntimePartyMemberData(CharacterSheetSO sheet)
         {
-            Debug.Log("create _memberActionRegister for " + sheet.CharacterName) ;
             _characterSheetSO = sheet ; 
             _memberActionRegister = new PartyMemberActionRegister();
             //_memberActionRegister.LoadSpellFromDatabase(spellUniqueKeys);
-            
         }
 
         public List<SpellActionSO> GetRegisteredSpellActionSO
@@ -49,7 +47,6 @@ namespace Vanaring
             return (characterName == GetMemberName ) ; 
         }
 
-
         public string GetMemberName {
             get {
                 if (_characterSheetSO == null)
@@ -58,7 +55,6 @@ namespace Vanaring
                 return _characterSheetSO.CharacterName;
             }
         } 
-        
 
         #region Save System
         public object CaptureState()

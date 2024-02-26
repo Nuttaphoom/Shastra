@@ -103,7 +103,7 @@ namespace Vanaring
                             traitReward.RewardAmount, Trait.Trait_Type.Proficiency, traitGauge4, levelProfText));
                         break;
                 }
-                Debug.Log(traitReward.RewardTraitType + ": " + traitReward.RewardAmount.ToString());
+                //Debug.Log(traitReward.RewardTraitType + ": " + traitReward.RewardAmount.ToString());
                 coroutineRunningCount++;
             }
             while(coroutineRunningCount > 0)
@@ -147,9 +147,9 @@ namespace Vanaring
 
                 if (Math.Floor(curExpGain) >= expReqVal) //level up condition
                 {
-                    Debug.Log(curExpGain + ", " + Math.Floor(curExpGain));
+                    //Debug.Log(curExpGain + ", " + Math.Floor(curExpGain));
                     curExpGain = curExpGain - expReqVal;
-                    Debug.Log("Lvl trait " + type.ToString() + " up to: " + (personalityTrait.GetStat(type).Getlevel() + 1).ToString());
+                    //Debug.Log("Lvl trait " + type.ToString() + " up to: " + (personalityTrait.GetStat(type).Getlevel() + 1).ToString());
 
                     isTraitHasReward = true;
                     personalityTrait.SetStat(type, personalityTrait.GetStat(type).Getlevel()+1, curExpGain);   //plus level by 1

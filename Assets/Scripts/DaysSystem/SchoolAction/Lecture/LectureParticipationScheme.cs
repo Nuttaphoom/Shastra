@@ -211,7 +211,7 @@ namespace Vanaring
 
             }
 
-            PersistentActiveDayDatabase.Instance.GetDayProgressionHandler.OnPostPerformSchoolAction();
+            PersistentActiveDayDatabase.Instance.OnPostPerformSchoolAction();
 
             yield return null; 
         }

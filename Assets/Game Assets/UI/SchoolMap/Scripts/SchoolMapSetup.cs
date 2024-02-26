@@ -2,11 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using UnityEngine.UI;
+using UnityEngine.AddressableAssets;
 
 namespace Vanaring
 {
     public class SchoolMapSetup : MonoBehaviour
     {
+        [SerializeField]
+        private Image _mapImage;
+
         [System.Serializable]
         public struct Pin
         {
@@ -21,16 +26,20 @@ namespace Vanaring
         private List<PinGUI> pinObject;
         [SerializeField]
         private PinGUI pinTemplate;
-        RuntimeDayData dayDataTmp;
         private List<RuntimeLocation> availableLocationList;
+
+
+
 
         private void Awake()
         {
-            availableLocationList = PersistentActiveDayDatabase.Instance.GetActiveDayData.GetAvailableLocation();
+            if (_mapImage == null)
+                throw new Exception("_mapImage hasn't been assigned");
+            availableLocationList = PersistentActiveDayDatabase.Instance.GetActiveDayData.GetAvailableLocationAccordingToDayTime();
             //LoadPin(PersistentActiveDayDatabase.Instance.GetActiveDayData);
-            LoadAllPin(dayDataTmp);
+            LoadAllPin();
         }
-        private void LoadAllPin(RuntimeDayData dayData)
+        private void LoadAllPin()
         {
             LoadMapBackground();
 
@@ -57,15 +66,67 @@ namespace Vanaring
                         Debug.LogError(location.LocationName + " hasn't been set in locationIndex");
                         break;
                 }
-                PinGUI newPin = Instantiate(pinTemplate, pinTransformList[locationIndex]);         
+                PinGUI newPin = Instantiate(pinTemplate, pinTransformList[locationIndex]);
                 newPin.Init(location);
                 pinObject.Add(newPin);
             }
         }
 
+        #region Map Image Method
+        [SerializeField]
+        private AssetReferenceT<Sprite> _morningMapAddress;
+        [SerializeField]
+        private AssetReferenceT<Sprite> _noonMapAddress;
+        [SerializeField]
+        private AssetReferenceT<Sprite> _nightMapAddress;
+
+        private Sprite _morningMapSprite;
+        private Sprite _noonMapSprite;
+        private Sprite _nightMapSprite;
+
         private void LoadMapBackground()
         {
-            //Need Day/Night time data
+            LoadMapSpriteFromAddress(); 
+
+            EDayTime currentDayTime = PersistentActiveDayDatabase.Instance.GetActiveDayData.GetCurrentDayTime;
+            Debug.Log("load map with current day time :  " + currentDayTime);
+            switch (currentDayTime) {
+                case EDayTime.Morning:
+                    _mapImage.sprite = _morningMapSprite;
+                    break;
+                case EDayTime.Noon:
+                    _mapImage.sprite = _noonMapSprite;
+                    break;
+                case EDayTime.Night:
+                    _mapImage.sprite = _nightMapSprite;
+                    break;
+                default:
+                    break;
+            }
         }
+
+        private void LoadMapSpriteFromAddress()
+        {
+            if (_morningMapAddress == null || _noonMapAddress == null || _nightMapAddress == null)
+            {
+                throw new NullReferenceException("Address of maps image hasn't been assigned"); 
+            }
+
+            if (_morningMapSprite == null)
+            {
+                _morningMapSprite = PersistentAddressableResourceLoader.Instance.LoadResourceOperation<Sprite>(_morningMapAddress);
+            }
+            if (_noonMapSprite == null)
+            {
+                _noonMapSprite = PersistentAddressableResourceLoader.Instance.LoadResourceOperation<Sprite>(_noonMapAddress);
+
+            }
+            if (_nightMapSprite == null)
+            {
+                _nightMapSprite = PersistentAddressableResourceLoader.Instance.LoadResourceOperation<Sprite>(_nightMapAddress);
+
+            }
+        }
+        #endregion
     }
 }

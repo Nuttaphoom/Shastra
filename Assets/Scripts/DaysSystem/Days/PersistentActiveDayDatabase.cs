@@ -20,6 +20,7 @@ namespace Vanaring
         
         private void TestSetUpFirstDay()
         {
+            //TODO : This should be refactor to a more appropriate solution
             DayDataSO dayDataSO = _dayProgressionHandler.GetSemesterDataSO.GetDayData(0);
             RuntimeDayData newDayData = new RuntimeDayData(dayDataSO);
 
@@ -45,18 +46,34 @@ namespace Vanaring
             _dayProgressionHandler.ProgressToNextDay();
         }
 
-        #region Getter 
-        public DayProgressionHandler GetDayProgressionHandler
+        public void OnPostPerformSchoolAction()
         {
-            get
-            {
-                if (_dayProgressionHandler == null)
-                    _dayProgressionHandler = new DayProgressionHandler();
+            _runtimeDayData.ProgressCurrentTime(); 
+            _dayProgressionHandler.OnPostPerformSchoolAction(); 
+        } 
 
-                return _dayProgressionHandler;
-            }
+        public void ProgressNextDaySession()
+        {
+            PersistentSceneLoader.Instance.LoadMapScene(); 
+            //PersistentSceneLoader.Instance.LoadLastVisitedLocation();
         }
 
+        #region Getter 
+        //public DayProgressionHandler GetDayProgressionHandler
+        //{
+        //    get
+        //    {
+        //        if (_dayProgressionHandler == null)
+        //            _dayProgressionHandler = new DayProgressionHandler();
+
+        //        return _dayProgressionHandler;
+        //    }
+        //}
+
+        public EDayTime GetCurrentDayTime()
+        {
+            return _runtimeDayData.GetCurrentDayTime; 
+        }
         public RuntimeDayData GetActiveDayData
         {
             get

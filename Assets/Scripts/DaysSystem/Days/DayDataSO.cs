@@ -12,9 +12,9 @@ namespace Vanaring
         [SerializeField]
         private AvailableLocationHandler _availableLocationHandler ;
 
-        public List<LocationSO> GetAvailableLocation()
+        public List<LocationSO> GetAvailableLocation(EDayTime dayTime)
         {
-            return _availableLocationHandler.GetAvailableLocation(); //.Select(info => info.GetLocationSO).ToList();
+            return _availableLocationHandler.GetAvailableLocation(dayTime); //.Select(info => info.GetLocationSO).ToList();
         }
 
         public List<BaseLocationActionCommand> FactorizeCommandActionWithinLocation(LocationSO location)
