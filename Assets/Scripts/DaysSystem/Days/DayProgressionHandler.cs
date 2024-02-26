@@ -127,17 +127,6 @@ namespace Vanaring
             }
 
         }
-
-        private void GetBackToLastVisitedLocationScene()
-        {
-            
-        }
-
-        public EDayTime GetCurrentDayTime()
-        {
-            EDayTime dayTime = (EDayTime) GetDailyActionParticipationHandler.GetMaxActionPoint() - _dailyActionParticipationHandler.GetRemaiingActionPoint();
-            return dayTime; 
-        }
     }
 
     public enum EDayTime

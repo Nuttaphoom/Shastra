@@ -11,7 +11,17 @@ namespace Vanaring
     {
         private EDayTime _currentTime;
 
-        private Dictionary<EDayTime, List<RuntimeLocation>> _runtimeLocations; 
+        private Dictionary<EDayTime, List<RuntimeLocation>> _runtimeLocations;
+
+        #region GETTER 
+        public EDayTime GetCurrentDayTime
+        {
+           get
+            {
+                return _currentTime; 
+            }
+        }
+        #endregion
         public RuntimeDayData(DayDataSO dayData) {
 
             _runtimeLocations = new Dictionary<EDayTime, List<RuntimeLocation>>() ;
@@ -33,14 +43,13 @@ namespace Vanaring
         }
 
         public void ProgressCurrentTime()
-        { Debug.Log("Before Progress : " + _currentTime); 
+        { 
             _currentTime = (EDayTime)(_currentTime + 1);
-            Debug.Log("After Progress : " + _currentTime);
+            
         }
 
         public List<RuntimeLocation> GetAvailableLocationAccordingToDayTime()
         {
-            ColorfulLogger.LogWithColor("_runtimeLocations[" + _currentTime + "].count  : " + _runtimeLocations[_currentTime].Count, Color.green);
             return _runtimeLocations[_currentTime]; 
         }
 

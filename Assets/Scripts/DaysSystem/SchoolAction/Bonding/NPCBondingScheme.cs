@@ -40,7 +40,7 @@ namespace Vanaring
             //Display reward displayer 
             //SubmitActionReward() ;
             yield return new WaitForSeconds(1);
-            PersistentActiveDayDatabase.Instance.GetDayProgressionHandler.OnPostPerformSchoolAction();
+            PersistentActiveDayDatabase.Instance.OnPostPerformSchoolAction();
             yield return null; 
             //yield return null; 
             //Display action reward 

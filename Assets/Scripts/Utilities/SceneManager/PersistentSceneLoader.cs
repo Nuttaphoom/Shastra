@@ -110,7 +110,6 @@ namespace Vanaring
         }
         public void LoadLocation<T>(SceneDataSO sceneSO, T transferedData)
         {
-            ColorfulLogger.LogWithColor("Load Location", Color.red);
 
             if (transferedData != null)
                 _last_visisted_loaderDataUser = CreateLoaderDataUser(sceneSO.GetSceneID(), transferedData);
