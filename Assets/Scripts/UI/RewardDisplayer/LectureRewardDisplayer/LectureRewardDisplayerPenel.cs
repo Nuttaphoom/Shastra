@@ -23,6 +23,8 @@ namespace Vanaring
         [SerializeField]
         private BonusTraitObject templateBonusTraitObj;
         [SerializeField]
+        private List<BonusTraitObject> reachBonusTraitObjectList = new List<BonusTraitObject>();
+        [SerializeField]
         private GameObject bonusVerticalLayout;
 
         private List<LectureRewardButtonObject> rewardButtonList = new List<LectureRewardButtonObject>();
@@ -42,9 +44,13 @@ namespace Vanaring
                 }
                 newBonusTrait.Init(boost.GetTrait.ToString(), boost.RequireLevel.ToString(),
                     isLvReach, personalityTrait.GetStat(boost.GetTrait).Getlevel().ToString());
+                if (newBonusTrait.IsLvReach)
+                {
+                    reachBonusTraitObjectList.Add(newBonusTrait);
+                }
             }
             templateBonusTraitObj.gameObject.SetActive(false);
-            Debug.Log("Current exp: "+ lectureProgressBarData.currentEXP + " + Max: " + lectureProgressBarData.maxEXP);
+            //Debug.Log("Current exp: "+ lectureProgressBarData.currentEXP + " + Max: " + lectureProgressBarData.maxEXP);
             filledBar.fillAmount = (float)lectureProgressBarData.currentEXP / lectureProgressBarData.maxEXP;
         }
 
@@ -99,16 +105,19 @@ namespace Vanaring
                 reachScoreIndex++;
             }
             float animationTime = Time.deltaTime * 0.001f;
+            Debug.Log($"Cur exp: {lectureProgressBarData.currentEXP}/{lectureProgressBarData.maxEXP} + Gain: " +
+                $"{lectureProgressBarData.gainedEXP}(+{lectureProgressBarData.bonusEXP}) = " +
+                $"{lectureProgressBarData.currentEXP + lectureProgressBarData.gainedEXP}/{lectureProgressBarData.maxEXP}");
 
             float finalScore = (float)(lectureProgressBarData.gainedEXP + lectureProgressBarData.currentEXP) / lectureProgressBarData.maxEXP;
-            bool isMaxBar = false;
+            float scoreWithoutBonus = (float)((lectureProgressBarData.gainedEXP + lectureProgressBarData.currentEXP) - lectureProgressBarData.bonusEXP) / lectureProgressBarData.maxEXP;
+            
+            int playTraitObjAnimIndex = 0;
             if (finalScore >= 1.0f)
             {
                 finalScore = 1.0f;
-                isMaxBar = true;
             }
-            Debug.Log(finalScore);
-            
+            Debug.Log(scoreWithoutBonus);
             while (filledBar.fillAmount < finalScore)
             {
                 if (IsSettingUpSucessfully)
@@ -117,11 +126,32 @@ namespace Vanaring
                     animationTime = 0.001f;
                 }
                 filledBar.fillAmount += 0.001f;
+                //Bonus Animation
+                if(filledBar.fillAmount >= scoreWithoutBonus && reachBonusTraitObjectList.Count >= 0)
+                {
+                    float bonusValEachTrait = (float)(lectureProgressBarData.bonusEXP / reachBonusTraitObjectList.Count) / lectureProgressBarData.maxEXP;
+                    //Debug.Log((scoreWithoutBonus + (bonusValEachTrait * playTraitObjAnimIndex)) + "index: " + playTraitObjAnimIndex);
+                    if (filledBar.fillAmount < (scoreWithoutBonus + (bonusValEachTrait * playTraitObjAnimIndex)))
+                    {
+                        foreach (BonusTraitObject bonusText in reachBonusTraitObjectList)
+                        {
+                            bonusText.StopAnimation();
+                        }
+                        reachBonusTraitObjectList[playTraitObjAnimIndex-1].StartAnimation();
+                        
+                    }
+                    else
+                    {
+                        if(playTraitObjAnimIndex < reachBonusTraitObjectList.Count)
+                            playTraitObjAnimIndex++;
+                    }
+                    
+                }
+                //Reach Reward Icon Animation
                 while (filledBar.fillAmount >= lectureProgressBarData.checkpoints[reachScoreIndex].RequirePoint / 1000.0f)
                 {
                     rewardButtonList[reachScoreIndex].TriggerAnimation();
                     rewardButtonList[reachScoreIndex].GetButtonComponent.interactable = true;
-                    //Debug.Log("Reach Reward");
                     if (reachScoreIndex < lectureProgressBarData.checkpoints.Count - 1)
                     {
                         reachScoreIndex++;
@@ -132,6 +162,10 @@ namespace Vanaring
                     }
                 }
                 yield return new WaitForSeconds(animationTime); 
+            }
+            foreach (BonusTraitObject bonusText in reachBonusTraitObjectList)
+            {
+                bonusText.StopAnimation();
             }
             _uiAnimationDone = true;
         }
