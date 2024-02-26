@@ -30,7 +30,7 @@ namespace Vanaring
         protected abstract IEnumerator SettingUpRewardDisplayPanel(RewardPanelType rewardDisplayGOTemplate); 
         protected IEnumerator CreateRewardDisplayPanel()
         {
-            Debug.Log("creating  ");
+            //Debug.Log("creating  ");
 
             _rewardPanel = MonoBehaviour.Instantiate(_rewardDisplayGOTemplate.gameObject);
             yield return SettingUpRewardDisplayPanel(_rewardPanel.GetComponent<RewardPanelType>());

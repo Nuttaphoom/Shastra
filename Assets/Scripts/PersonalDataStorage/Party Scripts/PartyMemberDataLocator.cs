@@ -110,10 +110,8 @@ namespace Vanaring
             InitializeRuntimeMemberData(); 
              
             Dictionary<string, List<string>> saveData = (Dictionary<string, List<string>>)state;
-            Debug.Log("restore state in PartyMemberDataLocater");
             foreach (KeyValuePair<string, List<string>> data in saveData) // loop through both
             {
-                Debug.Log("restore in PartyMemberDataLocator");
                 GetRuntimeData(data.Key).RestoreState(data.Value);
             }
         }

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _availableLocationHandler:
     _locationInfos:
-    - _location: {fileID: 11400000, guid: ec596210af1aa3f499c3c3a5845805c1, type: 2}
+    - Location: {fileID: 11400000, guid: ec596210af1aa3f499c3c3a5845805c1, type: 2}
       _selectionCommandCenter:
       - _commandType: 1
         _loadLocationCommand:
@@ -83,7 +83,10 @@ MonoBehaviour:
           _actionDescription: Talk with Ann
           _actionIconAsset: {fileID: 21300000, guid: c44b46ad2d18ff14d833cc70528a59d6, type: 3}
           _characterRelationshipDataSO: {fileID: 11400000, guid: c0c0defcc3a150045a7324fad27a7483, type: 2}
-    - _location: {fileID: 11400000, guid: db9dc7b8834c61e4597b233aef9eed71, type: 2}
+      EnableAtMorning: 1
+      EnableAtNoon: 1
+      EnableAtNight: 0
+    - Location: {fileID: 11400000, guid: 8b8a569a7af15584d8c31601d40e67b1, type: 2}
       _selectionCommandCenter:
       - _commandType: 1
         _loadLocationCommand:
@@ -108,3 +111,6 @@ MonoBehaviour:
           _actionDescription: 
           _actionIconAsset: {fileID: 0}
           _characterRelationshipDataSO: {fileID: 0}
+      EnableAtMorning: 0
+      EnableAtNoon: 0
+      EnableAtNight: 1

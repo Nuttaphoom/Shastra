@@ -89,7 +89,6 @@ namespace Vanaring
 
         public void RestoreState(object state)
         {
-            Debug.Log("Restore state in PlayerPersistentManager");
 
             SaveData saveData = (SaveData)state;
 

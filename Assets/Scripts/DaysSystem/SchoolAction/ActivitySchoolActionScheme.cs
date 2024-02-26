@@ -47,7 +47,7 @@ namespace Vanaring
         {
             yield return (_rewardDisplayer.DisplayRewardUICoroutine(_personalityRewards) ) ;
 
-            PersistentActiveDayDatabase.Instance.GetDayProgressionHandler.OnPostPerformSchoolAction();
+            PersistentActiveDayDatabase.Instance.OnPostPerformSchoolAction(); //.GetDayProgressionHandler.();
 
             //finish display(done)(close window) -> (update backend/load new scene)(Potae) -> Persistent
         }

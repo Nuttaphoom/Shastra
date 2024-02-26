@@ -18,7 +18,6 @@ namespace Vanaring
 
         public void SetUpRuntimePartyMemberData(CharacterSheetSO sheet)
         {
-            Debug.Log("create _memberActionRegister for " + sheet.CharacterName) ;
             _characterSheetSO = sheet ; 
             _memberActionRegister = new PartyMemberActionRegister();
             //_memberActionRegister.LoadSpellFromDatabase(spellUniqueKeys);

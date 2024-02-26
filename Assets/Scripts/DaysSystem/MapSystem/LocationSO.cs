@@ -40,6 +40,7 @@ namespace Vanaring
         private SceneDataSO _sceneData;
         private List<BaseLocationActionCommand> actionOnLocation;
         private Sprite _locationIcon;
+
         public RuntimeLocation(LocationSO data, List<BaseLocationActionCommand> actionOnLocation)
         {
             this._locationName = data.LocationName;

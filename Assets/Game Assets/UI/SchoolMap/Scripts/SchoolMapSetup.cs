@@ -21,16 +21,15 @@ namespace Vanaring
         private List<PinGUI> pinObject;
         [SerializeField]
         private PinGUI pinTemplate;
-        RuntimeDayData dayDataTmp;
         private List<RuntimeLocation> availableLocationList;
 
         private void Awake()
         {
-            availableLocationList = PersistentActiveDayDatabase.Instance.GetActiveDayData.GetAvailableLocation();
+            availableLocationList = PersistentActiveDayDatabase.Instance.GetActiveDayData.GetAvailableLocationAccordingToDayTime();
             //LoadPin(PersistentActiveDayDatabase.Instance.GetActiveDayData);
-            LoadAllPin(dayDataTmp);
+            LoadAllPin( );
         }
-        private void LoadAllPin(RuntimeDayData dayData)
+        private void LoadAllPin( )
         {
             LoadMapBackground();
 

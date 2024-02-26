@@ -38,7 +38,7 @@ namespace Vanaring
              LoadLocationMenuCommandData currentLocationSO = PersistentSceneLoader.Instance.ExtractLastSavedData<LoadLocationMenuCommandData>().GetData(); 
             //(loaderDataContainer.UseDataInContainer() as LoaderDataUser<LoadLocationMenuCommandData>).GetData() ; //.action_on_this_location;
 
-            foreach (var location in PersistentActiveDayDatabase.Instance.GetActiveDayData.GetAvailableLocation()) {
+            foreach (var location in PersistentActiveDayDatabase.Instance.GetActiveDayData.GetAvailableLocationAccordingToDayTime()) {
                 if (! location.IsSameLocation(currentLocationSO.LocationName))
                     continue;
                 
