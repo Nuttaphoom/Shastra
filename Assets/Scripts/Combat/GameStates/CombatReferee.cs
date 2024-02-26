@@ -133,7 +133,10 @@ namespace Vanaring
         private IEnumerator LoadDataFromDatabase()
         {
             //We garuntee that Player's side character is valid at this point 
-            
+            foreach (CombatEntity entity in GetCompetatorsBySide(ECompetatorSide.Ally))
+            {
+                yield return entity.LoadDataFromDatabase(); 
+            }
             yield return null; 
         }
 

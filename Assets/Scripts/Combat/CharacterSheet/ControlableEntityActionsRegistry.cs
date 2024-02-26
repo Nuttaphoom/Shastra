@@ -21,5 +21,16 @@ namespace Vanaring
         public List<SpellActionSO> GetSpellAction => _spellActions ;  
         public List<WeaponActionSO> GetWeaponAction => _equipedWeaponAction ;
 
+        public void RegisterSpell(List<SpellActionSO> spells)
+        {
+            _spellActions = new List<SpellActionSO>(spells);
+
+            foreach (SpellActionSO spellAction in _spellActions)
+            {
+                _spellActions.Add(spellAction);
+            } 
+
+
+        }
     }
 }

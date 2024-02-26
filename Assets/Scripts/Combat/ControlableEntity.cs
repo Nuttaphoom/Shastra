@@ -6,6 +6,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
+using Vanaring.Assets.Scripts.Utilities.StringConstant;
+using static UnityEngine.EventSystems.EventTrigger;
 
 namespace Vanaring
 {
@@ -14,12 +16,24 @@ namespace Vanaring
         [SerializeField]
         private ControlableEntityActionsRegistry _controlableEntityActionRegistry;
 
-        
         public override IEnumerator InitializeEntityIntoCombat()
         {
             throw new NotImplementedException();
         }
+        public override IEnumerator LoadDataFromDatabase()
+        {
+            
+            string characterName = CombatCharacterSheet.CharacterName;
+            List<SpellActionSO> spellList = new List<SpellActionSO>();
+            
 
+            var partyMemberRuntimeData = PersistentPlayerPersonalDataManager.Instance.PartyMemberDataLocator.GetRuntimeData(characterName) ;
+
+            spellList = partyMemberRuntimeData.GetRegisteredSpellActionSO;
+            _controlableEntityActionRegistry.RegisterSpell(spellList);
+
+            yield return null; 
+        }
         public override IEnumerator GetAction()
         {
             if (_ailmentHandler.DoesAilmentOccur())
@@ -75,7 +89,9 @@ namespace Vanaring
             CameraSetUPManager.Instance.DisableCamera(_attachedCamera);
         }
 
- 
+   
+
+
         #endregion
 
         #region GETTER

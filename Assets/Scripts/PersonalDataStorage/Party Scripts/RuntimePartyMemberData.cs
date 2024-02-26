@@ -18,6 +18,7 @@ namespace Vanaring
 
         public void SetUpRuntimePartyMemberData(CharacterSheetSO sheet)
         {
+            Debug.Log("create _memberActionRegister for " + sheet.CharacterName) ;
             _characterSheetSO = sheet ; 
             _memberActionRegister = new PartyMemberActionRegister();
             //_memberActionRegister.LoadSpellFromDatabase(spellUniqueKeys);
@@ -29,7 +30,7 @@ namespace Vanaring
             get
             {
                 if (_memberActionRegister == null)
-                    throw new Exception("_memberActionRegister is null : RuntimePartyMemberData have never been properly set up");
+                    throw new Exception("_memberActionRegister is null : RuntimePartyMemberData have never been properly set up" + _characterSheetSO.CharacterName);
                
                 return _memberActionRegister.GetRegisteredSpell(); 
             }
@@ -38,18 +39,25 @@ namespace Vanaring
         public void UnlockSpellActionSO(SpellActionSO spellActionSO)
         {
             if (_memberActionRegister == null)
-                throw new Exception("_memberActionRegister is null : RuntimePartyMemberData have never been properly set up");
+                throw new Exception("_memberActionRegister is null : RuntimePartyMemberData have never been properly set up in " + _characterSheetSO.CharacterName);
 
             _memberActionRegister.UnlockSpellAction(spellActionSO) ;
         }
 
         public bool IsThisPartyMember(string characterName)
         {
-            return (characterName == GetMemberName()); 
+            return (characterName == GetMemberName ) ; 
         }
 
-      
-        public string GetMemberName() => _characterSheetSO.CharacterName;
+
+        public string GetMemberName {
+            get {
+                if (_characterSheetSO == null)
+                    throw new Exception("CharacterSheetSO is null"); 
+
+                return _characterSheetSO.CharacterName;
+            }
+        } 
         
 
         #region Save System
@@ -62,6 +70,7 @@ namespace Vanaring
         {
             var saveData = (List<string>)state;
 
+            Debug.Log("restore state in RuntimePartyMemberData");
             _memberActionRegister.RestoreState(saveData);
         }
 

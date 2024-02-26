@@ -15,5 +15,18 @@ namespace Vanaring.Assets.Scripts.Utilities.StringConstant
         public static string GetInventoryDatabaseAddress => InventoryDatabaseAddress;
         public static string GetCharacterSheetDatabaseAddress => CharacterSheetDatabaseSOAddress;
 
+        public static SpellDatabaseSO _spellDatabaseSO;
+        public static SpellDatabaseSO GetSpellDatabase
+        {
+            get
+            {
+                if (_spellDatabaseSO == null)
+                {
+                    _spellDatabaseSO  = PersistentAddressableResourceLoader.Instance.LoadResourceOperation<SpellDatabaseSO>(SpellDatabaseAddress);
+                }
+                return _spellDatabaseSO;
+            }
+        }
+
     }
 }
