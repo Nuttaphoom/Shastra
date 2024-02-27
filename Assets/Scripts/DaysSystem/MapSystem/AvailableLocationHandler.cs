@@ -22,24 +22,15 @@ namespace Vanaring
             [SerializeField]
             private List<LocationActionCommandRegister> _selectionCommandCenter;
 
-            [SerializeField]
-            private bool EnableAtMorning ;
-            [SerializeField]
-            private bool EnableAtNoon;
-            [SerializeField]
-            private bool EnableAtNight; 
-
-            
-
-            public  List<BaseLocationActionCommand>  FactorizeCommandLocation  
-            {
-                get {
-                    List<BaseLocationActionCommand> ret = new List<BaseLocationActionCommand>();
-                    foreach (var commandCenter in _selectionCommandCenter)
-                        ret.Add(commandCenter.FactorizeLocationSelectionCommand( ) ); 
-                    
-                    return ret; 
+            public  List<BaseLocationActionCommand>  FactorizeCommandLocation (EDayTime dayTime)
+            { 
+                List<BaseLocationActionCommand> ret = new List<BaseLocationActionCommand>();
+                foreach (var commandCenter in _selectionCommandCenter)
+                {
+                    if(commandCenter.EnableAtGivenDayTime(dayTime))
+                        ret.Add(commandCenter.FactorizeLocationSelectionCommand());
                 }
+                return ret; 
             }
 
             public bool IsCorrectLocation(LocationSO _locationData)
@@ -49,27 +40,13 @@ namespace Vanaring
 
             public bool EnableAtGivenDayTime(EDayTime daytime)
             {
-                switch (daytime)
+                bool enable = false; 
+                foreach (var command in _selectionCommandCenter)
                 {
-                    case (EDayTime.Morning):
-                        if (EnableAtMorning)
-                            return true; 
-                        break;
-                    case (EDayTime.Noon):
-                        if (EnableAtNoon)
-                            return true;
-                        break;
-                    case (EDayTime.Night):
-                        if (EnableAtNight)
-                            return true;
-                        break;
-
-                    default:
-                        break; 
-
+                    enable = (enable || command.EnableAtGivenDayTime(daytime)) ;
                 }
 
-                return false; 
+                return enable;
             }
         }
 
@@ -88,7 +65,7 @@ namespace Vanaring
             return locations;
         }
 
-        public List<BaseLocationActionCommand> FactorizeCommandActionWithinLocation(LocationSO location)
+        public List<BaseLocationActionCommand> FactorizeCommandActionWithinLocation(LocationSO location, EDayTime dayTime)
         {
             List<BaseLocationActionCommand> ret = new List<BaseLocationActionCommand>(); 
             foreach (var info in _locationInfos)
@@ -100,7 +77,7 @@ namespace Vanaring
                     throw new Exception("Multiple matching location with " + info.Location.LocationName);
 
 
-                foreach (var command in info.FactorizeCommandLocation)
+                foreach (BaseLocationActionCommand command in info.FactorizeCommandLocation(dayTime))
                 {
                     ret.Add(command);
                 }
