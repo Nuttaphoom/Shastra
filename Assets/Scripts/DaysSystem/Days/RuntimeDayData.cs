@@ -29,7 +29,7 @@ namespace Vanaring
             foreach (EDayTime time in Enum.GetValues(typeof(EDayTime))) {
                 foreach (LocationSO locationSO in dayData.GetAvailableLocation(time))
                 {
-                    List<BaseLocationActionCommand> actionWithinLocation = dayData.FactorizeCommandActionWithinLocation(locationSO);
+                    List<BaseLocationActionCommand> actionWithinLocation = dayData.FactorizeCommandActionWithinLocation(locationSO, time);
                     var runtimeLocation = locationSO.FactorizeRuntimeLocation(actionWithinLocation);
                     if (!_runtimeLocations.ContainsKey(time))
                         _runtimeLocations.Add(time, new List<RuntimeLocation>() ); 

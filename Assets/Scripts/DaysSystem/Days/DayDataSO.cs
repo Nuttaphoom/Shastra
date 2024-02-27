@@ -17,9 +17,9 @@ namespace Vanaring
             return _availableLocationHandler.GetAvailableLocation(dayTime); //.Select(info => info.GetLocationSO).ToList();
         }
 
-        public List<BaseLocationActionCommand> FactorizeCommandActionWithinLocation(LocationSO location)
+        public List<BaseLocationActionCommand> FactorizeCommandActionWithinLocation(LocationSO location, EDayTime eDayTime)
         {
-            return _availableLocationHandler.FactorizeCommandActionWithinLocation(location);
+            return _availableLocationHandler.FactorizeCommandActionWithinLocation(location,eDayTime);
         }
     }
 

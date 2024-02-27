@@ -23,7 +23,13 @@ namespace Vanaring
         [SerializeField, AllowNesting, NaughtyAttributes.ShowIf("_commandType", ELoadLocationCommandType.Bonding)]
         private NPCBondingActionCommand _npcBondingActionCommand ;
 
-
+        [SerializeField]
+        private bool EnableAtMorning;
+        [SerializeField]
+        private bool EnableAtNoon;
+        [SerializeField]
+        private bool EnableAtNight;
+        
         public BaseLocationActionCommand FactorizeLocationSelectionCommand()
         {
             if (_commandType == ELoadLocationCommandType.Activity)
@@ -39,6 +45,31 @@ namespace Vanaring
             }
 
             throw new Exception("_commandType is never set "); 
+        }
+
+        public bool EnableAtGivenDayTime(EDayTime daytime)
+        {
+            switch (daytime)
+            {
+                case (EDayTime.Morning):
+                    if (EnableAtMorning)
+                        return true;
+                    break;
+                case (EDayTime.Noon):
+                    if (EnableAtNoon)
+                        return true;
+                    break;
+                case (EDayTime.Night):
+                    if (EnableAtNight)
+                        return true;
+                    break;
+
+                default:
+                    break;
+
+            }
+
+            return false;
         }
     }
 
