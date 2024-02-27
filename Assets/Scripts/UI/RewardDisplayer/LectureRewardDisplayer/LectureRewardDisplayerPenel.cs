@@ -130,16 +130,9 @@ namespace Vanaring
                 if(filledBar.fillAmount >= scoreWithoutBonus && reachBonusTraitObjectList.Count >= 0)
                 {
                     float bonusValEachTrait = (float)(lectureProgressBarData.bonusEXP / reachBonusTraitObjectList.Count) / lectureProgressBarData.maxEXP;
-                    //Debug.Log((scoreWithoutBonus + (bonusValEachTrait * playTraitObjAnimIndex)) + "index: " + playTraitObjAnimIndex);
                     if (filledBar.fillAmount < (scoreWithoutBonus + (bonusValEachTrait * playTraitObjAnimIndex)))
                     {
-                        //for (int i = 0; i < reachBonusTraitObjectList.Count; i++)
-                        //{
-                        //    reachBonusTraitObjectList[i].StopAnimation();
-                        //}
-                        
                         reachBonusTraitObjectList[playTraitObjAnimIndex-1].StartAnimation();
-                        
                     }
                     else
                     {
