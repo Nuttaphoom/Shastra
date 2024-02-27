@@ -26,6 +26,8 @@ namespace Vanaring
 
     public class CombatReferee : MonoBehaviour
     {
+        [SerializeField]
+        private bool EnableDebugMode = false;
         #region EventBroadcaster
         private EventBroadcaster _eventBroadcaster;
 
@@ -119,9 +121,14 @@ namespace Vanaring
         #region SettingUpRound
         private IEnumerator InitializeCombat()
         {
-            yield return LoadDataFromDatabase();
-            yield return PlayCombatIntroTimeline();
-            yield return BeginNewBattle();
+            if (! EnableDebugMode)
+            {
+                yield return LoadDataFromDatabase();
+                yield return PlayCombatIntroTimeline();
+            }
+
+                yield return BeginNewBattle();
+            
         }
 
         private IEnumerator PlayCombatIntroTimeline()
