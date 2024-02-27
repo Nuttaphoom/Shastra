@@ -42,7 +42,7 @@ namespace Vanaring
                 {
                     isLvReach = true;
                 }
-                newBonusTrait.Init(boost.GetTrait.ToString(), boost.RequireLevel.ToString(),
+                newBonusTrait.Init(boost.GetTrait, boost.RequireLevel.ToString(),
                     isLvReach, personalityTrait.GetStat(boost.GetTrait).Getlevel().ToString());
                 if (newBonusTrait.IsLvReach)
                 {
@@ -133,16 +133,21 @@ namespace Vanaring
                     //Debug.Log((scoreWithoutBonus + (bonusValEachTrait * playTraitObjAnimIndex)) + "index: " + playTraitObjAnimIndex);
                     if (filledBar.fillAmount < (scoreWithoutBonus + (bonusValEachTrait * playTraitObjAnimIndex)))
                     {
-                        foreach (BonusTraitObject bonusText in reachBonusTraitObjectList)
-                        {
-                            bonusText.StopAnimation();
-                        }
+                        //for (int i = 0; i < reachBonusTraitObjectList.Count; i++)
+                        //{
+                        //    reachBonusTraitObjectList[i].StopAnimation();
+                        //}
+                        
                         reachBonusTraitObjectList[playTraitObjAnimIndex-1].StartAnimation();
                         
                     }
                     else
                     {
-                        if(playTraitObjAnimIndex < reachBonusTraitObjectList.Count)
+                        foreach (BonusTraitObject bonusText in reachBonusTraitObjectList)
+                        {
+                            bonusText.StopAnimation();
+                        }
+                        if (playTraitObjAnimIndex < reachBonusTraitObjectList.Count)
                             playTraitObjAnimIndex++;
                     }
                     
