@@ -13,50 +13,69 @@ using UnityEngine.Timeline;
 
 namespace Vanaring 
 {
-    [Serializable]
     public class ActionTimelineSettingStruct
     {
-        [Header("This represent track to dynamically bind with Actor object, Like Caster")]
-        [SerializeField]
-        private List<string> _trackNameForActor ;
+        private const string CasterTrackName = "Caster";
+        //The format is Target_N when N is the number of the Target (Target_2 means target number 2)
+        private const string TargetTrackName = "Target_";
+
+        //[Header("This represent track to dynamically bind with Actor object, Like Caster")]
+        //[SerializeField]
+        //private List<string> _trackNameForActor ;
 
         private List<Transform> _timelienActors;
 
         public ActionTimelineSettingStruct(ActionTimelineSettingStruct copied)
         {
-            _trackNameForActor = new List<string>();
+            //_trackNameForActor = new List<string>();
             _timelienActors = new List<Transform>();
+ 
+            //foreach (var trackName in copied._trackNameForActor)
+            //    _trackNameForActor.Add(trackName); 
 
-            //Debug.Log(" copied._trackToChangeName : " + copied._trackToChangeName);
-            //Debug.Log(" copied._timelienActors : " + copied._timelienActors);
-            foreach (var trackName in copied._trackNameForActor)
-                _trackNameForActor.Add(trackName); 
-
-            //foreach (var transform in copied._timelienActors)  
-            //    _timelienActors.Add(transform) ; 
         }
 
         public void AddActors(GameObject actor)
         {
             if (_timelienActors == null)
-            {
                 _timelienActors = new List<Transform>();
-            }
+            
 
             _timelienActors.Add(actor.transform);
         }
 
         public Transform GetObjectWithTrackName(string trackName)
         {
-            for (int i = 0; i < _trackNameForActor.Count;i++)
+            if (trackName == CasterTrackName)
             {
-                if (_trackNameForActor[i] == trackName)
+                return _timelienActors[0]; 
+            }
+
+            if (trackName.StartsWith(TargetTrackName))
+            {
+                int targetNumber;
+                if (int.TryParse(trackName.Substring(TargetTrackName.Length), out targetNumber))
                 {
-                    return _timelienActors[i]  ;     
+                    if (targetNumber >= 0 && targetNumber < _timelienActors.Count - 1)
+                    {
+                        // Adjusting targetNumber to start from 0, and adding 1 to access the list
+                        return _timelienActors[targetNumber + 1];
+                    }
                 }
             }
 
-            throw new Exception("Given track name " + trackName + " is not listed in this action") ;
+            return null; 
+
+
+            //for (int i = 0; i < _trackNameForActor.Count;i++)
+            //{
+            //    if (_trackNameForActor[i] == trackName)
+            //    {
+            //        return _timelienActors[i]  ;     
+            //    }
+            //}
+
+            //throw new Exception("Given track name " + trackName + " is not listed in this action") ;
         }
 
         public GameObject GetObjectWithIndex(int index)
@@ -69,7 +88,7 @@ namespace Vanaring
 
        
 
-        public List<string> TrackNames => _trackNameForActor;
+        //public List<string> TrackNames => _trackNameForActor;
     }
 
     [Serializable] 
@@ -118,7 +137,6 @@ namespace Vanaring
         [SerializeField]
         private List<SignalEffectBindingStruct> _signalEffectBindings = new List<SignalEffectBindingStruct>() ;
 
-        [SerializeField]
         private ActionTimelineSettingStruct _actionTimelineSetting  ;
 
 

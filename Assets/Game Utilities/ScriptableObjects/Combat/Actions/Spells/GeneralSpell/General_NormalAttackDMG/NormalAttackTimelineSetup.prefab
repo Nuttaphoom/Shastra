@@ -28129,7 +28129,7 @@ MonoBehaviour:
   _destroyedWithTimeline:
   - {fileID: 4764948770002274705}
   - {fileID: 1857878342784453779}
-  _directVectorTransform: []
+  ChangeLookAt: 0
   _virtualCameraToChangeLookAt: {fileID: 0}
 --- !u!1 &5217008532386732627
 GameObject:
@@ -34284,6 +34284,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7057269841465458395}
   - component: {fileID: 8560287614176056097}
+  - component: {fileID: 3891225294872836554}
   m_Layer: 0
   m_Name: Point Light
   m_TagString: Untagged
@@ -34368,6 +34369,29 @@ Light:
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
   m_ShadowAngle: 0
+--- !u!114 &3891225294872836554
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6846339881622310006}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Version: 3
+  m_UsePipelineSettings: 1
+  m_AdditionalLightsShadowResolutionTier: 2
+  m_LightLayerMask: 1
+  m_RenderingLayers: 1
+  m_CustomShadowLayers: 0
+  m_ShadowLayerMask: 1
+  m_ShadowRenderingLayers: 1
+  m_LightCookieSize: {x: 1, y: 1}
+  m_LightCookieOffset: {x: 0, y: 0}
+  m_SoftShadowQuality: 0
 --- !u!1 &6890786637908163272
 GameObject:
   m_ObjectHideFlags: 0
@@ -36401,31 +36425,31 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 521890135331775457, guid: a113caa65fa353041b107233118b44a9, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 2.82
       objectReference: {fileID: 0}
     - target: {fileID: 521890135331775457, guid: a113caa65fa353041b107233118b44a9, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.306
+      value: 8.8
       objectReference: {fileID: 0}
     - target: {fileID: 521890135331775457, guid: a113caa65fa353041b107233118b44a9, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 3.233
+      value: -3.74
       objectReference: {fileID: 0}
     - target: {fileID: 521890135331775457, guid: a113caa65fa353041b107233118b44a9, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.0000000038803107
+      value: 0.939491
       objectReference: {fileID: 0}
     - target: {fileID: 521890135331775457, guid: a113caa65fa353041b107233118b44a9, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 7.541396e-10
+      value: 0.307073
       objectReference: {fileID: 0}
     - target: {fileID: 521890135331775457, guid: a113caa65fa353041b107233118b44a9, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.9816327
+      value: -0.1443497
       objectReference: {fileID: 0}
     - target: {fileID: 521890135331775457, guid: a113caa65fa353041b107233118b44a9, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.1907807
+      value: 0.047180753
       objectReference: {fileID: 0}
     - target: {fileID: 521890135331775457, guid: a113caa65fa353041b107233118b44a9, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x

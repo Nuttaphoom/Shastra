@@ -5,6 +5,7 @@ using UnityEngine.Timeline;
 using UnityEngine.Playables;
 using Cinemachine;
 using System;
+using NaughtyAttributes;
 
 namespace Vanaring
 {
@@ -18,15 +19,19 @@ namespace Vanaring
         private List<Transform> _targetTransform = new List<Transform>() ;
 
         [SerializeField]
-        private List<GameObject> _destroyedWithTimeline = new List<GameObject>() ;  
+        private List<GameObject> _destroyedWithTimeline = new List<GameObject>() ;
 
-        [Header("Direct Vector Interpolation. The system will place these transform starting from CasterTransform (index 0) up to TargetTransform (last index)")]
-        [SerializeField]
+        //[Header("Direct Vector Interpolation. The system will place these transform starting from CasterTransform (index 0) up to TargetTransform (last index)")]
+        //[SerializeField]
+        //Still Unavailable
         private List<Transform> _directVectorTransform = new List<Transform>() ;
 
 
-        [Header("Dynamically binding look at position with center betwen target transform")]
         [SerializeField]
+        private bool ChangeLookAt = false;
+
+        [SerializeField, AllowNesting, NaughtyAttributes.ShowIf("ChangeLookAt") ]
+        [Header("Dynamically binding look at position with center betwen target transform")]
         private CinemachineVirtualCamera _virtualCameraToChangeLookAt ;
 
         private PlayableDirector _director;
@@ -35,20 +40,36 @@ namespace Vanaring
         {
             _director = director;
 
+            Transform objectWithTrackName;
+
+            //For every tracks 
             foreach (var track in (director.playableAsset as TimelineAsset).GetOutputTracks())
             {
-                for (int i = 0; i < actionTimelineSetting.TrackNames.Count; i++)
-                {
-                    if (track.name == actionTimelineSetting.TrackNames[i])
-                    {
-                        director.SetGenericBinding(track, actionTimelineSetting.GetObjectWithTrackName(track.name));
-                    } else if ( track.name == "SignalTrack") {
-                        director.SetGenericBinding(track, unitySignalReciver) ; 
-                    } else if (track is CinemachineTrack)
-                    {
+                //for (int i = 0; i < actionTimelineSetting.TrackNames.Count; i++)
+                //{
+                //    if (track.name == actionTimelineSetting.TrackNames[i])
+                //    {
+                //        director.SetGenericBinding(track, actionTimelineSetting.GetObjectWithTrackName(track.name));
+                //    } else if ( track.name == "SignalTrack") {
+                //        director.SetGenericBinding(track, unitySignalReciver) ; 
+                //    } else if (track is CinemachineTrack)
+                //    {
 
-                    } 
+                //    } 
+                //}
+                if (objectWithTrackName = actionTimelineSetting.GetObjectWithTrackName(track.name))
+                {
+                    director.SetGenericBinding(track, objectWithTrackName);
                 }
+                else if (track.name == "SignalTrack")
+                {
+                    director.SetGenericBinding(track, unitySignalReciver);
+                }
+                else if (track is CinemachineTrack)
+                {
+
+                }
+            
             }
 
             if (_casterTransform != null)

@@ -12,13 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f5d27031a83ca845945ea045c3f11b6, type: 3}
   m_Name: Spell_ASha_DealHeavyDMG_MultipleTargets
   m_EditorClassIdentifier: 
-  _description:
-    _fieldName: Divine Slashes
-    _fieldDescription: Deal <b>Medium</b> 2 LIGHT damage to all targets
-    _fieldImage: {fileID: 21300000, guid: db089e60338a024409779b3e539a84a7, type: 3}
+  _actionDescription:
+    _fieldName: Multiple Light
+    _fieldDescription: Cast Blast dmg
+    _fieldImage: {fileID: 0}
   _targetSelector:
     _maxTargetSize: 3
-    _targetCaster: 0
     _targetAlly: 0
     _targetOppose: 1
     _targetSelf: 0
@@ -30,12 +29,7 @@ MonoBehaviour:
     - _signalType: 2
       _runtimeEffects:
       - {fileID: 11400000, guid: 5b89b623ce285ff4a87bdd5ef157641c, type: 2}
-    _actionTimelineSetting:
-      _trackToChangeName:
-      - Caster
     _timeLineActorSetupPrefab: {fileID: -8615740222444698358, guid: 650bb0a69c4a2f147917f733b2913e1d, type: 3}
-  _comment:
-    _comment: 
   _requiredEnergy:
     _side: 0
     _amount: 2
