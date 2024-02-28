@@ -18,12 +18,18 @@ namespace Vanaring
         private ButtonHover _buttonHover;
         [SerializeField]
         private TextMeshProUGUI rewardName;
+        private Sprite rewardIconSprite;
+        private string rewardNameString;
 
         public Button GetButtonComponent => lectureRewardButton;
         public Image GetIconImage => rewardImage;
         public Animator GetAnimator => anim;
+        public Sprite GetRewardIconSprite => rewardIconSprite;
+        public string GetRewardNameString => rewardNameString;
         public void SetRewardDetail(string newText, Sprite newIcon)
         {
+            rewardIconSprite = newIcon;
+            rewardNameString = newText;
             _buttonHover.InitWindowDetail(newText, newIcon);
             rewardImage.sprite = newIcon;
             rewardName.text = newText;

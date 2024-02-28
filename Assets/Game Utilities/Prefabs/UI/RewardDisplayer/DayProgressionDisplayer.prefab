@@ -215,6 +215,10 @@ PlayableDirector:
     value: {fileID: 4406889141912575847}
   - key: {fileID: 4878616215345824136, guid: b3f23d20741a74c479c9d8f5759729ec, type: 2}
     value: {fileID: 498124724979760179}
+  - key: {fileID: 5358890885904991464, guid: b3f23d20741a74c479c9d8f5759729ec, type: 2}
+    value: {fileID: 5933548272298221764}
+  - key: {fileID: -5398825450011017908, guid: b3f23d20741a74c479c9d8f5759729ec, type: 2}
+    value: {fileID: 2019587492365302563}
   m_ExposedReferences:
     m_References: []
 --- !u!114 &1073749793177509176
@@ -240,6 +244,7 @@ GameObject:
   - component: {fileID: 3717845649048244741}
   - component: {fileID: 5265151658693150305}
   - component: {fileID: 5771896993835418880}
+  - component: {fileID: 2019587492365302563}
   m_Layer: 0
   m_Name: NightBG
   m_TagString: Untagged
@@ -257,7 +262,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: 0.2206974, w: 0.9753424}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.62499994, y: 0.62499994, z: 0.62499994}
-  m_ConstrainProportionsScale: 0
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 1334381997181344439}
   m_RootOrder: -1
@@ -305,6 +310,27 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!95 &2019587492365302563
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5323034630626644632}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &5370751569842020291
 GameObject:
   m_ObjectHideFlags: 0
@@ -493,6 +519,7 @@ GameObject:
   - component: {fileID: 3157797268384154110}
   - component: {fileID: 7689528560783259500}
   - component: {fileID: 983881862973141100}
+  - component: {fileID: 5933548272298221764}
   m_Layer: 0
   m_Name: DayBG
   m_TagString: Untagged
@@ -510,7 +537,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 8240929493204801550}
   m_RootOrder: -1
@@ -558,6 +585,27 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!95 &5933548272298221764
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6527648883984412870}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &7565157753081020500
 GameObject:
   m_ObjectHideFlags: 0
