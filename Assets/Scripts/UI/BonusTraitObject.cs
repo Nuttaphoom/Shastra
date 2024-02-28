@@ -42,12 +42,25 @@ namespace Vanaring
                 bonusTraitLevel.color = defaultColor;
             }
         }
+
+        public IEnumerator StartPlayAnimation()
+        {
+            if (!IsPlaying)
+            {
+                bonusTraitName.rectTransform.localScale = new Vector3(1.3f, 1.3f, 1.3f);
+                //yield return StartCoroutine(ScaleOverTime(1.5f, 0.0f));
+                Debug.Log("Play anim " + traitName);
+                IsPlaying = true;
+                yield return new WaitForSeconds(1.0f);
+            }
+        }
+
         public void StartAnimation()
         {
             if (!IsPlaying)
             {
-                //bonusTraitName.rectTransform.localScale = new Vector3(1.3f, 1.3f, 1.3f);
-                StartCoroutine(ScaleOverTime(1.5f, 0.05f));
+                bonusTraitName.rectTransform.localScale = new Vector3(1.3f, 1.3f, 1.3f);
+                //StartCoroutine(ScaleOverTime(1.5f, 0.05f));
                 Debug.Log("Play anim " + traitName);
                 IsPlaying = true;
             }
@@ -74,6 +87,7 @@ namespace Vanaring
                 yield return null;
             }
             bonusTraitName.rectTransform.localScale = new Vector3(targetSize, targetSize, 1f);
+            yield return null;
         }
 
       
