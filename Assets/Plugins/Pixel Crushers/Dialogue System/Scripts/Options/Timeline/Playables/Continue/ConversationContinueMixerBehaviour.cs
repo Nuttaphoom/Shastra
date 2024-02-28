@@ -82,13 +82,14 @@ namespace PixelCrushers.DialogueSystem
                 }
                 else if (inputWeight <= 0.001f && played.Contains(i)  )
                 {
-                    if (input.HideDialogueBoxAfterCompletion  ) {
-                        foreach (var subtitlePanel in  DialogueManager.instance.standardDialogueUI.conversationUIElements.subtitlePanels )
+                    if (input.HideDialogueBoxAfterCompletion)
+                    {
+                        foreach (var subtitlePanel in DialogueManager.instance.standardDialogueUI.conversationUIElements.subtitlePanels)
                         {
                             subtitlePanel.Close();
-                        } 
+                        }
                     }
-                     
+
                     played.Remove(i);
                 }
 
