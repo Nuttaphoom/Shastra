@@ -23,9 +23,9 @@ namespace Vanaring
 
         public void RegisterSpell(List<SpellActionSO> spells)
         {
-            _spellActions = new List<SpellActionSO>(spells);
+            _spellActions = new List<SpellActionSO>();
 
-            foreach (SpellActionSO spellAction in _spellActions)
+            foreach (SpellActionSO spellAction in spells)
             {
                 _spellActions.Add(spellAction);
             } 
