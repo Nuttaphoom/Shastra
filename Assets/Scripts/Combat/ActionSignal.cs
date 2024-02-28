@@ -16,20 +16,21 @@ namespace Vanaring
     [Serializable]
     public class ActionTimelineSettingStruct
     {
+        [Header("This represent track to dynamically bind with Actor object, Like Caster")]
         [SerializeField]
-        private List<string> _trackToChangeName ;
+        private List<string> _trackNameForActor ;
 
         private List<Transform> _timelienActors;
 
         public ActionTimelineSettingStruct(ActionTimelineSettingStruct copied)
         {
-            _trackToChangeName = new List<string>();
+            _trackNameForActor = new List<string>();
             _timelienActors = new List<Transform>();
 
             //Debug.Log(" copied._trackToChangeName : " + copied._trackToChangeName);
             //Debug.Log(" copied._timelienActors : " + copied._timelienActors);
-            foreach (var trackName in copied._trackToChangeName)
-                _trackToChangeName.Add(trackName); 
+            foreach (var trackName in copied._trackNameForActor)
+                _trackNameForActor.Add(trackName); 
 
             //foreach (var transform in copied._timelienActors)  
             //    _timelienActors.Add(transform) ; 
@@ -47,9 +48,9 @@ namespace Vanaring
 
         public Transform GetObjectWithTrackName(string trackName)
         {
-            for (int i = 0; i < _trackToChangeName.Count;i++)
+            for (int i = 0; i < _trackNameForActor.Count;i++)
             {
-                if (_trackToChangeName[i] == trackName)
+                if (_trackNameForActor[i] == trackName)
                 {
                     return _timelienActors[i]  ;     
                 }
@@ -68,7 +69,7 @@ namespace Vanaring
 
        
 
-        public List<string> TrackNames => _trackToChangeName;
+        public List<string> TrackNames => _trackNameForActor;
     }
 
     [Serializable] 

@@ -14,11 +14,11 @@ namespace Vanaring
 
         [Header("Peak HP of this entity")]
         [SerializeField]
-        private readonly int _HP;
+        private int _HP;
 
         [Header("Default ATK of this entity")]
         [SerializeField]
-        private readonly int _ATK;
+        private int _ATK;
 
         [Header("Ailment Resistant")]
         [SerializeField]

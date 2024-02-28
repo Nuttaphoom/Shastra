@@ -29,10 +29,6 @@ namespace Vanaring
             _initialValue = copied._initialValue;
             _peakValue = copied._peakValue;
             _increasedValue = copied._increasedValue;
-
-            //Debug.Log("increaesed : " + _defaultValue);
-            //Debug.Log(" copied._defaultValue : " + copied._defaultValue);
-            //Debug.Log(" copied.getvalue : " + copied.GetStatValue() ) ;
         }
 
         public RuntimeStat(int peakValue, int initialValue)

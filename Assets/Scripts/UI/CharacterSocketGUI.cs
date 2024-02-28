@@ -96,8 +96,8 @@ namespace Vanaring
             isCanTurn = false;
             isSelected = false;
             characterName.text = _characterSheetSO.CharacterName;
-            hpVal = _combatEntity.StatsAccumulator.GetHPAmount();
-            maxHpVal = _combatEntity.StatsAccumulator.GetHPAmount();
+            hpVal = (int) _combatEntity.StatsAccumulator.GetHPAmount();
+            maxHpVal = (int)_combatEntity.StatsAccumulator.GetHPAmount();
             secondHpBar.fillAmount = (float)hpVal / maxHpVal;
             UpdateHPScaleGUI();
             animator = GetComponent<Animator>();
@@ -154,7 +154,7 @@ namespace Vanaring
         private void OnHPModified(int damage)
         {
             //animator.SetTrigger("Hit");
-            hpVal = _combatEntity.StatsAccumulator.GetHPAmount();
+            hpVal = (int) _combatEntity.StatsAccumulator.GetHPAmount();
             if(hpVal <= 0)
             {
                 foreach (Image image in fadeBlackImageList)

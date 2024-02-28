@@ -14,7 +14,6 @@ namespace Vanaring
     {
         [SerializeField]
         private string _comment;
-
         public string GetComment(CombatEntity characterInConversation)
         {
             string characterName = characterInConversation.CombatCharacterSheet.CharacterName;

@@ -12,6 +12,7 @@ using UnityEngine.Events;
 using static Cinemachine.CinemachineTargetGroup;
 using static UnityEngine.EventSystems.EventTrigger;
 using static UnityEngine.GraphicsBuffer;
+using Kryz.CharacterStats;
 
 namespace Vanaring
 {
@@ -225,7 +226,7 @@ namespace Vanaring
         {
             _isExhausted = false; 
 
-            yield return _runtimeCharacterStatsAccumulator.ResetTemporaryIncreasedValue();
+            //yield return _runtimeCharacterStatsAccumulator.ResetTemporaryIncreasedValue();
 
             yield return _statusEffectHandler.RunStatusEffectExpiredScheme();
         }
@@ -304,15 +305,12 @@ namespace Vanaring
             yield return _statusEffectHandler.ApplyNewEffect(statusEffect,applierFactory, applier); 
         }
 
-        public void LogicHurt(CombatEntity attacker, int inputdmg)
+        public void LogicHurt(CombatEntity attacker, StatModifier mod)
         {
-            float trueDmg = inputdmg;
-            //Do some math here
-            trueDmg = -trueDmg;
-
-            _runtimeCharacterStatsAccumulator.ModifyHPStat(trueDmg);
-    
-            _dmgOutputPopHanlder.AccumulateDMG(inputdmg); 
+            Debug.Log("HP Before : " + _runtimeCharacterStatsAccumulator.GetHPAmount());
+            _runtimeCharacterStatsAccumulator.ModifyHPStat(mod);
+            Debug.Log("HP After : " + _runtimeCharacterStatsAccumulator.GetHPAmount());
+            _dmgOutputPopHanlder.AccumulateDMG((int) mod.Value); 
 
             if (_runtimeCharacterStatsAccumulator.GetHPAmount() <= 0)
             {
@@ -323,12 +321,12 @@ namespace Vanaring
 
         }
 
-        public void LogicHeal(int amount)
+        public void LogicHeal(StatModifier statModifier)
         {
-            int increasedAmoubnt = StatsAccumulator.ModifyHPStat(amount);
-            _dmgOutputPopHanlder.AccumulateHP(amount);
+            StatsAccumulator.ModifyHPStat(statModifier);
+            _dmgOutputPopHanlder.AccumulateHP((int) statModifier.Value);
 
-            StartCoroutine(VisualHeal(amount)); 
+            StartCoroutine(VisualHeal((int) statModifier.Value )); 
         }
 
         public IEnumerator VisualHeal(int healAmount  )
@@ -370,13 +368,15 @@ namespace Vanaring
         public IEnumerator LogicAttack(List<CombatEntity> targets, EDamageScaling scaling)
         {
             //Prepare for status effect  
-            yield return _statusEffectHandler.ExecuteAttackStatusRuntimeEffectCoroutine(); 
+            yield return _statusEffectHandler.ExecuteAttackStatusRuntimeEffectCoroutine();
 
             //1.) Do apply dmg 
-            int inputDmg = VanaringMathConst.GetATKWithScaling(scaling, StatsAccumulator.GetATKAmount());
+            int inputDmg = VanaringMathConst.GetATKWithScaling(scaling, StatsAccumulator.GetATKAmount()) ;
+            StatModifier statsModifer = new StatModifier(-inputDmg, StatModType.Flat) ;
+            
             foreach (CombatEntity target in targets)
             {
-                target.LogicHurt(this, inputDmg);
+                target.LogicHurt(this, statsModifer);
             }
 
         }

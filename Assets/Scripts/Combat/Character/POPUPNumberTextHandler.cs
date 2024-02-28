@@ -53,6 +53,9 @@ namespace Vanaring
 
         public void AccumulateDMG(int dmg)
         {
+            //If dmg is negative, make it positive to displayc correct 
+            if (dmg < 0) 
+                dmg = Mathf.Abs(dmg); 
             _accumulatedDMG += dmg; 
         }
 

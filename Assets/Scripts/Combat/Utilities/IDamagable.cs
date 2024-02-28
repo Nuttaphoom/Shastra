@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Kryz.CharacterStats;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,7 +23,7 @@ namespace Vanaring
     }
     public interface IDamagable
     {
-        public void LogicHurt(CombatEntity attacker, int inputdmg);
+        public void LogicHurt(CombatEntity attacker, StatModifier statsMod );
         public IEnumerator VisualHurt(string animationTrigger = "Hurt");
 
 

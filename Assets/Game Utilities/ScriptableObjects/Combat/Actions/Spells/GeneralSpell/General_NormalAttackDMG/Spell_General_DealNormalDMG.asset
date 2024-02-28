@@ -12,13 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f5d27031a83ca845945ea045c3f11b6, type: 3}
   m_Name: Spell_General_DealNormalDMG
   m_EditorClassIdentifier: 
-  _description:
-    _fieldName: Attack
-    _fieldDescription: Deal <b>Medium</b> Damage to a Target
-    _fieldImage: {fileID: 21300000, guid: 5a206e28e997b6848bae9ab916fe636c, type: 3}
+  _actionDescription:
+    _fieldName: Soul Slash
+    _fieldDescription: test2
+    _fieldImage: {fileID: 0}
   _targetSelector:
     _maxTargetSize: 1
-    _targetCaster: 0
     _targetAlly: 0
     _targetOppose: 1
     _targetSelf: 0
@@ -28,11 +27,9 @@ MonoBehaviour:
       _runtimeEffects:
       - {fileID: 11400000, guid: 677a4d5870ddff746a3a9e1c14ed8591, type: 2}
     _actionTimelineSetting:
-      _trackToChangeName:
+      _trackNameForActor:
       - Caster
     _timeLineActorSetupPrefab: {fileID: -8615740222444698358, guid: 4234c7184a582d14e8985a1fd109c8e5, type: 3}
-  _comment:
-    _comment: 
   _requiredEnergy:
     _side: 0
     _amount: 0

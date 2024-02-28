@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Kryz.CharacterStats;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,68 +22,65 @@ namespace Vanaring
 
     public class RuntimeCharacterStatsAccumulator  
     {
-        private Dictionary<ECharacterStatType, RuntimeStat> _characterStats = new Dictionary<ECharacterStatType, RuntimeStat>() ;
+        private Dictionary<ECharacterStatType, CharacterStat> _characterStats = new Dictionary<ECharacterStatType, CharacterStat>() ;
         public RuntimeCharacterStatsAccumulator(CombatCharacterSheetSO _entityStatsSO)
         {
-            _characterStats.Add(ECharacterStatType.HP, new RuntimeStat(_entityStatsSO.GetHP, _entityStatsSO.GetHP));
-            _characterStats.Add(ECharacterStatType.ATK, new RuntimeStat(VanaringMathConst.InfinityValue ,_entityStatsSO.GetATK)) ;
- 
+            _characterStats.Add(ECharacterStatType.HP, new CharacterStat(_entityStatsSO.GetHP, _entityStatsSO.GetHP) );
+            _characterStats.Add(ECharacterStatType.ATK, new CharacterStat( _entityStatsSO.GetATK) ) ;
 
         }
 
         #region ATKStatsManipulationMethod  
-        public void ModifyATKAmount(int atk)
+        public void ModifyATKAmount(StatModifier mod)
         {
-            _characterStats[ECharacterStatType.ATK].ModifyValue(atk,true,true) ;
-
+            //_characterStats[ECharacterStatType.ATK].ModifyValue(atk,true,true) ;
+            _characterStats[ECharacterStatType.ATK].AddModifier(mod); 
         }
 
-        public void ModifyATKAmountByPercent(int percent)
-        {
-
-
-            int currentValue = _characterStats[ECharacterStatType.ATK].GetStatValue() ; 
-            int increasedAmount = (currentValue * percent ) / 100 ;
+        //public void ModifyATKAmountByPercent(int percent)
+        //{
+        //    int currentValue = _characterStats[ECharacterStatType.ATK].GetStatValue() ; 
+        //    int increasedAmount = (currentValue * percent ) / 100 ;
  
 
-            _characterStats[ECharacterStatType.ATK].ModifyValue(increasedAmount, true, true);
+        //    _characterStats[ECharacterStatType.ATK].ModifyValue(increasedAmount, true, true);
 
 
-        }
+        //}
 
-        public int GetATKAmount()
+        public float GetATKAmount()
         {
-            return _characterStats[ECharacterStatType.ATK].GetStatValue();
+            return _characterStats[ECharacterStatType.ATK].Value  ;
         }
         #endregion
 
         #region HPStatsManipulationmethod
-        public int ModifyHPStat(float amt)
+        public void ModifyHPStat(StatModifier mod)
         {
-            return _characterStats[ECharacterStatType.HP].ModifyValue((int)amt,false);
+            _characterStats[ECharacterStatType.HP].AddModifier(mod) ;
         }
 
-        public int GetHPAmount()
+        public float GetHPAmount()
         {
-            return _characterStats[ECharacterStatType.HP].GetStatValue();  
+            return _characterStats[ECharacterStatType.HP].Value ;  
         }
 
-        public int GetPeakHPAmount()
+        public float GetPeakHPAmount()
         {
-            return _characterStats[ECharacterStatType.HP].GetPeakValue();
+            return _characterStats[ECharacterStatType.HP].GetPeakValue ;
         }
         #endregion
 
         #region StuntManipulationMethod 
-        public IEnumerator ResetTemporaryIncreasedValue()
-        {
-            foreach (ECharacterStatType type in _characterStats.Keys)
-            {
-                _characterStats[type].ResetIncreasedValue();
-                //yield for some sec for removing status animation 
-                yield return null; 
-            }
-        } 
+        //public IEnumerator ResetTemporaryIncreasedValue()
+        //{
+        //    foreach (ECharacterStatType type in _characterStats.Keys)
+        //    {
+        //        _characterStats[type].ResetIncreasedValue();
+        //        //yield for some sec for removing status animation 
+        //        yield return null; 
+        //    }
+        //} 
         #endregion
 
 

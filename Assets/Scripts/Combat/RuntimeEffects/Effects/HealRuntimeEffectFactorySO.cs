@@ -1,4 +1,5 @@
 ﻿using CustomYieldInstructions;
+using Kryz.CharacterStats;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -14,11 +15,11 @@ namespace Vanaring
     public class HealRuntimeEffectFactorySO : RuntimeEffectFactorySO
     {
         [SerializeField]
-        private int _hp = 0;
+        private StatModifier _healStatModifer ;
 
         public override RuntimeEffect Factorize(List<CombatEntity> targets)
         {
-            HealRuntimeEffect retEffect = new HealRuntimeEffect(_hp);
+            HealRuntimeEffect retEffect = new HealRuntimeEffect(_healStatModifer);
             if (targets != null)
             {
                 foreach (CombatEntity target in targets)
@@ -33,10 +34,10 @@ namespace Vanaring
 
     public class HealRuntimeEffect : RuntimeEffect
     {
-        private int _hp = 0;
-        public HealRuntimeEffect(int hp)
+        private StatModifier _healStatModifer;
+        public HealRuntimeEffect(StatModifier  healStatModifer)
         {
-            _hp = hp;
+            _healStatModifer = healStatModifer; 
         }
 
         public override IEnumerator ExecuteRuntimeCoroutine(CombatEntity caster)
@@ -49,7 +50,7 @@ namespace Vanaring
             foreach (CombatEntity target in _targets)
             {
                 CombatEntity entity = target;
-                entity.LogicHeal(_hp);
+                entity.LogicHeal(_healStatModifer) ;
             }
 
             yield return null;

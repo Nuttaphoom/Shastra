@@ -3,7 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using static UnityEngine.GraphicsBuffer;
-
+ 
+using Kryz.CharacterStats;
 
 namespace Vanaring 
 {
@@ -11,16 +12,12 @@ namespace Vanaring
     [CreateAssetMenu(fileName = "EnchanceEffectFactorySO", menuName = "ScriptableObject/RuntimeEffect/StatusEffect/EnchanceEffectFactorySO")]
     public class EnhanceATKStatusEffectFactorySO : StatusRuntimeEffectFactorySO
     {
-        [Header("100 = increased by 100%")]
         [SerializeField]
-        private int _modifiedPercent = 0 ;
-
-        [SerializeField]
-        private int _realIncreasedAmount = 0 ; 
+        private StatModifier _enchanceATKStats  ; 
 
         public override RuntimeEffect Factorize(List<CombatEntity> targets)
         {
-            EnhanceATKStatusEffect retEffect = new EnhanceATKStatusEffect(this, _modifiedPercent, _realIncreasedAmount);
+            EnhanceATKStatusEffect retEffect = new EnhanceATKStatusEffect(this, _enchanceATKStats);
             foreach (CombatEntity target in targets)
             {
                 retEffect.AssignTarget(target);
@@ -33,14 +30,12 @@ namespace Vanaring
 
     public class EnhanceATKStatusEffect : StatusRuntimeEffect
     {
-        private int _modifiedPercent = 0 ;
-        private int _realIncreasedAmount = 0; 
+        private StatModifier _enchanceATKStats ;
+       
 
-        public EnhanceATKStatusEffect(StatusRuntimeEffectFactorySO factory, int modifiedPercent,int realIncreasedAmount) : base(factory)
+        public EnhanceATKStatusEffect(StatusRuntimeEffectFactorySO factory, StatModifier statsMod) : base(factory)
         {
-            this._modifiedPercent = modifiedPercent ; 
-            this._realIncreasedAmount = realIncreasedAmount ; 
-
+            _enchanceATKStats = statsMod; 
         }
 
 
@@ -48,8 +43,7 @@ namespace Vanaring
         
         public override IEnumerator BeforeAttackEffect(CombatEntity caster)
         {
-            caster.StatsAccumulator.ModifyATKAmount(_realIncreasedAmount);
-            caster.StatsAccumulator.ModifyATKAmountByPercent(_modifiedPercent);
+            caster.StatsAccumulator.ModifyATKAmount(_enchanceATKStats);
 
             _timeToLive = 0;
 

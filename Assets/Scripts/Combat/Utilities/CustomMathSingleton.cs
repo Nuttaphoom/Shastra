@@ -7,7 +7,7 @@ namespace Vanaring
     {
         public  const int InfinityValue = 2147483647 ; 
 
-        public static int GetATKWithScaling(EDamageScaling scaling, int inputDmg)
+        public static int GetATKWithScaling(EDamageScaling scaling, float inputDmg)
         {
             float mul = 1;
             switch (scaling)

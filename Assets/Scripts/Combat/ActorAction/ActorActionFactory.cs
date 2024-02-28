@@ -14,31 +14,31 @@ namespace Vanaring
 {
     public abstract class ActorActionFactory : ScriptableObject
     {
+        [Header("===Description Information Of this Action ===")]
+        [Header("=== Action name will be dispaly on BacklogNotification")]
         [SerializeField]
-        protected DescriptionBaseField _actiondescription;
+        protected DescriptionBaseField _actionDescription;
 
+        [Header("===Action Target Detail===")]
         [SerializeField]
         protected TargetSelector _targetSelector;
 
+        [Header("=== Animation ===")]
         [SerializeField]
         protected ActionSignal _actionSignal;
-
-        [SerializeField]
-        protected Comment _comment;
 
 
         public abstract ActorAction FactorizeRuntimeAction(CombatEntity combatEntity );
 
         #region GETTER
         public TargetSelector TargetSelect => _targetSelector;
-        public string AbilityName => _actiondescription.FieldName;
-        public string Desscription => _actiondescription.FieldDescription;
-        public Sprite AbilityImage => _actiondescription.FieldImage;
+        public string AbilityName => _actionDescription.FieldName;
+        public string Desscription => _actionDescription.FieldDescription;
+        public Sprite AbilityImage => _actionDescription.FieldImage;
 
         public ActionSignal ActionSignal => _actionSignal;
-        public DescriptionBaseField DescriptionBaseField => _actiondescription; 
-        public Comment GetActionComment => _comment; 
-
+        public DescriptionBaseField DescriptionBaseField => _actionDescription; 
+ 
         #endregion
 
     }
@@ -51,7 +51,6 @@ namespace Vanaring
         protected ActionSignal _actionSignal;
         protected CombatEntity _caster;
         protected DescriptionBaseField _description;
-        protected Comment _actionComment ; 
 
 
         private List<Coroutine> _ongoingEffect = new List<Coroutine>();
@@ -61,7 +60,6 @@ namespace Vanaring
             _description = actionFactory.DescriptionBaseField ;
             _targetSelector = actionFactory.TargetSelect ;
             _actionSignal = new ActionSignal(actionFactory.ActionSignal) ;
-            _actionComment = actionFactory.GetActionComment ;
             
             _caster = caster; 
         }

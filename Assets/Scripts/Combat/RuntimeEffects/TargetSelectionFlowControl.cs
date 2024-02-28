@@ -352,11 +352,9 @@ namespace Vanaring
         [SerializeField]
         private int _maxTargetSize = 1;
 
+        #region Getter 
         public int MaxTarget => _maxTargetSize;
-
-        [SerializeField]
-        private bool _targetCaster = false;
-
+        #endregion
         [Header("Toggle target status when selected")]
         [SerializeField]
         private bool _targetAlly;
