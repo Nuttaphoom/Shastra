@@ -107,9 +107,21 @@ namespace Vanaring
 
         public void RestoreState(object state)
         {
-            var saveData = (List<string>)state;
+            List<string> saveData = (List<string>)state;
 
-            LoadSpellFromDatabase(saveData);
+            if (_registeredSpellActions == null)
+            {
+                LoadSpellFromDatabase(saveData);
+                return;
+            }
+
+            for (int i = 0; i < saveData.Count; i++)
+            {
+                if (_registeredSpellActions.Contains(m_spellDatabase.GetRecord(saveData[i])))
+                    continue;
+
+                _registeredSpellActions.Add(m_spellDatabase.GetRecord(saveData[i]));
+            }
         }
 
         #endregion
