@@ -26,13 +26,9 @@ namespace Vanaring
         /// <exception cref="System.Exception"></exception>
         /// <exception cref="NotImplementedException"></exception>
         
-        public void InitializeSpellActions()
-        {
-
-        }
+    
         public void LoadSpellFromDatabase(List<string> uniqueID)
         {
-            Debug.Log("LoadSpellFromDatabase");
             LoadSpellDatabaseOP();
 
             if (_registeredSpellActions != null)
@@ -80,7 +76,7 @@ namespace Vanaring
         }
 
         public List<SpellActionSO> GetRegisteredSpell()
-        { 
+        {
             if (_registeredSpellActions == null)
                 throw new Exception("RegisteredSpellAction is null : the LoadSpellFromDatabase may not be called properly"); 
             
@@ -111,9 +107,21 @@ namespace Vanaring
 
         public void RestoreState(object state)
         {
-            var saveData = (List<string>)state;
-            Debug.Log("restore state in ActionRegister");
-            LoadSpellFromDatabase(saveData);
+            List<string> saveData = (List<string>)state;
+
+            if (_registeredSpellActions == null)
+            {
+                LoadSpellFromDatabase(saveData);
+                return;
+            }
+
+            for (int i = 0; i < saveData.Count; i++)
+            {
+                if (_registeredSpellActions.Contains(m_spellDatabase.GetRecord(saveData[i])))
+                    continue;
+
+                _registeredSpellActions.Add(m_spellDatabase.GetRecord(saveData[i]));
+            }
         }
 
         #endregion

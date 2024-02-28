@@ -29,7 +29,6 @@ namespace Vanaring
                 runtimePartyMemberData.SetUpRuntimePartyMemberData(partyMemberData);
                 _partyMemberData.Add(runtimePartyMemberData); 
             }
-
         }
 
         #region GETTER
@@ -94,9 +93,10 @@ namespace Vanaring
             Dictionary<string, List<string>> saveData = new Dictionary<string, List<string>>();
             foreach (var member in _partyMemberData)
             {
-                string characterName = member.GetMemberName ;
+                string characterName = member.GetMemberName();
                 List<string> captureState = (List<string>)member.CaptureState();
-                if (!saveData.ContainsKey(characterName)) // temp skip for duplicate Asha?????
+
+                if (saveData.ContainsKey(characterName)) // temp skip for duplicate Asha?????
                     continue;
 
                 saveData.Add(characterName, captureState);
@@ -107,8 +107,8 @@ namespace Vanaring
 
         public void RestoreState(object state)
         {
-            InitializeRuntimeMemberData(); 
-             
+            InitializeRuntimeMemberData();
+
             Dictionary<string, List<string>> saveData = (Dictionary<string, List<string>>)state;
             foreach (KeyValuePair<string, List<string>> data in saveData) // loop through both
             {
