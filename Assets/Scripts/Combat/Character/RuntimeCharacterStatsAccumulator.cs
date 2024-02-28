@@ -74,13 +74,6 @@ namespace Vanaring
         #endregion
 
         #region StuntManipulationMethod 
-
-        
-
-    
-
-       
-
         public IEnumerator ResetTemporaryIncreasedValue()
         {
             foreach (ECharacterStatType type in _characterStats.Keys)

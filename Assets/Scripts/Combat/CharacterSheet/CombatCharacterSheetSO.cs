@@ -14,19 +14,19 @@ namespace Vanaring
 
         [Header("Peak HP of this entity")]
         [SerializeField]
-        private int _HP;
+        private readonly int _HP;
 
         [Header("Default ATK of this entity")]
         [SerializeField]
-        private int _ATK;
+        private readonly int _ATK;
 
         [Header("Ailment Resistant")]
         [SerializeField]
-        private AilmentResistantDataInfo _ailmentResistantDataInfo;
+        private readonly AilmentResistantDataInfo _ailmentResistantDataInfo;
 
         [Header("Character Sprite")]
         [SerializeField]
-        private Sprite _characterIconGUI;
+        private readonly Sprite _characterIconGUI;
 
         public AilmentResistantDataInfo ResistantData => _ailmentResistantDataInfo;
 

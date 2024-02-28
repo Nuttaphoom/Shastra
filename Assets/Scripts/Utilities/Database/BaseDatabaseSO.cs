@@ -24,7 +24,7 @@ namespace Vanaring
             {
                 if (! record.IsContainRecorded())
                 {
-                    record.SetKey("Empty");
+                    record.SetKey("EMPTY");
                     continue;
                 } 
                 if (record.IsContainKey)
@@ -81,18 +81,26 @@ namespace Vanaring
         {
             [SerializeField]
             private RecordType _recorded ;
-            private string _key  = "Empty";
+            [SerializeField]
+            private string _key = "EMPTY" ;
 
             public bool IsContainKey
             {
                 get
                 {
-                    return _key != "Empty" ; 
+                    if (_key == "EMPTY")
+                        return false;
+
+                    if (_key == null)
+                        return false;  
+
+                    return true ; 
                 }
             }
 
             public void SetKey(string key)
             {
+                Debug.Log("set key + " + key); 
                 _key = key;
             }
 
