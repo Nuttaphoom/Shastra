@@ -71,14 +71,23 @@ namespace Vanaring
             }
         }
 
-        public void OnHoverEnterUIEventWindow(BaseEventData eventData)
+        public void OnExpansion()
         {
-            EventWindow.SetActive(true);
+            gameObject.transform.localScale = new Vector3(1.3f, 1.3f, 1.3f);
+        }
+        public void OnShrink()
+        {
+            gameObject.transform.localScale = Vector3.one;
         }
 
-        public void OnHoverExitUIEventWindow(BaseEventData eventData)
-        {
-            EventWindow.SetActive(false);
-        }
+        //public void OnHoverEnterUIEventWindow(BaseEventData eventData)
+        //{
+        //    EventWindow.SetActive(true);
+        //}
+
+        //public void OnHoverExitUIEventWindow(BaseEventData eventData)
+        //{
+        //    EventWindow.SetActive(false);
+        //}
     }
 }
