@@ -15,26 +15,14 @@ namespace Vanaring
     public class PersonalityRewardDisplayerPanel : BaseRewardDisplayerPanel
     {
         [SerializeField]
-        protected TextMeshProUGUI _testTextUGUI;
-
-        [SerializeField]
         private float _animationDuration = 3.0f;
         private List<Trait.Trait_Type> traitRewardShowList = new List<Trait.Trait_Type>();
         private int coroutineRunningCount = 0;
 
         [Header("TraitGauge")]
-        [SerializeField] private Image traitGauge1;
-        [SerializeField] private Image traitGauge2;
-        [SerializeField] private Image traitGauge3;
-        [SerializeField] private Image traitGauge4;
-        [SerializeField] private TextMeshProUGUI levelCharmText;
-        [SerializeField] private TextMeshProUGUI levelKindText;
-        [SerializeField] private TextMeshProUGUI levelKnowText;
-        [SerializeField] private TextMeshProUGUI levelProfText;
-        [SerializeField] private Image charmIcon;
-        [SerializeField] private Image kindIcon;
-        [SerializeField] private Image knowIcon;
-        [SerializeField] private Image profIcon;
+        [SerializeField] private PersonalityTraitRewardUIObject uiObjectTemplate;
+        private List<PersonalityTraitRewardUIObject> gaugeFillList = new List<PersonalityTraitRewardUIObject>();
+        [SerializeField] private List<Transform> uiTransformList = new List<Transform>();
 
         [Header("TraitRewardPanel")]
         [SerializeField] private GameObject levelUpPanel;
@@ -52,14 +40,16 @@ namespace Vanaring
         {
             _personalityRewardList = personalRewardDataList;
             personalityTrait = PersistentPlayerPersonalDataManager.Instance.GetPersonalityTrait ;
-            charmIcon.sprite = personalityTrait.GetStat(Trait.Trait_Type.Charm).GetPersonalityTraitIcon;
-            kindIcon.sprite = personalityTrait.GetStat(Trait.Trait_Type.Kindness).GetPersonalityTraitIcon;
-            knowIcon.sprite = personalityTrait.GetStat(Trait.Trait_Type.Knowledge).GetPersonalityTraitIcon;
-            profIcon.sprite = personalityTrait.GetStat(Trait.Trait_Type.Proficiency).GetPersonalityTraitIcon;
-            levelCharmText.text = personalityTrait.GetStat(Trait.Trait_Type.Charm).Getlevel().ToString();
-            levelKindText.text = personalityTrait.GetStat(Trait.Trait_Type.Kindness).Getlevel().ToString();
-            levelKnowText.text = personalityTrait.GetStat(Trait.Trait_Type.Knowledge).Getlevel().ToString();
-            levelProfText.text = personalityTrait.GetStat(Trait.Trait_Type.Proficiency).Getlevel().ToString();
+            Trait.Trait_Type[] allTrait = (Trait.Trait_Type[])Enum.GetValues(typeof(Trait.Trait_Type));
+            for (int i = 0; i < allTrait.Length; i++)
+            {
+                PersonalityTraitRewardUIObject newUIObj = Instantiate(uiObjectTemplate, uiTransformList[i]);
+                newUIObj.Init(allTrait[i], personalityTrait.GetStat(allTrait[i]).GetPersonalityTraitIcon, 
+                    personalityTrait.GetStat(allTrait[i]).Getlevel(), 
+                    (float)Math.Floor(personalityTrait.GetStat(allTrait[i]).GetCurrentexp()) / personalityTrait.GetCurrentTraitRequireEXP(allTrait[i]));
+                gaugeFillList.Add(newUIObj);
+            }
+            uiObjectTemplate.gameObject.SetActive(false);
             levelUpPanel.SetActive(false);
         }
 
@@ -82,31 +72,21 @@ namespace Vanaring
             introDirector.Play();
             yield return new WaitForSeconds(1.0f);
             introDirector.Stop();
+            int i = 0;
             foreach (PersonalityRewardData traitReward in _personalityRewardList)
             {
-                switch (traitReward.RewardTraitType)
+                foreach (PersonalityTraitRewardUIObject gauge in gaugeFillList)
                 {
-                    case Trait.Trait_Type.Charm:
-                        StartCoroutine(GuageDisplay(personalityTrait.GetStat(Trait.Trait_Type.Charm).GetCurrentexp(), 
-                            traitReward.RewardAmount, Trait.Trait_Type.Charm, traitGauge1, levelCharmText));
-                        break;
-                    case Trait.Trait_Type.Kindness:
-                        StartCoroutine(GuageDisplay(personalityTrait.GetStat(Trait.Trait_Type.Kindness).GetCurrentexp(), 
-                            traitReward.RewardAmount, Trait.Trait_Type.Kindness, traitGauge2, levelKindText));
-                        break;
-                    case Trait.Trait_Type.Knowledge:
-                        StartCoroutine(GuageDisplay(personalityTrait.GetStat(Trait.Trait_Type.Knowledge).GetCurrentexp(), 
-                            traitReward.RewardAmount, Trait.Trait_Type.Knowledge, traitGauge3, levelKnowText));
-                        break;
-                    case Trait.Trait_Type.Proficiency:
-                        StartCoroutine(GuageDisplay(personalityTrait.GetStat(Trait.Trait_Type.Proficiency).GetCurrentexp(), 
-                            traitReward.RewardAmount, Trait.Trait_Type.Proficiency, traitGauge4, levelProfText));
-                        break;
+                    if (gauge.IsTraitTypeEqual(traitReward.RewardTraitType))
+                    {
+                        Debug.Log("Found " + traitReward.RewardTraitType + ": " + personalityTrait.GetStat(traitReward.RewardTraitType).GetCurrentexp());
+                        StartCoroutine(GuageDisplay(personalityTrait.GetStat(traitReward.RewardTraitType).GetCurrentexp(),
+                                traitReward.RewardAmount, traitReward.RewardTraitType, gauge.FillBar, gauge.TraitLevel));
+                    }
                 }
-                //Debug.Log(traitReward.RewardTraitType + ": " + traitReward.RewardAmount.ToString());
                 coroutineRunningCount++;
             }
-            while(coroutineRunningCount > 0)
+            while (coroutineRunningCount > 0)
             {
                 yield return null;
             }
@@ -114,11 +94,9 @@ namespace Vanaring
             //Snap
             if (traitRewardShowList.Count > 0)
             {
-                Debug.Log(traitRewardShowList.Count);
                 StartCoroutine(DisplayLevelUp(traitRewardShowList));
             }
         }
-
         private IEnumerator GuageDisplay(float currentVal , float rewardVal, Trait.Trait_Type type, Image gauge, TextMeshProUGUI lvText)
         {
             float currentTime = 0f;
@@ -160,6 +138,7 @@ namespace Vanaring
                 
                 yield return null;
             }
+            personalityTrait.SetStat(type, personalityTrait.GetStat(type).Getlevel(), curExpGain);
             if (isTraitHasReward)
             {
                 traitRewardShowList.Add(type);
