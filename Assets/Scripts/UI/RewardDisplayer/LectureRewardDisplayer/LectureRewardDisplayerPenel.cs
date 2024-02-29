@@ -17,7 +17,7 @@ namespace Vanaring
         [SerializeField]
         private Image filledBar;
         [SerializeField]
-        private LectureRewardButtonObject rewardButton;
+        private LectureRewardObject rewardObjTemplate;
         [SerializeField]
         private BonusTraitObject templateBonusTraitObj;
         private List<BonusTraitObject> reachBonusTraitObjectList = new List<BonusTraitObject>();
@@ -32,11 +32,12 @@ namespace Vanaring
         [SerializeField] private Image popUpRewardIcon;
         [SerializeField] private TextMeshProUGUI popUpRewardInformText;
 
-        private List<LectureRewardButtonObject> rewardButtonList = new List<LectureRewardButtonObject>();
+        private List<LectureRewardObject> rewardObjList = new List<LectureRewardObject>();
         private LectureRewardStruct lectureProgressBarData;
 
         public void ReceiveRewardDetail(LectureRewardStruct rewardData)
         {
+            popUpRewardPanel.SetActive(false);
             lectureProgressBarData = rewardData;
             PersonalityTrait personalityTrait = PersistentPlayerPersonalDataManager.Instance.GetPersonalityTrait;
             foreach (LectureRequieBoost boost in lectureProgressBarData.boostLecture)
@@ -55,7 +56,6 @@ namespace Vanaring
                 }
             }
             templateBonusTraitObj.gameObject.SetActive(false);
-            //Debug.Log("Current exp: "+ lectureProgressBarData.currentEXP + " + Max: " + lectureProgressBarData.maxEXP);
             filledBar.fillAmount = (float)lectureProgressBarData.currentEXP / lectureProgressBarData.maxEXP;
         }
 
@@ -77,30 +77,25 @@ namespace Vanaring
         {
             //Generate RewardButton according to score
             int rewardIndex = 0;
-            rewardButton.gameObject.SetActive(false);
+            rewardObjTemplate.gameObject.SetActive(false);
             foreach (LectureChechpoint checkPoint in lectureProgressBarData.checkpoints)
             {
-                LectureRewardButtonObject newRewardButton = Instantiate(rewardButton, filledBar.transform);
-                newRewardButton.gameObject.SetActive(true);
+                LectureRewardObject newRewardObj = Instantiate(rewardObjTemplate, filledBar.transform);
                 RewardData newEventReward = lectureProgressBarData.allRewardData[rewardIndex].GetRewardData;
-                newRewardButton.SetRewardDetail(newEventReward.RewardName, newEventReward.RewardIcon);
-                /////////////////////////////////////////////// Need Listener
-                newRewardButton.GetButtonComponent.onClick.AddListener(GetReward);
-                ///////////////////////////////////////////////
+                double iconXPos = ((float)checkPoint.RequirePoint * 360.0f) / 1000.0f;
+                newRewardObj.gameObject.transform.localPosition = new Vector2((float)iconXPos - 180f, 6.75f);
+                newRewardObj.gameObject.SetActive(true);
+                newRewardObj.SetRewardDetail(newEventReward.RewardName, newEventReward.RewardIcon);
+                newRewardObj.SetIsReachedState(false);
+                newRewardObj.SetIsObtainedState(false);
                 if (lectureProgressBarData.alreadyReceivedRewardData.Contains(lectureProgressBarData.allRewardData[rewardIndex]))
                 {
-                    newRewardButton.GetButtonComponent.interactable = false;
+                    newRewardObj.SetIsReachedState(false);
+                    newRewardObj.SetIsObtainedState(true);
                 }
-                
-                newRewardButton.GetButtonComponent.interactable = false;
-                double iconXPos = ((float)checkPoint.RequirePoint * 360.0f) / 1000.0f;
-                newRewardButton.gameObject.transform.localPosition = new Vector2((float)iconXPos-180f, 6.75f);
-
-                rewardButtonList.Add(newRewardButton);
+                rewardObjList.Add(newRewardObj);
                 rewardIndex++;
             }
-            Debug.Log(lectureProgressBarData.alreadyReceivedRewardData.Count);
-
             introDirector.Play();
             yield return new WaitForSeconds(1.0f);
 
@@ -154,13 +149,14 @@ namespace Vanaring
                 //Reach Reward Icon Animation
                 while (filledBar.fillAmount >= lectureProgressBarData.checkpoints[reachScoreIndex].RequirePoint / 1000.0f)
                 {
-                    rewardButtonList[reachScoreIndex].TriggerAnimation();
-                    rewardButtonList[reachScoreIndex].GetButtonComponent.interactable = true;
+                    rewardObjList[reachScoreIndex].TriggerAnimation();
+                    rewardObjList[reachScoreIndex].SetIsReachedState(true);
+                    rewardObjList[reachScoreIndex].SetIsObtainedState(true);
                     lectureProgressBarData.checkpoints[reachScoreIndex].ReceiveReward();
                     
                     obtainedRewardList.Add(lectureProgressBarData.checkpoints[reachScoreIndex]);
-                    obtainedRewardIcon.Add(rewardButtonList[reachScoreIndex].GetRewardIconSprite);
-                    obtainedRewardName.Add(rewardButtonList[reachScoreIndex].GetRewardNameString);
+                    obtainedRewardIcon.Add(rewardObjList[reachScoreIndex].GetRewardIconSprite);
+                    obtainedRewardName.Add(rewardObjList[reachScoreIndex].GetRewardNameString);
                     if (reachScoreIndex < lectureProgressBarData.checkpoints.Count - 1)
                     {
                         reachScoreIndex++;
@@ -182,12 +178,6 @@ namespace Vanaring
                 StartCoroutine(DisplayPopUpRewardPanel(obtainedRewardList));
             }
         }
-
-        private void GetReward()
-        {
-            Debug.Log("Get Reward");
-        }
-
         private IEnumerator DisplayPopUpRewardPanel(List<LectureChechpoint> obtainedRewardList)
         {
             for (int i = 0; i < obtainedRewardList.Count; i++)
