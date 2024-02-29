@@ -6,10 +6,8 @@ using TMPro;
 
 namespace Vanaring
 {
-    public class LectureRewardButtonObject : MonoBehaviour
+    public class LectureRewardObject : MonoBehaviour
     {
-        [SerializeField]
-        private Button lectureRewardButton;
         [SerializeField]
         private Image rewardImage;
         [SerializeField]
@@ -18,10 +16,13 @@ namespace Vanaring
         private ButtonHover _buttonHover;
         [SerializeField]
         private TextMeshProUGUI rewardName;
+        [SerializeField]
+        private Image faderImg;
+        [SerializeField]
+        private Image obtainedImg;
         private Sprite rewardIconSprite;
         private string rewardNameString;
 
-        public Button GetButtonComponent => lectureRewardButton;
         public Image GetIconImage => rewardImage;
         public Animator GetAnimator => anim;
         public Sprite GetRewardIconSprite => rewardIconSprite;
@@ -33,6 +34,14 @@ namespace Vanaring
             _buttonHover.InitWindowDetail(newText, newIcon);
             rewardImage.sprite = newIcon;
             rewardName.text = newText;
+        }
+        public void SetIsReachedState(bool isReach)
+        {
+            faderImg.gameObject.SetActive(!isReach);
+        }
+        public void SetIsObtainedState(bool isObtain)
+        {
+            obtainedImg.gameObject.SetActive(isObtain);
         }
         public void TriggerAnimation()
         {
