@@ -12,6 +12,7 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
+using Vanaring.Assets.Scripts.Combat.Utilities;
 using Vanaring_Utility_Tool; 
 using static UnityEngine.UI.CanvasScaler;
 
@@ -102,7 +103,6 @@ namespace Vanaring
         [Header("For testing, we manually assign these competator (including enemy) ")]
         List<CompetatorDetailStruct> _competators;
 
-
         public static CombatReferee Instance ;
        
         private void Awake()
@@ -138,12 +138,12 @@ namespace Vanaring
 
         private IEnumerator LoadDataFromDatabase()
         {
-            //We garuntee that Player's side character is valid at this point 
-            foreach (CombatEntity entity in GetCompetatorsBySide(ECompetatorSide.Ally))
+            foreach (ICombatRequireLoadData icombatRequireLoadData in FindObjectsOfType<MonoBehaviour>()
+                                                                    .OfType<ICombatRequireLoadData>())
             {
-                yield return entity.LoadDataFromDatabase(); 
+                yield return icombatRequireLoadData.LoadDataFromDatabase();
             }
-            yield return null; 
+            yield return null;
         }
 
         private IEnumerator BeginNewBattle()

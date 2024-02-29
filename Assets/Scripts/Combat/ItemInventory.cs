@@ -3,10 +3,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Vanaring.Assets.Scripts.Combat.Utilities;
 
 namespace Vanaring 
 {
-    public class ItemInventory : MonoBehaviour
+    public class ItemInventory : MonoBehaviour, ICombatRequireLoadData
     {
         // TODO : Not singleton inventory
         public static ItemInventory instance = null;
@@ -14,7 +15,6 @@ namespace Vanaring
         [Serializable]
         public struct ItemInventoryData
         {
-            // TODO : Combine itemData & amount into the struct
             [SerializeField]
             public ItemActionFactorySO itemData;
             [SerializeField]
@@ -49,6 +49,11 @@ namespace Vanaring
                 _itemInventoryAbility.Add(item.itemData);
                 _itemInventoryAmount.Add(item.amount);
             }
+        }
+
+        public IEnumerator LoadDataFromDatabase()
+        {
+            throw new NotImplementedException(); 
         }
     }
 }
