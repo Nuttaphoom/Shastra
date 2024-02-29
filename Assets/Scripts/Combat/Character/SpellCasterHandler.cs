@@ -3,6 +3,7 @@ using System;
 using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using Unity.VisualScripting;
@@ -26,6 +27,7 @@ namespace Vanaring
         private RuntimeMangicalEnergy _magicalEnergy;
 
         private UnityAction<CombatEntity, RuntimeMangicalEnergy.EnergySide, int> OnModifyEnergy;
+
 
         private CombatEntity _combatEntity;
 
@@ -52,6 +54,9 @@ namespace Vanaring
             {
                 _eventBroadcaster = new EventBroadcaster();
                 _eventBroadcaster.OpenChannel<EnergyModifyerEffectPair>("OnSimulateEnergy");
+
+                //int is modified value 
+                _eventBroadcaster.OpenChannel<int>("OnMPModified");
             }
 
             return _eventBroadcaster;
@@ -67,6 +72,14 @@ namespace Vanaring
             GetEventBroadcaster().UnSubEvent<EnergyModifyerEffectPair>(func, "OnSimulateEnergy");
         }
 
+        public void SubOnMPModified(UnityAction<int> func)
+        {
+            GetEventBroadcaster().SubEvent<int>(func, "OnMPModified");
+        }
+        public void UnSubOnMPModified(UnityAction<int> func)
+        {
+            GetEventBroadcaster().UnSubEvent<int>(func, "OnMPModified");
+        }
 
         #endregion
 
@@ -80,7 +93,17 @@ namespace Vanaring
         {
             OnModifyEnergy -= argc;
         }
-        #endregion EndSub 
+        #endregion   
+
+        #region MP Method 
+        public void ModifyMP(StatModifier mod)
+        {
+            _MPStats.AddModifier(mod);
+
+            GetEventBroadcaster().InvokeEvent(mod.Value, "OnMPModified");
+        }
+
+        #endregion
 
         #region Modify Energy  
         public bool IsEnergySufficient(SpellActionSO spell)
@@ -124,14 +147,9 @@ namespace Vanaring
             }
 
             OnModifyEnergy?.Invoke(_combatEntity, side, modValue);
-
         }
 
-
-        public void ModifyMP(StatModifier mod)
-        {
-            _MPStats.AddModifier(mod); 
-        }
+        
 
         public bool IsEnergyOverflow()
         {
@@ -140,13 +158,9 @@ namespace Vanaring
 
         public void ResetEnergy()
         {
-
             //RuntimeMangicalEnergy.EnergySide modifiedSide = RuntimeMangicalEnergy.EnergySide.LightEnergy;
             int lightModifiedAmout = _magicalEnergy.ResetEnergy(RuntimeMangicalEnergy.EnergySide.LightEnergy) ;
             int darkAmodifiedAmout = _magicalEnergy.ResetEnergy(RuntimeMangicalEnergy.EnergySide.DarkEnergy) ;
-
-
-
 
             if (_balancedEnergyStyle)
             {
@@ -208,8 +222,28 @@ namespace Vanaring
         #endregion
 
         #region GETTER
-        public bool IsBalanceStyle => _balancedEnergyStyle; 
+        public bool IsBalanceStyle => _balancedEnergyStyle;
+        public float GetMP
+        {
+            get
+            {
+                if (_MPStats == null)
+                    throw new Exception("MP Stats is null");
 
+                return _MPStats.Value;
+            }
+        }
+
+        public float GetPeakMP
+        {
+            get
+            {
+                if (_MPStats == null)
+                    throw new Exception("MP Stats is null");
+
+                return _MPStats.GetPeakValue ;
+            }
+        }
         #endregion
     }
 
