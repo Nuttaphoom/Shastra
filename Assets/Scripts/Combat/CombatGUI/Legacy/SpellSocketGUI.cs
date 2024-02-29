@@ -58,6 +58,7 @@ namespace Vanaring
             _actionButton.onClick.AddListener(ChooseSpell);
             //Debug.Log("Spell : " + spell) ;
             //Debug.Log("spell.AbilityName : " + spell.AbilityName) ;  
+            
             _textMeshProUGUI.text = spell.AbilityName.ToString();
             _spellCost.text = _spellRequireAmout.ToString();
             //_skillImage.sprite = spell.AbilityImage;

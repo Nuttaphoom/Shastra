@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Kryz.CharacterStats;
+using System;
 using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,6 +31,8 @@ namespace Vanaring
 
         private RuntimeMangicalEnergy _simulateMagicalEnergy = null ;
 
+        private CharacterStat _MPStats;  
+
         [Header("Balanced Style will synchonize")]
         [SerializeField]
         private bool _balancedEnergyStyle = false; 
@@ -37,7 +40,8 @@ namespace Vanaring
         private void Awake()
         {
             _combatEntity = GetComponent<CombatEntity>();
-            _magicalEnergy.Init(this); 
+            _magicalEnergy.Init(this);
+            _MPStats = new CharacterStat(_combatEntity.CombatCharacterSheet.GetMP, _combatEntity.CombatCharacterSheet.GetMP) ; 
         }
 
         #region GetEventBroadcaster Methods 
@@ -83,7 +87,7 @@ namespace Vanaring
         {
             // we use opposited side of Required energy to check because if spell display Dark 3 to cast, meaning we will need 
             //at least Light 3 to cast the spell
-            RuntimeMangicalEnergy.EnergySide side = spell.RequiredSide; 
+            RuntimeMangicalEnergy.EnergySide side = spell.RequiredSide;
             //if (== RuntimeMangicalEnergy.EnergySide.DarkEnergy)
             //{
             //    side = RuntimeMangicalEnergy.EnergySide.LightEnergy;
@@ -93,7 +97,10 @@ namespace Vanaring
             //    side = RuntimeMangicalEnergy.EnergySide.DarkEnergy; 
             //}
             //Debug.Log(GetEnergyAmount(side) + " - " + MathF.Abs(spell.RequiredAmout));
-            return  ( GetEnergyAmount(side) - MathF.Abs(spell.RequiredAmout ) ) > 0;
+            //return  ( GetEnergyAmount(side) - MathF.Abs(spell.RequiredAmout ) ) > 0;
+       
+            return (_MPStats.Value > spell.MPCost) ;
+
         }
         public int GetEnergyAmount(RuntimeMangicalEnergy.EnergySide side)
         {
@@ -118,6 +125,12 @@ namespace Vanaring
 
             OnModifyEnergy?.Invoke(_combatEntity, side, modValue);
 
+        }
+
+
+        public void ModifyMP(StatModifier mod)
+        {
+            _MPStats.AddModifier(mod); 
         }
 
         public bool IsEnergyOverflow()

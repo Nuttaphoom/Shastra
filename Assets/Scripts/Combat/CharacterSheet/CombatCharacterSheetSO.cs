@@ -20,6 +20,10 @@ namespace Vanaring
         [SerializeField]
         private int _ATK;
 
+        [Header("Default MP of this entity")]
+        [SerializeField]
+        private int _MP; 
+
         [Header("Ailment Resistant")]
         [SerializeField]
         private readonly AilmentResistantDataInfo _ailmentResistantDataInfo;
@@ -33,5 +37,7 @@ namespace Vanaring
         public Sprite GetCharacterIcon => _characterIconGUI;
         public int GetHP => _HP;
         public int GetATK => _ATK;
+
+        public int GetMP => _MP;
     }
 }

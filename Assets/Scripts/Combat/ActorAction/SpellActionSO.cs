@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Kryz.CharacterStats;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,9 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Unity.VisualScripting;
 using UnityEngine;
- 
-
-namespace Vanaring 
+namespace Vanaring
 { 
     [CreateAssetMenu(fileName = "Spell Ability", menuName = "ScriptableObject/Combat/SpellAbility")]
     public class SpellActionSO : ActorActionFactory , IRewardable
@@ -17,12 +16,17 @@ namespace Vanaring
         [Header("===Require Energy amount before casting===")]
         [SerializeField]
         private EnergyModifierData _requiredEnergy;
-        public RuntimeMangicalEnergy.EnergySide RequiredSide => _requiredEnergy.Side ;
-        public int RequiredAmout => _requiredEnergy.Amount > 0 ? (_requiredEnergy.Amount * -1 ) : (_requiredEnergy.Amount) ; 
 
+        [SerializeField]
+        private int _MPCost; 
+
+        public RuntimeMangicalEnergy.EnergySide RequiredSide => _requiredEnergy.Side ;
+        public int RequiredAmout => _requiredEnergy.Amount > 0 ? (_requiredEnergy.Amount * -1) : (_requiredEnergy.Amount);
+
+        public int MPCost => _MPCost    ;
         public override ActorAction FactorizeRuntimeAction(CombatEntity caster)
         {
-            return new SpellAbilityRuntime(RequiredSide, RequiredAmout, caster, this);
+            return new SpellAbilityRuntime(RequiredSide, MPCost, caster, this);
         }
 
         public RewardData GetRewardData()
@@ -44,12 +48,13 @@ namespace Vanaring
     {
         private int _requiredEnergy;
         private RuntimeMangicalEnergy.EnergySide _requiredSide ; 
-        public SpellAbilityRuntime(RuntimeMangicalEnergy.EnergySide  side, int amt, CombatEntity caster, ActorActionFactory factory) : base(factory,caster)
+        private int _MPCost;
+        public SpellAbilityRuntime(RuntimeMangicalEnergy.EnergySide  side, int MPCost, CombatEntity caster, ActorActionFactory factory) : base(factory,caster)
         {
-            _requiredEnergy = amt ; 
+            _requiredEnergy = MPCost; 
             _requiredSide = side ;
-            
-            
+            _MPCost = MPCost; 
+
             if (_requiredEnergy > 0)
                  _requiredEnergy = -1 * _requiredEnergy; 
             
@@ -62,7 +67,8 @@ namespace Vanaring
 
         public override IEnumerator PostActionPerform()
         {
-            _caster.SpellCaster.ModifyEnergy(_requiredSide, _requiredEnergy );
+            _caster.SpellCaster.ModifyMP(new StatModifier(_MPCost > 0 ? -_MPCost : _MPCost, StatModType.Flat));
+            //_caster.SpellCaster.ModifyEnergy(_requiredSide, _requiredEnergy );
             yield return null;
         }
 
