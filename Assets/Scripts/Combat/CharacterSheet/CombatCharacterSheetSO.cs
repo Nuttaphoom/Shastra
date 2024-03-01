@@ -26,11 +26,11 @@ namespace Vanaring
 
         [Header("Ailment Resistant")]
         [SerializeField]
-        private readonly AilmentResistantDataInfo _ailmentResistantDataInfo;
+        private  AilmentResistantDataInfo _ailmentResistantDataInfo;
 
         [Header("Character Sprite")]
         [SerializeField]
-        private readonly Sprite _characterIconGUI;
+        private  Sprite _characterIconGUI;
 
         public AilmentResistantDataInfo ResistantData => _ailmentResistantDataInfo;
 
