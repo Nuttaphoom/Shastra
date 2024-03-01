@@ -426,7 +426,8 @@ namespace PixelCrushers.DialogueSystem
             if (!waitForContinue)
             {
                 if (m_sequencer != null) m_sequencer.Stop();
-                ui.HideSubtitle(lastSubtitle);
+                //Arm Comment this 
+                //ui.HideSubtitle(lastSubtitle);
                 if (notifyOnFinishSubtitle)
                 {
                     notifyOnFinishSubtitle = false;

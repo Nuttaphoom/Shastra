@@ -13,6 +13,16 @@ namespace PixelCrushers.DialogueSystem.Wrappers
     [AddComponentMenu("Pixel Crushers/Dialogue System/UI/Standard UI/Dialogue/Standard UI Subtitle Panel")]
     public class StandardUISubtitlePanel : PixelCrushers.DialogueSystem.StandardUISubtitlePanel
     {
+        private void Awake()
+        {
+            base.Awake();
+            Debug.Log("Set enable");
+        }
+
+        private void OnDisable()
+        {
+            Debug.Log("Set diable");
+        }
     }
 
 }
