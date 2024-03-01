@@ -281,6 +281,27 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 665190602}
   m_CullTransparentMesh: 1
+--- !u!95 &665190608
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 665190602}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 22433cc3617c6c244af60445d8af85ab, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1001 &1621192589
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -769,6 +790,10 @@ PrefabInstance:
       propertyPath: m_Color.a
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5066994342790437176, guid: 0d97125695059784da5b5a45f4ffdb06, type: 3}
+      propertyPath: pcName.m_uiText
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 5092890646566633333, guid: 0d97125695059784da5b5a45f4ffdb06, type: 3}
       propertyPath: conversationUIElements.waitForMainPanelOpen
       value: 1
@@ -789,6 +814,14 @@ PrefabInstance:
       propertyPath: portraitImage
       value: 
       objectReference: {fileID: 1621192592}
+    - target: {fileID: 5093245110599642765, guid: 0d97125695059784da5b5a45f4ffdb06, type: 3}
+      propertyPath: hideAnimationTrigger
+      value: Hide
+      objectReference: {fileID: 0}
+    - target: {fileID: 5093245110599642765, guid: 0d97125695059784da5b5a45f4ffdb06, type: 3}
+      propertyPath: showAnimationTrigger
+      value: Show
+      objectReference: {fileID: 0}
     - target: {fileID: 5093441281040553437, guid: 0d97125695059784da5b5a45f4ffdb06, type: 3}
       propertyPath: m_Text
       value: 'You might have done a variety of things in hiding in your hometown,
@@ -824,7 +857,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5133360921832576249, guid: 0d97125695059784da5b5a45f4ffdb06, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5133569447337135541, guid: 0d97125695059784da5b5a45f4ffdb06, type: 3}
       propertyPath: m_IsActive
@@ -887,6 +920,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 5133360921832576249, guid: 0d97125695059784da5b5a45f4ffdb06, type: 3}
       insertIndex: -1
       addedObject: {fileID: 665190607}
+    - targetCorrespondingSourceObject: {fileID: 5133360921832576249, guid: 0d97125695059784da5b5a45f4ffdb06, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 665190608}
     - targetCorrespondingSourceObject: {fileID: 5133497727696303115, guid: 0d97125695059784da5b5a45f4ffdb06, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1621192591}

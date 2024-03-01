@@ -5,7 +5,7 @@ public class CloseSubtitleButton : MonoBehaviour
 {
     public void CloseSubtitle()
     {
-        GetComponentInParent<StandardUISubtitlePanel>().Close();
+        //GetComponentInParent<StandardUISubtitlePanel>().Close();
         Sequencer.Message("ClosedSubtitle");
     }
 }

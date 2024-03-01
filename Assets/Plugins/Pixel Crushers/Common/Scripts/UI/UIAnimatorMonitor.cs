@@ -156,6 +156,14 @@ namespace PixelCrushers
             m_coroutine = null;
         }
 
+        public void ResetTrigger(string triggerName)
+        {
+            if (m_animator == null)
+                return;
+
+            m_animator.ResetTrigger(triggerName);
+        }
+
     }
 
 }

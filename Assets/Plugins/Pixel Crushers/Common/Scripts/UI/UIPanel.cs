@@ -236,12 +236,15 @@ namespace PixelCrushers
             if (panelState == PanelState.Closing) animatorMonitor.CancelCurrentAnimation();
             m_frameLastOpened = Time.frameCount;
             panelState = PanelState.Opening;
+
             gameObject.SetActive(true);
+
             onOpen.Invoke();
             if (myAnimator != null && myAnimator.isInitialized && !string.IsNullOrEmpty(hideAnimationTrigger))
             {
                 myAnimator.ResetTrigger(hideAnimationTrigger);
             }
+
             animatorMonitor.SetTrigger(showAnimationTrigger, OnVisible, waitForShowAnimation);
 
             // With quick panel changes, panel may not reach OnEnable/OnDisable before being reused.
@@ -258,8 +261,14 @@ namespace PixelCrushers
             panelState = PanelState.Closing;
             onClose.Invoke();
             if (myAnimator != null && myAnimator.isInitialized && !string.IsNullOrEmpty(showAnimationTrigger))
-            {
+            {         
+                
                 myAnimator.ResetTrigger(showAnimationTrigger);
+            }
+
+            if (string.IsNullOrEmpty(showAnimationTrigger)) { 
+                //Arm Create this 
+                animatorMonitor.ResetTrigger(showAnimationTrigger);
             }
             animatorMonitor.SetTrigger(hideAnimationTrigger, OnHidden, true);
 
