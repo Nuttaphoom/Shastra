@@ -16,24 +16,18 @@ namespace Vanaring
         [SerializeField]
         private ControlableEntityActionsRegistry _controlableEntityActionRegistry;
 
+        public override IEnumerator PrepareForCombat()
+        {
+            GetComponent<ItemUserHandler>().FactorizeItemInInventory();
+            yield return null;
+        }
+
         public override IEnumerator InitializeEntityIntoCombat()
         {
-            throw new NotImplementedException();
-        }
-        public override IEnumerator LoadDataFromDatabase()
-        {
-            Debug.Log("load data from " + CombatCharacterSheet.CharacterName);
-            string characterName = CombatCharacterSheet.CharacterName;
-            List<SpellActionSO> spellList = new List<SpellActionSO>();
-            
+            throw new NotImplementedException() ; 
+        } 
 
-            var partyMemberRuntimeData = PersistentPlayerPersonalDataManager.Instance.PartyMemberDataLocator.GetRuntimeData(characterName) ;
 
-            spellList = partyMemberRuntimeData.GetRegisteredSpellActionSO;
-            _controlableEntityActionRegistry.RegisterSpell(spellList);
-
-            yield return null; 
-        }
         public override IEnumerator GetAction()
         {
             if (_ailmentHandler.DoesAilmentOccur())
@@ -88,8 +82,20 @@ namespace Vanaring
         {
             CameraSetUPManager.Instance.DisableCamera(_attachedCamera);
         }
+        public override IEnumerator LoadDataFromDatabase()
+        {
+            string characterName = CombatCharacterSheet.CharacterName;
+            List<SpellActionSO> spellList = new List<SpellActionSO>();
 
-   
+
+            var partyMemberRuntimeData = PersistentPlayerPersonalDataManager.Instance.PartyMemberDataLocator.GetRuntimeData(characterName);
+
+            spellList = partyMemberRuntimeData.GetRegisteredSpellActionSO;
+            _controlableEntityActionRegistry.RegisterSpell(spellList);
+
+            yield return null;
+        }
+
 
 
         #endregion

@@ -148,9 +148,11 @@ namespace Vanaring
 
         private IEnumerator BeginNewBattle()
         { 
+
             yield return SetUpNewCombatEncounter();
 
             yield return new WaitForSeconds(1.0f);
+
 
             GetEventBroadcaster().InvokeEvent<Null>(null, "OnCombatPreparation"); //b <Null>("OnCombatPreparation");
 
@@ -165,9 +167,13 @@ namespace Vanaring
             // Call the GenerateEntityAttacher method with the lists
             CameraSetUPManager.Instance.GenerateEntityAttacher(GetCompetatorsBySide(ECompetatorSide.Ally).Select(c => c.gameObject).ToList(), GetCompetatorsBySide(ECompetatorSide.Hostile).Select(c => c.gameObject).ToList());
 
+            //Right now we manually assign Ally so we call it here
+            ///TODO : Make AssignCompetators to assign of the loaded object  
             foreach (CombatEntity entity in GetCompetatorsBySide(ECompetatorSide.Ally))
+            {
+                yield return entity.PrepareForCombat(); 
                 GetEventBroadcaster().InvokeEvent<CombatEntity>(entity, "OnCompetitorEnterCombat");
-
+            }
             yield return AssignCompetators(_entityLoader.LoadData(), ECompetatorSide.Hostile);
         }
 
@@ -176,8 +182,9 @@ namespace Vanaring
             List<IEnumerator> _allIEs = new List<IEnumerator>();
 
             foreach (var entity in entites) {
+                _allIEs.Add(entity.InitializeEntityIntoCombat());
+                _allIEs.Add(entity.PrepareForCombat() ) ; 
                 GetEventBroadcaster().InvokeEvent<CombatEntity>(entity, "OnCompetitorEnterCombat");
-                _allIEs.Add(entity.InitializeEntityIntoCombat() ) ; 
             }
 
             yield return new WaitAll(this, _allIEs.ToArray()); 

@@ -81,7 +81,7 @@ namespace Vanaring
             foreach (LectureChechpoint checkPoint in lectureProgressBarData.checkpoints)
             {
                 LectureRewardObject newRewardObj = Instantiate(rewardObjTemplate, filledBar.transform);
-                RewardData newEventReward = lectureProgressBarData.allRewardData[rewardIndex].GetRewardData;
+                RewardData newEventReward = lectureProgressBarData.allRewardData[rewardIndex].GetRewardData() ;
                 double iconXPos = ((float)checkPoint.RequirePoint * 360.0f) / 1000.0f;
                 newRewardObj.gameObject.transform.localPosition = new Vector2((float)iconXPos - 180f, 6.75f);
                 newRewardObj.gameObject.SetActive(true);

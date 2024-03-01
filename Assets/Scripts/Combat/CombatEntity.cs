@@ -191,6 +191,9 @@ namespace Vanaring
         /// <returns></returns>
         public abstract IEnumerator InitializeEntityIntoCombat();
 
+        //Call in referee when the combat almost stat
+        public abstract IEnumerator PrepareForCombat(); 
+
         public abstract IEnumerator LoadDataFromDatabase(); 
         public abstract IEnumerator GetAction();
 

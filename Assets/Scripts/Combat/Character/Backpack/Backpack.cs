@@ -11,24 +11,21 @@ namespace Vanaring
     [Serializable]
     public class BackpackItemData
     {
-        [SerializeField]
-        private BackpackItemSO _backpackItem;
+        public BackpackItemSO BackpackItem;
 
-        [SerializeField]
-        private int _amount;
+        public int Amount;
 
-        public int GetItemAmount() { return _amount; }
-        public BackpackItemSO GetBackpackItem() { return _backpackItem; }
+ 
 
-        public void ModifyAmount(int amount)
-        {
-            _amount += amount;
-        }
+        //public void ModifyAmount(int amount)
+        //{
+        //    _amount += amount;
+        //}
 
-        public void SetBackpackItem (BackpackItemSO backpackItemSO)
-        {
-            _backpackItem = backpackItemSO;
-        }
+        //public void SetBackpackItem (BackpackItemSO backpackItemSO)
+        //{
+        //    _backpackItem = backpackItemSO;
+        //}
     }
 
     [Serializable]
@@ -90,16 +87,16 @@ namespace Vanaring
             
             for (int i = 0; i < _backpackItemSO.Count; i++)
             {
-                if (_backpackItemSO[i].GetBackpackItem().GetDescriptionBaseField().FieldName == itemSO.GetDescriptionBaseField().FieldName)
+                if (_backpackItemSO[i].BackpackItem.GetDescriptionBaseField().FieldName == itemSO.GetDescriptionBaseField().FieldName)
                 {
                     // Update the item at index i
-                    _backpackItemSO[i].ModifyAmount(amount); 
+                    _backpackItemSO[i].Amount += (amount); 
                     return;
                 }
             }
             BackpackItemData backpackItemData = new BackpackItemData();
-            backpackItemData.SetBackpackItem(itemSO);
-            backpackItemData.ModifyAmount(amount);
+            backpackItemData.BackpackItem = (itemSO);
+            backpackItemData.Amount += (amount);
             _backpackItemSO.Add(backpackItemData);
         }
 
@@ -107,11 +104,11 @@ namespace Vanaring
         {
             for (int i = 0; i < _backpackItemSO.Count; i++)
             {
-                if (_backpackItemSO[i].GetBackpackItem().GetDescriptionBaseField().FieldName == itemSO.GetDescriptionBaseField().FieldName)
+                if (_backpackItemSO[i].BackpackItem.GetDescriptionBaseField().FieldName == itemSO.GetDescriptionBaseField().FieldName)
                 {
                     // Update the item at index i
-                    _backpackItemSO[i].ModifyAmount(-(int) MathF.Abs(amount));// += amount;
-                    if (_backpackItemSO[i].GetItemAmount() <= 0)
+                    _backpackItemSO[i].Amount += (-(int) MathF.Abs(amount));// += amount;
+                    if (_backpackItemSO[i].Amount <= 0)
                         _backpackItemSO.RemoveAt(i);
 
                     return;
@@ -119,6 +116,21 @@ namespace Vanaring
             }
         }
 
+        public List<BackpackItemData> GetCombatUseableItemSOs()
+        {
+            List<BackpackItemData> ret = new List<BackpackItemData>();
+            foreach (var backpackItem in _backpackItemSO)
+            {
+                ret.Add(backpackItem); 
+
+                if ((backpackItem.BackpackItem) is not CombatUseableItemSO)
+                {
+                    ret.RemoveAt(ret.Count - 1)  ;
+                }
+            }
+
+            return _backpackItemSO ; 
+        }
         #region Save System
 
         public object CaptureState()
@@ -131,10 +143,10 @@ namespace Vanaring
             List<string> keys = new List<string>();
             foreach (BackpackItemData backpackItem in _backpackItemSO)
             {
-                for (int i = 0; i < backpackItem.GetItemAmount(); i++)
+                for (int i = 0; i < backpackItem.Amount ; i++)
                 {
                     Debug.Log("here surview"); 
-                    keys.Add(m_inventoryDatabase.GetRecordKey(backpackItem.GetBackpackItem()));
+                    keys.Add(m_inventoryDatabase.GetRecordKey(backpackItem.BackpackItem));
                     Debug.Log("end surview") ;
                 }
             }

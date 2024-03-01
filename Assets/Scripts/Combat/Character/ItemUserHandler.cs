@@ -37,18 +37,15 @@ namespace Vanaring
         }
 
         // TODO : Call FactorizeItemInInventory into Awake in correct order 
-        private void Start()
+      
+        public void FactorizeItemInInventory()
         {
-            FactorizeItemInInventory();
-           
-            //_itemWindowManager.UpdateItemSocket(Items, ItemsAmount);
-        }
+            ColorfulLogger.LogWithColor(".factorize item ", Color.yellow );
 
-        private void FactorizeItemInInventory()
-        {
             _itemInventory = ItemInventory.instance.GetItemInventoryAbility;
 
             _runtimeItemsAmount = ItemInventory.instance.GetItemInventoryAmount;
+
 
             foreach (ItemActionFactorySO factory in _itemInventory)
             {

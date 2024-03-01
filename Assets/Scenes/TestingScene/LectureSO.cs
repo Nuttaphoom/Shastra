@@ -24,7 +24,7 @@ namespace Vanaring
         public string GetLectureName => description.FieldName;
         public string GetLectureDestcription => description.FieldDescription;
         public List<LectureRequieBoost> GetBooster => lectureRequieBoosts;
-    
+ 
     }
 
     [Serializable]

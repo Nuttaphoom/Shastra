@@ -45,6 +45,16 @@ namespace Vanaring
             } }
 
         public RelationshipHandler RelationshipHandler { get { return _relationshipHandler; } }
+
+        public Backpack GetBackpack
+        {
+            get
+            {
+                if (_backpack == null)
+                    throw new Exception("_backpack is null");
+                return _backpack;
+            }
+        }
         #endregion
 
 

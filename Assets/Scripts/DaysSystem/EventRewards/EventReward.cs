@@ -9,50 +9,52 @@ using Unity;
 using UnityEngine;
 namespace Vanaring
 {
-    [Serializable]
-    public class EventReward 
+    public abstract class EventReward
     {
-        [SerializeField]
-        private ScriptableObject _rewards; 
+        public abstract IRewardable GetEventRewards() ;
 
-        public IRewardable GetEventRewards
-        {
-            get {
-                if (_rewards == null)
-                    throw new System.Exception("Reward hasn't never been assigned");
-
-                if ((_rewards as IRewardable )== null)
-                    throw new System.Exception("Reward is not IRewardable"); 
-                
-                return _rewards as IRewardable ; 
-            } 
-        }
-
-        public RewardData GetRewardData
-        {
-            get
-            {
-                return GetEventRewards.GetRewardData();
-            }
-        }
-
+        public abstract RewardData GetRewardData();
 
     }
 
-    /// <summary>
-    /// should only be attached to a ScriptableObject only
-    /// </summary>
-    /// <typeparam name="RewardData"></typeparam>
-    public interface IRewardable 
+
+    [System.Serializable]
+    public class EventReward<RewardType> : EventReward  where RewardType: ScriptableObject
     {
-        public RewardData GetRewardData() ;
-        public void SubmitReward(); 
+        [SerializeField]
+        private RewardType _rewards;
+
+        public override IRewardable GetEventRewards()
+        {
+             
+                if (_rewards == null)
+                    throw new System.Exception("Reward hasn't never been assigned");
+
+                if ((_rewards as IRewardable) == null)
+                    throw new System.Exception("Reward is not IRewardable");
+
+                return _rewards as IRewardable;
+             
+        }
+
+        public override RewardData GetRewardData()
+        {
+            return GetEventRewards().GetRewardData();
+        }
+
+     
+        
+    }
+
+    public interface IRewardable
+    {
+        RewardData GetRewardData();
+        void SubmitReward();
     }
 
     public struct RewardData
     {
         public string RewardName;
-        public Sprite RewardIcon; 
-        
+        public Sprite RewardIcon;
     }
 }
