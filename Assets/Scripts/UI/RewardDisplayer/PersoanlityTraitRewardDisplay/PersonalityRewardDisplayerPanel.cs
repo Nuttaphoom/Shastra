@@ -79,9 +79,9 @@ namespace Vanaring
                 {
                     if (gauge.IsTraitTypeEqual(traitReward.RewardTraitType))
                     {
-                        Debug.Log("Found " + traitReward.RewardTraitType + ": " + personalityTrait.GetStat(traitReward.RewardTraitType).GetCurrentexp());
+                        //Debug.Log("Found " + traitReward.RewardTraitType + ": " + personalityTrait.GetStat(traitReward.RewardTraitType).GetCurrentexp());
                         StartCoroutine(GuageDisplay(personalityTrait.GetStat(traitReward.RewardTraitType).GetCurrentexp(),
-                                traitReward.RewardAmount, traitReward.RewardTraitType, gauge.FillBar, gauge.TraitLevel));
+                                traitReward.RewardAmount, traitReward.RewardTraitType, gauge));
                     }
                 }
                 coroutineRunningCount++;
@@ -97,7 +97,7 @@ namespace Vanaring
                 StartCoroutine(DisplayLevelUp(traitRewardShowList));
             }
         }
-        private IEnumerator GuageDisplay(float currentVal , float rewardVal, Trait.Trait_Type type, Image gauge, TextMeshProUGUI lvText)
+        private IEnumerator GuageDisplay(float currentVal , float rewardVal, Trait.Trait_Type type, PersonalityTraitRewardUIObject gaugeObj)
         {
             float currentTime = 0f;
             float startValue = 0f;
@@ -121,7 +121,7 @@ namespace Vanaring
                 i = Mathf.Lerp(startValue, endValue, currentTime / _animationDuration);
                 curExpGain += (i - previ);
 
-                gauge.fillAmount = (float)Math.Floor(curExpGain) / personalityTrait.GetCurrentTraitRequireEXP(type);
+                gaugeObj.FillBar.fillAmount = (float)Math.Floor(curExpGain) / personalityTrait.GetCurrentTraitRequireEXP(type);
 
                 if (Math.Floor(curExpGain) >= expReqVal) //level up condition
                 {
@@ -131,9 +131,10 @@ namespace Vanaring
 
                     isTraitHasReward = true;
                     personalityTrait.SetStat(type, personalityTrait.GetStat(type).Getlevel()+1, curExpGain);   //plus level by 1
-                    lvText.text = personalityTrait.GetStat(type).Getlevel().ToString();
+                    gaugeObj.TraitLevel.text = personalityTrait.GetStat(type).Getlevel().ToString();
                     expReqVal = personalityTrait.GetCurrentTraitRequireEXP(type);   //set to next lvl
-                    gauge.fillAmount = (float)Math.Floor(curExpGain) / expReqVal;
+                    gaugeObj.FillBar.fillAmount = (float)Math.Floor(curExpGain) / expReqVal;
+                    gaugeObj.TriggerLevelUPAnimation();
                 }
                 
                 yield return null;
