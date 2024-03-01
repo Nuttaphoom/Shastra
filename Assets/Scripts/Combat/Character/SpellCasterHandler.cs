@@ -56,7 +56,7 @@ namespace Vanaring
                 _eventBroadcaster.OpenChannel<EnergyModifyerEffectPair>("OnSimulateEnergy");
 
                 //int is modified value 
-                _eventBroadcaster.OpenChannel<int>("OnMPModified");
+                _eventBroadcaster.OpenChannel<float>("OnMPModified");
             }
 
             return _eventBroadcaster;
@@ -72,13 +72,13 @@ namespace Vanaring
             GetEventBroadcaster().UnSubEvent<EnergyModifyerEffectPair>(func, "OnSimulateEnergy");
         }
 
-        public void SubOnMPModified(UnityAction<int> func)
+        public void SubOnMPModified(UnityAction<float> func)
         {
-            GetEventBroadcaster().SubEvent<int>(func, "OnMPModified");
+            GetEventBroadcaster().SubEvent<float>(func, "OnMPModified");
         }
-        public void UnSubOnMPModified(UnityAction<int> func)
+        public void UnSubOnMPModified(UnityAction<float> func)
         {
-            GetEventBroadcaster().UnSubEvent<int>(func, "OnMPModified");
+            GetEventBroadcaster().UnSubEvent<float>(func, "OnMPModified");
         }
 
         #endregion

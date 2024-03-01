@@ -28,12 +28,18 @@ namespace Vanaring
         private List<Image> energySlotList = new List<Image>();
         [SerializeField]
         private Image curveMask;
+        [SerializeField]
+        private Image mpBar;
+        [SerializeField]
+        private Image secondMpBar;
 
         [Header("TextMeshPro")]
         [SerializeField]
         private TextMeshProUGUI characterName;
         [SerializeField]
         private TextMeshProUGUI hpNumText;
+        [SerializeField]
+        private TextMeshProUGUI mpNumText;
 
         [Header("Components")]
         [SerializeField]
@@ -52,13 +58,13 @@ namespace Vanaring
 
         private int hpVal;
         private int maxHpVal;
+        private int mpVal;
+        private int maxMpVal;
 
         private float maxEnergyVal = 100;
         private float lightVal = 50;
         private float darkVal = 50;
         private CombatCharacterSheetSO _characterSheetSO;
-
-        
 
         private CombatEntity _combatEntity;
 
@@ -74,6 +80,7 @@ namespace Vanaring
                 _combatEntity.SubOnDamageVisualEvent(OnHPModified);
                 _combatEntity.SpellCaster.SubOnModifyEnergy(OnEnergyModified);
                 _combatEntity.SubOnHealVisualEvent(OnHPModified);
+                _combatEntity.SpellCaster.SubOnMPModified(OnMPModified);
             }
         }
 
@@ -82,6 +89,7 @@ namespace Vanaring
             _combatEntity.UnSubOnDamageVisualEvent(OnHPModified);
             _combatEntity.SpellCaster.UnSubOnModifyEnergy(OnEnergyModified);
             _combatEntity.UnSubOnHealVisualEvent(OnHPModified);
+            _combatEntity.SpellCaster.UnSubOnMPModified(OnMPModified);
         }
 
         public void Init(CombatEntity combatEntity)
@@ -90,19 +98,30 @@ namespace Vanaring
             _combatEntity.SubOnDamageVisualEvent(OnHPModified);
             _combatEntity.SpellCaster.SubOnModifyEnergy(OnEnergyModified);
             _combatEntity.SubOnHealVisualEvent(OnHPModified);
-            characterArrow.SetActive(false);
+            _combatEntity.SpellCaster.SubOnMPModified(OnMPModified);
+            
             _characterSheetSO = _combatEntity.CombatCharacterSheet;
             characterImg.sprite = _characterSheetSO.GetCharacterIcon;
+
+            characterArrow.SetActive(false);
             isCanTurn = false;
             isSelected = false;
+
             characterName.text = _characterSheetSO.CharacterName;
+
             hpVal = (int) _combatEntity.StatsAccumulator.GetHPAmount();
             maxHpVal = (int)_combatEntity.StatsAccumulator.GetHPAmount();
-            secondHpBar.fillAmount = (float)hpVal / maxHpVal;
-            UpdateHPScaleGUI();
-            animator = GetComponent<Animator>();
-            InitEnergySlot();
+            mpVal = (int)_combatEntity.SpellCaster.GetMP;
+            maxMpVal = (int)_combatEntity.SpellCaster.GetPeakMP;
 
+            secondHpBar.fillAmount = (float)hpVal / maxHpVal;
+
+            UpdateHPScaleGUI();
+            UpdateMPScaleGUI();
+
+            animator = GetComponent<Animator>();
+
+            InitEnergySlot();
         }
 
         private void InitEnergySlot()
@@ -146,9 +165,12 @@ namespace Vanaring
         private void UpdateHPScaleGUI()
         {
             hpBar.fillAmount = (float)hpVal / maxHpVal;
-            //hpNumText.text = "HP " + hpVal.ToString() + "/" + maxHpVal.ToString();
             hpNumText.text = hpVal.ToString();
-            //animator.Play("CharacterIconGotHit");
+        }
+        private void UpdateMPScaleGUI()
+        {
+            mpBar.fillAmount = (float)mpVal / maxMpVal;
+            mpNumText.text = mpVal.ToString();
         }
 
         private void OnHPModified(int damage)
@@ -166,124 +188,92 @@ namespace Vanaring
             }
             float hptemp = maxHpVal == 0 ? (hpVal == 0 ? 1 : hpVal) : maxHpVal;
             UpdateHPScaleGUI();
-
             StopAllCoroutines();
-            StartCoroutine(IEAnimateHPBarScale(hptemp));
+            StartCoroutine(IEAnimateBarScale(hpVal, hptemp, secondHpBar));
+        }
+
+        private void OnMPModified(float valueChange)
+        {
+            mpVal = (int) _combatEntity.SpellCaster.GetMP;
+            if (mpVal <= 0)
+            {
+                mpBar.fillAmount = 0;
+            }
+            float mptemp = maxMpVal == 0 ? (mpVal == 0 ? 1 : mpVal) : maxMpVal;
+            UpdateMPScaleGUI();
+            StopAllCoroutines();
+            StartCoroutine(IEAnimateBarScale(mpVal, mptemp, secondMpBar));
         }
 
         private void OnEnergyModified(CombatEntity caster, RuntimeMangicalEnergy.EnergySide side, int val)
         {
             curveMask.fillAmount = slotBarRatios[_combatEntity.SpellCaster.GetEnergyAmount(RuntimeMangicalEnergy.EnergySide.DarkEnergy)];
-            //if (side == RuntimeMangicalEnergy.EnergySide.LightEnergy)
-            //{
-            //    for (int i = 0; i < caster.SpellCaster.GetEnergyAmount(RuntimeMangicalEnergy.EnergySide.LightEnergy); i++)
-            //    {
-            //        Color slotColor = lightSlot.color;
-            //        energySlotList[i].color = slotColor;
-            //    }
-            //    //LightScaleIncrease(val);
-            //}
-            //else
-            //{
-            //    for (int i = caster.SpellCaster.GetEnergyAmount(RuntimeMangicalEnergy.EnergySide.LightEnergy) + caster.SpellCaster.GetEnergyAmount(RuntimeMangicalEnergy.EnergySide.DarkEnergy)-1; i >= caster.SpellCaster.GetEnergyAmount(RuntimeMangicalEnergy.EnergySide.LightEnergy); i--)
-            //    {
-            //        Color slotColor = darkSlot.color;
-            //        energySlotList[i].color = slotColor;
-            //    }
-            //    //DarkScaleIncrease(val);
-            //}
         }
 
-        //public void LightScaleIncrease(int val)
+        //private IEnumerator IEAnimateHPBarScale(float maxHP)
         //{
-        //    lightGroup.transform.SetAsLastSibling();
-        //    if (lightVal + val > 100)
-        //    {
-        //        val = (int)(100 - lightVal);
-        //    }
-        //    lightVal += val;
-        //    secondLightBar.fillAmount = lightVal / maxEnergyVal;
-        //    StartCoroutine(IEAnimateEnergyBarScale());
-        //}
-        //public void DarkScaleIncrease(int val)
-        //{
-        //    darkGroup.transform.SetAsLastSibling();
-        //    if (lightVal - val < 0)
-        //    {
-        //        Debug.Log("Value can't be lower than 0!");
-        //        return;
-        //    }
-        //    lightVal -= val;
-        //    secondDarkBar.fillAmount = (float)(100-lightVal) / maxEnergyVal;
-        //    StartCoroutine(IEAnimateEnergyBarScale());
-        //}
-
-        //private IEnumerator IEAnimateEnergyBarScale()
-        //{
+        //    float tickRate = 0.5f / ((Mathf.Abs((hpVal / maxHP) - secondHpBar.fillAmount)) * 100);
         //    yield return new WaitForSeconds(0.5f);
-        //    while (int.Parse(lightNumText.text) < lightVal)
+        //    while (secondHpBar.fillAmount < hpVal / maxHP)
         //    {
-        //        lightNumText.text = (int.Parse(lightNumText.text) + 1).ToString();
-        //        darkNumText.text = (int.Parse(darkNumText.text) - 1).ToString();
-        //        UpdateEnergyScaleGUI();
-        //        yield return new WaitForSeconds(0.01f);
+        //        if (secondHpBar.fillAmount < 1.0f)
+        //        {
+        //            secondHpBar.fillAmount += 0.01f;
+        //        }
+        //        else if(secondHpBar.fillAmount >= 1.0f)
+        //        {
+        //            secondHpBar.fillAmount = 1.0f;
+        //        }
+                
+        //        yield return new WaitForSeconds(tickRate);
         //    }
-        //    while (int.Parse(lightNumText.text) > lightVal)
+        //    while (secondHpBar.fillAmount > hpVal / maxHP)
         //    {
-        //        lightNumText.text = (int.Parse(lightNumText.text) - 1).ToString();
-        //        darkNumText.text = (int.Parse(darkNumText.text) + 1).ToString();
-        //        UpdateEnergyScaleGUI();
-        //        yield return new WaitForSeconds(0.01f);
+        //        if (secondHpBar.fillAmount > 0.0f)
+        //        {
+        //            secondHpBar.fillAmount -= 0.01f;
+        //        }
+        //        else if (secondHpBar.fillAmount <= 0.0f)
+        //        {
+        //            secondHpBar.fillAmount = 0.0f;
+        //        }
+                
+        //        yield return new WaitForSeconds(tickRate);
         //    }
         //    yield return null;
         //}
 
-        private IEnumerator IEAnimateHPBarScale(float maxHP)
+        private IEnumerator IEAnimateBarScale(float currentVal, float maxVal, Image secondBar)
         {
-            //float tickRate = 0.5f / ((Mathf.Abs((hpVal / maxHP) - secondhpImage.fillAmount)) * 100);
-            //while (hpBar.fillAmount < (float)hpVal/maxHpVal)
-            //{
-            //    hpVal += 1;
-            //    UpdateHPScaleGUI();
-            //    yield return new WaitForSeconds(0.01f);
-            //}
-            //while ((float)hpVal / maxHpVal > hpBar.fillAmount)
-            //{
-            //    hpVal -= 1;
-            //    UpdateHPScaleGUI();
-            //    yield return new WaitForSeconds(0.01f);
-            //}
-            float tickRate = 0.5f / ((Mathf.Abs((hpVal / maxHP) - secondHpBar.fillAmount)) * 100);
-            //Debug.Log((hpVal / maxHP) + "-" + hpImage.fillAmount + "=" + tickRate);
+            float tickRate = 0.5f / ((Mathf.Abs((currentVal / maxVal) - secondBar.fillAmount)) * 100);
             yield return new WaitForSeconds(0.5f);
-            while (secondHpBar.fillAmount < hpVal / maxHP)
+            while (secondBar.fillAmount < currentVal / maxVal)
             {
-                if (secondHpBar.fillAmount < 1.0f)
+                if (secondBar.fillAmount < 1.0f)
                 {
-                    secondHpBar.fillAmount += 0.01f;
+                    secondBar.fillAmount += 0.01f;
                 }
-                else if(secondHpBar.fillAmount >= 1.0f)
+                else if (secondBar.fillAmount >= 1.0f)
                 {
-                    secondHpBar.fillAmount = 1.0f;
+                    secondBar.fillAmount = 1.0f;
                 }
-                
                 yield return new WaitForSeconds(tickRate);
             }
-            while (secondHpBar.fillAmount > hpVal / maxHP)
+            while (secondBar.fillAmount > currentVal / maxVal)
             {
-                if (secondHpBar.fillAmount > 0.0f)
+                if (secondBar.fillAmount > 0.0f)
                 {
-                    secondHpBar.fillAmount -= 0.01f;
+                    secondBar.fillAmount -= 0.01f;
                 }
-                else if (secondHpBar.fillAmount <= 0.0f)
+                else if (secondBar.fillAmount <= 0.0f)
                 {
-                    secondHpBar.fillAmount = 0.0f;
+                    secondBar.fillAmount = 0.0f;
                 }
-                
                 yield return new WaitForSeconds(tickRate);
             }
             yield return null;
         }
+
         #endregion
     }
 }

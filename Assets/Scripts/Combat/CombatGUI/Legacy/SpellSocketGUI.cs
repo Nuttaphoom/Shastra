@@ -52,24 +52,20 @@ namespace Vanaring
 
         public void Init(SpellActionSO spell, CombatEntity combatEntity)
         {
-            int _spellRequireAmout = (int) MathF.Abs(spell.RequiredAmout) ;
+            int _spellRequireAmount = (int) MathF.Abs(spell.RequiredAmout) ;
             _spellSO = spell;
             this._caster = combatEntity;
             _actionButton.onClick.AddListener(ChooseSpell);
-            Debug.Log("Spell : " + spell);
-            Debug.Log("spell.AbilityName : " + spell.AbilityName);
-
             _textMeshProUGUI.text = spell.AbilityName.ToString();
-            _spellCost.text = _spellRequireAmout.ToString();
-            //_skillImage.sprite = spell.AbilityImage;
+            _spellCost.text = spell.MPCost.ToString() + " MP";
             _fadeBlack.gameObject.SetActive(false); ;
 
             //init slot layout
             if (spell.RequiredSide == RuntimeMangicalEnergy.EnergySide.LightEnergy)
             {
-                for (int i = 0; i < _spellRequireAmout; i++)
+                for (int i = 0; i < _spellRequireAmount; i++)
                 {
-                    if(_spellRequireAmout <= 3)
+                    if(_spellRequireAmount <= 3)
                     {
                         Image slot = Instantiate(_lightSlotReqImage, HorizontalSlotLayout.transform);
                         slot.gameObject.SetActive(true);
@@ -92,9 +88,9 @@ namespace Vanaring
             }
             else
             {
-                for (int i = 0; i < _spellRequireAmout; i++)
+                for (int i = 0; i < _spellRequireAmount; i++)
                 {
-                    if (_spellRequireAmout <= 3)
+                    if (_spellRequireAmount <= 3)
                     {
                         Image slot = Instantiate(_darkSlotReqImage, HorizontalSlotLayout.transform);
                         slot.gameObject.SetActive(true);
