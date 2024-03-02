@@ -103,21 +103,37 @@ namespace Vanaring
             transform.transform.localScale = Vector3.one;
         }
 
-        public void OpenPanel()
+        public void ButtonOpenPanel()
+        {
+            StartCoroutine(OpenPanel());
+        }
+        public void ButtonClosePanel()
+        {
+            StartCoroutine(ClosePanel());
+        }
+
+        private IEnumerator OpenPanel()
         {
             gameObject.SetActive(true);
+            outTimeline.Stop();
+            inTimeline.Play();
+            while (inTimeline.state == PlayState.Playing)
+            {
+                yield return new WaitForEndOfFrame();
+            }
+            //inTimeline.time = inTimeline.duration;
+            yield return null;
         }
 
         public IEnumerator ClosePanel()
         {
-            
+            inTimeline.Stop();
             outTimeline.Play();
             while (outTimeline.state == PlayState.Playing)
             {
                 yield return new WaitForEndOfFrame();
             }
-
-
+            outTimeline.time = outTimeline.duration;
             yield return null; 
         }
     }
