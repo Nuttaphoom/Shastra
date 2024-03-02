@@ -238,6 +238,7 @@ namespace Vanaring
 
                 yield return null;
             }
+
             PersistentSaveLoadManager.Instance.RestoreFromTemp();
 
             yield return PersistentSceneLoader.Instance.NotifySceneLoadingComplete();

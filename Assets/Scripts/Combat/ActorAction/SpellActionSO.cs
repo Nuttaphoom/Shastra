@@ -62,12 +62,13 @@ namespace Vanaring
 
         public override IEnumerator PreActionPerform()
         {
+            _caster.SpellCaster.ModifyMP(new StatModifier(_MPCost > 0 ? -_MPCost : _MPCost, StatModType.Flat));
+
             yield return null;
         }
 
         public override IEnumerator PostActionPerform()
         {
-            _caster.SpellCaster.ModifyMP(new StatModifier(_MPCost > 0 ? -_MPCost : _MPCost, StatModType.Flat));
             //_caster.SpellCaster.ModifyEnergy(_requiredSide, _requiredEnergy );
             yield return null;
         }

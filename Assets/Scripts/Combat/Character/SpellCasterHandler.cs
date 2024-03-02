@@ -28,7 +28,6 @@ namespace Vanaring
 
         private UnityAction<CombatEntity, RuntimeMangicalEnergy.EnergySide, int> OnModifyEnergy;
 
-
         private CombatEntity _combatEntity;
 
         private RuntimeMangicalEnergy _simulateMagicalEnergy = null ;
