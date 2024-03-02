@@ -17,12 +17,14 @@ namespace Vanaring
         [SerializeField] private GameObject nextButton;
         [SerializeField] private GameObject prevButton;
         [SerializeField] private GameObject gfx;
+        private GameObject confirmPanel;
         private int pageCount = 1;
         private int maxPage = 1;
         private LectureParticipationActionCommand action;
         private List<LectureParticipationActionCommand.ParticpationLectureData> availableLectures;
         public void InitPanel(List<LectureParticipationActionCommand.ParticpationLectureData> availableLectures, LectureParticipationActionCommand action)
         {
+            
             this.action = action;
             this.availableLectures = availableLectures;
             gameObject.SetActive(true);
@@ -69,7 +71,8 @@ namespace Vanaring
                 if (i < availableLectures.Count)
                 {
                     int currentIndex = i;
-                    lectureButtonList[buttonIndex].onClick.AddListener(() => action.OnSelectLecture(availableLectures[currentIndex]));
+                    //lectureButtonList[buttonIndex].onClick.AddListener(() => action.OnSelectLecture(availableLectures[currentIndex]));
+                    lectureButtonList[buttonIndex].onClick.AddListener(() => PerformAction(action, currentIndex));
                     lectureButtonList[buttonIndex].gameObject.SetActive(true);
                     lectureNameList[buttonIndex].text = availableLectures[i].GetAvailableLecture.GetLectureName;
                     lectureDesList[buttonIndex].text = availableLectures[i].GetAvailableLecture.GetLectureDestcription;
@@ -77,6 +80,18 @@ namespace Vanaring
                 }
                 buttonIndex++;
             }
+        }
+
+        private void PerformAction(LectureParticipationActionCommand action, int index)
+        {
+            if(confirmPanel == null)
+            {
+                confirmPanel = MonoBehaviour.Instantiate(PersistentAddressableResourceLoader.Instance.LoadResourceOperation<GameObject>("ConfirmationPanel"));
+            }
+            confirmPanel.GetComponent<LocationConfirmationPanel>().GFX.SetActive(true);
+            string ct = string.Format("{0} at the library?\nThis action will consume <color=#FF0000FF>1 time slot</color>, are you sure to perform this action ? ", action.GetActionDescription);
+            confirmPanel.GetComponent<LocationConfirmationPanel>().SetButtonListerner(() => action.OnSelectLecture(availableLectures[index]));
+            confirmPanel.GetComponent<LocationConfirmationPanel>().WarningText.text = ct;
         }
 
         private void CalculatePageButton()
