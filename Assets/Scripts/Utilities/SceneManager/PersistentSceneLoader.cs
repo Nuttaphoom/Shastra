@@ -220,11 +220,20 @@ namespace Vanaring
     [System.Serializable]
     public class TransitionSceneManager
     {
-        [SerializeField]
         private TransitionSceneSO _transitionSceneSO;
+        [SerializeField]
+        private int transitionIndex = 0;
+
+        [SerializeField] private List<TransitionSceneSO> _transitionSceneSOList;
+
+        public int TransitionIndex
+        {
+            get { return transitionIndex; }
+            set { transitionIndex = value; }
+        }
+
         private EventBroadcaster _eventBroadCaster;
-        public TransitionSceneSO TransitionSO => _transitionSceneSO;
-        public TransitionObject TransitionObj => _transitionSceneSO.GetTransitionObject;
+        public TransitionObject TransitionObj => _transitionSceneSOList[transitionIndex].GetTransitionObject;
 
         public IEnumerator LoadSceneAsync(SceneDataSO sceneToLoad)
         {

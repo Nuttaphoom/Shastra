@@ -72,10 +72,15 @@ namespace Vanaring
         private IEnumerator FadeInTransition()
         {
             gfxScreen.fillAmount = 0;
-            while (fadeInDirector.state == PlayState.Playing)
-                yield return new WaitForEndOfFrame();
-            //Debug.Log("finish fade-in");
-            fadeInDirector.Stop();
+
+            if (fadeInDirector != null)
+            {
+                fadeInDirector.Play();
+                while (fadeInDirector.state == PlayState.Playing)
+                    yield return new WaitForEndOfFrame();
+                fadeInDirector.Stop();
+            }
+
             GetEventBroadcaster().InvokeEvent<Null>(null, "OnSceneLoaderBegin");
         }
 
@@ -85,11 +90,14 @@ namespace Vanaring
             _tsm.UnSubOnSceneLoaderOperation(OnSceneProgressBarLoading);
             //yield return new WaitForSeconds(delayLoadingTime);
             //Debug.Log("Load scene finish");
-            fadeOutDirector.Play();
-            while (fadeOutDirector.state == PlayState.Playing)
-                yield return new WaitForEndOfFrame();
-            //Debug.Log("finish fade-out");
-            fadeOutDirector.Stop();
+            if(fadeOutDirector != null)
+            {
+                fadeOutDirector.Play();
+                while (fadeOutDirector.state == PlayState.Playing)
+                    yield return new WaitForEndOfFrame();
+                fadeOutDirector.Stop();
+            }
+
             GetEventBroadcaster().InvokeEvent<Null>(null, "OnSceneLoaderBegin");
             transitionCanvas.SetActive(false);
             Destroy(gameObject);
