@@ -8,7 +8,9 @@ using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 using Vanaring; 
 using Vanaring_Utility_Tool;
-
+using UnityEditor;
+using UnityEngine;
+using UnityEngine.Tilemaps;
 namespace Vanaring
 {
     public class PersistentSceneLoader : PersistentInstantiatedObject<PersistentSceneLoader>
@@ -116,7 +118,7 @@ namespace Vanaring
 
             _last_visisted_location = (sceneSO);
 
-            LoadGeneralScene(sceneSO);
+            LoadGeneralScene(sceneSO, 0) ;
         }
         public LoaderDataUser CreateLoaderDataUser<T>(string id, T transferedData)
         {
@@ -134,10 +136,12 @@ namespace Vanaring
 
             return null;
         }
-        public void LoadGeneralScene(SceneDataSO sceneSO)
+        public void LoadGeneralScene(SceneDataSO sceneSO, int transitionType = 1)
         {
             if (_isLoading)
                 return;
+
+            transitionManager.TransitionIndex = transitionType ;
 
             _isLoading = true;
 
@@ -220,11 +224,20 @@ namespace Vanaring
     [System.Serializable]
     public class TransitionSceneManager
     {
-        [SerializeField]
         private TransitionSceneSO _transitionSceneSO;
+        [SerializeField]
+        private int transitionIndex = 0;
+
+        [SerializeField] private List<TransitionSceneSO> _transitionSceneSOList;
+
+        public int TransitionIndex
+        {
+            get { return transitionIndex; }
+            set { transitionIndex = value; }
+        }
+
         private EventBroadcaster _eventBroadCaster;
-        public TransitionSceneSO TransitionSO => _transitionSceneSO;
-        public TransitionObject TransitionObj => _transitionSceneSO.GetTransitionObject;
+        public TransitionObject TransitionObj => _transitionSceneSOList[transitionIndex].GetTransitionObject;
 
         public IEnumerator LoadSceneAsync(SceneDataSO sceneToLoad)
         {
