@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f5d27031a83ca845945ea045c3f11b6, type: 3}
+  m_Name: Spell_ASha_DealHeavyDMG_MultipleTargets
+  m_EditorClassIdentifier: 
+  _actionDescription:
+    _fieldName: Multiple Light
+    _fieldDescription: Cast Blast dmg
+    _fieldImage: {fileID: 0}
+  _targetSelector:
+    _maxTargetSize: 3
+    _targetAlly: 0
+    _targetOppose: 1
+    _targetSelf: 0
+  _actionSignal:
+    _signalEffectBindings:
+    - _signalType: 1
+      _runtimeEffects:
+      - {fileID: 11400000, guid: ecc19d0526fa0d842974464e6ddfcc09, type: 2}
+    - _signalType: 2
+      _runtimeEffects:
+      - {fileID: 11400000, guid: 5b89b623ce285ff4a87bdd5ef157641c, type: 2}
+    _timeLineActorSetupPrefab: {fileID: -8615740222444698358, guid: 650bb0a69c4a2f147917f733b2913e1d, type: 3}
+  _requiredEnergy:
+    _side: 0
+    _amount: 2
