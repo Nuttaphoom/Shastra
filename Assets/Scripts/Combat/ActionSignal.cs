@@ -20,7 +20,7 @@ namespace Vanaring
         //The format is Target_N when N is the number of the Target (Target_2 means target number 2)
         private const string TargetTrackName = "Target_";
 
- 
+
         //[Header("This represent track to dynamically bind with Actor object, Like Caster")]
         //[SerializeField]
         //private List<string> _trackNameForActor ;
@@ -45,8 +45,6 @@ namespace Vanaring
 
             _timelienActors.Add(actor.transform);
         }
-
-      
 
         public Transform GetObjectWithTrackName(string trackName)
         {
