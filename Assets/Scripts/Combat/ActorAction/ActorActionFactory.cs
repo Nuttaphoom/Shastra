@@ -106,12 +106,17 @@ namespace Vanaring
 
             while (_ongoingEffect.Count > 0)
             {
+                Debug.Log("ongoing effect ");
+
                 yield return new WaitForEndOfFrame();
             }
             while (DirectorManager.Instance.IsPlayingTimeline)
             {
+                Debug.Log("still playing timeline");
                 yield return new WaitForEndOfFrame();
             }
+
+            Debug.Log("clear current timeline");
             DirectorManager.Instance.ClearCurrentTimeline() ; 
 
         }

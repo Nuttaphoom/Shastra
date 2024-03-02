@@ -35,7 +35,6 @@ namespace Vanaring
 
                 _multiChannelPerlin = vm.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
 
-                Debug.Log("vm is " + vm.gameObject.name);
 
                 _oldNoiseSetting =  _multiChannelPerlin.m_NoiseProfile ;
                 _oldAmp = _multiChannelPerlin.m_AmplitudeGain;
@@ -70,7 +69,6 @@ namespace Vanaring
 
         private void StopCamShake()
         {
-            Debug.Log("stop cam shake"); 
             _multiChannelPerlin.m_AmplitudeGain = _oldAmp ;
             _multiChannelPerlin.m_NoiseProfile = _oldNoiseSetting ;
         }
