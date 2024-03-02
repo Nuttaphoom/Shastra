@@ -41,6 +41,7 @@ namespace Vanaring
             _director = director;
 
             Transform objectWithTrackName;
+            Animator animatorWithTrackName; 
 
             //For every tracks 
             foreach (var track in (director.playableAsset as TimelineAsset).GetOutputTracks())
@@ -60,6 +61,10 @@ namespace Vanaring
                 if (objectWithTrackName = actionTimelineSetting.GetObjectWithTrackName(track.name))
                 {
                     director.SetGenericBinding(track, objectWithTrackName);
+                }
+                else if (animatorWithTrackName = actionTimelineSetting.GetAnimatorWithTrackName(track.name))
+                {
+                    director.SetGenericBinding(track, animatorWithTrackName); 
                 }
                 else if (track.name == "SignalTrack")
                 {

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Cinemachine;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +19,8 @@ namespace Vanaring
         private const string CasterTrackName = "Caster";
         //The format is Target_N when N is the number of the Target (Target_2 means target number 2)
         private const string TargetTrackName = "Target_";
+
+        private const string OverwrittenMainCameraAnimation = "OverwrittenMainCameraAnimation"; 
 
         //[Header("This represent track to dynamically bind with Actor object, Like Caster")]
         //[SerializeField]
@@ -44,6 +47,16 @@ namespace Vanaring
             _timelienActors.Add(actor.transform);
         }
 
+        public Animator GetAnimatorWithTrackName(string trackName)
+        {
+            if (trackName == OverwrittenMainCameraAnimation)
+            {
+                return Camera.main.GetComponent<CinemachineBrain>().ActiveVirtualCamera.VirtualCameraGameObject.GetComponent<Animator>() ;
+            }
+
+            return null; 
+        }
+
         public Transform GetObjectWithTrackName(string trackName)
         {
             if (trackName == CasterTrackName)
@@ -63,6 +76,8 @@ namespace Vanaring
                     }
                 }
             }
+
+           
 
             return null; 
 

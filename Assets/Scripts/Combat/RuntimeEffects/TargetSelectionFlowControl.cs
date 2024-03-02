@@ -223,8 +223,8 @@ namespace Vanaring
 
             AssignPossibleTargets(caster, actorAction.GetTargetSelector());
 
-            if (! randomTarget) 
-                CameraSetUPManager.Instance.CaptureVMCamera();
+            //if (! randomTarget) 
+            //    CameraSetUPManager.Instance.CaptureVMCamera();
 
 
             while (_selectedTarget.Count < actorAction.GetTargetSelector().MaxTarget )
@@ -283,7 +283,7 @@ namespace Vanaring
                     }
                     else
                     {
-                        CameraSetUPManager.Instance.SetLookAtTarget(_selectingTarget[0].GetComponent<CombatEntityAnimationHandler>().GetGUISpawnTransform());
+                        //CameraSetUPManager.Instance.SetLookAtTarget(_selectingTarget[0].GetComponent<CombatEntityAnimationHandler>().GetGUISpawnTransform());
                     }
                 }
 
@@ -307,8 +307,8 @@ namespace Vanaring
             //Broadcast Ending of target selection with Sucesfful status
             _eventBroadcaster.InvokeEvent<bool>(!_forceStop, "OnTargetSelectionEnd");
 
-            if (! randomTarget)
-                CameraSetUPManager.Instance.RestoreVMCameraState();
+            //if (! randomTarget)
+            //    CameraSetUPManager.Instance.RestoreVMCameraState();
 
             CentralInputReceiver.Instance().RemoveInputReceiverIntoStack(this);
 

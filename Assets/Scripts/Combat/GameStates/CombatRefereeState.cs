@@ -137,7 +137,7 @@ namespace Vanaring
                 if (_actor == null)
                     break; 
                  
-                if ((action = _actor.GetActionRuntimeEffect()) == null) 
+                if ((action = _actor.GetActionRuntimeEffect()) == null)  
                     yield return _actor.GetAction() ;
 
                 else

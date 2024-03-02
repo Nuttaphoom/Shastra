@@ -10,7 +10,7 @@ namespace Vanaring
     {
         void AttachCamera(CinemachineVirtualCamera camera);
         void EnableCamera();
-        void DisableCamera(); 
+        void ClearCameraData();
     }
     public class CameraSetUPManager : MonoBehaviour
     {
@@ -155,9 +155,11 @@ namespace Vanaring
                  
             }           
             
-            newVMCamera.Follow = follow.transform;
+            //newVMCamera.Follow = follow.transform;
             newVMCamera.LookAt = _ally_cam_aimPoint.transform;
             CamList.Add(newVMCamera);
+
+            newVMCamera.gameObject.SetActive(false);
 
             if (follow.TryGetComponent(out ICameraAttacher iCamAttacher))
                 iCamAttacher.AttachCamera(newVMCamera);
