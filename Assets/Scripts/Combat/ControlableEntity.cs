@@ -36,21 +36,23 @@ namespace Vanaring
             }
             else
             {
-                EnableCamera();
-
                 yield return null;
             }
         }
 
         public override IEnumerator TakeControl()
         {
+            EnableCamera();
+
             yield return base.TakeControl();
+
         }
 
         public override IEnumerator TakeControlLeave()
         {
-            yield return base.TakeControlLeave();
-            DisableCamera(); 
+            yield return base.TakeControlLeave(); 
+            ClearCameraData();
+
         }
 
         public override IEnumerator TurnEnter()
@@ -75,12 +77,14 @@ namespace Vanaring
 
         public void EnableCamera()
         {
+            _attachedCamera.Follow = gameObject.transform ; 
             CameraSetUPManager.Instance.EnableCamera(_attachedCamera);
         }
 
-        public void DisableCamera()
+        public void ClearCameraData()
         {
-            CameraSetUPManager.Instance.DisableCamera(_attachedCamera);
+            _attachedCamera.Follow = null ;
+            //CameraSetUPManager.Instance.DisableCamera(_attachedCamera);
         }
         public override IEnumerator LoadDataFromDatabase()
         {
@@ -94,6 +98,11 @@ namespace Vanaring
             _controlableEntityActionRegistry.RegisterSpell(spellList);
 
             yield return null;
+        }
+
+        public void TemporaryResetLookAtAndFollow()
+        {
+            throw new NotImplementedException();
         }
 
 
