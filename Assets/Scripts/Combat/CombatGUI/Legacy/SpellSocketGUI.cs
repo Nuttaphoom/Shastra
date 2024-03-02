@@ -57,7 +57,15 @@ namespace Vanaring
             this._caster = combatEntity;
             _actionButton.onClick.AddListener(ChooseSpell);
             _textMeshProUGUI.text = spell.AbilityName.ToString();
-            _spellCost.text = spell.MPCost.ToString() + " MP";
+            if(spell.MPCost > 0)
+            {
+                _spellCost.text = spell.MPCost.ToString() + " MP";
+            }
+            else
+            {
+                _spellCost.text = "";
+            }
+            
             _fadeBlack.gameObject.SetActive(false); ;
 
             //init slot layout
