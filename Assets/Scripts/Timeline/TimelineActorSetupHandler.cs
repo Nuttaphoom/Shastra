@@ -157,6 +157,7 @@ namespace Vanaring
 
         private void SetUpCasterTargetTransform(Transform owner, GameObject objectWithIndex)
         {
+            //owner.transform.position = objectWithIndex.transform.position;
             owner.transform.parent = objectWithIndex.transform;
             owner.transform.position = objectWithIndex.GetComponent<CombatEntityAnimationHandler>().GetEntityTimelineAnimationLocation(); ;
             owner.transform.rotation = objectWithIndex.transform.rotation;
