@@ -26,9 +26,9 @@ namespace Vanaring
         //Still Unavailable
         private List<Transform> _directVectorTransform = new List<Transform>() ;
 
-
         [SerializeField]
         private bool ChangeLookAt = false;
+
 
         [SerializeField, AllowNesting, NaughtyAttributes.ShowIf("ChangeLookAt") ]
         [Header("Dynamically binding look at position with center betwen target transform")]
@@ -36,12 +36,41 @@ namespace Vanaring
 
         private PlayableDirector _director;
 
+
+        [SerializeField]
+        private bool ModifyMainCameraPosition = false;
+        
+        [SerializeField, AllowNesting, NaughtyAttributes.ShowIf("ModifyMainCameraPosition")]
+        [Header("Transform to put main VM in and apply translation")]
+        private Transform _VMTranslationTransform;
+
+        [SerializeField, AllowNesting, NaughtyAttributes.ShowIf("ModifyMainCameraPosition")]
+        [Header("(Optional) Rotation of the parent (bind dynamically ) will be assigned to this object, result in rotating _VMTranslationTransform translation direction")]
+        private Transform _VMFaceDirectionParentTransform ;
+
+
+        private Transform _mainVMTransform;
+        private Transform _formerParent; 
+
         public void SetUpActor(PlayableDirector director, ActionTimelineSettingStruct actionTimelineSetting, SignalReceiver unitySignalReciver   )
         {
             _director = director;
 
             Transform objectWithTrackName;
-            Animator animatorWithTrackName; 
+
+            //Tranform main camera to translation object
+            if (ModifyMainCameraPosition)
+            {
+                var animatorWithTrackName = Camera.main.GetComponent<CinemachineBrain>().ActiveVirtualCamera.VirtualCameraGameObject ;
+                if (_VMFaceDirectionParentTransform != null)
+                {
+                    _VMFaceDirectionParentTransform.transform.rotation = animatorWithTrackName.transform.parent.transform.rotation;
+                    _VMFaceDirectionParentTransform.transform.position = animatorWithTrackName.transform.position;
+                }
+                _mainVMTransform = animatorWithTrackName.transform;
+                _formerParent = _mainVMTransform.parent;
+                _mainVMTransform.parent = _VMTranslationTransform;
+            }
 
             //For every tracks 
             foreach (var track in (director.playableAsset as TimelineAsset).GetOutputTracks())
@@ -61,10 +90,6 @@ namespace Vanaring
                 if (objectWithTrackName = actionTimelineSetting.GetObjectWithTrackName(track.name))
                 {
                     director.SetGenericBinding(track, objectWithTrackName);
-                }
-                else if (animatorWithTrackName = actionTimelineSetting.GetAnimatorWithTrackName(track.name))
-                {
-                    director.SetGenericBinding(track, animatorWithTrackName); 
                 }
                 else if (track.name == "SignalTrack")
                 {
@@ -148,6 +173,14 @@ namespace Vanaring
     
         public void DestroyTimelineElement()
         {
+            if (ModifyMainCameraPosition)
+            {
+                _mainVMTransform.parent = _formerParent;
+                Destroy(_VMTranslationTransform.gameObject);
+                if (_VMFaceDirectionParentTransform)
+                    Destroy(_VMFaceDirectionParentTransform.gameObject);
+            }
+
             Destroy(_casterTransform.gameObject); 
             for (int i = _targetTransform.Count - 1; i >= 0 ; i--)
             {

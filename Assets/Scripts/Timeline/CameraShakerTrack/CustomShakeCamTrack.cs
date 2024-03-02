@@ -7,7 +7,7 @@ using UnityEngine.Timeline;
 namespace Vanaring
 {
     [TrackColor(0.0f, 0.0f, 1)]
-    [TrackBindingType(typeof(CinemachineVirtualCamera))]
+    [TrackBindingType(typeof(GameObject))]
     [TrackClipType(typeof(CustomShakeCamClip))]
     public class CustomShakeCamTrack : TrackAsset
     {

@@ -31,9 +31,11 @@ namespace Vanaring
             {
                 firstTime = true;
 
-                CinemachineVirtualCamera vm = playerData as CinemachineVirtualCamera;
+                CinemachineVirtualCamera vm =  Camera.main.GetComponent<CinemachineBrain>().ActiveVirtualCamera.VirtualCameraGameObject.GetComponent<CinemachineVirtualCamera>();   
 
                 _multiChannelPerlin = vm.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
+
+                Debug.Log("vm is " + vm.gameObject.name);
 
                 _oldNoiseSetting =  _multiChannelPerlin.m_NoiseProfile ;
                 _oldAmp = _multiChannelPerlin.m_AmplitudeGain;
@@ -68,6 +70,7 @@ namespace Vanaring
 
         private void StopCamShake()
         {
+            Debug.Log("stop cam shake"); 
             _multiChannelPerlin.m_AmplitudeGain = _oldAmp ;
             _multiChannelPerlin.m_NoiseProfile = _oldNoiseSetting ;
         }
