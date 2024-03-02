@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using DG.Tweening;
 
 namespace Vanaring
 {
@@ -12,7 +13,29 @@ namespace Vanaring
         [SerializeField] private TextMeshProUGUI traitLevel;
         [SerializeField] private Image fillBar;
         [SerializeField] private Image traitIcon;
+        private Animator anim;
         private Trait.Trait_Type traitType;
+        private void Awake()
+        {
+            anim = gameObject.GetComponent<Animator>();
+        }
+
+        public void TriggerLevelUPAnimation()
+        {
+            transform.localScale = Vector3.zero;
+
+            // Scale up over 1 second
+            transform.DOScale(new Vector3(1.2f,1.2f,1.2f), 0.01f)
+                .SetEase(Ease.OutBack) // You can choose a different ease function if needed
+                .OnComplete(() =>
+                {
+                // Scale down over 0.5 seconds after scaling up
+                transform.DOScale(Vector3.one, 0.2f)
+                        .SetEase(Ease.InBack); // You can choose a different ease function here as well
+            });
+            Debug.Log("Anim Play");
+        }
+
         public bool IsTraitTypeEqual(Trait.Trait_Type inputType)
         {
             return inputType == traitType;
