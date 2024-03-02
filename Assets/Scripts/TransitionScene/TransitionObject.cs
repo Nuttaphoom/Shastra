@@ -81,8 +81,9 @@ namespace Vanaring
 
         private IEnumerator FadeOutTransition()
         {
+            Debug.Log("fade out transitio nstart");
             _tsm.UnSubOnSceneLoaderOperation(OnSceneProgressBarLoading);
-            yield return new WaitForSeconds(delayLoadingTime);
+            //yield return new WaitForSeconds(delayLoadingTime);
             //Debug.Log("Load scene finish");
             fadeOutDirector.Play();
             while (fadeOutDirector.state == PlayState.Playing)
