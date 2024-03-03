@@ -43,7 +43,9 @@ namespace Vanaring
 
         [Header("Components")]
         [SerializeField]
-        private CharacterStatusWindowManager _statusWindow;
+        private GameObject statusBarLayout;
+        [SerializeField]
+        private Image effectIcon;
         [SerializeField]
         private Animator animator;
         [SerializeField]
@@ -53,25 +55,18 @@ namespace Vanaring
         [SerializeField]
         private GameObject characterArrow;
 
-        private bool isCanTurn;
-        private bool isSelected;
-
         private int hpVal;
         private int maxHpVal;
         private int mpVal;
         private int maxMpVal;
 
-        private float maxEnergyVal = 100;
-        private float lightVal = 50;
-        private float darkVal = 50;
         private CombatCharacterSheetSO _characterSheetSO;
 
         private CombatEntity _combatEntity;
 
         private void Awake()
         {
-            lightVal = 50;
-            darkVal = 50;
+            
         }
         private void OnEnable()
         {
@@ -92,6 +87,14 @@ namespace Vanaring
             _combatEntity.SpellCaster.UnSubOnMPModified(OnMPModified);
         }
 
+        private void Update()
+        {
+            Color imageColor = characterImg.color;
+            if (_combatEntity.IsExhausted) { imageColor.a = 0.7f; }
+            else { imageColor.a = 1.0f; }
+            characterImg.color = imageColor;
+        }
+
         public void Init(CombatEntity combatEntity)
         {
             _combatEntity = combatEntity;
@@ -99,13 +102,12 @@ namespace Vanaring
             _combatEntity.SpellCaster.SubOnModifyEnergy(OnEnergyModified);
             _combatEntity.SubOnHealVisualEvent(OnHPModified);
             _combatEntity.SpellCaster.SubOnMPModified(OnMPModified);
-            
+            _combatEntity.SubOnStatusEffectApplied(AddEffectIcon);
+
             _characterSheetSO = _combatEntity.CombatCharacterSheet;
             characterImg.sprite = _characterSheetSO.GetCharacterIcon;
 
             characterArrow.SetActive(false);
-            isCanTurn = false;
-            isSelected = false;
 
             characterName.text = _characterSheetSO.CharacterName;
 
@@ -122,6 +124,12 @@ namespace Vanaring
             animator = GetComponent<Animator>();
 
             InitEnergySlot();
+        }
+        private void AddEffectIcon(EntityStatusEffectPair effect)
+        {
+            Image newEffectIcon = Instantiate(effectIcon, statusBarLayout.transform);
+            newEffectIcon.gameObject.SetActive(true);
+            effectIcon.sprite = effect.StatusEffectFactory.StatusImage;
         }
 
         private void InitEnergySlot()
@@ -209,39 +217,6 @@ namespace Vanaring
         {
             curveMask.fillAmount = slotBarRatios[_combatEntity.SpellCaster.GetEnergyAmount(RuntimeMangicalEnergy.EnergySide.DarkEnergy)];
         }
-
-        //private IEnumerator IEAnimateHPBarScale(float maxHP)
-        //{
-        //    float tickRate = 0.5f / ((Mathf.Abs((hpVal / maxHP) - secondHpBar.fillAmount)) * 100);
-        //    yield return new WaitForSeconds(0.5f);
-        //    while (secondHpBar.fillAmount < hpVal / maxHP)
-        //    {
-        //        if (secondHpBar.fillAmount < 1.0f)
-        //        {
-        //            secondHpBar.fillAmount += 0.01f;
-        //        }
-        //        else if(secondHpBar.fillAmount >= 1.0f)
-        //        {
-        //            secondHpBar.fillAmount = 1.0f;
-        //        }
-                
-        //        yield return new WaitForSeconds(tickRate);
-        //    }
-        //    while (secondHpBar.fillAmount > hpVal / maxHP)
-        //    {
-        //        if (secondHpBar.fillAmount > 0.0f)
-        //        {
-        //            secondHpBar.fillAmount -= 0.01f;
-        //        }
-        //        else if (secondHpBar.fillAmount <= 0.0f)
-        //        {
-        //            secondHpBar.fillAmount = 0.0f;
-        //        }
-                
-        //        yield return new WaitForSeconds(tickRate);
-        //    }
-        //    yield return null;
-        //}
 
         private IEnumerator IEAnimateBarScale(float currentVal, float maxVal, Image secondBar)
         {

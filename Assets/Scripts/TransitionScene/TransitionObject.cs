@@ -50,6 +50,12 @@ namespace Vanaring
             //System should tell the timeline to play
         }
 
+        [ContextMenu("Test")]
+        public void TestTransition()
+        {
+            StartCoroutine(FadeInTransition());
+        }
+
         private EventBroadcaster GetEventBroadcaster()
         {
             if (_eventBroadCaster == null)
@@ -76,6 +82,7 @@ namespace Vanaring
             if (fadeInDirector != null)
             {
                 fadeInDirector.Play();
+                Debug.Log("Transi IN");
                 while (fadeInDirector.state == PlayState.Playing)
                     yield return new WaitForEndOfFrame();
                 fadeInDirector.Stop();
@@ -93,6 +100,7 @@ namespace Vanaring
             if(fadeOutDirector != null)
             {
                 fadeOutDirector.Play();
+                Debug.Log("Transi OUT");
                 while (fadeOutDirector.state == PlayState.Playing)
                     yield return new WaitForEndOfFrame();
                 fadeOutDirector.Stop();
