@@ -15,11 +15,11 @@ namespace Vanaring
     public class HealRuntimeEffectFactorySO : RuntimeEffectFactorySO
     {
         [SerializeField]
-        private StatModifier _healStatModifer ;
+        private float _flat_healValue ;
 
         public override RuntimeEffect Factorize(List<CombatEntity> targets)
         {
-            HealRuntimeEffect retEffect = new HealRuntimeEffect(_healStatModifer);
+            HealRuntimeEffect retEffect = new HealRuntimeEffect(new StatModifier(_flat_healValue,StatModType.Flat));
             if (targets != null)
             {
                 foreach (CombatEntity target in targets)

@@ -89,7 +89,8 @@ namespace Vanaring
                 }
             }
 
-            _validTargets = ArrangeEntityListInXAxis(_validTargets); 
+            //Arrange entity index according to the camera
+            //_validTargets = ArrangeEntityListInXAxis(_validTargets); 
 
         }
 
@@ -223,8 +224,8 @@ namespace Vanaring
 
             AssignPossibleTargets(caster, actorAction.GetTargetSelector());
 
-            //if (! randomTarget) 
-            //    CameraSetUPManager.Instance.CaptureVMCamera();
+            if (!randomTarget)
+                CameraSetUPManager.Instance.CaptureVMCamera();
 
 
             while (_selectedTarget.Count < actorAction.GetTargetSelector().MaxTarget )
@@ -240,7 +241,6 @@ namespace Vanaring
                 _selectingTarget.Add(_validTargets[_currentSelectIndex]);
 
          
-
                 if (_validTargets.Count <= actorAction.GetTargetSelector().MaxTarget)
                 {
                     _selectingTarget.Clear();
@@ -279,7 +279,7 @@ namespace Vanaring
                             continue;
                         
                         _selectingTarget[0].GetComponent<EntityCameraManager>().EnableShoulderCamera();
-                        _validTargets = ArrangeEntityListInXAxis(_validTargets);
+                        //_validTargets = ArrangeEntityListInXAxis(_validTargets);
                     }
                     else
                     {
@@ -307,8 +307,8 @@ namespace Vanaring
             //Broadcast Ending of target selection with Sucesfful status
             _eventBroadcaster.InvokeEvent<bool>(!_forceStop, "OnTargetSelectionEnd");
 
-            //if (! randomTarget)
-            //    CameraSetUPManager.Instance.RestoreVMCameraState();
+            if (!randomTarget)
+                CameraSetUPManager.Instance.RestoreVMCameraState();
 
             CentralInputReceiver.Instance().RemoveInputReceiverIntoStack(this);
 
