@@ -11,9 +11,11 @@ namespace Vanaring.Assets.Scripts.Utilities.StringConstant
         private const string SpellDatabaseAddress = "SpellDatabaseSOAddress";
         private const string InventoryDatabaseAddress = "InventoryDatabaseSOAddress";
         private const string CharacterSheetDatabaseSOAddress = "CharacterSheetDatabaseSOAddress";
+        private const string TuitorialDatabaseSOAddress = "TuitorialDatabaseSOAddress"; 
         public static string GetSpellDatabaseAddress => SpellDatabaseAddress; 
         public static string GetInventoryDatabaseAddress => InventoryDatabaseAddress;
         public static string GetCharacterSheetDatabaseAddress => CharacterSheetDatabaseSOAddress;
+        public static string GetTuitorialDatabaseSOAddress => TuitorialDatabaseSOAddress; 
 
         public static SpellDatabaseSO _spellDatabaseSO;
         public static SpellDatabaseSO GetSpellDatabase
