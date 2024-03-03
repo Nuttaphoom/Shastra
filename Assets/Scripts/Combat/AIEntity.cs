@@ -14,7 +14,6 @@ namespace Vanaring
     {
         AIBehaviorHandler aiBehaviorHandler;
 
-        
         protected override void Awake()
         {
             base.Awake();

@@ -329,6 +329,7 @@ namespace Vanaring
         {
             if (_visualMesh.activeSelf)
                 return;
+
             isSlotBreakDisplay = true;
             _visualMesh.gameObject.SetActive(true); 
         }
@@ -360,34 +361,49 @@ namespace Vanaring
             hpImage.fillAmount = hpVal / hptemp;
             StartCoroutine(IEAnimateHPBarScale(hptemp));
         }
-        
+
         #endregion
         #region IEnumerator
-       
+
         private IEnumerator IEAnimateHPBarScale(float maxHP)
         {
+            Debug.Log("animate hp bar scale");
             float tickRate = 0.5f / ((Mathf.Abs((hpVal / maxHP) - secondhpImage.fillAmount)) * 100);
 
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(0.25f);
+            
             while (secondhpImage.fillAmount < hpVal / maxHP)
             {
-                secondhpImage.fillAmount += 0.01f;
+                Debug.Log("first while");
+                secondhpImage.fillAmount += 0.03f;
                 yield return new WaitForSeconds(tickRate);
             }
-            while (secondhpImage.fillAmount > hpVal / maxHP)
+            while (Mathf.Abs(secondhpImage.fillAmount - hpVal / maxHP) > 0.03)
             {
-                secondhpImage.fillAmount -= 0.01f;
+
+                //if (Mathf.Abs(secondhpImage.fillAmount - (hpVal / maxHP)) < 0.03f)
+                //{
+                //    break;
+                //}
+                secondhpImage.fillAmount -= 0.03f;
+
                 yield return new WaitForSeconds(tickRate);
             }
+            yield return new WaitForSeconds(.25f);
 
             if (hpVal <= 0)
             {
+                Debug.Log("destroy self");
+                Destroy(_visualMesh.gameObject);
                 Destroy(gameObject);
             }
+            else
+            {
 
-            yield return new WaitForSeconds(_time_BeforeHideHUD); 
-            HideHUDVisual(); 
-            yield return null;
+                Debug.Log("hide hud ");
+                HideHUDVisual();
+                yield return null;
+            }
         }
 
         //private IEnumerator OnModifyEnergyVisualUpdateCoroutine(CombatEntity caster, RuntimeMangicalEnergy.EnergySide side, int val)

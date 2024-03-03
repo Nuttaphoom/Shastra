@@ -33,7 +33,7 @@ namespace Vanaring
 
         private static BaseType CreateInstance()
         {
-            var go = new GameObject(""+ typeof(BaseType) );
+            var go = new GameObject("" + typeof(BaseType) );
             DontDestroyOnLoad(go); 
             var component = go.AddComponent<BaseType>();
             return component;

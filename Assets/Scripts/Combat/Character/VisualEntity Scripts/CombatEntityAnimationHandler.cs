@@ -23,8 +23,6 @@ namespace Vanaring
         [SerializeField]
         private GameObject _visualMesh ;
 
-
-
         [SerializeField]
         public Transform _guiPos;
 
@@ -99,9 +97,6 @@ namespace Vanaring
 
             yield return new WaitForSeconds(3.0f);
         }
-
-         
-        
 
         public IEnumerator DestroyVisualMesh()
         {

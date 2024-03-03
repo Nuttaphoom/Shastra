@@ -39,7 +39,7 @@ namespace Vanaring
             //LoadPin(PersistentActiveDayDatabase.Instance.GetActiveDayData);
             LoadAllPin();
 
-            StartCoroutine(PersistentTutorialManager.Instance.CheckTuitorialNotifier("MapExplain")) ; 
+            //StartCoroutine(PersistentTutorialManager.Instance.CheckTuitorialNotifier("MapExplain")) ; 
         }
         private void LoadAllPin()
         {
