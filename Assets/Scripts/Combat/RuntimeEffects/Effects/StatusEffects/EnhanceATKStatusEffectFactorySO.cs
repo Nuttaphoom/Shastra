@@ -13,11 +13,12 @@ namespace Vanaring
     public class EnhanceATKStatusEffectFactorySO : StatusRuntimeEffectFactorySO
     {
         [SerializeField]
-        private StatModifier _enchanceATKStats  ; 
+        private float flat_enchanceATKPercentage  ; 
 
         public override RuntimeEffect Factorize(List<CombatEntity> targets)
         {
-            EnhanceATKStatusEffect retEffect = new EnhanceATKStatusEffect(this, _enchanceATKStats);
+            
+            EnhanceATKStatusEffect retEffect = new EnhanceATKStatusEffect(this, new StatModifier(flat_enchanceATKPercentage, StatModType.PercentMult));
             foreach (CombatEntity target in targets)
             {
                 retEffect.AssignTarget(target);
