@@ -311,9 +311,7 @@ namespace Vanaring
 
         public void LogicHurt(CombatEntity attacker, StatModifier mod)
         {
-            Debug.Log("HP Before : " + _runtimeCharacterStatsAccumulator.GetHPAmount());
             _runtimeCharacterStatsAccumulator.ModifyHPStat(mod);
-            Debug.Log("HP After : " + _runtimeCharacterStatsAccumulator.GetHPAmount());
             _dmgOutputPopHanlder.AccumulateDMG((int) mod.Value); 
 
             if (_runtimeCharacterStatsAccumulator.GetHPAmount() <= 0)
