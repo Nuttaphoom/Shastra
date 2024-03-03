@@ -147,7 +147,7 @@ namespace PixelCrushers.DialogueSystem.SequencerCommands
                             playableDirector.Stop();
                             nostop = false;
                             break;
-                        case "speed":
+                        case "speed": 
                             playableDirector.playableGraph.GetRootPlayable(0).SetSpeed(GetParameterAsFloat(2));
                             nostop = true;
                             break;

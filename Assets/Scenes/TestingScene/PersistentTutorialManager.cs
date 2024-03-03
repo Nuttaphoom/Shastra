@@ -2,51 +2,55 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using Unity.VisualScripting;
+using Vanaring.Assets.Scripts.Utilities.StringConstant;
+using static Vanaring.TuitorialDatabaseSO;
+using System.Linq;
 
 namespace Vanaring
 {
     public class PersistentTutorialManager : PersistentInstantiatedObject<PersistentTutorialManager>
     {
-        [SerializeField]
-        private GameObject tutorialDemo;
-
         private List<GameObject> tutorials = new List<GameObject>();
 
-        public void PlayTutorial(string tutorialName)
+        private List<string> _dirtyKey = new List<string>();
+
+        private TuitorialDatabaseSO _tuitorialDatabaseSO ;
+
+
+        [SerializeField]
+        private List<TuitorialInstanceData> _tuitorialInstanceDatas;
+        public IEnumerator CheckTuitorialNotifier(string tuitorialKey)
         {
-            Debug.Log("PlayTutorial : " + tutorialName);
-            GameObject tutorial = Instantiate(tutorialDemo, new Vector3(0, 0, 0), Quaternion.identity);
-            tutorial.name = tutorialName;
-            tutorial.transform.parent = gameObject.transform;
-            CutsceneDirector cd = tutorial.AddComponent<CutsceneDirector>();
-            cd.PlayCutscene();
-            tutorials.Add(tutorial);
+            if (_tuitorialDatabaseSO == null)
+                _tuitorialDatabaseSO =  PersistentAddressableResourceLoader.Instance.LoadResourceOperation<TuitorialDatabaseSO>(DatabaseAddressLocator.GetTuitorialDatabaseSOAddress) ;
+            TuitorialInstanceData tuitorialData = null ;
+
+            foreach (var data in _tuitorialInstanceDatas)
+            {
+                if (data.TutorialNotifyKey != tuitorialKey)
+                    continue; 
+
+                tuitorialData = data ; 
+            }
+
+            if (tuitorialData != null)
+                yield return PlayTutorial(tuitorialData);
+
+
         }
 
-        public void DonePlayTutorial(string tutorialName)
+        private IEnumerator PlayTutorial(TuitorialInstanceData tuitorialData)
         {
-            foreach (GameObject obj in tutorials)
-            {
-                if (obj.name == tutorialName)
-                {
-                    Debug.Log("Destroy Tutorial : " + tutorialName);
-                    Destroy(obj);
-                    return;
-                }
-            }
-            Debug.LogError("invalid name :" + tutorialName);
+            tuitorialData.TuitorialCutscene.gameObject.SetActive(true) ;
+
+            yield return null;  
+            //yield return tuitorialData.TuitorialCutscene.PlayCutscene();
+            //Destroy(tuitorialData.TuitorialCutscene.gameObject);
+
+            //_tuitorialInstanceDatas.Remove(tuitorialData); 
         }
 
-        private void Update()
-        {
-            if (Input.GetKeyDown(KeyCode.T))
-            {
-                PlayTutorial("Test");
-            }
-            if (Input.GetKeyDown(KeyCode.Y))
-            {
-                DonePlayTutorial("Test");
-            }
-        }
+
     }
 }

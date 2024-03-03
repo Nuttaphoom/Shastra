@@ -38,6 +38,8 @@ namespace Vanaring
             availableLocationList = PersistentActiveDayDatabase.Instance.GetActiveDayData.GetAvailableLocationAccordingToDayTime();
             //LoadPin(PersistentActiveDayDatabase.Instance.GetActiveDayData);
             LoadAllPin();
+
+            StartCoroutine(PersistentTutorialManager.Instance.CheckTuitorialNotifier("MapExplain")) ; 
         }
         private void LoadAllPin()
         {
