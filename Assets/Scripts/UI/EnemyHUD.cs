@@ -8,6 +8,7 @@ using UnityEditor;
 using Unity.Collections;
 using Unity.Jobs;
 using DG.Tweening;
+using Unity.VisualScripting;
 
 namespace Vanaring
 {
@@ -367,42 +368,37 @@ namespace Vanaring
 
         private IEnumerator IEAnimateHPBarScale(float maxHP)
         {
-            Debug.Log("animate hp bar scale");
             float tickRate = 0.5f / ((Mathf.Abs((hpVal / maxHP) - secondhpImage.fillAmount)) * 100);
 
             yield return new WaitForSeconds(0.25f);
             
             while (secondhpImage.fillAmount < hpVal / maxHP)
             {
-                Debug.Log("first while");
                 secondhpImage.fillAmount += 0.03f;
                 yield return new WaitForSeconds(tickRate);
             }
-            while (Mathf.Abs(secondhpImage.fillAmount - hpVal / maxHP) > 0.03)
+            while (Mathf.Abs(secondhpImage.fillAmount - (hpVal / maxHP) ) > 0.03)
             {
-
                 //if (Mathf.Abs(secondhpImage.fillAmount - (hpVal / maxHP)) < 0.03f)
                 //{
                 //    break;
                 //}
                 secondhpImage.fillAmount -= 0.03f;
 
+                if (hpVal <= 0)
+                    break; 
+                
+
                 yield return new WaitForSeconds(tickRate);
             }
             yield return new WaitForSeconds(.25f);
 
+            HideHUDVisual();
+
             if (hpVal <= 0)
             {
-                Debug.Log("destroy self");
                 Destroy(_visualMesh.gameObject);
                 Destroy(gameObject);
-            }
-            else
-            {
-
-                Debug.Log("hide hud ");
-                HideHUDVisual();
-                yield return null;
             }
         }
 

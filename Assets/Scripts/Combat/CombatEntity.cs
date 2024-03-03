@@ -223,7 +223,6 @@ namespace Vanaring
             yield return _ailmentHandler.CheckForExpiration();
 
             _ailmentHandler.ProgressAlimentTTL();
-
         }
 
         public virtual IEnumerator TurnLeave()
@@ -242,6 +241,13 @@ namespace Vanaring
 
 
         #endregion
+        public IEnumerator GetAilmentAction()
+        {
+            if (_ailmentHandler.DoesAilmentOccur())
+            {
+                yield return _ailmentHandler.AlimentControlGetAction();
+            }
+        }
         public ActorAction GetActionRuntimeEffect( )
         {
             if (_actionQueue == null)

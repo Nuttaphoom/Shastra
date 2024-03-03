@@ -83,8 +83,6 @@ namespace Vanaring
 
         protected override IEnumerator StateEnter()
         {
-
-             
             List<CombatEntity> team = _stateHandler.Referee.GetCurrentTeam();
 
             //1.) Prepare current team for Enter Turn of the entity, this included running status effect 
@@ -106,6 +104,17 @@ namespace Vanaring
             //    _currentEntityIndex = 0;
             //    yield return SwitchControl(-1, _currentEntityIndex);
             //}
+
+            ActorAction action ; 
+            foreach (CombatEntity actor in team)
+            {
+                yield return actor.GetAilmentAction(); 
+
+                if ((action = actor.GetActionRuntimeEffect()) != null)
+                {
+                    yield return _stateHandler.Referee.OnCharacterPerformAction(actor, action);
+                }
+            }
         }
 
         protected override IEnumerator StateExit()
