@@ -20,6 +20,14 @@ namespace Vanaring
 
         [SerializeField]
         private List<TuitorialInstanceData> _tuitorialInstanceDatas;
+
+        private void Awake()
+        {
+            foreach (var data in _tuitorialInstanceDatas)
+            {
+                data.TuitorialCutscene.gameObject.SetActive(false) ;
+            }
+        }
         public IEnumerator CheckTuitorialNotifier(string tuitorialKey)
         {
             if (_tuitorialDatabaseSO == null)
@@ -43,12 +51,11 @@ namespace Vanaring
         private IEnumerator PlayTutorial(TuitorialInstanceData tuitorialData)
         {
             tuitorialData.TuitorialCutscene.gameObject.SetActive(true) ;
+            yield return tuitorialData.TuitorialCutscene.PlayCutscene();
 
-            yield return null;  
-            //yield return tuitorialData.TuitorialCutscene.PlayCutscene();
-            //Destroy(tuitorialData.TuitorialCutscene.gameObject);
+            Destroy(tuitorialData.TuitorialCutscene.gameObject);
 
-            //_tuitorialInstanceDatas.Remove(tuitorialData); 
+            _tuitorialInstanceDatas.Remove(tuitorialData);
         }
 
 
