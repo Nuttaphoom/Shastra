@@ -30,9 +30,10 @@ namespace Vanaring
         }
         public IEnumerator CheckTuitorialNotifier(string tuitorialKey)
         {
-            if (_tuitorialDatabaseSO == null)
-                _tuitorialDatabaseSO =  PersistentAddressableResourceLoader.Instance.LoadResourceOperation<TuitorialDatabaseSO>(DatabaseAddressLocator.GetTuitorialDatabaseSOAddress) ;
-            TuitorialInstanceData tuitorialData = null ;
+            //if (_tuitorialDatabaseSO == null)
+            //    _tuitorialDatabaseSO =  PersistentAddressableResourceLoader.Instance.LoadResourceOperation<TuitorialDatabaseSO>(DatabaseAddressLocator.GetTuitorialDatabaseSOAddress) ;
+            
+            TuitorialInstanceData tuitorialData = null;
 
             foreach (var data in _tuitorialInstanceDatas)
             {

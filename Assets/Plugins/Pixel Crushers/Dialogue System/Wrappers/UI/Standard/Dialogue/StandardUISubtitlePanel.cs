@@ -16,13 +16,9 @@ namespace PixelCrushers.DialogueSystem.Wrappers
         private void Awake()
         {
             base.Awake();
-            Debug.Log("Set enable");
         }
 
-        private void OnDisable()
-        {
-            Debug.Log("Set diable");
-        }
+   
     }
 
 }
