@@ -40,13 +40,15 @@ namespace Vanaring
             }
         }
 
-        public void ProgressRelationship(string characterName, int exp = 1)
+        public void ProgressRelationship(string characterName, float exp = 1)
         {
             foreach (var status in characterRelationshipStatuses)
             {
                 if ( status.IsTheSameCharacter(characterName))
                 {
+
                     status.ProgressRelationship(exp);
+              
                     return;
                 }
             }
