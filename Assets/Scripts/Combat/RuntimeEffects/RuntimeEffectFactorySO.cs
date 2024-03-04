@@ -42,6 +42,7 @@ namespace Vanaring
         protected List<CombatEntity> _targets = new List<CombatEntity>();
         public virtual IEnumerator ExecuteRuntimeCoroutine(CombatEntity caster)
         {
+            Debug.Log("candle flickering"); 
             yield return null; 
         }
         public virtual IEnumerator OnExecuteRuntimeDone(CombatEntity caster)
