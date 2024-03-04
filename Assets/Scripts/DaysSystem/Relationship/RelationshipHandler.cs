@@ -46,10 +46,8 @@ namespace Vanaring
             {
                 if ( status.IsTheSameCharacter(characterName))
                 {
-                    Debug.Log("BEFORE currentEXP" + status.GetCurrentEXP);
 
                     status.ProgressRelationship(exp);
-                    Debug.Log("AFTER currentEXP" + status.GetCurrentEXP);
               
                     return;
                 }
