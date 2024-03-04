@@ -23,7 +23,8 @@ namespace Vanaring
         }
 
         public IEnumerator PlayCutscene()
-        { 
+        {
+            Debug.Log("Play cutscene");
             if (_director == null )
                 _director = GetComponent<PlayableDirector>();
 
