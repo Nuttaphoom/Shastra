@@ -12,13 +12,15 @@ namespace Vanaring
         SignalA,
         SignalB,
         SignalC,
-        SignalD
+        SignalD,
+        SignalE
     }
     public class TimelineSignalBroadcaster : MonoBehaviour
     {
         [SerializeField] DirectorManager directorManager;
         public void RecieveSignal(string signal)
         {
+            Debug.Log("signal is " + signal);
             SignalType broadcastSignal = SignalType.None  ;
             switch (signal)
             {
@@ -27,6 +29,15 @@ namespace Vanaring
                     break;
                 case "B":
                     broadcastSignal = SignalType.SignalB ;
+                    break;
+                case "C":
+                    broadcastSignal = SignalType.SignalC;
+                    break;
+                case "D":
+                    broadcastSignal = SignalType.SignalD;
+                    break;
+                case "E":
+                    broadcastSignal = SignalType.SignalE;
                     break;
                     //case SignalType.SignalB:
                     //    Debug.Log("Signal B");
