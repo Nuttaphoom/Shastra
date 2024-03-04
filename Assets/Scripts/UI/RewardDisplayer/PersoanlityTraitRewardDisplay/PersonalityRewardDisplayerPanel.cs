@@ -92,6 +92,7 @@ namespace Vanaring
             }
             _uiAnimationDone = true;
             //Snap
+            yield return new WaitForSeconds(0.5f);
             if (traitRewardShowList.Count > 0)
             {
                 StartCoroutine(DisplayLevelUp(traitRewardShowList));
