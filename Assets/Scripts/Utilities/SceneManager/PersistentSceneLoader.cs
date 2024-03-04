@@ -118,7 +118,7 @@ namespace Vanaring
 
             _last_visisted_location = (sceneSO);
 
-            LoadGeneralScene(sceneSO, 0) ;
+            LoadGeneralScene(sceneSO, 2) ;
         }
         public LoaderDataUser CreateLoaderDataUser<T>(string id, T transferedData)
         {
