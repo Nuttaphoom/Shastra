@@ -55,19 +55,41 @@ namespace Vanaring
         {
             LoadItemDatabaseOP();
 
-            //if (_backpackItemSO != null)
-            //    throw new System.Exception("Try to laod spell from data base multiple time.This isn't allowed. " +
-            //        "The system should be loaded only 1 time when the save is loaded, and modified the SpellAction thoughtout the lifetime of application, " +
-            //        "and save the uniqueID when the game is saved");
+            if (_backpackItemSO != null)
+                throw new System.Exception("Try to laod spell from data base multiple time.This isn't allowed. " +
+                    "The system should be loaded only 1 time when the save is loaded, and modified the SpellAction thoughtout the lifetime of application, " +
+                    "and save the uniqueID when the game is saved");
 
-            //_backpackItemSO = new List<BackpackItemData>(); 
+            _backpackItemSO = new List<BackpackItemData>();
 
             for (int i = 0; i < uniqueID.Count; i++)
             {
-                
                 AddItemIntoBackpack(m_inventoryDatabase.GetRecord(uniqueID[i]), 1);
             }
+        }
 
+        public void RestoreBackpackItem(List<string> uniqueID)
+        {
+            // temporary data holder for update the backpack item
+            Dictionary<BackpackItemSO, int> currentBackpackItem = new Dictionary<BackpackItemSO, int>();
+
+            for (int i = 0; i < uniqueID.Count; i++)
+            {
+                BackpackItemSO item = m_inventoryDatabase.GetRecord(uniqueID[i]);
+                // already contains key add amount instead
+                if (currentBackpackItem.ContainsKey(item))
+                {
+                    currentBackpackItem[item] += 1;
+                    continue;
+                }
+                // add unique
+                currentBackpackItem.Add(item, 1);
+            }
+
+            foreach (var data in currentBackpackItem)
+            {
+                UpdateItemInBackpack(data.Key, data.Value);
+            }
         }
 
         private void LoadItemDatabaseOP()
@@ -97,6 +119,26 @@ namespace Vanaring
             BackpackItemData backpackItemData = new BackpackItemData();
             backpackItemData.BackpackItem = (itemSO);
             backpackItemData.Amount += (amount);
+            _backpackItemSO.Add(backpackItemData);
+        }
+
+        // this function call when update item from temporary save to restore the different item data
+        public void UpdateItemInBackpack(BackpackItemSO itemSO, int amount)
+        {
+            for (int i = 0; i < _backpackItemSO.Count; i++)
+            {
+                if (_backpackItemSO[i].BackpackItem.GetDescriptionBaseField().FieldName == itemSO.GetDescriptionBaseField().FieldName)
+                {
+                    if (_backpackItemSO[i].Amount != amount)
+                    {
+                        _backpackItemSO[i].Amount = amount;
+                    }
+                    return;
+                }
+            }
+            BackpackItemData backpackItemData = new BackpackItemData();
+            backpackItemData.BackpackItem = (itemSO);
+            backpackItemData.Amount = (amount);
             _backpackItemSO.Add(backpackItemData);
         }
 
@@ -158,7 +200,13 @@ namespace Vanaring
         {
             List<string> saveData = (List<string>)state;
 
-            LoadBackpackItemFromDatabase(saveData);
+            if(_backpackItemSO != null)
+            {
+                RestoreBackpackItem(saveData);
+                return;
+            }
+            //Debug.LogError("LoadBackpackItemFromDatabase");
+            //LoadBackpackItemFromDatabase(saveData);
             //_partyDataLocator.RestoreState(saveData.savePartyDataLocator);
         }
 
