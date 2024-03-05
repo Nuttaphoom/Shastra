@@ -41,7 +41,7 @@ namespace Vanaring
             //}
             EventWindow.SetActive(false);
             //InitEventButton();
-            pinImage.sprite = location.LocationIcon;
+            //pinImage.sprite = location.LocationIcon;
             locationNameText.text = location.LocationName.ToString();
             locationNamePinText.text = location.LocationName.ToString();
             gameObject.GetComponent<Button>().onClick.AddListener(() => location.LoadThisLocation());

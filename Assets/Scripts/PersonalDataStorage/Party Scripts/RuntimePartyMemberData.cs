@@ -14,8 +14,6 @@ namespace Vanaring
         [SerializeField]
         private PartyMemberActionRegister _memberActionRegister ;
 
-        private int _level = 100 ;
-
         public void SetUpRuntimePartyMemberData(CharacterSheetSO sheet)
         {
             _characterSheetSO = sheet ; 
