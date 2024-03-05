@@ -27,6 +27,7 @@ namespace Vanaring
             lv = rewardData.bondLevel;
             fillBar.fillAmount = bondRatio[lv];
             characterName.text = rewardData.characterName;
+            Debug.Log(lv + " " + rewardData.curExp);
         }
 
         public override void ForceSetUpNumber()

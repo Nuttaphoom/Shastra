@@ -82,21 +82,21 @@ namespace Vanaring
             if (fadeInDirector != null)
             {
                 fadeInDirector.Play();
-                Debug.Log("Transi IN");
+                //Debug.Log("Transi IN");
                 while (fadeInDirector.state == PlayState.Playing)
                 {
                     yield return new WaitForEndOfFrame();
                 }
-                Debug.Log("End Transi IN");
+                //Debug.Log("End Transi IN");
             }
 
-            Debug.Log("Load");
+            //Debug.Log("Load");
             //GetEventBroadcaster().InvokeEvent<Null>(null, "OnSceneLoaderBegin");
         }
 
         private IEnumerator FadeOutTransition()
         {
-            Debug.Log("Transi Out");
+            //Debug.Log("Transi Out");
             _tsm.UnSubOnSceneLoaderOperation(OnSceneProgressBarLoading);
             while (fadeInDirector.state == PlayState.Playing)
             {
@@ -111,7 +111,7 @@ namespace Vanaring
                 while (fadeOutDirector.state == PlayState.Playing)
                     yield return new WaitForEndOfFrame();
                 fadeOutDirector.Stop();
-                Debug.Log("End Transi OUT");
+                //Debug.Log("End Transi OUT");
             }
 
             //GetEventBroadcaster().InvokeEvent<Null>(null, "OnSceneLoaderBegin");
