@@ -45,7 +45,7 @@ namespace Vanaring
             _tsm.SubOnSceneLoaderOperation(OnSceneProgressBarLoading);
             _tsm.SubOnSceneLoaderComplete(Startcou);
             transitionCanvas.SetActive(true);
-            StartCoroutine(FadeInTransition());
+           
             fadeInDirector.Play();
             //System should tell the timeline to play
         }
@@ -75,7 +75,7 @@ namespace Vanaring
             loadingBarFill.fillAmount = val;
         }
 
-        private IEnumerator FadeInTransition()
+        public IEnumerator FadeInTransition()
         {
             gfxScreen.fillAmount = 0;
 

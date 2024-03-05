@@ -66,23 +66,25 @@ namespace Vanaring
         /// Clear data related to last visiste location only 
         /// No need to clear _userDataScene and _stackLoadedSceneData
         /// </summary>
-        public void CreateTransitionScene()
+        public IEnumerator CreateTransitionScene()
         {
             if (transitionScreenObj == null)
             {
                 transitionScreenObj = Instantiate(transitionManager.TransitionObj, gameObject.transform);
                 transitionScreenObj.name = "-- TransitionScreen ----------";
-                //transitionManager.SetTransitionObj(transitionScreenObj);
                 transitionScreenObj.Init(transitionManager);
+                yield return transitionScreenObj.FadeInTransition();
+            }
+            else
+            {
+                throw new System.Exception("non-destroy transition object found.");
             }
         }
         public void OnCompleteLoadedNewLocationScene(AsyncOperation asy)
         {
             _currentLoadedLocationScene = _sceneToLoad.GetSceneName();
-            //Debug.Log(_currentLoadedLocationScene); 
             SceneManager.SetActiveScene(SceneManager.GetSceneByName(_currentLoadedLocationScene));
             _isLoading = false;
-
         }
 
         public void ClearUserDataOfTempVisitedLocationData()
@@ -153,7 +155,7 @@ namespace Vanaring
             }
             else
             {
-                BeginLoadScene();
+                StartCoroutine( BeginLoadScene());
             }
         }
         #endregion
@@ -163,7 +165,7 @@ namespace Vanaring
             if (_currentLoadedLocationScene != null)
                 SceneManager.UnloadSceneAsync(_currentLoadedLocationScene);
 
-            BeginLoadScene() ;
+            StartCoroutine(BeginLoadScene());
         }
 
         #endregion
@@ -183,26 +185,21 @@ namespace Vanaring
 
         #endregion
 
-        private void BeginLoadScene()
+        private IEnumerator BeginLoadScene()
         {
             if (_sceneToLoad == null)
                 throw new System.Exception("_sceneToLoad is null");
 
             PersistentSaveLoadManager.Instance.CaptureToTemp();
-            CreateTransitionScene();
+            yield return CreateTransitionScene();
             transitionManager.TransitionObj.SubOnSceneLoaderBegin(LoadNewScene);
-            StartCoroutine(LoadDelayTimer());
-        }
-
-        private IEnumerator LoadDelayTimer() {
-            yield return new WaitForSeconds(0.5f);
             LoadNewScene(null);
+            yield return null;
         }
 
         private void LoadNewScene(Null n)
         {
             _stackLoadedSceneData.Push(_sceneToLoad);
-
             transitionManager.TransitionObj.UnSubOnSceneLoaderBegin(LoadNewScene);
             StartCoroutine(transitionManager.LoadSceneAsync(_sceneToLoad));
         }
