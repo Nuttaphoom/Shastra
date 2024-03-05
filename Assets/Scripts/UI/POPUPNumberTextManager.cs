@@ -37,7 +37,8 @@ namespace Vanaring
                         continue;
                     }
 
-                    _spawnedTextDict[key][i].transform.position = UISpaceSingletonHandler.ObjectToUISpace(key.CombatEntityAnimationHandler.GetGUISpawnTransform());
+                    //_spawnedTextDict[key][i].transform.position = UISpaceSingletonHandler.ObjectToUISpace(key.CombatEntityAnimationHandler.GetGUISpawnTransform());
+                    //_spawnedTextDict[key][i].transform.position = RandomPointInCircle(_spawnedTextDict[key][i].transform.position, 100f);
                 }
             }
         }
@@ -80,10 +81,20 @@ namespace Vanaring
         public GameObject InstantiatedTextPrefab(GameObject template, string text, CombatEntity showToThisEntity)
         {
             GameObject ret = MonoBehaviour.Instantiate(template, transform);
-            ret.GetComponent<TextMeshProUGUI>().text = text; 
+            ret.GetComponent<TextMeshProUGUI>().text = text;
+            ret.GetComponent<TextMeshProUGUI>().fontSize = Random.Range(50f, 85f);
             ret.transform.position = UISpaceSingletonHandler.ObjectToUISpace(showToThisEntity.CombatEntityAnimationHandler.GetGUISpawnTransform());
+            ret.transform.position = RandomPointInCircle(ret.transform.position, 10f);
 
             return ret; 
+        }
+
+        Vector2 RandomPointInCircle(Vector2 center, float radius)
+        {
+            float angle = Random.Range(0f, 360f);
+            float x = center.x + Random.Range(3f, radius) * Mathf.Cos(angle * Mathf.Deg2Rad);
+            float y = center.y + Random.Range(3f, radius) * Mathf.Sin(angle * Mathf.Deg2Rad);
+            return new Vector2(x, y);
         }
 
         private void AddNewEntityToTextList(CombatEntity showToThisEntity, GameObject textGO)
