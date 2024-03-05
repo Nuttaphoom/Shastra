@@ -75,6 +75,7 @@ namespace Vanaring
         {
             float capEXP = GetEXPCap();
             _currentEXP += receivedEXP;
+
             if (_currentEXP >= capEXP)
             {
                 LevelUp();

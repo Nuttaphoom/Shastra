@@ -39,6 +39,7 @@ namespace Vanaring
             int currentLevel = _relationshipHandler.GetCurrentBondLevel(characterName);
             int currentExp = _relationshipHandler.GetCurrentRelationshipEXP(characterName);
 
+            
             _bondingAnimationGO = MonoBehaviour.Instantiate(_characterRelationshipDataSO.GetBondingAnimationGO(currentLevel, currentExp));
 
            _bondingAnimationGO.StartCoroutine(_bondingAnimationGO.PlayCutscene(this) ) ;
@@ -49,6 +50,7 @@ namespace Vanaring
         {
             //Display reward displayer 
             SubmitActionReward();
+
             yield return new WaitForSeconds(1);
             bondingRewardDisplayerPanel = MonoBehaviour.Instantiate(PersistentAddressableResourceLoader.Instance.LoadResourceOperation<GameObject>("BondingRewardDisplayerPanel"));
             bondingRewardDisplayerPanel.GetComponent<BondingRewardDisplayer>().SetReceivedReward(new BondingRewardData()

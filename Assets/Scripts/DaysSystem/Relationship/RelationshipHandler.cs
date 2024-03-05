@@ -46,7 +46,6 @@ namespace Vanaring
             {
                 if ( status.IsTheSameCharacter(characterName))
                 {
-
                     status.ProgressRelationship(exp);
               
                     return;
@@ -62,7 +61,7 @@ namespace Vanaring
             {
                 if (runtimeStatus.IsTheSameCharacter(characterName))
                 {
-                    return runtimeStatus.GetCurrentEXP;
+                    return (int) runtimeStatus.GetCurrentEXP;
                 }
             }
 
@@ -178,14 +177,14 @@ namespace Vanaring
         }
 
         #region GETTER
-        public int GetCurrentEXP
+        public float GetCurrentEXP
         {
             get
             {
                 if (_expSystem == null)
                     throw new Exception("_expSystem is null"); 
 
-                return _expSystem.GetCurrentLevel; 
+                return _expSystem.GetCurrentEXP ; 
             }
         }
         public float GetEXPCap
