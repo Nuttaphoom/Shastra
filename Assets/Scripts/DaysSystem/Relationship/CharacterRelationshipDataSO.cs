@@ -27,8 +27,8 @@ namespace Vanaring
 
         public BondingAnimationGO GetBondingAnimationGO (int bondLevel, int exp)
         {
-            //Because Relationship exp start with 1
-            exp = exp - 1;
+ 
+ 
 
             if (bondLevel > _bondsData.Count )
                 throw new Exception("bondLevel : " + bondLevel + " excess the size of _bondsData which is " + _bondsData.Count);
