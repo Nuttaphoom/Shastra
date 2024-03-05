@@ -33,6 +33,14 @@ namespace Vanaring
                 return _currentLevel; 
             }
         }
+
+        public float GetCurrentEXP
+        {
+            get
+            {
+                return _currentEXP;
+            }
+        }
         #endregion
 
         #region EventBroadcaster

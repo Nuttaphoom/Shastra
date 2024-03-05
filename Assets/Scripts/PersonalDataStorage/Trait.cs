@@ -21,12 +21,14 @@ namespace Vanaring
         [Serializable]
         public class Trait_Data
         {
-            private int level;
-            public int Getlevel() { return level; }
-            private float currentexp;
-            private Sprite _triatIcon;
-            public float GetCurrentexp() { return currentexp; }
+            public int Getlevel() {
+                return _personalityEXP.GetCurrentLevel ; 
+            }
             
+            private PersonalityTraitUEXPSystem _personalityEXP; 
+            private Sprite _triatIcon;
+            public float GetCurrentexp() { return _personalityEXP.GetCurrentEXP; }
+            public float GetCurrentEXPCap() { return _personalityEXP.GetEXPCap() ; }
             
             public Sprite GetPersonalityTraitIcon
             {
@@ -41,15 +43,16 @@ namespace Vanaring
 
             public Trait_Data(int level, float currentexp, Sprite traitIcon)
             {
-                this.level = level;
-                this.currentexp = currentexp;
+                _personalityEXP = new PersonalityTraitUEXPSystem(level, currentexp);
+
+                //this.level = level;
+                //this. = currentexp;
                 this._triatIcon = traitIcon;
             }
 
             public void SetTraitData(int level, float currentexp)
             {
-                this.level = level;
-                this.currentexp = currentexp;
+                _personalityEXP = new PersonalityTraitUEXPSystem(level, currentexp);
             }
         }
     }

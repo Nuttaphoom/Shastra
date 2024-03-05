@@ -12,25 +12,13 @@ namespace Vanaring
         [SerializeField]
         private Dictionary<Trait.Trait_Type, Trait.Trait_Data> traits = new Dictionary<Trait.Trait_Type, Trait.Trait_Data>();
 
-        [SerializeField] 
-        private List<int> trait_require_exp = new List<int>();
+  
         public PersonalityTrait(PersonalityTraitSO personalityTraitSO)
         {
             foreach (Trait.Trait_Type type in Enum.GetValues(typeof(Trait.Trait_Type)))
             {
                 // TEMP : Setting start exp with 0
                 traits[type] = new Trait.Trait_Data(personalityTraitSO.GetStat(type), 0, personalityTraitSO.GetTraitImage(type));
-            }
-
-            if (trait_require_exp.Count > 0)
-            {
-                throw new Exception("trait_require_exp is already has data");
-            }
-
-            for (int i = 0; i < personalityTraitSO.GetTraitRequireExpSize(); i++)
-            {
-                //Debug.Log( i + " : " + personalityTraitSO.GetTraitRequireExp(i));
-                trait_require_exp.Add(personalityTraitSO.GetTraitRequireExp(i));
             }
         }
 
@@ -50,14 +38,14 @@ namespace Vanaring
             return traits[type];
         }
 
-        public int GetCurrentTraitRequireEXP(Trait.Trait_Type type)
+        public float GetCurrentTraitRequireEXP(Trait.Trait_Type type)
         {
             // Warning of forgot adding new type to Base SO
             if (!traits.ContainsKey(type))
             {
                 throw new Exception("Trait.Trait_Type don't have this type: " + type);
             }
-            return trait_require_exp[traits[type].Getlevel()];
+            return traits[type].GetCurrentEXPCap(); //  trait_require_exp[traits[type].Getlevel()];
         }
 
         public float GetCurrentTraitEXP(Trait.Trait_Type type)

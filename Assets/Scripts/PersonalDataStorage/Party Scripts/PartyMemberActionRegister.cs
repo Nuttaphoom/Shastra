@@ -61,12 +61,10 @@ namespace Vanaring
         {
             if (_registeredSpellActions == null)
             {
-                Debug.LogWarning("RegisteredSpellAction is null, this shouldn't be allowed as the load system should be responsible for creating the isntance"); 
                 _registeredSpellActions = new List<SpellActionSO>();
             }
             //Dont forget to save all of the _registeredSpellActions again when application ends of saved
             _registeredSpellActions.Add(spellToUnlock) ;
-            Debug.Log("RegisteredSpellAction.Count : " + _registeredSpellActions.Count);
         }
 
         private void LoadSpellDatabaseOP()

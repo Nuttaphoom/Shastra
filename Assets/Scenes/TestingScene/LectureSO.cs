@@ -8,8 +8,7 @@ namespace Vanaring
     [CreateAssetMenu(fileName = "LectureSO", menuName = "ScriptableObject/LectureSO")]
     public class LectureSO : ScriptableObject
     {
-        [SerializeField]
-        private string LectureName = "GAM300";
+         
         [SerializeField]
         public int maxPoint = 1000;
         [SerializeField]
