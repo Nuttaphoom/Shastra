@@ -10,11 +10,21 @@ using Vanaring.Assets.Scripts.DaysSystem.SchoolAction;
 namespace Vanaring 
 {
     [Serializable]
+    public struct BondingRewardData
+    {
+        public int bondLevel;
+        public int curExp;
+        public int capExp;
+        public string characterName;
+    }
+
+    [Serializable]
     public class NPCBondingScheme : ISchoolAction
     {
         private CharacterRelationshipDataSO _characterRelationshipDataSO;
         private BondingAnimationGO _bondingAnimationGO ;
         private RelationshipHandler _relationshipHandler;
+        [SerializeField] private GameObject bondingRewardDisplayerPanel;
 
         public void PlayBondingScheme(CharacterRelationshipDataSO characterRelationshipDataSO)
         {
@@ -28,7 +38,7 @@ namespace Vanaring
             string characterName = _characterRelationshipDataSO.GetCharacterName; 
             int currentLevel = _relationshipHandler.GetCurrentBondLevel(characterName);
             int currentExp = _relationshipHandler.GetCurrentRelationshipEXP(characterName);
-             
+
             _bondingAnimationGO = MonoBehaviour.Instantiate(_characterRelationshipDataSO.GetBondingAnimationGO(currentLevel, currentExp));
 
            _bondingAnimationGO.StartCoroutine(_bondingAnimationGO.PlayCutscene(this) ) ;
@@ -39,13 +49,19 @@ namespace Vanaring
         {
             //Display reward displayer 
             SubmitActionReward();
-            //SubmitActionReward() ;
             yield return new WaitForSeconds(1);
+            bondingRewardDisplayerPanel = MonoBehaviour.Instantiate(PersistentAddressableResourceLoader.Instance.LoadResourceOperation<GameObject>("BondingRewardDisplayerPanel"));
+            bondingRewardDisplayerPanel.GetComponent<BondingRewardDisplayer>().SetReceivedReward(new BondingRewardData()
+            {
+                bondLevel = PersistentPlayerPersonalDataManager.Instance.RelationshipHandler.GetCurrentBondLevel(_characterRelationshipDataSO.GetCharacterName),
+                curExp = PersistentPlayerPersonalDataManager.Instance.RelationshipHandler.GetCurrentRelationshipEXP(_characterRelationshipDataSO.GetCharacterName),
+                capExp = PersistentPlayerPersonalDataManager.Instance.RelationshipHandler.GetRelationshipCapEXP(_characterRelationshipDataSO.GetCharacterName),
+                characterName = _characterRelationshipDataSO.GetCharacterName
+
+            });
+            yield return bondingRewardDisplayerPanel.GetComponent<BondingRewardDisplayer>().SettingUpNumber();
             PersistentActiveDayDatabase.Instance.OnPostPerformSchoolAction();
             yield return null; 
-            //yield return null; 
-            //Display action reward 
-            //throw new NotImplementedException();
         }
 
         public void SubmitActionReward()

@@ -26,7 +26,6 @@ namespace Vanaring
 
         [Header("TraitRewardPanel")]
         [SerializeField] private GameObject levelUpPanel;
-        //[SerializeField] private TextMeshProUGUI levelUpText;
         [SerializeField] private Image levelUpTraitIcon;
         [SerializeField] private TextMeshProUGUI levelUpRewardText;
 
