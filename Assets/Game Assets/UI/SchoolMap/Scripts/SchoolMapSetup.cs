@@ -58,6 +58,9 @@ namespace Vanaring
                     case LocationName.Library:
                         locationIndex = 1;
                         break;
+                    case LocationName.SchoolField:
+                        locationIndex = 2;
+                        break;
                     //case LocationName.Stadium:
                     //    locationIndex = 2;
                     //    break;

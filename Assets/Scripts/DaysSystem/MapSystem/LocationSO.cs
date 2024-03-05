@@ -81,6 +81,7 @@ namespace Vanaring
         Stadium,
         Cottage,
         SchoolMap,
-        Dorm
+        Dorm, 
+        SchoolField 
     }
 }
