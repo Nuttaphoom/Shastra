@@ -10,18 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d3a67f9a2c838b74ca5685af78146670, type: 3}
-  m_Name: Test2LectureSO
+  m_Name: LectureSO_DarkMagic
   m_EditorClassIdentifier: 
   LectureName: LOL800
   maxPoint: 1000
   Checkpoint:
-  - cp_requirepoint: 100
-    RewardIsItem: 1
-    RewardIsSpell: 0
-    cp_spellReward:
-      _rewards: {fileID: 0}
-    cp_itemReward:
-      _rewards: {fileID: 11400000, guid: cab6a1cf038672342bb1ea8975adc564, type: 2}
   - cp_requirepoint: 300
     RewardIsItem: 0
     RewardIsSpell: 1
@@ -29,6 +22,13 @@ MonoBehaviour:
       _rewards: {fileID: 11400000, guid: aa58f05603ff6c649a0e06f84ac54e69, type: 2}
     cp_itemReward:
       _rewards: {fileID: 0}
+  - cp_requirepoint: 100
+    RewardIsItem: 1
+    RewardIsSpell: 0
+    cp_spellReward:
+      _rewards: {fileID: 0}
+    cp_itemReward:
+      _rewards: {fileID: 11400000, guid: cab6a1cf038672342bb1ea8975adc564, type: 2}
   - cp_requirepoint: 500
     RewardIsItem: 1
     RewardIsSpell: 0
@@ -47,6 +47,6 @@ MonoBehaviour:
   - trait: 0
     requirelevel: 0
   description:
-    _fieldName: 'Dark Magic '
-    _fieldDescription: 
+    _fieldName: 'Dark Magic  '
+    _fieldDescription: Learn about dark magic.
     _fieldImage: {fileID: 21300000, guid: fc18948e51aff8d4daf02e6275b7d979, type: 3}
