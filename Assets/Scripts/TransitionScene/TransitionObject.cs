@@ -84,29 +84,37 @@ namespace Vanaring
                 fadeInDirector.Play();
                 Debug.Log("Transi IN");
                 while (fadeInDirector.state == PlayState.Playing)
+                {
                     yield return new WaitForEndOfFrame();
-                fadeInDirector.Stop();
+                }
+                Debug.Log("End Transi IN");
             }
 
-            GetEventBroadcaster().InvokeEvent<Null>(null, "OnSceneLoaderBegin");
+            Debug.Log("Load");
+            //GetEventBroadcaster().InvokeEvent<Null>(null, "OnSceneLoaderBegin");
         }
 
         private IEnumerator FadeOutTransition()
         {
-            Debug.Log("fade out transitio nstart");
+            Debug.Log("Transi Out");
             _tsm.UnSubOnSceneLoaderOperation(OnSceneProgressBarLoading);
+            while (fadeInDirector.state == PlayState.Playing)
+            {
+                yield return new WaitForEndOfFrame();
+            }
             //yield return new WaitForSeconds(delayLoadingTime);
             //Debug.Log("Load scene finish");
-            if(fadeOutDirector != null)
+            if (fadeOutDirector != null)
             {
                 fadeOutDirector.Play();
-                Debug.Log("Transi OUT");
+                
                 while (fadeOutDirector.state == PlayState.Playing)
                     yield return new WaitForEndOfFrame();
                 fadeOutDirector.Stop();
+                Debug.Log("End Transi OUT");
             }
 
-            GetEventBroadcaster().InvokeEvent<Null>(null, "OnSceneLoaderBegin");
+            //GetEventBroadcaster().InvokeEvent<Null>(null, "OnSceneLoaderBegin");
             transitionCanvas.SetActive(false);
             Destroy(gameObject);
             _tsm.UnSubOnSceneLoaderComplete(Startcou);
