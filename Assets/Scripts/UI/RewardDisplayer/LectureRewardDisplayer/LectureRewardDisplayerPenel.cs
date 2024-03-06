@@ -82,7 +82,7 @@ namespace Vanaring
             {
                 LectureRewardObject newRewardObj = Instantiate(rewardObjTemplate, filledBar.transform);
                 RewardData newEventReward = lectureProgressBarData.allRewardData[rewardIndex].GetRewardData() ;
-                double iconXPos = ((float)checkPoint.RequirePoint * 360.0f) / 1000.0f;
+                double iconXPos = ((float)checkPoint.RequirePoint * 360.0f) / lectureProgressBarData.maxEXP;
                 newRewardObj.gameObject.transform.localPosition = new Vector2((float)iconXPos - 180f, 6.75f);
                 newRewardObj.gameObject.SetActive(true);
                 newRewardObj.SetRewardDetail(newEventReward.RewardName, newEventReward.RewardIcon);
@@ -147,8 +147,9 @@ namespace Vanaring
                     
                 }
                 //Reach Reward Icon Animation
-                while (filledBar.fillAmount >= lectureProgressBarData.checkpoints[reachScoreIndex].RequirePoint / 1000.0f)
+                while (filledBar.fillAmount >= (float)lectureProgressBarData.checkpoints[reachScoreIndex].RequirePoint / lectureProgressBarData.maxEXP)
                 {
+                    Debug.Log(filledBar.fillAmount + ">" + (float)lectureProgressBarData.checkpoints[reachScoreIndex].RequirePoint / lectureProgressBarData.maxEXP);
                     rewardObjList[reachScoreIndex].TriggerAnimation();
                     rewardObjList[reachScoreIndex].SetIsReachedState(true);
                     rewardObjList[reachScoreIndex].SetIsObtainedState(true);
