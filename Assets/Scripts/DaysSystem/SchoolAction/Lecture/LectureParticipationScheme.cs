@@ -101,7 +101,13 @@ namespace Vanaring
             {
                 if (LectureSubjectRuntime.LectureName == _lectureToStudy.GetLectureName)
                 {
-                    LectureSubjectRuntime.RecievePoint(CalculateReceivedEXPPoint(_lectureToStudy));  
+                    int receivedEXP = CalculateReceivedEXPPoint(_lectureToStudy); 
+                    Debug.Log("BEF EXP " + LectureSubjectRuntime.CurrentPoint);
+                    LectureSubjectRuntime.RecievePoint(receivedEXP);
+
+                    Debug.Log("AFT EXP " + LectureSubjectRuntime.CurrentPoint);
+                    Debug.Log("Increase by " + receivedEXP );
+
                     LectureSubjectRuntime.CalculateRecievedEventReward();
                 }
             }

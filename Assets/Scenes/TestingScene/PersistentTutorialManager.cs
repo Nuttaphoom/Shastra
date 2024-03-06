@@ -21,6 +21,8 @@ namespace Vanaring
         [SerializeField]
         private List<TuitorialInstanceData> _tuitorialInstanceDatas;
 
+    
+
         private void Awake()
         {
             foreach (var data in _tuitorialInstanceDatas)
@@ -33,6 +35,7 @@ namespace Vanaring
             //if (_tuitorialDatabaseSO == null)
             //    _tuitorialDatabaseSO =  PersistentAddressableResourceLoader.Instance.LoadResourceOperation<TuitorialDatabaseSO>(DatabaseAddressLocator.GetTuitorialDatabaseSOAddress) ;
 
+          
 
             TuitorialInstanceData tuitorialData = null;
 
@@ -45,8 +48,7 @@ namespace Vanaring
             }
             if (tuitorialData != null)
                 yield return PlayTutorial(tuitorialData);
-            else
-                throw new Exception(tuitorialKey + " can NOT be found");
+ 
 
 
         }
