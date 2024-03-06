@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System;
+using UnityEngine.Playables;
 
 namespace Vanaring
 {
@@ -12,11 +13,14 @@ namespace Vanaring
         [SerializeField] private List<Button> lectureButtonList = new List<Button>();
         [SerializeField] private List<TextMeshProUGUI> lectureNameList = new List<TextMeshProUGUI>();
         [SerializeField] private List<TextMeshProUGUI> lectureDesList = new List<TextMeshProUGUI>();
+        [SerializeField] private List<GameObject> lectureObjList = new List<GameObject>();
         [SerializeField] private List<Image> lectureIconList = new List<Image>();
         [SerializeField] private TextMeshProUGUI pageText;
         [SerializeField] private GameObject nextButton;
         [SerializeField] private GameObject prevButton;
         [SerializeField] private GameObject gfx;
+        [SerializeField] private PlayableDirector inDirector;
+        [SerializeField] private PlayableDirector outDirector;
         private GameObject confirmPanel;
         private int pageCount = 1;
         private int maxPage = 1;
@@ -65,6 +69,10 @@ namespace Vanaring
                 button.gameObject.SetActive(false);
                 button.onClick.RemoveAllListeners();
             }
+            foreach(GameObject ui in lectureObjList)
+            {
+                ui.SetActive(false);
+            }
             int buttonIndex = 0;
             for (int i = (pageCount * 3) - 3; i < (pageCount * 3); i++)
             {
@@ -74,6 +82,7 @@ namespace Vanaring
                     //lectureButtonList[buttonIndex].onClick.AddListener(() => action.OnSelectLecture(availableLectures[currentIndex]));
                     lectureButtonList[buttonIndex].onClick.AddListener(() => PerformAction(action, currentIndex));
                     lectureButtonList[buttonIndex].gameObject.SetActive(true);
+                    lectureObjList[buttonIndex].SetActive(true);
                     lectureNameList[buttonIndex].text = availableLectures[i].GetAvailableLecture.GetLectureName;
                     lectureDesList[buttonIndex].text = availableLectures[i].GetAvailableLecture.GetLectureDestcription;
                     lectureIconList[buttonIndex].sprite = availableLectures[i].GetAvailableLecture.GetLectureLogoIcon;
@@ -118,7 +127,25 @@ namespace Vanaring
 
         public void OpenPanel()
         {
+            //gameObject.SetActive(true);
+            outDirector.Stop();
+            inDirector.Play();
+        }
+
+        public void ClosePanel()
+        {
             gameObject.SetActive(true);
+            StartCoroutine(CloseLecturePanel());
+        }
+
+        private IEnumerator CloseLecturePanel()
+        {
+            inDirector.Stop();
+            outDirector.Play();
+            while(outDirector.state == PlayState.Playing)
+            {
+                yield return new WaitForEndOfFrame();
+            }
         }
     }
 }
