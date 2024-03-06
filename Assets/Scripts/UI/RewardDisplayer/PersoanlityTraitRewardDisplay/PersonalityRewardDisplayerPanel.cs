@@ -149,7 +149,7 @@ namespace Vanaring
             {
                 levelUpPanel.SetActive(true);
                 levelUpTraitIcon.sprite = personalityTrait.GetStat(displayTraitRewardList[i]).GetPersonalityTraitIcon;
-                levelUpRewardText.text = displayTraitRewardList[i].ToString() + " upgrades to rank " + 
+                levelUpRewardText.text = displayTraitRewardList[i].ToString() + " has reached rank " + 
                     personalityTrait.GetStat(displayTraitRewardList[i]).Getlevel().ToString() + "!";
                 while (levelUpPanel.activeSelf)
                 {
