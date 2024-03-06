@@ -173,6 +173,7 @@ namespace Vanaring
         [SerializeField]
         private string _fieldName ;
         [SerializeField]
+        [TextArea(3, 5)]
         private string _fieldDescription ;
         [SerializeField]
         private Sprite _fieldImage;
