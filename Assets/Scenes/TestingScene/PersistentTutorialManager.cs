@@ -33,7 +33,6 @@ namespace Vanaring
             //if (_tuitorialDatabaseSO == null)
             //    _tuitorialDatabaseSO =  PersistentAddressableResourceLoader.Instance.LoadResourceOperation<TuitorialDatabaseSO>(DatabaseAddressLocator.GetTuitorialDatabaseSOAddress) ;
 
-            Debug.Log("try to play tuitorial"); 
 
             TuitorialInstanceData tuitorialData = null;
 
@@ -44,9 +43,10 @@ namespace Vanaring
 
                 tuitorialData = data ; 
             }
-            Debug.Log("tuitira data is " + tuitorialData);
             if (tuitorialData != null)
                 yield return PlayTutorial(tuitorialData);
+            else
+                throw new Exception(tuitorialKey + " can NOT be found");
 
 
         }

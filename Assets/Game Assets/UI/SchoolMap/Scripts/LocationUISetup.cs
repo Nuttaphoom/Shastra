@@ -87,6 +87,8 @@ namespace Vanaring
             }
             actionButton.SetActive(false);
             mapButton.onClick.AddListener(() => PersistentSceneLoader.Instance.LoadLocation<int>(_mapSceneToLoad, 0));
+
+            StartCoroutine(PersistentTutorialManager.Instance.CheckTuitorialNotifier("LocationExplain") ) ;
         }
 
         private void PerformAction(BaseLocationActionCommand action)
