@@ -104,6 +104,8 @@ namespace Vanaring
             DayDataSO dayDataSO = GetSemesterDataSO.GetDayData(_currentDate) ;
             RuntimeDayData newDayData = new RuntimeDayData(dayDataSO) ;
 
+            ColorfulLogger.LogWithColor("set up next day with " + dayDataSO.name,Color.red) ; 
+
             PersistentActiveDayDatabase.Instance.SetUpNextDay(newDayData);
 
             LoadCorrespondScene(); 
