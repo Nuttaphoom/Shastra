@@ -125,18 +125,14 @@ namespace Vanaring
 
                 if (Math.Floor(curExpGain) >= expReqVal) //level up condition
                 {
-                    //Debug.Log(curExpGain + ", " + Math.Floor(curExpGain));
                     curExpGain = curExpGain - expReqVal;
-                    //Debug.Log("Lvl trait " + type.ToString() + " up to: " + (personalityTrait.GetStat(type).Getlevel() + 1).ToString());
-
                     isTraitHasReward = true;
-                    personalityTrait.SetStat(type, personalityTrait.GetStat(type).Getlevel()+1, curExpGain);   //plus level by 1
+                    personalityTrait.SetStat(type, personalityTrait.GetStat(type).Getlevel()+1, curExpGain);
                     gaugeObj.TraitLevel.text = personalityTrait.GetStat(type).Getlevel().ToString();
-                    expReqVal = personalityTrait.GetCurrentTraitRequireEXP(type);   //set to next lvl
+                    expReqVal = personalityTrait.GetCurrentTraitRequireEXP(type);
                     gaugeObj.FillBar.fillAmount = (float)Math.Floor(curExpGain) / expReqVal;
                     gaugeObj.TriggerLevelUPAnimation();
                 }
-                
                 yield return null;
             }
             personalityTrait.SetStat(type, personalityTrait.GetStat(type).Getlevel(), curExpGain);
@@ -146,14 +142,13 @@ namespace Vanaring
             }
             coroutineRunningCount--;
         }
+
         private IEnumerator DisplayLevelUp(List<Trait.Trait_Type> displayTraitRewardList)
         {
             for (int i = 0; i < displayTraitRewardList.Count; i++)
             {
                 levelUpPanel.SetActive(true);
                 levelUpTraitIcon.sprite = personalityTrait.GetStat(displayTraitRewardList[i]).GetPersonalityTraitIcon;
-                //levelUpText.text = displayTraitRewardList[i].ToString() + " lv." 
-                //    + personalityTrait.GetStat(displayTraitRewardList[i]).Getlevel().ToString();
                 levelUpRewardText.text = displayTraitRewardList[i].ToString() + " upgrades to rank " + 
                     personalityTrait.GetStat(displayTraitRewardList[i]).Getlevel().ToString() + "!";
                 while (levelUpPanel.activeSelf)

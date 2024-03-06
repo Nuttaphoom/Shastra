@@ -16,18 +16,16 @@ namespace Vanaring
         private List<GameObject> bondRewardShowList = new List<GameObject>();
         [SerializeField] private List<float> bondRatio = new List<float>();
         [SerializeField] private Image topBar;
-        [SerializeField] private Image botBar;
         private BondingRewardData rewardData;
-        private int lv;
+        private int currentExp;
 
         public void SetReceivedReward(BondingRewardData rewardData)
         {
             this.rewardData = rewardData;
-            //fillBar.fillAmount = rewardData.curExp / rewardData.capExp;
-            lv = rewardData.bondLevel;
-            fillBar.fillAmount = bondRatio[lv];
+            currentExp = rewardData.curExp;
+            fillBar.fillAmount = bondRatio[rewardData.curExp - 1];
             characterName.text = rewardData.characterName;
-            Debug.Log(lv + " " + rewardData.curExp);
+            Debug.Log("Cur exp: " + currentExp + " " + rewardData.capExp);
         }
 
         public override void ForceSetUpNumber()
@@ -47,7 +45,6 @@ namespace Vanaring
         public override IEnumerator SettingUpNumber()
         {
             topBar.gameObject.SetActive(false);
-            botBar.gameObject.SetActive(false);
             introDirector.Play();
             //yield return new WaitForSeconds(1.0f);
             while (introDirector.state == PlayState.Playing)
@@ -58,15 +55,13 @@ namespace Vanaring
 
             _uiAnimationDone = true;
 
-            while (fillBar.fillAmount < bondRatio[lv + 1])
+            while (fillBar.fillAmount < bondRatio[currentExp])
             {
                 topBar.gameObject.SetActive(true);
-                botBar.gameObject.SetActive(true);
                 fillBar.fillAmount += 0.001f;
                 yield return new WaitForSeconds(0.01f);
             }
             topBar.gameObject.SetActive(false);
-            botBar.gameObject.SetActive(false);
             yield return new WaitForSeconds(0.5f);
         }
 
