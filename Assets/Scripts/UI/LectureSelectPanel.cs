@@ -127,7 +127,6 @@ namespace Vanaring
 
         public void OpenPanel()
         {
-            //gameObject.SetActive(true);
             outDirector.Stop();
             inDirector.Play();
         }
