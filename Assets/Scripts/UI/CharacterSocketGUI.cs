@@ -193,10 +193,10 @@ namespace Vanaring
                     grayColor = new Color(80.0f / 255.0f, 80.0f / 255.0f, 80.0f / 255.0f);
                     image.color = grayColor;
                 }
-                foreach (GameObject item in statusBarLayout.gameObject.transform)
-                {
-                    Destroy(item);
-                }
+                //foreach (GameObject item in statusBarLayout.gameObject.transform)
+                //{
+                //    Destroy(item);
+                //}
             }
             float hptemp = maxHpVal == 0 ? (hpVal == 0 ? 1 : hpVal) : maxHpVal;
             UpdateHPScaleGUI();
