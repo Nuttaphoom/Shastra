@@ -18,8 +18,8 @@ namespace Vanaring
         [SerializeField]
         private LectureRewardDisplayer _rewardDisplayer ; 
         //the default increased amount 
-        private const int increaseAmount = 10 ;
-        private const int statsBootsModifer = 20 ; 
+        private const int increaseAmount = 8;
+        private const int statsBootsModifer = 10 ; 
 
         [SerializeField]
         private CutsceneDirector _director;
@@ -203,6 +203,7 @@ namespace Vanaring
                     checkpoints = lectureRuntime.GetCheckPoints , 
                     boostLecture = _lectureToStudy.GetBooster 
                 };
+                ColorfulLogger.LogWithColor("current EXP is " + reward.currentEXP, Color.green);
                 ColorfulLogger.LogWithColor("gained EXP is " + reward.gainedEXP, Color.blue) ;
                 ColorfulLogger.LogWithColor("bonus EXP is " + reward.bonusEXP, Color.blue);
 
