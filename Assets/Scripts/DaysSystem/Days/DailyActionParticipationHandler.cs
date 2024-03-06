@@ -12,7 +12,7 @@ namespace Vanaring
     {
         //[SerializeField]
         //[Header("Max Action Point should be copied and used throughout the whole application life time")]
-        private int _maxActionPoint = 3;
+        private int _maxActionPoint = 3 ;
 
         private int _remainingAction; 
         public DailyActionParticipationHandler() {

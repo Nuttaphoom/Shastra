@@ -46,6 +46,9 @@ namespace Vanaring
             {
                 yield return new WaitForEndOfFrame();
             }
+
+            MonoBehaviour.Destroy(_rewardPanel.gameObject);
+            _rewardPanel = null; 
         }
     } 
 
