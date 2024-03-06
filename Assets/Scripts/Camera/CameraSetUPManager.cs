@@ -32,7 +32,9 @@ namespace Vanaring
         [SerializeField] private CinemachineVirtualCamera RvirtualCamera;
         [SerializeField] private CinemachineVirtualCamera MvirtualCamera;
         [SerializeField] private CinemachineVirtualCamera LvirtualCamera;
-       
+
+        [SerializeField]
+        private CinemachineVirtualCamera AllAllyCamera; 
 
         //TempList
         private List<GameObject> playerModels = new List<GameObject>();
@@ -80,6 +82,10 @@ namespace Vanaring
         //    }
         //}
 
+        public void SetVMTOAllAlly()
+        {
+            EnableCamera(AllAllyCamera);
+        }
         public void SetLookAtTarget(Transform lookat)
         {
             Camera.main.GetComponent<CinemachineBrain>().ActiveVirtualCamera.LookAt = lookat;

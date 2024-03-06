@@ -276,7 +276,11 @@ namespace Vanaring
                             continue;
 
                         if (_selectingTarget.Count != 1)
+                        {
+                            CameraSetUPManager.Instance.SetVMTOAllAlly(); 
                             continue;
+                        }
+                           
                         
                         _selectingTarget[0].GetComponent<EntityCameraManager>().EnableShoulderCamera();
 
