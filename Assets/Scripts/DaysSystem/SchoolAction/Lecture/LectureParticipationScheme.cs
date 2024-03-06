@@ -95,22 +95,15 @@ namespace Vanaring
             return increaseAmount + statsBootsModifer ;
         }
 
-        private void IncreaseExp()
+        private void IncreaseExp(LectureSubjectRuntime LectureSubjectRuntime)
         {
-            foreach (LectureSubjectRuntime LectureSubjectRuntime in lectureRuntimes)
-            {
-                if (LectureSubjectRuntime.LectureName == _lectureToStudy.GetLectureName)
-                {
+         
+                 
                     int receivedEXP = CalculateReceivedEXPPoint(_lectureToStudy); 
-                    Debug.Log("BEF EXP " + LectureSubjectRuntime.CurrentPoint);
                     LectureSubjectRuntime.RecievePoint(receivedEXP);
-
-                    Debug.Log("AFT EXP " + LectureSubjectRuntime.CurrentPoint);
-                    Debug.Log("Increase by " + receivedEXP );
-
+ 
                     LectureSubjectRuntime.CalculateRecievedEventReward();
-                }
-            }
+               
         }
 
         //[ContextMenu("Print Debug Lecture")]
@@ -190,18 +183,20 @@ namespace Vanaring
 
         public IEnumerator PostPerformActivity()
         {
-            SubmitActionReward(); 
 
             foreach (LectureSubjectRuntime lectureRuntime in lectureRuntimes)
             {
 
                 if (lectureRuntime.LectureName != _lectureToStudy.GetLectureName) 
                     continue;
+                int currentPointBeforeUpgrade = lectureRuntime.CurrentPoint; 
+
+                IncreaseExp(lectureRuntime) ;
 
                 var reward = new LectureRewardStruct()
                 {
                     maxEXP = lectureRuntime.MaxPoint,
-                    currentEXP = lectureRuntime.CurrentPoint,
+                    currentEXP = currentPointBeforeUpgrade, 
                     gainedEXP = CalculateReceivedEXPPoint(_lectureToStudy),
                     bonusEXP =  CalculateBonusEXPPoint(_lectureToStudy), 
                     allRewardData = lectureRuntime.GetEventReward(),
@@ -217,6 +212,7 @@ namespace Vanaring
 
 
             }
+
 
             PersistentActiveDayDatabase.Instance.OnPostPerformSchoolAction();
 
@@ -239,7 +235,8 @@ namespace Vanaring
 
         public void SubmitActionReward()
         {
-            IncreaseExp();
+            throw new NotImplementedException(); 
+            //IncreaseExp();
         }
     }
 
