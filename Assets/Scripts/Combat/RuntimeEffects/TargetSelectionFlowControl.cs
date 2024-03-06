@@ -90,7 +90,7 @@ namespace Vanaring
             }
 
             //Arrange entity index according to the camera
-            //_validTargets = ArrangeEntityListInXAxis(_validTargets); 
+            //_validTargets = ArrangeEntityListInXAxis(_validTargets);
 
         }
 
@@ -279,10 +279,15 @@ namespace Vanaring
                             continue;
                         
                         _selectingTarget[0].GetComponent<EntityCameraManager>().EnableShoulderCamera();
+
                         //_validTargets = ArrangeEntityListInXAxis(_validTargets);
+
                     }
+
                     else
                     {
+                        _validTargets = ArrangeEntityListInXAxis(_validTargets);
+
                         //CameraSetUPManager.Instance.SetLookAtTarget(_selectingTarget[0].GetComponent<CombatEntityAnimationHandler>().GetGUISpawnTransform());
                     }
                 }
