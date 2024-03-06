@@ -57,6 +57,7 @@ namespace Vanaring
             }
             templateBonusTraitObj.gameObject.SetActive(false);
             filledBar.fillAmount = (float)lectureProgressBarData.currentEXP / lectureProgressBarData.maxEXP;
+            Debug.Log("Bonus: " + lectureProgressBarData.bonusEXP);
 
         }
 

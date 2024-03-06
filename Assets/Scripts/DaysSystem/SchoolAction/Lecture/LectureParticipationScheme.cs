@@ -76,9 +76,9 @@ namespace Vanaring
             foreach (LectureRequieBoost booster in calculatedBootsLecture.GetBooster)
             {
                 //If booster condition doesn't match 
-                if (PersistentPlayerPersonalDataManager.Instance.GetPersonalityTrait.GetStat(booster.GetTrait).GetCurrentexp() < (float)booster.RequireLevel)
+                if (PersistentPlayerPersonalDataManager.Instance.GetPersonalityTrait.GetStat(booster.GetTrait).Getlevel() < (float)booster.RequireLevel)
                     continue;
-
+                
                 ret += statsBootsModifer; 
 
             }
