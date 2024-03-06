@@ -75,13 +75,11 @@ namespace Vanaring
 
     public enum LocationName
     {
-        Null,
-        Front_Gate, 
+        Null, 
         Library,
-        Stadium,
-        Cottage,
         SchoolMap,
         Dorm, 
-        SchoolField 
+        SchoolField, 
+        Classroom
     }
 }
