@@ -61,9 +61,9 @@ namespace Vanaring
                     case LocationName.SchoolField:
                         locationIndex = 2;
                         break;
-                    //case LocationName.Stadium:
-                    //    locationIndex = 2;
-                    //    break;
+                    case LocationName.Classroom:
+                        locationIndex = 3;
+                        break;
                     //case LocationName.Cottage:
                     //    locationIndex = 3;
                     //    break;
