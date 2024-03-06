@@ -14,21 +14,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _availableLocationHandler:
     _locationInfos:
-    - _location: {fileID: 11400000, guid: ec596210af1aa3f499c3c3a5845805c1, type: 2}
+    - Location: {fileID: 11400000, guid: efe0368ba25161144ab2f34466cf6239, type: 2}
       _selectionCommandCenter:
       - _commandType: 1
         _loadLocationCommand:
-          _actionName: Review Lecture
-          _actionDescription: Learn curse spell
-          _actionIconAsset: {fileID: 21300000, guid: b3b6c8e61b792a348bf59c181f302d58, type: 3}
-          _activityCutscene: {fileID: 11400000, guid: 4fd25733d8966714a88833a4b5967153, type: 2}
+          _actionName: Exercise
+          _actionDescription: Do exercise at home.
+          _actionIconAsset: {fileID: 0}
+          _activityCutscene: {fileID: 11400000, guid: 4e7621518c97ae542a20f2ecdf90a8c4, type: 2}
           _personalityRewards:
           - _rewardTrait: 3
-            _rewardAmount: 10
-          - _rewardTrait: 1
-            _rewardAmount: 300
-          - _rewardTrait: 0
-            _rewardAmount: 800
+            _rewardAmount: 1
         _lectureParticipationActionCommand:
           _actionName: 
           _actionDescription: 
@@ -39,3 +35,58 @@ MonoBehaviour:
           _actionDescription: 
           _actionIconAsset: {fileID: 0}
           _characterRelationshipDataSO: {fileID: 0}
+        EnableAtMorning: 1
+        EnableAtNoon: 0
+        EnableAtNight: 0
+    - Location: {fileID: 11400000, guid: 0ad811a300fcecf47986f86de13fdaf8, type: 2}
+      _selectionCommandCenter:
+      - _commandType: 2
+        _loadLocationCommand:
+          _actionName: Exercise
+          _actionDescription: Do exercise at home.
+          _actionIconAsset: {fileID: 0}
+          _activityCutscene: {fileID: 11400000, guid: 4e7621518c97ae542a20f2ecdf90a8c4, type: 2}
+          _personalityRewards:
+          - _rewardTrait: 3
+            _rewardAmount: 1
+        _lectureParticipationActionCommand:
+          _actionName: Lecture
+          _actionDescription: 'do lecture '
+          _actionIconAsset: {fileID: 0}
+          _availableLecture:
+          - _availableLecture: {fileID: 11400000, guid: 73ea015fd775cda449545291ac8d2516, type: 2}
+            _cutsceneContainerSO: {fileID: 11400000, guid: fb1f493f00d4acb4d81d7be5360ed3d9, type: 2}
+        _npcBondingActionCommand:
+          _actionName: 
+          _actionDescription: 
+          _actionIconAsset: {fileID: 0}
+          _characterRelationshipDataSO: {fileID: 0}
+        EnableAtMorning: 0
+        EnableAtNoon: 1
+        EnableAtNight: 0
+    - Location: {fileID: 11400000, guid: ec596210af1aa3f499c3c3a5845805c1, type: 2}
+      _selectionCommandCenter:
+      - _commandType: 3
+        _loadLocationCommand:
+          _actionName: Exercise
+          _actionDescription: Do exercise at home.
+          _actionIconAsset: {fileID: 0}
+          _activityCutscene: {fileID: 11400000, guid: 4e7621518c97ae542a20f2ecdf90a8c4, type: 2}
+          _personalityRewards:
+          - _rewardTrait: 3
+            _rewardAmount: 1
+        _lectureParticipationActionCommand:
+          _actionName: Lecture
+          _actionDescription: 'do lecture '
+          _actionIconAsset: {fileID: 0}
+          _availableLecture:
+          - _availableLecture: {fileID: 11400000, guid: 73ea015fd775cda449545291ac8d2516, type: 2}
+            _cutsceneContainerSO: {fileID: 11400000, guid: fb1f493f00d4acb4d81d7be5360ed3d9, type: 2}
+        _npcBondingActionCommand:
+          _actionName: awd
+          _actionDescription: awd
+          _actionIconAsset: {fileID: 0}
+          _characterRelationshipDataSO: {fileID: 11400000, guid: c0c0defcc3a150045a7324fad27a7483, type: 2}
+        EnableAtMorning: 0
+        EnableAtNoon: 1
+        EnableAtNight: 0

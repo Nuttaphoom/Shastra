@@ -1,0 +1,164 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db0c7357c94bab64682d049f6c304f5d, type: 3}
+  m_Name: DayDataSO 1
+  m_EditorClassIdentifier: 
+  _availableLocationHandler:
+    _locationInfos:
+    - Location: {fileID: 11400000, guid: ec596210af1aa3f499c3c3a5845805c1, type: 2}
+      _selectionCommandCenter:
+      - _commandType: 1
+        _loadLocationCommand:
+          _actionName: Review Lecture
+          _actionDescription: Learn curse spell
+          _actionIconAsset: {fileID: 21300000, guid: 14339b27d00e91048aa17a392c6c2c8e, type: 3}
+          _activityCutscene: {fileID: 11400000, guid: 4fd25733d8966714a88833a4b5967153, type: 2}
+          _personalityRewards:
+          - _rewardTrait: 2
+            _rewardAmount: 10
+        _lectureParticipationActionCommand:
+          _actionName: 
+          _actionDescription: 
+          _actionIconAsset: {fileID: 0}
+          _availableLecture: []
+        _npcBondingActionCommand:
+          _actionName: 
+          _actionDescription: 
+          _actionIconAsset: {fileID: 0}
+          _characterRelationshipDataSO: {fileID: 0}
+        EnableAtMorning: 1
+        EnableAtNoon: 1
+        EnableAtNight: 1
+      - _commandType: 2
+        _loadLocationCommand:
+          _actionName: Hang out
+          _actionDescription: Relax with friend
+          _actionIconAsset: {fileID: 21300000, guid: c44b46ad2d18ff14d833cc70528a59d6, type: 3}
+          _activityCutscene: {fileID: 0}
+          _personalityRewards: []
+        _lectureParticipationActionCommand:
+          _actionName: Lecture Participation
+          _actionDescription: Participate in Lecture
+          _actionIconAsset: {fileID: 21300000, guid: b3b6c8e61b792a348bf59c181f302d58, type: 3}
+          _availableLecture:
+          - _availableLecture: {fileID: 11400000, guid: 6f1290713704a9b42aaae006a366b378, type: 2}
+            _cutsceneContainerSO: {fileID: 11400000, guid: 3683e87fce275e142bf4f6ba191945d9, type: 2}
+          - _availableLecture: {fileID: 11400000, guid: 73ea015fd775cda449545291ac8d2516, type: 2}
+            _cutsceneContainerSO: {fileID: 11400000, guid: fb1f493f00d4acb4d81d7be5360ed3d9, type: 2}
+        _npcBondingActionCommand:
+          _actionName: 
+          _actionDescription: 
+          _actionIconAsset: {fileID: 0}
+          _characterRelationshipDataSO: {fileID: 0}
+        EnableAtMorning: 1
+        EnableAtNoon: 1
+        EnableAtNight: 0
+      - _commandType: 3
+        _loadLocationCommand:
+          _actionName: Hang out
+          _actionDescription: Relax with friend
+          _actionIconAsset: {fileID: 21300000, guid: c44b46ad2d18ff14d833cc70528a59d6, type: 3}
+          _activityCutscene: {fileID: 0}
+          _personalityRewards: []
+        _lectureParticipationActionCommand:
+          _actionName: Lecture Participation
+          _actionDescription: Participate in Lecture
+          _actionIconAsset: {fileID: 21300000, guid: 13aec6114dfcd9c4f8fadf8aa4885fd4, type: 3}
+          _availableLecture:
+          - _availableLecture: {fileID: 11400000, guid: 6f1290713704a9b42aaae006a366b378, type: 2}
+            _cutsceneContainerSO: {fileID: 11400000, guid: 3683e87fce275e142bf4f6ba191945d9, type: 2}
+          - _availableLecture: {fileID: 11400000, guid: 6f1290713704a9b42aaae006a366b378, type: 2}
+            _cutsceneContainerSO: {fileID: 11400000, guid: 3683e87fce275e142bf4f6ba191945d9, type: 2}
+        _npcBondingActionCommand:
+          _actionName: Ann
+          _actionDescription: Talk with Ann
+          _actionIconAsset: {fileID: 21300000, guid: ffa07e25474e95c4ca31d92c08a9f15a, type: 3}
+          _characterRelationshipDataSO: {fileID: 11400000, guid: c0c0defcc3a150045a7324fad27a7483, type: 2}
+        EnableAtMorning: 1
+        EnableAtNoon: 1
+        EnableAtNight: 1
+    - Location: {fileID: 11400000, guid: db9dc7b8834c61e4597b233aef9eed71, type: 2}
+      _selectionCommandCenter:
+      - _commandType: 1
+        _loadLocationCommand:
+          _actionName: Review Lecture
+          _actionDescription: Learn curse spell
+          _actionIconAsset: {fileID: 21300000, guid: d89f3e4c43e784e4fa602c4d398f978b, type: 3}
+          _activityCutscene: {fileID: 11400000, guid: 4fd25733d8966714a88833a4b5967153, type: 2}
+          _personalityRewards:
+          - _rewardTrait: 3
+            _rewardAmount: 10
+          - _rewardTrait: 1
+            _rewardAmount: 300
+          - _rewardTrait: 0
+            _rewardAmount: 800
+        _lectureParticipationActionCommand:
+          _actionName: 
+          _actionDescription: 
+          _actionIconAsset: {fileID: 0}
+          _availableLecture: []
+        _npcBondingActionCommand:
+          _actionName: 
+          _actionDescription: 
+          _actionIconAsset: {fileID: 0}
+          _characterRelationshipDataSO: {fileID: 0}
+        EnableAtMorning: 1
+        EnableAtNoon: 1
+        EnableAtNight: 1
+    - Location: {fileID: 11400000, guid: efe0368ba25161144ab2f34466cf6239, type: 2}
+      _selectionCommandCenter:
+      - _commandType: 1
+        _loadLocationCommand:
+          _actionName: Exercise
+          _actionDescription: Increase Proficiency
+          _actionIconAsset: {fileID: 21300000, guid: d89f3e4c43e784e4fa602c4d398f978b, type: 3}
+          _activityCutscene: {fileID: 11400000, guid: 4e7621518c97ae542a20f2ecdf90a8c4, type: 2}
+          _personalityRewards:
+          - _rewardTrait: 3
+            _rewardAmount: 10
+        _lectureParticipationActionCommand:
+          _actionName: 
+          _actionDescription: 
+          _actionIconAsset: {fileID: 0}
+          _availableLecture: []
+        _npcBondingActionCommand:
+          _actionName: 
+          _actionDescription: 
+          _actionIconAsset: {fileID: 0}
+          _characterRelationshipDataSO: {fileID: 0}
+        EnableAtMorning: 1
+        EnableAtNoon: 1
+        EnableAtNight: 0
+    - Location: {fileID: 11400000, guid: 0ad811a300fcecf47986f86de13fdaf8, type: 2}
+      _selectionCommandCenter:
+      - _commandType: 1
+        _loadLocationCommand:
+          _actionName: Exercise
+          _actionDescription: Increase Proficiency
+          _actionIconAsset: {fileID: 21300000, guid: d89f3e4c43e784e4fa602c4d398f978b, type: 3}
+          _activityCutscene: {fileID: 11400000, guid: 4e7621518c97ae542a20f2ecdf90a8c4, type: 2}
+          _personalityRewards:
+          - _rewardTrait: 3
+            _rewardAmount: 10
+        _lectureParticipationActionCommand:
+          _actionName: 
+          _actionDescription: 
+          _actionIconAsset: {fileID: 0}
+          _availableLecture: []
+        _npcBondingActionCommand:
+          _actionName: 
+          _actionDescription: 
+          _actionIconAsset: {fileID: 0}
+          _characterRelationshipDataSO: {fileID: 0}
+        EnableAtMorning: 1
+        EnableAtNoon: 1
+        EnableAtNight: 1
