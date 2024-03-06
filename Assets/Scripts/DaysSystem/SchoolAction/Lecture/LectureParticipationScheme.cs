@@ -18,8 +18,8 @@ namespace Vanaring
         [SerializeField]
         private LectureRewardDisplayer _rewardDisplayer ; 
         //the default increased amount 
-        private const int increaseAmount = 8;
-        private const int statsBootsModifer = 10 ; 
+        private const int increaseAmount = 10;
+        private const int statsBootsModifer = 15 ; 
 
         [SerializeField]
         private CutsceneDirector _director;
@@ -76,9 +76,9 @@ namespace Vanaring
             foreach (LectureRequieBoost booster in calculatedBootsLecture.GetBooster)
             {
                 //If booster condition doesn't match 
-                if (PersistentPlayerPersonalDataManager.Instance.GetPersonalityTrait.GetStat(booster.GetTrait).GetCurrentexp() < (float)booster.RequireLevel)
+                if (PersistentPlayerPersonalDataManager.Instance.GetPersonalityTrait.GetStat(booster.GetTrait).Getlevel() < (float)booster.RequireLevel)
                     continue;
-
+                
                 ret += statsBootsModifer; 
 
             }
