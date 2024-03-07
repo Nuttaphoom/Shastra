@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f5d27031a83ca845945ea045c3f11b6, type: 3}
+  m_Name: Spell_Aranya_Shout
+  m_EditorClassIdentifier: 
+  _actionDescription:
+    _fieldName: Shout
+    _fieldDescription: 'Deal Dark <b>Normal</b> Damage to a Single target. '
+    _fieldImage: {fileID: 21300000, guid: 75be4036a4097074a9caef9530b7c588, type: 3}
+  _targetSelector:
+    _maxTargetSize: 1
+    _targetAlly: 0
+    _targetOppose: 1
+    _targetSelf: 0
+  _actionSignal:
+    _signalEffectBindings:
+    - _signalType: 1
+      _runtimeEffects:
+      - {fileID: 11400000, guid: 71a9d2440e2dc134fa824ccf032e428a, type: 2}
+      - {fileID: 11400000, guid: f7f6c7c9122c2f249990afa1f2d7a15f, type: 2}
+    _timeLineActorSetupPrefab: {fileID: -8615740222444698358, guid: 0acc395ed73c5194aaf54311a45a45d3, type: 3}
+  _requiredEnergy:
+    _side: 1
+    _amount: 1
+  _MPCost: 30
