@@ -42,6 +42,8 @@ namespace Vanaring
                 return _currentSemester;
             }
         }
+
+        public int GetCurrentDate => _currentDate;
         #endregion
         private int _currentDate = 0;
 
