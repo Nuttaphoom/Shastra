@@ -34,7 +34,7 @@ namespace Vanaring
 
         private List<ProgressData> localSaveProgress = new List<ProgressData>();
 
-        private List<LectureSubjectRuntime> lectureRuntimes = new List<LectureSubjectRuntime>();
+        private static List<LectureSubjectRuntime> lectureRuntimes = new List<LectureSubjectRuntime>();
 
         //private void Start()
         //{

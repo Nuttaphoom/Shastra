@@ -83,6 +83,7 @@ namespace Vanaring
         /// 
         public IEnumerator PerformAction()
         {
+            Debug.Log("perform action"); 
             //Set up 
             SetUpTimeLineActorSetting();
 
