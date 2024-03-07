@@ -156,6 +156,7 @@ namespace Vanaring
 
             GetEventBroadcaster().InvokeEvent<Null>(null, "OnCombatPreparation"); //b <Null>("OnCombatPreparation");
 
+            
 
             StartCoroutine(CustomTick());
 

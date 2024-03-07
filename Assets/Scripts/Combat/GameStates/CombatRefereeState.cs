@@ -22,6 +22,8 @@ namespace Vanaring
         {
             yield return new RoundEnterState(this).Execute();
 
+            yield return PersistentTutorialManager.Instance.CheckTuitorialNotifier("CombatBeginExplain");
+
             while (_referee.GetCurrentActiveEntities().Count > 0)
             {
                 yield return AdvanceTurn();
