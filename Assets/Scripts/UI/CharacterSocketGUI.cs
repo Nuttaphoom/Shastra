@@ -174,11 +174,19 @@ namespace Vanaring
         {
             hpBar.fillAmount = (float)hpVal / maxHpVal;
             hpNumText.text = hpVal.ToString();
+            if (hpVal < 0)
+            {
+                hpNumText.text = "0";
+            }
         }
         private void UpdateMPScaleGUI()
         {
             mpBar.fillAmount = (float)mpVal / maxMpVal;
             mpNumText.text = mpVal.ToString();
+            if (mpVal < 0)
+            {
+                mpNumText.text = "0";
+            }
         }
 
         private void OnHPModified(int damage)
