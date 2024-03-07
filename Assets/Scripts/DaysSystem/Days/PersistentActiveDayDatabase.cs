@@ -59,16 +59,16 @@ namespace Vanaring
         }
 
         #region Getter 
-        //public DayProgressionHandler GetDayProgressionHandler
-        //{
-        //    get
-        //    {
-        //        if (_dayProgressionHandler == null)
-        //            _dayProgressionHandler = new DayProgressionHandler();
+        public DayProgressionHandler GetDayProgressionHandler
+        {
+            get
+            {
+                if (_dayProgressionHandler == null)
+                    _dayProgressionHandler = new DayProgressionHandler();
 
-        //        return _dayProgressionHandler;
-        //    }
-        //}
+                return _dayProgressionHandler;
+            }
+        }
 
         public EDayTime GetCurrentDayTime()
         {

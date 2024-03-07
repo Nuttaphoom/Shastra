@@ -74,6 +74,10 @@ namespace Vanaring
         [ContextMenu("ShowPanelDetail")]
         private void InitPanel()
         {
+            while(date <= PersistentActiveDayDatabase.Instance.GetDayProgressionHandler.GetCurrentDate)
+            {
+                AdvanceDay();
+            }
             dateText.text = date + "/" + (month + 1);
             weekdayText.text = days[weekDay];
             weekdayText.color = weekColor[weekDay];
