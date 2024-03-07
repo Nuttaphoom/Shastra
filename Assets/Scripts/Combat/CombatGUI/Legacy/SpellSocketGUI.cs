@@ -34,6 +34,11 @@ namespace Vanaring
         [SerializeField]
         private TextMeshProUGUI _spellCost;
 
+        [SerializeField]
+        private Sprite lightSpellSprite;
+        [SerializeField]
+        private Sprite darkSpellSprite;
+
         [Header("Spell Socket Layer")]
         [SerializeField] private Image _fadeBlack;
         [SerializeField] private GameObject highlightImage;
@@ -71,6 +76,11 @@ namespace Vanaring
             //init slot layout
             if (spell.RequiredSide == RuntimeMangicalEnergy.EnergySide.LightEnergy)
             {
+                //if(_spellRequireAmount > 0)
+                //{
+                //    _actionButton.GetComponent<Image>().sprite = lightSpellSprite;
+                //    _actionButton.GetComponent<Image>().color = Color.white;
+                //}
                 for (int i = 0; i < _spellRequireAmount; i++)
                 {
                     if(_spellRequireAmount <= 3)
@@ -96,6 +106,11 @@ namespace Vanaring
             }
             else
             {
+                //if (_spellRequireAmount > 0)
+                //{
+                //    _actionButton.GetComponent<Image>().sprite = darkSpellSprite;
+                //    _actionButton.GetComponent<Image>().color = Color.white;
+                //}
                 for (int i = 0; i < _spellRequireAmount; i++)
                 {
                     if (_spellRequireAmount <= 3)
