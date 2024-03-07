@@ -108,10 +108,11 @@ namespace Vanaring
                 reachScoreIndex++;
             }
             float animationTime = Time.deltaTime * 0.001f;
+            Debug.Log("Start current exp:" + lectureProgressBarData.currentEXP + " End ");
             Debug.Log($"Cur exp: {lectureProgressBarData.currentEXP}/{lectureProgressBarData.maxEXP} + Gain: " +
                 $"{lectureProgressBarData.gainedEXP}(+{lectureProgressBarData.bonusEXP}) = " +
                 $"{lectureProgressBarData.currentEXP + lectureProgressBarData.gainedEXP}/{lectureProgressBarData.maxEXP}");
-
+            
             float finalScore = (float)(lectureProgressBarData.gainedEXP + lectureProgressBarData.currentEXP) / lectureProgressBarData.maxEXP;
             float scoreWithoutBonus = (float)((lectureProgressBarData.gainedEXP + lectureProgressBarData.currentEXP) - lectureProgressBarData.bonusEXP) / lectureProgressBarData.maxEXP;
             
