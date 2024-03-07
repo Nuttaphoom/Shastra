@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-
+using UnityEngine ; 
 namespace Kryz.CharacterStats
 {
 	[Serializable]
@@ -116,8 +116,11 @@ namespace Kryz.CharacterStats
 				}
 			}
 
+
+			Debug.Log("PeakValue : " + _peakValue); 
+
 			if (_peakValue > 0)
-				_value = Math.Clamp(_value, 0, _peakValue);
+				finalValue = finalValue > _peakValue ? _peakValue : finalValue; 
 
 			// Workaround for float calculation errors, like displaying 12.00001 instead of 12
 			return (float)Math.Round(finalValue, 4);
