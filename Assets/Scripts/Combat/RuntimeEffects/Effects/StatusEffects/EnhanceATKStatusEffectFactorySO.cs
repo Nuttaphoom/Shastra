@@ -18,7 +18,7 @@ namespace Vanaring
         public override RuntimeEffect Factorize(List<CombatEntity> targets)
         {
             
-            EnhanceATKStatusEffect retEffect = new EnhanceATKStatusEffect(this, new StatModifier(flat_enchanceATKPercentage, StatModType.PercentMult));
+            EnhanceATKStatusEffect retEffect = new EnhanceATKStatusEffect(this, new StatModifier(flat_enchanceATKPercentage, StatModType.PercentAdd));
             foreach (CombatEntity target in targets)
             {
                 retEffect.AssignTarget(target);
@@ -32,7 +32,8 @@ namespace Vanaring
     public class EnhanceATKStatusEffect : StatusRuntimeEffect
     {
         private StatModifier _enchanceATKStats ;
-       
+
+        private bool _appliedStatus = false; 
 
         public EnhanceATKStatusEffect(StatusRuntimeEffectFactorySO factory, StatModifier statsMod) : base(factory)
         {
@@ -44,12 +45,25 @@ namespace Vanaring
         
         public override IEnumerator BeforeAttackEffect(CombatEntity caster)
         {
-            caster.StatsAccumulator.ModifyATKAmount(_enchanceATKStats);
-
-            _timeToLive = 0;
+            if (!_appliedStatus)
+            {
+                _appliedStatus = true; 
+                caster.StatsAccumulator.ModifyATKAmount(_enchanceATKStats);
+            }
+            //_timeToLive = 0;
 
             yield return null;
         }
+
+        public override IEnumerator OnStatusEffecExpire(CombatEntity caster)
+        {
+            yield return base.OnStatusEffecExpire(caster);
+            
+            if (_appliedStatus)
+                caster.StatsAccumulator.RemoveModifyATK(_enchanceATKStats);
+            
+        }
+         
 
         public override IEnumerator ExecuteRuntimeCoroutine(CombatEntity caster)
         {

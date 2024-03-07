@@ -37,11 +37,17 @@ namespace Vanaring
             _characterStats[ECharacterStatType.ATK].AddModifier(mod); 
         }
 
+        public void RemoveModifyATK(StatModifier mod)
+        {
+            _characterStats[ECharacterStatType.ATK].RemoveModifier(mod);
+
+        }
+
         //public void ModifyATKAmountByPercent(int percent)
         //{
         //    int currentValue = _characterStats[ECharacterStatType.ATK].GetStatValue() ; 
         //    int increasedAmount = (currentValue * percent ) / 100 ;
- 
+
 
         //    _characterStats[ECharacterStatType.ATK].ModifyValue(increasedAmount, true, true);
 
