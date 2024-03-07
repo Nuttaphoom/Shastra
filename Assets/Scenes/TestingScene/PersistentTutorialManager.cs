@@ -25,9 +25,12 @@ namespace Vanaring
 
         private void Awake()
         {
-            foreach (var data in _tuitorialInstanceDatas)
+            if (_tuitorialInstanceDatas != null)
             {
-                data.TuitorialCutscene.gameObject.SetActive(false) ;
+                foreach (var data in _tuitorialInstanceDatas)
+                {
+                    data.TuitorialCutscene.gameObject.SetActive(false);
+                }
             }
         }
         public IEnumerator CheckTuitorialNotifier(string tuitorialKey)
@@ -35,7 +38,8 @@ namespace Vanaring
             //if (_tuitorialDatabaseSO == null)
             //    _tuitorialDatabaseSO =  PersistentAddressableResourceLoader.Instance.LoadResourceOperation<TuitorialDatabaseSO>(DatabaseAddressLocator.GetTuitorialDatabaseSOAddress) ;
 
-          
+            if (_tuitorialInstanceDatas == null)
+                goto Ret ; 
 
             TuitorialInstanceData tuitorialData = null;
 
@@ -48,8 +52,9 @@ namespace Vanaring
             }
             if (tuitorialData != null)
                 yield return PlayTutorial(tuitorialData);
- 
 
+            Ret:
+            yield return null; 
 
         }
 
