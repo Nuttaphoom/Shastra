@@ -13,6 +13,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.VFX;
 using Cinemachine;
+using DG.Tweening;
 
 namespace Vanaring 
 {
@@ -186,6 +187,10 @@ namespace Vanaring
             else if (whereToAttach == "CENTERMESH")
             {
                 return _visualMesh.transform;
+            }
+            else if (whereToAttach == "VFXPOS")
+            {
+                return _timelineAnimationRootLocation.transform ; 
             }
             else
             {

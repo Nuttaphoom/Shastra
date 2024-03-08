@@ -44,7 +44,7 @@ namespace Vanaring
         public override IEnumerator AilmentRecover()
         {
             yield return DirectorManager.Instance.PlayTimelineCoroutine(_basicDataInfo.RecoverTimelineInfo, new List<GameObject>() { _entity.gameObject });
-            _entity.GetComponent<CombatEntityAnimationHandler>().DeAttachVFXFromMeshComponent("SHOCKSAILMENTVFX", "CENTERMESH") ;
+            _entity.GetComponent<CombatEntityAnimationHandler>().DeAttachVFXFromMeshComponent("SHOCKSAILMENTVFX", "VFXPOS") ;
 
         }
 
@@ -55,7 +55,7 @@ namespace Vanaring
 
         public override void OnApplyAilment()
         {
-            _entity.GetComponent<CombatEntityAnimationHandler>().AttachVFXToMeshComponent(_dataType.GetParalizedStayVFX, "CENTERMESH", "SHOCKSAILMENTVFX");
+            _entity.GetComponent<CombatEntityAnimationHandler>().AttachVFXToMeshComponent(_dataType.GetParalizedStayVFX, "VFXPOS", "SHOCKSAILMENTVFX");
         }
 
         public override bool ShouldOverwrittenOthers()

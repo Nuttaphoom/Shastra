@@ -12,13 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f5d27031a83ca845945ea045c3f11b6, type: 3}
   m_Name: Spell_WoodBoss_HighATK
   m_EditorClassIdentifier: 
-  _description:
-    _fieldName: 'Charge Attack ! '
-    _fieldDescription: Apply <b>normal</b> damage to a target
-    _fieldImage: {fileID: 21300000, guid: db089e60338a024409779b3e539a84a7, type: 3}
+  _actionDescription:
+    _fieldName: Bonecrusher (SP)
+    _fieldDescription: 
+    _fieldImage: {fileID: 0}
   _targetSelector:
     _maxTargetSize: 1
-    _targetCaster: 0
     _targetAlly: 0
     _targetOppose: 1
     _targetSelf: 0
@@ -27,12 +26,8 @@ MonoBehaviour:
     - _signalType: 1
       _runtimeEffects:
       - {fileID: 11400000, guid: 100f91e8505162448926cd5c9dfb65b3, type: 2}
-    _actionTimelineSetting:
-      _trackToChangeName:
-      - Caster
     _timeLineActorSetupPrefab: {fileID: -8615740222444698358, guid: 0bfd439eebc81ab47bf375425c30c52b, type: 3}
-  _comment:
-    _comment: 
   _requiredEnergy:
     _side: 0
     _amount: 0
+  _MPCost: 0

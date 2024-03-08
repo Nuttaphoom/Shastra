@@ -94,12 +94,22 @@ namespace Vanaring
 
         }
 
-        private List<CombatEntity> ArrangeEntityListInXAxis(List<CombatEntity> entities)
+        private List<CombatEntity> ArrangeEntityListInXAxis(List<CombatEntity> entities, Vector3 rightVector )
         {
-            if (Camera.main.transform.right.x > 0)
-                entities.Sort((entity1, entity2) => entity1.transform.position.x.CompareTo(entity2.transform.position.x));
+            if (rightVector != Vector3.zero )
+            {
+                if (rightVector.x > 0)
+                    entities.Sort((entity1, entity2) => entity1.transform.position.x.CompareTo(entity2.transform.position.x));
+                else
+                    entities.Sort((entity1, entity2) => entity2.transform.position.x.CompareTo(entity1.transform.position.x));
+            }
             else
-                entities.Sort((entity1, entity2) => entity2.transform.position.x.CompareTo(entity1.transform.position.x));
+            {
+                if (Camera.main.transform.right.x > 0)
+                    entities.Sort((entity1, entity2) => entity1.transform.position.x.CompareTo(entity2.transform.position.x));
+                else
+                    entities.Sort((entity1, entity2) => entity2.transform.position.x.CompareTo(entity1.transform.position.x));
+            }
             return entities;
         }
 
@@ -224,13 +234,14 @@ namespace Vanaring
 
             AssignPossibleTargets(caster, actorAction.GetTargetSelector());
 
+
             if (!randomTarget)
                 CameraSetUPManager.Instance.CaptureVMCamera();
 
+            _validTargets = ArrangeEntityListInXAxis(_validTargets, Vector3.zero);
 
             while (_selectedTarget.Count < actorAction.GetTargetSelector().MaxTarget )
             {
-                _validTargets = ArrangeEntityListInXAxis(_validTargets);
 
                 if (_validTargets.Count < actorAction.GetTargetSelector().MaxTarget && _validTargets.Count == 0)
                     break;
@@ -285,6 +296,10 @@ namespace Vanaring
                         }
                            
                         
+                        //_selectingTarget[0].GetComponent<EntityCameraManager>().EnableShoulderCamera();
+                        _validTargets = ArrangeEntityListInXAxis( _validTargets, _selectingTarget[0].GetComponent<EntityCameraManager>().GetRightVectorShoulderCam() );
+                        _selectingTarget.Clear(); 
+                        _selectingTarget.Add(_validTargets[_currentSelectIndex]);
                         _selectingTarget[0].GetComponent<EntityCameraManager>().EnableShoulderCamera();
 
 
@@ -292,7 +307,7 @@ namespace Vanaring
 
                     else
                     {
-                        _validTargets = ArrangeEntityListInXAxis(_validTargets);
+                        _validTargets = ArrangeEntityListInXAxis(_validTargets, Vector3.zero );
 
                         //CameraSetUPManager.Instance.SetLookAtTarget(_selectingTarget[0].GetComponent<CombatEntityAnimationHandler>().GetGUISpawnTransform());
                     }

@@ -21,5 +21,10 @@ namespace Vanaring
         {
             CameraSetUPManager.Instance.EnableCamera(_shoulderCam);
         }
+
+        public Vector3 GetRightVectorShoulderCam()
+        {
+            return _shoulderCam.transform.right; 
+        }
     }
 }
