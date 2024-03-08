@@ -284,7 +284,7 @@ namespace Vanaring
                         
                         _selectingTarget[0].GetComponent<EntityCameraManager>().EnableShoulderCamera();
 
-                        //_validTargets = ArrangeEntityListInXAxis(_validTargets);
+                        _validTargets = ArrangeEntityListInXAxis(_validTargets);
 
                     }
 
@@ -302,22 +302,24 @@ namespace Vanaring
 
             _enemyHUDWindowManager.DisableEnemyHUD();
             _targetSelectionGUI.EndSelectionScheme();
-            _characterWindowManager.HideAllArrowTargetCharacter(); 
+            _characterWindowManager.HideAllArrowTargetCharacter();
 
             if (_selectedTarget.Count > 0)
-            { 
+            {
+
                 actorAction.SetActionTarget(_selectedTarget);
                 caster.AddActionQueue(actorAction);
             }
 
-    
+            else if (!randomTarget)
+            {
+                CameraSetUPManager.Instance.RestoreVMCameraState();
+            }
 
             //OnTargetSelectionSchemeEnd.PlayEvent(caster);
             //Broadcast Ending of target selection with Sucesfful status
             _eventBroadcaster.InvokeEvent<bool>(!_forceStop, "OnTargetSelectionEnd");
 
-            if (!randomTarget)
-                CameraSetUPManager.Instance.RestoreVMCameraState();
 
             CentralInputReceiver.Instance().RemoveInputReceiverIntoStack(this);
 
