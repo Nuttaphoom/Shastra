@@ -1384,6 +1384,7 @@ MonoBehaviour:
   - {fileID: 326708840729750669}
   - {fileID: 3124843567424086667}
   - {fileID: 7849156914637871791}
+  lectureObjList: []
   lectureIconList:
   - {fileID: 6238913376729113468}
   - {fileID: 6577377143972925850}
@@ -1392,6 +1393,8 @@ MonoBehaviour:
   nextButton: {fileID: 4822773816656429336}
   prevButton: {fileID: 9094547585179944421}
   gfx: {fileID: 0}
+  inDirector: {fileID: 0}
+  outDirector: {fileID: 0}
 --- !u!320 &1235588995418991598
 PlayableDirector:
   m_ObjectHideFlags: 0
@@ -7411,9 +7414,69 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 7936412638909753951}
     m_Modifications:
+    - target: {fileID: 1636972932905234317, guid: a82650c2759a43d4ca7853caea150347, type: 3}
+      propertyPath: m_Type
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1636972932905234317, guid: a82650c2759a43d4ca7853caea150347, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 8df208d1c77606f46b72b45a73d48173, type: 3}
+    - target: {fileID: 1779976270094788140, guid: a82650c2759a43d4ca7853caea150347, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.1768
+      objectReference: {fileID: 0}
+    - target: {fileID: 1779976270094788140, guid: a82650c2759a43d4ca7853caea150347, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.1768
+      objectReference: {fileID: 0}
+    - target: {fileID: 1779976270094788140, guid: a82650c2759a43d4ca7853caea150347, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.1768
+      objectReference: {fileID: 0}
+    - target: {fileID: 1779976270094788140, guid: a82650c2759a43d4ca7853caea150347, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.998784
+      objectReference: {fileID: 0}
+    - target: {fileID: 1779976270094788140, guid: a82650c2759a43d4ca7853caea150347, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1779976270094788140, guid: a82650c2759a43d4ca7853caea150347, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1779976270094788140, guid: a82650c2759a43d4ca7853caea150347, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.049299814
+      objectReference: {fileID: 0}
+    - target: {fileID: 1779976270094788140, guid: a82650c2759a43d4ca7853caea150347, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 5.652
+      objectReference: {fileID: 0}
     - target: {fileID: 2027735421779252103, guid: a82650c2759a43d4ca7853caea150347, type: 3}
       propertyPath: m_Name
       value: ConfirmPanelCanvas
+      objectReference: {fileID: 0}
+    - target: {fileID: 4933764505215555087, guid: a82650c2759a43d4ca7853caea150347, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.998747
+      objectReference: {fileID: 0}
+    - target: {fileID: 4933764505215555087, guid: a82650c2759a43d4ca7853caea150347, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4933764505215555087, guid: a82650c2759a43d4ca7853caea150347, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4933764505215555087, guid: a82650c2759a43d4ca7853caea150347, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.05004527
+      objectReference: {fileID: 0}
+    - target: {fileID: 4933764505215555087, guid: a82650c2759a43d4ca7853caea150347, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: -5.737
       objectReference: {fileID: 0}
     - target: {fileID: 5501846390080780078, guid: a82650c2759a43d4ca7853caea150347, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
