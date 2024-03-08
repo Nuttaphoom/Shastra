@@ -13,6 +13,10 @@ namespace Vanaring
     {
         [SerializeField] 
         private CharacterSheetSO _characterSheetSO ;
+        [SerializeField]
+        private Sprite _characterSprite;
+
+        public Sprite GetCharacterSprite => _characterSprite;
 
         [Serializable]
         struct BondingDataStruct
@@ -59,6 +63,17 @@ namespace Vanaring
                 return _characterSheetSO.CharacterName; 
             }
         }
+
+        //public string GetCharacterSprite
+        //{
+        //    get
+        //    {
+        //        if (_characterSheetSO == null)
+        //            throw new Exception("_characterSheetSO hasn't never been assigned");
+
+        //        return _characterSheetSO.Char;
+        //    }
+        //}
 
 
     }

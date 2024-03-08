@@ -16,6 +16,7 @@ namespace Vanaring
         public int curExp;
         public int capExp;
         public string characterName;
+        public Sprite characterSprite;
     }
 
     [Serializable]
@@ -58,8 +59,8 @@ namespace Vanaring
                 bondLevel = PersistentPlayerPersonalDataManager.Instance.RelationshipHandler.GetCurrentBondLevel(_characterRelationshipDataSO.GetCharacterName),
                 curExp = PersistentPlayerPersonalDataManager.Instance.RelationshipHandler.GetCurrentRelationshipEXP(_characterRelationshipDataSO.GetCharacterName),
                 capExp = PersistentPlayerPersonalDataManager.Instance.RelationshipHandler.GetRelationshipCapEXP(_characterRelationshipDataSO.GetCharacterName),
-                characterName = _characterRelationshipDataSO.GetCharacterName
-
+                characterName = _characterRelationshipDataSO.GetCharacterName,
+                characterSprite = _characterRelationshipDataSO.GetCharacterSprite
             });
             yield return bondingRewardDisplayerPanel.GetComponent<BondingRewardDisplayer>().SettingUpNumber();
             PersistentActiveDayDatabase.Instance.OnPostPerformSchoolAction();

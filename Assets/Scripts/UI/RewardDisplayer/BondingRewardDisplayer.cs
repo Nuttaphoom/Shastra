@@ -26,6 +26,7 @@ namespace Vanaring
             fillBar.fillAmount = bondRatio[rewardData.curExp - 1];
             characterName.text = rewardData.characterName;
             Debug.Log("Cur exp: " + currentExp + " " + rewardData.capExp);
+            characterPortrait.sprite = rewardData.characterSprite;
         }
 
         public override void ForceSetUpNumber()
