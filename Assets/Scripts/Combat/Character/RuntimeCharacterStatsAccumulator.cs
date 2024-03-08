@@ -8,12 +8,13 @@ using System.Security.AccessControl;
 using System.Text;
 using System.Threading.Tasks;
 using TMPro;
+using UnityEditor.Tilemaps;
 using UnityEngine;
 
  
 
 namespace Vanaring
-{
+{ 
 
     public enum ECharacterStatType
     {
@@ -22,6 +23,8 @@ namespace Vanaring
 
     public class RuntimeCharacterStatsAccumulator  
     {
+
+
         private Dictionary<ECharacterStatType, CharacterStat> _characterStats = new Dictionary<ECharacterStatType, CharacterStat>() ;
         public RuntimeCharacterStatsAccumulator(CombatCharacterSheetSO _entityStatsSO)
         {
@@ -56,7 +59,8 @@ namespace Vanaring
 
         public float GetATKAmount()
         {
-            return _characterStats[ECharacterStatType.ATK].Value  ;
+            float ret = _characterStats[ECharacterStatType.ATK].Value ; 
+            return ret ;
         }
         #endregion
 

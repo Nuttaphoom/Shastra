@@ -11,6 +11,9 @@ namespace Vanaring
 {
     public class PersistentTutorialManager : PersistentInstantiatedObject<PersistentTutorialManager>
     {
+        [SerializeField]
+        private bool EnableDebuggingMode = false;
+
         private List<GameObject> tutorials = new List<GameObject>();
 
         private List<string> _dirtyKey = new List<string>();
@@ -20,6 +23,7 @@ namespace Vanaring
 
         [SerializeField]
         private List<TuitorialInstanceData> _tuitorialInstanceDatas;
+
 
         private void Awake()
         {
@@ -33,8 +37,11 @@ namespace Vanaring
         }
         public IEnumerator CheckTuitorialNotifier(string tuitorialKey)
         {
-            //if (_tuitorialDatabaseSO == null)
-            //    _tuitorialDatabaseSO =  PersistentAddressableResourceLoader.Instance.LoadResourceOperation<TuitorialDatabaseSO>(DatabaseAddressLocator.GetTuitorialDatabaseSOAddress) ;
+            if (EnableDebuggingMode)
+                goto Ret;
+
+                //if (_tuitorialDatabaseSO == null)
+                //    _tuitorialDatabaseSO =  PersistentAddressableResourceLoader.Instance.LoadResourceOperation<TuitorialDatabaseSO>(DatabaseAddressLocator.GetTuitorialDatabaseSOAddress) ;
             if (_tuitorialInstanceDatas == null)
                 goto Ret ; 
 
