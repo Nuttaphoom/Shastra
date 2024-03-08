@@ -75,7 +75,7 @@ namespace Vanaring
 
         public override IEnumerator OnAilmentOverwritten()
         {
-            _entity.GetComponent<CombatEntityAnimationHandler>().DeAttachVFXFromMeshComponent("SHOCKSAILMENTVFX", "CENTERMESH");
+            _entity.GetComponent<CombatEntityAnimationHandler>().DeAttachVFXFromMeshComponent("SHOCKSAILMENTVFX", "VFXPOS");
             yield return null; 
         }
     }
