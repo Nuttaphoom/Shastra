@@ -230,6 +230,8 @@ namespace Vanaring
 
             while (_selectedTarget.Count < actorAction.GetTargetSelector().MaxTarget )
             {
+                _validTargets = ArrangeEntityListInXAxis(_validTargets);
+
                 if (_validTargets.Count < actorAction.GetTargetSelector().MaxTarget && _validTargets.Count == 0)
                     break;
 
@@ -272,6 +274,7 @@ namespace Vanaring
 
                     if (actorAction.GetTargetSelector().TargetAllyTeam)
                     {
+
                         if (CombatReferee.Instance.GetCompetatorSide(caster) != ECompetatorSide.Ally)
                             continue;
 
@@ -284,7 +287,6 @@ namespace Vanaring
                         
                         _selectingTarget[0].GetComponent<EntityCameraManager>().EnableShoulderCamera();
 
-                        _validTargets = ArrangeEntityListInXAxis(_validTargets);
 
                     }
 

@@ -23,6 +23,7 @@ namespace Vanaring
 
         public TuitorialInstanceData GetTuitorialInstanceData(string tutorialKey)
         {
+            
             foreach (var data in _tuitorialInstanceDatas)
             {
                 if (data.TutorialNotifyKey == tutorialKey)

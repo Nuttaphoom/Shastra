@@ -21,8 +21,6 @@ namespace Vanaring
         [SerializeField]
         private List<TuitorialInstanceData> _tuitorialInstanceDatas;
 
-    
-
         private void Awake()
         {
             if (_tuitorialInstanceDatas != null)

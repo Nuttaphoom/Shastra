@@ -160,10 +160,7 @@ namespace Vanaring
             yield return new WaitForSeconds(1.0f);
 
 
-            GetEventBroadcaster().InvokeEvent<Null>(null, "OnCombatPreparation"); //b <Null>("OnCombatPreparation");
-            yield return PersistentTutorialManager.Instance.CheckTuitorialNotifier("CombatBeginExplain");
-
-
+            GetEventBroadcaster().InvokeEvent<Null>(null, "OnCombatPreparation"); //b <Null>("OnCombatPreparation
 
             StartCoroutine(CustomTick());
 
@@ -229,12 +226,37 @@ namespace Vanaring
                 _currentSide = (ECompetatorSide)(((int)_currentSide + 1) % 2);
 
                 //TODO : Determine end game condition
-                bool GameIsEnd = false;
-                if (GameIsEnd)
-                    break;
+
 
                 yield return new WaitForEndOfFrame();
             }
+        }
+
+        private bool IsGameEnd()
+        {
+            for (int i = 0 ; i < GetCompetatorsBySide(ECompetatorSide.Ally).Count; i++)
+            {
+                var entity = GetCompetatorsBySide(ECompetatorSide.Ally)[i];
+                if (! entity.IsDead)
+                    break;
+
+                if (i == GetCompetatorsBySide(ECompetatorSide.Ally).Count - 1)
+                    return true; 
+            }
+
+            for (int i = 0; i < GetCompetatorsBySide(ECompetatorSide.Hostile).Count; i++)
+            {
+                var entity = GetCompetatorsBySide(ECompetatorSide.Hostile)[i];
+                if (!entity.IsDead)
+                    break;
+
+                if (i == GetCompetatorsBySide(ECompetatorSide.Hostile).Count - 1)
+                    return true;
+            }
+
+            if (GetCompetatorsBySide(ECompetatorSide.Hostile).Count == 0)
+                return true;
+            return false;
         }
 
         #region RefereeHandler Methods
@@ -308,18 +330,24 @@ namespace Vanaring
 
             yield return PostPerformActionInEveryCharacter();
 
-            ResolveEntityDead(); 
+            ResolveEntityDead();
 
             //if (CombatEnd() == 1)
             //    MockUpGameOverDisplay.Instance.GameWinDisplay(); 
             //else if (CombatEnd() == 2)
             //    MockUpGameOverDisplay.Instance.GameOverDisplay(); 
-            
 
-            SetActiveActors();
-            
-            yield return SwitchControl(null, GetCurrentActor());
+            if (IsGameEnd())
+            {
+                FindObjectOfType<ThanksForPlayingDisplayer>().ShowThankForPlayingMenu();
+            }
+            else
+            {
 
+                SetActiveActors();
+
+                yield return SwitchControl(null, GetCurrentActor());
+            }
         }
 
         //private int CombatEnd()

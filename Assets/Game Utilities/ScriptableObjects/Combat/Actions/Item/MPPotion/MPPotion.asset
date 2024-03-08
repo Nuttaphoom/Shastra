@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d132026f874acb44ab4acfa25bb26af, type: 3}
+  m_Name: MPPotion
+  m_EditorClassIdentifier: 
+  _actionDescription:
+    _fieldName: MP Potion
+    _fieldDescription: Restore one ally MP point.
+    _fieldImage: {fileID: 21300000, guid: c26dd851d5984a140986590e28aa2fb3, type: 3}
+  _targetSelector:
+    _maxTargetSize: 1
+    _targetAlly: 1
+    _targetOppose: 0
+    _targetSelf: 0
+  _actionSignal:
+    _signalEffectBindings:
+    - _signalType: 1
+      _runtimeEffects:
+      - {fileID: 11400000, guid: 27488ec4f70e6a345b1ee2098871c9af, type: 2}
+    _timeLineActorSetupPrefab: {fileID: -8615740222444698358, guid: f509ba623487a6f478da22037c65f707, type: 3}

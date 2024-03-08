@@ -20,7 +20,8 @@ namespace Vanaring
         #region Public_Methods 
         public IEnumerator AdvanceRound()
         {
-           
+            yield return PersistentTutorialManager.Instance.CheckTuitorialNotifier("CombatBeginExplain");
+
             yield return new RoundEnterState(this).Execute();
 
 
