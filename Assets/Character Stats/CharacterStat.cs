@@ -129,4 +129,6 @@ namespace Kryz.CharacterStats
 			return (float)Math.Round(finalValue, 4);
 		}
 	}
+
+ 
 }

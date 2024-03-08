@@ -379,8 +379,11 @@ namespace Vanaring
             yield return _statusEffectHandler.ExecuteAttackStatusRuntimeEffectCoroutine();
 
             //1.) Do apply dmg 
-            int inputDmg = VanaringMathConst.GetATKWithScaling(scaling, StatsAccumulator.GetATKAmount()) ;
-            StatModifier statsModifer = new StatModifier(-inputDmg, StatModType.Flat) ;
+            float realDMG = VanaringMathConst.GetATKWithNoise(scaling, StatsAccumulator.GetATKAmount()) ;
+
+
+
+            StatModifier statsModifer = new StatModifier(-realDMG, StatModType.Flat) ;
             
             foreach (CombatEntity target in targets)
             {
