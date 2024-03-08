@@ -16,6 +16,7 @@ namespace Vanaring
         private List<GameObject> bondRewardShowList = new List<GameObject>();
         [SerializeField] private List<float> bondRatio = new List<float>();
         [SerializeField] private Image topBar;
+        [SerializeField] private Image arrow;
         private BondingRewardData rewardData;
         private int currentExp;
 
@@ -63,7 +64,8 @@ namespace Vanaring
                 yield return new WaitForSeconds(0.01f);
             }
             topBar.gameObject.SetActive(false);
-            yield return new WaitForSeconds(0.5f);
+            arrow.gameObject.SetActive(true);
+            yield return new WaitForSeconds(1.5f);
         }
 
         private IEnumerator DisplayLevelUp()
