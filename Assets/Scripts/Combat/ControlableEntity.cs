@@ -18,7 +18,6 @@ namespace Vanaring
 
         public override IEnumerator PrepareForCombat()
         {
-            GetComponent<ItemUserHandler>().FactorizeItemInInventory();
             yield return null;
         }
 
@@ -42,6 +41,8 @@ namespace Vanaring
 
         public override IEnumerator TakeControl()
         {
+            GetComponent<ItemUserHandler>().FactorizeItemInInventory();
+
             EnableCamera();
 
             yield return base.TakeControl();

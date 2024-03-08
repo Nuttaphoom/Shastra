@@ -29,7 +29,6 @@ namespace Vanaring  {
 
         public override void OnWindowActive()
         {
-            Debug.Log("Spell is open");
             StartCoroutine(PersistentTutorialManager.Instance.CheckTuitorialNotifier("SpellCastExplain"));
         }
 

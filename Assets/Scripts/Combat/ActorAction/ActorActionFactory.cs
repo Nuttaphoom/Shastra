@@ -57,6 +57,7 @@ namespace Vanaring
 
         public ActorAction(ActorActionFactory actionFactory, CombatEntity caster)
         {
+            ColorfulLogger.LogWithColor("construct ActorAction",Color.yellow) ;
             _description = actionFactory.DescriptionBaseField ;
             _targetSelector = actionFactory.TargetSelect ;
             _actionSignal = new ActionSignal(actionFactory.ActionSignal) ;
@@ -83,7 +84,6 @@ namespace Vanaring
         /// 
         public IEnumerator PerformAction()
         {
-            Debug.Log("perform action"); 
             //Set up 
             SetUpTimeLineActorSetting();
 
@@ -96,8 +96,11 @@ namespace Vanaring
 
             do
             {
+                Debug.Log("wait for signal terminated") ;
+
                 if ((factory = _actionSignal.GetReadyEffect()) != null)
                 {
+                    Debug.Log("get ready effect"); 
                     RuntimeEffect effect = factory.Factorize(_targets);
                     _ongoingEffect.Add(_caster.StartCoroutine(CasterStartExecuteEffectCoroutine(effect)));
                 }
@@ -107,11 +110,14 @@ namespace Vanaring
 
             while (_ongoingEffect.Count > 0)
             {
+                Debug.Log("onGoing effect") ;
 
                 yield return new WaitForEndOfFrame();
             }
             while (DirectorManager.Instance.IsPlayingTimeline)
             {
+                Debug.Log("playing timeline") ;
+
                 yield return new WaitForEndOfFrame();
             }
 

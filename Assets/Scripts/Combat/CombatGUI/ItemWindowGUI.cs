@@ -54,6 +54,9 @@ namespace Vanaring
         }
         public override void LoadWindowData(CombatEntity entity)
         {
+            if (entity.ItemUser.Items.Count <= 0)
+                return;  
+             
             int tmpItemIndex = 0;
             ClearData();
             _itemSocketTemplate.gameObject.SetActive(true);

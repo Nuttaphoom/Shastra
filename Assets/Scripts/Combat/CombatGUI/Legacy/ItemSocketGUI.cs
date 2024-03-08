@@ -89,14 +89,15 @@ namespace Vanaring
             }
             if (_caster == null)
             {
-                Debug.Log("cast is null");
+                throw new Exception("_caster user is null"); 
             } if ( _caster.ItemUser == null)
             {
-                Debug.Log("caster itemuser is null"); 
+                throw new Exception("caster itemuser is null");
             }if (_item == null)
             {
-                Debug.Log("item is null");
+                throw new Exception("item is null") ; 
             }
+
             _caster.ItemUser.UseItem(_item);
         }
 

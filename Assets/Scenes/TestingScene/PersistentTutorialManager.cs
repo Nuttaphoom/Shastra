@@ -37,7 +37,6 @@ namespace Vanaring
         {
             //if (_tuitorialDatabaseSO == null)
             //    _tuitorialDatabaseSO =  PersistentAddressableResourceLoader.Instance.LoadResourceOperation<TuitorialDatabaseSO>(DatabaseAddressLocator.GetTuitorialDatabaseSOAddress) ;
-            Debug.Log(tuitorialKey);
             if (_tuitorialInstanceDatas == null)
                 goto Ret ; 
 

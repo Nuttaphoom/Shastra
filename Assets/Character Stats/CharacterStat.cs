@@ -114,10 +114,13 @@ namespace Kryz.CharacterStats
 				{
 					finalValue *= 1 + mod.Value;
 				}
-			}
+
+                if (_peakValue > 0)
+                    finalValue = finalValue > _peakValue ? _peakValue : finalValue;
+
+            }
 
 
-			Debug.Log("PeakValue : " + _peakValue); 
 
 			if (_peakValue > 0)
 				finalValue = finalValue > _peakValue ? _peakValue : finalValue; 
