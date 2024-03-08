@@ -82,6 +82,8 @@ namespace Vanaring
         private CircularArray<CombatEntity> _activeCombatEntities;
         private CombatRefereeStateHandler _combatRefereeStateHandler;
 
+        private SideTurnDisplayerManager _sideTurnDisplayerManager ;
+
         
         [Serializable]
         private struct CompetatorDetailStruct
@@ -107,7 +109,11 @@ namespace Vanaring
        
         private void Awake()
         {
-            Instance = this; 
+            Instance = this;
+
+            _sideTurnDisplayerManager = FindObjectOfType<SideTurnDisplayerManager>(); 
+            if (_sideTurnDisplayerManager == null)
+                throw new Exception("SideTurnDisplayerManager CANNOT be found"); 
 
             _currentSide = ECompetatorSide.Ally;
             _activeCombatEntities = new CircularArray<CombatEntity>(new List<CombatEntity>());
@@ -155,8 +161,9 @@ namespace Vanaring
 
 
             GetEventBroadcaster().InvokeEvent<Null>(null, "OnCombatPreparation"); //b <Null>("OnCombatPreparation");
+            yield return PersistentTutorialManager.Instance.CheckTuitorialNotifier("CombatBeginExplain");
 
-            
+
 
             StartCoroutine(CustomTick());
 
@@ -215,6 +222,8 @@ namespace Vanaring
         {
             while (true)
             {
+                yield return _sideTurnDisplayerManager.DisplaySideRoundCoroutine(_currentSide);
+                Debug.Log("round enter state");
                 yield return _combatRefereeStateHandler.AdvanceRound();
 
                 _currentSide = (ECompetatorSide)(((int)_currentSide + 1) % 2);
@@ -402,6 +411,8 @@ namespace Vanaring
         {
             return GetCompetatorsBySide(_currentSide);
         }
+
+      
 
         //Good 
         public List<CombatEntity> GetCompetatorsBySide(ECompetatorSide ESide)

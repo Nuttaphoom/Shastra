@@ -20,9 +20,9 @@ namespace Vanaring
         #region Public_Methods 
         public IEnumerator AdvanceRound()
         {
+           
             yield return new RoundEnterState(this).Execute();
 
-            yield return PersistentTutorialManager.Instance.CheckTuitorialNotifier("CombatBeginExplain");
 
             while (_referee.GetCurrentActiveEntities().Count > 0)
             {
@@ -87,6 +87,7 @@ namespace Vanaring
         {
             List<CombatEntity> team = _stateHandler.Referee.GetCurrentTeam();
 
+  
             //1.) Prepare current team for Enter Turn of the entity, this included running status effect 
             foreach (CombatEntity entity in team)
             {

@@ -12,24 +12,27 @@ namespace Vanaring
         [SerializeField] private PlayableDirector playerTurn;
         [SerializeField] private PlayableDirector enemyTurn;
 
-        public IEnumerator BeginPlayerTurn()
+        public IEnumerator DisplaySideRoundCoroutine(ECompetatorSide side)
         {
-            playerTurn.Play();
-            if (playerTurn.state == PlayState.Playing)
+            if (side == ECompetatorSide.Ally)
             {
-                yield return new WaitForEndOfFrame();
+                playerTurn.Play();
+                while (playerTurn.state == PlayState.Playing)
+                {
+                    yield return new WaitForEndOfFrame();
+                }
             }
+            else if (side == ECompetatorSide.Hostile)
+            {
+                enemyTurn.Play();
+                while (enemyTurn.state == PlayState.Playing)
+                {
+                    yield return new WaitForEndOfFrame();
+                }
+            }
+           
             yield return null;
         }
-
-        public IEnumerator BeginEnemyTurn()
-        {
-            enemyTurn.Play();
-            if(enemyTurn.state == PlayState.Playing)
-            {
-                yield return new WaitForEndOfFrame();
-            }
-            yield return null;
-        }
+ 
     }
 }
