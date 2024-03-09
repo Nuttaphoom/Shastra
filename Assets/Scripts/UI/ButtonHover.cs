@@ -15,41 +15,45 @@ namespace Vanaring
         [SerializeField]
         private Image iconImageDetail;
         [SerializeField]
-        private Button _button;
-        [SerializeField]
         private Animator animator;
+        [SerializeField] private string inAnimationName;
+        [SerializeField] private string outAnimationName;
 
         private bool isHovering = false;
 
-        private void Update()
-        {
-            // If hovering, update window position to follow the mouse
-            if (isHovering)
-            {
-
-                //Vector2 mousePosition = Input.mousePosition;
-                //Vector2 windowPos = new Vector3(_button.transform.position.x+1, _button.transform.position.y+1);
-                //windowObject.transform.position = mousePosition;
-            }
-        }
-
         public void OnPointerEnter(PointerEventData eventData)
         {
-            animator.Play("LectureRewardDetailSlideUp");
+            if(animator != null)
+            {
+                animator.Play(inAnimationName);
+            }
             isHovering = true;
+
             windowObject.SetActive(true);
+            windowObject.GetComponent<Animator>().enabled = true;
+            windowObject.GetComponent<Animator>().Play(inAnimationName);
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
-            animator.Play("LectureRewardDetailSlideDown");
+            if (animator != null)
+            {
+                animator.Play(outAnimationName);
+            }
             isHovering = false;
+            windowObject.GetComponent<Animator>().enabled = true;
+            windowObject.GetComponent<Animator>().Play(outAnimationName);
         }
 
         public void InitWindowDetail(string newText, Sprite newIcon)
         {
             desText.text = newText;
             iconImageDetail.sprite = newIcon;
+        }
+
+        private void OpenDescriptionBox()
+        {
+            windowObject.gameObject.SetActive(true);
         }
     }
 }

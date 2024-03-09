@@ -88,10 +88,12 @@ namespace Vanaring
                 newRewardObj.gameObject.transform.localPosition = new Vector2((float)iconXPos - 180f, 6.75f);
                 newRewardObj.gameObject.SetActive(true);
                 newRewardObj.SetRewardDetail(newEventReward.RewardName, newEventReward.RewardIcon);
-                newRewardObj.SetIsReachedState(false);
+                newRewardObj.SetIsReachedState(false); //false = has fade Img
                 newRewardObj.SetIsObtainedState(false);
                 if (lectureProgressBarData.alreadyReceivedRewardData.Contains(lectureProgressBarData.allRewardData[rewardIndex]))
                 {
+                    //Debug.Log(lectureProgressBarData.allRewardData[rewardIndex])
+                    Debug.Log("Obtained");
                     newRewardObj.SetIsReachedState(false);
                     newRewardObj.SetIsObtainedState(true);
                 }

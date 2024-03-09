@@ -17,6 +17,8 @@ namespace Vanaring
         [SerializeField]
         private TextMeshProUGUI rewardName;
         [SerializeField]
+        private TextMeshProUGUI rewardNameDes;
+        [SerializeField]
         private Image faderImg;
         [SerializeField]
         private Image obtainedImg;
@@ -34,6 +36,7 @@ namespace Vanaring
             _buttonHover.InitWindowDetail(newText, newIcon);
             rewardImage.sprite = newIcon;
             rewardName.text = newText;
+            rewardNameDes.text = newText;
         }
         public void SetIsReachedState(bool isReach)
         {
