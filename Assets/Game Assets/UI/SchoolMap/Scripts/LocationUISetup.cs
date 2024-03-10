@@ -25,6 +25,8 @@ namespace Vanaring
         private Button tmpLectureButton;
         //[SerializeField] private Button testButton;
         [SerializeField] private List<Transform> buttonTransform = new List<Transform>();
+        private LoadLocationMenuCommandData currentLocationSO;
+        public string GetLocationName => currentLocationSO.LocationName.ToString();
 
         private void Start()
         {
@@ -35,7 +37,7 @@ namespace Vanaring
         private void Init()
         {
 
-             LoadLocationMenuCommandData currentLocationSO = PersistentSceneLoader.Instance.ExtractLastSavedData<LoadLocationMenuCommandData>().GetData(); 
+             currentLocationSO = PersistentSceneLoader.Instance.ExtractLastSavedData<LoadLocationMenuCommandData>().GetData(); 
             //(loaderDataContainer.UseDataInContainer() as LoaderDataUser<LoadLocationMenuCommandData>).GetData() ; //.action_on_this_location;
 
             foreach (var location in PersistentActiveDayDatabase.Instance.GetActiveDayData.GetAvailableLocationAccordingToDayTime()) {
@@ -94,7 +96,7 @@ namespace Vanaring
         private void PerformAction(BaseLocationActionCommand action)
         {
             OpenPanel();
-            string ct = string.Format("{0} at the library?\nThis action will consume <color=#FF0000FF>1 time slot</color>, are you sure to perform this action ? ", action.GetActionDescription);
+            string ct = string.Format("{0} at the {1}?\nThis action will consume <color=#FF0000FF>1 time slot</color>, are you sure to perform this action ? ", action.GetActionDescription, currentLocationSO.LocationName.ToString().ToLower());
             confirmText.text = ct;
             confirmButton.onClick.AddListener(() => action.ExecuteCommand());
             

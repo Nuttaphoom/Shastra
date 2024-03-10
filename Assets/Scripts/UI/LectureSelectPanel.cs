@@ -98,7 +98,7 @@ namespace Vanaring
                 confirmPanel = MonoBehaviour.Instantiate(PersistentAddressableResourceLoader.Instance.LoadResourceOperation<GameObject>("ConfirmationPanel"));
             }
             confirmPanel.GetComponent<LocationConfirmationPanel>().GFX.SetActive(true);
-            string ct = string.Format("{0} at the library?\nThis action will consume <color=#FF0000FF>1 time slot</color>, are you sure to perform this action ? ", action.GetActionDescription);
+            string ct = string.Format("{0} at the {1}?\nThis action will consume <color=#FF0000FF>1 time slot</color>, are you sure to perform this action ? ", action.GetActionDescription, FindAnyObjectByType<LocationUISetup>().GetLocationName.ToString().ToLower());
             confirmPanel.GetComponent<LocationConfirmationPanel>().SetButtonListerner(() => action.OnSelectLecture(availableLectures[index]));
             confirmPanel.GetComponent<LocationConfirmationPanel>().WarningText.text = ct;
         }
