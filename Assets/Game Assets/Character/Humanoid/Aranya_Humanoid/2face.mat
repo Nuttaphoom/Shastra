@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pass through
-  m_Shader: {fileID: -6465566751694194690, guid: 4d7004bbbd73f4b43a6829881836e3f9, type: 3}
+  m_Name: 2face
+  m_Shader: {fileID: -6465566751694194690, guid: 59750799c95e73547882804c6082aeb0, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -24,7 +24,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _BaseMap:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: ca7b4fad10567694e88368ab3f599810, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
@@ -48,7 +48,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: ca7b4fad10567694e88368ab3f599810, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
@@ -63,28 +63,24 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _Polkadot:
-        m_Texture: {fileID: 2800000, guid: b360e28090aa7934aba3ded6bd685c37, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
     - _SpecGlossMap:
         m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _Texture:
-        m_Texture: {fileID: 2800000, guid: ed9457a5d5cad3a4bb7857e807046386, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _fresnelmask:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _opacity:
+    - _noshadow:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _shadow:
-        m_Texture: {fileID: 0}
+    - _opacity:
+        m_Texture: {fileID: 2800000, guid: 34a0a164c9e2eb84b8f8086081ddd2df, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _texture:
+        m_Texture: {fileID: 2800000, guid: ca7b4fad10567694e88368ab3f599810, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
@@ -115,9 +111,9 @@ Material:
     - _DstBlend: 0
     - _DstBlendAlpha: 0
     - _EnvironmentReflections: 1
-    - _Float: 0
     - _FresnelHardness: 0.01
     - _FresnelOffset: 0
+    - _FresnelOffset_1: 0
     - _FresnelPower: 10
     - _GlossMapScale: 1
     - _Glossiness: 0.5
@@ -129,7 +125,6 @@ Material:
     - _PolkaDensity: 10
     - _PolkaHardness: 0
     - _Polkasize: 0.65
-    - _Polkawidth: 1
     - _QueueControl: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 1
@@ -143,17 +138,14 @@ Material:
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
-    - _BaseColor: {r: 0.9063317, g: 0.9063317, b: 0.9063317, a: 1}
-    - _Color: {r: 0.9063317, g: 0.9063317, b: 0.9063317, a: 1}
+    - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _FresnelDirection: {r: 1, g: 1, b: 0, a: 0}
     - _Highlightcolor: {r: 1, g: 0.5639589, b: 0, a: 0}
-    - _LightVector: {r: 1, g: 1, b: 1, a: 0}
     - _Shadecolor: {r: 0.4916237, g: 0.10457457, b: 0.8867924, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
-    - _occultioncolor: {r: 0.057298064, g: 0, b: 0.09433959, a: 0}
   m_BuildTextureStacks: []
---- !u!114 &7778434571759316128
+--- !u!114 &8811302760407371112
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
