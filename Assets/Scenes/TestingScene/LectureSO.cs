@@ -8,7 +8,8 @@ namespace Vanaring
     [CreateAssetMenu(fileName = "LectureSO", menuName = "ScriptableObject/LectureSO")]
     public class LectureSO : ScriptableObject
     {
-         
+        [SerializeField]
+        private LectureParticipationScheme _participationScheme ;
         [SerializeField]
         public int maxPoint = 1000;
         [SerializeField]
@@ -23,7 +24,9 @@ namespace Vanaring
         public string GetLectureName => description.FieldName;
         public string GetLectureDestcription => description.FieldDescription;
         public List<LectureRequieBoost> GetBooster => lectureRequieBoosts;
- 
+
+        public LectureParticipationScheme GetParticipationSchemeTemplateObj => _participationScheme; 
+
     }
 
     [Serializable]

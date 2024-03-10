@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using TMPro;
 using System;
 using UnityEngine.Playables;
+using Unity.VisualScripting;
 
 namespace Vanaring
 {
@@ -28,7 +29,7 @@ namespace Vanaring
         private List<LectureParticipationActionCommand.ParticpationLectureData> availableLectures;
         public void InitPanel(List<LectureParticipationActionCommand.ParticpationLectureData> availableLectures, LectureParticipationActionCommand action)
         {
-            
+
             this.action = action;
             this.availableLectures = availableLectures;
             gameObject.SetActive(true);
@@ -69,7 +70,7 @@ namespace Vanaring
                 button.gameObject.SetActive(false);
                 button.onClick.RemoveAllListeners();
             }
-            foreach(GameObject ui in lectureObjList)
+            foreach (GameObject ui in lectureObjList)
             {
                 ui.SetActive(false);
             }
@@ -93,15 +94,25 @@ namespace Vanaring
 
         private void PerformAction(LectureParticipationActionCommand action, int index)
         {
-            if(confirmPanel == null)
+            if (confirmPanel == null)
             {
                 confirmPanel = MonoBehaviour.Instantiate(PersistentAddressableResourceLoader.Instance.LoadResourceOperation<GameObject>("ConfirmationPanel"));
             }
             confirmPanel.GetComponent<LocationConfirmationPanel>().GFX.SetActive(true);
             string ct = string.Format("{0} at the library?\nThis action will consume <color=#FF0000FF>1 time slot</color>, are you sure to perform this action ? ", action.GetActionDescription);
-            confirmPanel.GetComponent<LocationConfirmationPanel>().SetButtonListerner(() => action.OnSelectLecture(availableLectures[index]));
+            confirmPanel.GetComponent<LocationConfirmationPanel>().SetButtonListerner(() => StartCoroutine(OnConfirmMenu(availableLectures[index])));
+
             confirmPanel.GetComponent<LocationConfirmationPanel>().WarningText.text = ct;
         }
+
+        private IEnumerator OnConfirmMenu(LectureParticipationActionCommand.ParticpationLectureData lecture)
+        {
+            confirmPanel.gameObject.SetActive(false);
+            //    yield return CloseLecturePanel() ; 
+            yield return null; 
+            action.OnSelectLecture(lecture); 
+        }
+        
 
         private void CalculatePageButton()
         {

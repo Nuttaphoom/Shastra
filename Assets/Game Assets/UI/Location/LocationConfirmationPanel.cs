@@ -17,6 +17,7 @@ namespace Vanaring
         private void Awake()
         {
             gameObject.GetComponent<Canvas>().sortingOrder = 10;
+
         }
 
         public TextMeshProUGUI WarningText
@@ -25,9 +26,11 @@ namespace Vanaring
             set { warningText = value; }
         }
 
-        public void SetButtonListerner(UnityAction action)
+        public void SetButtonListerner(UnityAction action, bool removeallListener = true)
         {
-            confirmButton.onClick.RemoveAllListeners();
+            if (removeallListener) 
+                confirmButton.onClick.RemoveAllListeners();
+
             confirmButton.onClick.AddListener(action);
         }
 
