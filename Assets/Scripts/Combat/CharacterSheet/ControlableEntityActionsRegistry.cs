@@ -18,7 +18,17 @@ namespace Vanaring
         [SerializeField]
         private List<WeaponActionSO> _equipedWeaponAction ;
  
-        public List<SpellActionSO> GetSpellAction => _spellActions ;  
+        public List<SpellActionSO> GetSpellAction
+        {
+            get
+            {
+                //foreach (SpellActionSO spellaction in _spellActions)
+                //{
+                //    Debug.Log("spell in spell actions : " + spellaction.AbilityName);
+                //}
+                return _spellActions;
+            }
+        }
         public List<WeaponActionSO> GetWeaponAction => _equipedWeaponAction ;
 
         public void RegisterSpell(List<SpellActionSO> spells)
@@ -31,6 +41,7 @@ namespace Vanaring
                 _spellActions.Add(spellAction);
             } 
 
+            
 
         }
     }

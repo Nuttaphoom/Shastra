@@ -51,11 +51,10 @@ namespace Vanaring
 
         public IEnumerator LoadDataFromDatabase()
         {
-            List<SpellActionSO> spellList = new List<SpellActionSO>();
-
             List<BackpackItemData> backpackItems =  PersistentPlayerPersonalDataManager.Instance.GetBackpack.GetCombatUseableItemSOs();
 
-            _itemInventory = new List<ItemInventoryData>(); 
+            if (_itemInventory == null)
+                _itemInventory = new List<ItemInventoryData>(); 
 
             foreach (BackpackItemData backpackItem in backpackItems)
             {
@@ -101,8 +100,7 @@ namespace Vanaring
                 _itemInventoryAbility.Add(item.itemData);
                 _itemInventoryAmount.Add(item.amount);
             }
-            ColorfulLogger.LogWithColor("._itemInventoryAbility is " + _itemInventoryAbility.Count, Color.yellow);
-            ColorfulLogger.LogWithColor("._itemInventoryAmount is " + _itemInventoryAmount.Count, Color.yellow);
+          
 
         }
     }
