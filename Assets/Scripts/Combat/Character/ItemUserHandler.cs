@@ -49,7 +49,7 @@ namespace Vanaring
 
             _runtimeItemsAmount = ItemInventory.instance.GetItemInventoryAmount;
 
-            Debug.Log("item " + _itemInventory.Count + " amount is " + _runtimeItemsAmount.Count);
+            //Debug.Log("item " + _itemInventory.Count + " amount is " + _runtimeItemsAmount.Count);
 
             _runtimeItems = new List<ItemAbilityRuntime>(); 
 

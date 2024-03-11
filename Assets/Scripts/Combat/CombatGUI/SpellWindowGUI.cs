@@ -68,7 +68,6 @@ namespace Vanaring  {
             {
                 foreach (SpellActionSO spellAction in controlableEntity.GetControlableEntityActionRegistry.GetSpellAction)
                 {
-                    ColorfulLogger.LogWithColor("instantiate spell socket of " + spellAction.AbilityName, Color.blue); 
                     SpellSocketGUI newSocket = Instantiate(_spellSocket, spellTransform.transform);
                     newSocket.transform.SetAsFirstSibling();
                     newSocket.Init(spellAction, entity);
