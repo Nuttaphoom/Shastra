@@ -39,8 +39,7 @@ namespace Vanaring
             {
                 _eventBroadcaster = new EventBroadcaster();
                 _eventBroadcaster.OpenChannel<Null>("OnCombatPreparation");
-                _eventBroadcaster.OpenChannel<CombatEntity>("OnCompetitorEnterCombat");
-                
+                _eventBroadcaster.OpenChannel<CombatEntity>("OnCompetitorEnterCombat"); 
             }
 
             return _eventBroadcaster; 
@@ -143,6 +142,8 @@ namespace Vanaring
 
         private IEnumerator LoadDataFromDatabase()
         {
+            Debug.Log("load database");
+
             foreach (ICombatRequireLoadData icombatRequireLoadData in FindObjectsOfType<MonoBehaviour>()
                                                                     .OfType<ICombatRequireLoadData>())
             {
