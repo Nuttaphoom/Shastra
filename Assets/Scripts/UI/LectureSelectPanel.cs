@@ -99,7 +99,7 @@ namespace Vanaring
                 confirmPanel = MonoBehaviour.Instantiate(PersistentAddressableResourceLoader.Instance.LoadResourceOperation<GameObject>("ConfirmationPanel"));
             }
             confirmPanel.GetComponent<LocationConfirmationPanel>().GFX.SetActive(true);
-            string ct = string.Format("{0} at the library?\nThis action will consume <color=#FF0000FF>1 time slot</color>, are you sure to perform this action ? ", action.GetActionDescription);
+            string ct = string.Format("This action will consume <color=#FF0000FF>1 time slot</color>, are you sure to perform this action ? ");
             confirmPanel.GetComponent<LocationConfirmationPanel>().SetButtonListerner(() => StartCoroutine(OnConfirmMenu(availableLectures[index])));
 
             confirmPanel.GetComponent<LocationConfirmationPanel>().WarningText.text = ct;
@@ -108,7 +108,7 @@ namespace Vanaring
         private IEnumerator OnConfirmMenu(LectureParticipationActionCommand.ParticpationLectureData lecture)
         {
             confirmPanel.gameObject.SetActive(false);
-            //    yield return CloseLecturePanel() ; 
+            yield return CloseLecturePanel();
             yield return null; 
             action.OnSelectLecture(lecture); 
         }
