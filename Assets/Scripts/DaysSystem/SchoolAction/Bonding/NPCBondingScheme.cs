@@ -25,6 +25,7 @@ namespace Vanaring
         private CharacterRelationshipDataSO _characterRelationshipDataSO;
         private BondingAnimationGO _bondingAnimationGO ;
         private RelationshipHandler _relationshipHandler;
+
         [SerializeField] private GameObject bondingRewardDisplayerPanel;
 
         public void PlayBondingScheme(CharacterRelationshipDataSO characterRelationshipDataSO)

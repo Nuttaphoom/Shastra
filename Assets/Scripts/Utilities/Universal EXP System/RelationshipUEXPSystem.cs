@@ -10,6 +10,11 @@ namespace Vanaring
     [Serializable]
     public class RelationshipUEXPSystem : BaseUEXPSystem
     {
+
+
+        public RelationshipUEXPSystem(int initialLevel = 1 ) : base(initialLevel)  { 
+            
+        }
     
         /// <summary>
         /// Formula is "4 + _currentLevel"

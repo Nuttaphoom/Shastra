@@ -109,7 +109,6 @@ namespace Vanaring
         #endregion
 
 
-
         /// <summary>
         /// DO NOT CALL LOADING OPERATION IN CONSTRUCTOR 
         /// </summary>
@@ -164,8 +163,12 @@ namespace Vanaring
         {
             _characterSheetSO = cs;
 
-            _expSystem = new RelationshipUEXPSystem();
-
+            #region ForTestingOnly 
+            if (cs.CharacterName == "Pear")
+                _expSystem = new RelationshipUEXPSystem(4);
+            else 
+                _expSystem = new RelationshipUEXPSystem();
+            #endregion
             _expSystem.SubOnLevelUp(OnlevelUp);
 
         } 

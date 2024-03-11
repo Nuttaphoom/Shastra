@@ -16,7 +16,9 @@ namespace Vanaring
         [SerializeField]
         private Sprite _characterSprite;
 
+ 
         public Sprite GetCharacterSprite => _characterSprite;
+
 
         [Serializable]
         struct BondingDataStruct
