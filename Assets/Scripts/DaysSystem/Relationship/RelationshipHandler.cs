@@ -87,6 +87,9 @@ namespace Vanaring
             {
                 if (runtimeStatus.IsTheSameCharacter(characterName))
                 {
+                    Debug.Log("Current EXP " + runtimeStatus.GetCurrentEXP);
+
+                    Debug.Log("runtimeStatus.GetEXPCap  " + runtimeStatus.GetEXPCap);
                     return runtimeStatus.GetCurrentEXP == runtimeStatus.GetEXPCap ;
                 }
             }
@@ -107,7 +110,6 @@ namespace Vanaring
             throw new Exception(characterName + " couldn't be found in characterRelationshipStatuses");
         }
         #endregion
-
 
 
         /// <summary>
@@ -164,8 +166,12 @@ namespace Vanaring
         {
             _characterSheetSO = cs;
 
-            _expSystem = new RelationshipUEXPSystem();
-
+            #region ForTestingOnly 
+            if (cs.CharacterName == "Pear")
+                _expSystem = new RelationshipUEXPSystem(1,5);
+            else 
+                _expSystem = new RelationshipUEXPSystem();
+            #endregion
             _expSystem.SubOnLevelUp(OnlevelUp);
 
         } 

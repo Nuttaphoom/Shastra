@@ -10,6 +10,12 @@ namespace Vanaring
     [Serializable]
     public class RelationshipUEXPSystem : BaseUEXPSystem
     {
+
+
+        public RelationshipUEXPSystem(int initialLevel = 1 , int initialEXP = 0) : base(initialLevel, initialEXP)
+        { 
+            
+        }
     
         /// <summary>
         /// Formula is "4 + _currentLevel"
@@ -17,7 +23,7 @@ namespace Vanaring
         /// <returns></returns>
         public override float GetEXPCap()
         { 
-            return  (float) 3 + _currentLevel ;
+            return  (float) 5 ;
         }
 
         [Serializable]

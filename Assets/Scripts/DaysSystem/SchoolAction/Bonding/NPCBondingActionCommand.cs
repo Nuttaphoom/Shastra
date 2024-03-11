@@ -44,8 +44,9 @@ namespace Vanaring
             {
                 popUpPanel.GetComponent<RelationshipFriendPanel>().ButtonOpenPanel();
                 return;
-            }
-            popUpPanel = MonoBehaviour.Instantiate(PersistentAddressableResourceLoader.Instance.LoadResourceOperation<GameObject>("RelationshipFriendPanel"));
+            } 
+
+            popUpPanel = MonoBehaviour.Instantiate(PersistentAddressableResourceLoader.Instance.LoadResourceOperation<GameObject>("RelationshipFriendPanel")); 
             popUpPanel.GetComponent<RelationshipFriendPanel>().InitPanel(_characterRelationshipDataSO);
 
             if (! _relationshipHandler.IsReadyForHangout(_characterRelationshipDataSO.GetCharacterName))

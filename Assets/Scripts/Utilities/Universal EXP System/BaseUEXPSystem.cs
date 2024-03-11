@@ -18,10 +18,10 @@ namespace Vanaring
         [SerializeField]
         protected float _currentEXP;
 
-        public BaseUEXPSystem()
+        public BaseUEXPSystem(int initialLevel = 1, int intialEXP = 0 )
         {
-            _currentLevel = 1 ;
-            _currentEXP = 0;
+            _currentLevel = initialLevel ;
+            _currentEXP = intialEXP ;
         }
 
         #region GETTER 
