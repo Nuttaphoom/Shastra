@@ -50,25 +50,28 @@ namespace Vanaring
                 throw new Exception("lectureToStudy is null") ;
 
 
-            if (ContainLectureInLectureRuntime(_lectureToStudy))
-                return; 
-
-            bool lectureAdded = false; 
-
-            foreach (ProgressData progressData in localSaveProgress)
+            if (! ContainLectureInLectureRuntime(_lectureToStudy))
             {
-                if (progressData.lectureName == _lectureToStudy.GetLectureName)
+                bool lectureAdded = false;
+
+                foreach (ProgressData progressData in localSaveProgress)
                 {
-                    lectureRuntimes.Add(new LectureSubjectRuntime(_lectureToStudy, progressData));
-                    lectureAdded = true;
+                    if (progressData.lectureName == _lectureToStudy.GetLectureName)
+                    {
+                        lectureRuntimes.Add(new LectureSubjectRuntime(_lectureToStudy, progressData));
+                        lectureAdded = true;
+                    }
+                }
+                if (!lectureAdded)
+                {
+                    lectureRuntimes.Add(new LectureSubjectRuntime(_lectureToStudy));
                 }
             }
-            if (!lectureAdded)
-            {
-                lectureRuntimes.Add(new LectureSubjectRuntime(_lectureToStudy));
-            }
 
+       
+             
             OnPerformAcivity();
+
 
         }
 
@@ -173,6 +176,7 @@ namespace Vanaring
         #region ISchoolAction Methods 
         public void OnPerformAcivity()
         {
+
             StartCoroutine(StartPlayingTimeline());
         }
 
@@ -206,9 +210,9 @@ namespace Vanaring
                     checkpoints = lectureRuntime.GetCheckPoints , 
                     boostLecture = _lectureToStudy.GetBooster 
                 };
-                ColorfulLogger.LogWithColor("current EXP is " + reward.currentEXP, Color.green);
-                ColorfulLogger.LogWithColor("gained EXP is " + reward.gainedEXP, Color.blue) ;
-                ColorfulLogger.LogWithColor("bonus EXP is " + reward.bonusEXP, Color.blue);
+                //ColorfulLogger.LogWithColor("current EXP is " + reward.currentEXP, Color.green);
+                //ColorfulLogger.LogWithColor("gained EXP is " + reward.gainedEXP, Color.blue) ;
+                //ColorfulLogger.LogWithColor("bonus EXP is " + reward.bonusEXP, Color.blue);
 
                 yield return (_rewardDisplayer.DisplayRewardUICoroutine(reward));
 
