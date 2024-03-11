@@ -142,7 +142,6 @@ namespace Vanaring
 
         private IEnumerator LoadDataFromDatabase()
         {
-            Debug.Log("load database");
 
             foreach (ICombatRequireLoadData icombatRequireLoadData in FindObjectsOfType<MonoBehaviour>()
                                                                     .OfType<ICombatRequireLoadData>())

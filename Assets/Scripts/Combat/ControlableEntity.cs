@@ -95,8 +95,14 @@ namespace Vanaring
 
 
             var partyMemberRuntimeData = PersistentPlayerPersonalDataManager.Instance.PartyMemberDataLocator.GetRuntimeData(characterName);
-
+            
             spellList = partyMemberRuntimeData.GetRegisteredSpellActionSO;
+
+            //Debug.Log("loaded spell list.count : " + spellList.Count);
+            //foreach (var spell in spellList)
+            //{
+            //    Debug.Log("spell : " + spell.AbilityName);
+            //}
             _controlableEntityActionRegistry.RegisterSpell(spellList);
 
             yield return null;
