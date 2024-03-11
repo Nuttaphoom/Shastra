@@ -13,7 +13,7 @@ using Vanaring;
 
 namespace Vanaring
 {
-    public class LectureParticipationScheme : MonoBehaviour, ISaveable, ISchoolAction, ISceneLoaderWaitForSignal
+    public class LectureParticipationScheme : MonoBehaviour, ISaveable, ISchoolAction
     {
         [SerializeField]
         private LectureRewardDisplayer _rewardDisplayer ; 
@@ -28,9 +28,9 @@ namespace Vanaring
 
         //private List<LectureSO> lectures = new List<LectureSO>();
 
-        [Header("DONT ASSIGN ANYTHING")] 
-        [SerializeField] 
-        private LectureSO _lectureToStudy ; 
+        //[Header("DONT ASSIGN ANYTHING")] 
+        [SerializeField]
+        private LectureSO _lectureToStudy;
 
         private List<ProgressData> localSaveProgress = new List<ProgressData>();
 
@@ -43,10 +43,9 @@ namespace Vanaring
         //}
 
         [ContextMenu("Init Runtime")]
-        public void InitLectureRuntime()
+        public void StartLectureScheme(LectureSO lectureToStudy)
         {
-            _lectureToStudy = (PersistentSceneLoader.Instance.ExtractSavedData<LectureSO>(PersistentSceneLoader.Instance.GetStackLoadedDataScene().GetSceneID())).GetData();
-
+            _lectureToStudy = lectureToStudy ; // (PersistentSceneLoader.Instance.ExtractSavedData<LectureSO>(PersistentSceneLoader.Instance.GetStackLoadedDataScene().GetSceneID())).GetData();
             if (_lectureToStudy == null)
                 throw new Exception("lectureToStudy is null") ;
 
@@ -68,6 +67,9 @@ namespace Vanaring
             {
                 lectureRuntimes.Add(new LectureSubjectRuntime(_lectureToStudy));
             }
+
+            OnPerformAcivity();
+
         }
 
         private int CalculateBonusEXPPoint(LectureSO calculatedBootsLecture)
@@ -158,13 +160,13 @@ namespace Vanaring
         #endregion
 
         #region IAwakeable Methods
-        IEnumerator ISceneLoaderWaitForSignal.OnNotifySceneLoadingComplete() 
-        {
-            InitLectureRuntime();
-            OnPerformAcivity();
+        //IEnumerator ISceneLoaderWaitForSignal.OnNotifySceneLoadingComplete() 
+        //{
+        //    InitLectureRuntime();
+        //    OnPerformAcivity();
 
-            yield return null; 
-        }
+        //    yield return null; 
+        //}
 
         #endregion
 

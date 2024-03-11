@@ -24,7 +24,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _BaseMap:
-        m_Texture: {fileID: 2800000, guid: 8275a1b73948b354693aea537f1d6399, type: 3}
+        m_Texture: {fileID: 2800000, guid: 9c8ee7a418daf2c4da00704b21493272, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
@@ -48,7 +48,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 8275a1b73948b354693aea537f1d6399, type: 3}
+        m_Texture: {fileID: 2800000, guid: 9c8ee7a418daf2c4da00704b21493272, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
@@ -73,6 +73,18 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _Texture:
         m_Texture: {fileID: 2800000, guid: 9c8ee7a418daf2c4da00704b21493272, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _fresnelmask:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _opacity:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _shadow:
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
@@ -104,9 +116,9 @@ Material:
     - _DstBlendAlpha: 0
     - _EnvironmentReflections: 1
     - _Float: -0.92
-    - _FresnelHardness: 0.05
-    - _FresnelOffset: -0.31
-    - _FresnelPower: 1.5
+    - _FresnelHardness: 0.01
+    - _FresnelOffset: 0
+    - _FresnelPower: 10
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
@@ -114,14 +126,14 @@ Material:
     - _Mode: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.02
-    - _PolkaDensity: 75
+    - _PolkaDensity: 10
     - _PolkaHardness: 0.1
     - _Polkasize: 1
     - _Polkawidth: 0.87
     - _QueueControl: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 1
-    - _Smoothness: 0.2
+    - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
@@ -135,13 +147,13 @@ Material:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _FresnelDirection: {r: 1, g: 1, b: 0, a: 0}
-    - _Highlightcolor: {r: 0.8745099, g: 0.57254905, b: 0.24705884, a: 0}
+    - _Highlightcolor: {r: 1, g: 0.5639589, b: 0, a: 0}
     - _LightVector: {r: 1, g: 1, b: 1, a: 0}
-    - _Shadecolor: {r: 0.63608533, g: 0.57627267, b: 0.6981132, a: 1}
+    - _Shadecolor: {r: 0.63529414, g: 0.5764706, b: 0.69803923, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
     - _occultioncolor: {r: 0.057298064, g: 0, b: 0.09433959, a: 0}
   m_BuildTextureStacks: []
---- !u!114 &8667885688658314291
+--- !u!114 &1149420075863745948
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}

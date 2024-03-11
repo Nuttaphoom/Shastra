@@ -20,13 +20,16 @@ namespace Vanaring
             [SerializeField] 
             private LectureSO _availableLecture ;
 
-            [SerializeField] 
-            private CutsceneContainerSO _cutsceneContainerSO ;
+            //[SerializeField]
+            //private LectureParticipationScheme _lectureParticipationTimelineGOTemplate; 
+
+            //[SerializeField] 
+            //private CutsceneContainerSO _cutsceneContainerSO ;
 
 
             public LectureSO GetAvailableLecture => _availableLecture ;
-
-            public AssetReference GetSceneDataRef => _cutsceneContainerSO.GetCutsceneSceneRef ; 
+            //public LectureParticipationScheme GetSchemeObjTemplate => _lectureParticipationTimelineGOTemplate; 
+            //public AssetReference GetSceneDataRef => _cutsceneContainerSO.GetCutsceneSceneRef ; 
         }
 
         [SerializeField] 
@@ -59,11 +62,17 @@ namespace Vanaring
 
         public void OnSelectLecture(ParticpationLectureData lecture)
         {
-            CutsceneSceneDataSO sceneDataSO = PersistentAddressableResourceLoader.Instance.LoadResourceOperation<CutsceneSceneDataSO>(lecture.GetSceneDataRef);
 
-            PersistentSceneLoader.Instance.CreateLoaderDataUser<LectureSO>(sceneDataSO.GetSceneID(), lecture.GetAvailableLecture) ;
+            LectureParticipationScheme lectureParticipationScheme = MonoBehaviour.Instantiate(lecture.GetAvailableLecture.GetParticipationSchemeTemplateObj);
 
-            PersistentSceneLoader.Instance.LoadGeneralScene(sceneDataSO);
+            lectureParticipationScheme.StartLectureScheme(lecture.GetAvailableLecture);
+            
+
+            //CutsceneSceneDataSO sceneDataSO = PersistentAddressableResourceLoader.Instance.LoadResourceOperation<CutsceneSceneDataSO>(lecture.GetSceneDataRef);
+
+            //PersistentSceneLoader.Instance.CreateLoaderDataUser<LectureSO>(sceneDataSO.GetSceneID(), lecture.GetAvailableLecture) ;
+
+            //PersistentSceneLoader.Instance.LoadGeneralScene(sceneDataSO);
         }
         
 
