@@ -90,6 +90,7 @@ namespace Vanaring
         public override IEnumerator LoadDataFromDatabase()
         {
             string characterName = CombatCharacterSheet.CharacterName;
+            
             List<SpellActionSO> spellList = new List<SpellActionSO>();
 
 
