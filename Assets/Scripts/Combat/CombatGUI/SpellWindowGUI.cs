@@ -54,6 +54,7 @@ namespace Vanaring  {
         }
         public override void LoadWindowData(CombatEntity entity)
         {
+            ColorfulLogger.LogWithColor("SpellWindow Loaded", Color.green);
             ClearData();
             _spellSocket.gameObject.SetActive(true);
             notificationBox.SetActive(false);
@@ -68,6 +69,8 @@ namespace Vanaring  {
             {
                 foreach (SpellActionSO spellAction in controlableEntity.GetControlableEntityActionRegistry.GetSpellAction)
                 {
+                    string debugText = "instantiate spell socket of " + "<color=#00ffffff>" + spellAction.AbilityName + "</color>";
+                    Debug.Log(debugText);
                     SpellSocketGUI newSocket = Instantiate(_spellSocket, spellTransform.transform);
                     newSocket.transform.SetAsFirstSibling();
                     newSocket.Init(spellAction, entity);

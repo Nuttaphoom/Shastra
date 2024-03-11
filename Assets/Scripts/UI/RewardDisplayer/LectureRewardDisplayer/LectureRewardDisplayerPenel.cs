@@ -92,10 +92,9 @@ namespace Vanaring
                 newRewardObj.SetIsObtainedState(false);
                 if (lectureProgressBarData.alreadyReceivedRewardData.Contains(lectureProgressBarData.allRewardData[rewardIndex]))
                 {
-                    //Debug.Log(lectureProgressBarData.allRewardData[rewardIndex])
                     Debug.Log("Obtained");
                     newRewardObj.SetIsReachedState(false);
-                    newRewardObj.SetIsObtainedState(true);
+                    //newRewardObj.SetIsObtainedState(true);
                 }
                 rewardObjList.Add(newRewardObj);
                 rewardIndex++;
