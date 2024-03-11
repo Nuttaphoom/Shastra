@@ -87,6 +87,9 @@ namespace Vanaring
             {
                 if (runtimeStatus.IsTheSameCharacter(characterName))
                 {
+                    Debug.Log("Current EXP " + runtimeStatus.GetCurrentEXP);
+
+                    Debug.Log("runtimeStatus.GetEXPCap  " + runtimeStatus.GetEXPCap);
                     return runtimeStatus.GetCurrentEXP == runtimeStatus.GetEXPCap ;
                 }
             }
@@ -165,7 +168,7 @@ namespace Vanaring
 
             #region ForTestingOnly 
             if (cs.CharacterName == "Pear")
-                _expSystem = new RelationshipUEXPSystem(4);
+                _expSystem = new RelationshipUEXPSystem(1,5);
             else 
                 _expSystem = new RelationshipUEXPSystem();
             #endregion
