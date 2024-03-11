@@ -33,7 +33,6 @@ namespace Vanaring
         #region EventBroadcaster
         private EventBroadcaster _eventBroadcaster;
 
-         
         private EventBroadcaster GetEventBroadcaster()
         {
             if (_eventBroadcaster == null)
@@ -157,7 +156,7 @@ namespace Vanaring
 
             yield return SetUpNewCombatEncounter();
 
-            yield return new WaitForSeconds(1.0f);
+            //yield return new WaitForSeconds(1.0f);
 
 
             GetEventBroadcaster().InvokeEvent<Null>(null, "OnCombatPreparation"); //b <Null>("OnCombatPreparation

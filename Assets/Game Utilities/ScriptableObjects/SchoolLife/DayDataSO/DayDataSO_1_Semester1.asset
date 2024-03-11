@@ -60,9 +60,32 @@ MonoBehaviour:
           _actionDescription: 
           _actionIconAsset: {fileID: 0}
           _characterRelationshipDataSO: {fileID: 0}
-        EnableAtMorning: 0
+        EnableAtMorning: 1
         EnableAtNoon: 1
-        EnableAtNight: 0
+        EnableAtNight: 1
+      - _commandType: 1
+        _loadLocationCommand:
+          _actionName: Exercise
+          _actionDescription: Do exercise at home.
+          _actionIconAsset: {fileID: 21300000, guid: b3b6c8e61b792a348bf59c181f302d58, type: 3}
+          _activityCutscene: {fileID: 11400000, guid: 0074ee39c335b4f4191c4dd2e0c6a3ba, type: 2}
+          _personalityRewards:
+          - _rewardTrait: 3
+            _rewardAmount: 1
+        _lectureParticipationActionCommand:
+          _actionName: Lecture
+          _actionDescription: Participate Lecture
+          _actionIconAsset: {fileID: 21300000, guid: b3b6c8e61b792a348bf59c181f302d58, type: 3}
+          _availableLecture:
+          - _availableLecture: {fileID: 11400000, guid: 73ea015fd775cda449545291ac8d2516, type: 2}
+        _npcBondingActionCommand:
+          _actionName: 
+          _actionDescription: 
+          _actionIconAsset: {fileID: 0}
+          _characterRelationshipDataSO: {fileID: 0}
+        EnableAtMorning: 1
+        EnableAtNoon: 1
+        EnableAtNight: 1
     - Location: {fileID: 11400000, guid: ec596210af1aa3f499c3c3a5845805c1, type: 2}
       _selectionCommandCenter:
       - _commandType: 3
