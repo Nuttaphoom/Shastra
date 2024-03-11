@@ -101,13 +101,10 @@ namespace Vanaring
         }
 
         private void IncreaseExp(LectureSubjectRuntime LectureSubjectRuntime)
-        {
-         
-                 
-                    int receivedEXP = CalculateReceivedEXPPoint(_lectureToStudy); 
-                    LectureSubjectRuntime.RecievePoint(receivedEXP);
- 
-                    LectureSubjectRuntime.CalculateRecievedEventReward();
+        {     
+            int receivedEXP = CalculateReceivedEXPPoint(_lectureToStudy); 
+            LectureSubjectRuntime.RecievePoint(receivedEXP);
+            LectureSubjectRuntime.CalculateRecievedEventReward();
                
         }
 
@@ -182,6 +179,7 @@ namespace Vanaring
 
         public IEnumerator StartPlayingTimeline()
         {
+            Debug.Log("play cutscene"); 
             yield return _director.PlayCutscene();
 
             yield return PostPerformActivity();
