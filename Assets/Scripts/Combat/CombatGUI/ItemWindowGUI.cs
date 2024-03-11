@@ -91,6 +91,7 @@ namespace Vanaring
             if (entity.ItemUser.Items.Count == 0)
             {
                 DisplayArrowIndicator();
+                itemLogText.text = "There's no item can be use.";
                 _itemSocketTemplate.gameObject.SetActive(false);
                 return;
             }
