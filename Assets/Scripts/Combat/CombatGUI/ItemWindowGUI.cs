@@ -68,6 +68,8 @@ namespace Vanaring
             int i = 3 ; 
             foreach (ItemAbilityRuntime item in entity.ItemUser.Items)
             {
+                if (entity.ItemUser.ItemsAmount[tmpItemIndex] <= 0)
+                    continue;
                 ItemSocketGUI newSocket = Instantiate(_itemSocketTemplate, itemTranform.transform) ;
                 newSocket.Init(item, entity, entity.ItemUser.ItemsAmount[tmpItemIndex]);
                 newSocket.transform.SetAsFirstSibling();

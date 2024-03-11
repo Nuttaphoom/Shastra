@@ -70,6 +70,26 @@ namespace Vanaring
              yield return null;
         }
 
+        public void RemoveItem(ItemAbilityRuntime itemToRemove)
+        {
+            int count = 0;
+            foreach (var item in _itemInventoryAbility)
+            {
+                if (item.AbilityName == itemToRemove.ItemName)
+                {
+                    _itemInventoryAmount[count]--; 
+
+                    if (_itemInventoryAmount[count] <= 0)
+                    {
+                        _itemInventoryAmount.RemoveAt(count);
+                        _itemInventoryAbility.RemoveAt(count);
+                    }
+                    break;
+                }
+                count++;
+            }
+        }
+
         public void SetUpRuntimeItemFromItemInventory()
         {
             _itemInventoryAbility = new List<ItemActionFactorySO>();

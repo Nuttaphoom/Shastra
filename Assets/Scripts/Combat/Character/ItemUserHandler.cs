@@ -33,7 +33,10 @@ namespace Vanaring
 
         private void Awake()
         {
+
             _combatEntity = GetComponent<CombatEntity>();
+
+            //FactorizeItemInInventory(); 
         }
 
         // TODO : Call FactorizeItemInInventory into Awake in correct order 
@@ -45,6 +48,8 @@ namespace Vanaring
             _itemInventory = ItemInventory.instance.GetItemInventoryAbility;
 
             _runtimeItemsAmount = ItemInventory.instance.GetItemInventoryAmount;
+
+            Debug.Log("item " + _itemInventory.Count + " amount is " + _runtimeItemsAmount.Count);
 
             _runtimeItems = new List<ItemAbilityRuntime>(); 
 
@@ -66,26 +71,28 @@ namespace Vanaring
 
         public void RemoveItem(ItemAbilityRuntime runtimeItem)
         {
-            //TODO - visually remove item from inventory 
-            int count = 0;
-            foreach (ItemAbilityRuntime item in _runtimeItems)
-            {
-                if (item.ItemName == runtimeItem.ItemName)
-                {
-                    _runtimeItemsAmount[count]--;
-                    if (_runtimeItemsAmount[count] <= 0)
-                    {
-                        _runtimeItems.RemoveAt(count);
-                        _runtimeItemsAmount.RemoveAt(count);
-                    }
-                    break;
-                }
-                count++;
-            }
+            ItemInventory.instance.RemoveItem(runtimeItem); 
+            ////TODO - visually remove item from inventory 
+            //int count = 0;
 
-            //TODO : fix this 
+            //foreach (ItemAbilityRuntime item in _runtimeItems)
+            //{
+            //    if (item.ItemName == runtimeItem.ItemName)
+            //    {
+            //        _runtimeItemsAmount[count]--;
+            //        if (_runtimeItemsAmount[count] <= 0)
+            //        {
+            //            _runtimeItems.RemoveAt(count);
+            //            _runtimeItemsAmount.RemoveAt(count);
+            //        }
+            //        break;
+            //    }
+            //    count++;
+            //}
 
-            
+            ////TODO : fix this 
+
+
         }
     }
 }
