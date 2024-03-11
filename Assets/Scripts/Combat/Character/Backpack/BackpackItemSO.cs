@@ -16,7 +16,8 @@ namespace Vanaring
             return new RewardData()
             {
                 RewardIcon = GetDescriptionBaseField().FieldImage,
-                RewardName = GetDescriptionBaseField().FieldName
+                RewardName = GetDescriptionBaseField().FieldName,
+                RewardDescription = GetDescriptionBaseField().FieldDescription
             }; 
         }
 

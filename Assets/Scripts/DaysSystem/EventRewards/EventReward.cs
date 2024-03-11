@@ -55,6 +55,7 @@ namespace Vanaring
     public struct RewardData
     {
         public string RewardName;
+        public string RewardDescription;
         public Sprite RewardIcon;
     }
 }

@@ -19,6 +19,8 @@ namespace Vanaring
         [SerializeField]
         private TextMeshProUGUI rewardNameDes;
         [SerializeField]
+        private TextMeshProUGUI rewardDes;
+        [SerializeField]
         private Image faderImg;
         [SerializeField]
         private Image obtainedImg;
@@ -29,7 +31,7 @@ namespace Vanaring
         public Animator GetAnimator => anim;
         public Sprite GetRewardIconSprite => rewardIconSprite;
         public string GetRewardNameString => rewardNameString;
-        public void SetRewardDetail(string newText, Sprite newIcon)
+        public void SetRewardDetail(string newText, Sprite newIcon, string newDesText)
         {
             rewardIconSprite = newIcon;
             rewardNameString = newText;
@@ -37,6 +39,7 @@ namespace Vanaring
             rewardImage.sprite = newIcon;
             rewardName.text = newText;
             rewardNameDes.text = newText;
+            rewardDes.text = newDesText;
         }
         public void SetIsReachedState(bool isReach)
         {

@@ -87,7 +87,7 @@ namespace Vanaring
                 double iconXPos = ((float)checkPoint.RequirePoint * 880) / lectureProgressBarData.maxEXP;
                 newRewardObj.gameObject.transform.localPosition = new Vector2((float)iconXPos-440f, -14f);
                 newRewardObj.gameObject.SetActive(true);
-                newRewardObj.SetRewardDetail(newEventReward.RewardName, newEventReward.RewardIcon);
+                newRewardObj.SetRewardDetail(newEventReward.RewardName, newEventReward.RewardIcon, newEventReward.RewardDescription);
                 newRewardObj.SetIsReachedState(false); //false = has fade Img
                 newRewardObj.SetIsObtainedState(false);
                 if (lectureProgressBarData.alreadyReceivedRewardData.Contains(lectureProgressBarData.allRewardData[rewardIndex]))
