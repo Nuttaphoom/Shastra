@@ -26,7 +26,7 @@ namespace Vanaring
         {
             charRelationDataSO = so;
             Debug.Log(PersistentPlayerPersonalDataManager.Instance.RelationshipHandler.GetCurrentBondLevel(so.GetCharacterName));
-            bondFilledBar.fillAmount = (float)(PersistentPlayerPersonalDataManager.Instance.RelationshipHandler.GetCurrentBondLevel(so.GetCharacterName)-1)/5f;
+            bondFilledBar.fillAmount = (float)(PersistentPlayerPersonalDataManager.Instance.RelationshipHandler.GetCurrentRelationshipEXP(so.GetCharacterName))/5f;
             RemoveFriendButtonListener();
             friendName.text = charRelationDataSO.GetCharacterName;
             friendDescription.text = charRelationDataSO.GetCharacterName;
