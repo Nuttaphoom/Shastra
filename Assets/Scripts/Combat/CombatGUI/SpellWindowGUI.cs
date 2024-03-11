@@ -54,6 +54,7 @@ namespace Vanaring  {
         }
         public override void LoadWindowData(CombatEntity entity)
         {
+            ColorfulLogger.LogWithColor("SpellWindow Loaded", Color.green);
             ClearData();
             _spellSocket.gameObject.SetActive(true);
             notificationBox.SetActive(false);
