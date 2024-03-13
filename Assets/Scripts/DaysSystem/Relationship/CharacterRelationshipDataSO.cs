@@ -82,6 +82,8 @@ namespace Vanaring
 
             foreach (var hangoutData in _hangoutData)
             {
+                Debug.Log("currentBondLevel : " + currentBondLevel);
+                Debug.Log("hangoutData.CorrectRankLevel " + hangoutData.CorrectRankLevel); 
                 if (hangoutData.CorrectRankLevel == currentBondLevel)
                 {
                     return hangoutData.HangoutCutsceneData ; 
