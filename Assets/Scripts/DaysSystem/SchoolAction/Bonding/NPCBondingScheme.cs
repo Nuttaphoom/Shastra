@@ -36,7 +36,6 @@ namespace Vanaring
 
         public void OnPerformAcivity()
         {
-            Debug.Log("on perform activity"); 
             _relationshipHandler = PersistentPlayerPersonalDataManager.Instance.RelationshipHandler;
             string characterName = _characterRelationshipDataSO.GetCharacterName; 
             int currentLevel = _relationshipHandler.GetCurrentBondLevel(characterName);
@@ -51,7 +50,6 @@ namespace Vanaring
 
         public IEnumerator PostPerformActivity()
         {
-            Debug.Log("Post perform");
 
             //Display reward displayer 
             SubmitActionReward();
