@@ -18,7 +18,10 @@ namespace Vanaring
 
         public IEnumerator PlayCutscene(NPCBondingScheme bondingScheme)
         {
+            Debug.Log("play cutscene"); 
             yield return _cutsceneDirector.PlayCutscene ();
+
+            Debug.Log("cutscene end");
             yield return bondingScheme.PostPerformActivity(); 
         }
 
