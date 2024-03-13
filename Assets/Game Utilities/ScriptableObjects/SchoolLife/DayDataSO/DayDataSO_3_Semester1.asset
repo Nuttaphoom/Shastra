@@ -61,6 +61,30 @@ MonoBehaviour:
           _actionDescription: 
           _actionIconAsset: {fileID: 0}
           _characterRelationshipDataSO: {fileID: 0}
+        EnableAtMorning: 0
+        EnableAtNoon: 1
+        EnableAtNight: 0
+      - _commandType: 3
+        _loadLocationCommand:
+          _actionName: Exercise
+          _actionDescription: Do some exercise
+          _actionIconAsset: {fileID: 21300000, guid: 8f4fb1fce0eb77c45bb3e62e7654e36a, type: 3}
+          _activityCutscene: {fileID: 11400000, guid: 4e7621518c97ae542a20f2ecdf90a8c4, type: 2}
+          _personalityRewards:
+          - _rewardTrait: 3
+            _rewardAmount: 6
+        _lectureParticipationActionCommand:
+          _actionName: Lecture
+          _actionDescription: Participate Lecture
+          _actionIconAsset: {fileID: 21300000, guid: b3b6c8e61b792a348bf59c181f302d58, type: 3}
+          _availableLecture:
+          - _availableLecture: {fileID: 11400000, guid: 6f1290713704a9b42aaae006a366b378, type: 2}
+          - _availableLecture: {fileID: 11400000, guid: 73ea015fd775cda449545291ac8d2516, type: 2}
+        _npcBondingActionCommand:
+          _actionName: Pear
+          _actionDescription: Meet Pear
+          _actionIconAsset: {fileID: 21300000, guid: ffa07e25474e95c4ca31d92c08a9f15a, type: 3}
+          _characterRelationshipDataSO: {fileID: 11400000, guid: c0c0defcc3a150045a7324fad27a7483, type: 2}
         EnableAtMorning: 1
         EnableAtNoon: 0
         EnableAtNight: 0
@@ -85,7 +109,7 @@ MonoBehaviour:
           _actionDescription: 
           _actionIconAsset: {fileID: 0}
           _characterRelationshipDataSO: {fileID: 0}
-        EnableAtMorning: 1
+        EnableAtMorning: 0
         EnableAtNoon: 1
         EnableAtNight: 0
     - Location: {fileID: 11400000, guid: 8b8a569a7af15584d8c31601d40e67b1, type: 2}
