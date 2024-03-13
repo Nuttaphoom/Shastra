@@ -26,15 +26,18 @@ namespace Vanaring
         private Image obtainedImg;
         private Sprite rewardIconSprite;
         private string rewardNameString;
+        private string rewardDesString;
 
         public Image GetIconImage => rewardImage;
         public Animator GetAnimator => anim;
         public Sprite GetRewardIconSprite => rewardIconSprite;
         public string GetRewardNameString => rewardNameString;
+        public string GetRewardDesString => rewardDesString;
         public void SetRewardDetail(string newText, Sprite newIcon, string newDesText)
         {
             rewardIconSprite = newIcon;
             rewardNameString = newText;
+            rewardDesString = newDesText;
             _buttonHover.InitWindowDetail(newText, newIcon);
             rewardImage.sprite = newIcon;
             rewardName.text = newText;

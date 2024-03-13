@@ -29,7 +29,7 @@ namespace Vanaring
             bondFilledBar.fillAmount = (float)(PersistentPlayerPersonalDataManager.Instance.RelationshipHandler.GetCurrentRelationshipEXP(so.GetCharacterName))/5f;
             RemoveFriendButtonListener();
             friendName.text = charRelationDataSO.GetCharacterName;
-            friendDescription.text = charRelationDataSO.GetCharacterName;
+            friendDescription.text = charRelationDataSO.GetCharacterDescription;
             DisableRelationshipButton(talkButton);
             DisableRelationshipButton(eventButton);
             DisableRelationshipButton(bondButton);

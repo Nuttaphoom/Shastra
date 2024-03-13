@@ -16,9 +16,12 @@ namespace Vanaring
         private CharacterSheetSO _characterSheetSO ;
         [SerializeField]
         private Sprite _characterSprite;
+        [SerializeField]
+        private string _characterDescription;
 
- 
+
         public Sprite GetCharacterSprite => _characterSprite;
+        public string GetCharacterDescription => _characterDescription;
 
 
         [Serializable]
@@ -32,8 +35,8 @@ namespace Vanaring
         [Serializable]
         struct HangoutDataStruct
         {
-            public int CorrectLevel;
-            public List<HangoutCutsceneSceneDataSO> HangoutCutsceneData ;
+            public int CorrectRankLevel;
+            public HangoutCutsceneSceneDataSO HangoutCutsceneData ;
         }
 
         [SerializeField]
@@ -67,29 +70,26 @@ namespace Vanaring
         /// Function to reurn correct scene to load for hanging out 
         /// current bond level start at 1
         /// </summary>
-        /// <param name="currentBondLevel" ></param>
-        /// <returns></returns>
-        /// <exception cref="Exception"></exception>
-        //public BondingAnimationGO GetHangoutCutsceneData(int currentBondLevel)
-        //{
-        //    if (currentBondLevel > _hangoutData.Count)
-        //        throw new Exception("bondLevel : " + currentBondLevel + " excess the size of _hangoutData which is " + _hangoutData.Count);
-        //    if (currentBondLevel > _hangoutData.Count)
-        //        throw new Exception("bondLevel : " + currentBondLevel + " excess the size of _hangoutData which is " + _hangoutData.Count);
+        /// <param name = "currentBondLevel" ></ param >
+        /// < returns ></ returns >
+        /// < exception cref="Exception"></exception>
+        public HangoutCutsceneSceneDataSO GetHangoutCutsceneData(int currentBondLevel)
+        {
+            if (currentBondLevel > _hangoutData.Count)
+                throw new Exception("bondLevel : " + currentBondLevel + " excess the size of _hangoutData which is " + _hangoutData.Count);
+            if (currentBondLevel > _hangoutData.Count)
+                throw new Exception("bondLevel : " + currentBondLevel + " excess the size of _hangoutData which is " + _hangoutData.Count);
 
-        //    foreach (var bond in _hangoutData)
-        //    {
-        //        if (bond.CorrectLevel == bondLevel)
-        //        {
-        //            if (bond.BondingAnimationGOs.Count <= exp)
-        //                throw new Exception("BondingAnimationGOs.count (" + bond.BondingAnimationGOs.Count + " ) is less than given exp ( " + exp + " )");
+            foreach (var hangoutData in _hangoutData)
+            {
+                if (hangoutData.CorrectRankLevel == currentBondLevel)
+                {
+                    return hangoutData.HangoutCutsceneData ; 
+                }
+            }
 
-        //            return bond.BondingAnimationGOs[exp];
-        //        }
-        //    }
-
-        //    throw new Exception();
-        //}
+            throw new Exception( "Correct HangoutCutsceenSceneData can NOT be found");
+        }
 
         public string GetCharacterName
         {
