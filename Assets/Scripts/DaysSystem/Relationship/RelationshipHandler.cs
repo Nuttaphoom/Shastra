@@ -90,7 +90,7 @@ namespace Vanaring
                     Debug.Log("Current EXP " + runtimeStatus.GetCurrentEXP);
 
                     Debug.Log("runtimeStatus.GetEXPCap  " + runtimeStatus.GetEXPCap);
-                    return runtimeStatus.GetCurrentEXP == runtimeStatus.GetEXPCap ;
+                    return runtimeStatus.GetCurrentEXP == (runtimeStatus.GetEXPCap - 1 ) ;
                 }
             }
 
