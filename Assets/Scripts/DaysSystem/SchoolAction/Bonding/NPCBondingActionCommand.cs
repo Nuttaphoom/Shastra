@@ -24,6 +24,8 @@ namespace Vanaring
 
         private GameObject popUpPanel;
 
+        private int currentBondLevel;
+        private int currentBondEXP; 
 
         public NPCBondingActionCommand(NPCBondingActionCommand copied) : base(copied)
         {
@@ -34,9 +36,9 @@ namespace Vanaring
         public override void ExecuteCommand()
         {
             RelationshipHandler _relationshipHandler = PersistentPlayerPersonalDataManager.Instance.RelationshipHandler; 
-            int bondLevel = _relationshipHandler.GetCurrentBondLevel(_characterRelationshipDataSO.GetCharacterName) ;
 
-            int currentEXP =  _relationshipHandler.GetRelationshipCapEXP(_characterRelationshipDataSO.GetCharacterName);
+            currentBondLevel = _relationshipHandler.GetCurrentBondLevel(_characterRelationshipDataSO.GetCharacterName) ;
+            currentBondEXP =  _relationshipHandler.GetRelationshipCapEXP(_characterRelationshipDataSO.GetCharacterName);
 
             //TODO : Aome need to display relatioship ui here 
 
@@ -65,14 +67,13 @@ namespace Vanaring
         }
         private void PlayHangoutScheme()
         {
-            popUpPanel.GetComponent<MonoBehaviour>().StartCoroutine(PlayHangoutSchemeCoroutine());
+            SceneDataSO sceneData = _characterRelationshipDataSO.GetHangoutCutsceneData(currentBondLevel);
+
+            PersistentSceneLoader.Instance.LoadGeneralScene(sceneData);
+
         }
 
-        private IEnumerator PlayHangoutSchemeCoroutine()
-        {
-            Debug.Log("Play Hangout Scheme");
-            yield return null; 
-        }
+      
 
         private IEnumerator PlayBondingSchemeCoroutine()
         {
