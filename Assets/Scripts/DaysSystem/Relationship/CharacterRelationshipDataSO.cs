@@ -15,9 +15,12 @@ namespace Vanaring
         private CharacterSheetSO _characterSheetSO ;
         [SerializeField]
         private Sprite _characterSprite;
+        [SerializeField]
+        private string _characterDescription;
 
- 
+
         public Sprite GetCharacterSprite => _characterSprite;
+        public string GetCharacterDescription => _characterDescription;
 
 
         [Serializable]
