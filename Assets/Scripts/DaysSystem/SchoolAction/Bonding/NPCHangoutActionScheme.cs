@@ -15,6 +15,9 @@ namespace Vanaring
         [SerializeField]
         private CutsceneDirector _director;
 
+        [SerializeField]
+        private CutsceneDirector _tempUIPop ;
+
         //[SerializeField]
         //private PersonalityTraitRewardDisplayer _rewardDisplayer;
 
@@ -23,6 +26,7 @@ namespace Vanaring
 
         private void Start()
         {
+            _tempUIPop.gameObject.SetActive(false); 
             //_personalityRewards = PersistentSceneLoader.Instance.ExtractSavedData<List<PersonalityRewardData>>(PersistentSceneLoader.Instance.GetStackLoadedDataScene().GetSceneID()).GetData();
 
             //if (_personalityRewards == null)
@@ -38,6 +42,9 @@ namespace Vanaring
         public IEnumerator StartPlayingTimeline()
         {
             yield return _director.PlayCutscene();
+
+            _tempUIPop.gameObject.SetActive(true); 
+            yield return _tempUIPop.PlayCutscene(); 
 
             StartCoroutine(PostPerformActivity());
 
