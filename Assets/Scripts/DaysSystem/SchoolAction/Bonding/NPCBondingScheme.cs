@@ -50,6 +50,8 @@ namespace Vanaring
 
         public IEnumerator PostPerformActivity()
         {
+            Debug.Log("Post perform");
+
             //Display reward displayer 
             SubmitActionReward();
 
