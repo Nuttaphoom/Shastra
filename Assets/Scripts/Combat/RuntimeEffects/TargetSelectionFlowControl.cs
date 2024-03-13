@@ -297,7 +297,7 @@ namespace Vanaring
                            
                         
                         //_selectingTarget[0].GetComponent<EntityCameraManager>().EnableShoulderCamera();
-                        _validTargets = ArrangeEntityListInXAxis( _validTargets, _selectingTarget[0].GetComponent<EntityCameraManager>().GetRightVectorShoulderCam() );
+                        //_validTargets = ArrangeEntityListInXAxis( _validTargets, _selectingTarget[0].GetComponent<EntityCameraManager>().GetRightVectorShoulderCam() );
                         _selectingTarget.Clear(); 
                         _selectingTarget.Add(_validTargets[_currentSelectIndex]);
                         _selectingTarget[0].GetComponent<EntityCameraManager>().EnableShoulderCamera();
