@@ -23,7 +23,7 @@ namespace Vanaring
         /// <returns></returns>
         public override float GetEXPCap()
         { 
-            return  (float) 5 ;
+            return  (float) 6 ;
         }
 
         [Serializable]
