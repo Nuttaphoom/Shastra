@@ -2219,11 +2219,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 128421629}
   m_CullTransparentMesh: 0
---- !u!4 &132859435 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 422863253802712969, guid: 020e34f29e1254a47a783dfd0b7bbd3c, type: 3}
-  m_PrefabInstance: {fileID: 680568898}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &135287319
 GameObject:
   m_ObjectHideFlags: 0
@@ -3958,7 +3953,7 @@ Transform:
   m_Children:
   - {fileID: 1158423827}
   - {fileID: 204091712}
-  - {fileID: 132859435}
+  - {fileID: 680568899}
   m_Father: {fileID: 580880311}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -13955,6 +13950,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4211848866990917215, guid: 020e34f29e1254a47a783dfd0b7bbd3c, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 43347d1bb5fddd1409057ce06c5a477b, type: 2}
     - target: {fileID: 5442174224194596669, guid: 020e34f29e1254a47a783dfd0b7bbd3c, type: 3}
       propertyPath: m_Name
       value: Asha-Entity Ally Prefab
@@ -13968,14 +13967,34 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: b6df476e163f6c34998356688290d643, type: 2}
     - target: {fileID: 9139232750856232359, guid: 020e34f29e1254a47a783dfd0b7bbd3c, type: 3}
+      propertyPath: _head_position
+      value: 
+      objectReference: {fileID: 1364802420}
+    - target: {fileID: 9139232750856232359, guid: 020e34f29e1254a47a783dfd0b7bbd3c, type: 3}
       propertyPath: _timelineAnimationRootLocation
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1148591362}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 020e34f29e1254a47a783dfd0b7bbd3c, type: 3}
+--- !u!4 &680568899 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2055041419924217041, guid: 020e34f29e1254a47a783dfd0b7bbd3c, type: 3}
+  m_PrefabInstance: {fileID: 680568898}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &680568905 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5591972313678855088, guid: 020e34f29e1254a47a783dfd0b7bbd3c, type: 3}
+  m_PrefabInstance: {fileID: 680568898}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae437faf0a26dcf4d9f14f8e73c15e79, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &691952724
 GameObject:
   m_ObjectHideFlags: 0
@@ -14562,13 +14581,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9642066f4fed2354d856fee97de551f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _OnDebugMode: 0
+  _OnDebugMode: 1
   _enemyHUDWindowManager: {fileID: 882886739}
   _entityLoader: {fileID: 1386119686}
   _maxTeamSize: 3
   _competators:
   - _side: 0
-    _entity: {fileID: 0}
+    _entity: {fileID: 680568905}
   - _side: 0
     _entity: {fileID: 204091718}
   - _side: 0
@@ -26860,6 +26879,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1138266171}
   m_CullTransparentMesh: 1
+--- !u!4 &1148591362 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8695117341383232397, guid: 020e34f29e1254a47a783dfd0b7bbd3c, type: 3}
+  m_PrefabInstance: {fileID: 680568898}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1154677304
 GameObject:
   m_ObjectHideFlags: 0
@@ -32473,7 +32497,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32379dfbdd599a34ca13dac1b2902ec2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DebuggingMode: 0
+  DebuggingMode: 1
   _itemInventory:
   - itemData: {fileID: 11400000, guid: 3deb0a622cd9d844580049ce5ec43934, type: 2}
     amount: 1
@@ -33743,6 +33767,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1357441682}
   m_CullTransparentMesh: 0
+--- !u!4 &1364802420 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8339834221225485305, guid: 020e34f29e1254a47a783dfd0b7bbd3c, type: 3}
+  m_PrefabInstance: {fileID: 680568898}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1380101984
 GameObject:
   m_ObjectHideFlags: 0
