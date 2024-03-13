@@ -10,5 +10,6 @@ namespace Vanarin {
     [CreateAssetMenu(fileName = "HangoutCutsceneSceneDataSO", menuName = "ScriptableObject/SceneData/HangoutCutsceneSceneDataSO")]
     public class HangoutCutsceneSceneDataSO : SceneDataSO
     {
+
     }
 }
