@@ -23,14 +23,16 @@ namespace Vanaring
         private List<BonusTraitObject> reachBonusTraitObjectList = new List<BonusTraitObject>();
         [SerializeField]
         private GameObject bonusVerticalLayout;
-        
-        [Header("PopupRewardPanel")]
+
         private List<LectureChechpoint> obtainedRewardList = new List<LectureChechpoint>();
         private List<Sprite> obtainedRewardIcon = new List<Sprite>();
         private List<string> obtainedRewardName = new List<string>();
+        private List<string> obtainedRewardDes = new List<string>();
+        [Header("Popup Reward Panel")]
         [SerializeField] private GameObject popUpRewardPanel;
         [SerializeField] private Image popUpRewardIcon;
         [SerializeField] private TextMeshProUGUI popUpRewardInformText;
+        [SerializeField] private TextMeshProUGUI popUpRewardInformDesText;
 
         private List<LectureRewardObject> rewardObjList = new List<LectureRewardObject>();
         private LectureRewardStruct lectureProgressBarData;
@@ -162,6 +164,7 @@ namespace Vanaring
                     obtainedRewardList.Add(lectureProgressBarData.checkpoints[reachScoreIndex]);
                     obtainedRewardIcon.Add(rewardObjList[reachScoreIndex].GetRewardIconSprite);
                     obtainedRewardName.Add(rewardObjList[reachScoreIndex].GetRewardNameString);
+                    obtainedRewardDes.Add(rewardObjList[reachScoreIndex].GetRewardDesString);
                     if (reachScoreIndex < lectureProgressBarData.checkpoints.Count - 1)
                     {
                         reachScoreIndex++;
@@ -190,6 +193,7 @@ namespace Vanaring
                 popUpRewardPanel.SetActive(true);
                 popUpRewardIcon.sprite = obtainedRewardIcon[i];
                 popUpRewardInformText.text = obtainedRewardName[i];
+                popUpRewardInformDesText.text = obtainedRewardDes[i];
                 while (popUpRewardPanel.activeSelf)
                 {
                     yield return new WaitForEndOfFrame();
