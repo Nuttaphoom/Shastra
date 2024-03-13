@@ -38,6 +38,21 @@ namespace Vanaring
 
             foreach (SpellActionSO spellAction in spells)
             {
+                bool pass = false; 
+                foreach (var registeredSpell in _spellActions)
+                {
+                    if (registeredSpell.AbilityName == spellAction.AbilityName)
+                    {
+                        Debug.Log("Pass spell " + spellAction.AbilityName);
+                        pass = true;
+                        break; 
+                    }
+                }
+                if (pass)
+                    continue;
+
+
+                Debug.Log("Add spell " + spellAction.AbilityName); 
                 _spellActions.Add(spellAction);
             } 
 

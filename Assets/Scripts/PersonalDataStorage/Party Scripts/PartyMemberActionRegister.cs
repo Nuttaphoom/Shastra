@@ -40,8 +40,11 @@ namespace Vanaring
 
             for (int i = 0; i < uniqueID.Count; i++)
             {
-               _registeredSpellActions.Add( m_spellDatabase.GetRecord(uniqueID[i]) ) ;
+               
+                _registeredSpellActions.Add( m_spellDatabase.GetRecord(uniqueID[i]) ) ;
             }
+
+             
 
         }
 
