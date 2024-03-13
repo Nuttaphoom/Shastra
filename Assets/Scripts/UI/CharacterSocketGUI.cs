@@ -89,10 +89,15 @@ namespace Vanaring
 
         private void Update()
         {
-            Color imageColor = characterImg.color;
-            if (_combatEntity.IsExhausted) { imageColor.a = 0.7f; }
-            else { imageColor.a = 1.0f; }
-            characterImg.color = imageColor;
+            
+            if(_combatEntity != null)
+            {
+                Color imageColor = characterImg.color;
+                if (_combatEntity.IsExhausted) { imageColor.a = 0.7f; }
+                else { imageColor.a = 1.0f; }
+                characterImg.color = imageColor;
+            }
+            
         }
 
         public void Init(CombatEntity combatEntity)
