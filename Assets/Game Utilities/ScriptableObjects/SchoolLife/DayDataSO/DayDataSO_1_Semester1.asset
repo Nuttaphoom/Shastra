@@ -24,7 +24,7 @@ MonoBehaviour:
           _activityCutscene: {fileID: 11400000, guid: 4e7621518c97ae542a20f2ecdf90a8c4, type: 2}
           _personalityRewards:
           - _rewardTrait: 3
-            _rewardAmount: 5
+            _rewardAmount: 10
         _lectureParticipationActionCommand:
           _actionName: 
           _actionDescription: 
@@ -35,6 +35,28 @@ MonoBehaviour:
           _actionDescription: 
           _actionIconAsset: {fileID: 0}
           _characterRelationshipDataSO: {fileID: 0}
+        EnableAtMorning: 0
+        EnableAtNoon: 1
+        EnableAtNight: 0
+      - _commandType: 3
+        _loadLocationCommand:
+          _actionName: Exercise
+          _actionDescription: Do some exercise.
+          _actionIconAsset: {fileID: 21300000, guid: 8f4fb1fce0eb77c45bb3e62e7654e36a, type: 3}
+          _activityCutscene: {fileID: 11400000, guid: 4e7621518c97ae542a20f2ecdf90a8c4, type: 2}
+          _personalityRewards:
+          - _rewardTrait: 3
+            _rewardAmount: 5
+        _lectureParticipationActionCommand:
+          _actionName: 
+          _actionDescription: 
+          _actionIconAsset: {fileID: 0}
+          _availableLecture: []
+        _npcBondingActionCommand:
+          _actionName: Pear
+          _actionDescription: Meet Pear
+          _actionIconAsset: {fileID: 21300000, guid: ffa07e25474e95c4ca31d92c08a9f15a, type: 3}
+          _characterRelationshipDataSO: {fileID: 11400000, guid: c0c0defcc3a150045a7324fad27a7483, type: 2}
         EnableAtMorning: 1
         EnableAtNoon: 0
         EnableAtNight: 0
@@ -61,8 +83,8 @@ MonoBehaviour:
           _actionIconAsset: {fileID: 0}
           _characterRelationshipDataSO: {fileID: 0}
         EnableAtMorning: 0
-        EnableAtNoon: 1
-        EnableAtNight: 0
+        EnableAtNoon: 0
+        EnableAtNight: 1
       - _commandType: 1
         _loadLocationCommand:
           _actionName: Exercise
@@ -108,9 +130,9 @@ MonoBehaviour:
           _actionDescription: Meet Pear
           _actionIconAsset: {fileID: 21300000, guid: ffa07e25474e95c4ca31d92c08a9f15a, type: 3}
           _characterRelationshipDataSO: {fileID: 11400000, guid: c0c0defcc3a150045a7324fad27a7483, type: 2}
-        EnableAtMorning: 1
-        EnableAtNoon: 1
-        EnableAtNight: 1
+        EnableAtMorning: 0
+        EnableAtNoon: 0
+        EnableAtNight: 0
       - _commandType: 1
         _loadLocationCommand:
           _actionName: Study
