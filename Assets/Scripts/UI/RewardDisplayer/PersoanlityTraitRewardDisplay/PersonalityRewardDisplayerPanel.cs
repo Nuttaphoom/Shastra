@@ -28,6 +28,8 @@ namespace Vanaring
         [SerializeField] private GameObject levelUpPanel;
         [SerializeField] private Image levelUpTraitIcon;
         [SerializeField] private TextMeshProUGUI levelUpRewardText;
+        [SerializeField] private TextMeshProUGUI prevLevelUpRewardText;
+        [SerializeField] private TextMeshProUGUI nextlevelUpRewardText;
 
         private List<PersonalityRewardData> _personalityRewardList;
         
@@ -149,8 +151,9 @@ namespace Vanaring
             {
                 levelUpPanel.SetActive(true);
                 levelUpTraitIcon.sprite = personalityTrait.GetStat(displayTraitRewardList[i]).GetPersonalityTraitIcon;
-                levelUpRewardText.text = displayTraitRewardList[i].ToString() + " has reached rank " + 
-                    personalityTrait.GetStat(displayTraitRewardList[i]).Getlevel().ToString() + "!";
+                levelUpRewardText.text = displayTraitRewardList[i].ToString() + " rank up";
+                prevLevelUpRewardText.text = "Rank " + "<color=#ffde00>" + (personalityTrait.GetStat(displayTraitRewardList[i]).Getlevel()-1).ToString() + "</color>";
+                nextlevelUpRewardText.text = "Rank " + "<color=#ffde00>" + personalityTrait.GetStat(displayTraitRewardList[i]).Getlevel().ToString() + "</color>";
                 while (levelUpPanel.activeSelf)
                 {
                     yield return new WaitForEndOfFrame();
