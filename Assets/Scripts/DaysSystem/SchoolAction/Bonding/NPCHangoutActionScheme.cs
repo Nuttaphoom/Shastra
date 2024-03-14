@@ -24,7 +24,7 @@ namespace Vanaring
         List<PersonalityRewardData> _personalityRewards;
 
 
-        private void Start()
+        private void Awake()
         {
             _tempUIPop.gameObject.SetActive(false); 
             //_personalityRewards = PersistentSceneLoader.Instance.ExtractSavedData<List<PersonalityRewardData>>(PersistentSceneLoader.Instance.GetStackLoadedDataScene().GetSceneID()).GetData();
