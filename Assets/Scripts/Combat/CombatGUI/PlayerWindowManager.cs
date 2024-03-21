@@ -19,7 +19,7 @@ namespace Vanaring
         [SerializeField] private WeaponWindowGUI _weaponWindow;
         [SerializeField] private MainWindowGUI _mainWindow;
 
-        private WindowGUI _lastWindowOpen;
+        private CombatWindowGUI _lastWindowOpen;
 
         private void Start()
         {
@@ -38,9 +38,9 @@ namespace Vanaring
             CombatReferee.Instance.UnSubOnCombatPreparation(LoadNewEntityIntoHUD);
         }
 
-        private List<WindowGUI> GetAllValidWindows()
+        private List<CombatWindowGUI> GetAllValidWindows()
         {
-            List<WindowGUI> allWindows = new List<WindowGUI>() ;
+            List<CombatWindowGUI> allWindows = new List<CombatWindowGUI>() ;
             allWindows.Add(_spellWindow);
             allWindows.Add(_itemWindow);
             allWindows.Add(_weaponWindow);
@@ -59,7 +59,7 @@ namespace Vanaring
         }
 
         #region PrivateMethod
-        private void TryOpenWindow(WindowGUI newWindow)
+        private void TryOpenWindow(CombatWindowGUI newWindow)
         {
             if (newWindow.gameObject.activeSelf)
                 return;
@@ -81,7 +81,7 @@ namespace Vanaring
         #region PublicMethod
         public void OpenWindow(EWindowGUI newWindowType)
         {
-            WindowGUI windowToOpen = _mainWindow;
+            CombatWindowGUI windowToOpen = _mainWindow;
 
             if (newWindowType == EWindowGUI.Main)
             {

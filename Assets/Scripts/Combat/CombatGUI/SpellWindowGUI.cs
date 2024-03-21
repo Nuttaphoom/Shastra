@@ -9,7 +9,7 @@ using DG.Tweening;
 using TMPro;
 
 namespace Vanaring  { 
-    public class SpellWindowGUI : WindowGUI
+    public class SpellWindowGUI : CombatWindowGUI
     {
         [SerializeField] private SpellSocketGUI _spellSocket;
         [SerializeField] private Transform[] spellTransformList;

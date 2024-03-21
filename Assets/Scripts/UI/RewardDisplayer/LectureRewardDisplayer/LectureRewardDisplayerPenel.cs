@@ -130,7 +130,7 @@ namespace Vanaring
                 if (IsSettingUpSucessfully)
                 {
                     filledBar.fillAmount = finalScore;
-                    animationTime = 0.001f;
+                    animationTime = 0.00001f;
                 }
                 filledBar.fillAmount += 0.001f;
                 //Bonus Animation

@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Vanaring
 {
-    public class WeaponWindowGUI : WindowGUI
+    public class WeaponWindowGUI : CombatWindowGUI
     {
         public override void OnWindowActive()
         {

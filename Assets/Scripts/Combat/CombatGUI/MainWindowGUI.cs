@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 namespace Vanaring
 {
-    public class MainWindowGUI : WindowGUI
+    public class MainWindowGUI : CombatWindowGUI
     {
         [SerializeField]
         private Button _spellButton;

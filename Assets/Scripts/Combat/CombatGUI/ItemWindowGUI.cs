@@ -9,7 +9,7 @@ using TMPro;
 
 namespace Vanaring
 {
-    public class ItemWindowGUI : WindowGUI
+    public class ItemWindowGUI : CombatWindowGUI
     {
         [SerializeField]
         private ItemSocketGUI _itemSocketTemplate;
