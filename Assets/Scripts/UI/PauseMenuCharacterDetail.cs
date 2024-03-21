@@ -44,7 +44,7 @@ namespace Vanaring
         {
             if (key == KeyCode.Escape)
             {
-                _windowManager.OpenWindow(EWindowGUI.Character);
+                //_windowManager.OpenWindow(EWindowGUI.Character);
             }
             else if (key == KeyCode.Space)
             {

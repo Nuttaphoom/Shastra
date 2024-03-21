@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace Vanaring
 {
-    public abstract class CombatWindowGUI : MonoBehaviour
+    public abstract class CombatWindowGUI : WindowGUI
     {
         protected PlayerWindowManager _windowManager;
 
@@ -21,12 +21,6 @@ namespace Vanaring
             _windowManager = windowManager;
         }
 
-        public abstract void ClearData();
-        public abstract void OnWindowActive();
-        public abstract void OnWindowDeActive();
-        public abstract void LoadWindowData(CombatEntity entity);
-
-        public abstract void ReceiveKeysFromWindowManager(KeyCode key);
     }
 
     public enum EWindowGUI
