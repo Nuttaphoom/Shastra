@@ -64,6 +64,9 @@ namespace Vanaring
                     case LocationName.Classroom:
                         locationIndex = 3;
                         break;
+                    case LocationName.Dungeon:
+                        locationIndex = 4;
+                        break; 
                     //case LocationName.Cottage:
                     //    locationIndex = 3;
                     //    break;

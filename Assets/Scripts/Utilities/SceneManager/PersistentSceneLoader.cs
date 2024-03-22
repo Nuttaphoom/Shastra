@@ -251,9 +251,9 @@ namespace Vanaring
 
             PersistentSaveLoadManager.Instance.RestoreFromTemp();
 
-            yield return PersistentSceneLoader.Instance.NotifySceneLoadingComplete();
-
             PersistentSceneLoader.Instance.OnCompleteLoadedNewLocationScene(operation);
+
+            yield return PersistentSceneLoader.Instance.NotifySceneLoadingComplete();
 
             GetEventBroadcaster().InvokeEvent<Null>(null, "OnSceneLoaderComplete");
 

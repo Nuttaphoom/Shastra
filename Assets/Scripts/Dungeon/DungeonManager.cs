@@ -4,18 +4,67 @@ using UnityEngine;
 
 namespace Vanaring
 {
-    public class DungeonManager : MonoBehaviour
+    public class DungeonManager : MonoBehaviour, ISceneLoaderWaitForSignal
     {
-        // Start is called before the first frame update
-        void Start()
+        [SerializeField]
+        private BaseDungeonNode _firstDungeonNode;
+
+        [SerializeField]
+        private BaseDungeonNode _currentDungeonNode;
+
+        [SerializeField]
+        private List<BaseDungeonNode> _dungeonNodes;
+
+        [SerializeField]
+        private Transform _cameraPivot;
+
+
+        private void Awake()
         {
-        
+            StartCoroutine(SetUpDungeon());
+        } 
+
+        private IEnumerator SetUpDungeon()
+        {
+            yield return VisiteNextNode(_firstDungeonNode);
+        } 
+
+        public IEnumerator VisiteNextNode(BaseDungeonNode nodeToVisit)
+        {
+            if (_currentDungeonNode != null)
+            {
+                if (!_currentDungeonNode.IsConnectedNode(nodeToVisit))
+                    goto End;
+            }
+
+            _currentDungeonNode = nodeToVisit;
+
+            Vector3 prevCamPos = _cameraPivot.position;
+            float progression = 0;
+            while (progression < 1)
+            {
+                _cameraPivot.transform.position = Vector3.Lerp(prevCamPos, nodeToVisit.transform.position, progression);
+                progression += Time.deltaTime / 2 ;
+
+                yield return null; 
+
+            }
+
+            _cameraPivot.transform.position = nodeToVisit.transform.position; 
+
+            //yield return until transition visual is done 
+             
+
+            yield return _currentDungeonNode.OnVisiteThisNode() ;
+
+
+        End:
+            yield return null; 
         }
 
-        // Update is called once per frame
-        void Update()
+        public IEnumerator OnNotifySceneLoadingComplete()
         {
-        
+            yield return SetUpDungeon() ; 
         }
     }
 }

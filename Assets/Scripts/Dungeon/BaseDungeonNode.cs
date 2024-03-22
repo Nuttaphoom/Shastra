@@ -6,14 +6,36 @@ namespace Vanaring
 {
 
    
-    public abstract class BaseDungeonNode : MonoBehaviour
+    public class BaseDungeonNode : MonoBehaviour
     {
         private bool _isVisited = false;
 
         [SerializeField]
         private List<BaseDungeonNode> _connectedNode ;
 
+        [SerializeField]
+        private NodeVisualTransitionHandler _nodeVisualTransitionHandler;
+
+        private DungeonNodeTransitionManager _dungeonNodeTransitionManager;
+
+
+
         #region GETTER 
+        protected DungeonNodeTransitionManager GetDungeonNodeTransitionManager
+        {
+            get
+            {
+                if (_dungeonNodeTransitionManager == null)
+                    _dungeonNodeTransitionManager = FindObjectOfType<DungeonNodeTransitionManager>();
+
+                return _dungeonNodeTransitionManager ;
+            }
+        }
+        public NodeVisualTransitionHandler NodeVisualTransitionHandler
+        {
+            get { return _nodeVisualTransitionHandler ; }
+
+        }
         public List<BaseDungeonNode> ConnectedNode
         {
             get {
@@ -25,6 +47,38 @@ namespace Vanaring
         }
 
         #endregion
-        public abstract IEnumerator OnVisiteThisNode();
+        public virtual IEnumerator OnVisiteThisNode()
+        {
+            if (!_isVisited)
+            {
+                _isVisited = true;
+            }
+
+            yield return SetUpNodeTransitions() ; 
+
+         }
+
+        private IEnumerator SetUpNodeTransitions()
+        {
+            foreach (BaseDungeonNode node in _connectedNode)
+            {
+                yield return GetDungeonNodeTransitionManager.SetUpDungeonNodeTransition(this, node); 
+            }
+
+            yield return null; 
+        }
+
+        public bool IsConnectedNode(BaseDungeonNode nextNode)
+        {
+            foreach (var node in ConnectedNode)
+            {
+                if (nextNode == node) 
+                    return true ;
+            }
+
+            return false;
+        }
+
+         
     }
 }
