@@ -1,24 +1,28 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Vanaring
 {
     public class PauseMenuWindowManager : MonoBehaviour, IInputReceiver
     {
         [SerializeField] private PauseMenuCharacterDetail _characterDetail;
+        [SerializeField] private Button resumeButton;
+        [SerializeField] private Button characterDetailButton;
 
-        private WindowGUI _lastWindowOpen;
+        private PauseMenuWindowGUI _lastWindowOpen;
 
         private void Start()
         {
-            //CombatReferee.Instance.SubOnCombatPreparation(LoadNewEntityIntoHUD);
 
+            //CombatReferee.Instance.SubOnCombatPreparation(LoadNewEntityIntoHUD);
+            characterDetailButton.onClick.AddListener(()=>OpenWindow(EPauseWindowGUI.Character));
             //TargetSelectionFlowControl.Instance.SubOnTargetSelectionEnter(OnTargetSelectionEnter);
             //TargetSelectionFlowControl.Instance.SubOnTargetSelectionEnd(OnTargetSelectionEnd);//.SubEvent<bool>(OnTargetSelectionEnd, "OnTargetSelectionEnd");
 
-            //foreach (var window in GetAllValidWindows())
-            //    window.Init(this);
+            foreach (var window in GetAllValidWindows())
+                window.Init(this);
 
         }
 
@@ -27,13 +31,10 @@ namespace Vanaring
             //CombatReferee.Instance.UnSubOnCombatPreparation(LoadNewEntityIntoHUD);
         }
 
-        private List<WindowGUI> GetAllValidWindows()
+        private List<PauseMenuWindowGUI> GetAllValidWindows()
         {
-            List<WindowGUI> allWindows = new List<WindowGUI>();
+            List<PauseMenuWindowGUI> allWindows = new List<PauseMenuWindowGUI>();
             allWindows.Add(_characterDetail);
-            //allWindows.Add(_itemWindow);
-            //allWindows.Add(_weaponWindow);
-            //allWindows.Add(_mainWindow);
 
             return allWindows;
         }
@@ -48,7 +49,7 @@ namespace Vanaring
         //}
 
         #region PrivateMethod
-        private void TryOpenWindow(WindowGUI newWindow)
+        private void TryOpenWindow(PauseMenuWindowGUI newWindow)
         {
             if (newWindow.gameObject.activeSelf)
                 return;
@@ -68,59 +69,46 @@ namespace Vanaring
         #endregion
 
         #region PublicMethod
-        //public void OpenWindow(EWindowGUI newWindowType)
-        //{
-        //    WindowGUI windowToOpen = _mainWindow;
+        public void OpenWindow(EPauseWindowGUI newWindowType)
+        {
+            PauseMenuWindowGUI windowToOpen = _characterDetail;
 
-        //    if (newWindowType == EWindowGUI.Main)
-        //    {
-        //        windowToOpen = _mainWindow;
-        //    }
-        //    else if (newWindowType == EWindowGUI.Spell)
-        //    {
-        //        windowToOpen = _spellWindow;
+            if(newWindowType == EPauseWindowGUI.Character)
+            {
+                windowToOpen = _characterDetail;
+            }
 
-        //    }
-        //    else if (newWindowType == EWindowGUI.Item)
-        //    {
-        //        windowToOpen = _itemWindow;
-        //    }
-        //    else if (newWindowType == EWindowGUI.Weapon)
-        //    {
-        //        windowToOpen = _weaponWindow;
-        //    }
+            TryOpenWindow(windowToOpen);
 
-        //    TryOpenWindow(windowToOpen);
+        }
 
-        //}
+        public void SetUpWindows(CombatEntity entity)
+        {
+            foreach (var window in GetAllValidWindows())
+                window.ClearData();
 
-        //public void SetUpWindows(CombatEntity entity)
-        //{
-        //    foreach (var window in GetAllValidWindows())
-        //        window.ClearData();
+            foreach (var window in GetAllValidWindows())
+                window.LoadWindowData(entity);
 
-        //    foreach (var window in GetAllValidWindows())
-        //        window.LoadWindowData(entity);
+            //OpenWindow(EWindowGUI.Main);
 
-        //    OpenWindow(EWindowGUI.Main);
+            CentralInputReceiver.Instance().AddInputReceiverIntoStack(this);
 
-        //    CentralInputReceiver.Instance().AddInputReceiverIntoStack(this);
+        }
 
-        //}
+        public void CloseWindow(CombatEntity combatEntity = null)
+        {
+            CentralInputReceiver.Instance().RemoveInputReceiverIntoStack(this);
 
-        //public void CloseWindow(CombatEntity combatEntity = null)
-        //{
-        //    CentralInputReceiver.Instance().RemoveInputReceiverIntoStack(this);
-
-        //    if (_lastWindowOpen != null)
-        //        return;
+            if (_lastWindowOpen != null)
+                return;
 
 
-        //    _lastWindowOpen.OnWindowDeActive();
-        //    HideCurrentWindow();
-        //    _lastWindowOpen = null;
+            _lastWindowOpen.OnWindowDeActive();
+            HideCurrentWindow();
+            _lastWindowOpen = null;
 
-        //}
+        }
 
         public void DisplayCurrentWindow()
         {
@@ -150,14 +138,14 @@ namespace Vanaring
 
         private void OnTargetSelectionEnd(bool sucessfullySelect)
         {
-            //if (sucessfullySelect)
-            //{
-            //    CloseWindow();
-            //}
-            //else
-            //{
-            //    DisplayCurrentWindow();
-            //}
+            if (sucessfullySelect)
+            {
+                CloseWindow();
+            }
+            else
+            {
+                DisplayCurrentWindow();
+            }
         }
 
         #endregion

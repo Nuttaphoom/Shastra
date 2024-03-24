@@ -7,7 +7,7 @@ using TMPro;
 
 namespace Vanaring
 {
-    public class PauseMenuCharacterDetail : WindowGUI
+    public class PauseMenuCharacterDetail : PauseMenuWindowGUI
     {
         [SerializeField] private Image characterPortrait;
         [SerializeField] private Image hpFillBar;
@@ -42,14 +42,14 @@ namespace Vanaring
 
         public override void ReceiveKeysFromWindowManager(KeyCode key)
         {
-            if (key == KeyCode.Escape)
-            {
-                //_windowManager.OpenWindow(EWindowGUI.Character);
-            }
-            else if (key == KeyCode.Space)
-            {
+            //if (key == KeyCode.Escape)
+            //{
+            //    _pauseMenuWindowGUI.OpenWindow(EPauseWindowGUI.Character);
+            //}
+            //else if (key == KeyCode.Space)
+            //{
                 
-            }
+            //}
         }
     }
 }
