@@ -4,25 +4,19 @@ using UnityEngine;
 
 namespace Vanaring
 {
-    public class DungeonManager : MonoBehaviour, ISceneLoaderWaitForSignal 
+    public class DungeonManager : MonoBehaviour 
     {
-        [SerializeField]
-        private BaseDungeonNode _firstDungeonNode;
-
         [SerializeField]
         private BaseDungeonNode _currentDungeonNode;
 
         [SerializeField]
         private Transform _cameraPivot;
 
-        private void Awake()
-        {
-            StartCoroutine(SetUpDungeon());
-        } 
+    
 
-        private IEnumerator SetUpDungeon()
+        public IEnumerator SetUpDungeonCoroutine(BaseDungeonNode firstNodeToStart)
         {
-            yield return VisiteNextNode(_firstDungeonNode);
+            yield return VisiteNextNode(firstNodeToStart);
         } 
 
         public IEnumerator VisiteNextNode(BaseDungeonNode nodeToVisit)
@@ -67,9 +61,6 @@ namespace Vanaring
             yield return null; 
         }
 
-        public IEnumerator OnNotifySceneLoadingComplete()
-        {
-            yield return SetUpDungeon() ; 
-        }
+        
     }
 }

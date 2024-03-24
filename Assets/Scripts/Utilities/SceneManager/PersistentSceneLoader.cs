@@ -204,6 +204,16 @@ namespace Vanaring
         }
 
         #region IAwakeable Call
+        public IEnumerator OnNewSceneLoad_BeforeSaveLoadPerform()
+        {
+            foreach (var awakeable in FindObjectsOfType<MonoBehaviour>())
+            {
+                if (awakeable is ISceneLoaderWaitForSignal)
+                {
+                    yield return (awakeable as ISceneLoaderWaitForSignal).OnNewSceneLoad_BeforeSaveLoadPerform();
+                }
+            }
+        }
         public IEnumerator NotifySceneLoadingComplete()
         {
             foreach (var awakeable in FindObjectsOfType<MonoBehaviour>())
@@ -247,6 +257,9 @@ namespace Vanaring
 
                 yield return null;
             }
+
+
+            yield return PersistentSceneLoader.Instance.OnNewSceneLoad_BeforeSaveLoadPerform(); 
 
             PersistentSaveLoadManager.Instance.RestoreFromTemp();
 

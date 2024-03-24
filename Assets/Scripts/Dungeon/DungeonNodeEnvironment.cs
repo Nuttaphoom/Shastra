@@ -12,7 +12,7 @@ namespace Vanaring
     {
         public bool IsVisited;
     }
-    public class DungeonNodeEnvironment : MonoBehaviour, ISaveable
+    public class DungeonNodeEnvironment : MonoBehaviour, ISaveable  
     {
         
         [SerializeField]
@@ -26,6 +26,13 @@ namespace Vanaring
         [SerializeField]
         private SceneDataSO _TEST_Map_sceneData ;
 
+        public BaseDungeonNode GetFirstNode
+        {
+            get
+            {
+                return _baseDungeonNode[0]; 
+            }
+        }
         private void Update()
         {
             if (Input.GetKeyDown(KeyCode.W))
@@ -33,9 +40,6 @@ namespace Vanaring
                 PersistentSceneLoader.Instance.LoadGeneralScene(_TEST_Map_sceneData); 
             }
         }
-
-      
-
          
         public object CaptureState()
         {
@@ -47,9 +51,6 @@ namespace Vanaring
                  
             }
 
-
-            Debug.Log("captured after .count : " + _nodeRuntimeData.Count);
-
             return _nodeRuntimeData; 
 
         }
@@ -60,12 +61,10 @@ namespace Vanaring
 
             for (int i = 0; i < _baseDungeonNode.Count; i++)
             {
-                Debug.Log("_nodeRuntimeData.count : " + _nodeRuntimeData.Count);
                 _baseDungeonNode[i].RestoreNodeData(_nodeRuntimeData[i]) ;
-                
-
-
             }
         }
+
+         
     }
 }
