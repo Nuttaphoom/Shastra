@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 namespace Vanaring
@@ -17,8 +18,6 @@ namespace Vanaring
         private NodeVisualTransitionHandler _nodeVisualTransitionHandler;
 
         private DungeonNodeTransitionManager _dungeonNodeTransitionManager;
-
-
 
         #region GETTER 
         protected DungeonNodeTransitionManager GetDungeonNodeTransitionManager
@@ -46,7 +45,20 @@ namespace Vanaring
             }
         }
 
-        #endregion
+        #endregion  
+
+        public virtual IEnumerator OnLeaveThisNode()
+        {
+            if (!_isVisited)
+            {
+                throw new System.Exception("This node hasn't never been visited " ) ;
+            }
+
+            ClearUpNodeTransitions() ;
+
+            yield return null; 
+        }
+
         public virtual IEnumerator OnVisiteThisNode()
         {
             if (!_isVisited)
@@ -66,6 +78,12 @@ namespace Vanaring
             }
 
             yield return null; 
+        }
+
+        private void ClearUpNodeTransitions()
+        {
+            GetDungeonNodeTransitionManager.ClearDungeonNodeTransition();
+
         }
 
         public bool IsConnectedNode(BaseDungeonNode nextNode)

@@ -33,16 +33,25 @@ namespace Vanaring
         {
             if (_currentDungeonNode != null)
             {
+
+                //check if the next node is connected
                 if (!_currentDungeonNode.IsConnectedNode(nodeToVisit))
+                {
+
                     goto End;
+                }
+                yield return _currentDungeonNode.OnLeaveThisNode();
             }
+
 
             _currentDungeonNode = nodeToVisit;
 
             Vector3 prevCamPos = _cameraPivot.position;
-            float progression = 0;
+            float progression = 0; 
+
             while (progression < 1)
             {
+
                 _cameraPivot.transform.position = Vector3.Lerp(prevCamPos, nodeToVisit.transform.position, progression);
                 progression += Time.deltaTime / 2 ;
 

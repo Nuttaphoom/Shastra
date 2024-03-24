@@ -23,17 +23,6 @@ namespace Vanaring
             _nodeTransitions = new List<NodeTransition>(); 
         }
 
-        private void Update()
-        {
-            foreach (NodeTransition nodeTransition in _nodeTransitions)
-            {
-                NodeTransitionData data;
-                if ( ( data = nodeTransition.ReceiveTransitionSignal() ) != null) {
-                    StartCoroutine(FindObjectOfType<DungeonManager>().VisiteNextNode(data.DestinationNode )) ;
-                }
-            }
-        }
-
         public IEnumerator SetUpDungeonNodeTransition(BaseDungeonNode startNode, BaseDungeonNode destinationNode)
         {
             TransitionDirection direction = CalculateTransitionDirect(startNode, destinationNode);
@@ -47,6 +36,21 @@ namespace Vanaring
 
             yield return null;
         } 
+
+        public void ClearDungeonNodeTransition()
+        {
+            Debug.Log("node.count : " + _nodeTransitions.Count); 
+
+            for (int i =  _nodeTransitions.Count - 1; i >= 0; i--)
+            {
+                //Debug.Log("check for node transition"); 
+                NodeTransition nodeTransition = _nodeTransitions[i];
+                _nodeTransitions.RemoveAt(i);
+                Destroy(nodeTransition.gameObject);
+                
+            }
+
+        }
         
         private TransitionDirection CalculateTransitionDirect(BaseDungeonNode startNode, BaseDungeonNode destinationNode)
         {

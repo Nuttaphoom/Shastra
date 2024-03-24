@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UI;
@@ -19,7 +20,7 @@ namespace Vanaring
         private bool _useTransition = false; 
         #region GETTER 
 
-        public NodeTransitionData ReceiveTransitionData{
+        public NodeTransitionData ReceiveTransitionData {
             get
             {
                 if (! _isSetup)
@@ -47,21 +48,21 @@ namespace Vanaring
 
         private void EnableTransition()
         {
-            _useTransition = true; 
+            _useTransition = true;
+
+            FindObjectOfType<DungeonManager>().StartCoroutine(FindObjectOfType<DungeonManager>().VisiteNextNode(transitionData.DestinationNode));
+
         }
 
-        public NodeTransitionData ReceiveTransitionSignal()
-        {
-            if (_useTransition == true) 
-                return transitionData;
 
-            return null; 
-        }
+       
          
         public class NodeTransitionData
         {
             public BaseDungeonNode DestinationNode;
             public BaseDungeonNode StartNode;
         }
+
+        
     }
 }
