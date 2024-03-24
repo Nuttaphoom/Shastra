@@ -7,7 +7,7 @@ using TMPro;
 
 namespace Vanaring
 {
-    public class PauseMenuCharacterDetail : WindowGUI
+    public class PauseMenuCharacterDetail : PauseMenuWindowGUI
     {
         [SerializeField] private Image characterPortrait;
         [SerializeField] private Image hpFillBar;
@@ -18,7 +18,7 @@ namespace Vanaring
         private List<SpellActionSO> spellRegiteredList = new List<SpellActionSO>();
         public override void ClearData()
         {
-            throw new System.NotImplementedException();
+            
         }
 
         public override void LoadWindowData(CombatEntity entity)
@@ -44,12 +44,12 @@ namespace Vanaring
         {
             if (key == KeyCode.Escape)
             {
-                //_windowManager.OpenWindow(EWindowGUI.Character);
+                _pauseMenuWindowGUI.OpenWindow(EPauseWindowGUI.Party);
             }
-            else if (key == KeyCode.Space)
-            {
-                
-            }
+            //else if (key == KeyCode.Space)
+            //{
+
+            //}
         }
     }
 }
