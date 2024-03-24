@@ -109,7 +109,7 @@ namespace Vanaring
         {
             Instance = this;
 
-            _sideTurnDisplayerManager = FindObjectOfType<SideTurnDisplayerManager>(); 
+            _sideTurnDisplayerManager = FindObjectOfType<SideTurnDisplayerManager>();  
             if (_sideTurnDisplayerManager == null)
                 throw new Exception("SideTurnDisplayerManager CANNOT be found"); 
 
@@ -118,28 +118,45 @@ namespace Vanaring
             _combatRefereeStateHandler = new CombatRefereeStateHandler(this);
         }
 
-        private void Start()
-        {
-            StartCoroutine(InitializeCombat()); 
-        }
+         
 
         #region SettingUpRound
-        private IEnumerator InitializeCombat()
+        public IEnumerator InitializeCombat()
         {
+
             if (! _OnDebugMode)
             {
+                //Load party member into combat
+                yield return LoadAllyEntityRuntimeData();
+                //Set up party member and inventory from database
                 yield return LoadDataFromDatabase();
-                yield return PlayCombatIntroTimeline();
+
             }
-            yield return BeginNewBattle();
+
+            yield return SetUpNewCombatEncounter();
+
         }
 
-        private IEnumerator PlayCombatIntroTimeline()
+        public void BeginNewBattle()
         {
-            Debug.LogWarning("No Combat Intro");
-            yield return null; 
+            //yield return new WaitForSeconds(1.0f);
+
+            GetEventBroadcaster().InvokeEvent<Null>(null, "OnCombatPreparation"); //b <Null>("OnCombatPreparation
+
+            StartCoroutine(CustomTick());
+
         }
 
+        private IEnumerator LoadAllyEntityRuntimeData()
+        {
+            List<CombatEntity> entities = new List<CombatEntity>();
+            foreach (CombatEntity entity in PersistentPlayerPersonalDataManager.Instance.PartyMemberDataLocator.GetCombatEntityPrefabInParty())
+            {
+                entities.Add(Instantiate(entity, transform) as CombatEntity);
+            }
+
+            yield return AssignCompetators(entities, ECompetatorSide.Ally); 
+        }
         private IEnumerator LoadDataFromDatabase()
         {
 
@@ -151,21 +168,7 @@ namespace Vanaring
             yield return null;
         }
 
-        private IEnumerator BeginNewBattle()
-        { 
-
-            yield return SetUpNewCombatEncounter();
-
-            //yield return new WaitForSeconds(1.0f);
-
-
-            GetEventBroadcaster().InvokeEvent<Null>(null, "OnCombatPreparation"); //b <Null>("OnCombatPreparation
-
-            StartCoroutine(CustomTick());
-
-
-
-        }
+       
         private IEnumerator SetUpNewCombatEncounter()
         {
             // Call the GenerateEntityAttacher method with the lists
@@ -175,9 +178,10 @@ namespace Vanaring
             ///TODO : Make AssignCompetators to assign of the loaded object  
             foreach (CombatEntity entity in GetCompetatorsBySide(ECompetatorSide.Ally))
             {
-                yield return entity.PrepareForCombat(); 
+                yield return entity.PrepareForCombat();
                 GetEventBroadcaster().InvokeEvent<CombatEntity>(entity, "OnCompetitorEnterCombat");
             }
+
             yield return AssignCompetators(_entityLoader.LoadData(), ECompetatorSide.Hostile);
         }
 

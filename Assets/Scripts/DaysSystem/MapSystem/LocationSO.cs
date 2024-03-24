@@ -80,6 +80,7 @@ namespace Vanaring
         SchoolMap,
         Dorm, 
         SchoolField, 
-        Classroom
+        Classroom,
+        Dungeon
     }
 }

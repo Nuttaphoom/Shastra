@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Vanaring
 {
-    public class DungeonNodeCanvas : MonoBehaviour
+    public class DungeonNodeEnvironment : MonoBehaviour
     {
         
     }

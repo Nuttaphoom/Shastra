@@ -23,7 +23,7 @@ namespace Vanaring
 
         public override IEnumerator InitializeEntityIntoCombat()
         {
-            throw new NotImplementedException() ; 
+            yield return null; 
         } 
 
 

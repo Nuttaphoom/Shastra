@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 
 namespace Vanaring
 {
@@ -11,7 +12,6 @@ namespace Vanaring
 
     public class CombatCharacterSheetSO : CharacterSheetSO 
     {
-
         [Header("Peak HP of this entity")]
         [SerializeField]
         private int _HP;
@@ -31,13 +31,26 @@ namespace Vanaring
         [Header("Character Sprite")]
         [SerializeField]
         private  Sprite _characterIconGUI;
+    
+        [SerializeField]
+        private AssetReferenceT<GameObject> _combatEntityPrefabAddress;
 
         public AilmentResistantDataInfo ResistantData => _ailmentResistantDataInfo;
 
         public Sprite GetCharacterIcon => _characterIconGUI;
         public int GetHP => _HP;
         public int GetATK => _ATK;
-
         public int GetMP => _MP;
+
+        public GameObject GetCombatEntityPrefab
+        {
+            get
+            {
+                if (_combatEntityPrefabAddress == null)
+                    throw new Exception("" + name + "combat entity prefab address hasn't never been asisigned");
+
+                return PersistentAddressableResourceLoader.Instance.LoadResourceOperation<GameObject>(_combatEntityPrefabAddress) ; 
+            }
+        }
     }
 }
