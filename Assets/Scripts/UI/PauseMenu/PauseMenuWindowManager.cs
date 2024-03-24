@@ -8,6 +8,7 @@ namespace Vanaring
     public class PauseMenuWindowManager : MonoBehaviour, IInputReceiver
     {
         [SerializeField] private PauseMenuCharacterDetail _characterDetail;
+        [SerializeField] private PauseMenuMainPanel _mainPause;
         [SerializeField] private Button resumeButton;
         [SerializeField] private Button characterDetailButton;
 
@@ -15,20 +16,11 @@ namespace Vanaring
 
         private void Start()
         {
-
-            //CombatReferee.Instance.SubOnCombatPreparation(LoadNewEntityIntoHUD);
-            characterDetailButton.onClick.AddListener(()=>OpenWindow(EPauseWindowGUI.Character));
-            //TargetSelectionFlowControl.Instance.SubOnTargetSelectionEnter(OnTargetSelectionEnter);
-            //TargetSelectionFlowControl.Instance.SubOnTargetSelectionEnd(OnTargetSelectionEnd);//.SubEvent<bool>(OnTargetSelectionEnd, "OnTargetSelectionEnd");
+            characterDetailButton.onClick.AddListener(()=>OpenWindow(EPauseWindowGUI.Party));
 
             foreach (var window in GetAllValidWindows())
                 window.Init(this);
 
-        }
-
-        private void OnDisable()
-        {
-            //CombatReferee.Instance.UnSubOnCombatPreparation(LoadNewEntityIntoHUD);
         }
 
         private List<PauseMenuWindowGUI> GetAllValidWindows()
@@ -38,15 +30,6 @@ namespace Vanaring
 
             return allWindows;
         }
-
-        //private void LoadNewEntityIntoHUD(Null n)
-        //{
-        //    foreach (var entity in CombatReferee.Instance.GetCompetatorsBySide(ECompetatorSide.Ally))
-        //    {
-        //        entity.SubOnTakeControlEvent(SetUpWindows);
-        //        entity.SubOnTakeControlLeaveEvent(CloseWindow);
-        //    }
-        //}
 
         #region PrivateMethod
         private void TryOpenWindow(PauseMenuWindowGUI newWindow)
@@ -71,24 +54,30 @@ namespace Vanaring
         #region PublicMethod
         public void OpenWindow(EPauseWindowGUI newWindowType)
         {
-            PauseMenuWindowGUI windowToOpen = _characterDetail;
+            PauseMenuWindowGUI windowToOpen = _mainPause;
 
-            if(newWindowType == EPauseWindowGUI.Character)
+            if(newWindowType == EPauseWindowGUI.Party)
             {
                 windowToOpen = _characterDetail;
+            }
+            else if (newWindowType == EPauseWindowGUI.Main)
+            {
+                windowToOpen = _mainPause;
             }
 
             TryOpenWindow(windowToOpen);
 
         }
 
-        public void SetUpWindows(CombatEntity entity)
+
+
+        public void SetUpWindows()
         {
             foreach (var window in GetAllValidWindows())
                 window.ClearData();
 
-            foreach (var window in GetAllValidWindows())
-                window.LoadWindowData(entity);
+            //foreach (var window in GetAllValidWindows())
+            //    window.LoadWindowData(entity);
 
             //OpenWindow(EWindowGUI.Main);
 

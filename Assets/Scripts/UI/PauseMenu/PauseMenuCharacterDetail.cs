@@ -18,7 +18,7 @@ namespace Vanaring
         private List<SpellActionSO> spellRegiteredList = new List<SpellActionSO>();
         public override void ClearData()
         {
-            throw new System.NotImplementedException();
+            
         }
 
         public override void LoadWindowData(CombatEntity entity)
@@ -42,13 +42,13 @@ namespace Vanaring
 
         public override void ReceiveKeysFromWindowManager(KeyCode key)
         {
-            //if (key == KeyCode.Escape)
-            //{
-            //    _pauseMenuWindowGUI.OpenWindow(EPauseWindowGUI.Character);
-            //}
+            if (key == KeyCode.Escape)
+            {
+                _pauseMenuWindowGUI.OpenWindow(EPauseWindowGUI.Party);
+            }
             //else if (key == KeyCode.Space)
             //{
-                
+
             //}
         }
     }

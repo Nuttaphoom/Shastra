@@ -14,11 +14,14 @@ namespace Vanaring
             {
                 if (pauseMenuGFX.activeSelf)
                 {
-                    pauseMenuGFX.SetActive(false);
+                    Debug.Log("Close Pause");
+                    _pauseMenuWindowManager.HideCurrentWindow();
                 }
                 else
                 {
-                    pauseMenuGFX.SetActive(true);
+                    Debug.Log("Open Pause");
+                    _pauseMenuWindowManager.OpenWindow(EPauseWindowGUI.Main);
+                    _pauseMenuWindowManager.SetUpWindows();
                 }
             }
         }

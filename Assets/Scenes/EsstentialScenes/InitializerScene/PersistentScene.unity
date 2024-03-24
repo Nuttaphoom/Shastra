@@ -2178,7 +2178,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8749034520258798602, guid: 1fd4536d19903b64397b8e548fcbcf05, type: 3}
       propertyPath: m_Name
-      value: CharacterDetailListPanel_Canvas
+      value: CharacterDetailListPanel
       objectReference: {fileID: 0}
     - target: {fileID: 8749034520258798602, guid: 1fd4536d19903b64397b8e548fcbcf05, type: 3}
       propertyPath: m_IsActive
@@ -2873,6 +2873,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _characterDetail: {fileID: 1150265588}
+  _mainPause: {fileID: 1737217556}
   resumeButton: {fileID: 1737217552}
   characterDetailButton: {fileID: 1737217553}
 --- !u!114 &1349283009
@@ -2888,7 +2889,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _pauseMenuWindowManager: {fileID: 1349283008}
-  pauseMenuGFX: {fileID: 1737217554}
+  pauseMenuGFX: {fileID: 1737217555}
 --- !u!1 &1358214039
 GameObject:
   m_ObjectHideFlags: 0
@@ -3448,11 +3449,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4573846946361879747, guid: ead64765ed49ccc49a0eedb1b07f3061, type: 3}
       propertyPath: m_Name
-      value: PauseMenuPanel_Canvas
+      value: PauseMenuMainPanel
       objectReference: {fileID: 0}
     - target: {fileID: 4573846946361879747, guid: ead64765ed49ccc49a0eedb1b07f3061, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4720270081820665278, guid: ead64765ed49ccc49a0eedb1b07f3061, type: 3}
       propertyPath: m_AnchorMax.y
@@ -3576,12 +3577,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8410463660162264872, guid: ead64765ed49ccc49a0eedb1b07f3061, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4573846946361879747, guid: ead64765ed49ccc49a0eedb1b07f3061, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1737217556}
   m_SourcePrefab: {fileID: 100100000, guid: ead64765ed49ccc49a0eedb1b07f3061, type: 3}
 --- !u!224 &1737217551 stripped
 RectTransform:
@@ -3610,11 +3614,39 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &1737217554 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8410463660162264872, guid: ead64765ed49ccc49a0eedb1b07f3061, type: 3}
+--- !u!114 &1737217554 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8092989284782870382, guid: ead64765ed49ccc49a0eedb1b07f3061, type: 3}
   m_PrefabInstance: {fileID: 1737217550}
   m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1 &1737217555 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4573846946361879747, guid: ead64765ed49ccc49a0eedb1b07f3061, type: 3}
+  m_PrefabInstance: {fileID: 1737217550}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1737217556
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1737217555}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dbb2c569022ed204c8954ddb4642467c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  resumeButton: {fileID: 1737217552}
+  characterButton: {fileID: 1737217553}
+  settingButton: {fileID: 0}
+  quitButton: {fileID: 0}
+  hlImage: {fileID: 1737217554}
 --- !u!1 &1792214398
 GameObject:
   m_ObjectHideFlags: 0

@@ -14,6 +14,6 @@ namespace Vanaring
     }
     public enum EPauseWindowGUI
     {
-        Character
+        Main, Party
     }
 }
