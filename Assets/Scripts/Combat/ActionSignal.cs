@@ -154,7 +154,6 @@ namespace Vanaring
 
         public ActionSignal(ActionSignal copied)
         {
-            ColorfulLogger.LogWithColor("consturct new action signal ", Color.blue);
             if (copied._timeLineActorSetupPrefab == null)
             {
                 Debug.LogWarning("TimeLineActorSetUpPrefab hasn't been assigned to  " + copied);
@@ -174,7 +173,6 @@ namespace Vanaring
         /// <param name="signal"></param>
         public void ReceiveSignal(SignalType signal)
         {
-            Debug.Log("receive signal in action signal " + signal); 
             foreach (var signalBinding in _signalEffectBindings)
             {
                 if (signalBinding.IsSameSignalType(signal))

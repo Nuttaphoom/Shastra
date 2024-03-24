@@ -10,9 +10,17 @@ namespace Vanaring
         private SceneDataSO _combatSceneData; 
         public override IEnumerator OnVisiteThisNode()
         {
-            yield return base.OnVisiteThisNode() ;
+            if (!_isVisited)
+            {
 
-            PersistentSceneLoader.Instance.LoadGeneralScene(_combatSceneData);
+                _isVisited = true;      
+                PersistentSceneLoader.Instance.LoadGeneralScene(_combatSceneData);
+            }
+
+
+
+            yield return SetUpNodeTransitions();
+
         }
     }
 }

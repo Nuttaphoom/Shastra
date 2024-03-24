@@ -20,6 +20,13 @@ namespace Vanaring
         private DungeonNodeTransitionManager _dungeonNodeTransitionManager;
 
         #region GETTER 
+        public bool IsThisNodeVisited { 
+        get
+            {
+                return _isVisited;
+                
+            }
+        }       
         protected DungeonNodeTransitionManager GetDungeonNodeTransitionManager
         {
             get
@@ -63,6 +70,7 @@ namespace Vanaring
         {
             if (!_isVisited)
             {
+                Debug.Log("set visite this node"); 
                 _isVisited = true;
             }
 
@@ -70,7 +78,7 @@ namespace Vanaring
 
          }
 
-        private IEnumerator SetUpNodeTransitions()
+        protected IEnumerator SetUpNodeTransitions()
         {
             foreach (BaseDungeonNode node in _connectedNode)
             {
@@ -95,6 +103,19 @@ namespace Vanaring
             }
 
             return false;
+        }
+
+        public virtual NodeRuntimeData CaptureNodeData()
+        {
+            return new NodeRuntimeData()
+            {
+                IsVisited = IsThisNodeVisited,
+            };
+        }
+
+        public virtual void RestoreNodeData(NodeRuntimeData data)
+        {
+            _isVisited = data.IsVisited;
         }
 
          

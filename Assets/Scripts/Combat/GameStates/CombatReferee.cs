@@ -342,7 +342,8 @@ namespace Vanaring
 
             if (IsGameEnd())
             {
-                FindObjectOfType<ThanksForPlayingDisplayer>().ShowThankForPlayingMenu();
+                PersistentSceneLoader.Instance.LoadGeneralScene(PersistentSceneLoader.Instance.GetStackLoadedDataScene(1));
+                //FindObjectOfType<ThanksForPlayingDisplayer>().ShowThankForPlayingMenu();
             }
             else
             {

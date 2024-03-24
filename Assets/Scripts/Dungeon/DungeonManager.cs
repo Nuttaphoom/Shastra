@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Vanaring
 {
-    public class DungeonManager : MonoBehaviour, ISceneLoaderWaitForSignal
+    public class DungeonManager : MonoBehaviour, ISceneLoaderWaitForSignal 
     {
         [SerializeField]
         private BaseDungeonNode _firstDungeonNode;
@@ -13,11 +13,7 @@ namespace Vanaring
         private BaseDungeonNode _currentDungeonNode;
 
         [SerializeField]
-        private List<BaseDungeonNode> _dungeonNodes;
-
-        [SerializeField]
         private Transform _cameraPivot;
-
 
         private void Awake()
         {

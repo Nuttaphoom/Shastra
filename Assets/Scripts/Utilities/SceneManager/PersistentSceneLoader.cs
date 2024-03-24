@@ -38,16 +38,15 @@ namespace Vanaring
         private Dictionary<string, LoaderDataUser> _userDataScene = new Dictionary<string, LoaderDataUser>(); 
 
         //Renenber last scene to load, this include both Location and general scene 
-        private Stack<SceneDataSO> _stackLoadedSceneData = new Stack<SceneDataSO>()  ;
+        private List<SceneDataSO> _stackLoadedSceneData = new List<SceneDataSO>()  ;
 
         #region GETTER
-        public SceneDataSO GetStackLoadedDataScene()
+        public SceneDataSO GetStackLoadedDataScene(int depth = 0)
         {
-            if (_stackLoadedSceneData.TryPeek(out SceneDataSO sceneData))
-                return sceneData;
+            return _stackLoadedSceneData[_stackLoadedSceneData.Count - 1 - depth];
+             
 
-            throw new System.Exception("StackLoadedSceneData is null"); 
-        }
+         }
 
         #endregion
 
@@ -199,7 +198,7 @@ namespace Vanaring
 
         private void LoadNewScene(Null n)
         {
-            _stackLoadedSceneData.Push(_sceneToLoad);
+            _stackLoadedSceneData.Add(_sceneToLoad);
             transitionManager.TransitionObj.UnSubOnSceneLoaderBegin(LoadNewScene);
             StartCoroutine(transitionManager.LoadSceneAsync(_sceneToLoad));
         }

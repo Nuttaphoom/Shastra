@@ -72,7 +72,6 @@ namespace Vanaring
         {
             var saveData = (List<string>)state;
 
-            Debug.Log("restore state in RuntimePartyMemberData");
             _memberActionRegister.RestoreState(saveData);
         }
 
