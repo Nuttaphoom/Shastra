@@ -4,18 +4,15 @@ using UnityEngine;
 
 namespace Vanaring
 {
-    public class CombatDungeonNode : MonoBehaviour
+    public class CombatDungeonNode : BaseDungeonNode
     {
-        // Start is called before the first frame update
-        void Start()
+        [SerializeField]
+        private SceneDataSO _combatSceneData; 
+        public override IEnumerator OnVisiteThisNode()
         {
-        
-        }
+            yield return base.OnVisiteThisNode() ;
 
-        // Update is called once per frame
-        void Update()
-        {
-        
+            PersistentSceneLoader.Instance.LoadGeneralScene(_combatSceneData);
         }
     }
 }

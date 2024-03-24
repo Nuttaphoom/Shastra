@@ -9,7 +9,7 @@ namespace Vanaring
    
     public class BaseDungeonNode : MonoBehaviour
     {
-        private bool _isVisited = false;
+        protected bool _isVisited = false;
 
         [SerializeField]
         private List<BaseDungeonNode> _connectedNode ;
