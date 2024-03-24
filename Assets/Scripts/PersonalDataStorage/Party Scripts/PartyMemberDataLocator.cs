@@ -11,8 +11,6 @@ namespace Vanaring
     {
         private CharacterSheetDatabaseSO m_characterSheetDatabase;
 
-
-        [SerializeField] 
         private List<RuntimePartyMemberData> _partyMemberData;
         public void InitializeRuntimeMemberData()
         {
@@ -59,6 +57,17 @@ namespace Vanaring
 
                 throw new System.Exception("The protagonist couldn't be found within PartyMemberData");
             }
+        }
+        public List<CombatEntity> GetCombatEntityPrefabInParty()
+        {
+            //TODO : Not return all of the character but instead only those currently in party 
+            List<CombatEntity> ret = new List<CombatEntity>() ; 
+            foreach (var member in _partyMemberData)
+            {
+                ret.Add((member.GetCharacterSheet as CombatCharacterSheetSO).GetCombatEntityPrefab.GetComponent<ControlableEntity>());
+            }
+
+            return ret ; 
         }
 
         #endregion

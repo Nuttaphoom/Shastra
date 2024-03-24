@@ -54,6 +54,14 @@ namespace Vanaring
             }
         } 
 
+        public CharacterSheetSO GetCharacterSheet
+        {
+            get
+            {
+                return _characterSheetSO; 
+            }
+        }
+
         #region Save System
         public object CaptureState()
         {
