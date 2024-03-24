@@ -198,7 +198,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 73657163}
-  - component: {fileID: 73657162}
+  - component: {fileID: 73657164}
   m_Layer: 0
   m_Name: Node (1)
   m_TagString: Untagged
@@ -206,26 +206,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &73657162
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 73657161}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f3a7d89506ca29d4abf4a744831f0020, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _connectedNode:
-  - {fileID: 1526060612}
-  - {fileID: 334151129}
-  _nodeVisualTransitionHandler:
-    _right_X: {fileID: 746225360}
-    _minusRight_X: {fileID: 1716341152}
-    _forward_Z: {fileID: 310299221}
-    _minusForward_Z: {fileID: 1807245609}
 --- !u!4 &73657163
 Transform:
   m_ObjectHideFlags: 0
@@ -244,6 +224,27 @@ Transform:
   m_Father: {fileID: 1443008279}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &73657164
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 73657161}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c247f4bb71fdeb4ea9028cfd666f210, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _connectedNode:
+  - {fileID: 1526060612}
+  - {fileID: 334151129}
+  _nodeVisualTransitionHandler:
+    _right_X: {fileID: 746225360}
+    _minusRight_X: {fileID: 1716341152}
+    _forward_Z: {fileID: 310299221}
+    _minusForward_Z: {fileID: 1807245609}
+  _combatSceneData: {fileID: 11400000, guid: ddbf44867eadcb8419af19eed48b2e15, type: 2}
 --- !u!1 &116595814
 GameObject:
   m_ObjectHideFlags: 0
@@ -525,7 +526,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _connectedNode:
-  - {fileID: 73657162}
+  - {fileID: 73657164}
   _nodeVisualTransitionHandler:
     _right_X: {fileID: 1193559996}
     _minusRight_X: {fileID: 1178277213}
@@ -1782,7 +1783,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _connectedNode:
-  - {fileID: 73657162}
+  - {fileID: 0}
   _nodeVisualTransitionHandler:
     _right_X: {fileID: 309102152}
     _minusRight_X: {fileID: 1119428920}
