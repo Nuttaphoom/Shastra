@@ -6,6 +6,7 @@ namespace Vanaring
 {
     public interface ISceneLoaderWaitForSignal
     {
+        IEnumerator OnNewSceneLoad_BeforeSaveLoadPerform(); 
         //Should be replaced Awake in Location components 
         IEnumerator OnNotifySceneLoadingComplete();
     }

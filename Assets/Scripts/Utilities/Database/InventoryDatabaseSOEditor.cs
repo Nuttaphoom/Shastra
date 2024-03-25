@@ -11,7 +11,7 @@ using UnityEngine;
 namespace Vanaring
 {
     [CustomEditor(typeof(InventoryDatabaseSO))]
-    public class InventoryDatabaseSOEditor : Editor
+    public class InventoryDatabaseSOEditor : UnityEditor.Editor
     {
         public override void OnInspectorGUI()
         {

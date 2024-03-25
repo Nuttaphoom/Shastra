@@ -30,6 +30,7 @@ namespace Vanaring
         {
             foreach (string path in savePath)
             {
+
                 CaptureState(path);
             }
         }

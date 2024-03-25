@@ -8,11 +8,13 @@ namespace Vanaring
     {
         [SerializeField]
         private SceneDataSO _combatSceneData; 
-        public override IEnumerator OnVisiteThisNode()
-        {
-            yield return base.OnVisiteThisNode() ;
+         
 
+        public override IEnumerator OnVisiteThisNodeFirstTime()
+        {
             PersistentSceneLoader.Instance.LoadGeneralScene(_combatSceneData);
+
+            yield return null; 
         }
     }
 }

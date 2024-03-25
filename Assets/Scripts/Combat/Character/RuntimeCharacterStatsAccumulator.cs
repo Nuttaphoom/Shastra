@@ -7,6 +7,7 @@ using System.Resources;
 using System.Security.AccessControl;
 using System.Text;
 using System.Threading.Tasks;
+using Unity.VisualScripting;
 using UnityEngine;
 
  
@@ -14,33 +15,77 @@ using UnityEngine;
 namespace Vanaring
 { 
 
-    public enum ECharacterStatType
+    //public enum ECharacterPrimaryAttributes 
+    //{
+    //    Strength, 
+    //    Vitality, 
+    //    Intellect, 
+    //    Agility, 
+    //    Luck
+    //}
+
+    public enum ECharacterSecondaryAttributes
     {
-        HP,ATK   
+        HP,
+        MP,
+        PhysicalATK, 
+        MagicalATK,
+        Accuracy, 
+        Evasion
     }
 
     public class RuntimeCharacterStatsAccumulator  
     {
-
-
-        private Dictionary<ECharacterStatType, CharacterStat> _characterStats = new Dictionary<ECharacterStatType, CharacterStat>() ;
+        //private Dictionary<ECharacterPrimaryAttributes, CharacterStat> _characterPrimaryAttributes = new Dictionary<ECharacterPrimaryAttributes, CharacterStat>();
+        private Dictionary<ECharacterSecondaryAttributes, CharacterStat> _characterSecondaryAttributes = new Dictionary<ECharacterSecondaryAttributes, CharacterStat>();
         public RuntimeCharacterStatsAccumulator(CombatCharacterSheetSO _entityStatsSO)
         {
-            _characterStats.Add(ECharacterStatType.HP, new CharacterStat(_entityStatsSO.GetHP, _entityStatsSO.GetHP) );
-            _characterStats.Add(ECharacterStatType.ATK, new CharacterStat( _entityStatsSO.GetATK) ) ;
+            //Setup Primary Attributes 
+            //_characterPrimaryAttributes.Add(ECharacterPrimaryAttributes.Strength, new CharacterStat(_entityStatsSO.GetStrength ) );
+            //_characterPrimaryAttributes.Add(ECharacterPrimaryAttributes.Vitality, new CharacterStat(_entityStatsSO.GetVitality));
+            //_characterPrimaryAttributes.Add(ECharacterPrimaryAttributes.Intellect, new CharacterStat(_entityStatsSO.GetIntellect));
+            //_characterPrimaryAttributes.Add(ECharacterPrimaryAttributes.Agility, new CharacterStat(_entityStatsSO.GetAgility));
+            //_characterPrimaryAttributes.Add(ECharacterPrimaryAttributes.Luck, new CharacterStat(_entityStatsSO.GetLuck));
+
+            //Setup Secondary Attributes 
+            //Mostly formula that transfer Primary stats into Secondary stats
+            int MaxHP = _entityStatsSO.GetSecondaryAttribute_MaxHP;
+            int PhysicalATK = _entityStatsSO.GetSecondaryAttribute_PhysicalATK;
+            int MagicalATK = _entityStatsSO.GetSecondaryAttribute_MagicalATK;
+            float ACC = _entityStatsSO.GetSecondaryAttribute_ACC ; 
+            float Evasion = _entityStatsSO.GetSecondaryAttribute_Evasion;
+
+
+            _characterSecondaryAttributes.Add(ECharacterSecondaryAttributes.HP, new CharacterStat(MaxHP, MaxHP) ) ;
+            _characterSecondaryAttributes.Add(ECharacterSecondaryAttributes.PhysicalATK, new CharacterStat(PhysicalATK, PhysicalATK));
+            _characterSecondaryAttributes.Add(ECharacterSecondaryAttributes.MagicalATK, new CharacterStat(MagicalATK, MagicalATK));
+
+            _characterSecondaryAttributes.Add(ECharacterSecondaryAttributes.Accuracy, new CharacterStat(ACC, ACC))  ;
+            _characterSecondaryAttributes.Add(ECharacterSecondaryAttributes.Evasion, new CharacterStat(Evasion, Evasion)) ;
 
         }
 
         #region ATKStatsManipulationMethod  
-        public void ModifyATKAmount(StatModifier mod)
+        public void ModifyPhysicalATKAmount(StatModifier mod)
         {
             //_characterStats[ECharacterStatType.ATK].ModifyValue(atk,true,true) ;
-            _characterStats[ECharacterStatType.ATK].AddModifier(mod); 
+            _characterSecondaryAttributes[ECharacterSecondaryAttributes.PhysicalATK].AddModifier(mod); 
         }
 
-        public void RemoveModifyATK(StatModifier mod)
+        public void RemoveModifyPhysicalATK(StatModifier mod)
         {
-            _characterStats[ECharacterStatType.ATK].RemoveModifier(mod);
+            _characterSecondaryAttributes[ECharacterSecondaryAttributes.PhysicalATK].RemoveModifier(mod);
+        }
+
+        public void ModifyMagicalATKAmount(StatModifier mod)
+        {
+            //_characterStats[ECharacterStatType.ATK].ModifyValue(atk,true,true) ;
+            _characterSecondaryAttributes[ECharacterSecondaryAttributes.MagicalATK].AddModifier(mod);
+        }
+
+        public void RemoveMagicalPhysicalATK(StatModifier mod)
+        {
+            _characterSecondaryAttributes[ECharacterSecondaryAttributes.MagicalATK].RemoveModifier(mod);
 
         }
 
@@ -55,9 +100,9 @@ namespace Vanaring
 
         //}
 
-        public float GetATKAmount()
+        public float GetPhysicalATKAmount()
         {
-            float ret = _characterStats[ECharacterStatType.ATK].Value ; 
+            float ret = _characterSecondaryAttributes[ECharacterSecondaryAttributes.PhysicalATK].Value ; 
             return ret ;
         }
         #endregion
@@ -65,17 +110,17 @@ namespace Vanaring
         #region HPStatsManipulationmethod
         public void ModifyHPStat(StatModifier mod)
         {
-            _characterStats[ECharacterStatType.HP].AddModifier(mod) ;
+            _characterSecondaryAttributes[ECharacterSecondaryAttributes.HP].AddModifier(mod) ;
         }
 
         public float GetHPAmount()
         {
-            return _characterStats[ECharacterStatType.HP].Value ;  
+            return _characterSecondaryAttributes[ECharacterSecondaryAttributes.HP].Value ;  
         }
 
         public float GetPeakHPAmount()
         {
-            return _characterStats[ECharacterStatType.HP].GetPeakValue ;
+            return _characterSecondaryAttributes[ECharacterSecondaryAttributes.HP].GetPeakValue ;
         }
         #endregion
 
@@ -89,6 +134,18 @@ namespace Vanaring
         //        yield return null; 
         //    }
         //} 
+        #endregion
+
+        #region Accuracy and Dodge Manipulation Method 
+        public float GetAccuracyAmount()
+        {
+            return _characterSecondaryAttributes[ECharacterSecondaryAttributes.Accuracy].Value ; 
+        }
+        public float GetEvasionAmount()
+        {
+            return _characterSecondaryAttributes[ECharacterSecondaryAttributes.Evasion].Value ;
+        }
+
         #endregion
 
 

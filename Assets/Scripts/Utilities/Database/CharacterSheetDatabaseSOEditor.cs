@@ -12,7 +12,7 @@ using UnityEngine;
 namespace Vanaring
 {
     [CustomEditor(typeof(CharacterSheetDatabaseSO))]
-    public class CharacterSheetDatabaseSOEditor : Editor
+    public class CharacterSheetDatabaseSOEditor : UnityEditor.Editor
     {
         public override void OnInspectorGUI()
         {

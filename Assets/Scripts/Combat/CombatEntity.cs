@@ -315,8 +315,10 @@ namespace Vanaring
             yield return _statusEffectHandler.ApplyNewEffect(statusEffect,applierFactory, applier); 
         }
 
-        public void LogicHurt(CombatEntity attacker, StatModifier mod)
+        public void LogicHurt(CombatEntity attacker, StatModifier mod      )
         {
+            float hitchance = attacker._runtimeCharacterStatsAccumulator.GetAccuracyAmount() -  _runtimeCharacterStatsAccumulator.GetEvasionAmount() ; 
+
             _runtimeCharacterStatsAccumulator.ModifyHPStat(mod);
             _dmgOutputPopHanlder.AccumulateDMG((int) mod.Value); 
 
@@ -379,7 +381,7 @@ namespace Vanaring
             yield return _statusEffectHandler.ExecuteAttackStatusRuntimeEffectCoroutine();
 
             //1.) Do apply dmg 
-            float realDMG = VanaringMathConst.GetATKWithNoise(scaling, StatsAccumulator.GetATKAmount()) ;
+            float realDMG = VanaringMathConst.GetATKWithNoise(scaling, StatsAccumulator.GetPhysicalATKAmount()) ;
 
 
 
@@ -387,7 +389,7 @@ namespace Vanaring
             
             foreach (CombatEntity target in targets)
             {
-                target.LogicHurt(this, statsModifer);
+                target.LogicHurt(this, statsModifer );
             }
 
         }

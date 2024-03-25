@@ -42,7 +42,7 @@ namespace Vanaring
         {
             _combatEntity = GetComponent<CombatEntity>();
             _magicalEnergy.Init(this);
-            _MPStats = new CharacterStat(_combatEntity.CombatCharacterSheet.GetMP, _combatEntity.CombatCharacterSheet.GetMP) ; 
+            _MPStats = new CharacterStat(_combatEntity.CombatCharacterSheet.GetSecondaryAttribute_MaxMP, _combatEntity.CombatCharacterSheet.GetSecondaryAttribute_MaxMP) ; 
         }
 
         #region GetEventBroadcaster Methods 

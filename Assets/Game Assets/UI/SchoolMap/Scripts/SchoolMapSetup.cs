@@ -97,7 +97,6 @@ namespace Vanaring
             LoadMapSpriteFromAddress(); 
 
             EDayTime currentDayTime = PersistentActiveDayDatabase.Instance.GetActiveDayData.GetCurrentDayTime;
-            Debug.Log("load map with current day time :  " + currentDayTime);
             switch (currentDayTime) {
                 case EDayTime.Morning:
                     _mapImage.sprite = _morningMapSprite;

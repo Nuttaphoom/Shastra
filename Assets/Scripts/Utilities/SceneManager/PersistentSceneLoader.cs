@@ -38,16 +38,15 @@ namespace Vanaring
         private Dictionary<string, LoaderDataUser> _userDataScene = new Dictionary<string, LoaderDataUser>(); 
 
         //Renenber last scene to load, this include both Location and general scene 
-        private Stack<SceneDataSO> _stackLoadedSceneData = new Stack<SceneDataSO>()  ;
+        private List<SceneDataSO> _stackLoadedSceneData = new List<SceneDataSO>()  ;
 
         #region GETTER
-        public SceneDataSO GetStackLoadedDataScene()
+        public SceneDataSO GetStackLoadedDataScene(int depth = 0)
         {
-            if (_stackLoadedSceneData.TryPeek(out SceneDataSO sceneData))
-                return sceneData;
+            return _stackLoadedSceneData[_stackLoadedSceneData.Count - 1 - depth];
+             
 
-            throw new System.Exception("StackLoadedSceneData is null"); 
-        }
+         }
 
         #endregion
 
@@ -199,12 +198,32 @@ namespace Vanaring
 
         private void LoadNewScene(Null n)
         {
-            _stackLoadedSceneData.Push(_sceneToLoad);
+            _stackLoadedSceneData.Add(_sceneToLoad);
             transitionManager.TransitionObj.UnSubOnSceneLoaderBegin(LoadNewScene);
             StartCoroutine(transitionManager.LoadSceneAsync(_sceneToLoad));
         }
 
         #region IAwakeable Call
+
+        /// <summary>
+        /// This happen BEFORE loading from local storage 
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerator OnNewSceneLoad_BeforeSaveLoadPerform()
+        {
+            foreach (var awakeable in FindObjectsOfType<MonoBehaviour>())
+            {
+                if (awakeable is ISceneLoaderWaitForSignal)
+                {
+                    yield return (awakeable as ISceneLoaderWaitForSignal).OnNewSceneLoad_BeforeSaveLoadPerform();
+                }
+            }
+        }
+
+        /// <summary>
+        /// This happen AFTER loading from temp local storage
+        /// </summary>
+        /// <returns></returns>
         public IEnumerator NotifySceneLoadingComplete()
         {
             foreach (var awakeable in FindObjectsOfType<MonoBehaviour>())
@@ -248,6 +267,9 @@ namespace Vanaring
 
                 yield return null;
             }
+
+
+            yield return PersistentSceneLoader.Instance.OnNewSceneLoad_BeforeSaveLoadPerform(); 
 
             PersistentSaveLoadManager.Instance.RestoreFromTemp();
 

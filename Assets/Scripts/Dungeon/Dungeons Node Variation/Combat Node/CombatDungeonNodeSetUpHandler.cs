@@ -6,9 +6,13 @@ namespace Vanaring
 {
     public class CombatDungeonNodeSetUpHandler : MonoBehaviour, ISceneLoaderWaitForSignal
     {
+        public IEnumerator OnNewSceneLoad_BeforeSaveLoadPerform()
+        {
+            yield return null; 
+        }
+
         public IEnumerator OnNotifySceneLoadingComplete()
         {
-            Debug.Log("here");
             yield return CombatReferee.Instance.InitializeCombat();
 
             //Play intro 

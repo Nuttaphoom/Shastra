@@ -4,65 +4,53 @@ using UnityEngine;
 
 namespace Vanaring
 {
-    public class DungeonManager : MonoBehaviour, ISceneLoaderWaitForSignal
+    public class DungeonManager : MonoBehaviour 
     {
-        [SerializeField]
-        private BaseDungeonNode _firstDungeonNode;
-
         [SerializeField]
         private BaseDungeonNode _currentDungeonNode;
 
         [SerializeField]
-        private List<BaseDungeonNode> _dungeonNodes;
-
-        [SerializeField]
         private Transform _cameraPivot;
 
+    
 
-        private void Awake()
+        public IEnumerator SetUpDungeonCoroutine(BaseDungeonNode firstNodeToStart)
         {
-            StartCoroutine(SetUpDungeon());
+            yield return VisiteNextNode(firstNodeToStart);
         } 
 
-        private IEnumerator SetUpDungeon()
-        {
-            yield return VisiteNextNode(_firstDungeonNode);
-        } 
-
-        public IEnumerator VisiteNextNode(BaseDungeonNode nodeToVisit)
+        public IEnumerator VisiteNextNode(BaseDungeonNode nodeToVisit )
         {
             if (_currentDungeonNode != null)
             {
-
                 //check if the next node is connected
                 if (!_currentDungeonNode.IsConnectedNode(nodeToVisit))
                 {
-
                     goto End;
                 }
                 yield return _currentDungeonNode.OnLeaveThisNode();
+
+                Vector3 prevCamPos = _cameraPivot.position;
+                float progression = 0;
+
+                while (progression < 1)
+                {
+
+                    _cameraPivot.transform.position = Vector3.Lerp(prevCamPos, nodeToVisit.transform.position, progression);
+                    progression += Time.deltaTime / 2;
+
+                    yield return null;
+
+                }
+
             }
+
+            _cameraPivot.transform.position = nodeToVisit.transform.position;
 
 
             _currentDungeonNode = nodeToVisit;
 
-            Vector3 prevCamPos = _cameraPivot.position;
-            float progression = 0; 
-
-            while (progression < 1)
-            {
-
-                _cameraPivot.transform.position = Vector3.Lerp(prevCamPos, nodeToVisit.transform.position, progression);
-                progression += Time.deltaTime / 2 ;
-
-                yield return null; 
-
-            }
-
-            _cameraPivot.transform.position = nodeToVisit.transform.position; 
-
             //yield return until transition visual is done 
-             
 
             yield return _currentDungeonNode.OnVisiteThisNode() ;
 
@@ -71,9 +59,6 @@ namespace Vanaring
             yield return null; 
         }
 
-        public IEnumerator OnNotifySceneLoadingComplete()
-        {
-            yield return SetUpDungeon() ; 
-        }
+        
     }
 }
