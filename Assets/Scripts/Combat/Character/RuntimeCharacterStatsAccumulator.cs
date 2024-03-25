@@ -21,8 +21,6 @@ namespace Vanaring
 
     public class RuntimeCharacterStatsAccumulator  
     {
-
-
         private Dictionary<ECharacterStatType, CharacterStat> _characterStats = new Dictionary<ECharacterStatType, CharacterStat>() ;
         public RuntimeCharacterStatsAccumulator(CombatCharacterSheetSO _entityStatsSO)
         {

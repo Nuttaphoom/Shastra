@@ -35,6 +35,7 @@ namespace Vanaring
         [SerializeField]
         private AssetReferenceT<GameObject> _combatEntityPrefabAddress;
 
+        #region GETTER 
         public AilmentResistantDataInfo ResistantData => _ailmentResistantDataInfo;
 
         public Sprite GetCharacterIcon => _characterIconGUI;
@@ -52,5 +53,7 @@ namespace Vanaring
                 return PersistentAddressableResourceLoader.Instance.LoadResourceOperation<GameObject>(_combatEntityPrefabAddress) ; 
             }
         }
+
+        #endregion
     }
 }
