@@ -17,7 +17,8 @@ namespace Vanaring
         [SerializeField] private Image hlImage;
         public override void ClearData()
         {
-            buttonSelectingIndex = 0;
+            
+            
         }
 
         public override void LoadWindowData(CombatEntity entity)
@@ -27,10 +28,26 @@ namespace Vanaring
 
         public override void OnWindowActive()
         {
+            if(_pauseMenuWindowGUI == null)
+            {
+                Debug.LogError("no gui");
+            }
+            buttonSelectingIndex = 0;
+            foreach (Button button in pauseButtonList)
+            {
+                button.onClick.RemoveAllListeners();
+            }
+
+            Debug.Log("Add Listener");
+            resumeButton.onClick.AddListener(() => _pauseMenuWindowGUI.HideCurrentWindow());
+            characterButton.onClick.AddListener(() => _pauseMenuWindowGUI.OpenWindow(EPauseWindowGUI.Party));
+
             pauseButtonList.Add(resumeButton);
             pauseButtonList.Add(characterButton);
             pauseButtonList.Add(settingButton);
             pauseButtonList.Add(quitButton);
+
+            SwitchOption();
         }
 
         public override void OnWindowDeActive()
@@ -61,12 +78,23 @@ namespace Vanaring
             {
                 pauseButtonList[buttonSelectingIndex].onClick?.Invoke();
             }
+            if (key == KeyCode.Escape)
+            {
+                _pauseMenuWindowGUI.HideCurrentWindow();
+            }
         }
 
         private void SwitchOption()
         {
             float newY = (buttonSelectingIndex - 133) - (buttonSelectingIndex * 100) + 38f;
             hlImage.rectTransform.localPosition = new Vector3(hlImage.rectTransform.localPosition.x, newY, hlImage.rectTransform.localPosition.z);
+
+            foreach (Button button in pauseButtonList)
+            {
+                button.GetComponent<Image>().sprite = button.spriteState.selectedSprite;
+            }
+
+            pauseButtonList[buttonSelectingIndex].GetComponent<Image>().sprite = pauseButtonList[buttonSelectingIndex].spriteState.highlightedSprite;
         }
     }
 }

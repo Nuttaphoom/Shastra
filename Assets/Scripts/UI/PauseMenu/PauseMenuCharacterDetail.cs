@@ -23,6 +23,7 @@ namespace Vanaring
 
         public override void LoadWindowData(CombatEntity entity)
         {
+            Debug.Log(entity);
             characterName.text = PersistentPlayerPersonalDataManager.Instance.PartyMemberDataLocator.GetRuntimeData(entity.CombatCharacterSheet.CharacterName).GetMemberName;
             hpFillBar.fillAmount = entity.StatsAccumulator.GetHPAmount() / entity.StatsAccumulator.GetPeakHPAmount();
             mpFillBar.fillAmount = entity.SpellCaster.GetMP / entity.SpellCaster.GetPeakMP;
@@ -44,12 +45,12 @@ namespace Vanaring
         {
             if (key == KeyCode.Escape)
             {
-                _pauseMenuWindowGUI.OpenWindow(EPauseWindowGUI.Party);
+                _pauseMenuWindowGUI.OpenWindow(EPauseWindowGUI.Main);
             }
-            //else if (key == KeyCode.Space)
-            //{
-
-            //}
+            else if (key == KeyCode.Q)
+            {
+                
+            }
         }
     }
 }

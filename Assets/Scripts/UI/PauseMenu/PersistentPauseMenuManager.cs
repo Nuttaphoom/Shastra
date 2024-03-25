@@ -15,7 +15,7 @@ namespace Vanaring
                 if (pauseMenuGFX.activeSelf)
                 {
                     Debug.Log("Close Pause");
-                    _pauseMenuWindowManager.HideCurrentWindow();
+                    //_pauseMenuWindowManager.HideCurrentWindow();
                 }
                 else
                 {

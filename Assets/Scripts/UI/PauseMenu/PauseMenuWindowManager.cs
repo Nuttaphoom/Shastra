@@ -9,25 +9,23 @@ namespace Vanaring
     {
         [SerializeField] private PauseMenuCharacterDetail _characterDetail;
         [SerializeField] private PauseMenuMainPanel _mainPause;
-        [SerializeField] private Button resumeButton;
-        [SerializeField] private Button characterDetailButton;
+        //[SerializeField] private Button resumeButton;
+        //[SerializeField] private Button characterDetailButton;
 
         private PauseMenuWindowGUI _lastWindowOpen;
 
         private void Start()
         {
-            characterDetailButton.onClick.AddListener(()=>OpenWindow(EPauseWindowGUI.Party));
-
             foreach (var window in GetAllValidWindows())
                 window.Init(this);
-
         }
 
         private List<PauseMenuWindowGUI> GetAllValidWindows()
         {
             List<PauseMenuWindowGUI> allWindows = new List<PauseMenuWindowGUI>();
+            allWindows.Add(_mainPause);
             allWindows.Add(_characterDetail);
-
+            
             return allWindows;
         }
 

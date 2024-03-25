@@ -2539,6 +2539,28 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 051c8b41e04d08f4bb6eedd27ae1f2e7, type: 3}
+--- !u!114 &1291362783 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1006941433560257613, guid: ead64765ed49ccc49a0eedb1b07f3061, type: 3}
+  m_PrefabInstance: {fileID: 1737217550}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1291362784 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2536717995213569449, guid: ead64765ed49ccc49a0eedb1b07f3061, type: 3}
+  m_PrefabInstance: {fileID: 1737217550}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1300786676
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2874,8 +2896,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _characterDetail: {fileID: 1150265588}
   _mainPause: {fileID: 1737217556}
-  resumeButton: {fileID: 1737217552}
-  characterDetailButton: {fileID: 1737217553}
 --- !u!114 &1349283009
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3395,6 +3415,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1349283007}
     m_Modifications:
+    - target: {fileID: 1006941433560257613, guid: ead64765ed49ccc49a0eedb1b07f3061, type: 3}
+      propertyPath: m_SpriteState.m_SelectedSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 6032fec9cfb93ec479cebc2a3190fa71, type: 3}
     - target: {fileID: 1606092206152900806, guid: ead64765ed49ccc49a0eedb1b07f3061, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1
@@ -3427,6 +3451,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -132.37361
       objectReference: {fileID: 0}
+    - target: {fileID: 2536717995213569449, guid: ead64765ed49ccc49a0eedb1b07f3061, type: 3}
+      propertyPath: m_SpriteState.m_SelectedSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 6032fec9cfb93ec479cebc2a3190fa71, type: 3}
     - target: {fileID: 3122139095986822746, guid: ead64765ed49ccc49a0eedb1b07f3061, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1
@@ -3487,6 +3515,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -231.36182
       objectReference: {fileID: 0}
+    - target: {fileID: 6627749909065731149, guid: ead64765ed49ccc49a0eedb1b07f3061, type: 3}
+      propertyPath: m_SpriteState.m_SelectedSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 6032fec9cfb93ec479cebc2a3190fa71, type: 3}
     - target: {fileID: 6923410358840760313, guid: ead64765ed49ccc49a0eedb1b07f3061, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -3571,6 +3603,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7295274187502201433, guid: ead64765ed49ccc49a0eedb1b07f3061, type: 3}
+      propertyPath: m_SpriteState.m_SelectedSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 6032fec9cfb93ec479cebc2a3190fa71, type: 3}
     - target: {fileID: 7631043825788477776, guid: ead64765ed49ccc49a0eedb1b07f3061, type: 3}
       propertyPath: m_SortingOrder
       value: 94
@@ -3644,8 +3680,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   resumeButton: {fileID: 1737217552}
   characterButton: {fileID: 1737217553}
-  settingButton: {fileID: 0}
-  quitButton: {fileID: 0}
+  settingButton: {fileID: 1291362784}
+  quitButton: {fileID: 1291362783}
   hlImage: {fileID: 1737217554}
 --- !u!1 &1792214398
 GameObject:
