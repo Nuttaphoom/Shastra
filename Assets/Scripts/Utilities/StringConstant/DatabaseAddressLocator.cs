@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Vanaring.Assets.Scripts.Utilities.StringConstant
+namespace Vanaring
 {
     public class DatabaseAddressLocator
     {

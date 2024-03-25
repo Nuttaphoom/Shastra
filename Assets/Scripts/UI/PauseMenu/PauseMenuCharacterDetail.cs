@@ -15,7 +15,9 @@ namespace Vanaring
         [SerializeField] private TextMeshProUGUI characterName;
         [SerializeField] private TextMeshProUGUI characterDescription;
         [SerializeField] private GameObject gfx;
+        [SerializeField] private GameObject spellPanel;
         private List<SpellActionSO> spellRegiteredList = new List<SpellActionSO>();
+        private List<CombatCharacterSheetSO> combatCharacterSheet = new List<CombatCharacterSheetSO>();
         public override void ClearData()
         {
             
@@ -23,11 +25,23 @@ namespace Vanaring
 
         public override void LoadWindowData(CombatEntity entity)
         {
-            Debug.Log(entity);
-            characterName.text = PersistentPlayerPersonalDataManager.Instance.PartyMemberDataLocator.GetRuntimeData(entity.CombatCharacterSheet.CharacterName).GetMemberName;
-            hpFillBar.fillAmount = entity.StatsAccumulator.GetHPAmount() / entity.StatsAccumulator.GetPeakHPAmount();
-            mpFillBar.fillAmount = entity.SpellCaster.GetMP / entity.SpellCaster.GetPeakMP;
-            characterPortrait.sprite = entity.CombatCharacterSheet.GetCharacterIcon;
+            CharacterSheetDatabaseSO charactersheetDataSO = PersistentAddressableResourceLoader.Instance.LoadResourceOperation<CharacterSheetDatabaseSO>(DatabaseAddressLocator.GetCharacterSheetDatabaseAddress);
+            combatCharacterSheet = charactersheetDataSO.GetCombatCharacterShhets();
+            foreach (CombatCharacterSheetSO character in combatCharacterSheet)
+            {
+                hpFillBar.fillAmount = entity.StatsAccumulator.GetHPAmount() / entity.StatsAccumulator.GetPeakHPAmount();
+            }
+
+            //characterName.text = runtimePartyPear.GetMemberName;
+            //runtimePartyAsha.GetCharacterSheet.
+            //hpFillBar.fillAmount = entity.StatsAccumulator.GetHPAmount() / entity.StatsAccumulator.GetPeakHPAmount();
+            //mpFillBar.fillAmount = entity.SpellCaster.GetMP / entity.SpellCaster.GetPeakMP;
+            //characterPortrait.sprite = entity.CombatCharacterSheet.GetCharacterIcon;
+        }
+
+        public void LoadWindowData()
+        {
+            
         }
 
         public override void OnWindowActive()

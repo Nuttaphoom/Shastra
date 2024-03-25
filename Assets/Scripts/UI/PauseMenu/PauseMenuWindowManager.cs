@@ -74,8 +74,8 @@ namespace Vanaring
             foreach (var window in GetAllValidWindows())
                 window.ClearData();
 
-            //foreach (var window in GetAllValidWindows())
-            //    window.LoadWindowData(entity);
+            foreach (var window in GetAllValidWindows())
+                window.LoadWindowData(null);
 
             //OpenWindow(EWindowGUI.Main);
 

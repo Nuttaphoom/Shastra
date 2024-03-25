@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using Unity.VisualScripting;
-using Vanaring.Assets.Scripts.Utilities.StringConstant;
 using static Vanaring.TuitorialDatabaseSO;
 using System.Linq;
 

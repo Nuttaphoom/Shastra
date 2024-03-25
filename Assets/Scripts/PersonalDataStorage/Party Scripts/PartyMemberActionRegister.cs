@@ -6,7 +6,6 @@ using System.Xml.Linq;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
-using Vanaring.Assets.Scripts.Utilities.StringConstant;
 
 namespace Vanaring
 {
