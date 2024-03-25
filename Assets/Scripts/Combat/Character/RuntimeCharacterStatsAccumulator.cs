@@ -29,7 +29,9 @@ namespace Vanaring
         HP,
         MP,
         PhysicalATK, 
-        MagicalATK
+        MagicalATK,
+        Accuracy, 
+        Evasion
     }
 
     public class RuntimeCharacterStatsAccumulator  
@@ -48,13 +50,18 @@ namespace Vanaring
             //Setup Secondary Attributes 
             //Mostly formula that transfer Primary stats into Secondary stats
             int MaxHP = _entityStatsSO.GetSecondaryAttribute_MaxHP;
-            int MaxMP = _entityStatsSO.GetSecondaryAttribute_MaxMP;
             int PhysicalATK = _entityStatsSO.GetSecondaryAttribute_PhysicalATK;
-            int MagicalATK = _entityStatsSO.GetSecondaryAttribute_PhysicalATK;
+            int MagicalATK = _entityStatsSO.GetSecondaryAttribute_MagicalATK;
+            float ACC = _entityStatsSO.GetSecondaryAttribute_ACC ; 
+            float Evasion = _entityStatsSO.GetSecondaryAttribute_Evasion;
+
 
             _characterSecondaryAttributes.Add(ECharacterSecondaryAttributes.HP, new CharacterStat(MaxHP, MaxHP) ) ;
             _characterSecondaryAttributes.Add(ECharacterSecondaryAttributes.PhysicalATK, new CharacterStat(PhysicalATK, PhysicalATK));
             _characterSecondaryAttributes.Add(ECharacterSecondaryAttributes.MagicalATK, new CharacterStat(MagicalATK, MagicalATK));
+
+            _characterSecondaryAttributes.Add(ECharacterSecondaryAttributes.Accuracy, new CharacterStat(ACC, ACC))  ;
+            _characterSecondaryAttributes.Add(ECharacterSecondaryAttributes.Evasion, new CharacterStat(Evasion, Evasion)) ;
 
         }
 
@@ -127,6 +134,18 @@ namespace Vanaring
         //        yield return null; 
         //    }
         //} 
+        #endregion
+
+        #region Accuracy and Dodge Manipulation Method 
+        public float GetAccuracyAmount()
+        {
+            return _characterSecondaryAttributes[ECharacterSecondaryAttributes.Accuracy].Value ; 
+        }
+        public float GetEvasionAmount()
+        {
+            return _characterSecondaryAttributes[ECharacterSecondaryAttributes.Evasion].Value ;
+        }
+
         #endregion
 
 

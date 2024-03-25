@@ -66,10 +66,12 @@ namespace Vanaring
         /// Functions to calculate secondary attribute with respect to Primary attributes
         /// </summary>
         public int GetSecondaryAttribute_MaxHP => 50 + (_vitality * 14 ) ;
-
         public int GetSecondaryAttribute_MaxMP => 70 + (_intellect * 4 );
         public int GetSecondaryAttribute_PhysicalATK => 20 + (_strength * 3) ;
         public int GetSecondaryAttribute_MagicalATK => 15 + (_intellect * 3);
+
+        public float GetSecondaryAttribute_Evasion => 100 + ( (_agility )  )  ;
+        public float GetSecondaryAttribute_ACC => 190 + (_agility ); 
 
         public GameObject GetCombatEntityPrefab
         {
