@@ -14,6 +14,10 @@ namespace Vanaring
         [SerializeField] private Image hpFillBar;
         [SerializeField] private Image mpFillBar;
         [SerializeField] private TextMeshProUGUI atkStat;
+        [SerializeField] private TextMeshProUGUI vitStat;
+        [SerializeField] private TextMeshProUGUI intStat;
+        [SerializeField] private TextMeshProUGUI lckStat;
+        [SerializeField] private TextMeshProUGUI agiStat;
         [SerializeField] private TextMeshProUGUI characterName;
         [SerializeField] private TextMeshProUGUI characterDescription;
         [SerializeField] private GameObject gfx;
@@ -31,11 +35,16 @@ namespace Vanaring
             CharacterSheetDatabaseSO charactersheetDataSO = PersistentAddressableResourceLoader.Instance.LoadResourceOperation<CharacterSheetDatabaseSO>(DatabaseAddressLocator.GetCharacterSheetDatabaseAddress);
             combatCharacterSheet = charactersheetDataSO.GetCombatCharacterShhets();
 
+            characterIndex = 0;
             hpFillBar.fillAmount = 1.0f;
             mpFillBar.fillAmount = 1.0f;
-            atkStat.text = combatCharacterSheet[0].GetATK.ToString();
-            characterPortrait.sprite = combatCharacterSheet[0].GetCharacterIcon;
-            characterPortraitBG.sprite = combatCharacterSheet[0].GetCharacterIcon;
+            vitStat.text = combatCharacterSheet[characterIndex].GetVitality.ToString();
+            atkStat.text = combatCharacterSheet[characterIndex].GetStrength.ToString();
+            intStat.text = combatCharacterSheet[characterIndex].GetIntellect.ToString();
+            lckStat.text = combatCharacterSheet[characterIndex].GetLuck.ToString();
+            agiStat.text = combatCharacterSheet[characterIndex].GetAgility.ToString();
+            characterPortrait.sprite = combatCharacterSheet[characterIndex].GetCharacterIcon;
+            characterPortraitBG.sprite = combatCharacterSheet[characterIndex].GetCharacterIcon;
 
             //characterName.text = runtimePartyPear.GetMemberName;
             //runtimePartyAsha.GetCharacterSheet.
@@ -90,7 +99,11 @@ namespace Vanaring
         {
             hpFillBar.fillAmount = 1.0f;
             mpFillBar.fillAmount = 1.0f;
-            atkStat.text = combatCharacterSheet[characterIndex].GetATK.ToString();
+            vitStat.text = combatCharacterSheet[characterIndex].GetVitality.ToString();
+            atkStat.text = combatCharacterSheet[characterIndex].GetStrength.ToString();
+            intStat.text = combatCharacterSheet[characterIndex].GetIntellect.ToString();
+            lckStat.text = combatCharacterSheet[characterIndex].GetLuck.ToString();
+            agiStat.text = combatCharacterSheet[characterIndex].GetAgility.ToString();
             characterPortrait.sprite = combatCharacterSheet[characterIndex].GetCharacterIcon;
             characterPortraitBG.sprite = combatCharacterSheet[characterIndex].GetCharacterIcon;
         }
