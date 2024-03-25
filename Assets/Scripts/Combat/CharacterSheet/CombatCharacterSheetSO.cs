@@ -51,16 +51,16 @@ namespace Vanaring
 
         public Sprite GetCharacterIcon => _characterIconGUI;
 
-        //public int GetStrength => _strength ;
+        public int GetStrength => _strength;
 
-        //public int GetVitality => _vitality ;
+        public int GetVitality => _vitality;
 
 
-        //public int GetIntellect => _intellect;
+        public int GetIntellect => _intellect;
 
-        //public int GetAgility => _agility ;
+        public int GetAgility => _agility;
 
-        //public int GetLuck => _luck;
+        public int GetLuck => _luck;
 
         /// <summary>
         /// Functions to calculate secondary attribute with respect to Primary attributes
