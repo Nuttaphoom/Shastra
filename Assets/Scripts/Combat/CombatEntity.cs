@@ -379,7 +379,7 @@ namespace Vanaring
             yield return _statusEffectHandler.ExecuteAttackStatusRuntimeEffectCoroutine();
 
             //1.) Do apply dmg 
-            float realDMG = VanaringMathConst.GetATKWithNoise(scaling, StatsAccumulator.GetATKAmount()) ;
+            float realDMG = VanaringMathConst.GetATKWithNoise(scaling, StatsAccumulator.GetPhysicalATKAmount()) ;
 
 
 

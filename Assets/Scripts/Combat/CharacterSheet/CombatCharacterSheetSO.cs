@@ -12,17 +12,28 @@ namespace Vanaring
 
     public class CombatCharacterSheetSO : CharacterSheetSO 
     {
-        [Header("Peak HP of this entity")]
-        [SerializeField]
-        private int _HP;
 
-        [Header("Default ATK of this entity")]
-        [SerializeField]
-        private int _ATK;
+        /// <summary>
+        /// Primary Attributes only use in the begining of combat to set up secondary attributes 
+        /// If you wish to modify runtime attribute like DMG deal or MaxHP the modifer should be applied directly to secondary attributes 
+        /// </summary>
+        [Header("Character Primary Attribute Stats")]
 
-        [Header("Default MP of this entity")]
         [SerializeField]
-        private int _MP; 
+        private int _strength;
+
+        [SerializeField]
+        private int _vitality;
+
+        [SerializeField]
+        private int _intellect;
+
+        [SerializeField]
+        private int _agility;
+
+        [SerializeField]
+        private int _luck ;
+
 
         [Header("Ailment Resistant")]
         [SerializeField]
@@ -39,9 +50,26 @@ namespace Vanaring
         public AilmentResistantDataInfo ResistantData => _ailmentResistantDataInfo;
 
         public Sprite GetCharacterIcon => _characterIconGUI;
-        public int GetHP => _HP;
-        public int GetATK => _ATK;
-        public int GetMP => _MP;
+
+        //public int GetStrength => _strength ;
+
+        //public int GetVitality => _vitality ;
+
+
+        //public int GetIntellect => _intellect;
+
+        //public int GetAgility => _agility ;
+
+        //public int GetLuck => _luck;
+
+        /// <summary>
+        /// Functions to calculate secondary attribute with respect to Primary attributes
+        /// </summary>
+        public int GetSecondaryAttribute_MaxHP => 50 + (_vitality * 14 ) ;
+
+        public int GetSecondaryAttribute_MaxMP => 70 + (_intellect * 4 );
+        public int GetSecondaryAttribute_PhysicalATK => 20 + (_strength * 3) ;
+        public int GetSecondaryAttribute_MagicalATK => 15 + (_intellect * 3);
 
         public GameObject GetCombatEntityPrefab
         {

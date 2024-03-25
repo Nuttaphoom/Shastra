@@ -12,7 +12,7 @@ using UnityEngine;
 namespace Vanaring
 {
     [CustomEditor(typeof(SpellDatabaseSO))]
-    public class SpellDatabaseSOEditor : Editor
+    public class SpellDatabaseSOEditor : UnityEditor.Editor
     {
         public override void OnInspectorGUI()
         {

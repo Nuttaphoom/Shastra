@@ -48,7 +48,7 @@ namespace Vanaring
             if (!_appliedStatus)
             {
                 _appliedStatus = true; 
-                caster.StatsAccumulator.ModifyATKAmount(_enchanceATKStats);
+                caster.StatsAccumulator.ModifyPhysicalATKAmount(_enchanceATKStats);
             }
             //_timeToLive = 0;
 
@@ -60,7 +60,7 @@ namespace Vanaring
             yield return base.OnStatusEffecExpire(caster);
             
             if (_appliedStatus)
-                caster.StatsAccumulator.RemoveModifyATK(_enchanceATKStats);
+                caster.StatsAccumulator.RemoveModifyPhysicalATK(_enchanceATKStats);
             
         }
          
