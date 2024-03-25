@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.Experimental.GraphView;
@@ -9,7 +10,15 @@ namespace Vanaring
    
     public class BaseDungeonNode : MonoBehaviour
     {
-        protected bool _isVisited = false;
+        protected enum VisitationState
+        {
+            NotVisited,
+            Visited,
+            Visiting
+        }
+
+
+        protected VisitationState visistationState = VisitationState.NotVisited ; 
 
         [SerializeField]
         private List<BaseDungeonNode> _connectedNode ;
@@ -23,10 +32,18 @@ namespace Vanaring
         public bool IsThisNodeVisited { 
         get
             {
-                return _isVisited;
-                
+                return visistationState == VisitationState.Visited || IsCurrentlyVisiting  ;
+
             }
         }       
+
+        public bool IsCurrentlyVisiting
+        {
+            get
+            {
+                return visistationState == VisitationState.Visiting ; 
+            }
+        }
         protected DungeonNodeTransitionManager GetDungeonNodeTransitionManager
         {
             get
@@ -56,10 +73,12 @@ namespace Vanaring
 
         public virtual IEnumerator OnLeaveThisNode()
         {
-            if (!_isVisited)
+            if (! IsThisNodeVisited)
             {
                 throw new System.Exception("This node hasn't never been visited " ) ;
             }
+
+            visistationState = VisitationState.Visited ;
 
             ClearUpNodeTransitions() ;
 
@@ -68,15 +87,21 @@ namespace Vanaring
 
         public virtual IEnumerator OnVisiteThisNode()
         {
-            if (!_isVisited)
+            if (!IsThisNodeVisited)
             {
-                Debug.Log("set visite this node"); 
-                _isVisited = true;
+                visistationState = VisitationState.Visiting ;
+                yield return OnVisiteThisNodeFirstTime(); 
             }
+
 
             yield return SetUpNodeTransitions() ; 
 
-         }
+        } 
+
+        public virtual IEnumerator OnVisiteThisNodeFirstTime()
+        {
+            yield return null; 
+        }
 
         protected IEnumerator SetUpNodeTransitions()
         {
@@ -110,12 +135,20 @@ namespace Vanaring
             return new NodeRuntimeData()
             {
                 IsVisited = IsThisNodeVisited,
+                CurrentlyVisited = IsCurrentlyVisiting ,  
             };
         }
 
         public virtual void RestoreNodeData(NodeRuntimeData data)
         {
-            _isVisited = data.IsVisited;
+            if (data.CurrentlyVisited)
+            {
+                visistationState = VisitationState.Visiting;
+            }
+            else if (data.IsVisited)
+            {
+                visistationState = VisitationState.Visited ;
+            }
         }
 
          

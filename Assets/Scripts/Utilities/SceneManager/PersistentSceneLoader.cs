@@ -204,6 +204,11 @@ namespace Vanaring
         }
 
         #region IAwakeable Call
+
+        /// <summary>
+        /// This happen BEFORE loading from local storage 
+        /// </summary>
+        /// <returns></returns>
         public IEnumerator OnNewSceneLoad_BeforeSaveLoadPerform()
         {
             foreach (var awakeable in FindObjectsOfType<MonoBehaviour>())
@@ -214,6 +219,11 @@ namespace Vanaring
                 }
             }
         }
+
+        /// <summary>
+        /// This happen AFTER loading from temp local storage
+        /// </summary>
+        /// <returns></returns>
         public IEnumerator NotifySceneLoadingComplete()
         {
             foreach (var awakeable in FindObjectsOfType<MonoBehaviour>())

@@ -8,19 +8,13 @@ namespace Vanaring
     {
         [SerializeField]
         private SceneDataSO _combatSceneData; 
-        public override IEnumerator OnVisiteThisNode()
+         
+
+        public override IEnumerator OnVisiteThisNodeFirstTime()
         {
-            if (!_isVisited)
-            {
+            PersistentSceneLoader.Instance.LoadGeneralScene(_combatSceneData);
 
-                _isVisited = true;      
-                PersistentSceneLoader.Instance.LoadGeneralScene(_combatSceneData);
-            }
-
-
-
-            yield return SetUpNodeTransitions();
-
+            yield return null; 
         }
     }
 }

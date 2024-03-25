@@ -11,6 +11,7 @@ namespace Vanaring
     public struct NodeRuntimeData
     {
         public bool IsVisited;
+        public bool CurrentlyVisited; 
     }
     public class DungeonNodeEnvironment : MonoBehaviour, ISaveable  
     {
@@ -26,10 +27,19 @@ namespace Vanaring
         [SerializeField]
         private SceneDataSO _TEST_Map_sceneData ;
 
+        /// <summary>
+        /// make sure to call this AFTER loading process.
+        /// </summary>
         public BaseDungeonNode GetFirstNode
         {
             get
             {
+                foreach (BaseDungeonNode node in _baseDungeonNode)
+                {
+                    if (node.IsCurrentlyVisiting)
+                        return node; 
+                }
+
                 return _baseDungeonNode[0]; 
             }
         }
