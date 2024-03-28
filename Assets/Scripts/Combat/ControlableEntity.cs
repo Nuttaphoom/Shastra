@@ -93,7 +93,7 @@ namespace Vanaring
             List<SpellActionSO> spellList = new List<SpellActionSO>();
 
 
-            var partyMemberRuntimeData = PersistentPlayerPersonalDataManager.Instance.PartyMemberDataLocator.GetRuntimeData(characterName);
+            var partyMemberRuntimeData = PersistentPlayerPersonalDataManager.Instance.CombatMemberDataLocator.GetRuntimeData(characterName);
             
             spellList = partyMemberRuntimeData.GetRegisteredSpellActionSO;
 

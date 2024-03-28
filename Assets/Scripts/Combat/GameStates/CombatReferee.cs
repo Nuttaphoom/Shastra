@@ -150,9 +150,10 @@ namespace Vanaring
         private IEnumerator LoadAllyEntityRuntimeData()
         {
             List<CombatEntity> entities = new List<CombatEntity>();
-            foreach (CombatEntity entity in PersistentPlayerPersonalDataManager.Instance.PartyMemberDataLocator.GetCombatEntityPrefabInParty())
+            foreach (RuntimePartyMember partyMember in DungeonPartyHandler.Instance.PartyMembers)
             {
-                entities.Add(Instantiate(entity, transform) as CombatEntity);
+                
+                entities.Add(partyMember.InitializeCombatEntity);
             }
 
             yield return AssignCompetators(entities, ECompetatorSide.Ally); 

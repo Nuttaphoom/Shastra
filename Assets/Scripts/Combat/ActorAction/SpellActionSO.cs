@@ -41,7 +41,7 @@ namespace Vanaring
 
         public void SubmitReward()
         {
-            PersistentPlayerPersonalDataManager.Instance.PartyMemberDataLocator.GetProtagonistRuntimeData.UnlockSpellActionSO(this);
+            PersistentPlayerPersonalDataManager.Instance.CombatMemberDataLocator.GetProtagonistRuntimeData.UnlockSpellActionSO(this);
         }
     }
 

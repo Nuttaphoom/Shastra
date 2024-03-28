@@ -6,11 +6,11 @@ using UnityEngine;
 namespace Vanaring
 {
     [Serializable]
-    public class PartyMemberDataLocator  
+    public class CombatMemberDataLocator  
     {
         private CharacterSheetDatabaseSO m_characterSheetDatabase;
 
-        private List<RuntimePartyMemberData> _partyMemberData;
+        private List<RuntimeCombatMemberData> _partyMemberData;
         public void InitializeRuntimeMemberData()
         {
             if (_partyMemberData != null)
@@ -18,18 +18,18 @@ namespace Vanaring
 
             LoadCharacterDatabaseOP();
 
-            _partyMemberData = new List<RuntimePartyMemberData>();
+            _partyMemberData = new List<RuntimeCombatMemberData>();
             
             foreach (var partyMemberData in m_characterSheetDatabase.GetNormalCharacterSheets())
             {
-                RuntimePartyMemberData runtimePartyMemberData = new RuntimePartyMemberData();
+                RuntimeCombatMemberData runtimePartyMemberData = new RuntimeCombatMemberData();
                 runtimePartyMemberData.SetUpRuntimePartyMemberData(partyMemberData);
                 _partyMemberData.Add(runtimePartyMemberData); 
             }
         }
 
         #region GETTER
-        public RuntimePartyMemberData GetRuntimeData(string memberName)
+        public RuntimeCombatMemberData GetRuntimeData(string memberName)
         {
             foreach (var member in _partyMemberData)
             {
@@ -42,7 +42,7 @@ namespace Vanaring
             throw new System.Exception("member " + memberName + "couldn't be found within PartyMemberData"); 
         }
 
-        public RuntimePartyMemberData GetProtagonistRuntimeData
+        public RuntimeCombatMemberData GetProtagonistRuntimeData
         {
             get
             {
@@ -57,18 +57,14 @@ namespace Vanaring
                 throw new System.Exception("The protagonist couldn't be found within PartyMemberData");
             }
         }
-        public List<CombatEntity> GetCombatEntityPrefabInParty()
-        {
-            //TODO : Not return all of the character but instead only those currently in party 
-            List<CombatEntity> ret = new List<CombatEntity>() ; 
-            foreach (var member in _partyMemberData)
+        
+
+        public List<RuntimeCombatMemberData> GetRuntimeCombatMembers {
+            get
             {
-                ret.Add((member.GetCharacterSheet as CombatCharacterSheetSO).GetCombatEntityPrefab.GetComponent<ControlableEntity>());
+                return _partyMemberData ; 
             }
-
-            return ret ; 
         }
-
         #endregion
 
         //public void LoadLocalSaveForCharacters()

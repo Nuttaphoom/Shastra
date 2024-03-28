@@ -16,7 +16,7 @@ namespace Vanaring
         private PersonalityTrait player_personalityTrait;
         
         [SerializeField]
-        private PartyMemberDataLocator _partyDataLocator;
+        private CombatMemberDataLocator _partyDataLocator;
 
         [SerializeField]
         private RelationshipHandler _relationshipHandler;
@@ -28,7 +28,7 @@ namespace Vanaring
         private Backpack _backpack;
 
         #region GETTER 
-        public PartyMemberDataLocator PartyMemberDataLocator
+        public CombatMemberDataLocator CombatMemberDataLocator
         {
             get
             {
@@ -63,7 +63,7 @@ namespace Vanaring
             // TO DO : 
             player_personalityTrait = new PersonalityTrait(player_personalityTraitSO);
             _relationshipHandler = new RelationshipHandler() ;
-            _partyDataLocator = new PartyMemberDataLocator() ;  
+            _partyDataLocator = new CombatMemberDataLocator() ;  
 
             //TODO : Transfer this function into save/load system
             _relationshipHandler.LoadRelationStatusFromDatabase() ; 

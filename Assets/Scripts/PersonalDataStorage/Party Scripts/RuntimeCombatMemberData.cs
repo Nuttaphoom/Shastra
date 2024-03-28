@@ -7,17 +7,17 @@ using UnityEngine;
 namespace Vanaring
 {
     [Serializable]
-    public class RuntimePartyMemberData
+    public class RuntimeCombatMemberData
     {
         [SerializeField]
         private CharacterSheetSO _characterSheetSO;
         [SerializeField]
-        private PartyMemberActionRegister _memberActionRegister ;
+        private CombatMemberActionRegister _memberActionRegister ;
 
         public void SetUpRuntimePartyMemberData(CharacterSheetSO sheet)
         {
             _characterSheetSO = sheet ; 
-            _memberActionRegister = new PartyMemberActionRegister();
+            _memberActionRegister = new CombatMemberActionRegister();
             //_memberActionRegister.LoadSpellFromDatabase(spellUniqueKeys);
         }
 
@@ -54,11 +54,14 @@ namespace Vanaring
             }
         } 
 
-        public CharacterSheetSO GetCharacterSheet
+        public CombatCharacterSheetSO GetCharacterSheet
         {
             get
             {
-                return _characterSheetSO; 
+                if (_characterSheetSO is not CombatCharacterSheetSO)
+                    throw new Exception("Character sheet " + _characterSheetSO.CharacterName + " is not CombatCaracterSheetSO"); 
+
+                return _characterSheetSO as CombatCharacterSheetSO ; 
             }
         }
 

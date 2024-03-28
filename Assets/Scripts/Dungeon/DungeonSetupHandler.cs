@@ -16,9 +16,9 @@ namespace Vanaring
 
         public IEnumerator OnNewSceneLoad_BeforeSaveLoadPerform()
         {
-            _dungeonEvn = Instantiate(_dungeonNodeEnvTemplate, transform);
+            _dungeonEvn = Instantiate(_dungeonNodeEnvTemplate, transform); 
 
-            yield return null; 
+            yield return FindObjectOfType<DungeonPartyHandler>().SetUpRuntimeParty();
         }
 
         public IEnumerator OnNotifySceneLoadingComplete()

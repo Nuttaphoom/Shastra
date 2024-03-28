@@ -55,8 +55,8 @@ namespace Vanaring
 
         public override void OnWindowActive()
         {
-            characterName.text = PersistentPlayerPersonalDataManager.Instance.PartyMemberDataLocator.GetRuntimeData("Asha").GetMemberName;
-            spellRegiteredList = PersistentPlayerPersonalDataManager.Instance.PartyMemberDataLocator.GetRuntimeData("Asha").GetRegisteredSpellActionSO;
+            characterName.text = PersistentPlayerPersonalDataManager.Instance.CombatMemberDataLocator.GetRuntimeData("Asha").GetMemberName;
+            spellRegiteredList = PersistentPlayerPersonalDataManager.Instance.CombatMemberDataLocator.GetRuntimeData("Asha").GetRegisteredSpellActionSO;
         }
 
         public override void OnWindowDeActive()

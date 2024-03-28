@@ -21,6 +21,7 @@ namespace Vanaring
 
         public IEnumerator VisiteNextNode(BaseDungeonNode nodeToVisit )
         {
+            //first time dungeon node is init 
             if (_currentDungeonNode != null)
             {
                 //check if the next node is connected

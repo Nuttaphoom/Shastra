@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngineInternal;
@@ -22,6 +23,7 @@ namespace Vanaring
 
             _nodeTransitions = new List<NodeTransition>(); 
         }
+
 
         public IEnumerator SetUpDungeonNodeTransition(BaseDungeonNode startNode, BaseDungeonNode destinationNode)
         {
@@ -52,7 +54,7 @@ namespace Vanaring
 
         }
         
-        private TransitionDirection CalculateTransitionDirect(BaseDungeonNode startNode, BaseDungeonNode destinationNode)
+        public TransitionDirection CalculateTransitionDirect(BaseDungeonNode startNode, BaseDungeonNode destinationNode)
         {
             Vector3 directionVector = (destinationNode.transform.position - startNode.transform.position).normalized ;
 

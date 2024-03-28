@@ -43,6 +43,15 @@ namespace Vanaring
                 return _baseDungeonNode[0]; 
             }
         }
+
+        public List<BaseDungeonNode> GetAllDungeonNodes
+        {
+            get
+            {
+                return _baseDungeonNode;
+            }
+        }
+
         private void Update()
         {
             if (Input.GetKeyDown(KeyCode.W))
