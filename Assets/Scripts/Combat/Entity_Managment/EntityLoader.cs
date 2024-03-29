@@ -9,8 +9,7 @@ namespace Vanaring
 {
     public class EntityLoader : MonoBehaviour
     {
-        [SerializeField]
-        private List<EntityLoaderPoolSO> _pools;
+        private  EntityLoaderPoolSO  _pools;
 
         [SerializeField]
         private List<Transform> _spawnPositionSet = new List<Transform>();
@@ -25,12 +24,19 @@ namespace Vanaring
             foreach (Transform tf in _spawnPositionSet)
                 _available.Add(tf); 
         }
-        public List<CombatEntity> LoadData()
+
+        public void ReceiveEntityLoaderPool(EntityLoaderPoolSO pool)
         {
+            _pools = pool; 
+        }
+
+        public List<CombatEntity> GetCombatEntitiesFromPool()
+        {
+            if (_pools == null)
+                throw new Exception("_pools hasn't neven been assigned");
             List<CombatEntity> ret = new List<CombatEntity>();
 
-            EntityLoaderPoolSO pool = _pools[0];
-            _pools.RemoveAt(0);
+            EntityLoaderPoolSO pool = _pools ;
 
             int index = 0;
             foreach (var entityPrefabPool in pool.GetEntityPrefabPoolStruct)

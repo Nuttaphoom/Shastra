@@ -22,7 +22,14 @@ namespace Vanaring
 
         public override IEnumerator InitializeEntityIntoCombat()
         {
-            yield return null; 
+            yield return base.InitializeEntityIntoCombat();
+            
+            //Set up runtime value according to Party member data
+            RuntimePartyMember partyMemberData = DungeonManagerSingleton.Instance.DungeonPartyHandler.GetPartyMember(CombatCharacterSheet.CharacterName);
+
+            _runtimeCharacterStatsAccumulator = new RuntimeCharacterStatsAccumulator(partyMemberData); 
+
+            _spellCaster.SetMP(partyMemberData.GetCurrentPartyMemberMP) ;
         } 
 
 
@@ -93,7 +100,7 @@ namespace Vanaring
             List<SpellActionSO> spellList = new List<SpellActionSO>();
 
 
-            var partyMemberRuntimeData = PersistentPlayerPersonalDataManager.Instance.PartyMemberDataLocator.GetRuntimeData(characterName);
+            var partyMemberRuntimeData = PersistentPlayerPersonalDataManager.Instance.CombatMemberDataLocator.GetRuntimeData(characterName);
             
             spellList = partyMemberRuntimeData.GetRegisteredSpellActionSO;
 

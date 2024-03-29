@@ -4,15 +4,13 @@ using UnityEngine;
 
 namespace Vanaring
 {
-    public class DungeonManager : MonoBehaviour 
+    public class DungeonNodeManager : MonoBehaviour 
     {
         [SerializeField]
         private BaseDungeonNode _currentDungeonNode;
 
         [SerializeField]
         private Transform _cameraPivot;
-
-    
 
         public IEnumerator SetUpDungeonCoroutine(BaseDungeonNode firstNodeToStart)
         {
@@ -21,6 +19,7 @@ namespace Vanaring
 
         public IEnumerator VisiteNextNode(BaseDungeonNode nodeToVisit )
         {
+            //first time dungeon node is init 
             if (_currentDungeonNode != null)
             {
                 //check if the next node is connected

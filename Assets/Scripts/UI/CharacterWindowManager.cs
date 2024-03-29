@@ -18,10 +18,15 @@ namespace Vanaring
         private List<CharacterSocketGUI> characterSocketList = new List<CharacterSocketGUI>();
         private List<CombatEntity> combatEntityList = new List<CombatEntity>();
 
-   
         private void Start()
         {
+            CombatReferee.Instance.SubOnCombatPreparation(SetUpCharacterHUD);
+        }
+        private void SetUpCharacterHUD(Null n)
+        {
             entities = CombatReferee.Instance.GetCompetatorsBySide(ECompetatorSide.Ally);
+            
+            Debug.Log("entities .count : " +entities.Count);
 
             for (int i = entities.Count-1; i >= 0; i--)
             {

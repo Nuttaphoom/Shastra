@@ -101,6 +101,10 @@ namespace Vanaring
 
             GetEventBroadcaster().InvokeEvent(mod.Value, "OnMPModified");
         }
+        public void SetMP(float newMP)
+        {
+            _MPStats = new CharacterStat(newMP, _combatEntity.CombatCharacterSheet.GetSecondaryAttribute_MaxMP) ; 
+        }
 
         #endregion
 

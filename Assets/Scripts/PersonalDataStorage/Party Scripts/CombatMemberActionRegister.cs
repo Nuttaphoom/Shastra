@@ -10,7 +10,7 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 namespace Vanaring
 {
     [Serializable]
-    public class PartyMemberActionRegister    
+    public class CombatMemberActionRegister    
     {
         [SerializeField]
         private List<SpellActionSO> _registeredSpellActions ;
