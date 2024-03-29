@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Vanaring
 {
-    public class DungeonSetupHandler : MonoBehaviour, ISceneLoaderWaitForSignal
+    public class DungeonSetupHandler : MonoBehaviour , ISceneLoaderWaitForSignal
     {
         /// <summary>
         /// TODO : Pass this data from the quest selection menu
@@ -14,20 +14,32 @@ namespace Vanaring
 
         private DungeonNodeEnvironment _dungeonEvn;
 
+        /// <summary>
+        /// Call when player get into dungeon on the first time
+        /// </summary>
+        /// <returns></returns>
+        
+
+
+        public IEnumerator LoadEnvironmentData()
+        {
+            _dungeonEvn = Instantiate(_dungeonNodeEnvTemplate, transform);
+
+            yield return null;
+        }
+
         public IEnumerator OnNewSceneLoad_BeforeSaveLoadPerform()
         {
-            _dungeonEvn = Instantiate(_dungeonNodeEnvTemplate, transform); 
-
-            yield return FindObjectOfType<DungeonPartyHandler>().SetUpRuntimeParty();
+            yield return LoadEnvironmentData();
         }
 
         public IEnumerator OnNotifySceneLoadingComplete()
         {
-            DungeonManager dm = FindObjectOfType<DungeonManager>(); 
-
-            dm.StartCoroutine(FindObjectOfType<DungeonManager>().SetUpDungeonCoroutine(_dungeonEvn.GetFirstNode)); 
-
+            DungeonNodeManager dm = FindObjectOfType<DungeonNodeManager>();
+            //Set up logic transition detail
+            dm.StartCoroutine(FindObjectOfType<DungeonNodeManager>().SetUpDungeonCoroutine(FindObjectOfType<DungeonNodeEnvironment>().GetFirstNode));
             yield return null;
+            
         }
     }
 }

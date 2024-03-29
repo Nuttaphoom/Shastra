@@ -117,7 +117,7 @@ namespace Vanaring
             characterName.text = _characterSheetSO.CharacterName;
 
             hpVal = (int) _combatEntity.StatsAccumulator.GetHPAmount();
-            maxHpVal = (int)_combatEntity.StatsAccumulator.GetHPAmount();
+            maxHpVal = (int)_combatEntity.StatsAccumulator.GetPeakHPAmount();
             mpVal = (int)_combatEntity.SpellCaster.GetMP;
             maxMpVal = (int)_combatEntity.SpellCaster.GetPeakMP;
 

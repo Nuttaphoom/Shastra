@@ -6,6 +6,7 @@ namespace Vanaring
 {
     public class CombatDungeonNodeSetUpHandler : MonoBehaviour, ISceneLoaderWaitForSignal
     {
+        CombatDungeonNodeLoaderData _combatDungeonNodeLoaderData ; 
         public IEnumerator OnNewSceneLoad_BeforeSaveLoadPerform()
         {
             yield return null; 
@@ -13,6 +14,12 @@ namespace Vanaring
 
         public IEnumerator OnNotifySceneLoadingComplete()
         {
+            _combatDungeonNodeLoaderData = (PersistentSceneLoader.Instance.ExtractSavedData<CombatDungeonNodeLoaderData>("CombatDungeonNodeDataUser") ).GetData() ;  
+
+            //Use data from CombatNode and set up those data before Initialize anything 
+
+            FindObjectOfType<EntityLoader>().ReceiveEntityLoaderPool(_combatDungeonNodeLoaderData.EnemyLoaderPool) ;
+
             yield return CombatReferee.Instance.InitializeCombat();
 
             //Play intro 

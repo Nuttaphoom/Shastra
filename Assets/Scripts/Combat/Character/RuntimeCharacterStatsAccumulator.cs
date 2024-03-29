@@ -14,16 +14,6 @@ using UnityEngine;
 
 namespace Vanaring
 { 
-
-    //public enum ECharacterPrimaryAttributes 
-    //{
-    //    Strength, 
-    //    Vitality, 
-    //    Intellect, 
-    //    Agility, 
-    //    Luck
-    //}
-
     public enum ECharacterSecondaryAttributes
     {
         HP,
@@ -38,32 +28,60 @@ namespace Vanaring
     {
         //private Dictionary<ECharacterPrimaryAttributes, CharacterStat> _characterPrimaryAttributes = new Dictionary<ECharacterPrimaryAttributes, CharacterStat>();
         private Dictionary<ECharacterSecondaryAttributes, CharacterStat> _characterSecondaryAttributes = new Dictionary<ECharacterSecondaryAttributes, CharacterStat>();
-        public RuntimeCharacterStatsAccumulator(CombatCharacterSheetSO _entityStatsSO)
+       
+        /// <summary>
+        /// Use to initialize Party member entity
+        /// this function will update HP and other status of the member depending on the runtime value of that Party member
+        /// </summary>
+        /// <param name="runtimePartyMember"></param>
+        public RuntimeCharacterStatsAccumulator(RuntimePartyMember runtimePartyMember)
         {
-            //Setup Primary Attributes 
-            //_characterPrimaryAttributes.Add(ECharacterPrimaryAttributes.Strength, new CharacterStat(_entityStatsSO.GetStrength ) );
-            //_characterPrimaryAttributes.Add(ECharacterPrimaryAttributes.Vitality, new CharacterStat(_entityStatsSO.GetVitality));
-            //_characterPrimaryAttributes.Add(ECharacterPrimaryAttributes.Intellect, new CharacterStat(_entityStatsSO.GetIntellect));
-            //_characterPrimaryAttributes.Add(ECharacterPrimaryAttributes.Agility, new CharacterStat(_entityStatsSO.GetAgility));
-            //_characterPrimaryAttributes.Add(ECharacterPrimaryAttributes.Luck, new CharacterStat(_entityStatsSO.GetLuck));
-
+            CombatCharacterSheetSO combatCharacterSheetSO = runtimePartyMember.GetCharacterSheet;
             //Setup Secondary Attributes 
             //Mostly formula that transfer Primary stats into Secondary stats
-            int MaxHP = _entityStatsSO.GetSecondaryAttribute_MaxHP;
-            int PhysicalATK = _entityStatsSO.GetSecondaryAttribute_PhysicalATK;
-            int MagicalATK = _entityStatsSO.GetSecondaryAttribute_MagicalATK;
-            float ACC = _entityStatsSO.GetSecondaryAttribute_ACC ; 
-            float Evasion = _entityStatsSO.GetSecondaryAttribute_Evasion;
+            int MaxHP = combatCharacterSheetSO.GetSecondaryAttribute_MaxHP;
+            int PhysicalATK = combatCharacterSheetSO.GetSecondaryAttribute_PhysicalATK;
+            int MagicalATK = combatCharacterSheetSO.GetSecondaryAttribute_MagicalATK;
+            float ACC = combatCharacterSheetSO.GetSecondaryAttribute_ACC ; 
+            float Evasion = combatCharacterSheetSO.GetSecondaryAttribute_Evasion;
 
-
-            _characterSecondaryAttributes.Add(ECharacterSecondaryAttributes.HP, new CharacterStat(MaxHP, MaxHP) ) ;
+            _characterSecondaryAttributes.Add(ECharacterSecondaryAttributes.HP, new CharacterStat(runtimePartyMember.GetCurrentPartyMemberHP, MaxHP) ) ;
             _characterSecondaryAttributes.Add(ECharacterSecondaryAttributes.PhysicalATK, new CharacterStat(PhysicalATK, PhysicalATK));
             _characterSecondaryAttributes.Add(ECharacterSecondaryAttributes.MagicalATK, new CharacterStat(MagicalATK, MagicalATK));
 
             _characterSecondaryAttributes.Add(ECharacterSecondaryAttributes.Accuracy, new CharacterStat(ACC, ACC))  ;
             _characterSecondaryAttributes.Add(ECharacterSecondaryAttributes.Evasion, new CharacterStat(Evasion, Evasion)) ;
 
+
+            Debug.Log("current HP of " + combatCharacterSheetSO.CharacterName + " is " + GetHPAmount());
         }
+
+        /// <summary>
+        /// Use to initialize Combat entity with given CombatCharacterSheetSO
+        /// </summary>
+        /// <param name="combatCharacterSheetSO"></param>
+        public RuntimeCharacterStatsAccumulator(CombatCharacterSheetSO combatCharacterSheetSO)
+        {
+            //Mostly formula that transfer Primary stats into Secondary stats
+            int MaxHP = combatCharacterSheetSO.GetSecondaryAttribute_MaxHP;
+            int PhysicalATK = combatCharacterSheetSO.GetSecondaryAttribute_PhysicalATK;
+            int MagicalATK = combatCharacterSheetSO.GetSecondaryAttribute_MagicalATK;
+            float ACC = combatCharacterSheetSO.GetSecondaryAttribute_ACC;
+            float Evasion = combatCharacterSheetSO.GetSecondaryAttribute_Evasion;
+
+
+            _characterSecondaryAttributes.Add(ECharacterSecondaryAttributes.HP, new CharacterStat(MaxHP, MaxHP));
+            _characterSecondaryAttributes.Add(ECharacterSecondaryAttributes.PhysicalATK, new CharacterStat(PhysicalATK, PhysicalATK));
+            _characterSecondaryAttributes.Add(ECharacterSecondaryAttributes.MagicalATK, new CharacterStat(MagicalATK, MagicalATK));
+
+            _characterSecondaryAttributes.Add(ECharacterSecondaryAttributes.Accuracy, new CharacterStat(ACC, ACC));
+            _characterSecondaryAttributes.Add(ECharacterSecondaryAttributes.Evasion, new CharacterStat(Evasion, Evasion)); 
+
+            Debug.Log("current HP of " + combatCharacterSheetSO.CharacterName + " is " + GetHPAmount());
+
+        }
+
+
 
         #region ATKStatsManipulationMethod  
         public void ModifyPhysicalATKAmount(StatModifier mod)

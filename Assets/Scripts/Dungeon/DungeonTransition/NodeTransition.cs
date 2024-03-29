@@ -50,7 +50,7 @@ namespace Vanaring
         {
             _useTransition = true;
 
-            FindObjectOfType<DungeonManager>().StartCoroutine(FindObjectOfType<DungeonManager>().VisiteNextNode(transitionData.DestinationNode));
+            FindObjectOfType<DungeonNodeManager>().StartCoroutine(FindObjectOfType<DungeonNodeManager>().VisiteNextNode(transitionData.DestinationNode));
         }
          
         public class NodeTransitionData

@@ -4,15 +4,13 @@ using UnityEngine;
 
 namespace Vanaring
 {
-    public class DungeonManager : MonoBehaviour 
+    public class DungeonNodeManager : MonoBehaviour 
     {
         [SerializeField]
         private BaseDungeonNode _currentDungeonNode;
 
         [SerializeField]
         private Transform _cameraPivot;
-
-    
 
         public IEnumerator SetUpDungeonCoroutine(BaseDungeonNode firstNodeToStart)
         {

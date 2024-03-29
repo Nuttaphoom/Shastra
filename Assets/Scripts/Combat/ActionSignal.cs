@@ -215,7 +215,6 @@ namespace Vanaring
 
         public bool SignalTerminated()
         {
-            Debug.Log("_signalEffectBindings.coutn : " + _signalEffectBindings.Count); 
             return _signalEffectBindings.Count == 0 && _readyEffectQueue.Count == 0; 
         }
 

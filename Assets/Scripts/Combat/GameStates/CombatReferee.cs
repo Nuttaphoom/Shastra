@@ -13,7 +13,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 using Vanaring.Assets.Scripts.Combat.Utilities;
-using Vanaring_Utility_Tool; 
+using Vanaring_Utility_Tool;
 using static UnityEngine.UI.CanvasScaler;
 
 
@@ -149,11 +149,13 @@ namespace Vanaring
 
         private IEnumerator LoadAllyEntityRuntimeData()
         {
+
+            //Load controlable entities from Party data 
             List<CombatEntity> entities = new List<CombatEntity>();
-            foreach (RuntimePartyMember partyMember in DungeonPartyHandler.Instance.PartyMembers)
+            foreach (RuntimePartyMember partyMember in DungeonManagerSingleton.Instance.DungeonPartyHandler.PartyMembers)
             {
-                
-                entities.Add(partyMember.InitializeCombatEntity);
+                CombatEntity newEntity = partyMember.InitializeCombatEntity; 
+                entities.Add(newEntity) ;
             }
 
             yield return AssignCompetators(entities, ECompetatorSide.Ally); 
@@ -183,7 +185,7 @@ namespace Vanaring
                 GetEventBroadcaster().InvokeEvent<CombatEntity>(entity, "OnCompetitorEnterCombat");
             }
 
-            yield return AssignCompetators(_entityLoader.LoadData(), ECompetatorSide.Hostile);
+            yield return AssignCompetators(_entityLoader.GetCombatEntitiesFromPool(), ECompetatorSide.Hostile);
         }
 
         private IEnumerator AssignCompetators(List<CombatEntity> entites, ECompetatorSide side)
@@ -193,19 +195,21 @@ namespace Vanaring
             foreach (var entity in entites) {
                 _allIEs.Add(entity.InitializeEntityIntoCombat());
                 _allIEs.Add(entity.PrepareForCombat() ) ; 
-                GetEventBroadcaster().InvokeEvent<CombatEntity>(entity, "OnCompetitorEnterCombat");
             }
 
-            yield return new WaitAll(this, _allIEs.ToArray()); 
+            yield return new WaitAll(this, _allIEs.ToArray());
 
             foreach (var entity in entites)
             {
                 CompetatorDetailStruct c = new CompetatorDetailStruct(side, entity);
                 _competators.Add(c);
+
+                GetEventBroadcaster().InvokeEvent<CombatEntity>(entity, "OnCompetitorEnterCombat");
+
             }
 
-            
-            
+
+
             yield return null; 
         }
         public IEnumerator PrepareRefereeForNewRound()
@@ -224,7 +228,6 @@ namespace Vanaring
             while (true)
             {
                 yield return _sideTurnDisplayerManager.DisplaySideRoundCoroutine(_currentSide);
-                Debug.Log("round enter state");
                 yield return _combatRefereeStateHandler.AdvanceRound();
 
                 _currentSide = (ECompetatorSide)(((int)_currentSide + 1) % 2);
@@ -343,6 +346,7 @@ namespace Vanaring
 
             if (IsGameEnd())
             {
+                yield return FindObjectOfType<CombatRewardManager>().CombatRewardSchemeStart(this) ;
                 PersistentSceneLoader.Instance.LoadGeneralScene(PersistentSceneLoader.Instance.GetStackLoadedDataScene(1));
                 //FindObjectOfType<ThanksForPlayingDisplayer>().ShowThankForPlayingMenu();
             }

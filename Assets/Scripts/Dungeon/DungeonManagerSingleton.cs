@@ -1,0 +1,88 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using Unity.VisualScripting;
+using UnityEngine;
+
+namespace Vanaring
+{
+    /// <summary>
+    /// Not Exactly Persistent, this object will destroy self when exit dungeon 
+    /// </summary>
+    public class DungeonManagerSingleton : MonoBehaviour, ISceneLoaderWaitForSignal
+    {
+        private static DungeonManagerSingleton _instance ;
+        private DungeonPartyHandler _dungeonPartyHandler;
+
+
+        //TODO : Create property entering dungeon state not just random bool
+        private bool _firstTimeEnterDungeon = true ;
+        
+        #region GETTER
+        public static DungeonManagerSingleton Instance
+        {
+            get
+            {
+                if (_instance == null)
+                    throw new System.Exception("Instance = null"); 
+
+                return _instance; 
+            }
+        }
+
+        public DungeonPartyHandler DungeonPartyHandler
+        {
+            get
+            {
+                return _dungeonPartyHandler; 
+            }
+        }
+        #endregion
+
+        private void Awake()
+        {
+            Debug.Log("set _instance = this");
+            if (_instance)
+            {
+                Debug.Log("destroy this"); 
+                 if (_instance != this) 
+                    Destroy(gameObject); 
+            }else
+            {
+                _instance = this;
+                DontDestroyOnLoad(gameObject);
+            }
+        }
+
+        
+        //These function should be call EVERYTIME we enter/back to dungeon 
+        public IEnumerator OnNewSceneLoad_BeforeSaveLoadPerform()
+        {
+            yield return null; 
+        }
+
+        public IEnumerator OnNotifySceneLoadingComplete()
+        {
+            if (_firstTimeEnterDungeon)
+                yield return OnEnterDungeon() ;
+        }
+
+        ///////////
+
+
+        public IEnumerator OnEnterDungeon()
+        {
+            _dungeonPartyHandler = new DungeonPartyHandler ();
+            yield return _dungeonPartyHandler.SetUpRuntimeParty();
+
+            _firstTimeEnterDungeon = false; 
+        }
+
+        public IEnumerator OnExitDungeon()
+        {
+            yield return _dungeonPartyHandler.OnExitDungeon(); 
+        }
+
+        
+    }
+}

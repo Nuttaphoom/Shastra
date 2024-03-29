@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static Vanaring.CombatRewardManager;
 
 namespace Vanaring
 {
@@ -17,6 +18,7 @@ namespace Vanaring
         
         public RuntimePartyMember(RuntimeCombatMemberData combatMemberData)
         {
+            ColorfulLogger.LogWithColor("New party init ", Color.red);
             _runtimeCombatMemberData = combatMemberData;
 
             CombatCharacterSheetSO characterSheet = _runtimeCombatMemberData.GetCharacterSheet;
@@ -45,12 +47,20 @@ namespace Vanaring
                 return MonoBehaviour.Instantiate(GetCharacterSheet.GetCombatEntityPrefab).GetComponent<CombatEntity>()   ;
             }
         }
+
+        public float GetCurrentPartyMemberHP => _currentHP;
+        public float GetCurrentPartyMemberMP => _currentMP;
+
+        public void UpdateValue(float hp, float mp)
+        {
+            _currentHP = hp; 
+            _currentMP = mp; 
+        }
         #endregion
 
     }
-    public class DungeonPartyHandler : MonoBehaviour
+    public class DungeonPartyHandler 
     {
-        public static DungeonPartyHandler Instance;
 
         [SerializeField]
         private List<RuntimePartyMember> _partyMembers ;
@@ -64,17 +74,20 @@ namespace Vanaring
             }
         }
 
-        #endregion
-        private void Awake()
+        public RuntimePartyMember GetPartyMember(string characterName)
         {
-            if (Instance != null)
+            foreach (RuntimePartyMember member in _partyMembers)
             {
-                throw new System.Exception("DungeonPartyHandler exit more than one instance , This obejct should be properly destroyed when exit dungeon"); 
-                Destroy(Instance.gameObject);
+                if (characterName== member.GetCharacterSheet.CharacterName)
+                    return member; 
             }
 
-            Instance = this; 
+            throw new Exception("Given name " + characterName + " couldn't be found in the party member datas");
         }
+     
+
+        #endregion
+       
 
         public IEnumerator SetUpRuntimeParty()
         {
@@ -88,7 +101,24 @@ namespace Vanaring
             yield return null; 
         }
 
-        public void OnExitDungeon()
+        public void UpdateMemberStatus(EntityRewardData entityRewardData)
+        {
+            Debug.Log("Update " + entityRewardData.ControlEntity.CombatCharacterSheet.CharacterName) ;
+
+            foreach (RuntimePartyMember member in _partyMembers)
+            {
+                if (member.GetCharacterSheet.CharacterName != entityRewardData.ControlEntity.CombatCharacterSheet.CharacterName)
+                    continue;
+
+                CombatEntity combatEntity = entityRewardData.ControlEntity;
+                Debug.Log("New HP of " + entityRewardData.ControlEntity.CombatCharacterSheet.CharacterName + " is " + combatEntity.StatsAccumulator.GetHPAmount()); 
+                member.UpdateValue(combatEntity.StatsAccumulator.GetHPAmount(), combatEntity.SpellCaster.GetMP);
+
+
+
+            }
+        }
+        public IEnumerator OnExitDungeon()
         {
             throw new NotImplementedException(); 
         }

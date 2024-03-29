@@ -33,7 +33,7 @@ namespace Vanaring
         [SerializeField]
         private StatusEffectHandler _statusEffectHandler;
 
-        private RuntimeCharacterStatsAccumulator _runtimeCharacterStatsAccumulator;
+        protected RuntimeCharacterStatsAccumulator _runtimeCharacterStatsAccumulator;
 
         [SerializeField]
         private CombatEntityAnimationHandler _combatEntityAnimationHandler;
@@ -168,20 +168,7 @@ namespace Vanaring
         }
 
         #endregion
-
-        protected virtual void Awake()
-        {
-            _ailmentHandler = new AilmentHandler(this); 
-            _dmgOutputPopHanlder = new POPUPNumberTextHandler(this); 
-            _runtimeCharacterStatsAccumulator = new RuntimeCharacterStatsAccumulator(_characterSheet);
-            _energyOverflowHandler = GetComponent<EnergyOverflowHandler>();
-            _statusEffectHandler = new StatusEffectHandler(this); 
-
-            if (_spellCaster == null)
-            {
-                throw new Exception("SpellCaster haven't been assigned (should never use 'GetComponent' for SpellCaster as it would be too slow') ");
-            }
-        }
+       
 
         #region Turn Handler Methods 
         /// <summary>
@@ -189,7 +176,20 @@ namespace Vanaring
         /// Enemy will display spawning effect here 
         /// </summary>
         /// <returns></returns>
-        public abstract IEnumerator InitializeEntityIntoCombat();
+        public virtual IEnumerator InitializeEntityIntoCombat()
+        {
+            _ailmentHandler = new AilmentHandler(this);
+            _dmgOutputPopHanlder = new POPUPNumberTextHandler(this);
+            _energyOverflowHandler = GetComponent<EnergyOverflowHandler>();
+            _statusEffectHandler = new StatusEffectHandler(this);
+
+            if (_spellCaster == null)
+            {
+                throw new Exception("SpellCaster haven't been assigned (should never use 'GetComponent' for SpellCaster as it will be too slow') ");
+            }
+
+            yield return null; 
+        }
 
         //Call in referee when the combat almost stat
         public abstract IEnumerator PrepareForCombat(); 

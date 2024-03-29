@@ -43,7 +43,6 @@ namespace Vanaring
       
         public void FactorizeItemInInventory()
         {
-            ColorfulLogger.LogWithColor(".factorize item ", Color.yellow );
 
             _itemInventory = ItemInventory.instance.GetItemInventoryAbility;
 

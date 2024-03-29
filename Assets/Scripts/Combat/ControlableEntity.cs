@@ -22,7 +22,14 @@ namespace Vanaring
 
         public override IEnumerator InitializeEntityIntoCombat()
         {
-            yield return null; 
+            yield return base.InitializeEntityIntoCombat();
+            
+            //Set up runtime value according to Party member data
+            RuntimePartyMember partyMemberData = DungeonManagerSingleton.Instance.DungeonPartyHandler.GetPartyMember(CombatCharacterSheet.CharacterName);
+
+            _runtimeCharacterStatsAccumulator = new RuntimeCharacterStatsAccumulator(partyMemberData); 
+
+            _spellCaster.SetMP(partyMemberData.GetCurrentPartyMemberMP) ;
         } 
 
 

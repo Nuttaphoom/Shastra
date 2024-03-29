@@ -41,7 +41,6 @@ namespace Vanaring
 
         public void ClearDungeonNodeTransition()
         {
-            Debug.Log("node.count : " + _nodeTransitions.Count); 
 
             for (int i =  _nodeTransitions.Count - 1; i >= 0; i--)
             {
