@@ -72,10 +72,8 @@ namespace Vanaring
             }
             else if (key == KeyCode.Q)
             {
-                //if 
-                //{
-
-                //}
+                _pauseMenuWindowGUI.OpenWindow(EPauseWindowGUI.Spell);
+                combatCharacterSheet[characterIndex].
             }
             else if (key == KeyCode.W)
             {
