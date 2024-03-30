@@ -38,7 +38,7 @@ namespace Vanaring
                 button.onClick.RemoveAllListeners();
             }
 
-            Debug.Log("Add Listener");
+            
             resumeButton.onClick.AddListener(() => _pauseMenuWindowGUI.HideCurrentWindow());
             characterButton.onClick.AddListener(() => _pauseMenuWindowGUI.OpenWindow(EPauseWindowGUI.Party));
 

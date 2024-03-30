@@ -72,8 +72,8 @@ namespace Vanaring
             }
             else if (key == KeyCode.Q)
             {
+                _pauseMenuWindowGUI.SelectCharacter = combatCharacterSheet[characterIndex];
                 _pauseMenuWindowGUI.OpenWindow(EPauseWindowGUI.Spell);
-                combatCharacterSheet[characterIndex].
             }
             else if (key == KeyCode.W)
             {
@@ -94,7 +94,7 @@ namespace Vanaring
         }
 
         private void SwitchCharacter()
-        {
+        {   
             hpFillBar.fillAmount = 1.0f;
             mpFillBar.fillAmount = 1.0f;
             vitStat.text = combatCharacterSheet[characterIndex].GetVitality.ToString();

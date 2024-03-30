@@ -13,11 +13,27 @@ namespace Vanaring
 
         private PauseMenuWindowGUI _lastWindowOpen;
 
+        private CombatCharacterSheetSO selectedCharacter;
+
+        public CombatCharacterSheetSO SelectCharacter
+        {
+            get
+            {
+                return selectedCharacter;
+            }
+            set
+            {
+                selectedCharacter = value;
+            }
+        }
+
         private void Start()
         {
             foreach (var window in GetAllValidWindows())
                 window.Init(this);
         }
+
+        
 
         private List<PauseMenuWindowGUI> GetAllValidWindows()
         {
