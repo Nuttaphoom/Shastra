@@ -46,7 +46,7 @@ namespace Vanaring
                 }
             }
             possessesCharacter.sprite = _pauseMenuWindowGUI.SelectCharacter.GetCharacterIcon;
-            Debug.Log(_pauseMenuWindowGUI.SelectCharacter.CharacterName);
+            //Debug.Log(_pauseMenuWindowGUI.SelectCharacter.CharacterName);
 
             if (_pauseMenuWindowGUI.SelectCharacter.GetCombatEntityPrefab.GetComponent<CombatEntity>() is ControlableEntity controlEntity)
             {

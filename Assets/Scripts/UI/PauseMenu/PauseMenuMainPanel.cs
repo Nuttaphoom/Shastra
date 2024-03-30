@@ -32,7 +32,7 @@ namespace Vanaring
             {
                 Debug.LogError("no gui");
             }
-            buttonSelectingIndex = 0;
+            //buttonSelectingIndex = 0;
             foreach (Button button in pauseButtonList)
             {
                 button.onClick.RemoveAllListeners();
