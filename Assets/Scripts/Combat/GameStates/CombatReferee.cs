@@ -152,7 +152,7 @@ namespace Vanaring
 
             //Load controlable entities from Party data 
             List<CombatEntity> entities = new List<CombatEntity>();
-            foreach (RuntimePartyMember partyMember in DungeonManagerSingleton.Instance.DungeonPartyHandler.PartyMembers)
+            foreach (RuntimePartyMember partyMember in MissionManagerSingleton.Instance.DungeonPartyHandler.PartyMembers)
             {
                 CombatEntity newEntity = partyMember.InitializeCombatEntity; 
                 entities.Add(newEntity) ;

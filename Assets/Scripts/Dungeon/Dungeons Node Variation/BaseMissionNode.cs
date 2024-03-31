@@ -8,7 +8,7 @@ namespace Vanaring
 {
 
    
-    public class BaseDungeonNode : MonoBehaviour
+    public class BaseMissionNode : MonoBehaviour
     {
         protected enum VisitationState
         {
@@ -21,12 +21,12 @@ namespace Vanaring
         protected VisitationState visistationState = VisitationState.NotVisited ; 
 
         [SerializeField]
-        private List<BaseDungeonNode> _connectedNode ;
+        private List<BaseMissionNode> _connectedNode ;
 
         [SerializeField]
         private NodeVisualTransitionHandler _nodeVisualTransitionHandler;
 
-        private DungeonNodeTransitionManager _dungeonNodeTransitionManager;
+        private MissionNodeTransitionManager _dungeonNodeTransitionManager;
 
         #region GETTER 
         public bool IsThisNodeVisited { 
@@ -44,12 +44,12 @@ namespace Vanaring
                 return visistationState == VisitationState.Visiting ; 
             }
         }
-        protected DungeonNodeTransitionManager GetDungeonNodeTransitionManager
+        protected MissionNodeTransitionManager GetDungeonNodeTransitionManager
         {
             get
             {
                 if (_dungeonNodeTransitionManager == null)
-                    _dungeonNodeTransitionManager = FindObjectOfType<DungeonNodeTransitionManager>();
+                    _dungeonNodeTransitionManager = FindObjectOfType<MissionNodeTransitionManager>();
 
                 return _dungeonNodeTransitionManager ;
             }
@@ -59,7 +59,7 @@ namespace Vanaring
             get { return _nodeVisualTransitionHandler ; }
 
         }
-        public List<BaseDungeonNode> ConnectedNode
+        public List<BaseMissionNode> ConnectedNode
         {
             get {
                 if (_connectedNode == null)
@@ -105,7 +105,7 @@ namespace Vanaring
 
         protected IEnumerator SetUpNodeTransitions()
         {
-            foreach (BaseDungeonNode node in _connectedNode)
+            foreach (BaseMissionNode node in _connectedNode)
             {
                 yield return GetDungeonNodeTransitionManager.SetUpDungeonNodeTransition(this, node); 
             }
@@ -119,7 +119,7 @@ namespace Vanaring
 
         }
 
-        public bool IsConnectedNode(BaseDungeonNode nextNode)
+        public bool IsConnectedNode(BaseMissionNode nextNode)
         {
             foreach (var node in ConnectedNode)
             {

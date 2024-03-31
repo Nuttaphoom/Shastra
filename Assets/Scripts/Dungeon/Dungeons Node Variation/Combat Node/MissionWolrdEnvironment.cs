@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Vanaring
 {
-    public class DungeonWolrdEnvironment : MonoBehaviour
+    public class MissionWolrdEnvironment : MonoBehaviour
     {
         // Start is called before the first frame update
         void Start()

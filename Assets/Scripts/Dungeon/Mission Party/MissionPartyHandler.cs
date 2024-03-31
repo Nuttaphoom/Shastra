@@ -59,7 +59,7 @@ namespace Vanaring
         #endregion
 
     }
-    public class DungeonPartyHandler 
+    public class MissionPartyHandler 
     {
 
         [SerializeField]

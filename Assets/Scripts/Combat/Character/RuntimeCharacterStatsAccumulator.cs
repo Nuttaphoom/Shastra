@@ -53,7 +53,6 @@ namespace Vanaring
             _characterSecondaryAttributes.Add(ECharacterSecondaryAttributes.Evasion, new CharacterStat(Evasion, Evasion)) ;
 
 
-            Debug.Log("current HP of " + combatCharacterSheetSO.CharacterName + " is " + GetHPAmount());
         }
 
         /// <summary>

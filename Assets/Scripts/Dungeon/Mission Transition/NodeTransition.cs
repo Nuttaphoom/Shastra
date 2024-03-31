@@ -31,7 +31,7 @@ namespace Vanaring
         }
         #endregion
 
-        public void SetUpTransitionData(BaseDungeonNode startNode, BaseDungeonNode destinationNode)
+        public void SetUpTransitionData(BaseMissionNode startNode, BaseMissionNode destinationNode)
         {
             _isSetup = true; 
 
@@ -50,13 +50,13 @@ namespace Vanaring
         {
             _useTransition = true;
 
-            FindObjectOfType<DungeonNodeManager>().StartCoroutine(FindObjectOfType<DungeonNodeManager>().VisiteNextNode(transitionData.DestinationNode));
+            FindObjectOfType<MissionNodeManager>().StartCoroutine(FindObjectOfType<MissionNodeManager>().VisiteNextNode(transitionData.DestinationNode));
         }
          
         public class NodeTransitionData
         {
-            public BaseDungeonNode DestinationNode;
-            public BaseDungeonNode StartNode;
+            public BaseMissionNode DestinationNode;
+            public BaseMissionNode StartNode;
         }
 
         

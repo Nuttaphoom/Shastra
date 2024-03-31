@@ -8,7 +8,7 @@ using static Vanaring.NodeTransition;
 
 namespace Vanaring
 {
-    public class DungeonNodeTransitionManager : MonoBehaviour
+    public class MissionNodeTransitionManager : MonoBehaviour
     {
 
         [SerializeField] 
@@ -25,7 +25,7 @@ namespace Vanaring
         }
 
 
-        public IEnumerator SetUpDungeonNodeTransition(BaseDungeonNode startNode, BaseDungeonNode destinationNode)
+        public IEnumerator SetUpDungeonNodeTransition(BaseMissionNode startNode, BaseMissionNode destinationNode)
         {
             TransitionDirection direction = CalculateTransitionDirect(startNode, destinationNode);
  
@@ -53,7 +53,7 @@ namespace Vanaring
 
         }
         
-        public TransitionDirection CalculateTransitionDirect(BaseDungeonNode startNode, BaseDungeonNode destinationNode)
+        public TransitionDirection CalculateTransitionDirect(BaseMissionNode startNode, BaseMissionNode destinationNode)
         {
             Vector3 directionVector = (destinationNode.transform.position - startNode.transform.position).normalized ;
 

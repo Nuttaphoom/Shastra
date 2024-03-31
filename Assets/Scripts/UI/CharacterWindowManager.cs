@@ -26,7 +26,6 @@ namespace Vanaring
         {
             entities = CombatReferee.Instance.GetCompetatorsBySide(ECompetatorSide.Ally);
             
-            Debug.Log("entities .count : " +entities.Count);
 
             for (int i = entities.Count-1; i >= 0; i--)
             {

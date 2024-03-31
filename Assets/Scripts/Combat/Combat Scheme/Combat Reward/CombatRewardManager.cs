@@ -42,7 +42,7 @@ namespace Vanaring
         {
             Debug.Log("Update Party Member") ;
             foreach (EntityRewardData rewardEntity in combatRewardData.RewardForEntities) { 
-                DungeonManagerSingleton.Instance.DungeonPartyHandler.UpdateMemberStatus(rewardEntity) ; 
+                MissionManagerSingleton.Instance.DungeonPartyHandler.UpdateMemberStatus(rewardEntity) ; 
             }
 
             yield return null; 

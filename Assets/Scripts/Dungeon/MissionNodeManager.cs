@@ -4,20 +4,20 @@ using UnityEngine;
 
 namespace Vanaring
 {
-    public class DungeonNodeManager : MonoBehaviour 
+    public class MissionNodeManager : MonoBehaviour 
     {
         [SerializeField]
-        private BaseDungeonNode _currentDungeonNode;
+        private BaseMissionNode _currentDungeonNode;
 
         [SerializeField]
         private Transform _cameraPivot;
 
-        public IEnumerator SetUpDungeonCoroutine(BaseDungeonNode firstNodeToStart)
+        public IEnumerator SetUpDungeonCoroutine(BaseMissionNode firstNodeToStart)
         {
             yield return VisiteNextNode(firstNodeToStart);
         } 
 
-        public IEnumerator VisiteNextNode(BaseDungeonNode nodeToVisit )
+        public IEnumerator VisiteNextNode(BaseMissionNode nodeToVisit )
         {
             //first time dungeon node is init 
             if (_currentDungeonNode != null)

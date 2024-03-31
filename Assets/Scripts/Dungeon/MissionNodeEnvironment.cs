@@ -13,11 +13,11 @@ namespace Vanaring
         public bool IsVisited;
         public bool CurrentlyVisited; 
     }
-    public class DungeonNodeEnvironment : MonoBehaviour, ISaveable  
+    public class MissionNodeEnvironment : MonoBehaviour, ISaveable  
     {
         
         [SerializeField]
-        private List<BaseDungeonNode> _baseDungeonNode ;
+        private List<BaseMissionNode> _baseDungeonNode ;
 
         [Header("*** Use for debuging only ***")]
         ///Use for save/load system 
@@ -30,11 +30,11 @@ namespace Vanaring
         /// <summary>
         /// make sure to call this AFTER loading process.
         /// </summary>
-        public BaseDungeonNode GetFirstNode
+        public BaseMissionNode GetFirstNode
         {
             get
             {
-                foreach (BaseDungeonNode node in _baseDungeonNode)
+                foreach (BaseMissionNode node in _baseDungeonNode)
                 {
                     if (node.IsCurrentlyVisiting)
                         return node; 
@@ -44,7 +44,7 @@ namespace Vanaring
             }
         }
 
-        public List<BaseDungeonNode> GetAllDungeonNodes
+        public List<BaseMissionNode> GetAllDungeonNodes
         {
             get
             {

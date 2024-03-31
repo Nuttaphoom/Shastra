@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Vanaring
 {
-    public class DungeonDataSO : ScriptableObject
+    public class MissionDataSO : ScriptableObject
     {
          
     }

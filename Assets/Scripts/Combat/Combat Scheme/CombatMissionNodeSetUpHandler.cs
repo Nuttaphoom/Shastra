@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Vanaring
 {
-    public class CombatDungeonNodeSetUpHandler : MonoBehaviour, ISceneLoaderWaitForSignal
+    public class CombatMissionNodeSetUpHandler : MonoBehaviour, ISceneLoaderWaitForSignal
     {
         CombatDungeonNodeLoaderData _combatDungeonNodeLoaderData ; 
         public IEnumerator OnNewSceneLoad_BeforeSaveLoadPerform()

@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Vanaring
 {
-    public class CombatDungeonNode : BaseDungeonNode
+    public class CombatMissionNode : BaseMissionNode
     {
         [SerializeField]
         private SceneDataSO _combatSceneData;

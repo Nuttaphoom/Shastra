@@ -9,17 +9,17 @@ namespace Vanaring
     /// <summary>
     /// Not Exactly Persistent, this object will destroy self when exit dungeon 
     /// </summary>
-    public class DungeonManagerSingleton : MonoBehaviour, ISceneLoaderWaitForSignal
+    public class MissionManagerSingleton : MonoBehaviour, ISceneLoaderWaitForSignal
     {
-        private static DungeonManagerSingleton _instance ;
-        private DungeonPartyHandler _dungeonPartyHandler;
+        private static MissionManagerSingleton _instance ;
+        private MissionPartyHandler _dungeonPartyHandler;
 
 
         //TODO : Create property entering dungeon state not just random bool
         private bool _firstTimeEnterDungeon = true ;
         
         #region GETTER
-        public static DungeonManagerSingleton Instance
+        public static MissionManagerSingleton Instance
         {
             get
             {
@@ -30,7 +30,7 @@ namespace Vanaring
             }
         }
 
-        public DungeonPartyHandler DungeonPartyHandler
+        public MissionPartyHandler DungeonPartyHandler
         {
             get
             {
@@ -72,7 +72,7 @@ namespace Vanaring
 
         public IEnumerator OnEnterDungeon()
         {
-            _dungeonPartyHandler = new DungeonPartyHandler ();
+            _dungeonPartyHandler = new MissionPartyHandler ();
             yield return _dungeonPartyHandler.SetUpRuntimeParty();
 
             _firstTimeEnterDungeon = false; 
