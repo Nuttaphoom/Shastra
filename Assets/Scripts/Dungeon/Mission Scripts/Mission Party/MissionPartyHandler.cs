@@ -102,7 +102,6 @@ namespace Vanaring
 
         public void UpdateMemberStatus(EntityRewardData entityRewardData)
         {
-            Debug.Log("Update " + entityRewardData.ControlEntity.CombatCharacterSheet.CharacterName) ;
 
             foreach (RuntimePartyMember member in _partyMembers)
             {
@@ -110,7 +109,6 @@ namespace Vanaring
                     continue;
 
                 CombatEntity combatEntity = entityRewardData.ControlEntity;
-                Debug.Log("New HP of " + entityRewardData.ControlEntity.CombatCharacterSheet.CharacterName + " is " + combatEntity.StatsAccumulator.GetHPAmount()); 
                 member.UpdateValue(combatEntity.StatsAccumulator.GetHPAmount(), combatEntity.SpellCaster.GetMP);
 
 

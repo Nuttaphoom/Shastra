@@ -87,6 +87,7 @@ namespace Vanaring
 
         public virtual IEnumerator OnVisiteThisNode()
         {
+            ColorfulLogger.LogWithColor("OnVisiteThisNode",Color.yellow);
             if (!IsThisNodeVisited)
             {
                 visistationState = VisitationState.Visiting ;

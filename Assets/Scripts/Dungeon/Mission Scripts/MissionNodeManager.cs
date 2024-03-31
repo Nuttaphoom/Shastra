@@ -15,8 +15,9 @@ namespace Vanaring
         public IEnumerator SetUpDungeonCoroutine(BaseMissionNode firstNodeToStart)
         {
             yield return VisiteNextNode(firstNodeToStart);
-        } 
+        }
 
+       
         public IEnumerator VisiteNextNode(BaseMissionNode nodeToVisit )
         {
             //first time dungeon node is init 
@@ -52,6 +53,9 @@ namespace Vanaring
             //yield return until transition visual is done 
 
             yield return _currentDungeonNode.OnVisiteThisNode() ;
+            /// If VisiteNextNode is interrupted with Loading new scene in _currentDungeonNode.OnVisiteThisNode
+            /// The rest of the code below will not be called, 
+
 
 
         End:
