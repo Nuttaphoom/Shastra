@@ -9,8 +9,8 @@ namespace Vanaring
         /// <summary>
         /// TODO : Pass this data from the quest selection menu
         /// </summary>
-        [SerializeField]
-        private MissionNodeEnvironment _dungeonNodeEnvTemplate;
+        //[SerializeField]
+        //private MissionNodeEnvironment _dungeonNodeEnvTemplate;
 
         private MissionNodeEnvironment _dungeonEvn;
 
@@ -21,16 +21,16 @@ namespace Vanaring
         
 
 
-        public IEnumerator LoadEnvironmentData()
+        public IEnumerator LoadEnvironmentData(MissionNodeEnvironment nodeEnvironment )
         {
-            _dungeonEvn = Instantiate(_dungeonNodeEnvTemplate, transform);
+            _dungeonEvn = Instantiate(nodeEnvironment, transform);
 
             yield return null;
         }
 
         public IEnumerator OnNewSceneLoad_BeforeSaveLoadPerform()
         {
-            yield return LoadEnvironmentData();
+            yield return null;   
         }
 
         public IEnumerator OnNotifySceneLoadingComplete()

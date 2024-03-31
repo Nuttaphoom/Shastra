@@ -13,7 +13,23 @@ namespace Vanaring
     {
         private static MissionManagerSingleton _instance ;
         private MissionPartyHandler _dungeonPartyHandler;
+        private MissionDataSO _currentMissionDataSO;
 
+        public MissionDataSO CurrentMissionDataSO
+        {
+            get
+            {
+                if (_currentMissionDataSO == null)
+                {
+                    _currentMissionDataSO = PersistentSceneLoader.Instance.ExtractSavedData<DungeonMissionInstance>("DungeonMissionInstanceFromDungeonManager").GetData().MissionData ; 
+                    if (_currentMissionDataSO == null)
+                    {
+                        throw new Exception("_currentMissionDataSO couldn't be extracted from the DataUser data"); 
+                    }
+                }
+                return _currentMissionDataSO; 
+            }
+        }
 
         //TODO : Create property entering dungeon state not just random bool
         private bool _firstTimeEnterDungeon = true ;
@@ -41,10 +57,8 @@ namespace Vanaring
 
         private void Awake()
         {
-            Debug.Log("set _instance = this");
             if (_instance)
             {
-                Debug.Log("destroy this"); 
                  if (_instance != this) 
                     Destroy(gameObject); 
             }else
@@ -58,6 +72,7 @@ namespace Vanaring
         //These function should be call EVERYTIME we enter/back to dungeon 
         public IEnumerator OnNewSceneLoad_BeforeSaveLoadPerform()
         {
+            yield return FindObjectOfType<MissionSetupHandler>().LoadEnvironmentData(CurrentMissionDataSO.MissionNodeEnvironment) ; 
             yield return null; 
         }
 
