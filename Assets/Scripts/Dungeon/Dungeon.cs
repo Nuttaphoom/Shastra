@@ -14,8 +14,6 @@ namespace Vanaring
 
         private List<DungeonMissionInstance> _dungeonMissionInstance = new List<DungeonMissionInstance>(); 
 
-
-
         /// <summary>
         /// TEMP function use for testing
         /// </summary>

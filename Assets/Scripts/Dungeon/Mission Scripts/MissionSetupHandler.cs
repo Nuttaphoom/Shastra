@@ -30,7 +30,7 @@ namespace Vanaring
 
         public IEnumerator OnNewSceneLoad_BeforeSaveLoadPerform()
         {
-            yield return null;   
+            yield return LoadEnvironmentData(MissionManagerSingleton.Instance.CurrentMissionDataSO.MissionNodeEnvironment) ; 
         }
 
         public IEnumerator OnNotifySceneLoadingComplete()

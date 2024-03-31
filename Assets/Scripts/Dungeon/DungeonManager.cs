@@ -5,7 +5,7 @@ using UnityEngine.AddressableAssets;
 
 namespace Vanaring
 {
-    public class DungeonManager : MonoBehaviour, ISaveable
+    public class DungeonManager : MonoBehaviour, ISaveable 
     {
         [SerializeField]
         private List<Dungeon> _dungeons;
@@ -28,13 +28,22 @@ namespace Vanaring
         }
         private void LoadSelectedMission(DungeonMissionInstance missionInstance)
         {
-            //Visually dispaly confirm selection UI 
-
+            //Visually dispaly confirm selection 
             PersistentSceneLoader.Instance.CreateLoaderDataUser<DungeonMissionInstance>("DungeonMissionInstanceFromDungeonManager", missionInstance) ;
-            PersistentSceneLoader.Instance.LoadGeneralScene( PersistentAddressableResourceLoader.Instance.LoadResourceOperation<SceneDataSO>(_base_missionScene) ) ; 
+            PersistentSceneLoader.Instance.LoadGeneralScene( PersistentAddressableResourceLoader.Instance.LoadResourceOperation<SceneDataSO>(_base_missionScene) ) ;
 
+            OnEnterDungeon(); 
         }
 
+        private void OnEnterDungeon()
+        {
+            MissionManagerSingleton.Instance.OnEnterDungeon(); 
+        }
+
+        private void OnExitDungeon()
+        {
+            MissionManagerSingleton.Instance.OnExitDungeon();
+        }
 
 
         public object CaptureState()

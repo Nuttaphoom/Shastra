@@ -89,7 +89,7 @@ namespace Vanaring
         #endregion
        
 
-        public IEnumerator SetUpRuntimeParty()
+        public void SetUpRuntimeParty()
         {
             _partyMembers = new List<RuntimePartyMember>();
 
@@ -98,7 +98,6 @@ namespace Vanaring
                 _partyMembers.Add(new RuntimePartyMember(member)); 
             }
 
-            yield return null; 
         }
 
         public void UpdateMemberStatus(EntityRewardData entityRewardData)
@@ -118,7 +117,7 @@ namespace Vanaring
 
             }
         }
-        public IEnumerator OnExitDungeon()
+        public void OnExitDungeon()
         {
             throw new NotImplementedException(); 
         }

@@ -9,9 +9,10 @@ namespace Vanaring
     /// <summary>
     /// Not Exactly Persistent, this object will destroy self when exit dungeon 
     /// </summary>
-    public class MissionManagerSingleton : MonoBehaviour, ISceneLoaderWaitForSignal
+    public class MissionManagerSingleton 
     {
         private static MissionManagerSingleton _instance ;
+
         private MissionPartyHandler _dungeonPartyHandler;
         private MissionDataSO _currentMissionDataSO;
 
@@ -31,8 +32,7 @@ namespace Vanaring
             }
         }
 
-        //TODO : Create property entering dungeon state not just random bool
-        private bool _firstTimeEnterDungeon = true ;
+ 
         
         #region GETTER
         public static MissionManagerSingleton Instance
@@ -40,7 +40,7 @@ namespace Vanaring
             get
             {
                 if (_instance == null)
-                    throw new System.Exception("Instance = null"); 
+                    _instance = new MissionManagerSingleton(); 
 
                 return _instance; 
             }
@@ -50,52 +50,28 @@ namespace Vanaring
         {
             get
             {
+                if (_dungeonPartyHandler == null)
+                    throw new Exception("_dungeonPartyHandler hasn't never been assigned");
                 return _dungeonPartyHandler; 
             }
         }
         #endregion
 
-        private void Awake()
-        {
-            if (_instance)
-            {
-                 if (_instance != this) 
-                    Destroy(gameObject); 
-            }else
-            {
-                _instance = this;
-                DontDestroyOnLoad(gameObject);
-            }
-        }
+        
 
         
-        //These function should be call EVERYTIME we enter/back to dungeon 
-        public IEnumerator OnNewSceneLoad_BeforeSaveLoadPerform()
-        {
-            yield return FindObjectOfType<MissionSetupHandler>().LoadEnvironmentData(CurrentMissionDataSO.MissionNodeEnvironment) ; 
-            yield return null; 
-        }
-
-        public IEnumerator OnNotifySceneLoadingComplete()
-        {
-            if (_firstTimeEnterDungeon)
-                yield return OnEnterDungeon() ;
-        }
-
-        ///////////
+        
 
 
-        public IEnumerator OnEnterDungeon()
+        public void OnEnterDungeon()
         {
             _dungeonPartyHandler = new MissionPartyHandler ();
-            yield return _dungeonPartyHandler.SetUpRuntimeParty();
-
-            _firstTimeEnterDungeon = false; 
+            _dungeonPartyHandler.SetUpRuntimeParty();
         }
 
-        public IEnumerator OnExitDungeon()
+        public void OnExitDungeon()
         {
-            yield return _dungeonPartyHandler.OnExitDungeon(); 
+           _dungeonPartyHandler.OnExitDungeon(); 
         }
 
         
