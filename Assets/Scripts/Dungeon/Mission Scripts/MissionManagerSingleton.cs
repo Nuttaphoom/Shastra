@@ -57,12 +57,6 @@ namespace Vanaring
         }
         #endregion
 
-        
-
-        
-        
-
-
         public void OnEnterDungeon()
         {
             _dungeonPartyHandler = new MissionPartyHandler ();
@@ -71,7 +65,10 @@ namespace Vanaring
 
         public void OnExitDungeon()
         {
-           _dungeonPartyHandler.OnExitDungeon(); 
+           _dungeonPartyHandler.OnExitDungeon();
+
+            _instance = null; 
+
         }
 
         
