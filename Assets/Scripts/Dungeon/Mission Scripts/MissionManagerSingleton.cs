@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Vanaring
 {
@@ -11,6 +12,7 @@ namespace Vanaring
     /// </summary>
     public class MissionManagerSingleton : PersistentInstantiatedObject<MissionManagerSingleton>
     {
+      
 
         private MissionPartyHandler _dungeonPartyHandler;
 
@@ -47,15 +49,22 @@ namespace Vanaring
         #endregion
 
         #region Public Method 
+        /// <summary>
+        /// Call only once when player "select and enter mission from mission selection menu" 
+        /// </summary>
         public void SetUpMission()
         {
             _dungeonPartyHandler = new MissionPartyHandler ();
             _missionCompletetionHandler = new MissionCompletetionHandler(); 
 
             _dungeonPartyHandler.SetUpRuntimeParty();
+
         }
 
-        
+        /// <summary>
+        /// call only once when mission is completed 
+        /// </summary>
+        /// <param name="missionCompleteStatus"></param>
         public void ExitDungeon(MissionCompleteStatus missionCompleteStatus)
         {
             StartCoroutine(ExitDungeonCoroutine(missionCompleteStatus));
