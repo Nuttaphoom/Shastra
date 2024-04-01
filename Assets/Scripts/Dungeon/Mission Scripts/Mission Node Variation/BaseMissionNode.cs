@@ -26,8 +26,6 @@ namespace Vanaring
         [SerializeField]
         private NodeVisualTransitionHandler _nodeVisualTransitionHandler;
 
-        private MissionNodeTransitionManager _dungeonNodeTransitionManager;
-
         #region GETTER 
         public bool IsThisNodeVisited { 
         get
@@ -44,16 +42,7 @@ namespace Vanaring
                 return visistationState == VisitationState.Visiting ; 
             }
         }
-        protected MissionNodeTransitionManager GetDungeonNodeTransitionManager
-        {
-            get
-            {
-                if (_dungeonNodeTransitionManager == null)
-                    _dungeonNodeTransitionManager = FindObjectOfType<MissionNodeTransitionManager>();
-
-                return _dungeonNodeTransitionManager ;
-            }
-        }
+        
         public NodeVisualTransitionHandler NodeVisualTransitionHandler
         {
             get { return _nodeVisualTransitionHandler ; }
@@ -78,7 +67,8 @@ namespace Vanaring
 
             visistationState = VisitationState.Visited ;
 
-            ClearUpNodeTransitions() ;
+            MissionNodeTransitionManager.Instance.ClearDungeonNodeTransition();
+
 
             yield return null; 
         }
@@ -107,16 +97,10 @@ namespace Vanaring
         {
             foreach (BaseMissionNode node in _connectedNode)
             {
-                yield return GetDungeonNodeTransitionManager.SetUpDungeonNodeTransition(this, node); 
+                yield return MissionNodeTransitionManager.Instance.SetUpDungeonNodeTransition(this, node); 
             }
 
             yield return null; 
-        }
-
-        private void ClearUpNodeTransitions()
-        {
-            GetDungeonNodeTransitionManager.ClearDungeonNodeTransition();
-
         }
 
         public bool IsConnectedNode(BaseMissionNode nextNode)
