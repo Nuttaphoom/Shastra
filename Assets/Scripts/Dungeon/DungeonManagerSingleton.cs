@@ -31,12 +31,20 @@ namespace Vanaring
 
                     _instance = FindObjectOfType<DungeonManagerSingleton>(); 
 
-                    DontDestroyOnLoad(_instance.gameObject) ;
                 }
-
+                
+                if (_instance == null)
+                    Debug.Log("is instance equal null " + _instance);
+                
                 return _instance;
             } 
-        } 
+        }
+
+        private void Awake()
+        {
+            _instance  = this; 
+            DontDestroyOnLoad(gameObject);
+        }
 
         private void Update()
         {
@@ -73,8 +81,11 @@ namespace Vanaring
 
         public void OnExitMission()
         {
+            Debug.Log("OnExitMission");
             _instance = null;
             SceneManager.MoveGameObjectToScene(gameObject, SceneManager.GetActiveScene());
+
+            PersistentActiveDayDatabase.Instance.OnPostPerformSchoolAction(3); 
         }
 
         #endregion

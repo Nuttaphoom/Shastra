@@ -73,13 +73,11 @@ namespace Vanaring
             //DisplayMission Complete UI and get reward accordingly 
             yield return _missionCompletetionHandler.ResolveMissionCompleteStatus(missionCompleteStatus);
 
-            //Handle OnExit for every dungeon 
+            //Handle OnExit for every dungeon componenets
             _dungeonPartyHandler.OnExitMission() ;
+            FindObjectOfType<MissionSetupHandler>().OnExitMission();
 
-            DungeonManagerSingleton.Instance.OnExitMission(); 
-
-
-
+            DungeonManagerSingleton.Instance.OnExitMission() ; 
         }
 
 

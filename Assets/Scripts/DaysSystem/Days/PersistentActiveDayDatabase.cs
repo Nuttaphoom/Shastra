@@ -46,10 +46,10 @@ namespace Vanaring
             _dayProgressionHandler.ProgressToNextDay();
         }
 
-        public void OnPostPerformSchoolAction()
+        public void OnPostPerformSchoolAction(int actionPointDecreased = 1)
         {
             _runtimeDayData.ProgressCurrentTime(); 
-            _dayProgressionHandler.OnPostPerformSchoolAction(); 
+            _dayProgressionHandler.OnPostPerformSchoolAction(actionPointDecreased); 
         } 
 
         public void ProgressNextDaySession()

@@ -135,6 +135,11 @@ namespace Vanaring
             }
         }
 
+        public virtual void OnExitMission_ClearNodeData()
+        {
+            visistationState = VisitationState.NotVisited; 
+        } 
+
          
     }
 }

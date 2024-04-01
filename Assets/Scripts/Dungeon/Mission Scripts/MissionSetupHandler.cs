@@ -89,5 +89,13 @@ namespace Vanaring
 
             yield return null; 
         }
+
+        /// <summary>
+        /// Clear saved data in Dungeon Environment, ensure next time player visite Mission will be clean
+        /// </summary>
+        public void OnExitMission()
+        {
+            _dungeonEvn.OnMissionExit(); 
+        }
     }
 }

@@ -113,9 +113,9 @@ namespace Vanaring
             LoadCorrespondScene(); 
         }
 
-        public void OnPostPerformSchoolAction()
+        public void OnPostPerformSchoolAction(int actionPointMinus)
         {
-            GetDailyActionParticipationHandler.DecreaseActionPoint(1);
+            GetDailyActionParticipationHandler.DecreaseActionPoint(actionPointMinus);
 
             
             ///No remaining action point => start new day 

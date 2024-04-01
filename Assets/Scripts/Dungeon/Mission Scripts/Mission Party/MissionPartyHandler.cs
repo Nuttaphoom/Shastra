@@ -117,7 +117,7 @@ namespace Vanaring
         }
         public void OnExitMission()
         {
-            throw new NotImplementedException(); 
+            //throw new NotImplementedException(); 
         }
     }
 }
