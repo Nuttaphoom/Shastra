@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Vanaring
@@ -11,9 +12,10 @@ namespace Vanaring
         private List<BaseMissionNode> nodeList = new List<BaseMissionNode>();
         private List<BaseMissionNode> allConnectedNodeList = new List<BaseMissionNode>();
         private Queue<BaseMissionNode> unConnectNodeList = new Queue<BaseMissionNode>();
+        private MissionNodeTransitionManager missionNodeTransitionManager;
 
         [SerializeField] private MissionNodeEnvironment mission;
-        [SerializeField] private MissionNodeTransitionManager missionNodeTransitionManager;
+        [SerializeField] private MissionSetupHandler setUpHandler;
         [SerializeField] private GameObject nodeField;
         [SerializeField] private GameObject curNode;
         [SerializeField] private GameObject dungeonNode;
@@ -22,7 +24,19 @@ namespace Vanaring
         private GameObject focusNode;
 
         [ContextMenu("Init Minimap")]
-        public void Init()
+
+        private void Start()
+        {
+            setUpHandler.SubOnEnvironmentSetup(Init);
+            missionNodeTransitionManager = MissionNodeTransitionManager.Instance;
+        }
+
+        public void OnDisable()
+        {
+            setUpHandler.UnSubOnEnvironmentSetup(Init);
+        }
+
+        public void Init(Null n)
         {
             nodeList = mission.GetAllDungeonNodes;
             firstNode = mission.GetFirstNode;
