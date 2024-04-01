@@ -149,13 +149,11 @@ namespace Vanaring
             _sceneToLoad = sceneSO;
 
             if (_currentLoadedLocationScene != null)
-            {
                 UnloadLocation();
-            }
+
             else
-            {
                 StartCoroutine( BeginLoadScene());
-            }
+            
         }
         #endregion
 

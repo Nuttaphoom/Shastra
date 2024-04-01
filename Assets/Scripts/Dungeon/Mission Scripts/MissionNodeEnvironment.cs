@@ -15,7 +15,6 @@ namespace Vanaring
     }
     public class MissionNodeEnvironment : MonoBehaviour, ISaveable  
     {
-        
         [SerializeField]
         private List<BaseMissionNode> _baseDungeonNode ;
 
@@ -65,9 +64,7 @@ namespace Vanaring
             _nodeRuntimeData = new List<NodeRuntimeData>();
             for (int i = 0; i < _baseDungeonNode.Count; i++)
             {
-
-                _nodeRuntimeData.Add(_baseDungeonNode[i].CaptureNodeData() ) ; 
-                 
+                _nodeRuntimeData.Add(_baseDungeonNode[i].CaptureNodeData() ) ;   
             }
 
             return _nodeRuntimeData; 
@@ -84,6 +81,17 @@ namespace Vanaring
             }
         }
 
-         
+        public void OnMissionExit()
+        {
+            for (int i = 0; i < _baseDungeonNode.Count; i++)
+            {
+                _baseDungeonNode[i].OnExitMission_ClearNodeData();
+            }
+
+            
+        }
+
+
+
     }
 }

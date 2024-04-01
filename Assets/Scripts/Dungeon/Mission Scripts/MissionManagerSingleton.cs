@@ -12,8 +12,6 @@ namespace Vanaring
     /// </summary>
     public class MissionManagerSingleton : PersistentInstantiatedObject<MissionManagerSingleton>
     {
-      
-
         private MissionPartyHandler _dungeonPartyHandler;
 
         private MissionCompletetionHandler _missionCompletetionHandler; 
@@ -72,10 +70,14 @@ namespace Vanaring
         #endregion
         private IEnumerator ExitDungeonCoroutine(MissionCompleteStatus missionCompleteStatus)
         {
+            //DisplayMission Complete UI and get reward accordingly 
             yield return _missionCompletetionHandler.ResolveMissionCompleteStatus(missionCompleteStatus);
 
-            _dungeonPartyHandler.OnExitDungeon();
+            //Handle OnExit for every dungeon componenets
+            _dungeonPartyHandler.OnExitMission() ;
+            FindObjectOfType<MissionSetupHandler>().OnExitMission();
 
+            DungeonManagerSingleton.Instance.OnExitMission() ; 
         }
 
 

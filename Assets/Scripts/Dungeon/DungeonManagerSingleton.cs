@@ -1,11 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
+using UnityEngine.Experimental.GlobalIllumination;
+using UnityEngine.SceneManagement;
 
 namespace Vanaring
 {
-    public class DungeonManager : MonoBehaviour, ISaveable 
+    public class DungeonManagerSingleton : MonoBehaviour, ISaveable 
     {
         [SerializeField]
         private List<RuntimeDungeon> _dungeons;
@@ -13,9 +17,32 @@ namespace Vanaring
         [SerializeField] 
         private AssetReferenceT<EssentialSceneDataSO> _base_missionScene ;
 
+        private static DungeonManagerSingleton _instance; 
+        public static DungeonManagerSingleton Instance { 
+            get 
+            {
+                if (_instance == null)
+                {
+                    if (FindObjectsOfType<DungeonManagerSingleton>().Count() > 1)
+                        throw new System.Exception("DungeonManagerSingleton can not exit more than one, check if previous dungeon has properly destroy DungeonManagerSingleton when exit mission");
+                    
+                    if (FindObjectsOfType<DungeonManagerSingleton>().Count() == 0)
+                        throw new System.Exception("DungeonManagerSingleton can not be found");
+
+                    _instance = FindObjectOfType<DungeonManagerSingleton>(); 
+
+                }
+                
+                if (_instance == null)
+                    Debug.Log("is instance equal null " + _instance);
+                
+                return _instance;
+            } 
+        }
 
         private void Awake()
         {
+            _instance  = this; 
             DontDestroyOnLoad(gameObject);
         }
 
@@ -34,6 +61,7 @@ namespace Vanaring
             
             _dungeons.Add(dungeon.FactorizeRuntimeDungeon());
         }
+        #region Mission Selection Methods
         private void LoadSelectedMission(DungeonMissionInstance missionInstance)
         {
             //Visually dispaly confirm selection 
@@ -43,11 +71,26 @@ namespace Vanaring
             StartMission(); 
         }
 
+        #endregion
+
+        #region Mission Scheme Methods
         private void StartMission()
         {
             MissionManagerSingleton.Instance.SetUpMission(); 
         }
 
+        public void OnExitMission()
+        {
+            Debug.Log("OnExitMission");
+            _instance = null;
+            SceneManager.MoveGameObjectToScene(gameObject, SceneManager.GetActiveScene());
+
+            PersistentActiveDayDatabase.Instance.OnPostPerformSchoolAction(3); 
+        }
+
+        #endregion
+
+        #region Mission Save/Load Methods
         public object CaptureState()
         {
             //List<object> captured = new List<object>(); 
@@ -61,8 +104,9 @@ namespace Vanaring
             //    //save that data into array
             //}
             //return captured;
-            throw new System.NotImplementedException();
 
+            int captured = 1; 
+            return captured;
 
         }
 
@@ -76,9 +120,12 @@ namespace Vanaring
             //    dungeon.RestoreData(someData) ;
              
             //}
-            throw new System.NotImplementedException();
+
+            Debug.Log("state is " + state.ToString());
+
+            //throw new System.NotImplementedException();
         }
 
-       
+        #endregion
     }
 }

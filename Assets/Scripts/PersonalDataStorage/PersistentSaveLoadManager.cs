@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
+using DG.Tweening.Plugins.Core.PathCore;
 
 namespace Vanaring
 {
@@ -28,11 +29,11 @@ namespace Vanaring
         [ContextMenu("Capture To Temp")]
         public void CaptureToTemp()
         {
-            foreach (string path in savePath)
-            {
+            //foreach (string path in savePath)
+            //{
 
-                CaptureState(path);
-            }
+                CaptureState(/*path*/);
+            //}
         }
 
         private void Awake()
@@ -41,38 +42,64 @@ namespace Vanaring
             LoadToTemp();
         }
 
+
+        /// <summary>
+        /// Called when leave scene 
+        /// </summary>
         [ContextMenu("Load to Temp")]
         public void LoadToTemp()
         {
-            foreach (string path in savePath)
-            {
-                Dictionary<string, object> state = LoadFile(path);
-                AddDataToTemp(path, state);
-            }
+            //foreach (string path in savePath)
+            //{
+                AddDataToTemp();
+            //}
         }
 
+        /// <summary>
+        /// Called when enter new scene 
+        /// </summary>
         [ContextMenu("Restore From Temp")]
         public void RestoreFromTemp()
         {
-            foreach (string path in savePath)
-            {
-                RestoreState(path);
-            }
+            //foreach (string path in savePath)
+            //{
+                RestoreState(/*path*/);
+            //}
         }
 
-        public void AddDataToTemp(string path, Dictionary<string, object> state)
+        public void AddDataToTemp(/*string path, Dictionary<string, object> state*/)
         {
-            if (temporaryLoader.ContainsKey(path) == true)
+            foreach (var saveable in FindObjectsOfType<SaveableEntity>())
             {
-                foreach (var data in state)
+                string path = saveable.fileName;
+                Dictionary<string, object> state = LoadFile(path);
+
+                //if (filepath != FileNameToPath(saveable.fileName))
+                //    continue;
+
+                //if (temporaryLoader.TryGetValue(saveable.fileName, out Dictionary<string, object> data))
+                //{
+                //    if (data.TryGetValue(saveable.Id, out object value))
+                //    {
+                //        saveable.RestoreState(value);
+                //    }
+                //}
+
+                if (temporaryLoader.ContainsKey(path) == true)
                 {
-                    temporaryLoader[path][data.Key] = data.Value;
+                    foreach (var data in state)
+                    {
+                        temporaryLoader[path][data.Key] = data.Value;
+                    }
+                }
+                else
+                {
+                    temporaryLoader.Add(path, state);
                 }
             }
-            else
-            {
-                temporaryLoader.Add(path, state);
-            }
+
+
+            
         }
 
         private Dictionary<string, object> LoadFile(string filePath)
@@ -110,27 +137,29 @@ namespace Vanaring
             }
         }
 
-        private void CaptureState(/*Dictionary<string, object> state,*/ string filepath)
+        private void CaptureState(/*Dictionary<string, object> state,*/ /*string filepath*/)
         {
             foreach (var saveable in FindObjectsOfType<SaveableEntity>())
             {
-                if (filepath != FileNameToPath(saveable.fileName))
-                    continue;
+                string filepath = saveable.fileName ; 
+                if (!temporaryLoader.ContainsKey(filepath))
+                {
+                    temporaryLoader.Add(filepath, new Dictionary<string, object>() ) ; 
+                }
 
                 temporaryLoader[filepath][saveable.Id] = saveable.CaptureState();
                 //state[saveable.Id] = saveable.CaptureState();
             }
         }
 
-        private void RestoreState(/*Dictionary<string, object> state, */string filepath)
+        private void RestoreState(/*Dictionary<string, object> state, *//*string filepath*/)
         {
-            
             foreach (var saveable in FindObjectsOfType<SaveableEntity>())
             {
-                if (filepath != FileNameToPath(saveable.fileName))
-                    continue;
+                //if (filepath != FileNameToPath(saveable.fileName))
+                //    continue;
 
-                if (temporaryLoader.TryGetValue(filepath, out Dictionary<string, object> data))
+                if (temporaryLoader.TryGetValue(saveable.fileName, out Dictionary<string, object> data))
                 {
                     if (data.TryGetValue(saveable.Id, out object value))
                     {

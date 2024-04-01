@@ -66,8 +66,6 @@ namespace Vanaring
         /// </summary>
         /// <returns></returns>
 
-
-
         public IEnumerator LoadEnvironmentData(MissionNodeEnvironment nodeEnvironment )
         {
             _dungeonEvn = Instantiate(nodeEnvironment, transform);
@@ -90,6 +88,14 @@ namespace Vanaring
             EventBroadcaster.InvokeEvent<Null>(null, "OnMissionSetUpComplete");
 
             yield return null; 
+        }
+
+        /// <summary>
+        /// Clear saved data in Dungeon Environment, ensure next time player visite Mission will be clean
+        /// </summary>
+        public void OnExitMission()
+        {
+            _dungeonEvn.OnMissionExit(); 
         }
     }
 }
