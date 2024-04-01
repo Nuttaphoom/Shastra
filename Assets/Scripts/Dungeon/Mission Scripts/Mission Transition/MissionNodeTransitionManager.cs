@@ -10,18 +10,26 @@ namespace Vanaring
 {
     public class MissionNodeTransitionManager : MonoBehaviour
     {
-
         [SerializeField] 
         private NodeTransition _nodeTransitionTemplate ;
 
-        private List<NodeTransition> _nodeTransitions  ; 
+        private List<NodeTransition> _nodeTransitions  ;
 
+        public static MissionNodeTransitionManager Instance;
         private void Awake()
         {
             if (_nodeTransitionTemplate == null)
                 throw new System.Exception("Node Transition Tempalte is null");
 
-            _nodeTransitions = new List<NodeTransition>(); 
+            _nodeTransitions = new List<NodeTransition>();
+
+            
+            if (Instance != null)
+            {
+                Destroy(Instance.gameObject) ;
+            }
+
+            Instance = this; 
         }
 
 
