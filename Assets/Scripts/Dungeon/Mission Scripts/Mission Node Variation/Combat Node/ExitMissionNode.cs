@@ -8,8 +8,15 @@ namespace Vanaring
     {
         public override IEnumerator OnVisiteThisNodeFirstTime()
         {
-            ColorfulLogger.LogWithColor("Dungeon is complete", Color.green) ; 
-            yield return null;
+            MissionCompleteStatus status = new MissionCompleteStatus()
+            {
+                CompleteDungeon = true,
+                ExitDungeon = true ,
+            }; 
+            MissionManagerSingleton.Instance.ExitDungeon(status);
+
+            yield return null; 
+            
         }
 
          

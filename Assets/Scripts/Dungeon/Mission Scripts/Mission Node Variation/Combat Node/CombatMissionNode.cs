@@ -13,7 +13,6 @@ namespace Vanaring
         [SerializeField]
         private CombatDungeonNodeLoaderData _combatDungeonNodeLoaderData;
          
-
         public override IEnumerator OnVisiteThisNodeFirstTime()
         {
             PersistentSceneLoader.Instance.CreateLoaderDataUser<CombatDungeonNodeLoaderData>("CombatDungeonNodeDataUser", _combatDungeonNodeLoaderData); 
