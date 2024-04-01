@@ -36,7 +36,10 @@ namespace Vanaring
 
         private void Update()
         {
-            
+            if(mission == null)
+            {
+                mission = FindAnyObjectByType<MissionNodeEnvironment>();
+            }
         }
 
         private IEnumerator SetupNodeTransitionMinimap(BaseMissionNode startNode)
@@ -56,19 +59,19 @@ namespace Vanaring
                         switch (direction)
                         {
                             case TransitionDirection.Forward_Z:
-                                Debug.Log("ForwZ");
+                                //Debug.Log("ForwZ");
                                 yForward = 70;
                                 break;
                             case TransitionDirection.MinusForward_Z:
-                                Debug.Log("-ForwZ");
+                                //Debug.Log("-ForwZ");
                                 yForward = -70;
                                 break;
                             case TransitionDirection.MinusRight_X:
-                                Debug.Log("-ForwX");
+                                //Debug.Log("-ForwX");
                                 xForward = -70;
                                 break;
                             case TransitionDirection.Right_X:
-                                Debug.Log("ForwX");
+                                //Debug.Log("ForwX");
                                 xForward = 70;
                                 break;
                         }
@@ -79,7 +82,7 @@ namespace Vanaring
                             rect.localPosition.x + xForward, rect.localPosition.y + yForward, rect.localPosition.z);
                         newPath.SetActive(true);
                         newPath.transform.SetAsLastSibling();
-                        Debug.Log("Create Path");
+                        ColorfulLogger.LogWithColor("Create Path", Color.green);
 
                         GameObject newDun = Instantiate(dungeonNode, nodeField.transform);
                         RectTransform rectDun = newPath.GetComponent<RectTransform>();
@@ -87,7 +90,7 @@ namespace Vanaring
                             rectDun.localPosition.x + xForward, rectDun.localPosition.y + yForward, rectDun.transform.localPosition.z);
                         newDun.SetActive(true);
                         newDun.transform.SetAsLastSibling();
-                        Debug.Log("Create Dungeon Node");
+                        ColorfulLogger.LogWithColor("Create Dungeon Node", Color.green);
 
                         focusNode = newDun;
 
