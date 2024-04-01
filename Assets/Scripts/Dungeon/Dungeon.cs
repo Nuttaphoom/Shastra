@@ -1,10 +1,12 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace Vanaring
 {
-    public class Dungeon : MonoBehaviour, ISaveable
+    [Serializable]
+    public class Dungeon  : MonoBehaviour
     {
         //[SerializeField]
         //private DungeonDataSO _dungeonData;
@@ -12,38 +14,13 @@ namespace Vanaring
         [SerializeField]
         private List<MissionDataSO> _missionsOnThisDungeon;
 
-        private List<DungeonMissionInstance> _dungeonMissionInstance = new List<DungeonMissionInstance>(); 
-
-        /// <summary>
-        /// TEMP function use for testing
-        /// </summary>
-        public DungeonMissionInstance GetSelectMission
+        private void Awake()
         {
-            get
-            {
-                return _dungeonMissionInstance[0]; 
-            }
+            FindObjectOfType<DungeonManager>().RegisterDungeon(this) ; 
         }
-
-        public void SelectThisDungeon()
+        public RuntimeDungeon FactorizeRuntimeDungeon()
         {
-            foreach (MissionDataSO missionDataSO in _missionsOnThisDungeon)
-            {
-                _dungeonMissionInstance.Add(new DungeonMissionInstance(missionDataSO));
-
-            }
-
-            //Display list of DungeonMissionInstance for player to select 
-        }
-
-        public object CaptureState()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public void RestoreState(object state)
-        {
-            throw new System.NotImplementedException();
+            return new RuntimeDungeon(_missionsOnThisDungeon, _dungeonData); 
         }
     }
 }
