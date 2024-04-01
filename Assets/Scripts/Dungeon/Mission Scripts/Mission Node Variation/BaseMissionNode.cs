@@ -74,9 +74,7 @@ namespace Vanaring
         public virtual IEnumerator OnLeaveThisNode()
         {
             if (! IsThisNodeVisited)
-            {
                 throw new System.Exception("This node hasn't never been visited " ) ;
-            }
 
             visistationState = VisitationState.Visited ;
 
@@ -87,10 +85,11 @@ namespace Vanaring
 
         public virtual IEnumerator OnVisiteThisNode()
         {
-            ColorfulLogger.LogWithColor("OnVisiteThisNode",Color.yellow);
+
             if (!IsThisNodeVisited)
-            {
-                visistationState = VisitationState.Visiting ;
+            {            
+                visistationState = VisitationState.Visiting;
+
                 yield return OnVisiteThisNodeFirstTime(); 
             }
 

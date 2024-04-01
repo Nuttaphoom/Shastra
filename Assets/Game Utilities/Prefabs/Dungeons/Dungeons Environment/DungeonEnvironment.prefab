@@ -40,7 +40,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1093605680298031502}
-  - component: {fileID: 7093039156531920659}
+  - component: {fileID: 4424497137980182463}
   m_Layer: 0
   m_Name: Node (2)
   m_TagString: Untagged
@@ -66,7 +66,7 @@ Transform:
   m_Father: {fileID: 7953740182424467012}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7093039156531920659
+--- !u!114 &4424497137980182463
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -75,7 +75,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1622888083185478383}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 59be80a8c6bec234a9f5c00cb6c42506, type: 3}
+  m_Script: {fileID: 11500000, guid: 54dd217d61901cd4ca1813338f6db4e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _connectedNode:
@@ -85,9 +85,6 @@ MonoBehaviour:
     _minusRight_X: {fileID: 1179200339004980456}
     _forward_Z: {fileID: 5838570753111256542}
     _minusForward_Z: {fileID: 1425639118557948931}
-  _combatSceneData: {fileID: 11400000, guid: ddbf44867eadcb8419af19eed48b2e15, type: 2}
-  _combatDungeonNodeLoaderData:
-    EnemyLoaderPool: {fileID: 11400000, guid: 4367ff60691f4cf4496bd6c95d0611b4, type: 2}
 --- !u!1 &1639838335360169733
 GameObject:
   m_ObjectHideFlags: 0
@@ -400,7 +397,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _connectedNode:
-  - {fileID: 7093039156531920659}
+  - {fileID: 4424497137980182463}
   - {fileID: 7225673379240972976}
   _nodeVisualTransitionHandler:
     _right_X: {fileID: 2256278526875639307}
@@ -602,7 +599,7 @@ MonoBehaviour:
   _baseDungeonNode:
   - {fileID: 7225673379240972976}
   - {fileID: 3754187075752884219}
-  - {fileID: 7093039156531920659}
+  - {fileID: 4424497137980182463}
   _nodeRuntimeData: []
   _TEST_Map_sceneData: {fileID: 11400000, guid: 83fd68bdc5653ec4f98fe02ff8de5ab0, type: 2}
 --- !u!114 &7371870699441161752
