@@ -12,9 +12,9 @@ namespace Vanaring
         private List<BaseMissionNode> nodeList = new List<BaseMissionNode>();
         private List<BaseMissionNode> allConnectedNodeList = new List<BaseMissionNode>();
         private Queue<BaseMissionNode> unConnectNodeList = new Queue<BaseMissionNode>();
+        private MissionNodeTransitionManager missionNodeTransitionManager;
 
         [SerializeField] private MissionNodeEnvironment mission;
-        [SerializeField] private MissionNodeTransitionManager missionNodeTransitionManager;
         [SerializeField] private MissionSetupHandler setUpHandler;
         [SerializeField] private GameObject nodeField;
         [SerializeField] private GameObject curNode;
@@ -28,6 +28,7 @@ namespace Vanaring
         private void Start()
         {
             setUpHandler.SubOnEnvironmentSetup(Init);
+            missionNodeTransitionManager = MissionNodeTransitionManager.Instance;
         }
 
         public void OnDisable()
