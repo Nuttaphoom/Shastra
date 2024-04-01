@@ -38,7 +38,7 @@ namespace Vanaring
 
         public void Init(Null n)
         {
-            missionNodeTransitionManager = MissionNodeTransitionManager.Instance;
+            missionNodeTransitionManager = FindObjectOfType<MissionNodeManager>().MissionNodeTransitionManager; 
             mission = setUpHandler.DungeonEnvironment;
             firstNode = mission.GetFirstNode;
             if(firstNode != null)
