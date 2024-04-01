@@ -115,7 +115,7 @@ namespace Vanaring
 
             }
         }
-        public void OnExitDungeon()
+        public void OnExitMission()
         {
             throw new NotImplementedException(); 
         }

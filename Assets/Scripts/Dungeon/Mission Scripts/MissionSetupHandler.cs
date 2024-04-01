@@ -66,8 +66,6 @@ namespace Vanaring
         /// </summary>
         /// <returns></returns>
 
-
-
         public IEnumerator LoadEnvironmentData(MissionNodeEnvironment nodeEnvironment )
         {
             _dungeonEvn = Instantiate(nodeEnvironment, transform);

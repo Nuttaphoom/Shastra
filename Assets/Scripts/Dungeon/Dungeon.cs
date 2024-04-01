@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Vanaring
 {
     [Serializable]
-    public class Dungeon  : MonoBehaviour
+    public class Dungeon  : MonoBehaviour, ISceneLoaderWaitForSignal
     {
         [SerializeField]
         private DungeonDataSO _dungeonData;
@@ -14,13 +14,22 @@ namespace Vanaring
         [SerializeField]
         private List<MissionDataSO> _missionsOnThisDungeon;
 
-        private void Awake()
-        {
-            FindObjectOfType<DungeonManager>().RegisterDungeon(this) ; 
-        }
+       
         public RuntimeDungeon FactorizeRuntimeDungeon()
         {
             return new RuntimeDungeon(_missionsOnThisDungeon, _dungeonData); 
+        }
+
+        public IEnumerator OnNewSceneLoad_BeforeSaveLoadPerform()
+        {
+            DungeonManagerSingleton.Instance.RegisterDungeon(this);
+
+            yield return null; 
+        }
+
+        public IEnumerator OnNotifySceneLoadingComplete()
+        {
+            yield return null; 
         }
     }
 }
