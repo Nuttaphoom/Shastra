@@ -6,8 +6,8 @@ namespace Vanaring
 {
     public class Dungeon : MonoBehaviour, ISaveable
     {
-        [SerializeField]
-        private DungeonDataSO _dungeonData;
+        //[SerializeField]
+        //private DungeonDataSO _dungeonData;
 
         [SerializeField]
         private List<MissionDataSO> _missionsOnThisDungeon;
