@@ -86,7 +86,7 @@ namespace Vanaring
 
             yield return SetUpNodeTransitions() ; 
 
-        } 
+        }
 
         public virtual IEnumerator OnVisiteThisNodeFirstTime()
         {

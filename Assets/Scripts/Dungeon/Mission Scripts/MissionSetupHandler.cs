@@ -47,11 +47,25 @@ namespace Vanaring
 
         private MissionNodeEnvironment _dungeonEvn;
 
+        #region GETTER
+
+        public MissionNodeEnvironment DungeonEnvironment
+        {
+            get
+            {
+                if (_dungeonEvn == null)
+                    throw new Exception("_dungeonEvn is null"); 
+
+                return _dungeonEvn; 
+            }
+        }
+        #endregion
+
         /// <summary>
         /// Call when player get into dungeon on the first time
         /// </summary>
         /// <returns></returns>
-        
+
 
 
         public IEnumerator LoadEnvironmentData(MissionNodeEnvironment nodeEnvironment )
@@ -71,7 +85,7 @@ namespace Vanaring
         {
             MissionNodeManager dm = FindObjectOfType<MissionNodeManager>();
             //Set up logic transition detail
-            dm.StartCoroutine(FindObjectOfType<MissionNodeManager>().SetUpDungeonCoroutine(FindObjectOfType<MissionNodeEnvironment>().GetFirstNode));
+            dm.StartCoroutine(dm.SetUpDungeonCoroutine(DungeonEnvironment.GetFirstNode));
             
             EventBroadcaster.InvokeEvent<Null>(null, "OnMissionSetUpComplete");
 
