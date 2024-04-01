@@ -15,7 +15,8 @@ namespace Vanaring
 
         private List<NodeTransition> _nodeTransitions  ;
 
-        public static MissionNodeTransitionManager Instance;
+        public static MissionNodeTransitionManager Instance; 
+
         private void Awake()
         {
             if (_nodeTransitionTemplate == null)
