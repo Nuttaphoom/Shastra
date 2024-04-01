@@ -8,8 +8,8 @@ namespace Vanaring
     [Serializable]
     public class Dungeon  : MonoBehaviour
     {
-        [SerializeField]
-        private DungeonDataSO _dungeonData;
+        //[SerializeField]
+        //private DungeonDataSO _dungeonData;
 
         [SerializeField]
         private List<MissionDataSO> _missionsOnThisDungeon;
