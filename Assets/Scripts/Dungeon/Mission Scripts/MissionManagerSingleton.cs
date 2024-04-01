@@ -9,40 +9,29 @@ namespace Vanaring
     /// <summary>
     /// Not Exactly Persistent, this object will destroy self when exit dungeon 
     /// </summary>
-    public class MissionManagerSingleton 
+    public class MissionManagerSingleton : PersistentInstantiatedObject<MissionManagerSingleton>
     {
-        private static MissionManagerSingleton _instance ;
 
         private MissionPartyHandler _dungeonPartyHandler;
+
+        private MissionCompletetionHandler _missionCompletetionHandler; 
+
         private MissionDataSO _currentMissionDataSO;
 
+        #region GETTER
         public MissionDataSO CurrentMissionDataSO
         {
             get
             {
                 if (_currentMissionDataSO == null)
                 {
-                    _currentMissionDataSO = PersistentSceneLoader.Instance.ExtractSavedData<DungeonMissionInstance>("DungeonMissionInstanceFromDungeonManager").GetData().MissionData ; 
+                    _currentMissionDataSO = PersistentSceneLoader.Instance.ExtractSavedData<DungeonMissionInstance>("DungeonMissionInstanceFromDungeonManager").GetData().MissionData;
                     if (_currentMissionDataSO == null)
                     {
-                        throw new Exception("_currentMissionDataSO couldn't be extracted from the DataUser data"); 
+                        throw new Exception("_currentMissionDataSO couldn't be extracted from the DataUser data");
                     }
                 }
-                return _currentMissionDataSO; 
-            }
-        }
-
- 
-        
-        #region GETTER
-        public static MissionManagerSingleton Instance
-        {
-            get
-            {
-                if (_instance == null)
-                    _instance = new MissionManagerSingleton(); 
-
-                return _instance; 
+                return _currentMissionDataSO;
             }
         }
 
@@ -57,20 +46,29 @@ namespace Vanaring
         }
         #endregion
 
-        public void OnEnterDungeon()
+        #region Public Method 
+        public void SetUpMission()
         {
             _dungeonPartyHandler = new MissionPartyHandler ();
+            _missionCompletetionHandler = new MissionCompletetionHandler(); 
+
             _dungeonPartyHandler.SetUpRuntimeParty();
         }
 
-        public void OnExitDungeon()
+        
+        public void ExitDungeon(MissionCompleteStatus missionCompleteStatus)
         {
-           _dungeonPartyHandler.OnExitDungeon();
+            StartCoroutine(ExitDungeonCoroutine(missionCompleteStatus));
+        }
+        #endregion
+        private IEnumerator ExitDungeonCoroutine(MissionCompleteStatus missionCompleteStatus)
+        {
+            yield return _missionCompletetionHandler.ResolveMissionCompleteStatus(missionCompleteStatus);
 
-            _instance = null; 
+            _dungeonPartyHandler.OnExitDungeon();
 
         }
 
-        
+
     }
 }

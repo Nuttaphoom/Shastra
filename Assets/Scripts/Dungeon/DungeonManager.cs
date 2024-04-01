@@ -45,14 +45,8 @@ namespace Vanaring
 
         private void StartMission()
         {
-            MissionManagerSingleton.Instance.OnEnterDungeon(); 
+            MissionManagerSingleton.Instance.SetUpMission(); 
         }
-
-        private void OnMissionComplete()
-        {
-            MissionManagerSingleton.Instance.OnExitDungeon();
-        }
-
 
         public object CaptureState()
         {
