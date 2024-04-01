@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.Experimental.GraphView;
@@ -8,16 +9,20 @@ using static Vanaring.NodeTransition;
 
 namespace Vanaring
 {
-    public class MissionNodeTransitionManager : MonoBehaviour
+    [Serializable]
+    public class MissionNodeTransitionManager  
     {
+        [SerializeField]
+        private Canvas _transitionCanvas; 
+
         [SerializeField] 
         private NodeTransition _nodeTransitionTemplate ;
 
         private List<NodeTransition> _nodeTransitions  ;
 
-        public static MissionNodeTransitionManager Instance; 
+        
 
-        private void Awake()
+        public void Init()
         {
             if (_nodeTransitionTemplate == null)
                 throw new System.Exception("Node Transition Tempalte is null");
@@ -25,12 +30,7 @@ namespace Vanaring
             _nodeTransitions = new List<NodeTransition>();
 
             
-            if (Instance != null)
-            {
-                Destroy(Instance.gameObject) ;
-            }
-
-            Instance = this; 
+         
         }
 
 
@@ -38,7 +38,7 @@ namespace Vanaring
         {
             TransitionDirection direction = CalculateTransitionDirect(startNode, destinationNode);
  
-            NodeTransition nodeTransition = Instantiate(_nodeTransitionTemplate, transform);
+            NodeTransition nodeTransition = MonoBehaviour.Instantiate(_nodeTransitionTemplate, _transitionCanvas.transform);
             nodeTransition.SetUpTransitionData(startNode, destinationNode);
 
             nodeTransition.transform.position = UISpaceSingletonHandler.ObjectToUISpace(startNode.NodeVisualTransitionHandler.GetCorrectPosition(direction));
@@ -50,14 +50,11 @@ namespace Vanaring
 
         public void ClearDungeonNodeTransition()
         {
-
             for (int i =  _nodeTransitions.Count - 1; i >= 0; i--)
             {
-                //Debug.Log("check for node transition"); 
                 NodeTransition nodeTransition = _nodeTransitions[i];
                 _nodeTransitions.RemoveAt(i);
-                Destroy(nodeTransition.gameObject);
-                
+                MonoBehaviour.Destroy(nodeTransition.gameObject);
             }
 
         }

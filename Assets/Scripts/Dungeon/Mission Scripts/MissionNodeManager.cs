@@ -12,6 +12,17 @@ namespace Vanaring
         [SerializeField]
         private Transform _cameraPivot;
 
+        [SerializeField]
+        private MissionNodeTransitionManager _missionNodeTransitionManager;
+
+        #region GETTER
+
+        public MissionNodeTransitionManager MissionNodeTransitionManager { get { return _missionNodeTransitionManager; } }
+        #endregion
+        private void Awake()
+        {
+            _missionNodeTransitionManager.Init(); 
+        }
         public IEnumerator SetUpDungeonCoroutine(BaseMissionNode firstNodeToStart)
         {
             yield return VisiteNextNode(firstNodeToStart);
@@ -28,7 +39,14 @@ namespace Vanaring
                 {
                     goto End;
                 }
+
+                //Clear up transition node object
+                _missionNodeTransitionManager.ClearDungeonNodeTransition();
+
+
                 yield return _currentDungeonNode.OnLeaveThisNode();
+
+
 
                 Vector3 prevCamPos = _cameraPivot.position;
                 float progression = 0;
@@ -53,6 +71,11 @@ namespace Vanaring
             //yield return until transition visual is done 
 
             yield return _currentDungeonNode.OnVisiteThisNode() ;
+
+            //Set up transition 
+            foreach (var node in _currentDungeonNode.ConnectedNode)
+                yield return _missionNodeTransitionManager.SetUpDungeonNodeTransition(_currentDungeonNode,node );
+
             /// If VisiteNextNode is interrupted with Loading new scene in _currentDungeonNode.OnVisiteThisNode
             /// The rest of the code below will not be called, 
 

@@ -67,7 +67,6 @@ namespace Vanaring
 
             visistationState = VisitationState.Visited ;
 
-            MissionNodeTransitionManager.Instance.ClearDungeonNodeTransition();
 
 
             yield return null; 
@@ -84,7 +83,6 @@ namespace Vanaring
             }
 
 
-            yield return SetUpNodeTransitions() ; 
 
         }
 
@@ -93,15 +91,7 @@ namespace Vanaring
             yield return null; 
         }
 
-        protected IEnumerator SetUpNodeTransitions()
-        {
-            foreach (BaseMissionNode node in _connectedNode)
-            {
-                yield return MissionNodeTransitionManager.Instance.SetUpDungeonNodeTransition(this, node); 
-            }
-
-            yield return null; 
-        }
+       
 
         public bool IsConnectedNode(BaseMissionNode nextNode)
         {
