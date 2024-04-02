@@ -1,8 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Vanaring
 {
@@ -10,6 +12,59 @@ namespace Vanaring
    
     public class BaseMissionNode : MonoBehaviour
     {
+        #region Event Broadcaster 
+        private EventBroadcaster _eventBroadcaster;
+
+        
+        protected EventBroadcaster EventBroadcaster
+        {
+            get
+            { 
+                if (_eventBroadcaster == null)
+                {
+                    _eventBroadcaster = new EventBroadcaster();
+                    _eventBroadcaster.OpenChannel<Null>("OnBeforeVisitThisNode");
+                    _eventBroadcaster.OpenChannel<Null>("OnBeforeVisitThisNodeFirstTime");
+                    _eventBroadcaster.OpenChannel<Null>("OnBeforeExitThisNode");
+                }
+
+                return _eventBroadcaster; 
+            }
+        }
+
+        
+        public void SubOnBeforeVisitThisNode(UnityAction<Null> func)
+        {
+            EventBroadcaster.SubEvent(func, "OnBeforeVisitThisNode");
+        }
+
+        public void UnSubBeforeOnVisitThisNode(UnityAction<Null> func)
+        {
+            EventBroadcaster.UnSubEvent(func, "OnBeforeVisitThisNode");
+        }
+
+        public void SubOnBeforeVisitThisNodeFirstTime(UnityAction<Null> func)
+        {
+            EventBroadcaster.SubEvent(func, "OnBeforeVisitThisNodeFirstTime");
+        }
+
+        public void UnSubOnBeforeVisitThisNodeFirstTime(UnityAction<Null> func)
+        {
+            EventBroadcaster.UnSubEvent(func, "OnBeforeVisitThisNodeFirstTime");
+        }
+
+        public void SubOnBeforeExitThisNode(UnityAction<Null> func)
+        {
+            EventBroadcaster.SubEvent(func, "OnBeforeExitThisNode");
+        }
+
+        public void UnSubOnBeforeExitThisNode(UnityAction<Null> func)
+        {
+            EventBroadcaster.UnSubEvent(func, "OnBeforeExitThisNode");
+        }
+
+        #endregion 
+
         protected enum VisitationState
         {
             NotVisited,
@@ -31,7 +86,6 @@ namespace Vanaring
         get
             {
                 return visistationState == VisitationState.Visited || IsCurrentlyVisiting  ;
-
             }
         }       
 
@@ -62,6 +116,8 @@ namespace Vanaring
 
         public virtual IEnumerator OnLeaveThisNode()
         {
+            EventBroadcaster.InvokeEvent<Null>(null, "OnBeforeExitThisNode");
+
             if (! IsThisNodeVisited)
                 throw new System.Exception("This node hasn't never been visited " ) ;
 
@@ -74,6 +130,7 @@ namespace Vanaring
 
         public virtual IEnumerator OnVisiteThisNode()
         {
+            EventBroadcaster.InvokeEvent<Null>(null,"OnBeforeVisitThisNode");
 
             if (!IsThisNodeVisited)
             {            
@@ -88,6 +145,8 @@ namespace Vanaring
 
         public virtual IEnumerator OnVisiteThisNodeFirstTime()
         {
+            EventBroadcaster.InvokeEvent<Null>(null, "OnBeforeVisitThisNodeFirstTime");
+
             yield return null; 
         }
 
