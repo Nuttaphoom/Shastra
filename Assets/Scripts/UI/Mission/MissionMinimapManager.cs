@@ -11,18 +11,18 @@ namespace Vanaring
         private BaseMissionNode firstNode;
         private List<BaseMissionNode> allConnectedNodeList = new List<BaseMissionNode>();
         private Queue<BaseMissionNode> unConnectNodeList = new Queue<BaseMissionNode>();
-        private List<GameObject> nodeObjectList = new List<GameObject>();
+        private List<MissionNodeObject> nodeObjectList = new List<MissionNodeObject>();
         private MissionNodeTransitionManager missionNodeTransitionManager;
         private MissionNodeEnvironment mission;
 
         [SerializeField] private MissionSetupHandler setUpHandler;
         [SerializeField] private GameObject nodeField;
-        [SerializeField] private GameObject curNode;
-        [SerializeField] private GameObject dungeonNode;
-        [SerializeField] private GameObject pathNode_x;
-        [SerializeField] private GameObject pathNode_z;
+        [SerializeField] private MissionNodeObject curNode;
+        [SerializeField] private MissionNodeObject dungeonNode;
+        [SerializeField] private MissionPathObject pathNode_x;
+        [SerializeField] private MissionPathObject pathNode_z;
         private GameObject focusNode;
-        private GameObject path;
+        private MissionPathObject path;
         private int runningIndex = 0;
 
         [ContextMenu("Init Minimap")]
@@ -44,10 +44,9 @@ namespace Vanaring
             firstNode = mission.GetFirstNode;
             if(firstNode != null)
             {
-                curNode.SetActive(true);
+                curNode.gameObject.SetActive(true);
             }
             
-            focusNode = curNode;
             StartCoroutine(SetupNodeTransitionMinimap(firstNode));
         }
 
@@ -92,22 +91,25 @@ namespace Vanaring
                                 break;
                         }
 
-                        GameObject newPath = Instantiate(path, nodeField.transform);
+                        MissionPathObject newPath = Instantiate(path, nodeField.transform);
                         RectTransform rect = nodeObjectList[runningIndex].GetComponent<RectTransform>();
                         newPath.GetComponent<RectTransform>().localPosition = new Vector3(
                             rect.localPosition.x + xForward, rect.localPosition.y + yForward, rect.localPosition.z);
-                        newPath.SetActive(true);
+                        newPath.gameObject.SetActive(true);
                         newPath.transform.SetAsLastSibling();
                         ColorfulLogger.LogWithColor("Create Path", Color.green);
                         //yield return new WaitForSeconds(.2f);
-                        GameObject newDun = Instantiate(dungeonNode, nodeField.transform);
+
+                        MissionNodeObject newDun = Instantiate(dungeonNode, nodeField.transform);
                         RectTransform rectDun = newPath.GetComponent<RectTransform>();
                         newDun.GetComponent<RectTransform>().localPosition = new Vector3(
                             rectDun.localPosition.x + xForward, rectDun.localPosition.y + yForward, rectDun.transform.localPosition.z);
-                        newDun.SetActive(true);
+                        newDun.gameObject.SetActive(true);
+                        newDun.Init(connectNode);
                         newDun.transform.SetAsLastSibling();
                         ColorfulLogger.LogWithColor("Create Dungeon Node", Color.green);
 
+                        //newPath.InitConnectedNode(startNode, newDun);
                         unConnectNodeList.Enqueue(connectNode);
                         nodeObjectList.Add(newDun);
                     }
