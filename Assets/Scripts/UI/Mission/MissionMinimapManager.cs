@@ -10,19 +10,19 @@ namespace Vanaring
         
         private BaseMissionNode firstNode;
         private List<BaseMissionNode> allConnectedNodeList = new List<BaseMissionNode>();
-        private Queue<BaseMissionNode> unConnectNodeList = new Queue<BaseMissionNode>();
-        private List<GameObject> nodeObjectList = new List<GameObject>();
+        private Queue<MissionNodeObject> unConnectNodeList = new Queue<MissionNodeObject>();
+        private List<MissionNodeObject> nodeObjectList = new List<MissionNodeObject>();
         private MissionNodeTransitionManager missionNodeTransitionManager;
         private MissionNodeEnvironment mission;
 
         [SerializeField] private MissionSetupHandler setUpHandler;
         [SerializeField] private GameObject nodeField;
-        [SerializeField] private GameObject curNode;
-        [SerializeField] private GameObject dungeonNode;
-        [SerializeField] private GameObject pathNode_x;
-        [SerializeField] private GameObject pathNode_z;
+        [SerializeField] private MissionNodeObject curNode;
+        [SerializeField] private MissionNodeObject dungeonNode;
+        [SerializeField] private MissionPathObject pathNode_x;
+        [SerializeField] private MissionPathObject pathNode_z;
         private GameObject focusNode;
-        private GameObject path;
+        private MissionPathObject path;
         private int runningIndex = 0;
 
         [ContextMenu("Init Minimap")]
@@ -44,33 +44,33 @@ namespace Vanaring
             firstNode = mission.GetFirstNode;
             if(firstNode != null)
             {
-                curNode.SetActive(true);
+                curNode.gameObject.SetActive(true);
+                curNode.Init(firstNode);
             }
             
-            focusNode = curNode;
-            StartCoroutine(SetupNodeTransitionMinimap(firstNode));
+            StartCoroutine(SetupNodeTransitionMinimap(curNode));
         }
 
-        private IEnumerator SetupNodeTransitionMinimap(BaseMissionNode startNode)
+        private IEnumerator SetupNodeTransitionMinimap(MissionNodeObject startNode)
         {
             yield return new WaitForSeconds(0f);
-            if (startNode.ConnectedNode != null)
+            if (startNode.GetBaseMissionNode.ConnectedNode != null)
             {
                 int xForward = 0;
                 int yForward = 0;
-                Debug.Log("Connected node: " + startNode.ConnectedNode.Count);
+                //Debug.Log("Connected node: " + startNode.GetBaseMissionNode.ConnectedNode.Count);
                 if(nodeObjectList.Count == 0)
                 {
                     nodeObjectList.Add(curNode);
                 }
-                foreach (BaseMissionNode connectNode in startNode.ConnectedNode)
+                foreach (BaseMissionNode connectNode in startNode.GetBaseMissionNode.ConnectedNode)
                 {
                     xForward = 0;
                     yForward = 0;
                     //yield return new WaitForSeconds(.2f);
                     if (!allConnectedNodeList.Contains(connectNode))
                     {
-                        TransitionDirection direction = missionNodeTransitionManager.CalculateTransitionDirect(startNode, connectNode);
+                        TransitionDirection direction = missionNodeTransitionManager.CalculateTransitionDirect(startNode.GetBaseMissionNode, connectNode);
                         Debug.Log(direction);
                         switch (direction)
                         {
@@ -92,34 +92,40 @@ namespace Vanaring
                                 break;
                         }
 
-                        GameObject newPath = Instantiate(path, nodeField.transform);
+                        MissionPathObject newPath = Instantiate(path, nodeField.transform);
                         RectTransform rect = nodeObjectList[runningIndex].GetComponent<RectTransform>();
                         newPath.GetComponent<RectTransform>().localPosition = new Vector3(
                             rect.localPosition.x + xForward, rect.localPosition.y + yForward, rect.localPosition.z);
-                        newPath.SetActive(true);
+                        newPath.gameObject.SetActive(true);
                         newPath.transform.SetAsLastSibling();
                         ColorfulLogger.LogWithColor("Create Path", Color.green);
                         //yield return new WaitForSeconds(.2f);
-                        GameObject newDun = Instantiate(dungeonNode, nodeField.transform);
+
+                        MissionNodeObject newDun = Instantiate(dungeonNode, nodeField.transform);
                         RectTransform rectDun = newPath.GetComponent<RectTransform>();
                         newDun.GetComponent<RectTransform>().localPosition = new Vector3(
                             rectDun.localPosition.x + xForward, rectDun.localPosition.y + yForward, rectDun.transform.localPosition.z);
-                        newDun.SetActive(true);
+                        newDun.gameObject.SetActive(true);
+                        newDun.Init(connectNode);
                         newDun.transform.SetAsLastSibling();
                         ColorfulLogger.LogWithColor("Create Dungeon Node", Color.green);
 
-                        unConnectNodeList.Enqueue(connectNode);
+                        startNode.AddPathConnectToThisNode(newPath);
+                        newPath.InitConnectedNode(startNode, newDun);
+
+                        unConnectNodeList.Enqueue(newDun);
                         nodeObjectList.Add(newDun);
                     }
                 }
 
-                allConnectedNodeList.Add(startNode);
+                allConnectedNodeList.Add(startNode.GetBaseMissionNode);
 
                 runningIndex++;
                 if (unConnectNodeList.Count != 0)
                 {
-                    Debug.Log("Prepare in queue: " + unConnectNodeList.Count);
-                    BaseMissionNode nextNode = unConnectNodeList.Dequeue();
+                   // Debug.Log("Prepare in queue: " + unConnectNodeList.Count);
+                    MissionNodeObject nextNode = unConnectNodeList.Dequeue();
+                    //BaseMissionNode nextNode = unConnectNodeList.Dequeue();
                     StartCoroutine(SetupNodeTransitionMinimap(nextNode));
                 }
                 else
