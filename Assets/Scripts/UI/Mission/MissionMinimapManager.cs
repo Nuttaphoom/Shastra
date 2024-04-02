@@ -11,7 +11,7 @@ namespace Vanaring
         private BaseMissionNode firstNode;
         private List<BaseMissionNode> allConnectedNodeList = new List<BaseMissionNode>();
         private Queue<BaseMissionNode> unConnectNodeList = new Queue<BaseMissionNode>();
-        private List<Vector3> nodeRectPosition = new List<Vector3>();
+        private List<GameObject> nodeObjectList = new List<GameObject>();
         private MissionNodeTransitionManager missionNodeTransitionManager;
         private MissionNodeEnvironment mission;
 
@@ -22,6 +22,7 @@ namespace Vanaring
         [SerializeField] private GameObject pathNode_x;
         [SerializeField] private GameObject pathNode_z;
         private GameObject focusNode;
+        private GameObject path;
         private int runningIndex = 0;
 
         [ContextMenu("Init Minimap")]
@@ -45,21 +46,28 @@ namespace Vanaring
             {
                 curNode.SetActive(true);
             }
-            nodeRectPosition.Add(Vector3.zero);
+            
             focusNode = curNode;
-            StartCoroutine(SetupNodeTransitionMinimap(firstNode, nodeRectPosition[runningIndex]));
+            StartCoroutine(SetupNodeTransitionMinimap(firstNode));
         }
 
-        private IEnumerator SetupNodeTransitionMinimap(BaseMissionNode startNode, Vector3 nodePos)
+        private IEnumerator SetupNodeTransitionMinimap(BaseMissionNode startNode)
         {
-            yield return new WaitForSeconds(2.0f);
+            yield return new WaitForSeconds(0f);
             if (startNode.ConnectedNode != null)
             {
                 int xForward = 0;
                 int yForward = 0;
                 Debug.Log("Connected node: " + startNode.ConnectedNode.Count);
+                if(nodeObjectList.Count == 0)
+                {
+                    nodeObjectList.Add(curNode);
+                }
                 foreach (BaseMissionNode connectNode in startNode.ConnectedNode)
                 {
+                    xForward = 0;
+                    yForward = 0;
+                    //yield return new WaitForSeconds(.2f);
                     if (!allConnectedNodeList.Contains(connectNode))
                     {
                         TransitionDirection direction = missionNodeTransitionManager.CalculateTransitionDirect(startNode, connectNode);
@@ -67,33 +75,31 @@ namespace Vanaring
                         switch (direction)
                         {
                             case TransitionDirection.Forward_Z:
-                                //Debug.Log("ForwZ");
+                                path = pathNode_x;
                                 yForward = 70;
                                 break;
                             case TransitionDirection.MinusForward_Z:
-                                //Debug.Log("-ForwZ");
+                                path = pathNode_x;
                                 yForward = -70;
                                 break;
                             case TransitionDirection.MinusRight_X:
-                                //Debug.Log("-ForwX");
+                                path = pathNode_z;
                                 xForward = -70;
                                 break;
                             case TransitionDirection.Right_X:
-                                //Debug.Log("ForwX");
+                                path = pathNode_z;
                                 xForward = 70;
                                 break;
                         }
 
-                        
-
-                        GameObject newPath = Instantiate(pathNode_z, nodeField.transform);
-                        RectTransform rect = focusNode.GetComponent<RectTransform>();
+                        GameObject newPath = Instantiate(path, nodeField.transform);
+                        RectTransform rect = nodeObjectList[runningIndex].GetComponent<RectTransform>();
                         newPath.GetComponent<RectTransform>().localPosition = new Vector3(
                             rect.localPosition.x + xForward, rect.localPosition.y + yForward, rect.localPosition.z);
                         newPath.SetActive(true);
                         newPath.transform.SetAsLastSibling();
                         ColorfulLogger.LogWithColor("Create Path", Color.green);
-
+                        //yield return new WaitForSeconds(.2f);
                         GameObject newDun = Instantiate(dungeonNode, nodeField.transform);
                         RectTransform rectDun = newPath.GetComponent<RectTransform>();
                         newDun.GetComponent<RectTransform>().localPosition = new Vector3(
@@ -102,23 +108,19 @@ namespace Vanaring
                         newDun.transform.SetAsLastSibling();
                         ColorfulLogger.LogWithColor("Create Dungeon Node", Color.green);
 
-                        focusNode = newDun;
-
                         unConnectNodeList.Enqueue(connectNode);
-                        nodeRectPosition.Add(newDun.GetComponent<RectTransform>().localPosition);
-                        runningIndex++;
-
+                        nodeObjectList.Add(newDun);
                     }
-                    
                 }
 
                 allConnectedNodeList.Add(startNode);
-                
-                if(unConnectNodeList.Count != 0)
+
+                runningIndex++;
+                if (unConnectNodeList.Count != 0)
                 {
                     Debug.Log("Prepare in queue: " + unConnectNodeList.Count);
                     BaseMissionNode nextNode = unConnectNodeList.Dequeue();
-                    StartCoroutine(SetupNodeTransitionMinimap(nextNode, nodeRectPosition[runningIndex]));
+                    StartCoroutine(SetupNodeTransitionMinimap(nextNode));
                 }
                 else
                 {
