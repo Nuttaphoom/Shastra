@@ -123,8 +123,6 @@ namespace Vanaring
 
             visistationState = VisitationState.Visited ;
 
-
-
             yield return null; 
         }
 

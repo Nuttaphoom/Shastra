@@ -80,12 +80,13 @@ namespace Vanaring
         public override IEnumerator SettingUpNumber()
         {
             //Generate RewardButton according to score
-            int rewardIndex = 0;
+            int rewardIndex = 0 ;
             rewardObjTemplate.gameObject.SetActive(false);
             foreach (LectureChechpoint checkPoint in lectureProgressBarData.checkpoints)
             {
                 LectureRewardObject newRewardObj = Instantiate(rewardObjTemplate, filledBar.transform);
-                RewardData newEventReward = lectureProgressBarData.allRewardData[rewardIndex].GetRewardData() ;
+                //We assume GetRewardData for Lecture will receive one
+                RewardData newEventReward = lectureProgressBarData.allRewardData[rewardIndex].GetRewardData()  ;
                 double iconXPos = ((float)checkPoint.RequirePoint * 880) / lectureProgressBarData.maxEXP;
                 newRewardObj.gameObject.transform.localPosition = new Vector2((float)iconXPos-440f, -14f);
                 newRewardObj.gameObject.SetActive(true);
@@ -94,7 +95,6 @@ namespace Vanaring
                 newRewardObj.SetIsObtainedState(false);
                 if (lectureProgressBarData.alreadyReceivedRewardData.Contains(lectureProgressBarData.allRewardData[rewardIndex]))
                 {
-                    Debug.Log("Obtained");
                     newRewardObj.SetIsReachedState(false);
                     //newRewardObj.SetIsObtainedState(true);
                 }

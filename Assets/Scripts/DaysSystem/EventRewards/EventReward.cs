@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using Unity.VisualScripting;
 using Unity;
 using UnityEngine;
+using JetBrains.Annotations;
+using static UnityEngine.InputSystem.LowLevel.InputStateHistory;
 namespace Vanaring
 {
     public abstract class EventReward
@@ -15,6 +17,60 @@ namespace Vanaring
 
         public abstract RewardData GetRewardData();
 
+    }
+
+    [Serializable]
+    public class EventRewardData
+    {
+        [SerializeField]
+        private bool _rewardIsItem = false;
+
+        [SerializeField]
+        private bool _rewardIsSpell = false;
+
+        [SerializeField, AllowNesting, NaughtyAttributes.ShowIf("RewardIsSpell")]
+        private EventReward<SpellActionSO> _spellReward;
+
+        [SerializeField, AllowNesting, NaughtyAttributes.ShowIf("RewardIsItem")]
+        private EventReward<BackpackItemSO> _itemReward;
+
+        #region Getter 
+
+        public bool RewardIsItem => _rewardIsItem;
+        public bool RewardIsSpell => _rewardIsSpell;
+
+        public EventReward<SpellActionSO> SpellReward
+        {
+            get
+            {
+                return _spellReward; 
+            }
+        }
+
+        public EventReward<BackpackItemSO> ItemReward
+        {
+            get
+            {
+                return _itemReward ; 
+            }
+        }
+
+        public IRewardable GetAllRewards()
+        {
+            if (RewardIsItem)
+            {
+                return _itemReward.GetEventRewards() ; 
+            }else if (RewardIsSpell)
+            {
+                return _spellReward.GetEventRewards() ;
+            }
+
+            throw new Exception("Reward hasn't been properly assigned"); 
+            
+
+        }
+
+        #endregion
     }
 
 
@@ -26,20 +82,19 @@ namespace Vanaring
 
         public override IRewardable GetEventRewards()
         {
-             
-                if (_rewards == null)
-                    throw new System.Exception("Reward hasn't never been assigned");
+            if (_rewards == null)   
+                throw new System.Exception("Reward hasn't never been assigned");
 
-                if ((_rewards as IRewardable) == null)
-                    throw new System.Exception("Reward is not IRewardable");
+                
+            if ((_rewards as IRewardable) == null)    
+                throw new System.Exception("Reward is not IRewardable");
 
-                return _rewards as IRewardable;
-             
+            return _rewards as IRewardable; 
         }
 
         public override RewardData GetRewardData()
-        {
-            return GetEventRewards().GetRewardData();
+        { 
+            return GetEventRewards().GetRewardData();  
         }
 
      

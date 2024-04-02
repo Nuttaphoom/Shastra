@@ -65,7 +65,6 @@ namespace Vanaring
         /// Call when player get into dungeon on the first time
         /// </summary>
         /// <returns></returns>
-
         public IEnumerator LoadEnvironmentData(MissionNodeEnvironment nodeEnvironment )
         {
             _dungeonEvn = Instantiate(nodeEnvironment, transform);
@@ -97,5 +96,7 @@ namespace Vanaring
         {
             _dungeonEvn.OnMissionExit(); 
         }
+
+
     }
 }

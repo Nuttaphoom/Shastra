@@ -13,16 +13,7 @@ namespace Vanaring
         private int cp_requirepoint;
 
         [SerializeField]
-        private bool RewardIsItem = false;
-
-        [SerializeField]
-        private bool RewardIsSpell = false;
-
-        [SerializeField, AllowNesting, NaughtyAttributes.ShowIf("RewardIsSpell")]
-        private EventReward<SpellActionSO> cp_spellReward ;
-
-        [SerializeField, AllowNesting, NaughtyAttributes.ShowIf("RewardIsItem")]
-        private EventReward<BackpackItemSO> cp_itemReward;
+        private EventRewardData _eventRewardData; 
 
         [NonSerialized]
         private bool cp_received;
@@ -36,12 +27,12 @@ namespace Vanaring
         public EventReward Reward {
             get
             {
-                if (RewardIsSpell)
+                if (_eventRewardData.RewardIsSpell)
                 {
-                    return cp_spellReward; 
-                }else if (RewardIsItem)
+                    return _eventRewardData.SpellReward; 
+                }else if (_eventRewardData.RewardIsItem)
                 {
-                    return cp_itemReward; 
+                    return _eventRewardData.ItemReward; 
                 }else
                 {
                     throw new Exception("No reward has been assigned at requirePoint : " + cp_requirepoint); 
