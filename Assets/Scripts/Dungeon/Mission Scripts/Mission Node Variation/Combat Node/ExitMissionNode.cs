@@ -8,14 +8,14 @@ namespace Vanaring
     {
         public override IEnumerator OnVisiteThisNodeFirstTime()
         {
+            yield return base.OnVisiteThisNodeFirstTime();
+
             MissionCompleteStatus status = new MissionCompleteStatus()
             {
                 CompleteDungeon = true,
                 ExitDungeon = true ,
             }; 
             MissionManagerSingleton.Instance.ExitDungeon(status);
-
-            yield return null; 
             
         }
 
