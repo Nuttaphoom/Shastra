@@ -23,7 +23,6 @@ namespace Vanaring
         }
         public IEnumerator CombatRewardSchemeStart(CombatReferee combatReferee)
         {
-            Debug.Log("Combat Reward Setup");
             CombatRewardData combatReward = new CombatRewardData(); 
         
             foreach (CombatEntity entity in combatReferee.GetCompetatorsBySide(ECompetatorSide.Ally) ) 
@@ -36,6 +35,8 @@ namespace Vanaring
             }
 
             yield return UpdatePartyMembersStatus(combatReward);
+
+            ItemInventory.instance.RestoreRemainingItemIntoDatabase(); 
         }
 
         public IEnumerator UpdatePartyMembersStatus(CombatRewardData combatRewardData)
@@ -47,5 +48,7 @@ namespace Vanaring
 
             yield return null; 
         }
+
+         
     }
 }

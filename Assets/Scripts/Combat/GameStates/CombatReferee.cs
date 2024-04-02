@@ -232,7 +232,6 @@ namespace Vanaring
 
                 _currentSide = (ECompetatorSide)(((int)_currentSide + 1) % 2);
 
-                //TODO : Determine end game condition
 
 
                 yield return new WaitForEndOfFrame();
