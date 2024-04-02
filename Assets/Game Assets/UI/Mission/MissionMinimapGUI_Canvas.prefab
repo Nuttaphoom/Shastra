@@ -381,6 +381,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8652054639619783987}
   - component: {fileID: 7141934340255223772}
+  - component: {fileID: 6028389476732418382}
   m_Layer: 5
   m_Name: <NodeObject>Path_Z
   m_TagString: Untagged
@@ -417,6 +418,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2106193926502373871}
   m_CullTransparentMesh: 1
+--- !u!114 &6028389476732418382
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2106193926502373871}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e8e2d90a15eaba4c8ef85d895cee408, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  graphic: {fileID: 7578783252326580023}
 --- !u!1 &2444039392226979606
 GameObject:
   m_ObjectHideFlags: 0
@@ -427,6 +441,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1404586242596255773}
   - component: {fileID: 1730069238396568647}
+  - component: {fileID: 5121261039743236580}
   m_Layer: 5
   m_Name: <NodeObject>Path_X
   m_TagString: Untagged
@@ -463,6 +478,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2444039392226979606}
   m_CullTransparentMesh: 1
+--- !u!114 &5121261039743236580
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2444039392226979606}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e8e2d90a15eaba4c8ef85d895cee408, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  graphic: {fileID: 657053823847126891}
 --- !u!1 &2566299088221382013
 GameObject:
   m_ObjectHideFlags: 0
@@ -1713,8 +1741,8 @@ MonoBehaviour:
   nodeField: {fileID: 4955491964810983591}
   curNode: {fileID: 2514345260880512319}
   dungeonNode: {fileID: 6041271348162293113}
-  pathNode_x: {fileID: 2444039392226979606}
-  pathNode_z: {fileID: 2106193926502373871}
+  pathNode_x: {fileID: 5121261039743236580}
+  pathNode_z: {fileID: 6028389476732418382}
 --- !u!1 &8108171540294379840
 GameObject:
   m_ObjectHideFlags: 0

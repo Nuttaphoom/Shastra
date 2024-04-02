@@ -10,8 +10,11 @@ namespace Vanaring
     public class MissionNodeObject : MonoBehaviour
     {
         private BaseMissionNode baseNode;
+        public BaseMissionNode GetBaseMissionNode => baseNode;
         [SerializeField] private Image floorGraphic;
         [SerializeField] private Image iconShown;
+        private List<MissionPathObject> pathList = new List<MissionPathObject>();
+        public List<MissionPathObject> GetPathList => pathList;
 
         private bool isVisisted;
         private bool isVisisting;
@@ -27,6 +30,11 @@ namespace Vanaring
             if (baseNode.IsCurrentlyVisiting)
             {
                 floorGraphic.color = Color.yellow;
+                Debug.Log("pathList Count: " + pathList.Count);
+                foreach (MissionPathObject path in pathList)
+                {
+                    path.PathReveal();
+                }
             }
             else if (baseNode.IsThisNodeVisited)
             {
@@ -40,6 +48,11 @@ namespace Vanaring
             baseNode.SubOnBeforeExitThisNode(ExitNode);
 
             baseNode.SubOnBeforeVisitThisNodeFirstTime(FirstTimeVisit);
+        }
+
+        public void AddPathConnectToThisNode(MissionPathObject newPath)
+        {
+            pathList.Add(newPath);
         }
 
         private void BeforeVisitNode(Null n)

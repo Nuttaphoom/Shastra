@@ -10,7 +10,7 @@ namespace Vanaring
         
         private BaseMissionNode firstNode;
         private List<BaseMissionNode> allConnectedNodeList = new List<BaseMissionNode>();
-        private Queue<BaseMissionNode> unConnectNodeList = new Queue<BaseMissionNode>();
+        private Queue<MissionNodeObject> unConnectNodeList = new Queue<MissionNodeObject>();
         private List<MissionNodeObject> nodeObjectList = new List<MissionNodeObject>();
         private MissionNodeTransitionManager missionNodeTransitionManager;
         private MissionNodeEnvironment mission;
@@ -45,31 +45,32 @@ namespace Vanaring
             if(firstNode != null)
             {
                 curNode.gameObject.SetActive(true);
+                curNode.Init(firstNode);
             }
             
-            StartCoroutine(SetupNodeTransitionMinimap(firstNode));
+            StartCoroutine(SetupNodeTransitionMinimap(curNode));
         }
 
-        private IEnumerator SetupNodeTransitionMinimap(BaseMissionNode startNode)
+        private IEnumerator SetupNodeTransitionMinimap(MissionNodeObject startNode)
         {
             yield return new WaitForSeconds(0f);
-            if (startNode.ConnectedNode != null)
+            if (startNode.GetBaseMissionNode.ConnectedNode != null)
             {
                 int xForward = 0;
                 int yForward = 0;
-                Debug.Log("Connected node: " + startNode.ConnectedNode.Count);
+                //Debug.Log("Connected node: " + startNode.GetBaseMissionNode.ConnectedNode.Count);
                 if(nodeObjectList.Count == 0)
                 {
                     nodeObjectList.Add(curNode);
                 }
-                foreach (BaseMissionNode connectNode in startNode.ConnectedNode)
+                foreach (BaseMissionNode connectNode in startNode.GetBaseMissionNode.ConnectedNode)
                 {
                     xForward = 0;
                     yForward = 0;
                     //yield return new WaitForSeconds(.2f);
                     if (!allConnectedNodeList.Contains(connectNode))
                     {
-                        TransitionDirection direction = missionNodeTransitionManager.CalculateTransitionDirect(startNode, connectNode);
+                        TransitionDirection direction = missionNodeTransitionManager.CalculateTransitionDirect(startNode.GetBaseMissionNode, connectNode);
                         Debug.Log(direction);
                         switch (direction)
                         {
@@ -109,19 +110,22 @@ namespace Vanaring
                         newDun.transform.SetAsLastSibling();
                         ColorfulLogger.LogWithColor("Create Dungeon Node", Color.green);
 
-                        //newPath.InitConnectedNode(startNode, newDun);
-                        unConnectNodeList.Enqueue(connectNode);
+                        startNode.AddPathConnectToThisNode(newPath);
+                        newPath.InitConnectedNode(startNode, newDun);
+
+                        unConnectNodeList.Enqueue(newDun);
                         nodeObjectList.Add(newDun);
                     }
                 }
 
-                allConnectedNodeList.Add(startNode);
+                allConnectedNodeList.Add(startNode.GetBaseMissionNode);
 
                 runningIndex++;
                 if (unConnectNodeList.Count != 0)
                 {
-                    Debug.Log("Prepare in queue: " + unConnectNodeList.Count);
-                    BaseMissionNode nextNode = unConnectNodeList.Dequeue();
+                   // Debug.Log("Prepare in queue: " + unConnectNodeList.Count);
+                    MissionNodeObject nextNode = unConnectNodeList.Dequeue();
+                    //BaseMissionNode nextNode = unConnectNodeList.Dequeue();
                     StartCoroutine(SetupNodeTransitionMinimap(nextNode));
                 }
                 else
