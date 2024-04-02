@@ -15,7 +15,6 @@ namespace Vanaring
 
         public DayDataSO  GetDayData(int date)
         {
-            ColorfulLogger.LogWithColor("Return day data at " + date, Color.cyan)  ;
             return _dayDataSOO[date]; 
         }
     }

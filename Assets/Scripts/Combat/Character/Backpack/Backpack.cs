@@ -144,9 +144,7 @@ namespace Vanaring
             {
                 for (int i = 0; i < backpackItem.Amount ; i++)
                 {
-                    Debug.Log("here surview"); 
                     keys.Add(m_inventoryDatabase.GetRecordKey(backpackItem.BackpackItem));
-                    Debug.Log("end surview") ;
                 }
             }
             

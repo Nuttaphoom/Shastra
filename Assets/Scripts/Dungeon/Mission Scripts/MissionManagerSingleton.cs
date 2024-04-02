@@ -70,14 +70,28 @@ namespace Vanaring
         #endregion
         private IEnumerator ExitDungeonCoroutine(MissionCompleteStatus missionCompleteStatus)
         {
+            Debug.Log("Exit Dungeon Coroutine");
+            MissionSetupHandler missionSetupHandler = FindObjectOfType<MissionSetupHandler>() ;
+            EventRewardData eventRewardData = MissionManagerSingleton.Instance.CurrentMissionDataSO.EventRewardData; 
             //DisplayMission Complete UI and get reward accordingly 
             yield return _missionCompletetionHandler.ResolveMissionCompleteStatus(missionCompleteStatus);
+            yield return SubmitRewardCoroutine(eventRewardData) ; 
 
-            //Handle OnExit for every dungeon componenets
-            _dungeonPartyHandler.OnExitMission() ;
-            FindObjectOfType<MissionSetupHandler>().OnExitMission();
+
+                //Handle OnExit for every dungeon componenets
+                _dungeonPartyHandler.OnExitMission() ;
+            missionSetupHandler.OnExitMission()  ;
 
             DungeonManagerSingleton.Instance.OnExitMission() ; 
+        }
+
+        private IEnumerator SubmitRewardCoroutine(EventRewardData eventRewardData)
+        {
+            Debug.Log("SubmitRewardCoroutine with reward " + eventRewardData.GetAllRewards()) ;
+
+            eventRewardData.GetAllRewards().SubmitReward() ; //;.GetEventRewards(); 
+
+            yield return null; 
         }
 
 

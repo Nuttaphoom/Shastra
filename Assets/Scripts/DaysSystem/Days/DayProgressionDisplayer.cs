@@ -22,7 +22,6 @@ namespace Vanaring
         private DayProgressionData _dayProgressionData; 
         public override IEnumerator DisplayRewardUICoroutine(DayProgressionData data)
         {
-            Debug.Log("displaying up reward ");
 
             _dayProgressionData = data;
             yield return CreateRewardDisplayPanel();
@@ -32,7 +31,6 @@ namespace Vanaring
 
         protected override IEnumerator SettingUpRewardDisplayPanel(DayProgressionDisplayerPanel rewardDisplayGOTemplate)
         {
-            Debug.Log("Setting up reward ");
             rewardDisplayGOTemplate.ReceiveDayProgressionDetail(_dayProgressionData);
             yield return null;
         }
