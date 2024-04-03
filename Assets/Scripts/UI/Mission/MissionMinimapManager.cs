@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Vanaring
 {
@@ -14,6 +15,10 @@ namespace Vanaring
         private List<MissionNodeObject> nodeObjectList = new List<MissionNodeObject>();
         private MissionNodeTransitionManager missionNodeTransitionManager;
         private MissionNodeEnvironment mission;
+
+        [SerializeField] private GameObject pivotCamera;
+        private Transform curCameraTransform;
+
 
         [SerializeField] private MissionSetupHandler setUpHandler;
         [SerializeField] private GameObject nodeField;
@@ -30,12 +35,37 @@ namespace Vanaring
         private void Start()
         {
             setUpHandler.SubOnEnvironmentSetup(Init);
+            curCameraTransform = pivotCamera.transform;
+            StartCoroutine(WaitForCameraStartMove());
         }
 
         public void OnDisable()
         {
             setUpHandler.UnSubOnEnvironmentSetup(Init);
         }
+        private IEnumerator WaitForCameraStartMove()
+        {
+            //while (true)
+            //{
+            //    if (curCameraTransform != pivotCamera.transform)
+            //    {
+            //        nodeField.GetComponent<Image>().rectTransform.localPosition = Vector3.Lerp(startMarker.position, endMarker.position, 3.0f);
+            //    }
+            //}
+            yield return null;
+        }
+        //void Start()
+        //{
+        //    startTime = Time.time;
+        //    journeyLength = Vector3.Distance(startMarker.position, endMarker.position);
+        //}
+
+        //void Update()
+        //{
+        //    float distCovered = (Time.time - startTime) * speed;
+        //    float fracJourney = distCovered / journeyLength;
+        //    transform.position = Vector3.Lerp(startMarker.position, endMarker.position, fracJourney);
+        //}
 
         public void Init(Null n)
         {

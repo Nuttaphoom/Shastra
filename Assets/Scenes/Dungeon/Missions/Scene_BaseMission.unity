@@ -514,6 +514,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 3011222667398101928, guid: 5e5ce92a17d4b87419f09b35a234f10d, type: 3}
+      propertyPath: pivotCamera
+      value: 
+      objectReference: {fileID: 1563817923}
+    - target: {fileID: 3011222667398101928, guid: 5e5ce92a17d4b87419f09b35a234f10d, type: 3}
       propertyPath: setUpHandler
       value: 
       objectReference: {fileID: 1016762100}
@@ -610,6 +614,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5e5ce92a17d4b87419f09b35a234f10d, type: 3}
+--- !u!114 &1036617456 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2439014140617454800, guid: 5e5ce92a17d4b87419f09b35a234f10d, type: 3}
+  m_PrefabInstance: {fileID: 1036617455}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1141599459
 GameObject:
   m_ObjectHideFlags: 0
@@ -786,6 +801,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1563817924}
+  - component: {fileID: 1563817925}
   m_Layer: 0
   m_Name: PivotCamera
   m_TagString: Untagged
@@ -809,3 +825,17 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1563817925
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1563817923}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c29472fbb4af8d448b9460103440db9b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pivotCamera: {fileID: 1563817923}
+  nodeField: {fileID: 1036617456}

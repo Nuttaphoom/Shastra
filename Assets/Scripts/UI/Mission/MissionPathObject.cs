@@ -10,7 +10,6 @@ namespace Vanaring
         [SerializeField] private Image graphic;
         private MissionNodeObject startNode;
         private MissionNodeObject desNode;
-        
 
         public void InitConnectedNode(MissionNodeObject startNode, MissionNodeObject destinationNode)
         {
