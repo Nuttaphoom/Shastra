@@ -113,8 +113,8 @@ namespace Vanaring
         public void RestoreState(object state)
         {
             InitializeRuntimeMemberData();
-
             Dictionary<string, RuntimeCombatMemberDataSaveLoad> saveData = (Dictionary<string, RuntimeCombatMemberDataSaveLoad>)state;
+            
             foreach (KeyValuePair<string, RuntimeCombatMemberDataSaveLoad> data in saveData) // loop through both
             {
                 GetRuntimeData(data.Key).RestoreState(data.Value);
