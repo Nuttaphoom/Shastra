@@ -70,7 +70,6 @@ namespace Vanaring
         #endregion
         private IEnumerator ExitDungeonCoroutine(MissionCompleteStatus missionCompleteStatus)
         {
-            Debug.Log("Exit Dungeon Coroutine");
             MissionSetupHandler missionSetupHandler = FindObjectOfType<MissionSetupHandler>() ;
             EventRewardData eventRewardData = MissionManagerSingleton.Instance.CurrentMissionDataSO.EventRewardData; 
             //DisplayMission Complete UI and get reward accordingly 
@@ -87,7 +86,6 @@ namespace Vanaring
 
         private IEnumerator SubmitRewardCoroutine(EventRewardData eventRewardData)
         {
-            Debug.Log("SubmitRewardCoroutine with reward " + eventRewardData.GetAllRewards()) ;
 
             eventRewardData.GetAllRewards().SubmitReward() ; //;.GetEventRewards(); 
 

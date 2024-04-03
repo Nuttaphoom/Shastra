@@ -78,14 +78,14 @@ namespace Vanaring
         [Serializable]
         private struct SaveData
         {
-            public Dictionary<string, List<string>> savePartyDataLocator;
+            public Dictionary<string, RuntimeCombatMemberData.RuntimeCombatMemberDataSaveLoad> savePartyDataLocator;
             public List<string> saveBackpackData;
             public Dictionary<string, object> saveRelationshipHandler;
         }
 
         public object CaptureState()
         {
-            Dictionary<string, List<string>> partyDataLocatorState = (Dictionary<string, List<string>>)_partyDataLocator.CaptureState();
+            Dictionary<string, RuntimeCombatMemberData.RuntimeCombatMemberDataSaveLoad> partyDataLocatorState = (Dictionary<string, RuntimeCombatMemberData.RuntimeCombatMemberDataSaveLoad>)_partyDataLocator.CaptureState();
             List<string> backpackState = (List<string>)_backpack.CaptureState();
             Dictionary<string, object> relationshipHandlerState = (Dictionary<string, object>)_relationshipHandler.CaptureState();
             return new SaveData
@@ -99,7 +99,6 @@ namespace Vanaring
 
         public void RestoreState(object state)
         {
-
             SaveData saveData = (SaveData)state;
 
             _partyDataLocator.RestoreState(saveData.savePartyDataLocator);

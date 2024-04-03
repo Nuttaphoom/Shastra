@@ -121,7 +121,6 @@ namespace Vanaring
              
             //}
 
-            Debug.Log("state is " + state.ToString());
 
             //throw new System.NotImplementedException();
         }

@@ -36,19 +36,20 @@ namespace Vanaring
         /// <param name="runtimePartyMember"></param>
         public RuntimeCharacterStatsAccumulator(RuntimePartyMember runtimePartyMember)
         {
+            LevelAttributeHandler levelAttributeHandler = runtimePartyMember.GetRuntimeCombatMemberData.LevelAttributeHandler; //.GetBaseSecondaryAttribute_MaxHP;
+
             CombatCharacterSheetSO combatCharacterSheetSO = runtimePartyMember.GetCharacterSheet;
             //Setup Secondary Attributes 
             //Mostly formula that transfer Primary stats into Secondary stats
-            int MaxHP = combatCharacterSheetSO.GetSecondaryAttribute_MaxHP;
-            int PhysicalATK = combatCharacterSheetSO.GetSecondaryAttribute_PhysicalATK;
-            int MagicalATK = combatCharacterSheetSO.GetSecondaryAttribute_MagicalATK;
-            float ACC = combatCharacterSheetSO.GetSecondaryAttribute_ACC ; 
-            float Evasion = combatCharacterSheetSO.GetSecondaryAttribute_Evasion;
+            int MaxHP = levelAttributeHandler.GetSecondaryAttribute_MaxHP;
+            int PhysicalATK = levelAttributeHandler.GetSecondaryAttribute_PhysicalATK;
+            int MagicalATK = levelAttributeHandler.GetSecondaryAttribute_MagicalATK;
+            float ACC = levelAttributeHandler.GetSecondaryAttribute_ACC ; 
+            float Evasion = levelAttributeHandler.GetSecondaryAttribute_Evasion;
 
             _characterSecondaryAttributes.Add(ECharacterSecondaryAttributes.HP, new CharacterStat(runtimePartyMember.GetCurrentPartyMemberHP, MaxHP) ) ;
             _characterSecondaryAttributes.Add(ECharacterSecondaryAttributes.PhysicalATK, new CharacterStat(PhysicalATK, PhysicalATK));
             _characterSecondaryAttributes.Add(ECharacterSecondaryAttributes.MagicalATK, new CharacterStat(MagicalATK, MagicalATK));
-
             _characterSecondaryAttributes.Add(ECharacterSecondaryAttributes.Accuracy, new CharacterStat(ACC, ACC))  ;
             _characterSecondaryAttributes.Add(ECharacterSecondaryAttributes.Evasion, new CharacterStat(Evasion, Evasion)) ;
 
@@ -62,11 +63,11 @@ namespace Vanaring
         public RuntimeCharacterStatsAccumulator(CombatCharacterSheetSO combatCharacterSheetSO)
         {
             //Mostly formula that transfer Primary stats into Secondary stats
-            int MaxHP = combatCharacterSheetSO.GetSecondaryAttribute_MaxHP;
-            int PhysicalATK = combatCharacterSheetSO.GetSecondaryAttribute_PhysicalATK;
-            int MagicalATK = combatCharacterSheetSO.GetSecondaryAttribute_MagicalATK;
-            float ACC = combatCharacterSheetSO.GetSecondaryAttribute_ACC;
-            float Evasion = combatCharacterSheetSO.GetSecondaryAttribute_Evasion;
+            int MaxHP = combatCharacterSheetSO.GetBaseSecondaryAttribute_MaxHP;
+            int PhysicalATK = combatCharacterSheetSO.GetBaseSecondaryAttribute_PhysicalATK;
+            int MagicalATK = combatCharacterSheetSO.GetBaseSecondaryAttribute_MagicalATK;
+            float ACC = combatCharacterSheetSO.GetBaseSecondaryAttribute_ACC;
+            float Evasion = combatCharacterSheetSO.GetBaseSecondaryAttribute_Evasion;
 
 
             _characterSecondaryAttributes.Add(ECharacterSecondaryAttributes.HP, new CharacterStat(MaxHP, MaxHP));

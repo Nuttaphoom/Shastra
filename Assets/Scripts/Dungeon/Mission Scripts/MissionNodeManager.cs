@@ -31,20 +31,23 @@ namespace Vanaring
        
         public IEnumerator VisiteNextNode(BaseMissionNode nodeToVisit )
         {
+
             //first time dungeon node is init 
             if (_currentDungeonNode != null)
             {
+
                 //check if the next node is connected
                 if (!_currentDungeonNode.IsConnectedNode(nodeToVisit))
                 {
                     goto End;
                 }
 
+                yield return _currentDungeonNode.OnLeaveThisNode();
+
                 //Clear up transition node object
                 _missionNodeTransitionManager.ClearDungeonNodeTransition();
 
 
-                yield return _currentDungeonNode.OnLeaveThisNode();
 
 
 

@@ -46,7 +46,8 @@ namespace Vanaring
             {
                 baseNode.SubOnBeforeVisitThisNode(BeforeVisitNode);
 
-                baseNode.SubOnBeforeExitThisNode(ExitNode);
+                baseNode.SubOnBeforeExitThisNode(ExitNode,gameObject); 
+
 
                 baseNode.SubOnBeforeVisitThisNodeFirstTime(FirstTimeVisit);
             }
@@ -87,7 +88,7 @@ namespace Vanaring
             }
         }
 
-        private void ExitNode(Null n)
+        public void ExitNode(Null n)
         {
             SetFloorGraphicState(Color.grey);
             state = NodeState.VISITED;
