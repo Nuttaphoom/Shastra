@@ -21,7 +21,7 @@ namespace Vanaring
 
         public void PathReveal()
         {
-            Debug.Log("Path REveal");
+            //Debug.Log("Path Reveal");
             graphic.gameObject.SetActive(true);
             desNode.NodeReveal();
         }

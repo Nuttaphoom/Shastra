@@ -16,20 +16,23 @@ namespace Vanaring
         private List<MissionPathObject> pathList = new List<MissionPathObject>();
         public List<MissionPathObject> GetPathList => pathList;
 
+        private NodeState state;
+
+        
         private bool isVisisted;
         private bool isVisisting;
         //private BaseMissionNode.VisitationState state;
 
         public void Init(BaseMissionNode node)
         {
-            baseNode = node;
+            InitBaseNode(node);
             isVisisted = baseNode.IsThisNodeVisited;
             isVisisting = baseNode.IsCurrentlyVisiting;
 
-            floorGraphic.color = Color.black;
+            SetFloorGraphicState(Color.black);
             if (baseNode.IsCurrentlyVisiting)
             {
-                floorGraphic.color = Color.yellow;
+                SetFloorGraphicState(Color.yellow);
                 Debug.Log("pathList Count: " + pathList.Count);
                 foreach (MissionPathObject path in pathList)
                 {
@@ -41,13 +44,27 @@ namespace Vanaring
                 floorGraphic.color = Color.grey;
             }
             
+            if(baseNode != null)
+            {
+                baseNode.SubOnBeforeVisitThisNode(BeforeVisitNode);
 
+                baseNode.SubOnBeforeExitThisNode(ExitNode);
 
-            baseNode.SubOnBeforeVisitThisNode(BeforeVisitNode);
+                baseNode.SubOnBeforeVisitThisNodeFirstTime(FirstTimeVisit);
+            }
+            else
+            {
+                Debug.Log("No baseNode can be access!");
+            }
+        }
+        public void InitBaseNode(BaseMissionNode node)
+        {
+            baseNode = node;
+        }
 
-            baseNode.SubOnBeforeExitThisNode(ExitNode);
-
-            baseNode.SubOnBeforeVisitThisNodeFirstTime(FirstTimeVisit);
+        private void SetFloorGraphicState(Color color)
+        {
+            floorGraphic.color = color;
         }
 
         public void AddPathConnectToThisNode(MissionPathObject newPath)
@@ -57,32 +74,61 @@ namespace Vanaring
 
         private void BeforeVisitNode(Null n)
         {
-            Debug.Log("beVisit");
-            floorGraphic.color = Color.magenta;
+            Debug.Log("beforeVisit");
+            //SetFloorGraphicState(Color.magenta);
+            iconShown.gameObject.SetActive(true);
         }
 
         private void ExitNode(Null n)
         {
             Debug.Log("exit");
-            floorGraphic.color = Color.grey;
+            SetFloorGraphicState(Color.grey);
         }
         private void FirstTimeVisit(Null n)
         {
-            floorGraphic.color = Color.yellow;
+            Debug.Log("firstTimeVisit");
+            SetFloorGraphicState(Color.yellow);
+            foreach (MissionPathObject path in pathList)
+            {
+                path.PathReveal();
+            }
         }
 
         public void OnDisable()
         {
-            baseNode.UnSubBeforeOnVisitThisNode(BeforeVisitNode);
+            if(baseNode != null) 
+            {
+                baseNode.UnSubBeforeOnVisitThisNode(BeforeVisitNode);
 
-            baseNode.UnSubOnBeforeExitThisNode(ExitNode);
+                baseNode.UnSubOnBeforeExitThisNode(ExitNode);
 
-            baseNode.UnSubOnBeforeVisitThisNodeFirstTime(FirstTimeVisit);
+                baseNode.UnSubOnBeforeVisitThisNodeFirstTime(FirstTimeVisit);
+            }
         }
 
         public void NodeReveal()
         {
             floorGraphic.gameObject.SetActive(true);
+            floorGraphic.color = Color.white;
+            if (baseNode.IsCurrentlyVisiting)
+            {
+                state = NodeState.VISITING;
+                SetFloorGraphicState(Color.yellow);
+            }
+            else if(state == NodeState.VISITING || baseNode.IsThisNodeVisited)
+            {
+                state = NodeState.VISITED;
+                SetFloorGraphicState(Color.grey);
+            }
+            //Debug.Log("Node Reveal");
         }
+    }
+
+    public enum NodeState
+    {
+        NOT_FOUND,
+        NOT_VISIT,
+        VISITING,
+        VISITED
     }
 }

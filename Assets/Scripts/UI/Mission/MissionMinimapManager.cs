@@ -45,7 +45,7 @@ namespace Vanaring
             if(firstNode != null)
             {
                 curNode.gameObject.SetActive(true);
-                curNode.Init(firstNode);
+                //curNode.Init(firstNode);
             }
             
             StartCoroutine(SetupNodeTransitionMinimap(curNode));
@@ -54,15 +54,16 @@ namespace Vanaring
         private IEnumerator SetupNodeTransitionMinimap(MissionNodeObject startNode)
         {
             yield return new WaitForSeconds(0f);
+            if (nodeObjectList.Count == 0)
+            {
+                nodeObjectList.Add(curNode);
+                curNode.InitBaseNode(firstNode);
+            }
             if (startNode.GetBaseMissionNode.ConnectedNode != null)
             {
                 int xForward = 0;
                 int yForward = 0;
                 //Debug.Log("Connected node: " + startNode.GetBaseMissionNode.ConnectedNode.Count);
-                if(nodeObjectList.Count == 0)
-                {
-                    nodeObjectList.Add(curNode);
-                }
                 foreach (BaseMissionNode connectNode in startNode.GetBaseMissionNode.ConnectedNode)
                 {
                     xForward = 0;
@@ -71,7 +72,7 @@ namespace Vanaring
                     if (!allConnectedNodeList.Contains(connectNode))
                     {
                         TransitionDirection direction = missionNodeTransitionManager.CalculateTransitionDirect(startNode.GetBaseMissionNode, connectNode);
-                        Debug.Log(direction);
+                        //Debug.Log(direction);
                         switch (direction)
                         {
                             case TransitionDirection.Forward_Z:
@@ -98,7 +99,7 @@ namespace Vanaring
                             rect.localPosition.x + xForward, rect.localPosition.y + yForward, rect.localPosition.z);
                         newPath.gameObject.SetActive(true);
                         newPath.transform.SetAsLastSibling();
-                        ColorfulLogger.LogWithColor("Create Path", Color.green);
+                        //ColorfulLogger.LogWithColor("Create Path", Color.green);
                         //yield return new WaitForSeconds(.2f);
 
                         MissionNodeObject newDun = Instantiate(dungeonNode, nodeField.transform);
@@ -108,7 +109,7 @@ namespace Vanaring
                         newDun.gameObject.SetActive(true);
                         newDun.Init(connectNode);
                         newDun.transform.SetAsLastSibling();
-                        ColorfulLogger.LogWithColor("Create Dungeon Node", Color.green);
+                        //ColorfulLogger.LogWithColor("Create Dungeon Node", Color.green);
 
                         startNode.AddPathConnectToThisNode(newPath);
                         newPath.InitConnectedNode(startNode, newDun);
@@ -131,6 +132,16 @@ namespace Vanaring
                 else
                 {
                     ColorfulLogger.LogWithColor("No node has to find its connect", Color.red);
+                    //Debug.Log(curNode.GetPathList.Count);
+                    curNode.NodeReveal();
+                    //if (curNode.GetBaseMissionNode.IsCurrentlyVisiting)
+                    //{
+                    //    curNode.NodeReveal();
+                    //}
+                    foreach (MissionPathObject path in curNode.GetPathList)
+                    {
+                        path.PathReveal();
+                    }
                 }
 
 
