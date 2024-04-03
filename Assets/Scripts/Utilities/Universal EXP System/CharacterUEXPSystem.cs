@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Unity.VisualScripting;
+using static Cinemachine.DocumentationSortingAttribute;
 
 namespace Vanaring
 {
@@ -24,7 +25,7 @@ namespace Vanaring
          
         public override float GetEXPCap()
         {
-            return (float)10 * _currentLevel;
+            return 75 * (_currentLevel ^ 2) - (75 * _currentLevel); 
         }
 
         [Serializable]
