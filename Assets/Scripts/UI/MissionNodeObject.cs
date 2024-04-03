@@ -13,6 +13,7 @@ namespace Vanaring
         public BaseMissionNode GetBaseMissionNode => baseNode;
         [SerializeField] private Image floorGraphic;
         [SerializeField] private Image iconShown;
+        [SerializeField] private Animator animator;
         private List<MissionPathObject> pathList = new List<MissionPathObject>();
         public List<MissionPathObject> GetPathList => pathList;
 
@@ -78,6 +79,8 @@ namespace Vanaring
         {
             iconShown.gameObject.SetActive(true);
             state = NodeState.VISITING;
+            SetFloorGraphicState(Color.yellow);
+            
             foreach (MissionPathObject path in pathList)
             {
                 path.PathReveal();
@@ -115,6 +118,7 @@ namespace Vanaring
         public void NodeReveal()
         {
             floorGraphic.gameObject.SetActive(true);
+            animator.Play("NodeObjectStateChange");
             floorGraphic.color = Color.white;
             if (baseNode.IsCurrentlyVisiting)
             {
