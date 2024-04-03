@@ -18,12 +18,14 @@ namespace Vanaring
         private bool DebuggingMode = false;
 
         [Serializable]
-        public struct ItemInventoryData
+        public class ItemInventoryData
         {
             [SerializeField]
             public ItemActionFactorySO itemData;
             [SerializeField]
             public int amount;
+            [SerializeField]
+            public BackpackItemData backpackItemData;
         }
 
         [SerializeField, AllowNesting, NaughtyAttributes.ShowIf("DebuggingMode")]
@@ -56,12 +58,18 @@ namespace Vanaring
             if (_itemInventory == null)
                 _itemInventory = new List<ItemInventoryData>(); 
 
-            foreach (BackpackItemData backpackItem in backpackItems)
+            for (int i = 0; i < backpackItems.Count; i++)
             {
+                BackpackItemData backpackItem = backpackItems[i]; 
+
                 _itemInventory.Add(new ItemInventoryData() { 
                     itemData = (backpackItem.BackpackItem as CombatUseableItemSO).ItemActionFactory ,
                     amount = backpackItem.Amount ,
+                    backpackItemData = backpackItem 
                 });
+
+                PersistentPlayerPersonalDataManager.Instance.GetBackpack.RemoveItemFromBackpack(backpackItem.BackpackItem, backpackItem.Amount);
+
             }
 
             SetUpRuntimeItemFromItemInventory(); 
@@ -69,9 +77,24 @@ namespace Vanaring
              yield return null;
         }
 
+        public void RestoreRemainingItemIntoDatabase()
+        {
+            if (_itemInventory == null)
+                _itemInventory = new List<ItemInventoryData>();
+
+            for (int i = 0; i < _itemInventory.Count; i++)
+            {
+                ItemInventoryData itemInventoryData = _itemInventory[i];
+
+                PersistentPlayerPersonalDataManager.Instance.GetBackpack.AddItemIntoBackpack(itemInventoryData.backpackItemData.BackpackItem, itemInventoryData.amount);
+
+            }
+        }
+
         public void RemoveItem(ItemAbilityRuntime itemToRemove)
         {
             int count = 0;
+            
             foreach (var item in _itemInventoryAbility)
             {
                 if (item.AbilityName == itemToRemove.ItemName)
@@ -86,6 +109,22 @@ namespace Vanaring
                     break;
                 }
                 count++;
+            }
+
+            //Remove item in which runtime instantiate from as we need this to restore back into inventory
+            for (int i = 0; i < _itemInventory.Count; i++)
+            {
+                if (_itemInventory[i].backpackItemData.BackpackItem.GetDescriptionBaseField().FieldName == itemToRemove.ItemName)
+                {
+                    _itemInventory[i].amount -= 1 ;
+                    if (_itemInventory[i].amount <= 0)
+                    {
+                        _itemInventory.RemoveAt(i); 
+                    }
+                    break;
+                }
+
+
             }
         }
 
