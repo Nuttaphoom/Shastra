@@ -16,10 +16,6 @@ namespace Vanaring
         private MissionNodeTransitionManager missionNodeTransitionManager;
         private MissionNodeEnvironment mission;
 
-        [SerializeField] private GameObject pivotCamera;
-        private Transform curCameraTransform;
-
-
         [SerializeField] private MissionSetupHandler setUpHandler;
         [SerializeField] private GameObject nodeField;
         [SerializeField] private MissionNodeObject curNode;
@@ -35,37 +31,12 @@ namespace Vanaring
         private void Start()
         {
             setUpHandler.SubOnEnvironmentSetup(Init);
-            curCameraTransform = pivotCamera.transform;
-            StartCoroutine(WaitForCameraStartMove());
         }
 
         public void OnDisable()
         {
             setUpHandler.UnSubOnEnvironmentSetup(Init);
         }
-        private IEnumerator WaitForCameraStartMove()
-        {
-            //while (true)
-            //{
-            //    if (curCameraTransform != pivotCamera.transform)
-            //    {
-            //        nodeField.GetComponent<Image>().rectTransform.localPosition = Vector3.Lerp(startMarker.position, endMarker.position, 3.0f);
-            //    }
-            //}
-            yield return null;
-        }
-        //void Start()
-        //{
-        //    startTime = Time.time;
-        //    journeyLength = Vector3.Distance(startMarker.position, endMarker.position);
-        //}
-
-        //void Update()
-        //{
-        //    float distCovered = (Time.time - startTime) * speed;
-        //    float fracJourney = distCovered / journeyLength;
-        //    transform.position = Vector3.Lerp(startMarker.position, endMarker.position, fracJourney);
-        //}
 
         public void Init(Null n)
         {
@@ -75,7 +46,6 @@ namespace Vanaring
             if(firstNode != null)
             {
                 curNode.gameObject.SetActive(true);
-                //curNode.Init(firstNode);
             }
             
             StartCoroutine(SetupNodeTransitionMinimap(curNode));
@@ -93,16 +63,13 @@ namespace Vanaring
             {
                 int xForward = 0;
                 int yForward = 0;
-                //Debug.Log("Connected node: " + startNode.GetBaseMissionNode.ConnectedNode.Count);
                 foreach (BaseMissionNode connectNode in startNode.GetBaseMissionNode.ConnectedNode)
                 {
                     xForward = 0;
                     yForward = 0;
-                    //yield return new WaitForSeconds(.2f);
                     if (!allConnectedNodeList.Contains(connectNode))
                     {
                         TransitionDirection direction = missionNodeTransitionManager.CalculateTransitionDirect(startNode.GetBaseMissionNode, connectNode);
-                        //Debug.Log(direction);
                         switch (direction)
                         {
                             case TransitionDirection.Forward_Z:
@@ -129,8 +96,6 @@ namespace Vanaring
                             rect.localPosition.x + xForward, rect.localPosition.y + yForward, rect.localPosition.z);
                         newPath.gameObject.SetActive(true);
                         newPath.transform.SetAsLastSibling();
-                        //ColorfulLogger.LogWithColor("Create Path", Color.green);
-                        //yield return new WaitForSeconds(.2f);
 
                         MissionNodeObject newDun = Instantiate(dungeonNode, nodeField.transform);
                         RectTransform rectDun = newPath.GetComponent<RectTransform>();
@@ -139,7 +104,6 @@ namespace Vanaring
                         newDun.gameObject.SetActive(true);
                         newDun.Init(connectNode);
                         newDun.transform.SetAsLastSibling();
-                        //ColorfulLogger.LogWithColor("Create Dungeon Node", Color.green);
 
                         startNode.AddPathConnectToThisNode(newPath);
                         newPath.InitConnectedNode(startNode, newDun);
@@ -154,20 +118,13 @@ namespace Vanaring
                 runningIndex++;
                 if (unConnectNodeList.Count != 0)
                 {
-                   // Debug.Log("Prepare in queue: " + unConnectNodeList.Count);
                     MissionNodeObject nextNode = unConnectNodeList.Dequeue();
-                    //BaseMissionNode nextNode = unConnectNodeList.Dequeue();
                     StartCoroutine(SetupNodeTransitionMinimap(nextNode));
                 }
                 else
                 {
                     ColorfulLogger.LogWithColor("No node has to find its connect", Color.red);
-                    //Debug.Log(curNode.GetPathList.Count);
                     curNode.NodeReveal();
-                    //if (curNode.GetBaseMissionNode.IsCurrentlyVisiting)
-                    //{
-                    //    curNode.NodeReveal();
-                    //}
                     foreach (MissionPathObject path in curNode.GetPathList)
                     {
                         path.PathReveal();

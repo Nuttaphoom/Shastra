@@ -11,7 +11,6 @@ namespace Vanaring
         [SerializeField] private Image nodeField;
         private Vector3 startPosition;
         private Vector3 endPosition;
-        private CameraTranslateDirection dir;
 
         private void Start()
         {
@@ -19,12 +18,11 @@ namespace Vanaring
             endPosition = startPosition;
             StopAllCoroutines();
             StartCoroutine(CheckDirectionOverTime());
-            Debug.Log("Start Position - x: " + startPosition.x + ", y: " + startPosition.y + ", z: " + startPosition.z);
         }
 
         private IEnumerator CheckDirectionOverTime()
         {
-            yield return new WaitForSeconds(2.5f);
+            yield return new WaitForSeconds(1.0f);
             startPosition = pivotCamera.transform.position;
             Debug.Log("StartPos - x: " + startPosition.x + ", y: " + startPosition.y + ", z: " + startPosition.z);
             
@@ -41,28 +39,32 @@ namespace Vanaring
 
                     if(direction.x > 0)
                     {
-                        dir = CameraTranslateDirection.Forward;
+                        endPosition = new Vector3(nodeField.rectTransform.localPosition.x - 100, nodeField.rectTransform.localPosition.y - 40, 0);
+                    }
+                    else if (direction.z > 0)
+                    {
+                        endPosition = new Vector3(nodeField.rectTransform.localPosition.x + 100, nodeField.rectTransform.localPosition.y - 60, 0);
+                    }
+                    else if (direction.x < 0)
+                    {
+                        endPosition = new Vector3(nodeField.rectTransform.localPosition.x + 100, nodeField.rectTransform.localPosition.y + 40, 0);
+                    }
+                    else if (direction.z < 0)
+                    {
+                        endPosition = new Vector3(nodeField.rectTransform.localPosition.x - 100, nodeField.rectTransform.localPosition.y + 60, 0);
                     }
                     break;
                 }
 
-                yield return new WaitForSeconds(0.1f);
+                yield return new WaitForSeconds(0.01f);
             }
-            TranslateMinimapNodeField();
+            StartCoroutine(TranslateCoroutine());
             yield return null;
         }
-        private void TranslateMinimapNodeField()
-        {
-            Debug.Log("Start Translate");
-            endPosition = new Vector3(nodeField.rectTransform.localPosition.x - 100, nodeField.rectTransform.localPosition.y - 40, 0);
-            Debug.Log("End Position - x: " + endPosition.x + ", y: " + endPosition.y + ", z: " + endPosition.z);
-            StartCoroutine(TranslateCoroutine());
-        }
-
         private IEnumerator TranslateCoroutine()
         {
             float elapsedTime = 0f;
-            float duration = 1.5f;
+            float duration = 1.6f;
 
             Vector3 startPosition = nodeField.rectTransform.localPosition;
 
@@ -75,21 +77,8 @@ namespace Vanaring
             nodeField.rectTransform.localPosition = endPosition;
 
             Debug.Log("Translation completed");
-        }
-
-        public CameraTranslateDirection CalculateCamearaTranslateDirection()
-        {
             
-            //pivotCamera
-            return dir;
+            yield return CheckDirectionOverTime();
         }
-    }
-
-    public enum CameraTranslateDirection
-    {
-        Forward,
-        BackWard,
-        Left,
-        Right
     }
 }
