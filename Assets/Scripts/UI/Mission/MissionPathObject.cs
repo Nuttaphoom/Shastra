@@ -10,7 +10,6 @@ namespace Vanaring
         [SerializeField] private Image graphic;
         private MissionNodeObject startNode;
         private MissionNodeObject desNode;
-        
 
         public void InitConnectedNode(MissionNodeObject startNode, MissionNodeObject destinationNode)
         {
@@ -24,6 +23,13 @@ namespace Vanaring
             //Debug.Log("Path Reveal");
             graphic.gameObject.SetActive(true);
             desNode.NodeReveal();
+            if (desNode.GetBaseMissionNode.IsThisNodeVisited)
+            {
+                foreach (MissionPathObject path in desNode.GetPathList)
+                {
+                    path.PathReveal();
+                }
+            }
         }
 
     }

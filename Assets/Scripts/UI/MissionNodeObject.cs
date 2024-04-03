@@ -13,15 +13,13 @@ namespace Vanaring
         public BaseMissionNode GetBaseMissionNode => baseNode;
         [SerializeField] private Image floorGraphic;
         [SerializeField] private Image iconShown;
+        [SerializeField] private Animator animator;
         private List<MissionPathObject> pathList = new List<MissionPathObject>();
         public List<MissionPathObject> GetPathList => pathList;
 
         private NodeState state;
-
-        
         private bool isVisisted;
         private bool isVisisting;
-        //private BaseMissionNode.VisitationState state;
 
         public void Init(BaseMissionNode node)
         {
@@ -30,6 +28,10 @@ namespace Vanaring
             isVisisting = baseNode.IsCurrentlyVisiting;
 
             SetFloorGraphicState(Color.black);
+            //if (baseNode.IsThisNodeVisited)
+            //{
+            //    SetFloorGraphicState(Color.grey);
+            //}
             if (baseNode.IsCurrentlyVisiting)
             {
                 SetFloorGraphicState(Color.yellow);
@@ -39,11 +41,7 @@ namespace Vanaring
                     path.PathReveal();
                 }
             }
-            else if (baseNode.IsThisNodeVisited)
-            {
-                floorGraphic.color = Color.grey;
-            }
-            
+
             if(baseNode != null)
             {
                 baseNode.SubOnBeforeVisitThisNode(BeforeVisitNode);
@@ -61,6 +59,11 @@ namespace Vanaring
         public void InitBaseNode(BaseMissionNode node)
         {
             baseNode = node;
+            baseNode.SubOnBeforeVisitThisNode(BeforeVisitNode);
+
+            baseNode.SubOnBeforeExitThisNode(ExitNode);
+
+            baseNode.SubOnBeforeVisitThisNodeFirstTime(FirstTimeVisit);
         }
 
         private void SetFloorGraphicState(Color color)
@@ -75,19 +78,25 @@ namespace Vanaring
 
         private void BeforeVisitNode(Null n)
         {
-            Debug.Log("beforeVisit");
-            //SetFloorGraphicState(Color.magenta);
             iconShown.gameObject.SetActive(true);
+            state = NodeState.VISITING;
+            SetFloorGraphicState(Color.yellow);
+            
+            foreach (MissionPathObject path in pathList)
+            {
+                path.PathReveal();
+            }
         }
 
         public void ExitNode(Null n)
         {
-            Debug.Log("exit");
             SetFloorGraphicState(Color.grey);
+            state = NodeState.VISITED;
+            iconShown.gameObject.SetActive(false);
         }
         private void FirstTimeVisit(Null n)
         {
-            Debug.Log("firstTimeVisit");
+            isVisisted = true;
             SetFloorGraphicState(Color.yellow);
             foreach (MissionPathObject path in pathList)
             {
@@ -110,6 +119,7 @@ namespace Vanaring
         public void NodeReveal()
         {
             floorGraphic.gameObject.SetActive(true);
+            animator.Play("NodeObjectStateChange");
             floorGraphic.color = Color.white;
             if (baseNode.IsCurrentlyVisiting)
             {
@@ -121,7 +131,6 @@ namespace Vanaring
                 state = NodeState.VISITED;
                 SetFloorGraphicState(Color.grey);
             }
-            //Debug.Log("Node Reveal");
         }
     }
 
