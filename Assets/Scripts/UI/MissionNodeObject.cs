@@ -58,7 +58,8 @@ namespace Vanaring
         }
         public void InitBaseNode(BaseMissionNode node)
         {
-            baseNode = node;
+            baseNode = node; 
+
             baseNode.SubOnBeforeVisitThisNode(BeforeVisitNode);
 
             baseNode.SubOnBeforeExitThisNode(ExitNode);

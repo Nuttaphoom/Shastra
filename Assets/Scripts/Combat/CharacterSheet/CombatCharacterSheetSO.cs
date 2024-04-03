@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
+using Vanaring.Assets.Scripts.Utilities.StringConstant;
 
 namespace Vanaring
 {
@@ -89,15 +90,15 @@ namespace Vanaring
         public int GetModLuck => _luck_per_level;
 
         /// <summary>
-        /// Functions to calculate secondary attribute with respect to Primary attributes
+        /// Functions to calculate base secondary attribute with respect to Primary attributes
         /// </summary>
-        public int GetBaseSecondaryAttribute_MaxHP => 50 + (_vitality * 14 ) ;
-        public int GetBaseSecondaryAttribute_MaxMP => 70 + (_intellect * 4 );
-        public int GetBaseSecondaryAttribute_PhysicalATK => 20 + (_strength * 3) ;
-        public int GetBaseSecondaryAttribute_MagicalATK => 15 + (_intellect * 3);
+        public int Get_Base_SecondaryAttribute_MaxHP => AttributeFormulaLocator.CalculateMaxHP(_vitality); // 50 + (_vitality * 14 ) ;
+        public int Get_Base_SecondaryAttribute_MaxMP => AttributeFormulaLocator.CalculateMaxMP(_intellect);// 70 + (_intellect * 4 );
+        public int Get_Base_SecondaryAttribute_PhysicalATK => AttributeFormulaLocator.CalculatePhysicalATK(_strength);// 20 + (_strength * 3) ;
+        public int Get_Base_SecondaryAttribute_MagicalATK => AttributeFormulaLocator.CalculateMagicalATK(_intellect); // 15 + (_intellect * 3);
 
-        public float GetBaseSecondaryAttribute_Evasion => 100 + ( (_agility )  )  ;
-        public float GetBaseSecondaryAttribute_ACC => 190 + (_agility ); 
+        public float Get_Base_SecondaryAttribute_Evasion => 100 + ( (_agility )  )  ;
+        public float Get_Base_SecondaryAttribute_ACC => 190 + (_agility ); 
 
         public GameObject GetCombatEntityPrefab
         {

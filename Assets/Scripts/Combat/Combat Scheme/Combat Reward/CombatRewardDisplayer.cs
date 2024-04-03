@@ -1,19 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static Vanaring.CombatRewardManager;
 
 namespace Vanaring
 {
 
-    public class CombatRewardDisplayer : BaseRewardDisplayer<int, CombatRewardDisplayerPanel>
+    public class CombatRewardDisplayer : BaseRewardDisplayer<CombatRewardData, CombatRewardDisplayerPanel>
     {
-        private int _rewardData ; 
+        private CombatRewardData _rewardData ; 
 
-        //private List<PersonalityRewardData> _personalityRewardDatas;
-        public override IEnumerator DisplayRewardUICoroutine(int rewardType)
+        public override IEnumerator DisplayRewardUICoroutine(CombatRewardData rewardData)
         {
-            _rewardData = rewardType;
-            yield return CreateRewardDisplayPanel();
+            //_rewardData = rewardData;
+            //yield return CreateRewardDisplayPanel();
+
+            yield return null;
 
         }
 

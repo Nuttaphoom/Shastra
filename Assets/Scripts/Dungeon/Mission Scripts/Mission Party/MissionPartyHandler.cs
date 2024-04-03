@@ -112,7 +112,6 @@ namespace Vanaring
 
         public void UpdateMemberStatus(EntityRewardData entityRewardData)
         {
-
             foreach (RuntimePartyMember member in _partyMembers)
             {
                 if (member.GetCharacterSheet.CharacterName != entityRewardData.ControlEntity.CombatCharacterSheet.CharacterName)
@@ -120,8 +119,6 @@ namespace Vanaring
 
                 CombatEntity combatEntity = entityRewardData.ControlEntity;
                 member.UpdateValue(combatEntity.StatsAccumulator.GetHPAmount(), combatEntity.SpellCaster.GetMP);
-
-
 
             }
         }
