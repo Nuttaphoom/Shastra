@@ -48,7 +48,8 @@ namespace Vanaring
             {
                 baseNode.SubOnBeforeVisitThisNode(BeforeVisitNode);
 
-                baseNode.SubOnBeforeExitThisNode(ExitNode);
+                baseNode.SubOnBeforeExitThisNode(ExitNode,gameObject); 
+
 
                 baseNode.SubOnBeforeVisitThisNodeFirstTime(FirstTimeVisit);
             }
@@ -79,7 +80,7 @@ namespace Vanaring
             iconShown.gameObject.SetActive(true);
         }
 
-        private void ExitNode(Null n)
+        public void ExitNode(Null n)
         {
             Debug.Log("exit");
             SetFloorGraphicState(Color.grey);

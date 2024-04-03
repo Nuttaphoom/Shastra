@@ -14,8 +14,6 @@ namespace Vanaring
     {
         #region Event Broadcaster 
         private EventBroadcaster _eventBroadcaster;
-
-        
         protected EventBroadcaster EventBroadcaster
         {
             get
@@ -26,6 +24,7 @@ namespace Vanaring
                     _eventBroadcaster.OpenChannel<Null>("OnBeforeVisitThisNode");
                     _eventBroadcaster.OpenChannel<Null>("OnBeforeVisitThisNodeFirstTime");
                     _eventBroadcaster.OpenChannel<Null>("OnBeforeExitThisNode");
+
                 }
 
                 return _eventBroadcaster; 
@@ -53,8 +52,9 @@ namespace Vanaring
             EventBroadcaster.UnSubEvent(func, "OnBeforeVisitThisNodeFirstTime");
         }
 
-        public void SubOnBeforeExitThisNode(UnityAction<Null> func)
+        public void SubOnBeforeExitThisNode(UnityAction<Null> func,GameObject gameObj)
         {
+            Debug.Log("Sub on exit this node by " + gameObj.gameObject.name);
             EventBroadcaster.SubEvent(func, "OnBeforeExitThisNode");
         }
 
@@ -114,9 +114,11 @@ namespace Vanaring
 
         #endregion  
 
+        
         public virtual IEnumerator OnLeaveThisNode()
         {
-            EventBroadcaster.InvokeEvent<Null>(null, "OnBeforeExitThisNode");
+            EventBroadcaster?.InvokeEvent<Null>(null, "OnBeforeExitThisNode");
+
 
             if (! IsThisNodeVisited)
                 throw new System.Exception("This node hasn't never been visited " ) ;
@@ -128,7 +130,8 @@ namespace Vanaring
 
         public virtual IEnumerator OnVisiteThisNode()
         {
-            EventBroadcaster.InvokeEvent<Null>(null,"OnBeforeVisitThisNode");
+
+            EventBroadcaster?.InvokeEvent<Null>(null,"OnBeforeVisitThisNode");
 
             if (!IsThisNodeVisited)
             {            

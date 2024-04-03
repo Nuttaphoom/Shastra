@@ -18,7 +18,6 @@ namespace Vanaring
         
         public RuntimePartyMember(RuntimeCombatMemberData combatMemberData)
         {
-            ColorfulLogger.LogWithColor("New party init ", Color.red);
             _runtimeCombatMemberData = combatMemberData;
 
             CombatCharacterSheetSO characterSheet = _runtimeCombatMemberData.GetCharacterSheet;
