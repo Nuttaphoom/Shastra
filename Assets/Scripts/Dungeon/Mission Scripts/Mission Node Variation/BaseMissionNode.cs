@@ -52,9 +52,8 @@ namespace Vanaring
             EventBroadcaster.UnSubEvent(func, "OnBeforeVisitThisNodeFirstTime");
         }
 
-        public void SubOnBeforeExitThisNode(UnityAction<Null> func,GameObject gameObj)
+        public void SubOnBeforeExitThisNode(UnityAction<Null> func)
         {
-            Debug.Log("Sub on exit this node by " + gameObj.gameObject.name);
             EventBroadcaster.SubEvent(func, "OnBeforeExitThisNode");
         }
 

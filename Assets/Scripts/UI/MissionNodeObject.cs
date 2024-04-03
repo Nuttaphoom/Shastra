@@ -46,7 +46,7 @@ namespace Vanaring
             {
                 baseNode.SubOnBeforeVisitThisNode(BeforeVisitNode);
 
-                baseNode.SubOnBeforeExitThisNode(ExitNode,gameObject); 
+                baseNode.SubOnBeforeExitThisNode(ExitNode); 
 
 
                 baseNode.SubOnBeforeVisitThisNodeFirstTime(FirstTimeVisit);
