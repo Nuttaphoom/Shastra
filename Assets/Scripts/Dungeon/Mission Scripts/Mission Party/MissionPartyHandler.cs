@@ -22,8 +22,8 @@ namespace Vanaring
 
             CombatCharacterSheetSO characterSheet = _runtimeCombatMemberData.GetCharacterSheet;
 
-            _currentHP = characterSheet.GetSecondaryAttribute_MaxHP; 
-            _currentMP = characterSheet.GetSecondaryAttribute_MaxMP; 
+            _currentHP = combatMemberData.LevelAttributeHandler.GetSecondaryAttribute_MaxHP ;// characterSheet.GetSecondaryAttribute_MaxHP; 
+            _currentMP = combatMemberData.LevelAttributeHandler.GetSecondaryAttribute_MaxMP ; 
 
         }
 
@@ -54,7 +54,18 @@ namespace Vanaring
         {
             _currentHP = hp; 
             _currentMP = mp; 
+        } 
+
+        public RuntimeCombatMemberData GetRuntimeCombatMemberData
+        {
+            get
+            { 
+                return _runtimeCombatMemberData; 
+            }
         }
+
+
+
         #endregion
 
     }

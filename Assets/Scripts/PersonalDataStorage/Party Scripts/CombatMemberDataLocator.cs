@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static Vanaring.RuntimeCombatMemberData;
 
 namespace Vanaring
 {
@@ -94,11 +95,11 @@ namespace Vanaring
         #region Save System
         public object CaptureState()
         {
-            Dictionary<string, List<string>> saveData = new Dictionary<string, List<string>>();
+            Dictionary<string, RuntimeCombatMemberDataSaveLoad> saveData = new Dictionary<string, RuntimeCombatMemberDataSaveLoad>();
             foreach (var member in _partyMemberData)
             {
                 string characterName = member.GetMemberName ;
-                List<string> captureState = (List<string>)member.CaptureState();
+                RuntimeCombatMemberDataSaveLoad captureState = (RuntimeCombatMemberDataSaveLoad)member.CaptureState();
 
                 if (saveData.ContainsKey(characterName)) // temp skip for duplicate Asha?????
                     continue;
@@ -113,8 +114,8 @@ namespace Vanaring
         {
             InitializeRuntimeMemberData();
 
-            Dictionary<string, List<string>> saveData = (Dictionary<string, List<string>>)state;
-            foreach (KeyValuePair<string, List<string>> data in saveData) // loop through both
+            Dictionary<string, RuntimeCombatMemberDataSaveLoad> saveData = (Dictionary<string, RuntimeCombatMemberDataSaveLoad>)state;
+            foreach (KeyValuePair<string, RuntimeCombatMemberDataSaveLoad> data in saveData) // loop through both
             {
                 GetRuntimeData(data.Key).RestoreState(data.Value);
             }

@@ -13,14 +13,28 @@ namespace Vanaring
         private CharacterSheetSO _characterSheetSO;
         [SerializeField]
         private CombatMemberActionRegister _memberActionRegister ;
+        [SerializeField]
+        private LevelAttributeHandler _levelAttributeHandler; 
 
         public void SetUpRuntimePartyMemberData(CharacterSheetSO sheet)
         {
             _characterSheetSO = sheet ; 
             _memberActionRegister = new CombatMemberActionRegister();
+            _levelAttributeHandler = new LevelAttributeHandler(this); 
+
             //_memberActionRegister.LoadSpellFromDatabase(spellUniqueKeys);
         }
 
+        public LevelAttributeHandler LevelAttributeHandler
+        {
+            get
+            {
+                if (_levelAttributeHandler == null)
+                    throw new Exception("_levelAttributeHandler is null");
+
+                return _levelAttributeHandler;
+            }
+        }
         public List<SpellActionSO> GetRegisteredSpellActionSO
         {
             get
@@ -68,14 +82,28 @@ namespace Vanaring
         #region Save System
         public object CaptureState()
         {
-            return _memberActionRegister.CaptureState();
+            RuntimeCombatMemberDataSaveLoad capturedData = new RuntimeCombatMemberDataSaveLoad() ;
+            capturedData.RegisteredAction = _memberActionRegister.CaptureState() as List<string> ;
+            capturedData.CurrentLevel = _levelAttributeHandler.GetCharacterUEXPSystem.GetCurrentLevel;
+            capturedData.CurrentEXP = _levelAttributeHandler.GetCharacterUEXPSystem.GetCurrentEXP ;
+
+            return capturedData; //.CaptureState(); 
         }
 
         public void RestoreState(object state)
         {
-            var saveData = (List<string>)state;
+            var saveData = (RuntimeCombatMemberDataSaveLoad) state;
 
-            _memberActionRegister.RestoreState(saveData);
+            _memberActionRegister.RestoreState(saveData.RegisteredAction);
+
+            _levelAttributeHandler.RestoreLevelDataFromLocalSave(saveData.CurrentLevel, saveData.CurrentEXP);
+        }
+
+        public struct RuntimeCombatMemberDataSaveLoad
+        {
+            public List<string> RegisteredAction;
+            public int CurrentLevel;
+            public float CurrentEXP;
         }
 
         #endregion

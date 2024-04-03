@@ -42,7 +42,6 @@ namespace Vanaring
         {
             _combatEntity = GetComponent<CombatEntity>();
             _magicalEnergy.Init(this);
-            _MPStats = new CharacterStat(_combatEntity.CombatCharacterSheet.GetSecondaryAttribute_MaxMP, _combatEntity.CombatCharacterSheet.GetSecondaryAttribute_MaxMP) ; 
         }
 
         #region GetEventBroadcaster Methods 
@@ -101,9 +100,9 @@ namespace Vanaring
 
             GetEventBroadcaster().InvokeEvent(mod.Value, "OnMPModified");
         }
-        public void SetMP(float newMP)
+        public void SetNewMPAttribute(float newMP, float newMaxMP)
         {
-            _MPStats = new CharacterStat(newMP, _combatEntity.CombatCharacterSheet.GetSecondaryAttribute_MaxMP) ; 
+            _MPStats = new CharacterStat(newMP, newMaxMP) ; 
         }
 
         #endregion

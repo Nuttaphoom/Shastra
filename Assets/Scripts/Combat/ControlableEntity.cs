@@ -27,9 +27,9 @@ namespace Vanaring
             //Set up runtime value according to Party member data
             RuntimePartyMember partyMemberData = MissionManagerSingleton.Instance.DungeonPartyHandler.GetPartyMember(CombatCharacterSheet.CharacterName);
 
-            _runtimeCharacterStatsAccumulator = new RuntimeCharacterStatsAccumulator(partyMemberData); 
-
-            _spellCaster.SetMP(partyMemberData.GetCurrentPartyMemberMP) ;
+            _runtimeCharacterStatsAccumulator = new RuntimeCharacterStatsAccumulator(partyMemberData);
+        
+            _spellCaster.SetNewMPAttribute(partyMemberData.GetCurrentPartyMemberMP, partyMemberData.GetRuntimeCombatMemberData.LevelAttributeHandler.GetSecondaryAttribute_MaxMP);
         } 
 
 

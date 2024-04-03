@@ -34,6 +34,21 @@ namespace Vanaring
         [SerializeField]
         private int _luck ;
 
+        [SerializeField]
+        private int _strength_per_level = 1;
+
+
+        [SerializeField]
+        private int _vitality_per_level = 1;
+
+        [SerializeField]
+        private int _intellect_per_level = 1;
+
+        [SerializeField]
+        private int _agility_per_level = 1;
+
+        [SerializeField]
+        private int _luck_per_level = 1 ;
 
         [Header("Ailment Resistant")]
         [SerializeField]
@@ -62,16 +77,27 @@ namespace Vanaring
 
         public int GetLuck => _luck;
 
+        public int GetModStrength => _strength_per_level;
+
+        public int GetModVitality => _vitality_per_level;
+
+
+        public int GetModIntellect => _intellect_per_level;
+
+        public int GetModAgility => _agility_per_level;
+
+        public int GetModLuck => _luck_per_level;
+
         /// <summary>
         /// Functions to calculate secondary attribute with respect to Primary attributes
         /// </summary>
-        public int GetSecondaryAttribute_MaxHP => 50 + (_vitality * 14 ) ;
-        public int GetSecondaryAttribute_MaxMP => 70 + (_intellect * 4 );
-        public int GetSecondaryAttribute_PhysicalATK => 20 + (_strength * 3) ;
-        public int GetSecondaryAttribute_MagicalATK => 15 + (_intellect * 3);
+        public int GetBaseSecondaryAttribute_MaxHP => 50 + (_vitality * 14 ) ;
+        public int GetBaseSecondaryAttribute_MaxMP => 70 + (_intellect * 4 );
+        public int GetBaseSecondaryAttribute_PhysicalATK => 20 + (_strength * 3) ;
+        public int GetBaseSecondaryAttribute_MagicalATK => 15 + (_intellect * 3);
 
-        public float GetSecondaryAttribute_Evasion => 100 + ( (_agility )  )  ;
-        public float GetSecondaryAttribute_ACC => 190 + (_agility ); 
+        public float GetBaseSecondaryAttribute_Evasion => 100 + ( (_agility )  )  ;
+        public float GetBaseSecondaryAttribute_ACC => 190 + (_agility ); 
 
         public GameObject GetCombatEntityPrefab
         {
