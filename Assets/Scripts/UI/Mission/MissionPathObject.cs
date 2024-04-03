@@ -23,6 +23,13 @@ namespace Vanaring
             //Debug.Log("Path Reveal");
             graphic.gameObject.SetActive(true);
             desNode.NodeReveal();
+            if (desNode.GetBaseMissionNode.IsThisNodeVisited)
+            {
+                foreach (MissionPathObject path in desNode.GetPathList)
+                {
+                    path.PathReveal();
+                }
+            }
         }
 
     }
