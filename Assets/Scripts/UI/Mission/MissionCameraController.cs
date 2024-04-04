@@ -9,6 +9,7 @@ namespace Vanaring
     {
         [SerializeField] private GameObject pivotCamera;
         [SerializeField] private Image nodeField;
+        [SerializeField] private float duration = 1.8f;
         private Vector3 startPosition;
         private Vector3 endPosition;
 
@@ -24,7 +25,7 @@ namespace Vanaring
         {
             yield return new WaitForSeconds(1.0f);
             startPosition = pivotCamera.transform.position;
-            Debug.Log("StartPos - x: " + startPosition.x + ", y: " + startPosition.y + ", z: " + startPosition.z);
+            //Debug.Log("StartPos - x: " + startPosition.x + ", y: " + startPosition.y + ", z: " + startPosition.z);
             
             while (true)
             {
@@ -32,7 +33,7 @@ namespace Vanaring
 
                 if (currentPosition != startPosition)
                 {
-                    Debug.Log("CurrentPos - x: " + currentPosition.x + ", y: " + currentPosition.y + ", z: " + currentPosition.z);
+                    //Debug.Log("CurrentPos - x: " + currentPosition.x + ", y: " + currentPosition.y + ", z: " + currentPosition.z);
                     //Debug.Log("StartPos - x: " + startPosition.x + ", y: " + startPosition.y + ", z: " + startPosition.z);
                     Vector3 direction = (currentPosition - startPosition).normalized;
                     //Debug.Log("Direction - x: " + direction.x + ", y: " + direction.y + ", z: " + direction.z);
@@ -64,7 +65,6 @@ namespace Vanaring
         private IEnumerator TranslateCoroutine()
         {
             float elapsedTime = 0f;
-            float duration = 1.6f;
 
             Vector3 startPosition = nodeField.rectTransform.localPosition;
 
@@ -76,7 +76,7 @@ namespace Vanaring
             }
             nodeField.rectTransform.localPosition = endPosition;
 
-            Debug.Log("Translation completed");
+            //Debug.Log("Translation completed");
             
             yield return CheckDirectionOverTime();
         }
