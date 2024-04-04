@@ -10,8 +10,18 @@ namespace Vanaring
         [SerializeField]
         private string _dungeonName;
 
+        [SerializeField]
+        private List<MissionDataSO> _missionsOnThisDungeon;
+
         #region GETTER 
-        private string DungeonName => _dungeonName; 
+        private string DungeonName => _dungeonName;
+        public List<MissionDataSO> GetMissionDataSOes
+        {
+            get
+            {
+                return _missionsOnThisDungeon; 
+            }
+        }
 
 
         #endregion

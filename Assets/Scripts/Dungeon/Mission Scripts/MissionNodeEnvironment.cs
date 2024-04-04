@@ -35,7 +35,7 @@ namespace Vanaring
             {
                 foreach (BaseMissionNode node in _baseDungeonNode)
                 {
-                    Debug.Log(node.gameObject.name +" is " + node.visistationState) ; 
+                    //Debug.Log(node.gameObject.name +" is " + node.visistationState) ; 
                     if (node.IsCurrentlyVisiting)
                         return node; 
                 }

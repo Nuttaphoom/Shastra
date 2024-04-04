@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UnityEngine;
 
 namespace Vanaring 
 {
@@ -23,12 +24,21 @@ namespace Vanaring
         /// <summary>
         /// TEMP function use for testing
         /// </summary>
-        public DungeonMissionInstance GetSelectMission
+        //public DungeonMissionInstance GetSelectMission
+        //{
+        //    get
+        //    {
+        //        return _dungeonMissionInstance[0];
+        //    }
+        //}
+
+        //TEMP This function use for testing only
+        public DungeonMissionInstance GetSelectMission(int index)
         {
-            get
-            {
-                return _dungeonMissionInstance[0];
-            }
+            Debug.Log("Get mission with index " + index);
+               
+            return _dungeonMissionInstance[index];
+             
         }
 
         public void SelectThisDungeon()
