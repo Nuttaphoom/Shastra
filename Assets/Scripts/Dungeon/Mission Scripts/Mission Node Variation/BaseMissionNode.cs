@@ -64,7 +64,7 @@ namespace Vanaring
 
         #endregion 
 
-        protected enum VisitationState
+        public enum VisitationState
         {
             NotVisited,
             Visited,
@@ -72,7 +72,7 @@ namespace Vanaring
         }
 
 
-        protected VisitationState visistationState = VisitationState.NotVisited ; 
+        public VisitationState visistationState = VisitationState.NotVisited ; 
 
         [SerializeField]
         private List<BaseMissionNode> _connectedNode ;
@@ -117,7 +117,6 @@ namespace Vanaring
         public virtual IEnumerator OnLeaveThisNode()
         {
             EventBroadcaster?.InvokeEvent<Null>(null, "OnBeforeExitThisNode");
-
 
             if (! IsThisNodeVisited)
                 throw new System.Exception("This node hasn't never been visited " ) ;
