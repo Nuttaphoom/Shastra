@@ -19,8 +19,8 @@ namespace Vanaring
         {
             this.member = member;
             characterPortrait.sprite = member.GetRuntimeCombatMemberData.GetCharacterSheet.GetCharacterIcon;
-            hpBar.fillAmount = 1.0f;
-            mpBar.fillAmount = 1.0f;
+            hpBar.fillAmount = (float)member.GetCurrentPartyMemberHP / member.GetRuntimeCombatMemberData.LevelAttributeHandler.GetSecondaryAttribute_MaxHP;
+            mpBar.fillAmount = (float)member.GetCurrentPartyMemberMP / member.GetRuntimeCombatMemberData.LevelAttributeHandler.GetSecondaryAttribute_MaxMP;
             hpNUM.text = member.GetRuntimeCombatMemberData.LevelAttributeHandler.GetSecondaryAttribute_MaxHP.ToString();
             mpNUM.text = member.GetRuntimeCombatMemberData.LevelAttributeHandler.GetSecondaryAttribute_MaxMP.ToString();
         }
