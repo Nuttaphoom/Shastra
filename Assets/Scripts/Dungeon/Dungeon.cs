@@ -11,13 +11,12 @@ namespace Vanaring
         [SerializeField]
         private DungeonDataSO _dungeonData;
 
-        [SerializeField]
-        private List<MissionDataSO> _missionsOnThisDungeon;
+
 
        
         public RuntimeDungeon FactorizeRuntimeDungeon()
         {
-            return new RuntimeDungeon(_missionsOnThisDungeon, _dungeonData); 
+            return new RuntimeDungeon(_dungeonData.GetMissionDataSOes, _dungeonData); 
         }
 
         public IEnumerator OnNewSceneLoad_BeforeSaveLoadPerform()

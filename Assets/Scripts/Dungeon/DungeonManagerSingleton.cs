@@ -48,9 +48,14 @@ namespace Vanaring
 
         private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.W)) {
+            if (Input.GetKeyDown(KeyCode.U)) {
                 _dungeons[0].SelectThisDungeon();
-                LoadSelectedMission(_dungeons[0].GetSelectMission) ;
+                LoadSelectedMission(_dungeons[0].GetSelectMission(0)) ;
+            }
+            if (Input.GetKeyDown(KeyCode.J))
+            {
+                _dungeons[0].SelectThisDungeon();
+                LoadSelectedMission(_dungeons[0].GetSelectMission(1));
             }
         }
 
