@@ -11,7 +11,7 @@ namespace Vanaring
         [SerializeField] private Image itemIcon;
         [SerializeField] private TextMeshProUGUI amountText;
         private EventReward reward;
-        private int amount;
+        private int amount = 1;
 
         public void Init(EventReward reward)
         {

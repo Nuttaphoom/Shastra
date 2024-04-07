@@ -14,9 +14,11 @@ namespace Vanaring
         [SerializeField] private GameObject gfx;
         [SerializeField] private PlayableDirector introDirector;
         [SerializeField] private List<EventReward<SpellActionSO>> testList = new List<EventReward<SpellActionSO>>();
+        //[SerializeField] private List<EventReward<RewardType>> testwList = new List<EventReward<ScriptableObject>>();
         [SerializeField] private Button nextButton;
 
         private Dictionary<string, RewardIconObjectGUI> rewardObjectDictionary = new Dictionary<string, RewardIconObjectGUI>();
+
 
         private void Update()
         {
@@ -55,12 +57,10 @@ namespace Vanaring
                 if (isDuplicate)
                 {
                     // If the reward is already in the dictionary, call AddAmount
-                    Debug.Log("Found");
                     rewardObjectDictionary[reward.GetRewardData().RewardName].AddAmount();
                 }
                 else
                 {
-                    Debug.Log(reward.GetHashCode());
                     RewardIconObjectGUI newIcon = Instantiate(guiTemplate, hrz.transform);
                     newIcon.gameObject.name = reward.GetRewardData().RewardName;
                     newIcon.gameObject.SetActive(true);
