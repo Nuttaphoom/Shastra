@@ -35,7 +35,6 @@ namespace Vanaring
         private EventReward<BackpackItemSO> _itemReward;
 
         #region Getter 
-
         public bool RewardIsItem => _rewardIsItem;
         public bool RewardIsSpell => _rewardIsSpell;
 

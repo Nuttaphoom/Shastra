@@ -8,8 +8,6 @@ using UnityEngine.Events;
 
 namespace Vanaring
 {
-
-   
     public class BaseMissionNode : MonoBehaviour
     {
         #region Event Broadcaster 
@@ -70,7 +68,6 @@ namespace Vanaring
             Visited,
             Visiting
         }
-
 
         public VisitationState visistationState = VisitationState.NotVisited ; 
 
