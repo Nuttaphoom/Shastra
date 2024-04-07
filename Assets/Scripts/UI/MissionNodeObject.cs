@@ -18,20 +18,12 @@ namespace Vanaring
         public List<MissionPathObject> GetPathList => pathList;
 
         private NodeState state;
-        private bool isVisisted;
-        private bool isVisisting;
-
         public void Init(BaseMissionNode node)
         {
             InitBaseNode(node);
-            isVisisted = baseNode.IsThisNodeVisited;
-            isVisisting = baseNode.IsCurrentlyVisiting;
 
             SetFloorGraphicState(Color.black);
-            //if (baseNode.IsThisNodeVisited)
-            //{
-            //    SetFloorGraphicState(Color.grey);
-            //}
+
             if (baseNode.IsCurrentlyVisiting)
             {
                 SetFloorGraphicState(Color.yellow);
@@ -41,13 +33,20 @@ namespace Vanaring
                     path.PathReveal();
                 }
             }
+            if (baseNode.IsThisNodeVisited)
+            {
+                animator.Play("NodeObjectNoState");
+            }
+        }
+        public void InitBaseNode(BaseMissionNode node)
+        {
+            baseNode = node;
 
-            if(baseNode != null)
+            if (baseNode != null)
             {
                 baseNode.SubOnBeforeVisitThisNode(BeforeVisitNode);
 
-                baseNode.SubOnBeforeExitThisNode(ExitNode); 
-
+                baseNode.SubOnBeforeExitThisNode(ExitNode);
 
                 baseNode.SubOnBeforeVisitThisNodeFirstTime(FirstTimeVisit);
             }
@@ -55,20 +54,14 @@ namespace Vanaring
             {
                 Debug.Log("No baseNode can be access!");
             }
-        }
-        public void InitBaseNode(BaseMissionNode node)
-        {
-            baseNode = node; 
 
-            baseNode.SubOnBeforeVisitThisNode(BeforeVisitNode);
-
-            baseNode.SubOnBeforeExitThisNode(ExitNode);
-
-            baseNode.SubOnBeforeVisitThisNodeFirstTime(FirstTimeVisit);
+            animator.Play("NodeObjectVisittingState");
+            //Debug.Log("Init");
         }
 
         private void SetFloorGraphicState(Color color)
         {
+            Debug.Log("Set Color" + color);
             floorGraphic.color = color;
         }
 
@@ -79,10 +72,11 @@ namespace Vanaring
 
         private void BeforeVisitNode(Null n)
         {
+            Debug.Log("BeforeVisit");
             iconShown.gameObject.SetActive(true);
             state = NodeState.VISITING;
             SetFloorGraphicState(Color.yellow);
-            
+            animator.Play("NodeObjectVisittingState");
             foreach (MissionPathObject path in pathList)
             {
                 path.PathReveal();
@@ -91,14 +85,16 @@ namespace Vanaring
 
         public void ExitNode(Null n)
         {
+            Debug.Log("ExitNode");
             SetFloorGraphicState(Color.grey);
             state = NodeState.VISITED;
             iconShown.gameObject.SetActive(false);
+            animator.Play("NodeObjectNoState");
         }
         private void FirstTimeVisit(Null n)
         {
-            isVisisted = true;
-            SetFloorGraphicState(Color.yellow);
+            Debug.Log("First");
+            animator.Play("NodeObjectVisittingState");
             foreach (MissionPathObject path in pathList)
             {
                 path.PathReveal();
@@ -120,17 +116,13 @@ namespace Vanaring
         public void NodeReveal()
         {
             floorGraphic.gameObject.SetActive(true);
-            animator.Play("NodeObjectStateChange");
-            floorGraphic.color = Color.white;
-            if (baseNode.IsCurrentlyVisiting)
+
+            if (!baseNode.IsCurrentlyVisiting && !baseNode.IsThisNodeVisited)
             {
-                state = NodeState.VISITING;
-                SetFloorGraphicState(Color.yellow);
-            }
-            else if(state == NodeState.VISITING || baseNode.IsThisNodeVisited)
+                animator.Play("NodeObjectStateChange");
+            }else if (baseNode.IsThisNodeVisited)
             {
-                state = NodeState.VISITED;
-                SetFloorGraphicState(Color.grey);
+                floorGraphic.color = Color.grey;
             }
         }
     }
