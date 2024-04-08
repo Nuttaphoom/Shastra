@@ -66,10 +66,10 @@ namespace Vanaring
                         break;
                     case LocationName.Dungeon:
                         locationIndex = 4;
-                        break; 
-                    //case LocationName.Cottage:
-                    //    locationIndex = 3;
-                    //    break;
+                        break;
+                    case LocationName.AomeTest:
+                        locationIndex = 5;
+                        break;
                     default:
                         Debug.LogError(location.LocationName + " hasn't been set in locationIndex");
                         break;
