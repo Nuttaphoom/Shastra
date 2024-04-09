@@ -63,9 +63,10 @@ namespace Vanaring
 
         private IEnumerator UpdatePartyMembersStatus(CombatRewardData combatRewardData)
         {
-            foreach (EntityRewardData rewardEntity in combatRewardData.RewardForEntities) { 
-                MissionManagerSingleton.Instance.DungeonPartyHandler.UpdateMemberStatus(rewardEntity) ; 
-            }
+            throw new System.Exception("member exp should be update in PersistentPersonal and the party should be re calculate remaining status accordingly");
+            //foreach (EntityRewardData rewardEntity in combatRewardData.RewardForEntities) { 
+            //    MissionManagerSingleton.Instance.DungeonPartyHandler.UpdateMemberStatus(rewardEntity) ; 
+            //}
             yield return null; 
         }
 

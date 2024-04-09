@@ -12,15 +12,16 @@ namespace Vanaring
 
         private void Start()
         {
-            socketTemplate.gameObject.SetActive(true);
-            foreach (RuntimePartyMember member in MissionManagerSingleton.Instance.DungeonPartyHandler.PartyMembers)
-            {
-                PartyCharacterSocketGUI newSocket = Instantiate(socketTemplate, horizontalLayout.transform);
-                newSocket.Init(member);
-                newSocket.gameObject.SetActive(true);
-                socketList.Add(newSocket);
-            }
-            socketTemplate.gameObject.SetActive(false);
+            Debug.LogWarning("Mission Party HUD manager is disable on purpose") ;
+            //socketTemplate.gameObject.SetActive(true);
+            //foreach (RuntimePartyMember member in MissionManagerSingleton.Instance.DungeonPartyHandler.PartyMembers)
+            //{
+            //    PartyCharacterSocketGUI newSocket = Instantiate(socketTemplate, horizontalLayout.transform);
+            //    newSocket.Init(member);
+            //    newSocket.gameObject.SetActive(true);
+            //    socketList.Add(newSocket);
+            //}
+            //socketTemplate.gameObject.SetActive(false);
         }
     }
 }

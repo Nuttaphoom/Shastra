@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,15 +10,55 @@ using UnityEngine.SceneManagement;
 
 namespace Vanaring
 {
+
+    /// <summary>
+    /// Handle mission selection, enter mission, exit mission 
+    /// </summary>
     public class DungeonManagerSingleton : MonoBehaviour, ISaveable 
     {
         [SerializeField]
         private List<RuntimeDungeon> _dungeons;
 
+        [SerializeField]
+        private MissionManager _missioManager;
+
         [SerializeField] 
         private AssetReferenceT<EssentialSceneDataSO> _base_missionScene ;
 
-        private static DungeonManagerSingleton _instance; 
+        private MissionCompletetionHandler _missionCompletetionHandler;
+
+        private static DungeonManagerSingleton _instance;
+
+        private MissionDataSO _currentMissionDataSO;
+
+        #region GETTER
+
+        public MissionManager MissionManager
+        {
+            get
+            {
+                if (_missioManager == null)
+                    throw new Exception("MissionManager is null"); 
+
+                return _missioManager; 
+            }
+        }
+         
+        public MissionDataSO CurrentMissionDataSO
+        {
+            get
+            {
+                if (_currentMissionDataSO == null)
+                {
+                     
+                        throw new Exception("_currentMissionDataSO couldn't be extracted from the DataUser data");
+                    
+                }
+                return _currentMissionDataSO;
+            }
+        }
+
+
         public static DungeonManagerSingleton Instance { 
             get 
             {
@@ -40,9 +81,14 @@ namespace Vanaring
             } 
         }
 
+        #endregion
         private void Awake()
         {
-            _instance  = this; 
+            if (_instance != null && _instance != this)
+                Destroy(_instance.gameObject);
+            
+            _instance  = this;
+            _missioManager = new MissionManager();
             DontDestroyOnLoad(gameObject);
         }
 
@@ -72,27 +118,50 @@ namespace Vanaring
             //Visually dispaly confirm selection 
             PersistentSceneLoader.Instance.CreateLoaderDataUser<DungeonMissionInstance>("DungeonMissionInstanceFromDungeonManager", missionInstance) ;
             PersistentSceneLoader.Instance.LoadGeneralScene( PersistentAddressableResourceLoader.Instance.LoadResourceOperation<SceneDataSO>(_base_missionScene) ) ;
-
-            StartMission(); 
+            
+            StartMission(missionInstance); 
         }
 
         #endregion
 
         #region Mission Scheme Methods
-        private void StartMission()
+        private void StartMission(DungeonMissionInstance missionInstance)
         {
-            MissionManagerSingleton.Instance.SetUpMission(); 
+            _currentMissionDataSO = missionInstance.MissionData;
+
+            _missioManager.SetUpMission();
+
+
         }
 
-        public void OnExitMission()
+        public void ExitMission(MissionCompleteStatus missionCompleteStatus)
         {
-            Debug.Log("OnExitMission");
+            StartCoroutine(OnExitMission(missionCompleteStatus)); 
+        }
+        private IEnumerator OnExitMission(MissionCompleteStatus missionCompleteStatus)
+        {
+            MissionSetupHandler missionSetupHandler = FindObjectOfType<MissionSetupHandler>();
+            EventRewardData eventRewardData = DungeonManagerSingleton.Instance.CurrentMissionDataSO.EventRewardData; 
+             
+            //DisplayMission Complete UI and get reward accordingly 
+            yield return _missionCompletetionHandler.ResolveMissionCompleteStatus(missionCompleteStatus);
+            SubmitMissionRewardCoroutine(eventRewardData);
+
+
+            //Handle OnExit for every dungeon componenets
+            _missioManager.DungeonPartyHandler.OnExitMission();
+            missionSetupHandler.OnExitMission();
+
             _instance = null;
             SceneManager.MoveGameObjectToScene(gameObject, SceneManager.GetActiveScene());
 
             PersistentActiveDayDatabase.Instance.OnPostPerformSchoolAction(3); 
         }
+        private void SubmitMissionRewardCoroutine(EventRewardData eventRewardData)
+        {
+            eventRewardData.GetAllRewards().SubmitReward(); //;.GetEventRewards(); 
 
+        }
         #endregion
 
         #region Mission Save/Load Methods

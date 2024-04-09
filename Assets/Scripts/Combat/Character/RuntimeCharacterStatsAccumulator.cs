@@ -38,7 +38,6 @@ namespace Vanaring
         {
             LevelAttributeHandler levelAttributeHandler = runtimePartyMember.GetRuntimeCombatMemberData.LevelAttributeHandler; //.GetBaseSecondaryAttribute_MaxHP;
 
-            CombatCharacterSheetSO combatCharacterSheetSO = runtimePartyMember.GetCharacterSheet;
             //Setup Secondary Attributes 
             //Mostly formula that transfer Primary stats into Secondary stats
             int MaxHP = levelAttributeHandler.GetSecondaryAttribute_MaxHP;

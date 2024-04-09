@@ -16,8 +16,9 @@ namespace Vanaring
 
         public override IEnumerator OnVisiteThisNodeFirstTime()
         {
-            yield return base.OnVisiteThisNodeFirstTime(); 
+            yield return base.OnVisiteThisNodeFirstTime();
 
+            
             PersistentSceneLoader.Instance.CreateLoaderDataUser<CombatDungeonNodeLoaderData>("CombatDungeonNodeDataUser", _combatDungeonNodeLoaderData);
             PersistentSceneLoader.Instance.LoadGeneralScene(_combatSceneData);
 

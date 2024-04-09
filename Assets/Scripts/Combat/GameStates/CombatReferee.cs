@@ -14,6 +14,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using Vanaring.Assets.Scripts.Combat.Utilities;
 using Vanaring_Utility_Tool;
+using static UnityEngine.EventSystems.EventTrigger;
 using static UnityEngine.UI.CanvasScaler;
 
 
@@ -121,13 +122,12 @@ namespace Vanaring
          
 
         #region SettingUpRound
-        public IEnumerator InitializeCombat()
+        public IEnumerator InitializeCombat(List<RuntimePartyMember> playerParty)
         {
-
             if (! _OnDebugMode)
             {
                 //Load party member into combat
-                yield return LoadAllyEntityRuntimeData();
+                yield return LoadAllyEntityRuntimeData(playerParty) ;
                 //Set up party member and inventory from database
                 yield return LoadDataFromDatabase();
 
@@ -147,16 +147,20 @@ namespace Vanaring
 
         }
 
-        private IEnumerator LoadAllyEntityRuntimeData()
+        private IEnumerator LoadAllyEntityRuntimeData(List<RuntimePartyMember> playerParty)
         {
 
             //Load controlable entities from Party data 
             List<CombatEntity> entities = new List<CombatEntity>();
-            foreach (RuntimePartyMember partyMember in MissionManagerSingleton.Instance.DungeonPartyHandler.PartyMembers)
+            foreach (RuntimePartyMember partyMember in playerParty)
             {
-                CombatEntity newEntity = partyMember.InitializeCombatEntity; 
+                ControlableEntity newEntity = partyMember.InitializeCombatEntity as ControlableEntity ;
+                newEntity.LinkPartyMemberToThisEntity(partyMember); 
                 entities.Add(newEntity) ;
+
+
             }
+
 
             yield return AssignCompetators(entities, ECompetatorSide.Ally); 
         }
@@ -168,6 +172,8 @@ namespace Vanaring
             {
                 yield return icombatRequireLoadData.LoadDataFromDatabase();
             }
+
+           
             yield return null;
         }
 
@@ -177,24 +183,24 @@ namespace Vanaring
             // Call the GenerateEntityAttacher method with the lists
             CameraSetUPManager.Instance.GenerateEntityAttacher(GetCompetatorsBySide(ECompetatorSide.Ally).Select(c => c.gameObject).ToList(), GetCompetatorsBySide(ECompetatorSide.Hostile).Select(c => c.gameObject).ToList());
 
-            //Right now we manually assign Ally so we call it here
-            ///TODO : Make AssignCompetators to assign of the loaded object  
-            foreach (CombatEntity entity in GetCompetatorsBySide(ECompetatorSide.Ally))
-            {
-                yield return entity.PrepareForCombat();
-                GetEventBroadcaster().InvokeEvent<CombatEntity>(entity, "OnCompetitorEnterCombat");
-            }
+         
 
             yield return AssignCompetators(_entityLoader.GetCombatEntitiesFromPool(), ECompetatorSide.Hostile);
         }
 
+        /// <summary>
+        /// Use for property set up entities for the combat, this include adding them into _competators list 
+        /// </summary>
+        /// <param name="entites"></param>
+        /// <param name="side"></param>
+        /// <returns></returns>
         private IEnumerator AssignCompetators(List<CombatEntity> entites, ECompetatorSide side)
         {
             List<IEnumerator> _allIEs = new List<IEnumerator>();
 
             foreach (var entity in entites) {
                 _allIEs.Add(entity.InitializeEntityIntoCombat());
-                _allIEs.Add(entity.PrepareForCombat() ) ; 
+
             }
 
             yield return new WaitAll(this, _allIEs.ToArray());

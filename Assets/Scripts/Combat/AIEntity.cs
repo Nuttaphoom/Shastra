@@ -81,9 +81,6 @@ namespace Vanaring
             throw new NotImplementedException();
         }
 
-        public override IEnumerator PrepareForCombat()
-        {
-            yield return null; 
-        }
+     
     }
 }

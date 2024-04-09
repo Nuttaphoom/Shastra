@@ -14,8 +14,10 @@ namespace Vanaring
             {
                 CompleteDungeon = true,
                 ExitDungeon = true ,
-            }; 
-            MissionManagerSingleton.Instance.ExitDungeon(status);
+            };
+
+            DungeonManagerSingleton.Instance.ExitMission(status); 
+            //MissionManagerSingleton.Instance.ExitDungeon(status);
             
         }
 

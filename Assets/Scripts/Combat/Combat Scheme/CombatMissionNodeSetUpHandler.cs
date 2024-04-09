@@ -20,7 +20,9 @@ namespace Vanaring
 
             FindObjectOfType<EntityLoader>().ReceiveEntityLoaderPool(_combatDungeonNodeLoaderData.EnemyLoaderPool) ;
 
-            yield return CombatReferee.Instance.InitializeCombat();
+            List<RuntimePartyMember> memberInParty = DungeonManagerSingleton.Instance.MissionManager.DungeonPartyHandler.PartyMembers  ; 
+
+            yield return CombatReferee.Instance.InitializeCombat(memberInParty) ;
 
             //Play intro 
 

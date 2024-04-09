@@ -42,6 +42,8 @@ namespace Vanaring
         {
             _combatEntity = GetComponent<CombatEntity>();
             _magicalEnergy.Init(this);
+
+            _MPStats = new CharacterStat(1,1) ;
         }
 
         #region GetEventBroadcaster Methods 

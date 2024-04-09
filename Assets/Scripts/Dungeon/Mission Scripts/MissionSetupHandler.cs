@@ -74,7 +74,7 @@ namespace Vanaring
 
         public IEnumerator OnNewSceneLoad_BeforeSaveLoadPerform()
         {
-            yield return LoadEnvironmentData(MissionManagerSingleton.Instance.CurrentMissionDataSO.MissionNodeEnvironment) ;
+            yield return LoadEnvironmentData(DungeonManagerSingleton.Instance.CurrentMissionDataSO.MissionNodeEnvironment) ;
             
         }
 

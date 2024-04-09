@@ -6,6 +6,9 @@ using static Vanaring.CombatRewardManager;
 
 namespace Vanaring
 {
+    /// <summary>
+    /// Used for dungeon exploration instance
+    /// </summary>
     public class RuntimePartyMember
     {
         private RuntimeCombatMemberData _runtimeCombatMemberData;

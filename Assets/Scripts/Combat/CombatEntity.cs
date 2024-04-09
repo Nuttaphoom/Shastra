@@ -42,7 +42,6 @@ namespace Vanaring
 
         private POPUPNumberTextHandler _dmgOutputPopHanlder;
 
-        [SerializeField]
         protected AilmentHandler _ailmentHandler; 
 
 
@@ -190,9 +189,7 @@ namespace Vanaring
 
             yield return null; 
         }
-
-        //Call in referee when the combat almost stat
-        public abstract IEnumerator PrepareForCombat(); 
+ 
 
         public abstract IEnumerator LoadDataFromDatabase(); 
         public abstract IEnumerator GetAction();

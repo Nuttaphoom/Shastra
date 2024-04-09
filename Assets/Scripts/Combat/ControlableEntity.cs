@@ -15,21 +15,27 @@ namespace Vanaring
         [SerializeField]
         private ControlableEntityActionsRegistry _controlableEntityActionRegistry;
 
-        public override IEnumerator PrepareForCombat()
+        [SerializeField]
+        private RuntimePartyMember _runtimePartyMemberData; 
+     
+
+        public void LinkPartyMemberToThisEntity(RuntimePartyMember partyMember)
         {
-            yield return null;
+            _runtimePartyMemberData = partyMember; 
         }
 
         public override IEnumerator InitializeEntityIntoCombat()
         {
-            yield return base.InitializeEntityIntoCombat();
-            
-            //Set up runtime value according to Party member data
-            RuntimePartyMember partyMemberData = MissionManagerSingleton.Instance.DungeonPartyHandler.GetPartyMember(CombatCharacterSheet.CharacterName);
+            if (_runtimePartyMemberData == null)
+                throw new Exception("ControlableEntity's Runtime Party Member data hasn't never been linked"); 
 
-            _runtimeCharacterStatsAccumulator = new RuntimeCharacterStatsAccumulator(partyMemberData);
+            yield return base.InitializeEntityIntoCombat();
+           
+            //Set up runtime value according to Party member data
+ 
+            _runtimeCharacterStatsAccumulator = new RuntimeCharacterStatsAccumulator(_runtimePartyMemberData);
         
-            _spellCaster.SetNewMPAttribute(partyMemberData.GetCurrentPartyMemberMP, partyMemberData.GetRuntimeCombatMemberData.LevelAttributeHandler.GetSecondaryAttribute_MaxMP);
+            _spellCaster.SetNewMPAttribute(_runtimePartyMemberData.GetCurrentPartyMemberMP, _runtimePartyMemberData.GetRuntimeCombatMemberData.LevelAttributeHandler.GetSecondaryAttribute_MaxMP);
         } 
 
 

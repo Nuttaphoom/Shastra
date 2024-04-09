@@ -16,7 +16,9 @@ namespace Vanaring
         public override IEnumerator OnVisiteThisNodeFirstTime()
         {
             yield return base.OnVisiteThisNodeFirstTime();
-            yield return new WaitForSeconds(2.0f);
+            yield return new WaitForSeconds(1.25f) ;
+
+
             PersistentSceneLoader.Instance.CreateLoaderDataUser<CombatDungeonNodeLoaderData>("CombatDungeonNodeDataUser", _combatDungeonNodeLoaderData); 
             PersistentSceneLoader.Instance.LoadGeneralScene(_combatSceneData);
         }
@@ -26,6 +28,8 @@ namespace Vanaring
     public struct CombatDungeonNodeLoaderData
     {
         [SerializeField]
-        public EntityLoaderPoolSO EnemyLoaderPool ; 
+        public EntityLoaderPoolSO EnemyLoaderPool ;
+ 
+    
     }
 }

@@ -21,7 +21,7 @@ namespace Vanaring
 
         public IEnumerator OnNewSceneLoad_BeforeSaveLoadPerform()
         {
-            DungeonManagerSingleton.Instance.RegisterDungeon(this);
+            FindObjectOfType<DungeonManagerSingleton>().RegisterDungeon(this);
 
             yield return null; 
         }
