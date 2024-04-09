@@ -113,15 +113,14 @@ namespace Vanaring
 
         }
 
-        public void UpdateMemberStatus(EntityRewardData entityRewardData)
+        public void UpdateMemberStatus(CombatEntity combatEntity)
         {
             foreach (RuntimePartyMember member in _partyMembers)
             {
-                if (member.GetCharacterSheet.CharacterName != entityRewardData.ControlEntity.CombatCharacterSheet.CharacterName)
+                if (member.GetCharacterSheet.CharacterName != combatEntity.CombatCharacterSheet.CharacterName)
                     continue;
 
-                CombatEntity combatEntity = entityRewardData.ControlEntity;
-                member.UpdateValue(combatEntity.StatsAccumulator.GetHPAmount(), combatEntity.SpellCaster.GetMP);
+                 member.UpdateValue(combatEntity.StatsAccumulator.GetHPAmount(), combatEntity.SpellCaster.GetMP);
 
             }
         }

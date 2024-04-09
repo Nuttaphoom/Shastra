@@ -28,9 +28,10 @@ namespace Vanaring
         public IEnumerator CombatRewardSchemeStart(CombatReferee combatReferee)
         {
             //Calculate reward
-            CombatRewardData combatReward = new CombatRewardData(); 
-        
-            foreach (CombatEntity entity in combatReferee.GetCompetatorsBySide(ECompetatorSide.Ally) ) 
+            CombatRewardData combatReward = new CombatRewardData();
+            var playerTeam = combatReferee.GetCompetatorsBySide(ECompetatorSide.Ally);
+
+            foreach (CombatEntity entity in playerTeam) 
             {
                 EntityRewardData rewardEntity = new EntityRewardData() {
                     ControlEntity = entity as ControlableEntity,
@@ -46,7 +47,7 @@ namespace Vanaring
 
 
             //Clear up data 
-            yield return UpdatePartyMembersStatus(combatReward);
+            yield return UpdatePartyMembersStatus(playerTeam);
             ItemInventory.instance.RestoreRemainingItemIntoDatabase(); 
         }
 
@@ -61,12 +62,15 @@ namespace Vanaring
             //Submit exp reward
         }
 
-        private IEnumerator UpdatePartyMembersStatus(CombatRewardData combatRewardData)
+        private IEnumerator UpdatePartyMembersStatus(List<CombatEntity> playerTeam)
         {
-            throw new System.Exception("member exp should be update in PersistentPersonal and the party should be re calculate remaining status accordingly");
-            //foreach (EntityRewardData rewardEntity in combatRewardData.RewardForEntities) { 
-            //    MissionManagerSingleton.Instance.DungeonPartyHandler.UpdateMemberStatus(rewardEntity) ; 
-            //}
+            //throw new System.Exception("member exp should be update in PersistentPersonal and the party should be re calculate remaining status accordingly");
+            foreach (var entity in playerTeam)
+            {
+                DungeonManagerSingleton.Instance.MissionManager.DungeonPartyHandler.UpdateMemberStatus(entity);
+                
+                //MissionManagerSingleton.Instance.DungeonPartyHandler.UpdateMemberStatus(rewardEntity);
+            }
             yield return null; 
         }
 
