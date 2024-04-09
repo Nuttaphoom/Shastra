@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 using Unity.VisualScripting;
 using static Cinemachine.DocumentationSortingAttribute;
 
+using UnityEngine;
+using Vanaring.Assets.Scripts.Utilities.StringConstant;
+
 namespace Vanaring
 {
     [Serializable]
@@ -22,10 +25,10 @@ namespace Vanaring
             _currentLevel = currentLevel;
         }
 
-         
+
         public override float GetEXPCap()
         {
-            return 75 * (_currentLevel ^ 2) - (75 * _currentLevel); 
+            return (float)(75 * (Math.Pow(_currentLevel, 2))) - (75 * _currentLevel); 
         }
 
         [Serializable]

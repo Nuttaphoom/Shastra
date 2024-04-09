@@ -81,6 +81,7 @@ namespace Vanaring
         Dorm, 
         SchoolField, 
         Classroom,
-        Dungeon
+        Dungeon,
+        AomeTest
     }
 }

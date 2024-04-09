@@ -20,7 +20,7 @@ namespace Vanaring
 
         public void RestoreLevelDataFromLocalSave( int currentLevel, float currentEXP)
         {
-            _characterUEXPSystem = new CharacterUEXPSystem(currentLevel,currentEXP);
+            _characterUEXPSystem = new CharacterUEXPSystem(currentLevel, currentEXP);
             _characterUEXPSystem.SubOnLevelUp(DebugOnLevelUpTest);
         }
 
