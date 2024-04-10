@@ -1,27 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static Vanaring.CombatRewardManager;
 
 namespace Vanaring
 {
 
-    public class CombatRewardDisplayer : BaseRewardDisplayer<CombatRewardData, CombatRewardDisplayerPanel>
+    public class CombatRewardDisplayer : BaseRewardDisplayer<CombatRewardManager.CombatRewardData, CombatRewardDisplayerPanel>
     {
-        private CombatRewardData _rewardData ; 
+        private CombatRewardManager.CombatRewardData _rewardData ; 
 
-        public override IEnumerator DisplayRewardUICoroutine(CombatRewardData rewardData)
+        public override IEnumerator DisplayRewardUICoroutine(CombatRewardManager.CombatRewardData rewardData)
         {
-            //_rewardData = rewardData;
-            //yield return CreateRewardDisplayPanel();
-
-            yield return null;
-
+            _rewardData = rewardData;
+            yield return CreateRewardDisplayPanel();
         }
 
         protected override IEnumerator SettingUpRewardDisplayPanel(CombatRewardDisplayerPanel combatRewardPanel)
         {
-            combatRewardPanel.SetUpReward() ;
+            combatRewardPanel.SetUpReward(_rewardData) ;
             yield return (combatRewardPanel.SettingUpNumber());
         }
         
