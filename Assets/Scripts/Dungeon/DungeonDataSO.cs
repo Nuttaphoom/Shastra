@@ -14,7 +14,7 @@ namespace Vanaring
         private List<MissionDataSO> _missionsOnThisDungeon;
 
         #region GETTER 
-        private string DungeonName => _dungeonName;
+        public string DungeonName => _dungeonName;
         public List<MissionDataSO> GetMissionDataSOes
         {
             get

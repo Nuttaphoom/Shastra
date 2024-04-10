@@ -7,7 +7,7 @@ using UnityEngine.Events;
 
 namespace Vanaring
 {
-    public class MissionSetupHandler : MonoBehaviour , ISceneLoaderWaitForSignal
+    public class MissionSetupHandler : MonoBehaviour  
     {
         #region Event Broadcaster 
         private EventBroadcaster _eventBroadcaster;
@@ -72,14 +72,12 @@ namespace Vanaring
             yield return null;
         }
 
-        public IEnumerator OnNewSceneLoad_BeforeSaveLoadPerform()
-        {
-            yield return LoadEnvironmentData(DungeonManagerSingleton.Instance.CurrentMissionDataSO.MissionNodeEnvironment) ;
-            
-        }
+        
 
-        public IEnumerator OnNotifySceneLoadingComplete()
+        public IEnumerator SetUpMission()
         {
+            yield return LoadEnvironmentData(DungeonManagerSingleton.Instance.GetCurrentActiveMission.MissionData.MissionNodeEnvironment);
+
             MissionNodeManager dm = FindObjectOfType<MissionNodeManager>();
             //Set up logic transition detail
             dm.StartCoroutine(dm.SetUpDungeonCoroutine(DungeonEnvironment.GetFirstNode));

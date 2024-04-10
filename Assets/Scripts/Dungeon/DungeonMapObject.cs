@@ -6,14 +6,11 @@ using UnityEngine;
 namespace Vanaring
 {
     [Serializable]
-    public class Dungeon  : MonoBehaviour, ISceneLoaderWaitForSignal
+    public class DungeonMapObject  : MonoBehaviour, ISceneLoaderWaitForSignal   
     {
         [SerializeField]
         private DungeonDataSO _dungeonData;
 
-
-
-       
         public RuntimeDungeon FactorizeRuntimeDungeon()
         {
             return new RuntimeDungeon(_dungeonData.GetMissionDataSOes, _dungeonData); 

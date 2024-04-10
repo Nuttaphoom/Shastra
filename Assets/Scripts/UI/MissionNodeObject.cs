@@ -61,7 +61,7 @@ namespace Vanaring
 
         private void SetFloorGraphicState(Color color)
         {
-            Debug.Log("Set Color" + color);
+            //Debug.Log("Set Color" + color);
             floorGraphic.color = color;
         }
 
@@ -72,11 +72,11 @@ namespace Vanaring
 
         private void BeforeVisitNode(Null n)
         {
-            Debug.Log("BeforeVisit");
+            //Debug.Log("BeforeVisit");
             iconShown.gameObject.SetActive(true);
             state = NodeState.VISITING;
             SetFloorGraphicState(Color.yellow);
-            animator.Play("NodeObjectVisittingState");
+            //animator.Play("NodeObjectVisittingState");
             foreach (MissionPathObject path in pathList)
             {
                 path.PathReveal();

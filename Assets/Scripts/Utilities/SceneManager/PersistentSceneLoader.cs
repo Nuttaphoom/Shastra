@@ -109,7 +109,16 @@ namespace Vanaring
             if (_userDataScene[uniqueID] == null)
                 throw new System.Exception("ret is null");
 
-            return _userDataScene[uniqueID] as LoaderDataUser<T>;
+            var ret = _userDataScene[uniqueID] as LoaderDataUser<T>;
+
+            _userDataScene.Remove(uniqueID);
+            
+            return ret;
+        }
+
+        public bool IsSaveDataUserExit(string uniqueID)
+        {
+            return _userDataScene.ContainsKey(uniqueID);
         }
         public void LoadLocation<T>(SceneDataSO sceneSO, T transferedData)
         {
