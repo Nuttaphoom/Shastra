@@ -35,7 +35,7 @@ namespace Vanaring
             {
                 EntityRewardData rewardEntity = new EntityRewardData() {
                     ControlEntity = entity as ControlableEntity,
-                    ReceivedExp = 10, 
+                    ReceivedExp = 100, 
                 } ;       
                 combatReward.RewardForEntities.Add(rewardEntity);
             }

@@ -20,13 +20,20 @@ namespace Vanaring
 
             FindObjectOfType<EntityLoader>().ReceiveEntityLoaderPool(_combatDungeonNodeLoaderData.EnemyLoaderPool) ;
 
-            List<RuntimePartyMember> memberInParty = DungeonManagerSingleton.Instance.MissionManager.DungeonPartyHandler.PartyMembers  ; 
+            StartCoroutine(InitializeCombat()) ;
 
-            yield return CombatReferee.Instance.InitializeCombat(memberInParty) ;
+            yield return null; 
+        }
+
+        private IEnumerator InitializeCombat()
+        {
+            List<RuntimePartyMember> memberInParty = DungeonManagerSingleton.Instance.MissionManager.DungeonPartyHandler.PartyMembers;
+
+            yield return CombatReferee.Instance.InitializeCombat(memberInParty);
 
             //Play intro 
 
-            CombatReferee.Instance.BeginNewBattle(); 
+            CombatReferee.Instance.BeginNewBattle();
         }
 
         // Start is called before the first frame update

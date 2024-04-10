@@ -128,7 +128,7 @@ namespace Vanaring
         private void StartMission(DungeonMissionInstance missionInstance)
         {
             _currentMissionDataSO = missionInstance.MissionData;
-
+            _missionCompletetionHandler = new MissionCompletetionHandler(); 
             _missioManager.SetUpMission();
 
 
