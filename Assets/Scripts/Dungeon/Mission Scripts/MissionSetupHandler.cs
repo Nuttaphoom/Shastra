@@ -151,6 +151,7 @@ namespace Vanaring
         {
             public bool IsVisited;
             public bool CurrentlyVisited;
+            public bool MissionDirty;
         }
     }
 }

@@ -6,9 +6,9 @@ namespace Vanaring
 {
     public class ExitMissionNode : BaseMissionNode
     {
-        public override IEnumerator OnVisiteThisNodeFirstTime()
+        protected override IEnumerator OnVisiteThisNodeFirstTimeOnMission()
         {
-            yield return base.OnVisiteThisNodeFirstTime();
+            yield return base.OnVisiteThisNodeFirstTimeOnMission();
 
             MissionCompleteStatus status = new MissionCompleteStatus()
             {

@@ -70,7 +70,9 @@ namespace Vanaring
             Visiting
         }
 
-        public VisitationState visistationState = VisitationState.NotVisited ; 
+        public VisitationState visistationState = VisitationState.NotVisited ;
+   
+        private bool _missionDirty = false ; 
 
         [SerializeField]
         private List<BaseMissionNode> _connectedNode ;
@@ -79,6 +81,17 @@ namespace Vanaring
         private NodeVisualTransitionHandler _nodeVisualTransitionHandler;
 
         #region GETTER 
+        /// <summary>
+        /// TRUE => This node never visisted on this Mission exploration 
+        /// FALSE => This node has been visisted on this Mission exploration
+        /// </summary>
+        public bool IsThisNodeMissionDirty
+        {
+            get
+            {
+                return _missionDirty; 
+            }
+        }
         public bool IsThisNodeVisited { 
         get
             {
@@ -126,21 +139,31 @@ namespace Vanaring
 
         public virtual IEnumerator OnVisiteThisNode()
         {
-
             EventBroadcaster?.InvokeEvent<Null>(null,"OnBeforeVisitThisNode");
 
             if (!IsThisNodeVisited)
-            {            
-                visistationState = VisitationState.Visiting;
-
-                yield return OnVisiteThisNodeFirstTime(); 
+            {
+                yield return OnVisiteThisNodeFirstTime();
             }
 
+            visistationState = VisitationState.Visiting;
 
 
+            if (!IsThisNodeMissionDirty)
+            {
+                yield return OnVisiteThisNodeFirstTimeOnMission();
+            }
         }
 
-        public virtual IEnumerator OnVisiteThisNodeFirstTime()
+        protected virtual IEnumerator OnVisiteThisNodeFirstTimeOnMission()
+        {
+            _missionDirty = true;
+            yield return null; 
+        }
+
+
+
+        protected virtual IEnumerator OnVisiteThisNodeFirstTime()
         {
             EventBroadcaster.InvokeEvent<Null>(null, "OnBeforeVisitThisNodeFirstTime");
 
@@ -162,20 +185,21 @@ namespace Vanaring
 
         public virtual NodeRuntimeData CaptureNodeData()
         {
-            //if (IsCurrentlyVisiting)
-            //{
-            //    Debug.Log("Capture Currently visisted in " + gameObject.name);
-            //}
-             
-            //if (IsThisNodeVisited)
-            //{
-            //    Debug.Log("Capture Visisted in " + gameObject.name);
-            //}
+            if (IsCurrentlyVisiting)
+            {
+                Debug.Log("Capture Currently visisted in " + gameObject.name);
+            }
+
+            if (IsThisNodeVisited)
+            {
+                Debug.Log("Capture Visisted in " + gameObject.name);
+            }
 
             return new NodeRuntimeData()
             {
                 IsVisited = IsThisNodeVisited,
-                CurrentlyVisited = IsCurrentlyVisiting ,  
+                CurrentlyVisited = IsCurrentlyVisiting,
+                MissionDirty = IsThisNodeMissionDirty 
             };
         }
 
@@ -194,12 +218,16 @@ namespace Vanaring
             {
                 //Debug.Log("Restore Not Visisted in " + gameObject.name);
             }
+
+            _missionDirty = data.MissionDirty;
         }
 
         public virtual void OnExitMission_ClearNodeData()
         {
             if (visistationState == VisitationState.Visiting)
-                visistationState = VisitationState.Visited; 
+                visistationState = VisitationState.Visited;
+
+            _missionDirty = false; 
         } 
 
          

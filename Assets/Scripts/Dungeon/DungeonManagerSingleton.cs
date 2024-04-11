@@ -226,7 +226,7 @@ namespace Vanaring
 
         public void RestoreState(object state)
         {
-            Debug.Log("Restore data in dungeon manager singleton");
+            //Debug.Log("Restore data in dungeon manager singleton");
             DungeonManagerSaveLoadDataStruct saveLoadDataStruct = (DungeonManagerSaveLoadDataStruct) state;
 
 
