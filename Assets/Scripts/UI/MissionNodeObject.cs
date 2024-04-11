@@ -61,7 +61,7 @@ namespace Vanaring
 
         private void SetFloorGraphicState(Color color)
         {
-            Debug.Log("Set Color" + color);
+            //Debug.Log("Set Color" + color);
             floorGraphic.color = color;
         }
 
