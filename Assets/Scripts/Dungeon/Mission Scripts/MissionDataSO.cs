@@ -13,9 +13,19 @@ namespace Vanaring
         [SerializeField]
         private MissionNodeEnvironment _missionNodeEnvironment;
 
+        [SerializeField]
+        private DescriptionBaseField _missionDescription; 
         #region GETTERS
         public MissionNodeEnvironment MissionNodeEnvironment { get { return _missionNodeEnvironment; }   }
         public EventRewardData EventRewardData { get { return _eventRewardData  ; } }
+
+        public DescriptionBaseField MissionDescription 
+        { 
+            get 
+            { 
+                return _missionDescription; 
+            } 
+        } 
         #endregion
     }
 }

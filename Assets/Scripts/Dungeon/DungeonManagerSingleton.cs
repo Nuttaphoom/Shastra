@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing.Printing;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -10,11 +11,10 @@ using UnityEngine.SceneManagement;
 
 namespace Vanaring
 {
-
     /// <summary>
     /// Handle mission selection, enter mission, exit mission 
     /// </summary>
-    public class DungeonManagerSingleton : MonoBehaviour, ISaveable 
+    public class DungeonManagerSingleton : MonoBehaviour, ISaveable , ISceneLoaderWaitForSignal
     {
         [SerializeField]
         private List<RuntimeDungeon> _dungeons;
@@ -27,12 +27,22 @@ namespace Vanaring
 
         private MissionCompletetionHandler _missionCompletetionHandler;
 
+        private DungeonMissionInstance _currentActiveMission;
+        private bool _isMissionStart ;
+
         private static DungeonManagerSingleton _instance;
 
-        private MissionDataSO _currentMissionDataSO;
-
         #region GETTER
+        public DungeonMissionInstance GetCurrentActiveMission
+        {
+            get
+            {
+                if (_currentActiveMission == null)
+                    throw new Exception("Current Active Mission is null, maybe the Mission hasn't been started yet ?"); 
 
+                return _currentActiveMission;  
+            }
+        }
         public MissionManager MissionManager
         {
             get
@@ -43,21 +53,6 @@ namespace Vanaring
                 return _missioManager; 
             }
         }
-         
-        public MissionDataSO CurrentMissionDataSO
-        {
-            get
-            {
-                if (_currentMissionDataSO == null)
-                {
-                     
-                        throw new Exception("_currentMissionDataSO couldn't be extracted from the DataUser data");
-                    
-                }
-                return _currentMissionDataSO;
-            }
-        }
-
 
         public static DungeonManagerSingleton Instance { 
             get 
@@ -105,7 +100,11 @@ namespace Vanaring
             }
         }
 
-        public void RegisterDungeon(Dungeon dungeon)
+        /// <summary>
+        /// This should be called before save / load scheme
+        /// </summary>
+        /// <param name="dungeon"></param>
+        public void RegisterDungeon(DungeonMapObject dungeon)
         {
             if (_dungeons == null) 
                 _dungeons = new List<RuntimeDungeon>() ; 
@@ -118,8 +117,7 @@ namespace Vanaring
             //Visually dispaly confirm selection 
             PersistentSceneLoader.Instance.CreateLoaderDataUser<DungeonMissionInstance>("DungeonMissionInstanceFromDungeonManager", missionInstance) ;
             PersistentSceneLoader.Instance.LoadGeneralScene( PersistentAddressableResourceLoader.Instance.LoadResourceOperation<SceneDataSO>(_base_missionScene) ) ;
-            
-            StartMission(missionInstance); 
+
         }
 
         #endregion
@@ -127,11 +125,12 @@ namespace Vanaring
         #region Mission Scheme Methods
         private void StartMission(DungeonMissionInstance missionInstance)
         {
-            _currentMissionDataSO = missionInstance.MissionData;
+
             _missionCompletetionHandler = new MissionCompletetionHandler(); 
             _missioManager.SetUpMission();
 
-
+            _currentActiveMission = missionInstance;
+            _currentActiveMission.OnStartMission(); 
         }
 
         public void ExitMission(MissionCompleteStatus missionCompleteStatus)
@@ -141,7 +140,7 @@ namespace Vanaring
         private IEnumerator OnExitMission(MissionCompleteStatus missionCompleteStatus)
         {
             MissionSetupHandler missionSetupHandler = FindObjectOfType<MissionSetupHandler>();
-            EventRewardData eventRewardData = DungeonManagerSingleton.Instance.CurrentMissionDataSO.EventRewardData; 
+            EventRewardData eventRewardData = DungeonManagerSingleton.Instance._currentActiveMission.MissionData.EventRewardData; 
              
             //DisplayMission Complete UI and get reward accordingly 
             yield return _missionCompletetionHandler.ResolveMissionCompleteStatus(missionCompleteStatus);
@@ -167,38 +166,69 @@ namespace Vanaring
         #region Mission Save/Load Methods
         public object CaptureState()
         {
-            //List<object> captured = new List<object>(); 
-            //foreach (Dungeon dungeon in _dungeons)
-            //{
-            //    if (dungeon == null) continue;
 
-            //    var capturedData = dungeon.CaptureData(); 
-            //    //TODO : 
-            //    //Cast capture data to something else
-            //    //save that data into array
-            //}
-            //return captured;
+            DungeonManagerSaveLoadDataStruct ret = new DungeonManagerSaveLoadDataStruct() { 
+                DungeonNamePair = new Dictionary<string, RuntimeDungeonSaveLoadData>() } ; 
+            
+            foreach (var dungeon in _dungeons)
+            {
+                string dungeonName = dungeon.DungeonDataSO.DungeonName ;
+                ret.DungeonNamePair.Add( dungeonName , dungeon.CaptureDungeonData())    ; 
+            }
 
-            int captured = 1; 
-            return captured;
+            return ret ;
 
         }
 
         public void RestoreState(object state)
         {
-            //foreach (Dungeon dungeon in _dungeons)
-            //{
-            //    if (dungeon == null) continue;
-
-            //    int someData = 1;
-            //    dungeon.RestoreData(someData) ;
+            Debug.Log("Restore data in dungeon manager singleton");
+            DungeonManagerSaveLoadDataStruct saveLoadDataStruct = (DungeonManagerSaveLoadDataStruct) state; 
              
-            //}
 
+            foreach (var dungeon in _dungeons)
+            {
+                dungeon.RestoreDungeonData(saveLoadDataStruct.DungeonNamePair[dungeon.DungeonDataSO.DungeonName]); 
+            }
 
-            //throw new System.NotImplementedException();
         }
 
+        public IEnumerator OnNewSceneLoad_BeforeSaveLoadPerform()
+        {
+            yield return null;             
+        }
+
+        public IEnumerator OnNotifySceneLoadingComplete()
+        {
+            if (PersistentSceneLoader.Instance.IsSaveDataUserExit("DungeonMissionInstanceFromDungeonManager" ))
+            {
+                DungeonMissionInstance missionInstance = PersistentSceneLoader.Instance.ExtractSavedData<DungeonMissionInstance>("DungeonMissionInstanceFromDungeonManager").GetData();
+
+                StartMission(missionInstance) ;
+                yield return FindObjectOfType<MissionSetupHandler>().SetUpMission();
+
+            }
+
+            yield return null; //)
+        }
+
+        [Serializable]
+        public struct DungeonManagerSaveLoadDataStruct
+        {
+            public Dictionary<string, RuntimeDungeonSaveLoadData> DungeonNamePair ; 
+        }
+
+        [Serializable]
+        public struct RuntimeDungeonSaveLoadData
+        {
+            public Dictionary<string, RuntimeMissionSaveLoadData> MissionNamePair;
+        }
+
+        [Serializable]
+        public struct RuntimeMissionSaveLoadData
+        {
+            public bool HasVisiteThisMission ;   
+        }
         #endregion
     }
 }

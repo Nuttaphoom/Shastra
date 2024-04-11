@@ -51,14 +51,6 @@ namespace Vanaring
                 return _baseDungeonNode;
             }
         }
-
-        private void Update()
-        {
-            if (Input.GetKeyDown(KeyCode.W))
-            {
-                PersistentSceneLoader.Instance.LoadGeneralScene(_TEST_Map_sceneData); 
-            }
-        }
          
         public object CaptureState()
         {
