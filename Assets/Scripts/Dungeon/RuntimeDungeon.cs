@@ -68,7 +68,6 @@ namespace Vanaring
             {
                 string missionName = missionInstance.MissionData.MissionDescription.FieldName;
 
-
                 ret.MissionNamePair.Add(missionName, missionInstance.CaptureMissionData() ) ;
 
             }

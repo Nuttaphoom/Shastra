@@ -5,6 +5,7 @@ using Unity.VisualScripting;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.Events;
+using static Vanaring.MissionSetupHandler;
 
 namespace Vanaring
 {
@@ -161,6 +162,16 @@ namespace Vanaring
 
         public virtual NodeRuntimeData CaptureNodeData()
         {
+            //if (IsCurrentlyVisiting)
+            //{
+            //    Debug.Log("Capture Currently visisted in " + gameObject.name);
+            //}
+             
+            //if (IsThisNodeVisited)
+            //{
+            //    Debug.Log("Capture Visisted in " + gameObject.name);
+            //}
+
             return new NodeRuntimeData()
             {
                 IsVisited = IsThisNodeVisited,
@@ -172,17 +183,23 @@ namespace Vanaring
         {
             if (data.CurrentlyVisited)
             {
+                //Debug.Log("Restore Currently visisted in " + gameObject.name);
                 visistationState = VisitationState.Visiting;
             }
             else if (data.IsVisited)
             {
+                //Debug.Log("Restore Visisted in " + gameObject.name);
                 visistationState = VisitationState.Visited ;
+            }else
+            {
+                //Debug.Log("Restore Not Visisted in " + gameObject.name);
             }
         }
 
         public virtual void OnExitMission_ClearNodeData()
         {
-            visistationState = VisitationState.NotVisited; 
+            if (visistationState == VisitationState.Visiting)
+                visistationState = VisitationState.Visited; 
         } 
 
          

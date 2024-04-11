@@ -4,19 +4,16 @@ using System.Collections.Generic;
 using TMPro.EditorUtilities;
 using UnityEngine;
 using UnityEngine.UI;
+using static Vanaring.MissionSetupHandler;
 
 namespace Vanaring
 {
-    [Serializable]
-    public struct NodeRuntimeData
-    {
-        public bool IsVisited;
-        public bool CurrentlyVisited; 
-    }
-    public class MissionNodeEnvironment : MonoBehaviour, ISaveable  
+    
+    public class MissionNodeEnvironment : MonoBehaviour    
     {
         [SerializeField]
         private List<BaseMissionNode> _baseDungeonNode ;
+
 
         [Header("*** Use for debuging only ***")]
         ///Use for save/load system 
@@ -52,7 +49,7 @@ namespace Vanaring
             }
         }
          
-        public object CaptureState()
+        public List<NodeRuntimeData> CaptureEnvironmentData()
         {
             _nodeRuntimeData = new List<NodeRuntimeData>();
             for (int i = 0; i < _baseDungeonNode.Count; i++)
@@ -64,9 +61,9 @@ namespace Vanaring
 
         }
 
-        public void RestoreState(object state)
+        public void RestoreEnvironmentData(List<NodeRuntimeData> state)
         {
-            _nodeRuntimeData = (List<NodeRuntimeData>)state;
+            _nodeRuntimeData =  state;
 
             for (int i = 0; i < _baseDungeonNode.Count; i++)
             {
@@ -79,7 +76,7 @@ namespace Vanaring
             for (int i = 0; i < _baseDungeonNode.Count; i++)
             {
                 _baseDungeonNode[i].OnExitMission_ClearNodeData();
-            }
+            } 
 
             
         }

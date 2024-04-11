@@ -22,26 +22,24 @@ namespace Vanaring
 
         public void OnStartMission()
         {
-            if (_hasVisisteThisMission)
-                Debug.Log("this mission has been visisted");
-            else
-                Debug.Log("This mission has NEVER been visisted");
+            //if (_hasVisisteThisMission)
+            //    Debug.Log("this mission has been visisted");
+            //else
+            //    Debug.Log("This mission has NEVER been visisted");
 
-            Debug.Log("set visist status is true");
+            //Debug.Log("set visist status is true");
             _hasVisisteThisMission = true; 
             //This function is for testing only 
         }
 
         public RuntimeMissionSaveLoadData CaptureMissionData()
         {
-            Debug.Log("save mission data , status is " + _hasVisisteThisMission);
 
             return new RuntimeMissionSaveLoadData() { HasVisiteThisMission = _hasVisisteThisMission  } ;
         }
 
         public void RestoreMissionData(RuntimeMissionSaveLoadData state)
         {
-            Debug.Log("restore mission data , status is " + state.HasVisiteThisMission) ;
             _hasVisisteThisMission =  state.HasVisiteThisMission;
         }
     }
