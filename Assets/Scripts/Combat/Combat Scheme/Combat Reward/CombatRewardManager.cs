@@ -41,7 +41,7 @@ namespace Vanaring
             }
 
             //Display Reward  
-            //yield return _combatRewardDisplayer.DisplayRewardUICoroutine(combatReward); 
+            yield return _combatRewardDisplayer.DisplayRewardUICoroutine(combatReward); 
 
             yield return SubmitCombatReward(combatReward);
 

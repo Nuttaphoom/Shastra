@@ -1,0 +1,54 @@
+{
+    "name": "JoystickControl",
+    "maps": [
+        {
+            "name": "TurnBasedCombat",
+            "id": "2cd9bf3a-5a26-4afc-950e-9bb200d47b8f",
+            "actions": [
+                {
+                    "name": "ScrollOrSelect",
+                    "type": "Value",
+                    "id": "1faee7ba-e36d-4bc5-ac4d-96b04e485edc",
+                    "expectedControlType": "Stick",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Confirm",
+                    "type": "Button",
+                    "id": "2fdd2cc5-5d8f-4674-94ab-c8ac406ca12c",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "8e7c2288-0561-4f69-923f-b11a5a1b9c13",
+                    "path": "<Gamepad>/leftStick",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ScrollOrSelect",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0c7a45a6-da49-44da-a389-195d79f68dbc",
+                    "path": "<Gamepad>/buttonEast",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Confirm",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}

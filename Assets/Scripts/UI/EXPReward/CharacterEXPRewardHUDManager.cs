@@ -16,7 +16,7 @@ namespace Vanaring
         }
 
 
-        public IEnumerator LoadCharacterEXPGainWindow()
+        public IEnumerator LoadCharacterEXPGainWindow(List<RuntimeCombatMemberData> list)
         {
             if (PersistentPlayerPersonalDataManager.Instance.CombatMemberDataLocator.GetRuntimeCombatMembers.Count != 0)
             {
