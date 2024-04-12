@@ -14,9 +14,9 @@ namespace Vanaring
         protected override IEnumerator OnVisiteThisNodeFirstTime()
         {
             yield return base.OnVisiteThisNodeFirstTimeOnMission();
-            yield return new WaitForSeconds(1.25f);
+            //    yield return new WaitForSeconds(1.25f);
 
-            PersistentSceneLoader.Instance.LoadGeneralScene(_cutsceneData.GetCutsceneSceneDataSO) ;
+            //    PersistentSceneLoader.Instance.LoadGeneralScene(_cutsceneData.GetCutsceneSceneDataSO) ;
         }
     }
 

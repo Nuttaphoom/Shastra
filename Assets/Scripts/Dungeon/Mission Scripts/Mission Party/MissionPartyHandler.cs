@@ -56,6 +56,10 @@ namespace Vanaring
         public void UpdateValue(float hp, float mp)
         {
             _currentHP = hp; 
+
+            if (_currentHP <= 0)
+                _currentHP = 1; 
+
             _currentMP = mp; 
         } 
 

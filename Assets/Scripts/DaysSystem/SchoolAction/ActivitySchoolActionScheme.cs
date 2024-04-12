@@ -26,7 +26,7 @@ namespace Vanaring
             _personalityRewards = PersistentSceneLoader.Instance.ExtractSavedData<List<PersonalityRewardData>>(PersistentSceneLoader.Instance.GetStackLoadedDataScene().GetSceneID()).GetData();
             
             if (_personalityRewards == null)
-                throw new Exception("_personalityRewards is null");
+                throw new Exception("_personalityRewards is null") ;
 
             OnPerformAcivity();
         }
