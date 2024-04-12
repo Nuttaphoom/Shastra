@@ -15,12 +15,13 @@ namespace Vanaring.Assets.Scripts.Utilities.Cutscene_System
         [SerializeField]
         private AssetReferenceT<CutsceneSceneDataSO> _cutsceneSceneAssetRef;
 
-        public AssetReference GetCutsceneSceneRef
+        public CutsceneSceneDataSO GetCutsceneSceneDataSO
         {
             get
             {
-                return _cutsceneSceneAssetRef ; 
+                return PersistentAddressableResourceLoader.Instance.LoadResourceOperation<CutsceneSceneDataSO>(_cutsceneSceneAssetRef); 
             }
         }
+        
     }
 }
