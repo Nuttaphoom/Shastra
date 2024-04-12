@@ -16,17 +16,20 @@ namespace Vanaring
   
 
         [SerializeField]
-        private EventRewardData _lootRewardData ;
+        private List<EventRewardData> _lootRewardDatas ;
 
         protected override IEnumerator OnVisiteThisNodeFirstTimeOnMission()
         {
             yield return base.OnVisiteThisNodeFirstTimeOnMission();
             yield return new WaitForSeconds(.75f);
 
-            IRewardable rewards = _lootRewardData.GetReward();
-            rewards.SubmitReward();
-            ColorfulLogger.LogWithColor("Submit reward " + rewards.GetRewardData().RewardName, Color.yellow); 
-
+            List<IRewardable> rewards = new List<IRewardable>() ; //= _lootRewardData.GetReward();
+            foreach (var rewardData in _lootRewardDatas)
+            {
+                rewards.Add(rewardData.GetReward());
+            }
+            yield return  FindObjectOfType<MissionRewardObtainHandler>().ObtainReward(rewards) ;
+            
         }
     }
 

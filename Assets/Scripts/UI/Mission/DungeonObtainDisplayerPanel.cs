@@ -26,7 +26,7 @@ namespace Vanaring
 
         public override IEnumerator SettingUpNumber()
         {
-            nextButton.onClick.AddListener(() => Destroy(gameObject));
+            //nextButton.onClick.AddListener(() => Destroy(gameObject));
             gfx.SetActive(true);
             yield return GetReward(allRewardList);
         }
