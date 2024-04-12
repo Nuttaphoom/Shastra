@@ -35,6 +35,12 @@ namespace Vanaring
         private static DungeonManagerSingleton _instance;
 
         #region GETTER
+        public List<RuntimeDungeon> GetAllActiveDungeon { 
+            get
+            {
+                return _dungeons; 
+            }
+        }
         public DungeonMissionInstance CurrentActiveMission
         {
             get
