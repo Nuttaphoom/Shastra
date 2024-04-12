@@ -95,9 +95,6 @@ namespace Vanaring
         { 
             return GetEventRewards().GetRewardData();  
         }
-
-     
-        
     }
 
     public interface IRewardable
