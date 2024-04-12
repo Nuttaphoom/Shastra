@@ -53,12 +53,9 @@ namespace Vanaring
         {
             _nodeRuntimeData = new List<NodeRuntimeData>();
             for (int i = 0; i < _baseDungeonNode.Count; i++)
-            {
                 _nodeRuntimeData.Add(_baseDungeonNode[i].CaptureNodeData() ) ;   
-            }
-
+             
             return _nodeRuntimeData; 
-
         }
 
         public void RestoreEnvironmentData(List<NodeRuntimeData> state)

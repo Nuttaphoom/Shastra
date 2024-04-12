@@ -169,7 +169,7 @@ namespace Vanaring
         }
         private void SubmitMissionRewardCoroutine(EventRewardData eventRewardData)
         {
-            eventRewardData.GetAllRewards().SubmitReward(); //;.GetEventRewards(); 
+            eventRewardData.GetReward().SubmitReward(); //;.GetEventRewards(); 
 
         }
         #endregion

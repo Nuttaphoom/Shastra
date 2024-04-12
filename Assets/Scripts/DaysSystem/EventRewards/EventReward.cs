@@ -54,7 +54,7 @@ namespace Vanaring
             }
         }
 
-        public IRewardable GetAllRewards()
+        public IRewardable GetReward()
         {
             if (RewardIsItem)
             {
