@@ -85,7 +85,7 @@ namespace Vanaring
 
         public void ExitNode(Null n)
         {
-            Debug.Log("ExitNode");
+            //Debug.Log("ExitNode");
             SetFloorGraphicState(Color.grey);
             state = NodeState.VISITED;
             iconShown.gameObject.SetActive(false);
@@ -93,7 +93,7 @@ namespace Vanaring
         }
         private void FirstTimeVisit(Null n)
         {
-            Debug.Log("First");
+            //Debug.Log("First");
             animator.Play("NodeObjectVisittingState");
             foreach (MissionPathObject path in pathList)
             {

@@ -1,40 +1,40 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+//using System;
+//using System.Collections;
+//using System.Collections.Generic;
+//using UnityEngine;
 
-namespace Vanaring
-{
-    public class BossMissionNode : BaseMissionNode
-    {
-        [SerializeField]
-        private SceneDataSO _combatSceneData;
+//namespace Vanaring
+//{
+//    public class BossMissionNode : BaseMissionNode
+//    {
+//        [SerializeField]
+//        private SceneDataSO _combatSceneData;
 
-        [SerializeField]
-        private CombatDungeonNodeLoaderData _combatDungeonNodeLoaderData;
+//        [SerializeField]
+//        private CombatDungeonNodeLoaderData _combatDungeonNodeLoaderData;
 
 
-        public override IEnumerator OnVisiteThisNodeFirstTime()
-        {
-            yield return base.OnVisiteThisNodeFirstTime();
+//        protected override IEnumerator OnVisiteThisNodeFirstTime()
+//        {
+//            yield return base.OnVisiteThisNodeFirstTime();
 
             
-            PersistentSceneLoader.Instance.CreateLoaderDataUser<CombatDungeonNodeLoaderData>("CombatDungeonNodeDataUser", _combatDungeonNodeLoaderData);
-            PersistentSceneLoader.Instance.LoadGeneralScene(_combatSceneData);
+//            PersistentSceneLoader.Instance.CreateLoaderDataUser<CombatDungeonNodeLoaderData>("CombatDungeonNodeDataUser", _combatDungeonNodeLoaderData);
+//            PersistentSceneLoader.Instance.LoadGeneralScene(_combatSceneData);
 
-        }
+//        }
 
 
-        public override IEnumerator OnVisiteThisNode()
-        {
-            yield return base.OnVisiteThisNode();
+//        protected override IEnumerator OnVisiteThisNode()
+//        {
+//            yield return base.OnVisiteThisNode();
 
-            Debug.Log("TODO : Combat should talk with this function so that we can know the result of the combat , shouldn't be assume player get back and visiste this node again mean complete this node") ;   
+//            Debug.Log("TODO : Combat should talk with this function so that we can know the result of the combat , shouldn't be assume player get back and visiste this node again mean complete this node") ;   
 
-            Debug.Log("The dungeon is end");
-        }
+//            Debug.Log("The dungeon is end");
+//        }
 
-    }
+//    }
 
      
-}
+//}

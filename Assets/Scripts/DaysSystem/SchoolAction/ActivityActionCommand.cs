@@ -35,7 +35,7 @@ namespace Vanaring
         }
         public override void ExecuteCommand()
         {
-            SceneDataSO _sceneDataSO = PersistentAddressableResourceLoader.Instance.LoadResourceOperation<SceneDataSO>(_activityCutscene.GetCutsceneSceneRef) ;
+            SceneDataSO _sceneDataSO = (_activityCutscene.GetCutsceneSceneDataSO) ;
 
             PersistentSceneLoader.Instance.CreateLoaderDataUser<List<PersonalityRewardData>>(_sceneDataSO.GetSceneID(), _personalityRewards);
             PersistentSceneLoader.Instance.LoadGeneralScene(_sceneDataSO);

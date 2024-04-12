@@ -16,7 +16,7 @@ namespace Vanaring
         private MissionNodeTransitionManager missionNodeTransitionManager;
         private MissionNodeEnvironment mission;
 
-        [SerializeField] private MissionSetupHandler setUpHandler;
+        //private MissionSetupHandler setUpHandler;
         [SerializeField] private GameObject nodeField;
         [SerializeField] private MissionNodeObject curNode;
         [SerializeField] private MissionNodeObject dungeonNode;
@@ -26,22 +26,24 @@ namespace Vanaring
         private MissionPathObject path;
         private int runningIndex = 0;
 
+       
         [ContextMenu("Init Minimap")]
 
         private void Start()
         {
-            setUpHandler.SubOnEnvironmentSetup(Init);
+            DungeonManagerSingleton.Instance.MissionSetupHandler.SubOnEnvironmentSetup(Init);
         }
 
         public void OnDisable()
         {
-            setUpHandler.UnSubOnEnvironmentSetup(Init);
+            //ARM -- This line causes bugs when exit Mission as DungeonManagerSingleton will be destroyed and can't find its ref
+            //DungeonManagerSingleton.Instance.MissionSetupHandler.UnSubOnEnvironmentSetup(Init);
         }
 
         public void Init(Null n)
         {
             missionNodeTransitionManager = FindObjectOfType<MissionNodeManager>().MissionNodeTransitionManager; 
-            mission = setUpHandler.DungeonEnvironment;
+            mission = DungeonManagerSingleton.Instance.MissionSetupHandler.DungeonEnvironment;
             firstNode = mission.GetFirstNode;
             if(firstNode != null)
             {
@@ -123,7 +125,7 @@ namespace Vanaring
                 }
                 else
                 {
-                    ColorfulLogger.LogWithColor("No node has to find its connect", Color.red);
+                    //ColorfulLogger.LogWithColor("No node has to find its connect", Color.red);
                     curNode.NodeReveal();
                     foreach (MissionPathObject path in curNode.GetPathList)
                     {
