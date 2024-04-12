@@ -10,10 +10,10 @@ namespace Vanaring
     {
         [SerializeField] private Image itemIcon;
         [SerializeField] private TextMeshProUGUI amountText;
-        private EventReward reward;
+        private IRewardable reward;
         private int amount = 1;
 
-        public void Init(EventReward reward)
+        public void Init(IRewardable reward)
         {
             this.reward = reward;
             amountText.text = "x" + amount;

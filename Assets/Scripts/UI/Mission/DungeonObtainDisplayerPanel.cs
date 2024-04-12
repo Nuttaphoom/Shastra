@@ -6,32 +6,46 @@ using UnityEngine.UI;
 
 namespace Vanaring
 {
-    public class TESTSCRIPT_Aome : MonoBehaviour
+    public class DungeonObtainDisplayerPanel : BaseRewardDisplayerPanel
     {
         // Start is called before the first frame update
         [SerializeField] private RewardIconObjectGUI guiTemplate;
         [SerializeField] private GameObject hrz;
         [SerializeField] private GameObject gfx;
         [SerializeField] private PlayableDirector introDirector;
-        [SerializeField] private List<EventReward<SpellActionSO>> testList = new List<EventReward<SpellActionSO>>();
-        //[SerializeField] private List<EventReward<RewardType>> testwList = new List<EventReward<ScriptableObject>>();
+        [SerializeField] private List<IRewardable> allRewardList = new List<IRewardable>();
         [SerializeField] private Button nextButton;
 
         private Dictionary<string, RewardIconObjectGUI> rewardObjectDictionary = new Dictionary<string, RewardIconObjectGUI>();
 
 
-        private void Update()
+        public void SetupData(List<IRewardable> allRewardList)
         {
-            if (Input.GetKeyDown(KeyCode.W))
-            {
-                StartCoroutine(GetReward(testList));
-                nextButton.onClick.AddListener(() => Destroy(gameObject));
-                gfx.SetActive(true);
-                
-            }
+            this.allRewardList = allRewardList;
         }
 
-        private IEnumerator GetReward(List<EventReward<SpellActionSO>> rewardList)
+        public override IEnumerator SettingUpNumber()
+        {
+            nextButton.onClick.AddListener(() => Destroy(gameObject));
+            gfx.SetActive(true);
+            yield return GetReward(allRewardList);
+        }
+
+        public override void ForceSetUpNumber()
+        {
+            _uiAnimationDone = true;
+        }
+
+        public override void OnContinueButtonClick()
+        {
+            if (IsSettingUpSucessfully)
+                _displayingUIDone = true;
+
+            else
+                ForceSetUpNumber();
+        }
+
+        private IEnumerator GetReward(List<IRewardable> rewardList)
         {
             introDirector.Play();
             while (introDirector.state == PlayState.Playing)
@@ -40,7 +54,7 @@ namespace Vanaring
             }
             introDirector.Stop();
 
-            foreach (EventReward<SpellActionSO> reward in rewardList)
+            foreach (IRewardable reward in rewardList)
             {
                 bool isDuplicate = false;
 
