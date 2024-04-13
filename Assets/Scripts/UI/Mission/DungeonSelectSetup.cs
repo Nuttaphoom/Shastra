@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Vanaring
 {
@@ -26,7 +27,10 @@ namespace Vanaring
             yield return new WaitForSeconds(1.0f);
             foreach (RuntimeDungeon dungeon in dungeonList)
             {
-                GameObject newDungeon = Instantiate(template, hrzt.transform);
+                dungeon.SelectThisDungeon();
+                DungeonManagerSingleton.Instance.LoadSelectedMission(_dungeons.GetSelectMission(0));
+                //GameObject newDungeon = Instantiate(template)
+                //GameObject newDungeon = Instantiate(template, hrzt.transform);
             }
             template.gameObject.SetActive(false);
             yield return null;

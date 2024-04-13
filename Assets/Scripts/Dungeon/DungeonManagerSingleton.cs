@@ -128,7 +128,7 @@ namespace Vanaring
             _dungeons.Add(dungeon.FactorizeRuntimeDungeon());
         }
         #region Mission Selection Methods
-        private void LoadSelectedMission(DungeonMissionInstance missionInstance)
+        public void LoadSelectedMission(DungeonMissionInstance missionInstance)
         {
             //Visually dispaly confirm selection 
             PersistentSceneLoader.Instance.CreateLoaderDataUser<DungeonMissionInstance>("DungeonMissionInstanceFromDungeonManager", missionInstance) ;
