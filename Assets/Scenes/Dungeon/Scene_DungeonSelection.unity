@@ -2192,6 +2192,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 363c84964477e3c4797907f0af48740e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  missionButtonTemplate: {fileID: 0}
+  verticalLayout: {fileID: 0}
 --- !u!1 &661178899
 GameObject:
   m_ObjectHideFlags: 0
@@ -5376,8 +5378,9 @@ GameObject:
   - component: {fileID: 1596743088}
   - component: {fileID: 1596743090}
   - component: {fileID: 1596743089}
+  - component: {fileID: 1596743091}
   m_Layer: 5
-  m_Name: MissionList
+  m_Name: MissionBookList
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5443,6 +5446,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1596743087}
   m_CullTransparentMesh: 1
+--- !u!114 &1596743091
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1596743087}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 363c84964477e3c4797907f0af48740e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  missionButtonTemplate: {fileID: 1756847249}
+  verticalLayout: {fileID: 1436984794}
 --- !u!1 &1610985345
 GameObject:
   m_ObjectHideFlags: 0
@@ -6055,6 +6072,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1756847248}
+  - component: {fileID: 1756847249}
   m_Layer: 5
   m_Name: Mission
   m_TagString: Untagged
@@ -6085,6 +6103,24 @@ RectTransform:
   m_AnchoredPosition: {x: 242.165, y: -84.69405}
   m_SizeDelta: {x: 484.33, y: 22.3871}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1756847249
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1756847247}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 661d7437c004c8041b58948fd67b3ee9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  missionButton: {fileID: 288859571}
+  selectIcon: {fileID: 1887421331}
+  missionIcon: {fileID: 1786339865}
+  missionName: {fileID: 878156164}
+  missionDetail: {fileID: 0}
+  missionTime: {fileID: 1474362254}
 --- !u!1 &1786339863
 GameObject:
   m_ObjectHideFlags: 0
@@ -6358,7 +6394,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64d1c80aa8b9f2f49b650def3ecfe720, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  missionBook: {fileID: 0}
+  missionBook: {fileID: 1596743091}
   dungeonButton:
   - {fileID: 898211176}
   - {fileID: 1739418722}

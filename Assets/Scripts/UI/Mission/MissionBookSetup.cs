@@ -8,14 +8,78 @@ namespace Vanaring
 {
     public class MissionBookSetup : MonoBehaviour
     {
-        private List<DungeonMissionInstance> missionList = new List<DungeonMissionInstance>();
+        private List<MissionButtonObjectGUI> missionButtonList = new List<MissionButtonObjectGUI>();
+        private int selectingIndex;
+        [SerializeField] private MissionButtonObjectGUI missionButtonTemplate;
+        [SerializeField] private GameObject verticalLayout;
         //[SerializeField] private 
         
-        public void Init(List<DungeonMissionInstance> missionList)
+        public void Init(RuntimeDungeon dungeon)
         {
-            foreach (DungeonMissionInstance mission in missionList)
+            selectingIndex = 0;
+            if (missionButtonList.Count > 0)
             {
-                //AllDungeonMissionInstance
+                foreach (var buttonObject in missionButtonList)
+                {
+                    Destroy(buttonObject.gameObject);
+                }
+
+                missionButtonList.Clear();
+            }
+            foreach (DungeonMissionInstance mission in dungeon.AllDungeonMissionInstance)
+            {
+                MissionButtonObjectGUI newButton = Instantiate(missionButtonTemplate, verticalLayout.transform);
+                newButton.Init(dungeon, mission);
+                newButton.UnSelectThisMission();
+                missionButtonList.Add(newButton);
+            }
+            missionButtonList[selectingIndex].SelectThisMission();
+            missionButtonTemplate.gameObject.SetActive(false);
+            Debug.Log(missionButtonList.Count);
+        }
+
+        public void NextMissionIndex()
+        {
+            if (selectingIndex < missionButtonList.Count - 1)
+            {
+                foreach (MissionButtonObjectGUI obj in missionButtonList)
+                {
+                    obj.UnSelectThisMission();
+                }
+                selectingIndex++;
+                missionButtonList[selectingIndex].SelectThisMission();
+            }
+            Debug.Log(selectingIndex);
+        }
+
+        public void PrevMissionIndex()
+        {
+            if (selectingIndex > 0)
+            {
+                foreach (MissionButtonObjectGUI obj in missionButtonList)
+                {
+                    obj.UnSelectThisMission();
+                }
+                selectingIndex--;
+                missionButtonList[selectingIndex].SelectThisMission();
+            }
+            Debug.Log(selectingIndex);
+        }
+
+        private void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.W))
+            {
+                PrevMissionIndex();
+            }
+            if(Input.GetKeyDown(KeyCode.S))
+            {
+                NextMissionIndex();
+            }
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                missionButtonList[selectingIndex].EnterTheMission();
+                
             }
         }
     }

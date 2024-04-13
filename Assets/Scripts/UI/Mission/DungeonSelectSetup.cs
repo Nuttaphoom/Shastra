@@ -39,9 +39,10 @@ namespace Vanaring
 
         private void LoadAllMission(RuntimeDungeon dungeon)
         {
-
-            dungeon.SelectThisDungeon();
-            DungeonManagerSingleton.Instance.LoadSelectedMission(dungeon.GetSelectMission(0));
+            missionBook.gameObject.SetActive(true);
+            missionBook.Init(dungeon);
+            //dungeon.SelectThisDungeon();
+            //DungeonManagerSingleton.Instance.LoadSelectedMission(dungeon.GetSelectMission(0));
         }
 
         

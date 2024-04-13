@@ -24,10 +24,12 @@ namespace Vanaring
         public void SelectThisMission()
         {
             missionButton.GetComponent<Image>().color = Color.yellow;
+            selectIcon.gameObject.SetActive(true);
         }
         public void UnSelectThisMission()
         {
             missionButton.GetComponent<Image>().color = Color.white;
+            selectIcon.gameObject.SetActive(false);
         }
         public void EnterTheMission()
         {
