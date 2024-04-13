@@ -54,6 +54,7 @@ namespace Vanaring
                 newSocket.gameObject.SetActive(true);
             }
             socketTemplate.gameObject.SetActive(false);
+            _uiAnimationDone = true;
             yield return null;
         }
 

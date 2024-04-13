@@ -8,6 +8,8 @@ namespace Vanaring
     public class DungeonSelectSetup : MonoBehaviour, ISceneLoaderWaitForSignal
     {
         private List<RuntimeDungeon> dungeonList = new List<RuntimeDungeon>();
+        [SerializeField] private MissionBookSetup missionBook;
+        [SerializeField] private List<Button> dungeonButton = new List<Button>();
         [SerializeField] private GameObject template;
         [SerializeField] private GameObject hrzt;
         private void Start()
@@ -24,16 +26,24 @@ namespace Vanaring
         public IEnumerator OnNotifySceneLoadingComplete()
         {
             dungeonList = DungeonManagerSingleton.Instance.GetAllActiveDungeon;
+            int dungeonIndex = 0;
             yield return new WaitForSeconds(1.0f);
             foreach (RuntimeDungeon dungeon in dungeonList)
             {
-                dungeon.SelectThisDungeon();
-                DungeonManagerSingleton.Instance.LoadSelectedMission(_dungeons.GetSelectMission(0));
-                //GameObject newDungeon = Instantiate(template)
-                //GameObject newDungeon = Instantiate(template, hrzt.transform);
+                dungeonButton[dungeonIndex].onClick.AddListener(() => LoadAllMission(dungeon));
+                dungeonIndex++;
             }
-            template.gameObject.SetActive(false);
+            //template.gameObject.SetActive(false);
             yield return null;
         }
+
+        private void LoadAllMission(RuntimeDungeon dungeon)
+        {
+
+            dungeon.SelectThisDungeon();
+            DungeonManagerSingleton.Instance.LoadSelectedMission(dungeon.GetSelectMission(0));
+        }
+
+        
     }
 }

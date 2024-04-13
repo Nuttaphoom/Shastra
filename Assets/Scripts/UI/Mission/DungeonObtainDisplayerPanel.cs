@@ -82,9 +82,8 @@ namespace Vanaring
                     rewardObjectDictionary.Add(reward.GetRewardData().RewardName, newIcon);
                     yield return new WaitForSeconds(0.1f);
                 }
-
-                
             }
+            _uiAnimationDone = true;
 
             guiTemplate.gameObject.SetActive(false);
             yield return null;

@@ -17,6 +17,7 @@ namespace Vanaring
         #region GETTER
 
         public DungeonDataSO DungeonDataSO => _dungeonDataSO;
+        public List<DungeonMissionInstance> AllDungeonMissionInstance => _dungeonMissionInstance;
 
         #endregion
         public RuntimeDungeon(List<MissionDataSO> missionsOnThisDungeon, DungeonDataSO dungeonDataSO)
