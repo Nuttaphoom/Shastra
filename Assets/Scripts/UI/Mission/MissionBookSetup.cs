@@ -42,28 +42,29 @@ namespace Vanaring
         {
             if (selectingIndex < missionButtonList.Count - 1)
             {
-                foreach (MissionButtonObjectGUI obj in missionButtonList)
-                {
-                    obj.UnSelectThisMission();
-                }
+                //foreach (MissionButtonObjectGUI obj in missionButtonList)
+                //{
+                //    obj.UnSelectThisMission();
+                //}
+                missionButtonList[selectingIndex].UnSelectThisMission();
                 selectingIndex++;
                 missionButtonList[selectingIndex].SelectThisMission();
             }
-            Debug.Log(selectingIndex);
         }
 
         public void PrevMissionIndex()
         {
             if (selectingIndex > 0)
             {
-                foreach (MissionButtonObjectGUI obj in missionButtonList)
-                {
-                    obj.UnSelectThisMission();
-                }
+                //foreach (MissionButtonObjectGUI obj in missionButtonList)
+                //{
+                //    obj.UnSelectThisMission();
+                //}
+                missionButtonList[selectingIndex].UnSelectThisMission();
                 selectingIndex--;
                 missionButtonList[selectingIndex].SelectThisMission();
             }
-            Debug.Log(selectingIndex);
+            
         }
 
         private void Update()
