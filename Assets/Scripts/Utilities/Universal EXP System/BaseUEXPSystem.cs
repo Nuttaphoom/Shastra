@@ -84,7 +84,12 @@ namespace Vanaring
 
         private void LevelUp()
         {
-            _currentEXP = 0 ;
+             
+            //Warp up remaining EXP after level up
+            _currentEXP = _currentEXP - GetEXPCap() ;
+            if (_currentEXP < 0)
+                throw new Exception("CurrentEXP after LevelUp can't be negative value, currentEXP = " + _currentEXP + " GetEXPCap : " + GetEXPCap());
+            
             _currentLevel += 1;
 
             GetEventBroadcaster().InvokeEvent<int>(_currentLevel, "OnLevelUp"); 

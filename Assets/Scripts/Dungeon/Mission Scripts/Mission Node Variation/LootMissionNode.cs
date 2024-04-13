@@ -13,8 +13,6 @@ namespace Vanaring
 {
     public class LootMissionNode : BaseMissionNode
     {
-  
-
         [SerializeField]
         private List<EventRewardData> _lootRewardDatas ;
 
