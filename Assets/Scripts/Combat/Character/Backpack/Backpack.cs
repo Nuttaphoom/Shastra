@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
@@ -13,18 +14,6 @@ namespace Vanaring
         public BackpackItemSO BackpackItem;
 
         public int Amount;
-
- 
-
-        //public void ModifyAmount(int amount)
-        //{
-        //    _amount += amount;
-        //}
-
-        //public void SetBackpackItem (BackpackItemSO backpackItemSO)
-        //{
-        //    _backpackItem = backpackItemSO;
-        //}
     }
 
     [Serializable]
@@ -36,38 +25,161 @@ namespace Vanaring
         private List<BackpackItemData> _backpackItemSO   ;
 
         private InventoryDatabaseSO m_inventoryDatabase;
- 
-        //public void SaveBackpackItems()
-        //{
-        //    //Save the Unique id from all of the BackpackItemData in _backpackItemSO
-        //    //Duplicate element is allowed in the local save file 
-        //    //for emaple, list of uniqueID saved in the local might be 
-        //    //ITEM_1, ITEM_2, ITEM_1 => this indicates that ITEM_A amount equal to 2 
-        //    //Getting Address of the record in database =>
-        //    //m_inventoryDatabase.GetRecordKey(_backpackItemSO[0].GetBackpackItem());
 
-
-
-        //}
-
-        public void LoadBackpackItemFromDatabase(List<string> uniqueID)
+        private int _currentCash = 0 ;
+        #region GETTER
+        public List<BackpackItemData> GetCombatUseableItemSOs()
         {
-            LoadItemDatabaseOP();
-
-            if (_backpackItemSO != null)
-                throw new System.Exception("Try to laod spell from data base multiple time.This isn't allowed. " +
-                    "The system should be loaded only 1 time when the save is loaded, and modified the SpellAction thoughtout the lifetime of application, " +
-                    "and save the uniqueID when the game is saved");
-
-            _backpackItemSO = new List<BackpackItemData>();
-
-            for (int i = 0; i < uniqueID.Count; i++)
+            List<BackpackItemData> ret = new List<BackpackItemData>();
+            foreach (var backpackItem in _backpackItemSO)
             {
-                AddItemIntoBackpack(m_inventoryDatabase.GetRecord(uniqueID[i]), 1);
+                ret.Add(backpackItem);
+
+                if ((backpackItem.BackpackItem) is not CombatUseableItemSO)
+                {
+                    ret.RemoveAt(ret.Count - 1);
+                }
+            }
+
+            return _backpackItemSO;
+        }
+
+        public int GetCurrentCash
+        {
+            get
+            {
+                return _currentCash;
+            }
+        }
+        public List<BackpackItemData> GetAllItemsInBackpack 
+        {
+            get {
+                return _backpackItemSO; 
+            }
+        }
+        #endregion
+        
+        #region Cash Mod Methods 
+        public void ModifyCash(int modAmount)
+        {
+            if (modAmount < 0 && _currentCash < modAmount)
+                throw new Exception("Current Cash can't be negative ! modAmount = " + modAmount + "  current cash is " + _currentCash);
+
+            _currentCash += modAmount;
+
+            Debug.Log("Current Cash  : " + _currentCash); 
+        }
+
+        #endregion
+
+        #region Item Mod Methods 
+
+        public void AddItemIntoBackpack(BackpackItemSO itemSO, int amount)
+        {
+            if (_backpackItemSO == null)
+                _backpackItemSO = new List<BackpackItemData>();
+
+            for (int i = 0; i < _backpackItemSO.Count; i++)
+            {
+                if (_backpackItemSO[i].BackpackItem.GetDescriptionBaseField().FieldName == itemSO.GetDescriptionBaseField().FieldName)
+                {
+                    // Update the item at index i
+                    _backpackItemSO[i].Amount += (amount);
+                    return;
+                }
+            }
+            BackpackItemData backpackItemData = new BackpackItemData();
+            backpackItemData.BackpackItem = (itemSO);
+            backpackItemData.Amount += (amount);
+            _backpackItemSO.Add(backpackItemData);
+        }
+
+
+        // this function call when update item from temporary save to restore the different item data
+        public void UpdateItemInBackpack(BackpackItemSO itemSO, int amount)
+        {
+            for (int i = 0; i < _backpackItemSO.Count; i++)
+            {
+                if (_backpackItemSO[i].BackpackItem.GetDescriptionBaseField().FieldName == itemSO.GetDescriptionBaseField().FieldName)
+                {
+                    if (_backpackItemSO[i].Amount != amount)
+                    {
+                        _backpackItemSO[i].Amount = amount;
+                    }
+                    return;
+                }
+            }
+            BackpackItemData backpackItemData = new BackpackItemData();
+            backpackItemData.BackpackItem = (itemSO);
+            backpackItemData.Amount = (amount);
+            _backpackItemSO.Add(backpackItemData);
+        }
+        public void RemoveItemFromBackpack(BackpackItemSO itemSO, int amount)
+        {
+            for (int i = 0; i < _backpackItemSO.Count; i++)
+            {
+                if (_backpackItemSO[i].BackpackItem.GetDescriptionBaseField().FieldName == itemSO.GetDescriptionBaseField().FieldName)
+                {
+                    // Update the item at index i
+                    _backpackItemSO[i].Amount += (-(int)MathF.Abs(amount));// += amount;
+                    if (_backpackItemSO[i].Amount <= 0)
+                        _backpackItemSO.RemoveAt(i);
+
+                    return;
+                }
             }
         }
 
-        public void RestoreBackpackItem(List<string> uniqueID)
+        #endregion
+        private void LoadItemDatabaseOP()
+        {
+            if (m_inventoryDatabase != null)
+                return; 
+
+            m_inventoryDatabase = PersistentAddressableResourceLoader.Instance.LoadResourceOperation<InventoryDatabaseSO>(DatabaseAddressLocator.GetInventoryDatabaseAddress);
+        }
+
+        
+
+        
+       
+        #region Save System
+
+        public BackpackSaveData CaptureBackpackState()
+        {
+            if (m_inventoryDatabase == null)
+            {
+                LoadItemDatabaseOP();
+            }
+            
+            List<string> keys = new List<string>();
+            foreach (BackpackItemData backpackItem in _backpackItemSO)
+            {
+                for (int i = 0; i < backpackItem.Amount ; i++)
+                {
+                    keys.Add(m_inventoryDatabase.GetRecordKey(backpackItem.BackpackItem));
+                }
+            }
+            BackpackSaveData ret = new BackpackSaveData()
+            {
+                SavedItemUniqueID = keys,
+                SavedCash = _currentCash
+            };
+            return ret ;
+        }
+
+        public void RestoreBackpackState(BackpackSaveData state)
+        {
+            BackpackSaveData saveData = (BackpackSaveData)state;
+
+            if(_backpackItemSO != null)
+            {
+                RestoreBackpackItem(saveData.SavedItemUniqueID);
+            }
+
+            _currentCash = saveData.SavedCash;
+        }
+        private void RestoreBackpackItem(List<string> uniqueID)
         {
             // temporary data holder for update the backpack item
             Dictionary<BackpackItemSO, int> currentBackpackItem = new Dictionary<BackpackItemSO, int>();
@@ -91,122 +203,15 @@ namespace Vanaring
             }
         }
 
-        private void LoadItemDatabaseOP()
+        public struct BackpackSaveData
         {
-            if (m_inventoryDatabase != null)
-                return; 
+            /// <summary>
+            /// Duplicated Item (amount > 1) will be saved in here = number of items on that time
+            /// </summary>
+            public List<string> SavedItemUniqueID;
 
-            m_inventoryDatabase = PersistentAddressableResourceLoader.Instance.LoadResourceOperation<InventoryDatabaseSO>(DatabaseAddressLocator.GetInventoryDatabaseAddress);
+            public int SavedCash;
         }
-
-      
-
-        public void AddItemIntoBackpack(BackpackItemSO itemSO, int amount)
-        {
-            if ( _backpackItemSO == null)
-                _backpackItemSO = new List<BackpackItemData>();
-            
-            for (int i = 0; i < _backpackItemSO.Count; i++)
-            {
-                if (_backpackItemSO[i].BackpackItem.GetDescriptionBaseField().FieldName == itemSO.GetDescriptionBaseField().FieldName)
-                {
-                    // Update the item at index i
-                    _backpackItemSO[i].Amount += (amount); 
-                    return;
-                }
-            }
-            BackpackItemData backpackItemData = new BackpackItemData();
-            backpackItemData.BackpackItem = (itemSO);
-            backpackItemData.Amount += (amount);
-            _backpackItemSO.Add(backpackItemData);
-        }
-
-        // this function call when update item from temporary save to restore the different item data
-        public void UpdateItemInBackpack(BackpackItemSO itemSO, int amount)
-        {
-            for (int i = 0; i < _backpackItemSO.Count; i++)
-            {
-                if (_backpackItemSO[i].BackpackItem.GetDescriptionBaseField().FieldName == itemSO.GetDescriptionBaseField().FieldName)
-                {
-                    if (_backpackItemSO[i].Amount != amount)
-                    {
-                        _backpackItemSO[i].Amount = amount;
-                    }
-                    return;
-                }
-            }
-            BackpackItemData backpackItemData = new BackpackItemData();
-            backpackItemData.BackpackItem = (itemSO);
-            backpackItemData.Amount = (amount);
-            _backpackItemSO.Add(backpackItemData);
-        }
-
-        public void RemoveItemFromBackpack(BackpackItemSO itemSO, int amount)
-        {
-            for (int i = 0; i < _backpackItemSO.Count; i++)
-            {
-                if (_backpackItemSO[i].BackpackItem.GetDescriptionBaseField().FieldName == itemSO.GetDescriptionBaseField().FieldName)
-                {
-                    // Update the item at index i
-                    _backpackItemSO[i].Amount += (-(int) MathF.Abs(amount));// += amount;
-                    if (_backpackItemSO[i].Amount <= 0)
-                        _backpackItemSO.RemoveAt(i);
-
-                    return;
-                }
-            }
-        }
-
-        public List<BackpackItemData> GetCombatUseableItemSOs()
-        {
-            List<BackpackItemData> ret = new List<BackpackItemData>();
-            foreach (var backpackItem in _backpackItemSO)
-            {
-                ret.Add(backpackItem); 
-
-                if ((backpackItem.BackpackItem) is not CombatUseableItemSO)
-                {
-                    ret.RemoveAt(ret.Count - 1)  ;
-                }
-            }
-
-            return _backpackItemSO ; 
-        }
-        #region Save System
-
-        public object CaptureState()
-        {
-            if (m_inventoryDatabase == null)
-            {
-                LoadItemDatabaseOP();
-            }
-
-            List<string> keys = new List<string>();
-            foreach (BackpackItemData backpackItem in _backpackItemSO)
-            {
-                for (int i = 0; i < backpackItem.Amount ; i++)
-                {
-                    keys.Add(m_inventoryDatabase.GetRecordKey(backpackItem.BackpackItem));
-                }
-            }
-            
-            return keys;
-        }
-
-        public void RestoreState(object state)
-        {
-            List<string> saveData = (List<string>)state;
-
-            if(_backpackItemSO != null)
-            {
-                RestoreBackpackItem(saveData);
-                return;
-            }
-            //Debug.LogError("LoadBackpackItemFromDatabase");
-            //LoadBackpackItemFromDatabase(saveData);
-            //_partyDataLocator.RestoreState(saveData.savePartyDataLocator);
-        }
-
         #endregion
 
     }
