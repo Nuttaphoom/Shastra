@@ -206,6 +206,7 @@ namespace Vanaring
         #region Mission Save/Load Methods
         public object CaptureState()
         {
+            Debug.Log("Capture State");
 
             DungeonManagerSaveLoadDataStruct ret = new DungeonManagerSaveLoadDataStruct() {
                 DungeonNamePair = new Dictionary<string, RuntimeDungeonSaveLoadData>(),
@@ -232,6 +233,7 @@ namespace Vanaring
 
         public void RestoreState(object state)
         {
+            Debug.Log("Restore State");
             //Debug.Log("Restore data in dungeon manager singleton");
             DungeonManagerSaveLoadDataStruct saveLoadDataStruct = (DungeonManagerSaveLoadDataStruct) state;
 

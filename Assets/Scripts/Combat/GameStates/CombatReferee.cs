@@ -200,7 +200,6 @@ namespace Vanaring
 
             foreach (var entity in entites) {
                 _allIEs.Add(entity.InitializeEntityIntoCombat());
-
             }
 
             yield return new WaitAll(this, _allIEs.ToArray());

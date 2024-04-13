@@ -141,13 +141,13 @@ namespace Vanaring
         {
             EventBroadcaster?.InvokeEvent<Null>(null,"OnBeforeVisitThisNode");
 
-            if (!IsThisNodeVisited)
+            bool isThisNodeVisisted = IsThisNodeVisited;
+            visistationState = VisitationState.Visiting;
+
+            if (!isThisNodeVisisted)
             {
                 yield return OnVisiteThisNodeFirstTime();
             }
-
-            visistationState = VisitationState.Visiting;
-
 
             if (!IsThisNodeMissionDirty)
             {
@@ -185,6 +185,7 @@ namespace Vanaring
 
         public virtual NodeRuntimeData CaptureNodeData()
         {
+            Debug.Log("" + gameObject.name + "Visite Status is " + visistationState); 
             if (IsCurrentlyVisiting)
             {
                 Debug.Log("Capture Currently visisted in " + gameObject.name);

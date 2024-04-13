@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 
-namespace Vanaring.Assets.Scripts.Utilities.Cutscene_System
+namespace Vanaring 
 {
     [CreateAssetMenu(fileName = "CutsceneContainerSO", menuName = "ScriptableObject/Cutscene/CutsceneContainerSO")]
     public class CutsceneContainerSO : ScriptableObject
     {
-        [Header("Scene with lecture inside it")]
+        [Header("Scene with Activity cutscene inside it")]
         [SerializeField]
         private AssetReferenceT<CutsceneSceneDataSO> _cutsceneSceneAssetRef;
 
