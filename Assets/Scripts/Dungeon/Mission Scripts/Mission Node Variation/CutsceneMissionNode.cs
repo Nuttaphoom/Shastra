@@ -11,13 +11,13 @@ namespace Vanaring
         [SerializeField]
         private CutsceneContainerSO _cutsceneData;
           
-        protected override IEnumerator OnVisiteThisNodeFirstTime()
-        {
-            yield return base.OnVisiteThisNodeFirstTimeOnMission();
-            //    yield return new WaitForSeconds(1.25f);
+        //protected override IEnumerator OnVisiteThisNodeFirstTime()
+        //{
+        //    yield return base.OnVisiteThisNodeFirstTime();
+        //    //    yield return new WaitForSeconds(1.25f);
 
-            //    PersistentSceneLoader.Instance.LoadGeneralScene(_cutsceneData.GetCutsceneSceneDataSO) ;
-        }
+        //    //    PersistentSceneLoader.Instance.LoadGeneralScene(_cutsceneData.GetCutsceneSceneDataSO) ;
+        //}
     }
 
      

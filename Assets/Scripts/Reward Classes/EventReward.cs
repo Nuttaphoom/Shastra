@@ -14,7 +14,6 @@ namespace Vanaring
     public abstract class EventReward
     {
         public abstract IRewardable GetEventRewards() ;
-
         public abstract RewardData GetRewardData();
 
     }
@@ -28,15 +27,22 @@ namespace Vanaring
         [SerializeField]
         private bool _rewardIsSpell = false;
 
+        [SerializeField]
+        private bool _rewardIsCash = false;
+
         [SerializeField, AllowNesting, NaughtyAttributes.ShowIf("RewardIsSpell")]
         private EventReward<SpellActionSO> _spellReward;
 
         [SerializeField, AllowNesting, NaughtyAttributes.ShowIf("RewardIsItem")]
         private EventReward<BackpackItemSO> _itemReward;
 
+        [SerializeField, AllowNesting, NaughtyAttributes.ShowIf("RewardIsCash")]
+        private EventReward<CashRewardableSO> _cashReward; 
+
         #region Getter 
         public bool RewardIsItem => _rewardIsItem;
         public bool RewardIsSpell => _rewardIsSpell;
+        public bool RewardIsCash => _rewardIsCash;  
 
         public EventReward<SpellActionSO> SpellReward
         {
@@ -62,6 +68,9 @@ namespace Vanaring
             }else if (RewardIsSpell)
             {
                 return _spellReward.GetEventRewards() ;
+            }else if (RewardIsCash)
+            {
+                return _cashReward.GetEventRewards() ;
             }
 
             throw new Exception("Reward hasn't been properly assigned"); 
@@ -74,7 +83,7 @@ namespace Vanaring
 
 
     [System.Serializable]
-    public class EventReward<RewardType> : EventReward  where RewardType: ScriptableObject
+    public class EventReward<RewardType> : EventReward   
     {
         [SerializeField]
         private RewardType _rewards;
@@ -103,6 +112,7 @@ namespace Vanaring
         void SubmitReward();
     }
 
+    [Serializable]
     public struct RewardData
     {
         public string RewardName;
