@@ -14,6 +14,7 @@ using UnityEngine.Events;
 using UnityEngine.VFX;
 using Cinemachine;
 using DG.Tweening;
+using System.Runtime.InteropServices;
 
 namespace Vanaring 
 {
@@ -21,11 +22,144 @@ namespace Vanaring
     [Serializable]
     public class CombatEntityAnimationHandler : MonoBehaviour
     {
-        [SerializeField]
         private GameObject _visualMesh ;
 
+        //Pivot Position for Visualization 
+
+        #region Pivot Params
+        
+        private Transform _impactTransform;
+        private Transform _groundTransform;
+        private Transform _aboveHeadTransform;
+        private Transform _hudTransform;
+        private const string CharacterVisualMeshTag = "Character/VisualPivot/CharacterVisualMesh";
+        private const string CharacterImpactPivotTag = "Character/VisualPivot/CharacterImpactPivot";
+        private const string CharacterWorldHUDPivotTag = "Character/VisualPivot/CharacterWorldHUDPivot";
+        private const string CharacterAboveHeadPivotTag = "Character/VisualPivot/CharacterAboveHeadPivot";
+        private const string CharacterGroundPivotTag = "Character/VisualPivot/CharacterGroundPivot";
+
+        private void RecursiveSetUpPivot(Transform child)
+        {
+            if (child.CompareTag(CharacterVisualMeshTag))
+                _visualMesh = child.gameObject;
+
+            if (child.CompareTag(CharacterImpactPivotTag))
+                _impactTransform = child;
+
+            if (child.CompareTag(CharacterWorldHUDPivotTag))
+                _hudTransform = child;
+
+            if (child.CompareTag(CharacterGroundPivotTag))
+                _groundTransform = child;
+
+            if (child.CompareTag(CharacterAboveHeadPivotTag))
+                _aboveHeadTransform = child;
+
+            for (int i = 0; i < child.transform.childCount; i++)
+            {
+                RecursiveSetUpPivot(child.GetChild(i));
+            }
+        }
+        private void SetUpVisualPivotTransform()
+        {
+            for (int i = 0; i < transform.childCount; i++)
+            {
+                Transform child = transform.GetChild(i);
+
+                RecursiveSetUpPivot(child);
+
+                if (child.CompareTag(CharacterVisualMeshTag))
+                    _visualMesh = child.gameObject;
+
+                if (child.CompareTag(CharacterImpactPivotTag))
+                    _impactTransform = child;
+
+                if (child.CompareTag(CharacterWorldHUDPivotTag))
+                    _hudTransform = child;
+
+                if (child.CompareTag(CharacterGroundPivotTag))
+                    _groundTransform = child;
+
+                if (child.CompareTag(CharacterAboveHeadPivotTag))
+                    _aboveHeadTransform = child;
+            }
+
+            if (_visualMesh == null)
+                throw new Exception("Object with tag " + CharacterVisualMeshTag + " can't be FOUND in " + gameObject.name);
+
+
+            if (_impactTransform == null)
+                throw new Exception("Object with tag " + CharacterImpactPivotTag + " can't be FOUND in " + gameObject.name);
+
+            if (_hudTransform == null)
+                throw new Exception("Object with tag " + CharacterWorldHUDPivotTag + " can't be FOUND in " + gameObject.name);
+
+            if (_groundTransform == null)
+                throw new Exception("Object with tag " + CharacterGroundPivotTag + " can't be FOUND in " + gameObject.name);
+
+            if (_aboveHeadTransform == null)
+                throw new Exception("Object with tag " + CharacterAboveHeadPivotTag + " can't be FOUND in " + gameObject.name);
+        }
+    
+        private Transform ImpactTransform
+        {
+            get
+            {
+                if (_impactTransform == null)
+                    SetUpVisualPivotTransform();
+
+                if (_impactTransform == null)
+                    throw new Exception("Impact transform of " + gameObject.name + " can't be found"); 
+
+                return _impactTransform; 
+            }
+        }
+        private Transform HudTransform
+        {
+            get
+            {
+                if (_hudTransform == null)
+                    SetUpVisualPivotTransform();
+
+                if (_hudTransform == null)
+                    throw new Exception("HudTransform of " + gameObject.name + " can't be found");
+
+                return _hudTransform;
+            }
+        }
+
+        private Transform AboveHeadTransform
+        {
+            get
+            {
+                if (_aboveHeadTransform == null)
+                    SetUpVisualPivotTransform();
+
+                if (_aboveHeadTransform == null)
+                    throw new Exception("AboveHeadTransform of " + gameObject.name + " can't be found");
+
+                return _aboveHeadTransform;
+            }
+        }
+        private Transform GroundTransform
+        {
+            get
+            {
+                if (_groundTransform == null)
+                    SetUpVisualPivotTransform();
+
+                if (_groundTransform == null)
+                    throw new Exception("GroundTransform of " + gameObject.name + " can't be found");
+
+                return _groundTransform;
+            }
+        }
+
+        #endregion
+        //////
+
         [SerializeField]
-        public Transform _guiPos;
+        private ParticleSystem _spawnVisualEffect;
 
         [SerializeField]
         public VisualEffect _deadVisualEffect;
@@ -33,26 +167,15 @@ namespace Vanaring
         [SerializeField]
         private string _deadAnimationTrigger = "NONE";
 
-        [SerializeField]
-        private ParticleSystem _spawnVisualEffect;
+        //[Header("Use for specially set where (CastTransform, TarTransform) position will be set to #Can leave blank")]
+        //[SerializeField]
+        //public Transform _timelineAnimationRootLocation ; 
 
-        [SerializeField]
-        private Transform _head_position ;
+        private Animator _animator;
 
-
-        [Header("Use for specially set where (CastTransform, TarTransform) position will be set to #Can leave blank")]
-        [SerializeField]
-        public Transform _timelineAnimationRootLocation ;
 
         #region GETTER
-        public Vector3 GetEntityTimelineAnimationLocation()
-        {
-            if (_timelineAnimationRootLocation == null)
-            {
-                return GetGUISpawnTransform().position;
-            }
-            return _timelineAnimationRootLocation.position  ;
-        }
+        
         public GameObject GetVisualMesh()
         {
             if (_visualMesh == null)
@@ -63,24 +186,49 @@ namespace Vanaring
         }
      
 
+        //Get Pivot 
         public Transform GetGUISpawnTransform()
         {
-            if (_guiPos == null || _guiPos.position == null)
-                throw new Exception("GUI Spawn Position of " + gameObject.name + "hasn't never been assigned");
+            //if (_guiPos == null || _guiPos.position == null)
+            //    throw new Exception("GUI Spawn Position of " + gameObject.name + "hasn't never been assigned");
             
-            return _guiPos ;
+            return HudTransform ;
         }
 
-        
+        public Transform GetTargetIconSpawnPos
+        { 
+            get {
+                return ImpactTransform ; 
+            } 
+        }
 
-      
+        /// <summary>
+        /// return a transform in which Caster or Target position will be set to 
+        /// </summary>
+        /// <returns></returns>
+        public Vector3 GetEntityTimelineAnimationLocation()
+        {
+            //if (_timelineAnimationRootLocation == null)
+            //{
+            //    return GetGUISpawnTransform().position;
+            //}
+            //return _timelineAnimationRootLocation.position;
+
+            return ImpactTransform.position;
+        }
+
+        //////////////
+
+
+
+
         #endregion
-        private Animator _animator;
+
+       
         private void Awake()
         {
-            if (_visualMesh == null)
-                throw new Exception("Visual Mesh  of " + gameObject + " need to be assigned");
- 
+            SetUpVisualPivotTransform(); 
+
             _animator = GetVisualMesh().GetComponent<Animator>();
         }
 
@@ -181,7 +329,7 @@ namespace Vanaring
         {
             if (whereToAttach == "HEAD")
             {
-                return _head_position;
+                return AboveHeadTransform ;
             }
 
             else if (whereToAttach == "CENTERMESH")
@@ -190,7 +338,7 @@ namespace Vanaring
             }
             else if (whereToAttach == "VFXPOS")
             {
-                return _timelineAnimationRootLocation.transform ; 
+                return ImpactTransform ; 
             }
             else
             {

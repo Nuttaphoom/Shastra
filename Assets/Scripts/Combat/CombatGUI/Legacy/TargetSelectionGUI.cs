@@ -82,9 +82,11 @@ namespace Vanaring
 
             foreach (var combatEntity in entities)
             {
+                Vector3 targetPosition = GetIconPositioWithGivenEntity(combatEntity); 
+
                 if (!_instantiatedTargetGUI.ContainsKey(combatEntity))
                 {
-                     _instantiatedTargetGUI.Add(combatEntity, targetGUI.InstantiateTargetGUI(UISpaceSingletonHandler.ObjectToUISpace(combatEntity.CombatEntityAnimationHandler.GetGUISpawnTransform()) , _parent));
+                     _instantiatedTargetGUI.Add(combatEntity, targetGUI.InstantiateTargetGUI(targetPosition, _parent));
                 }
 
                 if (!_instantiatedTargetGUI[combatEntity].activeSelf)
@@ -102,17 +104,19 @@ namespace Vanaring
                 //if (!_instantiatedVFXCircle[combatEntity].activeSelf)
                 //    _instantiatedVFXCircle[combatEntity].SetActive(true);
 
-                targetGUI.SetTargetGUIPosition(_instantiatedTargetGUI[combatEntity], UISpaceSingletonHandler.ObjectToUISpace(combatEntity.CombatEntityAnimationHandler.GetGUISpawnTransform()));
+                targetGUI.SetTargetGUIPosition(_instantiatedTargetGUI[combatEntity], targetPosition);
             }
         }
 
         public void SelectBreakTarget(CombatEntity combatEntity)
         {
+            Vector3 location = GetIconPositioWithGivenEntity(combatEntity);
+
             if (!_instantiatedBreakGUI.ContainsKey(combatEntity))
             {
-                _instantiatedBreakGUI.Add(combatEntity, targetGUI.InstantiateBreakGUI(combatEntity.CombatEntityAnimationHandler.GetGUISpawnTransform().position, _parent));
 
-                Vector3 location = UISpaceSingletonHandler.ObjectToUISpace(combatEntity.CombatEntityAnimationHandler.GetGUISpawnTransform());
+                _instantiatedBreakGUI.Add(combatEntity, targetGUI.InstantiateBreakGUI(location, _parent));
+
                 _instantiatedBreakGUI[combatEntity].transform.position =  location ;// new Vector3(circleTranform.x, 0.03f, circleTranform.z);
             }
 
@@ -121,7 +125,12 @@ namespace Vanaring
                 _instantiatedBreakGUI[combatEntity].SetActive(true);
             }
 
-            targetGUI.SetBreakGUIPosition(_instantiatedBreakGUI[combatEntity], UISpaceSingletonHandler.ObjectToUISpace(combatEntity.GetComponent<CombatEntityAnimationHandler>().GetGUISpawnTransform() ));
+            targetGUI.SetBreakGUIPosition(_instantiatedBreakGUI[combatEntity], location);
+        }
+
+        private Vector3 GetIconPositioWithGivenEntity(CombatEntity entity)
+        {
+            return UISpaceSingletonHandler.ObjectToUISpace(entity.CombatEntityAnimationHandler.GetGUISpawnTransform()); 
         }
 
         public void EndSelectionScheme()
