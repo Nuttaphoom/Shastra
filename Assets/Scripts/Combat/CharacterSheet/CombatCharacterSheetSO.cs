@@ -92,14 +92,13 @@ namespace Vanaring
         /// <summary>
         /// Functions to calculate base secondary attribute with respect to Primary attributes
         /// </summary>
-        public int Get_Base_SecondaryAttribute_MaxHP => AttributeFormulaLocator.CalculateMaxHP(_vitality); // 50 + (_vitality * 14 ) ;
-        public int Get_Base_SecondaryAttribute_MaxMP => AttributeFormulaLocator.CalculateMaxMP(_intellect);// 70 + (_intellect * 4 );
-        public int Get_Base_SecondaryAttribute_PhysicalATK => AttributeFormulaLocator.CalculatePhysicalATK(_strength);// 20 + (_strength * 3) ;
-        public int Get_Base_SecondaryAttribute_MagicalATK => AttributeFormulaLocator.CalculateMagicalATK(_intellect); // 15 + (_intellect * 3);
+        public int Get_Base_SecondaryAttribute_MaxHP => AttributeFormulaLocator.CalculateMaxHP(_vitality);  
+        public int Get_Base_SecondaryAttribute_MaxMP => AttributeFormulaLocator.CalculateMaxMP(_intellect); 
+        public int Get_Base_SecondaryAttribute_PhysicalATK => AttributeFormulaLocator.CalculatePhysicalATK(_strength); 
+        public int Get_Base_SecondaryAttribute_MagicalATK => AttributeFormulaLocator.CalculateMagicalATK(_intellect);  
 
-        public float Get_Base_SecondaryAttribute_Evasion => 100 + ( (_agility )  )  ;
-        public float Get_Base_SecondaryAttribute_ACC => 190 + (_agility ); 
-
+        public float Get_Base_SecondaryAttribute_Evasion => AttributeFormulaLocator.CalculateEvasion(_agility);
+        public float Get_Base_SecondaryAttribute_ACC => AttributeFormulaLocator.CalculateACC(_agility);
         public GameObject GetCombatEntityPrefab
         {
             get

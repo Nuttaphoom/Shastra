@@ -28,14 +28,27 @@ namespace Vanaring.Assets.Scripts.Utilities.StringConstant
         }
         public static int CalculateEvasion(float agility)
         {
-            return (int)(100 + (agility)); 
+            return (int)(100 + (agility * 10 )); 
         }
 
+     
         public static int CalculateACC(float agility)
         {
-            return (int)(190 + (agility));
+            return (int)(100 + ((agility + 9) * 10));
         }
 
-      
+        public static float CalculateHitChance(float attackerACC, float defenderEvasion)
+        {
+            float ret = attackerACC - defenderEvasion;
+            if (ret < 10.0f)
+                ret = 10.0f;
+            else if (ret > 95)
+                ret = 95.0f;
+
+            return ret;
+        }
+
+
+
     }
 }

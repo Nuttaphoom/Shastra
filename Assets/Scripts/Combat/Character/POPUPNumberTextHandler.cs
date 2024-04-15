@@ -1,5 +1,6 @@
 ﻿using System;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Vanaring 
@@ -8,16 +9,13 @@ namespace Vanaring
     public class POPUPNumberTextHandler
     {
         private CombatEntity _entity;
-
-        private int _accumulatedDMG = 0;
-        private int _accumulatedHP = 0; 
+ 
 
         public POPUPNumberTextHandler(CombatEntity _owner)
         {
-            
             _entity = _owner;
-            _entity.SubOnDamageVisualEvent(OnHPATKVisualUpdate);
-            _entity.SubOnHealVisualEvent(OnHPATKVisualUpdate);
+            _entity.SubOnDamageVisualEvent(OnDamaged_DisplayAccumulatedDMG);
+            _entity.SubOnHealVisualEvent(OnHeal_DisplayAccumulatedHeal);
             _entity.SubOnOnAilmentAppliedEventChannel(OnAilmentAppliedAttemp);
 
         }
@@ -25,8 +23,8 @@ namespace Vanaring
 
         ~POPUPNumberTextHandler()
         {
-            _entity.UnSubOnDamageVisualEvent(OnHPATKVisualUpdate);
-            _entity.UnSubOnHealVisualEvent(OnHPATKVisualUpdate);
+            _entity.UnSubOnDamageVisualEvent(OnDamaged_DisplayAccumulatedDMG);
+            _entity.UnSubOnHealVisualEvent(OnHeal_DisplayAccumulatedHeal);
             _entity.UnSubOnOnAilmentAppliedEventChannel(OnAilmentAppliedAttemp);
         }
 
@@ -36,33 +34,26 @@ namespace Vanaring
             {
                 if (data.ResistantBlocked)
                 {
-                    POPUPNumberTextManager.Instance.DisplayPOPUPText(_entity, "RESIST");
+                    POPUPNumberTextManager.Instance.DisplayGeneralPOPUPText(_entity, "RESIST");
                 }else
                 {
-                    POPUPNumberTextManager.Instance.DisplayPOPUPText(_entity, "MISS") ;
+                    POPUPNumberTextManager.Instance.DisplayGeneralPOPUPText(_entity, "MISS") ;
                 }
             }
         }
 
-        private void OnHPATKVisualUpdate(int DONTUSE)
+        private void OnDamaged_DisplayAccumulatedDMG(int finalDMG)
         {
-            POPUPNumberTextManager.Instance.DisplayDPOPUPDamageHealText(_accumulatedDMG, _accumulatedHP, _entity);
-            _accumulatedDMG = 0;
-            _accumulatedHP = 0;
+            Debug.Log("final dmg : " + finalDMG);
+            POPUPNumberTextManager.Instance.DisplayDamageText(finalDMG, _entity);
+  
         }
 
-        public void AccumulateDMG(int dmg)
-        {
-            //If dmg is negative, make it positive to displayc correct 
-            if (dmg < 0) 
-                dmg = Mathf.Abs(dmg); 
-            _accumulatedDMG += dmg; 
+        private void OnHeal_DisplayAccumulatedHeal(int finalhHP) {    
+            POPUPNumberTextManager.Instance.DiisplayHealText(finalhHP, _entity);
         }
 
-        public void AccumulateHP(int hp)
-        {
-            _accumulatedHP += hp; 
-        }
+             
 
         
     }

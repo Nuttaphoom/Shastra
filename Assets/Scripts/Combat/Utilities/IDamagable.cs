@@ -24,7 +24,7 @@ namespace Vanaring
     public interface IDamagable
     {
         public void LogicHurt(CombatEntity attacker, StatModifier statsModm       );
-        public IEnumerator VisualHurt(string animationTrigger = "Hurt");
+        public IEnumerator VisualHurt(int finalDMG,string animationTrigger = "Hurt");
 
 
 

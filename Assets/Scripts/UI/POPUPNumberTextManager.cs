@@ -50,33 +50,31 @@ namespace Vanaring
         private DestroyOnTimer _normalTimerPrefab; 
         // Start is called before the first frame update
 
-        public void DisplayDPOPUPDamageHealText(int accumulatedDMG, int accumulatedHP, CombatEntity showToThisEntity )
+
+        public void DisplayDamageText(int dmgToDisplay , CombatEntity showToThisEntity)
         {
-            GameObject textObj; 
-
-            if (accumulatedDMG > 0)
-            {
-                textObj = InstantiatedTextPrefab(_outputDMGTimerPrefab.gameObject, accumulatedDMG.ToString(), showToThisEntity);
-                textObj.gameObject.SetActive(true);
-                AddNewEntityToTextList(showToThisEntity, textObj.gameObject);
-
-            }
-
-            if (accumulatedHP > 0)
-            {
-                textObj = InstantiatedTextPrefab(_outputHealTimerPrefab.gameObject, accumulatedHP.ToString(), showToThisEntity);
-                textObj.gameObject.SetActive(true);
-                AddNewEntityToTextList(showToThisEntity, textObj.gameObject);
-
-            }
+            dmgToDisplay = Mathf.Abs(dmgToDisplay); 
+            DisplayDPOPUPDamageHealText(dmgToDisplay.ToString(), showToThisEntity, _outputDMGTimerPrefab); 
         }
-
-        public void DisplayPOPUPText(CombatEntity showToThisEntity, string s)
+        public void DiisplayHealText(int healToDisplay, CombatEntity showToThisEntity)
         {
-            var textObj = InstantiatedTextPrefab(_normalTimerPrefab.gameObject, s, showToThisEntity);
+            healToDisplay = Mathf.Abs(healToDisplay);
+            DisplayDPOPUPDamageHealText(healToDisplay.ToString(), showToThisEntity, _outputHealTimerPrefab);
+        }
+        public void DisplayGeneralPOPUPText(CombatEntity showToThisEntity, string text)
+        {
+            DisplayDPOPUPDamageHealText(text, showToThisEntity, _normalTimerPrefab);
+        }
+        private void DisplayDPOPUPDamageHealText(string text, CombatEntity showToThisEntity , DestroyOnTimer textPrefab)
+        {
+            GameObject textObj;
+            textObj = InstantiatedTextPrefab(textPrefab.gameObject, text, showToThisEntity);
             textObj.gameObject.SetActive(true);
             AddNewEntityToTextList(showToThisEntity, textObj.gameObject);
+            
         }
+
+    
 
         public GameObject InstantiatedTextPrefab(GameObject template, string text, CombatEntity showToThisEntity)
         {

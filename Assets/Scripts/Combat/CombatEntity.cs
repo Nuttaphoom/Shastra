@@ -14,6 +14,7 @@ using static UnityEngine.EventSystems.EventTrigger;
 using static UnityEngine.GraphicsBuffer;
 using Kryz.CharacterStats;
 using Vanaring.Assets.Scripts.Combat.Utilities;
+using Vanaring.Assets.Scripts.Utilities.StringConstant;
 
 namespace Vanaring
 {
@@ -67,6 +68,7 @@ namespace Vanaring
 
                 _eventBroadcaster.OpenChannel<int>("OnHeal");
                 _eventBroadcaster.OpenChannel<int>("OnDamage");
+                _eventBroadcaster.OpenChannel<bool>("OnDodgeAttack");
                 _eventBroadcaster.OpenChannel<CombatEntity>("OnTakeControl");
                 _eventBroadcaster.OpenChannel<CombatEntity>("OnTakeControlLeave");
                 _eventBroadcaster.OpenChannel<EntityActionPair>("OnPerformAction");
@@ -74,7 +76,7 @@ namespace Vanaring
 
             return _eventBroadcaster;
         }
-
+        
         public void SubOnAilmentRecoverEventChannel(UnityAction<EntityAilmentEffectPair> func)
         {
             _ailmentHandler.SubOnAilmentRecoverEventChannel(func);
@@ -89,10 +91,13 @@ namespace Vanaring
         {
             _statusEffectHandler.SubOnStatusEffectApplied(func); 
         }
-  
         public void SubOnDamageVisualEvent(UnityAction<int> argc)
         {
             GetEventBroadcaster().SubEvent(argc, "OnDamage");
+        }
+        public void SubOnDodgeAttackVisualEvent(UnityAction<Null> argc)
+        {
+            GetEventBroadcaster().SubEvent(argc, "OnDodgeAttack");
         }
 
         public void SubOnPerformAction(UnityAction<EntityActionPair> argc)
@@ -127,8 +132,12 @@ namespace Vanaring
         public void UnSubOnPerformAction(UnityAction<EntityActionPair> argc)
         {
             GetEventBroadcaster().UnSubEvent(argc, "OnPerformAction");
+        }            
+        public void UnSubOnDodgeAttackVisualEvent(UnityAction<Null> argc)
+        {
+            
+            GetEventBroadcaster().UnSubEvent(argc, "OnDodgeAttack");
         }
-
         public void UnSubOnDamageVisualEvent(UnityAction<int> argc)
         {
             GetEventBroadcaster().UnSubEvent(argc, "OnDamage");
@@ -314,24 +323,48 @@ namespace Vanaring
 
         public void LogicHurt(CombatEntity attacker, StatModifier mod      )
         {
-            float hitchance = attacker._runtimeCharacterStatsAccumulator.GetAccuracyAmount() -  _runtimeCharacterStatsAccumulator.GetEvasionAmount() ; 
+            //Calculate hit chance 
+            float attackerACC = attacker._runtimeCharacterStatsAccumulator.GetAccuracyAmount();
+            float defenderEVS = _runtimeCharacterStatsAccumulator.GetEvasionAmount(); 
 
-            _runtimeCharacterStatsAccumulator.ModifyHPStat(mod);
-            _dmgOutputPopHanlder.AccumulateDMG((int) mod.Value); 
+            float hitchance = AttributeFormulaLocator.CalculateHitChance(attackerACC , defenderEVS);
 
-            if (_runtimeCharacterStatsAccumulator.GetHPAmount() <= 0)
+            int hitDice = UnityEngine.Random.Range(0,100) ; 
+
+            //Check if attack hit sucessfully 
+            //Hit 
+            if (hitDice < hitchance)
             {
-                _isDead = true;
+                _runtimeCharacterStatsAccumulator.ModifyHPStat(mod);
+                //Right now we don't use complex dmg formula 
+                int finalDMG = (int)mod.Value ; 
+                
+                //_dmgOutputPopHanlder.AccumulateDMG(finalDMG);
+
+                if (_runtimeCharacterStatsAccumulator.GetHPAmount() <= 0)
+                {
+                    _isDead = true;
+                }
+
+                StartCoroutine(VisualHurt(finalDMG, "Hurt"));
             }
 
-            StartCoroutine(VisualHurt( "Hurt")) ;
+            //Miss 
+            else
+            {
+                Debug.Log("Miss with " + hitDice + " > " + hitchance);
+                GetEventBroadcaster().InvokeEvent<Null>(null, "OnDodgeAttack");
+            }
+            
+            
+            
 
         }
 
         public void LogicHeal(StatModifier statModifier)
         {
             StatsAccumulator.ModifyHPStat(statModifier);
-            _dmgOutputPopHanlder.AccumulateHP((int) statModifier.Value);
+            //_dmgOutputPopHanlder.AccumulateHP((int) statModifier.Value);
 
             StartCoroutine(VisualHeal((int) statModifier.Value )); 
         }
@@ -341,7 +374,7 @@ namespace Vanaring
             GetEventBroadcaster().InvokeEvent<int>((int)healAmount, "OnHeal");
             yield return null; 
         }
-        public IEnumerator VisualHurt(string animationTrigger = "No Animation" )
+        public IEnumerator VisualHurt(int dmg, string animationTrigger = "No Animation" )
         {
             bool _callingDeadScheme = false;
 
@@ -356,8 +389,8 @@ namespace Vanaring
                 }
                 _coroutine.Add(_combatEntityAnimationHandler.PlayTriggerAnimation(animationTrigger));
             }
-
-            GetEventBroadcaster().InvokeEvent<int>((int)0, "OnDamage");
+            Debug.Log("VisualHurt : " + dmg);
+            GetEventBroadcaster().InvokeEvent(dmg, "OnDamage");
 
             yield return new WaitAll(this, _coroutine.ToArray());
 
@@ -379,8 +412,6 @@ namespace Vanaring
 
             //1.) Do apply dmg 
             float realDMG = VanaringMathConst.GetATKWithNoise(scaling, StatsAccumulator.GetPhysicalATKAmount()) ;
-
-
 
             StatModifier statsModifer = new StatModifier(-realDMG, StatModType.Flat) ;
             
