@@ -17,6 +17,9 @@ namespace Vanaring
         private MissionNodeTransitionManager _missionNodeTransitionManager;
 
         [SerializeField]
+        private MissionPartyAnimationManager _missionPartyAnimation;
+
+        [SerializeField]
         private GameObject allCompanionUI;
 
         #region GETTER
@@ -55,7 +58,7 @@ namespace Vanaring
                 List<IEnumerator> _allIEs = new List<IEnumerator>();
 
                 _allIEs.Add(OnCameraMoveToNode(nodeToVisit));
-                _allIEs.Add(OnCharacterMoveToNode(nodeToVisit));
+                _allIEs.Add(_missionPartyAnimation.OnCharacterMoveToNode(nodeToVisit));
 
                 yield return new WaitAll(this, _allIEs.ToArray());
 
@@ -96,22 +99,6 @@ namespace Vanaring
 
                 _cameraPivot.transform.position = Vector3.Lerp(prevCamPos, nodeToVisit.transform.position, progression);
                 progression += Time.deltaTime / 2;
-
-                yield return null;
-
-            }
-        }
-
-        private IEnumerator OnCharacterMoveToNode(BaseMissionNode nodeToVisit)
-        {
-            Vector3 prevUIPos = allCompanionUI.transform.position;
-            float progression = 0;
-
-            while (progression < 1)
-            {
-
-                allCompanionUI.transform.position = Vector3.Lerp(prevUIPos, nodeToVisit.transform.position, progression);
-                progression += Time.deltaTime / 1.7f;
 
                 yield return null;
 
