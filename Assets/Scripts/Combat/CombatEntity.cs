@@ -51,7 +51,6 @@ namespace Vanaring
         /// </summary>
         private bool _isDead = false ;
         private bool _isExhausted = true ;
-
         public bool IsDead => _isDead;
         public bool IsExhausted => _isExhausted;
 
@@ -68,7 +67,7 @@ namespace Vanaring
 
                 _eventBroadcaster.OpenChannel<int>("OnHeal");
                 _eventBroadcaster.OpenChannel<int>("OnDamage");
-                _eventBroadcaster.OpenChannel<bool>("OnDodgeAttack");
+                _eventBroadcaster.OpenChannel<Null>("OnDodgeAttack");
                 _eventBroadcaster.OpenChannel<CombatEntity>("OnTakeControl");
                 _eventBroadcaster.OpenChannel<CombatEntity>("OnTakeControlLeave");
                 _eventBroadcaster.OpenChannel<EntityActionPair>("OnPerformAction");

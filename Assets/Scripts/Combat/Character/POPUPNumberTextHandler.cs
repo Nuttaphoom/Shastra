@@ -17,7 +17,7 @@ namespace Vanaring
             _entity.SubOnDamageVisualEvent(OnDamaged_DisplayAccumulatedDMG);
             _entity.SubOnHealVisualEvent(OnHeal_DisplayAccumulatedHeal);
             _entity.SubOnOnAilmentAppliedEventChannel(OnAilmentAppliedAttemp);
-
+            _entity.SubOnDodgeAttackVisualEvent(OnDodge_DisplayAttackDodge); 
         }
 
 
@@ -26,6 +26,8 @@ namespace Vanaring
             _entity.UnSubOnDamageVisualEvent(OnDamaged_DisplayAccumulatedDMG);
             _entity.UnSubOnHealVisualEvent(OnHeal_DisplayAccumulatedHeal);
             _entity.UnSubOnOnAilmentAppliedEventChannel(OnAilmentAppliedAttemp);
+            _entity.SubOnDodgeAttackVisualEvent(OnDodge_DisplayAttackDodge);
+
         }
 
         private void OnAilmentAppliedAttemp(EntityAilmentApplierEffect data)
@@ -42,6 +44,15 @@ namespace Vanaring
             }
         }
 
+        /// <summary>
+        /// Call in Defender 
+        /// </summary>
+        /// <param name="n"></param>
+        private void OnDodge_DisplayAttackDodge(Null n)
+        {
+            POPUPNumberTextManager.Instance.DisplayDodgeText(_entity) ;
+        }
+
         private void OnDamaged_DisplayAccumulatedDMG(int finalDMG)
         {
             Debug.Log("final dmg : " + finalDMG);
@@ -50,7 +61,7 @@ namespace Vanaring
         }
 
         private void OnHeal_DisplayAccumulatedHeal(int finalhHP) {    
-            POPUPNumberTextManager.Instance.DiisplayHealText(finalhHP, _entity);
+            POPUPNumberTextManager.Instance.DisplayHealText(finalhHP, _entity);
         }
 
              

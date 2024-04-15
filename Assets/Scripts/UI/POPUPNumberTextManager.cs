@@ -53,30 +53,35 @@ namespace Vanaring
 
         public void DisplayDamageText(int dmgToDisplay , CombatEntity showToThisEntity)
         {
-            dmgToDisplay = Mathf.Abs(dmgToDisplay); 
-            DisplayDPOPUPDamageHealText(dmgToDisplay.ToString(), showToThisEntity, _outputDMGTimerPrefab); 
+            dmgToDisplay = Mathf.Abs(dmgToDisplay);
+            DisplayPopUpText(dmgToDisplay.ToString(), showToThisEntity, _outputDMGTimerPrefab); 
         }
-        public void DiisplayHealText(int healToDisplay, CombatEntity showToThisEntity)
+        public void DisplayHealText(int healToDisplay, CombatEntity showToThisEntity)
         {
-            healToDisplay = Mathf.Abs(healToDisplay);
-            DisplayDPOPUPDamageHealText(healToDisplay.ToString(), showToThisEntity, _outputHealTimerPrefab);
+            healToDisplay = Mathf.Abs(healToDisplay) ;
+            DisplayPopUpText(healToDisplay.ToString(), showToThisEntity, _outputHealTimerPrefab);
         }
+        public void DisplayDodgeText(CombatEntity showToThisEntity)
+        {
+            DisplayPopUpText("DODGE", showToThisEntity, _normalTimerPrefab); 
+        }
+
         public void DisplayGeneralPOPUPText(CombatEntity showToThisEntity, string text)
         {
-            DisplayDPOPUPDamageHealText(text, showToThisEntity, _normalTimerPrefab);
+            DisplayPopUpText(text, showToThisEntity, _normalTimerPrefab);
         }
-        private void DisplayDPOPUPDamageHealText(string text, CombatEntity showToThisEntity , DestroyOnTimer textPrefab)
+
+
+        private void DisplayPopUpText(string text, CombatEntity showToThisEntity, DestroyOnTimer textPrefab)
         {
             GameObject textObj;
             textObj = InstantiatedTextPrefab(textPrefab.gameObject, text, showToThisEntity);
             textObj.gameObject.SetActive(true);
             AddNewEntityToTextList(showToThisEntity, textObj.gameObject);
-            
+
         }
 
-    
-
-        public GameObject InstantiatedTextPrefab(GameObject template, string text, CombatEntity showToThisEntity)
+        private GameObject InstantiatedTextPrefab(GameObject template, string text, CombatEntity showToThisEntity)
         {
             GameObject ret = MonoBehaviour.Instantiate(template, transform);
             ret.GetComponent<TextMeshProUGUI>().text = text;
