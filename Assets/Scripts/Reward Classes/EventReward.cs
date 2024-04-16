@@ -11,6 +11,7 @@ using JetBrains.Annotations;
 using static UnityEngine.InputSystem.LowLevel.InputStateHistory;
 namespace Vanaring
 {
+    
     public abstract class EventReward
     {
         public abstract IRewardable GetEventRewards() ;

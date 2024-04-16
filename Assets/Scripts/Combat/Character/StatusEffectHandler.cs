@@ -13,12 +13,9 @@ using Unity.VisualScripting;
 
 namespace Vanaring 
 {
-  
-
     [Serializable]
     public class StatusEffectHandler
     {
-
         #region EventBroadcaster Methods 
         private EventBroadcaster _eventBroadcaster;
         private EventBroadcaster GetEventBroadcaster()
