@@ -43,8 +43,9 @@ namespace Vanaring
 
         private POPUPNumberTextHandler _dmgOutputPopHanlder;
 
-        protected AilmentHandler _ailmentHandler; 
+        protected AilmentHandler _ailmentHandler;
 
+        
 
         /// <summary>
         /// TODO : these IsDead, Is.... variables should be removed

@@ -47,10 +47,10 @@ namespace Vanaring
             float Evasion = levelAttributeHandler.GetSecondaryAttribute_Evasion;
 
             _characterSecondaryAttributes.Add(ECharacterSecondaryAttributes.HP, new CharacterStat(runtimePartyMember.GetCurrentPartyMemberHP, MaxHP) ) ;
-            _characterSecondaryAttributes.Add(ECharacterSecondaryAttributes.PhysicalATK, new CharacterStat(PhysicalATK, PhysicalATK));
-            _characterSecondaryAttributes.Add(ECharacterSecondaryAttributes.MagicalATK, new CharacterStat(MagicalATK, MagicalATK));
-            _characterSecondaryAttributes.Add(ECharacterSecondaryAttributes.Accuracy, new CharacterStat(ACC, ACC))  ;
-            _characterSecondaryAttributes.Add(ECharacterSecondaryAttributes.Evasion, new CharacterStat(Evasion, Evasion)) ;
+            _characterSecondaryAttributes.Add(ECharacterSecondaryAttributes.PhysicalATK, new CharacterStat(PhysicalATK));
+            _characterSecondaryAttributes.Add(ECharacterSecondaryAttributes.MagicalATK, new CharacterStat(MagicalATK));
+            _characterSecondaryAttributes.Add(ECharacterSecondaryAttributes.Accuracy, new CharacterStat(ACC))  ;
+            _characterSecondaryAttributes.Add(ECharacterSecondaryAttributes.Evasion, new CharacterStat(Evasion)) ;
 
 
         }
@@ -70,13 +70,24 @@ namespace Vanaring
 
 
             _characterSecondaryAttributes.Add(ECharacterSecondaryAttributes.HP, new CharacterStat(MaxHP, MaxHP));
-            _characterSecondaryAttributes.Add(ECharacterSecondaryAttributes.PhysicalATK, new CharacterStat(PhysicalATK, PhysicalATK));
-            _characterSecondaryAttributes.Add(ECharacterSecondaryAttributes.MagicalATK, new CharacterStat(MagicalATK, MagicalATK));
-            _characterSecondaryAttributes.Add(ECharacterSecondaryAttributes.Accuracy, new CharacterStat(ACC, ACC));
-            _characterSecondaryAttributes.Add(ECharacterSecondaryAttributes.Evasion, new CharacterStat(Evasion, Evasion)); 
+            _characterSecondaryAttributes.Add(ECharacterSecondaryAttributes.PhysicalATK, new CharacterStat(PhysicalATK));
+            _characterSecondaryAttributes.Add(ECharacterSecondaryAttributes.MagicalATK, new CharacterStat(MagicalATK));
+            _characterSecondaryAttributes.Add(ECharacterSecondaryAttributes.Accuracy, new CharacterStat(ACC));
+            _characterSecondaryAttributes.Add(ECharacterSecondaryAttributes.Evasion, new CharacterStat(Evasion)); 
 
         }
 
+        public void AddModifierSecondaryAtttributes(ECharacterSecondaryAttributes type, StatModifier mod)
+        {
+            _characterSecondaryAttributes[type].AddModifier(mod);
+
+            float ret = _characterSecondaryAttributes[ECharacterSecondaryAttributes.PhysicalATK].Value;
+            Debug.Log("Physical atk after applied is " + _characterSecondaryAttributes[ECharacterSecondaryAttributes.PhysicalATK].Value);
+        }
+        public void RemoveModifierSecondaryAttributes(ECharacterSecondaryAttributes type, StatModifier mod)
+        {
+            _characterSecondaryAttributes[type].RemoveModifier(mod);
+        }
 
 
         #region ATKStatsManipulationMethod  
@@ -116,7 +127,7 @@ namespace Vanaring
 
         public float GetPhysicalATKAmount()
         {
-            float ret = _characterSecondaryAttributes[ECharacterSecondaryAttributes.PhysicalATK].Value ; 
+            float ret = _characterSecondaryAttributes[ECharacterSecondaryAttributes.PhysicalATK].Value ;
             return ret ;
         }
         #endregion

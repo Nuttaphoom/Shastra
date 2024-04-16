@@ -6,6 +6,7 @@ using UnityEngine;
 using System.Diagnostics.Eventing.Reader;
 using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEditor;
+using Unity.VisualScripting;
 
 namespace Vanaring 
 {
@@ -103,6 +104,7 @@ namespace Vanaring
         #region Event Effect
         public virtual IEnumerator OnStatusEffectApplied(CombatEntity applier)
         {
+            Debug.Log("on status effect applied in parent");
             yield return null; 
         }
 
@@ -140,6 +142,7 @@ namespace Vanaring
 
         public bool IsExpired()
         {
+            Debug.Log("status effect with ttl : " + _timeToLive);
             return _timeToLive <= 0.0f;
         }
 

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Unity.Android.Types;
 using UnityEngine;
 using static UnityEngine.EventSystems.EventTrigger;
 
@@ -16,9 +17,9 @@ namespace Vanaring
         private ControlableEntityActionsRegistry _controlableEntityActionRegistry;
 
         [SerializeField]
-        private RuntimePartyMember _runtimePartyMemberData; 
-     
+        private RuntimePartyMember _runtimePartyMemberData;
 
+       
         public void LinkPartyMemberToThisEntity(RuntimePartyMember partyMember)
         {
             _runtimePartyMemberData = partyMember; 

@@ -25,6 +25,7 @@ namespace Vanaring
                 _eventBroadcaster = new EventBroadcaster();
 
                 _eventBroadcaster.OpenChannel<EntityStatusEffectPair>("OnStatusEffectApplied");
+                _eventBroadcaster.OpenChannel<StatusRuntimeEffect>("OnStatusEffectExpired");
             }
 
             return _eventBroadcaster;
@@ -32,6 +33,16 @@ namespace Vanaring
         public void SubOnStatusEffectApplied(UnityAction<EntityStatusEffectPair> func)
         {
             GetEventBroadcaster().SubEvent(func,"OnStatusEffectApplied");
+        }
+
+        public void SubOnStatusEffectExpired(UnityAction<EntityStatusEffectPair> func)
+        {
+            GetEventBroadcaster().SubEvent(func, "OnStatusEffectExpired");
+        }
+
+        public void UnSubOnStatusEffectExpired(UnityAction<EntityStatusEffectPair> func)
+        {
+            GetEventBroadcaster().UnSubEvent(func, "OnStatusEffectExpired");
         }
 
         public void UnSubOnStatusEffectApplied(UnityAction<EntityStatusEffectPair> func)
@@ -72,38 +83,51 @@ namespace Vanaring
         /// </summary>
         /// <param name="factory"></param>
         /// <returns></returns>
-        private void LogicApplyNewEffect(StatusRuntimeEffectFactorySO factory, CombatEntity applier)
+        private IEnumerator LogicApplyNewEffect(StatusRuntimeEffectFactorySO factory, CombatEntity applier)
         {
-             
-            StatusRuntimeEffect effect = factory.Factorize(new List<CombatEntity>() { _appliedEntity }) as StatusRuntimeEffect ;
+            StatusRuntimeEffect effect = factory.Factorize(new List<CombatEntity>() { _appliedEntity }) as StatusRuntimeEffect;
 
             string key = factory.Property.StackID();
 
-            if (! _effects.ContainsKey(key))
+            if (!_effects.ContainsKey(key))
             {
                 _effects.Add(key, new List<StatusRuntimeEffect>());
-                _effects[key].Add(effect);
-                return; 
-            }
 
-            if (factory.Property.Stackable)
+
+            }
+             
+
+                
+            if (_effects[key].Count == 0)
             {
                 _effects[key].Add(effect);
+                
+                yield return effect.OnStatusEffectApplied(applier);   
             }
-            else if (factory.Property.Overwrite)
+            
+            else if (factory.Property.Stackable)
             {
-                while (_effects[key].Count > 0)
+                _effects[key].Add(effect); 
+                
+                yield return effect.OnStatusEffectApplied(applier);   
+            }
+            
+            else if (factory.Property.Overwrite) 
+            {
+                while (_effects[key].Count > 0)   
                     _effects[key].RemoveAt(0);
 
-                _effects[key].Add(effect);
+                _effects[key].Add(effect);                
+                yield return effect.OnStatusEffectApplied(applier);
             }
 
-            effect.OnStatusEffectApplied(applier) ; 
+             
+
         }
 
         public IEnumerator ApplyNewEffect(StatusRuntimeEffectFactorySO statusEffectFactory, StatusEffectApplierRuntimeEffect applierFactory, CombatEntity applier)
         {
-            LogicApplyNewEffect(statusEffectFactory, applier);
+            yield return LogicApplyNewEffect(statusEffectFactory, applier);
 
             GetEventBroadcaster().InvokeEvent(new EntityStatusEffectPair()
             {
@@ -187,7 +211,11 @@ namespace Vanaring
                         //TODO - Remove status effect visually
                         yield return statusEffect.OnStatusEffecExpire(_appliedEntity);
                         _effects[key].RemoveAt(i);
-                        i--;
+                        i--; 
+
+                        if (_effects[key].Count == 0)
+                            GetEventBroadcaster().InvokeEvent(statusEffect , "OnStatusEffectExpired");
+
                         continue;
                     }
                 }

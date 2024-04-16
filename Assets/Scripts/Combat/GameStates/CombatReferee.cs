@@ -157,8 +157,6 @@ namespace Vanaring
                 ControlableEntity newEntity = partyMember.InitializeCombatEntity as ControlableEntity ;
                 newEntity.LinkPartyMemberToThisEntity(partyMember); 
                 entities.Add(newEntity) ;
-
-
             }
 
 

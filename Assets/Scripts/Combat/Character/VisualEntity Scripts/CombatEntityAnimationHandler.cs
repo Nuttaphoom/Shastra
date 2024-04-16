@@ -187,21 +187,19 @@ namespace Vanaring
      
 
         //Get Pivot 
-        public Transform GetGUISpawnTransform()
+        public Transform GetHUDSpawnTransform()
         {
             //if (_guiPos == null || _guiPos.position == null)
             //    throw new Exception("GUI Spawn Position of " + gameObject.name + "hasn't never been assigned");
             
             return HudTransform ;
         }
-
-        public Transform GetTargetIconSpawnPos
-        { 
-            get {
-                return ImpactTransform ; 
-            } 
+        public Transform GetTargetIconTransform()
+        {
+            return ImpactTransform; 
         }
 
+      
         /// <summary>
         /// return a transform in which Caster or Target position will be set to 
         /// </summary>

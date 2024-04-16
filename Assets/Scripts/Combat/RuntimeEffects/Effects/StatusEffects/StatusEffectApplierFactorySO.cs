@@ -10,7 +10,7 @@ using UnityEngine.VFX;
 
 namespace Vanaring
 {
-    [CreateAssetMenu(fileName = "StatusEffectApplierFactorySO", menuName = "ScriptableObject/RuntimeEffect/StatusEffectApplierFactorySO")]
+    [CreateAssetMenu(fileName = "StatusEffectApplierFactorySO", menuName = "ScriptableObject/RuntimeEffect/StatusEffect/StatusEffectApplierFactorySO")]
     public class StatusEffectApplierFactorySO : RuntimeEffectFactorySO
     {
         [SerializeField]
@@ -39,6 +39,7 @@ namespace Vanaring
     {
         protected List<StatusRuntimeEffectFactorySO> _effects;
         private Comment _comment_on_applied;
+        private Comment _comment_on_expired;
 
 
         public StatusEffectApplierRuntimeEffect(StatusEffectApplierFactorySO applierSO, List<StatusRuntimeEffectFactorySO> effects)
@@ -54,6 +55,7 @@ namespace Vanaring
                 List<IEnumerator> coroutines = new List<IEnumerator>();
                 foreach (StatusRuntimeEffectFactorySO effect in _effects)
                 {
+
                     StatusRuntimeEffectFactorySO eff = effect;
                     coroutines.Add(target.ApplyNewEffect(effect,this, caster)); 
                 }
@@ -65,7 +67,7 @@ namespace Vanaring
         }
 
         public Comment GetCommentOnApplied => _comment_on_applied;
-
+        public Comment GetCommentOnExpired => _comment_on_expired; 
 
 
 
