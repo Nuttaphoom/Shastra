@@ -42,7 +42,6 @@ namespace Vanaring
 
         public override IEnumerator OnStatusEffectApplied(CombatEntity applier)
         {
-            Debug.Log("add physical mod because of status");
             foreach (var target in _targets)
             {
                 target.StatsAccumulator.AddModifierSecondaryAtttributes(secondaryAttributeType, statsMod);
