@@ -35,7 +35,8 @@ namespace Vanaring
 
         private void OnDisable()
         {
-            CombatReferee.Instance.UnSubOnCombatPreparation(LoadNewEntityIntoHUD);
+            if (CombatReferee.Instance != null)
+                CombatReferee.Instance.UnSubOnCombatPreparation(LoadNewEntityIntoHUD);
         }
 
         private List<CombatWindowGUI> GetAllValidWindows()
@@ -56,6 +57,8 @@ namespace Vanaring
                 entity.SubOnTakeControlEvent(SetUpWindows);
                 entity.SubOnTakeControlLeaveEvent(CloseWindow);
             }
+
+
         }
 
         #region PrivateMethod

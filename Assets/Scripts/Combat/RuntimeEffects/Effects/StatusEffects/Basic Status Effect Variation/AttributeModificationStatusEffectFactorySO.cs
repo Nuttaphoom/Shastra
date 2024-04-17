@@ -51,7 +51,6 @@ namespace Vanaring
         }
         public override IEnumerator OnStatusEffecExpire(CombatEntity caster)
         {
-            Debug.Log("Remove physical mod because of expiration");
             yield return base.OnStatusEffecExpire(caster);
             foreach (var target in _targets)
                 target.StatsAccumulator.RemoveModifierSecondaryAttributes(secondaryAttributeType, statsMod);

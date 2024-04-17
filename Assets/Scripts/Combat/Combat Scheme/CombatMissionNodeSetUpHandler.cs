@@ -12,7 +12,8 @@ namespace Vanaring
         private bool _onDebugMode = false;
 
         [SerializeField, AllowNesting, NaughtyAttributes.ShowIf("_onDebugMode")]
-        private EntityLoaderPoolSO _debugPool; 
+        private EntityLoaderPoolSO _debugPool;
+ 
 
         private CombatDungeonNodeLoaderData _combatDungeonNodeLoaderData ;
 
@@ -21,6 +22,7 @@ namespace Vanaring
             if (_onDebugMode)
             {
                 FindObjectOfType<EntityLoader>().ReceiveEntityLoaderPool(_debugPool);
+
             }
         }
         private void Start  ()
@@ -41,6 +43,7 @@ namespace Vanaring
 
             if (! _onDebugMode)
             {
+
                 _combatDungeonNodeLoaderData = (PersistentSceneLoader.Instance.ExtractSavedData<CombatDungeonNodeLoaderData>("CombatDungeonNodeDataUser") ).GetData() ;  
 
                 //Use data from CombatNode and set up those data before Initialize anything 

@@ -81,8 +81,6 @@ namespace Vanaring
         {
             _characterSecondaryAttributes[type].AddModifier(mod);
 
-            float ret = _characterSecondaryAttributes[ECharacterSecondaryAttributes.PhysicalATK].Value;
-            Debug.Log("Physical atk after applied is " + _characterSecondaryAttributes[ECharacterSecondaryAttributes.PhysicalATK].Value);
         }
         public void RemoveModifierSecondaryAttributes(ECharacterSecondaryAttributes type, StatModifier mod)
         {
@@ -91,16 +89,16 @@ namespace Vanaring
 
 
         #region ATKStatsManipulationMethod  
-        public void ModifyPhysicalATKAmount(StatModifier mod)
-        {
-            //_characterStats[ECharacterStatType.ATK].ModifyValue(atk,true,true) ;
-            _characterSecondaryAttributes[ECharacterSecondaryAttributes.PhysicalATK].AddModifier(mod); 
-        }
+        //public void ModifyPhysicalATKAmount(StatModifier mod)
+        //{
+        //    //_characterStats[ECharacterStatType.ATK].ModifyValue(atk,true,true) ;
+        //    _characterSecondaryAttributes[ECharacterSecondaryAttributes.PhysicalATK].AddModifier(mod); 
+        //}
 
-        public void RemoveModifyPhysicalATK(StatModifier mod)
-        {
-            _characterSecondaryAttributes[ECharacterSecondaryAttributes.PhysicalATK].RemoveModifier(mod);
-        }
+        //public void RemoveModifyPhysicalATK(StatModifier mod)
+        //{
+        //    _characterSecondaryAttributes[ECharacterSecondaryAttributes.PhysicalATK].RemoveModifier(mod);
+        //}
 
         public void ModifyMagicalATKAmount(StatModifier mod)
         {

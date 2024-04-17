@@ -133,6 +133,7 @@ namespace Vanaring
         #region SettingUpRound
         public IEnumerator InitializeCombat(List<RuntimePartyMember> playerParty)
         {
+            Debug.Log("Initialize Combat");
             if (_OnDebugMode)
             {
                 List<CombatEntity> entities = new List<CombatEntity>();
@@ -148,6 +149,18 @@ namespace Vanaring
 
             }else
             {
+                //Unused data for debuging mode is need be clear
+                if (_competators.Count > 0) { 
+                    for (int i = 0; i < _competators.Count; i++)
+                    {
+                        Debug.Log("_competators.count : " + _competators.Count);
+                        Destroy(_competators[i].Competator.gameObject) ;
+                        _competators.RemoveAt(i);
+                        i--; 
+                    }
+                    _competators.Clear();
+                }
+
                 //Load party member into combat
                 yield return LoadAllyEntityRuntimeData(playerParty);
                 //Set up party member and inventory from database
@@ -238,7 +251,6 @@ namespace Vanaring
 
             foreach (var entity in entites)
             {
-                Debug.Log("Compatetaor of " + side + " is " + entity);
                 CompetatorDetailStruct c = new CompetatorDetailStruct(side, entity);
                 _competators.Add(c);
 
