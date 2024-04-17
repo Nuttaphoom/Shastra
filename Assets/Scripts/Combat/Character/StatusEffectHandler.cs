@@ -147,6 +147,9 @@ namespace Vanaring
         #region ExecuteStatus Effects
         public IEnumerator ExecuteStatusRuntimeEffectCoroutine()
         {
+            if (_effects == null)
+                _effects = new Dictionary<string, List<StatusRuntimeEffect>>(); 
+
             foreach (var key in _effects.Keys)
             {
                 for (int i = 0; i < _effects[key].Count; i++)

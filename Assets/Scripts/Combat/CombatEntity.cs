@@ -23,7 +23,7 @@ namespace Vanaring
     {
         //[Header("Right now we manually assign CharacterSheet, TO DO : Make it loaded from the main database")]
         [SerializeField]
-        private CombatCharacterSheetSO _characterSheet;
+        protected CombatCharacterSheetSO _characterSheet;
 
         [SerializeField]
         protected SpellCasterHandler _spellCaster;
@@ -223,6 +223,9 @@ namespace Vanaring
 
             if (_statusEffectHandler == null)
                 throw new Exception("Status Effect Handler hasn't never been init");
+
+            if (_ailmentHandler == null)
+                throw new Exception(gameObject.name + " 's ailment handler is null"); 
 
             yield return (_statusEffectHandler.ExecuteStatusRuntimeEffectCoroutine());
 

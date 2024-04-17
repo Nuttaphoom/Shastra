@@ -2965,6 +2965,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 567241da865803645a41c8506f83f5be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _onDebugMode: 1
+  _debugPool: {fileID: 11400000, guid: f7e604be6fea8554b805bd8de20671e9, type: 2}
 --- !u!1001 &204091711
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3023,7 +3025,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5442174224194596669, guid: accfa19e24739864da30ab9f017f2efe, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3035,6 +3037,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2055041419924217041, guid: accfa19e24739864da30ab9f017f2efe, type: 3}
   m_PrefabInstance: {fileID: 204091711}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &204091713 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5591972313678855088, guid: accfa19e24739864da30ab9f017f2efe, type: 3}
+  m_PrefabInstance: {fileID: 204091711}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae437faf0a26dcf4d9f14f8e73c15e79, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &204851504
 GameObject:
   m_ObjectHideFlags: 0
@@ -12779,13 +12792,24 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5442174224194596669, guid: 020e34f29e1254a47a783dfd0b7bbd3c, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 020e34f29e1254a47a783dfd0b7bbd3c, type: 3}
+--- !u!114 &680568899 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5591972313678855088, guid: 020e34f29e1254a47a783dfd0b7bbd3c, type: 3}
+  m_PrefabInstance: {fileID: 680568898}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae437faf0a26dcf4d9f14f8e73c15e79, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &692943627
 GameObject:
   m_ObjectHideFlags: 0
@@ -13253,11 +13277,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9642066f4fed2354d856fee97de551f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _OnDebugMode: 0
+  _OnDebugMode: 1
   _enemyHUDWindowManager: {fileID: 882886739}
   _entityLoader: {fileID: 1386119686}
   _maxTeamSize: 3
-  _competators: []
+  _competators:
+  - _side: 0
+    _entity: {fileID: 1158423828}
+  - _side: 0
+    _entity: {fileID: 204091713}
+  - _side: 0
+    _entity: {fileID: 680568899}
 --- !u!1 &716387534
 GameObject:
   m_ObjectHideFlags: 0
@@ -24623,7 +24653,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4091557501646720779, guid: 5962e4563cf58994c9e2bf1270ccc62f, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8055431243410914535, guid: 5962e4563cf58994c9e2bf1270ccc62f, type: 3}
       propertyPath: m_RootOrder
@@ -24679,6 +24709,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8055431243410914535, guid: 5962e4563cf58994c9e2bf1270ccc62f, type: 3}
   m_PrefabInstance: {fileID: 1158423826}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1158423828 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4527507892730764166, guid: 5962e4563cf58994c9e2bf1270ccc62f, type: 3}
+  m_PrefabInstance: {fileID: 1158423826}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae437faf0a26dcf4d9f14f8e73c15e79, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1170191772
 GameObject:
   m_ObjectHideFlags: 0
@@ -30122,7 +30163,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32379dfbdd599a34ca13dac1b2902ec2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DebuggingMode: 0
+  DebuggingMode: 1
   _itemInventory: []
 --- !u!1 &1226158942
 GameObject:

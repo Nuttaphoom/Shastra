@@ -1,6 +1,7 @@
 
 using CustomYieldInstructions;
 using JetBrains.Annotations;
+using NaughtyAttributes;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -30,7 +31,8 @@ namespace Vanaring
     {
         [SerializeField]
         private bool _OnDebugMode;
-
+        [SerializeField, AllowNesting, NaughtyAttributes.ShowIf("_OnDebugMode")]
+        List<CompetatorDetailStruct> _competators;
         #region EventBroadcaster
         private EventBroadcaster _eventBroadcaster;
 
@@ -100,15 +102,22 @@ namespace Vanaring
             }
         }
 
-        [SerializeField]
-        [Header("For testing, we manually assign these competator (including enemy) ")]
-        List<CompetatorDetailStruct> _competators;
 
-        public static CombatReferee Instance ;
+
+        private static CombatReferee _instance; 
+        public static CombatReferee Instance {
+            get
+            {
+                if (_instance == null)
+                    _instance = FindObjectOfType<CombatReferee>() ; 
+
+                return _instance;
+            }
+        } 
        
         private void Awake()
         {
-            Instance = this;
+            _instance = this;
 
             _sideTurnDisplayerManager = FindObjectOfType<SideTurnDisplayerManager>();  
             if (_sideTurnDisplayerManager == null)
@@ -124,13 +133,25 @@ namespace Vanaring
         #region SettingUpRound
         public IEnumerator InitializeCombat(List<RuntimePartyMember> playerParty)
         {
-            if (! _OnDebugMode)
+            if (_OnDebugMode)
+            {
+                List<CombatEntity> entities = new List<CombatEntity>();
+                foreach (var en in _competators)
+                {
+                    if (en.Side == ECompetatorSide.Ally)
+                        entities.Add(en.Competator) ; 
+                }
+                _competators.Clear(); 
+
+                yield return DebugMode_LoadAllyEntityRuntimeData(entities);
+ 
+
+            }else
             {
                 //Load party member into combat
-                yield return LoadAllyEntityRuntimeData(playerParty) ;
+                yield return LoadAllyEntityRuntimeData(playerParty);
                 //Set up party member and inventory from database
                 yield return LoadDataFromDatabase();
-
             }
 
             yield return SetUpNewCombatEncounter();
@@ -162,6 +183,21 @@ namespace Vanaring
 
             yield return AssignCompetators(entities, ECompetatorSide.Ally); 
         }
+
+        private IEnumerator DebugMode_LoadAllyEntityRuntimeData(List<CombatEntity> playerControlableEntities)
+        {
+             
+            //Load controlable entities from Party data 
+            List<CombatEntity> entities = new List<CombatEntity>();
+            foreach (ControlableEntity entity in playerControlableEntities)
+            {
+                //entity.LinkPartyMemberToThisEntity(partyMember);
+                entities.Add(entity);
+            }
+
+
+            yield return AssignCompetators(entities, ECompetatorSide.Ally);
+        }
         private IEnumerator LoadDataFromDatabase()
         {
 
@@ -180,8 +216,6 @@ namespace Vanaring
         {
             // Call the GenerateEntityAttacher method with the lists
             CameraSetUPManager.Instance.GenerateEntityAttacher(GetCompetatorsBySide(ECompetatorSide.Ally).Select(c => c.gameObject).ToList(), GetCompetatorsBySide(ECompetatorSide.Hostile).Select(c => c.gameObject).ToList());
-
-         
 
             yield return AssignCompetators(_entityLoader.GetCombatEntitiesFromPool(), ECompetatorSide.Hostile);
         }
@@ -204,6 +238,7 @@ namespace Vanaring
 
             foreach (var entity in entites)
             {
+                Debug.Log("Compatetaor of " + side + " is " + entity);
                 CompetatorDetailStruct c = new CompetatorDetailStruct(side, entity);
                 _competators.Add(c);
 

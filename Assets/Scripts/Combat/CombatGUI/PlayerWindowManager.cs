@@ -52,7 +52,7 @@ namespace Vanaring
         private void LoadNewEntityIntoHUD(Null n)
         {
             foreach (var entity in CombatReferee.Instance.GetCompetatorsBySide(ECompetatorSide.Ally))
-            {
+            { 
                 entity.SubOnTakeControlEvent(SetUpWindows);
                 entity.SubOnTakeControlLeaveEvent(CloseWindow);
             }

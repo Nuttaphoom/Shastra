@@ -27,16 +27,24 @@ namespace Vanaring
 
         public override IEnumerator InitializeEntityIntoCombat()
         {
-            if (_runtimePartyMemberData == null)
-                throw new Exception("ControlableEntity's Runtime Party Member data hasn't never been linked"); 
+
+
 
             yield return base.InitializeEntityIntoCombat();
-           
+
             //Set up runtime value according to Party member data
- 
-            _runtimeCharacterStatsAccumulator = new RuntimeCharacterStatsAccumulator(_runtimePartyMemberData);
-        
-            _spellCaster.SetNewMPAttribute(_runtimePartyMemberData.GetCurrentPartyMemberMP, _runtimePartyMemberData.GetRuntimeCombatMemberData.LevelAttributeHandler.GetSecondaryAttribute_MaxMP);
+            if (_runtimePartyMemberData != null)
+            {
+                _runtimeCharacterStatsAccumulator = new RuntimeCharacterStatsAccumulator(_runtimePartyMemberData);
+                _spellCaster.SetNewMPAttribute(_runtimePartyMemberData.GetCurrentPartyMemberMP, _runtimePartyMemberData.GetRuntimeCombatMemberData.LevelAttributeHandler.GetSecondaryAttribute_MaxMP);
+
+            }
+            else
+            {
+                _runtimeCharacterStatsAccumulator = new RuntimeCharacterStatsAccumulator(_characterSheet);
+                _spellCaster.SetNewMPAttribute(_characterSheet.Get_Base_SecondaryAttribute_MaxMP, _characterSheet.Get_Base_SecondaryAttribute_MaxMP);
+
+            }
         } 
 
 
