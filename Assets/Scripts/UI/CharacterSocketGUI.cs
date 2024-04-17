@@ -64,10 +64,7 @@ namespace Vanaring
 
         private CombatEntity _combatEntity;
 
-        private void Awake()
-        {
-            
-        }
+         
         private void OnEnable()
         {
             if(_combatEntity != null)
@@ -115,7 +112,7 @@ namespace Vanaring
             characterArrow.SetActive(false);
 
             characterName.text = _characterSheetSO.CharacterName;
-
+ 
             hpVal = (int) _combatEntity.StatsAccumulator.GetHPAmount();
             maxHpVal = (int)_combatEntity.StatsAccumulator.GetPeakHPAmount();
             mpVal = (int)_combatEntity.SpellCaster.GetMP;

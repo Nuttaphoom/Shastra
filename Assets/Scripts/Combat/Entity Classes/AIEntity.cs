@@ -21,6 +21,7 @@ namespace Vanaring
             //StartCoroutine(_botBehaviorHandler.CalculateNextBehavior());
         }
 
+        
         public override IEnumerator InitializeEntityIntoCombat()
         {
             yield return base.InitializeEntityIntoCombat(); 

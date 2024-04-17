@@ -28,6 +28,9 @@ namespace Vanaring
     {
         [SerializeField]
         public EntityLoaderPoolSO EnemyLoaderPool ;
+
+        [SerializeField]
+        public List<EventRewardData> CombatRewards ;
  
     
     }

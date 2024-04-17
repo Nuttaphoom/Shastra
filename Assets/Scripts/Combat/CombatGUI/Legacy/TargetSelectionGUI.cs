@@ -130,7 +130,7 @@ namespace Vanaring
 
         private Vector3 GetIconPositioWithGivenEntity(CombatEntity entity)
         {
-            return UISpaceSingletonHandler.ObjectToUISpace(entity.CombatEntityAnimationHandler.GetGUISpawnTransform()); 
+            return UISpaceSingletonHandler.ObjectToUISpace(entity.CombatEntityAnimationHandler.GetTargetIconTransform()); 
         }
 
         public void EndSelectionScheme()

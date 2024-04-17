@@ -114,9 +114,9 @@ namespace Vanaring
             {
                 yield return actor.GetAilmentAction(); 
 
-                if ((action = actor.GetActionRuntimeEffect()) != null)
+                if (actor.ActionHandler.IsReadyForAction() )
                 {
-                    yield return _stateHandler.Referee.OnCharacterPerformAction(actor, action);
+                    yield return _stateHandler.Referee.OnCharacterPerformAction(actor);
                 }
             }
         }
@@ -138,7 +138,6 @@ namespace Vanaring
         {
             CombatEntity _actor;
 
-            ActorAction action = null ;
 
             _stateHandler.Referee.SetActiveActors(); 
 
@@ -150,12 +149,12 @@ namespace Vanaring
                 if (_actor == null)
                     break; 
                  
-                if ((action = _actor.GetActionRuntimeEffect()) == null)  
+                if (( ! _actor.ActionHandler.IsReadyForAction()) )  
                     yield return _actor.GetAction() ;
 
                 else
                 {
-                    yield return _stateHandler.Referee.OnCharacterPerformAction(_actor,action);
+                    yield return _stateHandler.Referee.OnCharacterPerformAction(_actor);
                     
                     break; 
                 }    

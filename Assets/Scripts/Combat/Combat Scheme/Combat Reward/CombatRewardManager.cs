@@ -9,15 +9,18 @@ namespace Vanaring
     public class CombatRewardManager : MonoBehaviour
     {
         [SerializeField]
-        private CombatRewardDisplayer _combatRewardDisplayer; 
+        private CombatRewardDisplayer _combatRewardDisplayer;
+
+        private List<EventRewardData> _rewardPool ; 
         public struct EntityRewardData
         {
             public ControlableEntity ControlEntity ;
-            public float ReceivedExp ; 
+            public float ReceivedExp ;
         }
         public class CombatRewardData
         {
             public List<EntityRewardData> RewardForEntities ;
+            public List<EventRewardData> Rewards;
 
             public CombatRewardData()
             {
@@ -25,17 +28,40 @@ namespace Vanaring
             }
 
         }
+
+        /// <summary>
+        /// Called by CombatMissionNodeSetUpHandler too pass in mission data extracted from MissionNode
+        /// </summary>
+        /// <returns></returns>
+        public void SetUpRewardDataPool(List<EventRewardData> pool)
+        {
+            _rewardPool = new List<EventRewardData>(); 
+            foreach (EventRewardData e in pool)
+            {
+                _rewardPool.Add(e); 
+            }
+
+            
+        }
+
+
         public IEnumerator CombatRewardSchemeStart(CombatReferee combatReferee)
         {
-            //Calculate reward
-            CombatRewardData combatReward = new CombatRewardData();
+            if (_rewardPool == null)
+                throw new System.Exception("Reward Pool hasn't never been set up") ;
+
             var playerTeam = combatReferee.GetCompetatorsBySide(ECompetatorSide.Ally);
+
+            //Calculate reward    
+            CombatRewardData combatReward = new CombatRewardData();
+            
+            combatReward.Rewards = _rewardPool;
 
             foreach (CombatEntity entity in playerTeam) 
             {
                 EntityRewardData rewardEntity = new EntityRewardData() {
                     ControlEntity = entity as ControlableEntity,
-                    ReceivedExp = 100, 
+                    ReceivedExp = 100,
                 } ;       
                 combatReward.RewardForEntities.Add(rewardEntity);
             }
@@ -58,6 +84,12 @@ namespace Vanaring
                 PersistentPlayerPersonalDataManager.Instance.CombatMemberDataLocator.GetRuntimeData(rewardEntity.ControlEntity.CombatCharacterSheet.CharacterName).LevelAttributeHandler.ReceiveEXP(rewardEntity.ReceivedExp);
             }
 
+            foreach (EventRewardData rewardData in combatRewardData.Rewards)
+            {
+                rewardData.GetReward().SubmitReward(); 
+            }
+            
+
             yield return null; 
             //Submit exp reward
         }
@@ -70,7 +102,9 @@ namespace Vanaring
                 DungeonManagerSingleton.Instance.MissionManager.DungeonPartyHandler.UpdateMemberStatus(entity);
                 
                 //MissionManagerSingleton.Instance.DungeonPartyHandler.UpdateMemberStatus(rewardEntity);
-            }
+            } 
+
+            
             yield return null; 
         }
 

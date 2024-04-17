@@ -35,7 +35,8 @@ namespace Vanaring
 
         private void OnDisable()
         {
-            CombatReferee.Instance.UnSubOnCombatPreparation(LoadNewEntityIntoHUD);
+            if (CombatReferee.Instance != null)
+                CombatReferee.Instance.UnSubOnCombatPreparation(LoadNewEntityIntoHUD);
         }
 
         private List<CombatWindowGUI> GetAllValidWindows()
@@ -52,10 +53,12 @@ namespace Vanaring
         private void LoadNewEntityIntoHUD(Null n)
         {
             foreach (var entity in CombatReferee.Instance.GetCompetatorsBySide(ECompetatorSide.Ally))
-            {
+            { 
                 entity.SubOnTakeControlEvent(SetUpWindows);
                 entity.SubOnTakeControlLeaveEvent(CloseWindow);
             }
+
+
         }
 
         #region PrivateMethod

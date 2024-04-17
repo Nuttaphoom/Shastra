@@ -96,7 +96,6 @@ namespace Vanaring
                 return;
             }
             _itemSocketTemplate.gameObject.SetActive(false);
-            Debug.Log("itemSocketGUIList,.count : " + itemSocketGUIList.Count); 
             itemLogText.text = itemSocketGUIList[currentSelectedIndex].GetItemDescription();
             itemSocketGUIList[0].HightlightedButton();
         }

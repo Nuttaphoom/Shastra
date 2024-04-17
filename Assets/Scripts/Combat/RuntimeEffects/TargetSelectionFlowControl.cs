@@ -323,9 +323,8 @@ namespace Vanaring
 
             if (_selectedTarget.Count > 0)
             {
-
                 actorAction.SetActionTarget(_selectedTarget);
-                caster.AddActionQueue(actorAction);
+                caster.ActionHandler.AddActionQueue(actorAction);
             }
 
             else if (!randomTarget)

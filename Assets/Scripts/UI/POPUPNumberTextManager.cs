@@ -86,7 +86,7 @@ namespace Vanaring
             GameObject ret = MonoBehaviour.Instantiate(template, transform);
             ret.GetComponent<TextMeshProUGUI>().text = text;
             ret.GetComponent<TextMeshProUGUI>().fontSize = Random.Range(50f, 85f);
-            ret.transform.position = UISpaceSingletonHandler.ObjectToUISpace(showToThisEntity.CombatEntityAnimationHandler.GetGUISpawnTransform());
+            ret.transform.position = UISpaceSingletonHandler.ObjectToUISpace(showToThisEntity.CombatEntityAnimationHandler.GetTargetIconTransform());
             ret.transform.position = RandomPointInCircle(ret.transform.position, 10f);
 
             return ret; 
