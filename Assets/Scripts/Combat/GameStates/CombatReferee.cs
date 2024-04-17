@@ -149,16 +149,19 @@ namespace Vanaring
             }else
             {
                 //Unused data for debuging mode is need be clear
-                //if (_competators.Count > 0) {
-                //    for (int i = 0; i < _competators.Count; i++)
-                //    {
-                //        Debug.Log("_competators.count : " + _competators.Count);
-                //        Destroy(_competators[i].Competator.gameObject);
-                //        _competators.RemoveAt(i);
-                //        i--;
-                //    }
-                //    _competators.Clear();
-                //}
+                if (_competators.Count > 0)
+                {
+                    for (int i = 0; i < _competators.Count; i++)
+                    {
+                        Debug.Log("_competators.count : " + _competators.Count);
+                        Destroy(_competators[i].Competator.gameObject);
+                        _competators.RemoveAt(i);
+                        i--;
+                    }
+                    _competators.Clear();
+                }
+
+
 
                 //Load party member into combat
                 yield return LoadAllyEntityRuntimeData(playerParty);
@@ -188,7 +191,6 @@ namespace Vanaring
             foreach (RuntimePartyMember partyMember in playerParty)
             {
                 ControlableEntity newEntity = partyMember.InitializeCombatEntity as ControlableEntity ;
-                Debug.Log(newEntity);
                 newEntity.LinkPartyMemberToThisEntity(partyMember); 
                 entities.Add(newEntity) ;
             }
