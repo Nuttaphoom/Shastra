@@ -15,6 +15,7 @@ using static UnityEngine.GraphicsBuffer;
 using Kryz.CharacterStats;
 using Vanaring.Assets.Scripts.Combat.Utilities;
 using Vanaring.Assets.Scripts.Utilities.StringConstant;
+using static PixelCrushers.DialogueSystem.ActOnDialogueEvent;
 
 namespace Vanaring
 {
@@ -45,7 +46,9 @@ namespace Vanaring
 
         protected AilmentHandler _ailmentHandler;
 
-        
+        protected CombatEntityActionHandler _combatEntityActionHandler; 
+
+
 
         /// <summary>
         /// TODO : these IsDead, Is.... variables should be removed
@@ -53,9 +56,8 @@ namespace Vanaring
         private bool _isDead = false ;
         private bool _isExhausted = true ;
         public bool IsDead => _isDead;
-        public bool IsExhausted => _isExhausted;
+        public bool IsExhausted { get => _isExhausted; set => _isExhausted = value;  } 
 
-        protected Queue<ActorAction> _actionQueue = new Queue<ActorAction>();
 
         #region GetEventBroadcaster Methods 
 
@@ -71,7 +73,6 @@ namespace Vanaring
                 _eventBroadcaster.OpenChannel<Null>("OnDodgeAttack");
                 _eventBroadcaster.OpenChannel<CombatEntity>("OnTakeControl");
                 _eventBroadcaster.OpenChannel<CombatEntity>("OnTakeControlLeave");
-                _eventBroadcaster.OpenChannel<EntityActionPair>("OnPerformAction");
             }
 
             return _eventBroadcaster;
@@ -102,7 +103,7 @@ namespace Vanaring
 
         public void SubOnPerformAction(UnityAction<EntityActionPair> argc)
         {
-            GetEventBroadcaster().SubEvent(argc, "OnPerformAction");
+            ActionHandler.SubOnPerformAction(argc);
         }
         public void SubOnTakeControlEvent(UnityAction<CombatEntity> argc)
         {
@@ -131,7 +132,7 @@ namespace Vanaring
     
         public void UnSubOnPerformAction(UnityAction<EntityActionPair> argc)
         {
-            GetEventBroadcaster().UnSubEvent(argc, "OnPerformAction");
+           ActionHandler.UnSubOnPerformAction(argc);
         }            
         public void UnSubOnDodgeAttackVisualEvent(UnityAction<Null> argc)
         {
@@ -190,6 +191,7 @@ namespace Vanaring
             _dmgOutputPopHanlder = new POPUPNumberTextHandler(this);
             _energyOverflowHandler = GetComponent<EnergyOverflowHandler>();
             _statusEffectHandler = new StatusEffectHandler(this);
+            _combatEntityActionHandler = new CombatEntityActionHandler(this); 
 
             if (_spellCaster == null)
             {
@@ -257,45 +259,18 @@ namespace Vanaring
                 yield return _ailmentHandler.AlimentControlGetAction();
             }
         }
-        public ActorAction GetActionRuntimeEffect( )
-        {
-            if (_actionQueue == null)
-                _actionQueue = new Queue<ActorAction>();
-
-            if (_actionQueue.Count == 0)
-                return null;
- 
-            return _actionQueue.Dequeue();
-        }
-
-        public void AddActionQueue(ActorAction actorAction)
-        {
-            _actionQueue.Enqueue(actorAction);
-        }
+        
 
         /// <summary>
         /// Invoked before this character perform any action
         /// </summary>
-        public IEnumerator OnPerformAction(ActorAction action)
+        public IEnumerator OnPerformAction(   )
         {
-            //Call on perform action of the ActorAction
-            yield return action.PreActionPerform();
+            yield return ActionHandler.PerformActionInQueue();
             
-            //Old one, now we need to call Timeline asset instead 
-            //var eff = action.GetRuntimeEffect();
 
-            //check if still be able to call the action
-            if (ReadyForControl())
-            {
-                _isExhausted = true;
+            _isExhausted = true;
 
-                GetEventBroadcaster().InvokeEvent<EntityActionPair>(new EntityActionPair() { Actor = this, PerformedAction = action } ,"OnPerformAction");
-
-                yield return action.PerformAction(); 
-
-                yield return action.PostActionPerform();
-
-            }
         }
 
         public IEnumerator OnPostPerformAction()
@@ -307,7 +282,7 @@ namespace Vanaring
 
         #region GETTER
 
-
+        public CombatEntityActionHandler ActionHandler => _combatEntityActionHandler; 
         public EnergyOverflowHandler OverflowHandler => _energyOverflowHandler ;
         public RuntimeCharacterStatsAccumulator StatsAccumulator => _runtimeCharacterStatsAccumulator;
         public SpellCasterHandler SpellCaster => _spellCaster;

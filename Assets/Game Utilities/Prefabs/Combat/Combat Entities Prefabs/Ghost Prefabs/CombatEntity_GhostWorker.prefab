@@ -9836,12 +9836,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5361210965326132587}
-  - component: {fileID: 3464776634258701957}
   - component: {fileID: 244027561056077109}
   - component: {fileID: 4108770951947463597}
   - component: {fileID: 2535512391453201295}
   - component: {fileID: 2836808953561870674}
   - component: {fileID: 4483768332210889403}
+  - component: {fileID: 39854657709726041}
   m_Layer: 0
   m_Name: CombatEntity_GhostWorker
   m_TagString: Untagged
@@ -9870,22 +9870,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3464776634258701957
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1157354777371972715}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: acd9ffed6d6cced4a96205cc907deed7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _characterSheet: {fileID: 11400000, guid: 80013167f123ee94ab9254fdda0878b8, type: 2}
-  _spellCaster: {fileID: 2535512391453201295}
-  _itemUser: {fileID: 0}
-  _combatEntityAnimationHandler: {fileID: 244027561056077109}
 --- !u!114 &244027561056077109
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9988,6 +9972,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _faceCamera: {fileID: 0}
   _shoulderCam: {fileID: 0}
+--- !u!114 &39854657709726041
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1157354777371972715}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 002f805fbb0f17547accda09f670a484, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _characterSheet: {fileID: 11400000, guid: 80013167f123ee94ab9254fdda0878b8, type: 2}
+  _spellCaster: {fileID: 2535512391453201295}
+  _itemUser: {fileID: 0}
+  _combatEntityAnimationHandler: {fileID: 244027561056077109}
 --- !u!1 &1319644129541780317
 GameObject:
   m_ObjectHideFlags: 0
@@ -24776,7 +24776,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e50745e7c22bef46832cfc1275190f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _owner: {fileID: 3464776634258701957}
+  _owner: {fileID: 0}
   lightNumText: {fileID: 0}
   darkNumText: {fileID: 0}
   lightImage: {fileID: 0}

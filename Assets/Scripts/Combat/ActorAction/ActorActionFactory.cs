@@ -107,7 +107,6 @@ namespace Vanaring
 
             while (_ongoingEffect.Count > 0)
             {
-
                 yield return new WaitForEndOfFrame();
             }
             while (DirectorManager.Instance.IsPlayingTimeline)
