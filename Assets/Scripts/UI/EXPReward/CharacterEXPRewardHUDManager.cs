@@ -18,21 +18,22 @@ namespace Vanaring
 
         public IEnumerator LoadCharacterEXPGainWindow(List<RuntimeCombatMemberData> list)
         {
-            if (PersistentPlayerPersonalDataManager.Instance.CombatMemberDataLocator.GetRuntimeCombatMembers.Count != 0)
-            {
-                memberList = PersistentPlayerPersonalDataManager.Instance.CombatMemberDataLocator.GetRuntimeCombatMembers;
-            }
-            else
-            {
-                Debug.Log("Can't load member");
-            }
-            foreach (RuntimeCombatMemberData member in memberList)
-            {
-                CharacterEXPSocketGUI newSocket = Instantiate(socketTemplate, hrzLayout.transform);
-                newSocket.Init(member);
-                newSocket.gameObject.SetActive(true);
-            }
-            socketTemplate.gameObject.SetActive(false);
+            //if (PersistentPlayerPersonalDataManager.Instance.CombatMemberDataLocator.GetRuntimeCombatMembers.Count != 0)
+            //{
+            //    memberList = PersistentPlayerPersonalDataManager.Instance.CombatMemberDataLocator.GetRuntimeCombatMembers;
+            //}
+            //else
+            //{
+            //    Debug.Log("Can't load member");
+            //}
+            //foreach (RuntimeCombatMemberData member in memberList)
+            //{
+            //    //if(Runtime)
+            //    CharacterEXPSocketGUI newSocket = Instantiate(socketTemplate, hrzLayout.transform);
+            //    newSocket.Init(member);
+            //    newSocket.gameObject.SetActive(true);
+            //}
+            //socketTemplate.gameObject.SetActive(false);
             yield return null;
         }
     }

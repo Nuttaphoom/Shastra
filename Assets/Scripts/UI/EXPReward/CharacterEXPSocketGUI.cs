@@ -10,6 +10,7 @@ namespace Vanaring
     {
         [SerializeField] private Image portrait;
         [SerializeField] private Image expBar;
+        [SerializeField] private Image seccondBar;
         [SerializeField] private TextMeshProUGUI expRemainingNumText;
         [SerializeField] private TextMeshProUGUI levelText;
 
@@ -19,26 +20,45 @@ namespace Vanaring
         
         }
 
-        public void Init(RuntimeCombatMemberData member)
+        public void Init(CombatRewardManager.EntityRewardData rewardStruct)
         {
-            this.member = member;
-            //Debug.Log("Cur: " + member.LevelAttributeHandler.GetCharacterUEXPSystem.GetCurrentEXP + " Cap: " + member.LevelAttributeHandler.GetCharacterUEXPSystem.GetEXPCap() + " Level:" +member.LevelAttributeHandler.GetCharacterUEXPSystem.GetCurrentLevel);
-            if(member.LevelAttributeHandler.GetCharacterUEXPSystem.GetEXPCap() <= 0)
+            float expGained = rewardStruct.ReceivedExp;
+
+            foreach (RuntimeCombatMemberData cmember in PersistentPlayerPersonalDataManager.Instance.CombatMemberDataLocator.GetRuntimeCombatMembers)
             {
-                expBar.fillAmount = 1.0f;
+                if(cmember.GetCharacterSheet.CharacterName == rewardStruct.ControlEntity.CombatCharacterSheet.CharacterName)
+                {
+                    member = cmember;
+                    expBar.fillAmount = (float)cmember.LevelAttributeHandler.GetCharacterUEXPSystem.GetCurrentEXP /
+                            cmember.LevelAttributeHandler.GetCharacterUEXPSystem.GetEXPCap();
+                    StartCoroutine(RunNumberUp(cmember.LevelAttributeHandler.GetCharacterUEXPSystem.GetCurrentEXP,
+                        cmember.LevelAttributeHandler.GetCharacterUEXPSystem.GetCurrentEXP + rewardStruct.ReceivedExp,
+                        rewardStruct.ReceivedExp, (int)cmember.LevelAttributeHandler.GetCharacterUEXPSystem.GetEXPCap()));
+                }
             }
-            else
-            {
-                expBar.fillAmount = (float)member.LevelAttributeHandler.GetCharacterUEXPSystem.GetCurrentEXP / member.LevelAttributeHandler.GetCharacterUEXPSystem.GetEXPCap();
-            }
-            expRemainingNumText.text = ((float)member.LevelAttributeHandler.GetCharacterUEXPSystem.GetEXPCap() - member.LevelAttributeHandler.GetCharacterUEXPSystem.GetCurrentEXP).ToString();
+            //expRemainingNumText.text = ((float)member.LevelAttributeHandler.GetCharacterUEXPSystem.GetEXPCap() - member.LevelAttributeHandler.GetCharacterUEXPSystem.GetCurrentEXP).ToString();
             levelText.text = member.LevelAttributeHandler.GetCharacterUEXPSystem.GetCurrentLevel.ToString();
             portrait.sprite = member.GetCharacterSheet.GetCharacterIcon;
+            //Debug.Log("Cur: " + member.LevelAttributeHandler.GetCharacterUEXPSystem.GetCurrentEXP + " Cap: " + member.LevelAttributeHandler.GetCharacterUEXPSystem.GetEXPCap() + " Level:" +member.LevelAttributeHandler.GetCharacterUEXPSystem.GetCurrentLevel);
+            
+
         }
-        // Update is called once per frame
-        void Update()
+
+        private IEnumerator RunNumberUp(float start, float end, float gain, float max)
         {
-        
+            yield return new WaitForSeconds(1.0f);
+            seccondBar.fillAmount = (float)(member.LevelAttributeHandler.GetCharacterUEXPSystem.GetCurrentLevel + gain) / max;
+            float timer = 0f;
+            while (timer < 1)
+            {
+                float expVal = Mathf.Lerp(start, end, timer / 1);
+                expBar.fillAmount = Mathf.Round(expVal) / max;
+                expRemainingNumText.text = (Mathf.RoundToInt(max) - Mathf.RoundToInt(expVal)).ToString();
+                timer += Time.deltaTime;
+                yield return null;
+            }
+            expBar.fillAmount = (float)(member.LevelAttributeHandler.GetCharacterUEXPSystem.GetCurrentLevel + gain) / max;
+            //expRunningText.text = Mathf.Round(end).ToString();
         }
     }
 }
