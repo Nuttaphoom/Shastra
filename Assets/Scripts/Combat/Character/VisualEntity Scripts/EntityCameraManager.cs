@@ -21,7 +21,16 @@ namespace Vanaring
         {
             CameraSetUPManager.Instance.EnableCamera(_shoulderCam);
         }
+       
+        public void DisableAllAttachedCamera()
+        {
+            if (_shoulderCam != null && _shoulderCam.gameObject.activeSelf)
+                _shoulderCam.gameObject.SetActive(false);
 
+            if (_faceCamera != null && _faceCamera.gameObject.activeSelf)
+                _faceCamera.gameObject.SetActive(false);
+        }
+     
         public Vector3 GetRightVectorShoulderCam()
         {
             return _shoulderCam.transform.right; 

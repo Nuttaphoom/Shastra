@@ -121,7 +121,15 @@ namespace Vanaring
         /// </summary>
         public void ClearCurrentTimeline()
         {
+            
+            if (_currentTimelineActorSetupHandler == null)
+                return; 
+
             _currentTimelineActorSetupHandler.DestroyTimelineElement();
+
+            if (_currentPlayableDirector == null)
+                return;
+
             Destroy(_currentPlayableDirector);
 
             _currentPlayableDirector = null;

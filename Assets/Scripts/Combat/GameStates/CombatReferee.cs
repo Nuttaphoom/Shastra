@@ -133,7 +133,6 @@ namespace Vanaring
         #region SettingUpRound
         public IEnumerator InitializeCombat(List<RuntimePartyMember> playerParty)
         {
-            Debug.Log("Initialize Combat");
             if (_OnDebugMode)
             {
                 List<CombatEntity> entities = new List<CombatEntity>();
@@ -263,6 +262,10 @@ namespace Vanaring
 
             yield return null; 
         }
+        /// <summary>
+        /// Adjust position and give control to the first index
+        /// </summary>
+        /// <returns></returns>
         public IEnumerator PrepareRefereeForNewRound()
         {
             //_currentSide = ECompetatorSide.Ally;
@@ -381,18 +384,13 @@ namespace Vanaring
 
         public IEnumerator OnCharacterPerformAction(CombatEntity actor )
         {
-            yield return SwitchControl(GetCurrentActor(), null) ; 
+            var prevActor = GetCurrentActor();
 
             yield return actor.OnPerformAction( );
 
             yield return PostPerformActionInEveryCharacter();
 
             ResolveEntityDead();
-
-            //if (CombatEnd() == 1)
-            //    MockUpGameOverDisplay.Instance.GameWinDisplay(); 
-            //else if (CombatEnd() == 2)
-            //    MockUpGameOverDisplay.Instance.GameOverDisplay(); 
 
             if (IsGameEnd())
             {
@@ -401,12 +399,17 @@ namespace Vanaring
                 //FindObjectOfType<ThanksForPlayingDisplayer>().ShowThankForPlayingMenu();
             }
             else
-            {
+            { 
+                //yield return SwitchControl((), null);
 
                 SetActiveActors();
 
-                yield return SwitchControl(null, GetCurrentActor());
+                yield return SwitchControl(prevActor, GetCurrentActor());
+
+
             }
+
+
         }
 
         //private int CombatEnd()

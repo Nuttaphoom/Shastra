@@ -63,8 +63,8 @@ namespace Vanaring
         public override IEnumerator TakeControl()
         {
             GetComponent<ItemUserHandler>().FactorizeItemInInventory();
-
-            EnableCamera();
+    
+            EnableCamera() ; 
 
             yield return base.TakeControl();
 
@@ -74,7 +74,6 @@ namespace Vanaring
         {
             yield return base.TakeControlLeave(); 
             ClearCameraData();
-
         }
 
         public override IEnumerator TurnEnter()
@@ -84,6 +83,12 @@ namespace Vanaring
 
         }
 
+        public override IEnumerator OnPerformAction()
+        {
+            yield return base.OnPerformAction();
+
+            ClearCameraData();
+        }
         public override IEnumerator TurnLeave()
         {
             yield return base.TurnLeave();
@@ -99,13 +104,14 @@ namespace Vanaring
 
         public void EnableCamera()
         {
-            _attachedCamera.Follow = gameObject.transform ; 
+             _attachedCamera.Follow = gameObject.transform ; 
             CameraSetUPManager.Instance.EnableCamera(_attachedCamera);
         }
 
         public void ClearCameraData()
         {
             _attachedCamera.Follow = null ;
+            _attachedCamera.gameObject.SetActive(false);    
             //CameraSetUPManager.Instance.DisableCamera(_attachedCamera);
         }
         public override IEnumerator LoadDataFromDatabase()
@@ -129,10 +135,7 @@ namespace Vanaring
             yield return null;
         }
 
-        public void TemporaryResetLookAtAndFollow()
-        {
-            throw new NotImplementedException();
-        }
+     
 
 
 

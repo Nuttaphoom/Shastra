@@ -61,7 +61,9 @@ namespace Vanaring
             //Tranform main camera to translation object
             if (ModifyMainCameraPosition)
             {
-                var animatorWithTrackName = Camera.main.GetComponent<CinemachineBrain>().ActiveVirtualCamera.VirtualCameraGameObject ;
+                //CameraSetUPManager.Instance.UseLastEnableCamera(); 
+
+                GameObject animatorWithTrackName = Camera.main.GetComponent<CinemachineBrain>().ActiveVirtualCamera.VirtualCameraGameObject ;
                 if (_VMFaceDirectionParentTransform != null)
                 {
                     _VMFaceDirectionParentTransform.transform.rotation = animatorWithTrackName.transform.parent.transform.rotation;

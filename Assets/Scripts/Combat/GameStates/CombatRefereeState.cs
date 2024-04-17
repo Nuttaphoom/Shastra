@@ -86,6 +86,7 @@ namespace Vanaring
 
         protected override IEnumerator StateEnter()
         {
+
             List<CombatEntity> team = _stateHandler.Referee.GetCurrentTeam();
 
   
@@ -95,8 +96,7 @@ namespace Vanaring
                 yield return entity.TurnEnter();     
             }
 
-            //2.) Prepare Referee for new round 
-            yield return _stateHandler.Referee.PrepareRefereeForNewRound();
+
 
             ////2.) Notify UI elements
             //if (team.Count > 0)
@@ -108,8 +108,6 @@ namespace Vanaring
             //    _currentEntityIndex = 0;
             //    yield return SwitchControl(-1, _currentEntityIndex);
             //}
-
-            ActorAction action ; 
             foreach (CombatEntity actor in team)
             {
                 yield return actor.GetAilmentAction(); 
@@ -119,6 +117,10 @@ namespace Vanaring
                     yield return _stateHandler.Referee.OnCharacterPerformAction(actor);
                 }
             }
+
+            //2.) Prepare Referee for new round 
+            yield return _stateHandler.Referee.PrepareRefereeForNewRound();
+
         }
 
         protected override IEnumerator StateExit()
