@@ -11,19 +11,6 @@ namespace Vanaring
     {
         private  EntityLoaderPoolSO  _pools;
 
-        [SerializeField]
-        private List<Transform> _spawnPositionSet = new List<Transform>();
-
-        private Dictionary<CombatEntity, Transform> _spawnPositionDict = new Dictionary<CombatEntity, Transform>(); 
-        private List<Transform> _available = new List<Transform>();
-
-        private void Awake()
-        {
-            _available = new List<Transform>(); 
-
-            foreach (Transform tf in _spawnPositionSet)
-                _available.Add(tf); 
-        }
 
         public void ReceiveEntityLoaderPool(EntityLoaderPoolSO pool)
         {
@@ -50,37 +37,9 @@ namespace Vanaring
 
         public CombatEntity SpawnPrefab(CombatEntity prefab, int location = -1)
         {
-            if (_available.Count == 0)
-                throw new Exception("Available.Count is equal to 0");
-            
             CombatEntity newEntity = GameObject.Instantiate(prefab);
 
-
-            if (location == -1)
-            {
-                // If location is -1, use the first available position
-                UseAvailablePosition(newEntity,0);
-            }
-            else
-            {
-                int index = location - _spawnPositionDict.Count;
-
-                if (index >= 0 && _available[index] != null)
-                {
-                    // If the index is valid and the available position is not null, use it
-                    UseAvailablePosition(newEntity, index);
-                }
-                else
-                {
-                    // Otherwise, use the first available position
-                    UseAvailablePosition(newEntity,0);
-                }
-            }
-
-            Transform t = _spawnPositionDict[newEntity] ; 
-
-            newEntity.transform.position = t.position;
-            newEntity.transform.forward = t.forward;
+            OccupyLocation(newEntity, location);
 
             newEntity.name = newEntity.name + "Loaded" ;
 
@@ -89,21 +48,23 @@ namespace Vanaring
         }
 
 
-        void UseAvailablePosition(CombatEntity newEntity, int index)
+        private void OccupyLocation(CombatEntity newEntity, int index )
         {
-            _spawnPositionDict.Add(newEntity, _available[index]);
-            _available.RemoveAt(index);
+            if (index == -1)
+            {
+                //EntityPositionManager.Instance.OccupieAnyValidLocation( ECompetatorSide.Hostile, newEntity);
+            }
+            else
+            {
+                 EntityPositionManager.Instance.OccupieLocation(ECompetatorSide.Hostile, index, newEntity);
+            }
+
+            return; 
+
+            
         }
 
-    
-
-        public void ReleasePosition(CombatEntity ce)
-        {
-            _available.Add(_spawnPositionDict[ce]) ;
-            _spawnPositionDict.Remove(ce) ;
-
-
-        }
+   
 
     }
 }

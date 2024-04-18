@@ -185,7 +185,6 @@ namespace Vanaring
 
         private IEnumerator LoadAllyEntityRuntimeData(List<RuntimePartyMember> playerParty)
         {
-
             //Load controlable entities from Party data 
             List<CombatEntity> entities = new List<CombatEntity>();
             foreach (RuntimePartyMember partyMember in playerParty)
@@ -246,8 +245,10 @@ namespace Vanaring
             List<IEnumerator> _allIEs = new List<IEnumerator>();
 
             foreach (var entity in entites) {
+                EntityPositionManager.Instance.OccupieAnyValidLocation(side, entity); 
                 _allIEs.Add(entity.InitializeEntityIntoCombat());
             }
+
 
             yield return new WaitAll(this, _allIEs.ToArray());
 
@@ -445,9 +446,10 @@ namespace Vanaring
                 {                    
                     //No need to remove from the main list if it was player'
                     if (_competators[i].Side == ECompetatorSide.Ally)
-                        continue; 
+                        continue;
 
-                    _entityLoader.ReleasePosition(_competators[i].Competator);
+                    EntityPositionManager.Instance.ReleasePosition(_competators[i].Competator);
+                     
                     _competators.RemoveAt(i);
                 }
             }
