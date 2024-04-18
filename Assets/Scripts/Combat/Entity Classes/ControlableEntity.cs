@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Unity.Android.Types;
 using UnityEngine;
 using static UnityEngine.EventSystems.EventTrigger;
 
