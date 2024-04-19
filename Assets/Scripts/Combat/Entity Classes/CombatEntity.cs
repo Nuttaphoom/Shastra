@@ -214,8 +214,11 @@ namespace Vanaring
         }
         public virtual IEnumerator TakeControlLeave()
         {
+            Debug.Log("Take control leave");
             GetEventBroadcaster().InvokeEvent(this, "OnTakeControlLeave");
 
+            GetComponent<EntityCameraManager>().DisableAllAttachedCamera(); 
+            
             yield return null;
         }
 
@@ -264,7 +267,7 @@ namespace Vanaring
         /// <summary>
         /// Invoked before this character perform any action
         /// </summary>
-        public IEnumerator OnPerformAction(   )
+        public virtual IEnumerator OnPerformAction(   )
         {
             yield return ActionHandler.PerformActionInQueue();
             

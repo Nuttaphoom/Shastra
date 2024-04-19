@@ -323,6 +323,11 @@ namespace Vanaring
 
             if (_selectedTarget.Count > 0)
             {
+                for (int k= 0; k < _selectedTarget.Count; k++ )
+                {
+                    EntityCameraManager entityCam = _selectedTarget[k].GetComponent<EntityCameraManager>(); 
+                    entityCam.DisableAllAttachedCamera();
+                }
                 actorAction.SetActionTarget(_selectedTarget);
                 caster.ActionHandler.AddActionQueue(actorAction);
             }

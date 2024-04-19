@@ -114,8 +114,8 @@ namespace Vanaring
 
                 yield return new WaitForEndOfFrame();
             }
+            DirectorManager.Instance.ClearCurrentTimeline();
 
-            DirectorManager.Instance.ClearCurrentTimeline() ; 
 
         }
 

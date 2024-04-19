@@ -19,7 +19,7 @@ namespace Vanaring
         public enum CameraOffset { LEFT, MIDDLE, RIGHT };
         private bool IsTargetMode = false;
 
-        private CinemachineVirtualCamera _actionCamera;
+        //private CinemachineVirtualCamera previousCamera; 
 
         [SerializeField] private CinemachineBrain cinemachineBrain;
 
@@ -211,10 +211,22 @@ namespace Vanaring
         public void EnableCamera(CinemachineVirtualCamera newCamera)
         {
             if (Camera.main.GetComponent<CinemachineBrain>().ActiveVirtualCamera != null)
-                Camera.main.GetComponent<CinemachineBrain>().ActiveVirtualCamera.VirtualCameraGameObject.SetActive(false) ;  
-            
-            newCamera.gameObject.SetActive(true) ; 
+                Camera.main.GetComponent<CinemachineBrain>().ActiveVirtualCamera.VirtualCameraGameObject.SetActive(false) ;
+
+            newCamera.gameObject.SetActive(true) ;
+            //previousCamera = newCamera;
+
+            Debug.Log(Camera.main.GetComponent<CinemachineBrain>().ActiveVirtualCamera);
+
         }
+
+        //public void UseLastEnableCamera()
+        //{
+        //    if (previousCamera == null)
+        //        throw new System.Exception("Try to use last saved cam") ; 
+
+        //    EnableCamera(previousCamera);
+        //}
 
         public void DisableCamera(CinemachineVirtualCamera newCamera)
         {

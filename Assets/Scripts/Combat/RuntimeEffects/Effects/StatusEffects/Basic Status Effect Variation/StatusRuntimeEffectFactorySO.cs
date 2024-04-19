@@ -142,7 +142,6 @@ namespace Vanaring
 
         public bool IsExpired()
         {
-            Debug.Log("status effect with ttl : " + _timeToLive);
             return _timeToLive <= 0.0f;
         }
 

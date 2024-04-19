@@ -48,6 +48,9 @@ namespace Vanaring
             if (DebuggingMode)
             {
                 SetUpRuntimeItemFromItemInventory(); 
+            }else
+            {
+                _itemInventory.Clear(); 
             }
         }
 

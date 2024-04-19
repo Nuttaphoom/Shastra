@@ -133,7 +133,6 @@ namespace Vanaring
         #region SettingUpRound
         public IEnumerator InitializeCombat(List<RuntimePartyMember> playerParty)
         {
-            Debug.Log("Initialize Combat");
             if (_OnDebugMode)
             {
                 List<CombatEntity> entities = new List<CombatEntity>();
@@ -150,16 +149,19 @@ namespace Vanaring
             }else
             {
                 //Unused data for debuging mode is need be clear
-                //if (_competators.Count > 0) {
-                //    for (int i = 0; i < _competators.Count; i++)
-                //    {
-                //        Debug.Log("_competators.count : " + _competators.Count);
-                //        Destroy(_competators[i].Competator.gameObject);
-                //        _competators.RemoveAt(i);
-                //        i--;
-                //    }
-                //    _competators.Clear();
-                //}
+                if (_competators.Count > 0)
+                {
+                    for (int i = 0; i < _competators.Count; i++)
+                    {
+                        Debug.Log("_competators.count : " + _competators.Count);
+                        Destroy(_competators[i].Competator.gameObject);
+                        _competators.RemoveAt(i);
+                        i--;
+                    }
+                    _competators.Clear();
+                }
+
+
 
                 //Load party member into combat
                 yield return LoadAllyEntityRuntimeData(playerParty);
@@ -183,13 +185,11 @@ namespace Vanaring
 
         private IEnumerator LoadAllyEntityRuntimeData(List<RuntimePartyMember> playerParty)
         {
-
             //Load controlable entities from Party data 
             List<CombatEntity> entities = new List<CombatEntity>();
             foreach (RuntimePartyMember partyMember in playerParty)
             {
                 ControlableEntity newEntity = partyMember.InitializeCombatEntity as ControlableEntity ;
-                Debug.Log(newEntity);
                 newEntity.LinkPartyMemberToThisEntity(partyMember); 
                 entities.Add(newEntity) ;
             }
@@ -245,8 +245,10 @@ namespace Vanaring
             List<IEnumerator> _allIEs = new List<IEnumerator>();
 
             foreach (var entity in entites) {
+                EntityPositionManager.Instance.OccupieAnyValidLocation(side, entity); 
                 _allIEs.Add(entity.InitializeEntityIntoCombat());
             }
+
 
             yield return new WaitAll(this, _allIEs.ToArray());
 
@@ -263,6 +265,10 @@ namespace Vanaring
 
             yield return null; 
         }
+        /// <summary>
+        /// Adjust position and give control to the first index
+        /// </summary>
+        /// <returns></returns>
         public IEnumerator PrepareRefereeForNewRound()
         {
             //_currentSide = ECompetatorSide.Ally;
@@ -381,18 +387,13 @@ namespace Vanaring
 
         public IEnumerator OnCharacterPerformAction(CombatEntity actor )
         {
-            yield return SwitchControl(GetCurrentActor(), null) ; 
+            var prevActor = GetCurrentActor();
 
             yield return actor.OnPerformAction( );
 
             yield return PostPerformActionInEveryCharacter();
 
             ResolveEntityDead();
-
-            //if (CombatEnd() == 1)
-            //    MockUpGameOverDisplay.Instance.GameWinDisplay(); 
-            //else if (CombatEnd() == 2)
-            //    MockUpGameOverDisplay.Instance.GameOverDisplay(); 
 
             if (IsGameEnd())
             {
@@ -401,12 +402,17 @@ namespace Vanaring
                 //FindObjectOfType<ThanksForPlayingDisplayer>().ShowThankForPlayingMenu();
             }
             else
-            {
+            { 
+                //yield return SwitchControl((), null);
 
                 SetActiveActors();
 
-                yield return SwitchControl(null, GetCurrentActor());
+                yield return SwitchControl(prevActor, GetCurrentActor());
+
+
             }
+
+
         }
 
         //private int CombatEnd()
@@ -440,9 +446,10 @@ namespace Vanaring
                 {                    
                     //No need to remove from the main list if it was player'
                     if (_competators[i].Side == ECompetatorSide.Ally)
-                        continue; 
+                        continue;
 
-                    _entityLoader.ReleasePosition(_competators[i].Competator);
+                    EntityPositionManager.Instance.ReleasePosition(_competators[i].Competator);
+                     
                     _competators.RemoveAt(i);
                 }
             }
