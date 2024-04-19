@@ -69,16 +69,20 @@ namespace Vanaring
                 missionItemRewardSocketList.Add(newSocket);
             }
 
-            if(missionItemRewardSocketList.Count != 0)
-            {
-                StartCoroutine(ShowItemList());
-            }
-
             itemSocketTemplate.gameObject.SetActive(false);
             socketTemplate.gameObject.SetActive(false);
+
+            
+
+            
             yield return new WaitForSeconds(1.0f);
             yield return RunNumberUp(0, rewardList.RewardForEntities[0].ReceivedExp, 1.0f);
-            
+
+            if (missionItemRewardSocketList.Count != 0)
+            {
+                yield return ShowItemList();
+            }
+
             _uiAnimationDone = true;
             yield return null;
         }
@@ -87,6 +91,7 @@ namespace Vanaring
         {
             if (missionItemRewardSocketList.Count == 1)
             {
+                Debug.Log("PlayAnimation");
                 missionItemRewardSocketList[0].PlayAnimationMoveIn();
             }
             else
@@ -94,8 +99,9 @@ namespace Vanaring
                 foreach (MissionItemRewardSocketGUI socket in missionItemRewardSocketList)
                 {
                     socket.PlayAnimationMoveIn();
+                    
                     yield return MoveVerticalPanel(itemVerticalLayout.GetComponent<RectTransform>().localPosition.y,
-                        itemVerticalLayout.GetComponent<RectTransform>().localPosition.y - 120);
+                        itemVerticalLayout.GetComponent<RectTransform>().localPosition.y - 160);
                 }
             }
         }

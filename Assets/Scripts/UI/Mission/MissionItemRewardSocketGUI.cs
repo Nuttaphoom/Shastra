@@ -11,7 +11,7 @@ namespace Vanaring
         [SerializeField] private TextMeshProUGUI itemNameText;
         [SerializeField] private Image itemIcon;
         [SerializeField] private TextMeshProUGUI amount;
-        private Animator anim;
+        [SerializeField] private Animator anim;
 
         private void Start()
         {

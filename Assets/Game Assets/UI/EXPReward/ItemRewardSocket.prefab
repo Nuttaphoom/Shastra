@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8192275976669478713}
   - component: {fileID: 7424227142579001221}
   m_Layer: 5
-  m_Name: Text (TMP) (1)
+  m_Name: amountText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -223,7 +223,7 @@ GameObject:
   - component: {fileID: 858490221236722815}
   - component: {fileID: 6355399614158895105}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: ItemIcon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -478,7 +478,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemNameText: {fileID: 6355399614158895105}
   itemIcon: {fileID: 8916871075109058018}
-  amount: {fileID: 0}
+  amount: {fileID: 7424227142579001221}
+  anim: {fileID: 3387311493321759559}
 --- !u!95 &3387311493321759559
 Animator:
   serializedVersion: 5
