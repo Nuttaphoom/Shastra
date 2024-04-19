@@ -13,14 +13,17 @@ namespace Vanaring
         [SerializeField] private GameObject hrzLayout;
         [SerializeField] private GameObject gfx;
         [SerializeField] private Button nextButton;
+        [SerializeField] private MissionItemRewardSocketGUI itemSocketTemplate;
+        [SerializeField] private GameObject itemVerticalLayout;
         private List<RuntimeCombatMemberData> memberList = new List<RuntimeCombatMemberData>();
+        private List<MissionItemRewardSocketGUI> missionItemRewardSocketList = new List<MissionItemRewardSocketGUI>();
 
         private int startRunningEXP = 0;
 
         public void SetUpReward(CombatRewardManager.CombatRewardData combat)
         {
             gfx.gameObject.SetActive(true);
-            StartCoroutine(LoadCharacterEXPGainWindow(combat.RewardForEntities));
+            StartCoroutine(LoadCharacterEXPGainWindow(combat));
         }
 
         public override IEnumerator SettingUpNumber()
@@ -41,7 +44,7 @@ namespace Vanaring
                 ForceSetUpNumber();
         }
 
-        public IEnumerator LoadCharacterEXPGainWindow(List<CombatRewardManager.EntityRewardData> rewardList)
+        public IEnumerator LoadCharacterEXPGainWindow(CombatRewardManager.CombatRewardData rewardList)
         {
             if (PersistentPlayerPersonalDataManager.Instance.CombatMemberDataLocator.GetRuntimeCombatMembers.Count != 0)
             {
@@ -51,7 +54,7 @@ namespace Vanaring
             {
                 Debug.Log("Can't load member");
             }
-            foreach (CombatRewardManager.EntityRewardData reward in rewardList)
+            foreach (CombatRewardManager.EntityRewardData reward in rewardList.RewardForEntities)
             {
                 CharacterEXPSocketGUI newSocket = Instantiate(socketTemplate, hrzLayout.transform);
                 newSocket.Init(reward);
@@ -59,12 +62,60 @@ namespace Vanaring
                 //reward.ControlEntity.CombatCharacterSheet;
 
             }
+            foreach (EventRewardData eventReward in rewardList.Rewards)
+            {
+                MissionItemRewardSocketGUI newSocket = Instantiate(itemSocketTemplate, itemVerticalLayout.transform);
+                newSocket.InitSocket(eventReward);
+                missionItemRewardSocketList.Add(newSocket);
+            }
+
+            if(missionItemRewardSocketList.Count != 0)
+            {
+                StartCoroutine(ShowItemList());
+            }
+
+            itemSocketTemplate.gameObject.SetActive(false);
             socketTemplate.gameObject.SetActive(false);
             yield return new WaitForSeconds(1.0f);
-            yield return RunNumberUp(0, rewardList[0].ReceivedExp, 1.0f);
+            yield return RunNumberUp(0, rewardList.RewardForEntities[0].ReceivedExp, 1.0f);
             
             _uiAnimationDone = true;
             yield return null;
+        }
+
+        private IEnumerator ShowItemList()
+        {
+            if (missionItemRewardSocketList.Count == 1)
+            {
+                missionItemRewardSocketList[0].PlayAnimationMoveIn();
+            }
+            else
+            {
+                foreach (MissionItemRewardSocketGUI socket in missionItemRewardSocketList)
+                {
+                    socket.PlayAnimationMoveIn();
+                    yield return MoveVerticalPanel(itemVerticalLayout.GetComponent<RectTransform>().localPosition.y,
+                        itemVerticalLayout.GetComponent<RectTransform>().localPosition.y - 120);
+                }
+            }
+        }
+        private IEnumerator MoveVerticalPanel(float start, float end)
+        {
+            float elapsedTime = 0.0f;
+            while (elapsedTime < 0.15f)
+            {
+                float t = elapsedTime / 0.15f;
+                float posY = Mathf.Lerp(start, end, t);
+
+                Vector3 newPosition = itemVerticalLayout.GetComponent<RectTransform>().localPosition;
+                newPosition.y = posY;
+                itemVerticalLayout.GetComponent<RectTransform>().localPosition = newPosition;
+
+                elapsedTime += Time.deltaTime;
+                yield return null;
+            }
+            itemVerticalLayout.GetComponent<RectTransform>().localPosition = new Vector3(itemVerticalLayout.GetComponent<RectTransform>().localPosition.x,
+                end, itemVerticalLayout.GetComponent<RectTransform>().localPosition.z);
         }
 
         public IEnumerator RunNumberUp(float start, float end, float duration)
