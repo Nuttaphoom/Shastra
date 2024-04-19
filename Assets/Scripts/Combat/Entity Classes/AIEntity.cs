@@ -17,7 +17,7 @@ namespace Vanaring
         public void Awake()
         {
             aiBehaviorHandler = GetComponent<AIBehaviorHandler>();
-
+            //debugtest
             //StartCoroutine(_botBehaviorHandler.CalculateNextBehavior());
         }
 
@@ -26,7 +26,7 @@ namespace Vanaring
         {
             yield return base.InitializeEntityIntoCombat(); 
 
-            CombatEntityAnimationHandler.InstantlyHideVisualMesh();
+            //CombatEntityAnimationHandler.InstantlyHideVisualMesh();
 
             yield return CombatEntityAnimationHandler.PlaySpawnVisualEffectCoroutine();
 
