@@ -8,6 +8,14 @@ namespace Vanaring
     {
         [SerializeField] private List<Animator> animatorList = new List<Animator>();
 
+        public void LootBox()
+        {
+            foreach (Animator anim in animatorList)
+            {
+                anim.Play("testLoot");
+            }
+        }
+
         public void PerformMoveAnimation(Vector3 direction)
         {
             foreach (Animator anim in animatorList)

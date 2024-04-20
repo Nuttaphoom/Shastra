@@ -15,11 +15,14 @@ namespace Vanaring
     {
         [SerializeField]
         private List<EventRewardData> _lootRewardDatas ;
+        [SerializeField] private Animator lootBoxAnimator;
 
         protected override IEnumerator OnVisiteThisNodeFirstTimeOnMission()
         {
             yield return base.OnVisiteThisNodeFirstTimeOnMission();
             yield return new WaitForSeconds(.75f);
+
+            yield return OpenLootChest();
 
             List<IRewardable> rewards = new List<IRewardable>() ; //= _lootRewardData.GetReward();
             foreach (var rewardData in _lootRewardDatas)
@@ -28,6 +31,14 @@ namespace Vanaring
             }
             yield return  FindObjectOfType<MissionRewardObtainHandler>().ObtainReward(rewards) ;
             
+        }
+
+        private IEnumerator OpenLootChest()
+        {
+            lootBoxAnimator.Play("OpenChest");
+            FindAnyObjectByType<MissionPartyAnimationManager>().LootBox();
+
+            yield return new WaitForSeconds(lootBoxAnimator.GetCurrentAnimatorStateInfo(0).length);
         }
     }
 
