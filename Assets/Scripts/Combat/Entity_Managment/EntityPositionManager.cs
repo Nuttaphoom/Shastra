@@ -4,6 +4,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using Unity.VisualScripting;
 using UnityEditorInternal;
 using UnityEngine; 
 
@@ -11,6 +12,14 @@ namespace Vanaring
 {
     public class EntityPositionManager : MonoBehaviour  
     {
+        [Serializable]
+        private struct EnemyOccupierData
+        {
+            public StandingLocationOccupierData StandingLocationData;
+            [Header("Enemy size need to match to use this location")]
+            public int EnemySize;
+        }
+        #region Singleton 
         private static EntityPositionManager _instance ; 
         public static EntityPositionManager Instance
         {
@@ -26,6 +35,7 @@ namespace Vanaring
             }
         }
 
+
         private void Awake()
         {
             if (_instance != null && _instance != this)
@@ -35,27 +45,119 @@ namespace Vanaring
 
         }
 
+        #endregion
 
         [Header("Transform is easier assiged manually, no need to create Tag for them")]
         [SerializeField]
         private List<StandingLocationOccupierData> _allyStandingTransform ;
 
         [SerializeField]
-        private List<StandingLocationOccupierData> _enemyStandingTransform ;
+        private List<EnemyOccupierData> _enemyOccupierData;
+
+        /// <summary>
+        /// if EnemySize hasn't been specified 
+        /// </summary>
+        /// <param name="enemySize"></param>
+        /// <returns></returns>
+        private List<StandingLocationOccupierData> GetEnemyStandingLocations(int enemySize = -1)
+        {
+            List<StandingLocationOccupierData> ret = new List<StandingLocationOccupierData>(); 
+            foreach (var enemyOccupieData in _enemyOccupierData)
+            {
+                if (enemyOccupieData.EnemySize == enemySize)
+                {
+                    ret.Add(enemyOccupieData.StandingLocationData) ; 
+                }
+            }
+
+            return ret; 
+        }
 
         [SerializeField]
         private Transform _arenaCenterTransform;
 
+
+        private int _currentEnemySize = -1 ;
+        public int CurrentEnemySize
+        {
+            get
+            {
+                if (_currentEnemySize == -1)
+                    throw new Exception("Current Enemy Size hasn't been set");
+
+                return _currentEnemySize; 
+            }
+        }
+        public void SetNewEnemyCurrentSize(int newSize)
+        {
+            if (_currentEnemySize == newSize)
+                return ; 
+
+            if (_currentEnemySize == -1)
+            {
+                _currentEnemySize = newSize;
+                return;
+            }
+
+
+            //TODO :a if the enemy size changed, change all of the position of the enemy, reattach prev one and attach to the new location
+
+            List<StandingLocationOccupierData> oldLocationData = GetEnemyStandingLocations(_currentEnemySize);
+
+            _currentEnemySize = newSize;
+            int i = 0; 
+            foreach (var data in oldLocationData)
+            {
+                if (data.EntityStandingHere == null)
+                    continue;
+
+                CombatEntity combatEntity = data.EntityStandingHere;
+                OccupieLocation(ECompetatorSide.Hostile, i, combatEntity);
+                i++;
+            }
+        }
+        
+        
+       
+        public List<StandingLocationOccupierData> GetAllOccupiedLocation(ECompetatorSide side, int enemySize = -1)
+        {
+            List<StandingLocationOccupierData> ret = new List<StandingLocationOccupierData>(); 
+            if (side == ECompetatorSide.Ally)
+            {
+                foreach (var data in _allyStandingTransform)
+                {
+                    if (data.EntityStandingHere != null)
+                    {
+                        ret.Add(data);
+                    }
+                }
+            }
+            else
+            {
+                if (enemySize == -1)
+                    throw new Exception("Enemy Size is " + enemySize) ;
+                    
+                foreach (var data in GetEnemyStandingLocations(enemySize))
+                {
+                    if (data.EntityStandingHere != null)
+                    {
+                        ret.Add(data);
+                    }
+                }
+            }
+
+            return ret; 
+        }
 
         public Transform GetAllyStandLocationTransform(int index)
         {
             return _allyStandingTransform[index].Location;
         }
 
-        public Transform GetEnemyStandLocationTransform(int index)
-        {
-            return _enemyStandingTransform[index].Location;
-        }
+        //public Transform GetEnemyStandLocationTransform(int index)
+        //{
+        //    return _enemyStandingTransform[index].Location;
+        //}
 
         public Transform GetLocationFromCombatEntity(CombatEntity entity)
         {
@@ -65,26 +167,26 @@ namespace Vanaring
                     return standingLocationData.Location; 
             }
 
-            foreach (var standingLocationData in _enemyStandingTransform)
-            {
-                if (standingLocationData.EntityStandingHere.CombatCharacterSheet.CharacterName == entity.CombatCharacterSheet.CharacterName)
-                    return standingLocationData.Location;
-            }
 
+            for (int i = 1; i <= 6; i++)
+            {
+                foreach (var standingLocationData in GetEnemyStandingLocations(i))
+                {
+                    if (standingLocationData.EntityStandingHere.CombatCharacterSheet.CharacterName == entity.CombatCharacterSheet.CharacterName)
+                        return standingLocationData.Location;
+                }
+            }
             throw new Exception(entity.gameObject.name + " 's location can't not be found");
         }
 
-        /// <summary>
-        /// bool => check if the location has been occpied (invalid) 
-        /// </summary>
-        /// <param name="ally"></param>
-        /// <param name="index"></param>
-        /// <param name="entity"></param>
-        /// <returns></returns>
-        public void OccupieLocation(ECompetatorSide side, int index,CombatEntity entity)
+        #region Occupy & Release Location 
+       
+        public void OccupieLocation(ECompetatorSide side, int index,CombatEntity entity )
         {
-            if (IsThisEntityOccupyLocation(entity))
-                return   ;
+            if (IsThisEntityOccupyLocation(entity) != null)
+            {
+                ReleasePosition(entity);
+            }
 
             StandingLocationOccupierData data = null ;
 
@@ -97,11 +199,13 @@ namespace Vanaring
                 }
             }
             else
-            {
-                if (_enemyStandingTransform[index].EntityStandingHere == null)
+            { 
+
+                var enemyOccupation = GetEnemyStandingLocations(CurrentEnemySize);
+                if (enemyOccupation[index].EntityStandingHere == null)
                 {
-                    _enemyStandingTransform[index].EntityStandingHere = entity;
-                    data = _enemyStandingTransform[index];
+                    enemyOccupation[index].EntityStandingHere = entity;
+                    data = enemyOccupation[index];
                 }
            
             }
@@ -111,13 +215,16 @@ namespace Vanaring
 
             return  ; 
 
-        }
-        public void OccupieAnyValidLocation(ECompetatorSide side, CombatEntity entity)
+        } 
+        public void OccupieAnyValidLocation(ECompetatorSide side, CombatEntity entity   )
         {
-            if (IsThisEntityOccupyLocation(entity))
-                return; 
+            
+            if (IsThisEntityOccupyLocation(entity) != null) {
+                ReleasePosition(entity);
+            }
 
-            StandingLocationOccupierData validLocation = null ; 
+            StandingLocationOccupierData validLocation = null ;
+
             if (side == ECompetatorSide.Ally)
             {
                 foreach (var data in _allyStandingTransform)
@@ -125,19 +232,20 @@ namespace Vanaring
                     if (data.EntityStandingHere == null)
                     {
                         validLocation = data;
-                        break; 
-                       
-                        
+                        break;
+
+
                     }
                 }
-            }else
+            }
+            else
             {
-                foreach (var data in _enemyStandingTransform)
+                foreach (var data in GetEnemyStandingLocations(_currentEnemySize))
                 {
                     if (data.EntityStandingHere == null)
                     {
                         validLocation = data;
-                        break; 
+                        break;
                     }
                 }
             }
@@ -163,7 +271,7 @@ namespace Vanaring
                 }
             }
 
-            foreach (var data in _enemyStandingTransform)
+            foreach (var data in GetEnemyStandingLocations(_currentEnemySize))
             {
                 if (data.EntityStandingHere == entity)
                 {
@@ -171,29 +279,28 @@ namespace Vanaring
                     return;
                 }
             }
-
-
         }
+        #endregion 
 
-        public bool IsThisEntityOccupyLocation(CombatEntity entity)
+        public StandingLocationOccupierData IsThisEntityOccupyLocation(CombatEntity entity)
         {
             foreach (var data in _allyStandingTransform)
             {
                 if (data.EntityStandingHere == entity)
                 {
-                    return true ;
+                    return data ;
                 }
             }
 
-            foreach (var data in _enemyStandingTransform)
+            foreach (var data in GetEnemyStandingLocations(_currentEnemySize))
             {
                 if (data.EntityStandingHere == entity)
                 {
-                    return true ;
+                    return data ;
                 }
             }
 
-            return false; 
+            return null; 
         }
 
         [Serializable]

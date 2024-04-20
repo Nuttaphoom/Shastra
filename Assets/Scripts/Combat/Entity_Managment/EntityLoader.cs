@@ -39,7 +39,6 @@ namespace Vanaring
         {
             CombatEntity newEntity = GameObject.Instantiate(prefab);
 
-            OccupyLocation(newEntity, location);
 
             newEntity.name = newEntity.name + "Loaded" ;
 

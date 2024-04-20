@@ -236,6 +236,8 @@ namespace Vanaring
 
         /// <summary>
         /// Use for property set up entities for the combat, this include adding them into _competators list 
+        /// and set up position, 
+        /// Entities => every entity in that team 
         /// </summary>
         /// <param name="entites"></param>
         /// <param name="side"></param>
@@ -243,6 +245,10 @@ namespace Vanaring
         private IEnumerator AssignCompetators(List<CombatEntity> entites, ECompetatorSide side)
         {
             List<IEnumerator> _allIEs = new List<IEnumerator>();
+
+            if (side == ECompetatorSide.Hostile)
+                EntityPositionManager.Instance.SetNewEnemyCurrentSize(entites.Count); 
+            
 
             foreach (var entity in entites) {
                 EntityPositionManager.Instance.OccupieAnyValidLocation(side, entity); 

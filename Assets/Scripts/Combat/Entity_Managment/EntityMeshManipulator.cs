@@ -11,7 +11,6 @@ namespace Vanaring
         private List<GameObject> _allyEntityMesh;
         private List<GameObject> _enemyEntityMesh; 
 
-
         public List<GameObject> GetEntityMesh(ECompetatorSide side)
         {   
             List<GameObject> mesh = new List<GameObject>();
