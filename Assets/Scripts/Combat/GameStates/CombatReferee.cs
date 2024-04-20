@@ -418,6 +418,9 @@ namespace Vanaring
 
             }
 
+            EntityPositionManager.Instance.SetNewEnemyCurrentSize(GetCompetatorsBySide(ECompetatorSide.Hostile).Count);
+
+
 
         }
 
@@ -455,12 +458,12 @@ namespace Vanaring
                         continue;
 
                     EntityPositionManager.Instance.ReleasePosition(_competators[i].Competator);
-                     
+                    
                     _competators.RemoveAt(i);
+                    
                 }
             }
 
-   
 
         }
         private IEnumerator PostPerformActionInEveryCharacter()
