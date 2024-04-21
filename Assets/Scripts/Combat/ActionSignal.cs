@@ -48,7 +48,6 @@ namespace Vanaring
 
         public Transform GetObjectWithTrackName(string trackName)
         {
-            Debug.Log("Get Object with track name : trackName : " + trackName);
             if (trackName == CasterTrackName)
             {
                 return _timelienActors[0]; 

@@ -119,40 +119,40 @@ namespace Vanaring
         
         
        
-        public List<StandingLocationOccupierData> GetAllOccupiedLocation(ECompetatorSide side, int enemySize = -1)
-        {
-            List<StandingLocationOccupierData> ret = new List<StandingLocationOccupierData>(); 
-            if (side == ECompetatorSide.Ally)
-            {
-                foreach (var data in _allyStandingTransform)
-                {
-                    if (data.EntityStandingHere != null)
-                    {
-                        ret.Add(data);
-                    }
-                }
-            }
-            else
-            {
-                if (enemySize == -1)
-                    throw new Exception("Enemy Size is " + enemySize) ;
+        //public List<StandingLocationOccupierData> GetAllOccupiedLocation(ECompetatorSide side, int enemySize = -1)
+        //{
+        //    List<StandingLocationOccupierData> ret = new List<StandingLocationOccupierData>(); 
+        //    if (side == ECompetatorSide.Ally)
+        //    {
+        //        foreach (var data in _allyStandingTransform)
+        //        {
+        //            if (data.EntityStandingHere != null)
+        //            {
+        //                ret.Add(data);
+        //            }
+        //        }
+        //    }
+        //    else
+        //    {
+        //        if (enemySize == -1)
+        //            throw new Exception("Enemy Size is " + enemySize) ;
                     
-                foreach (var data in GetEnemyStandingLocations(enemySize))
-                {
-                    if (data.EntityStandingHere != null)
-                    {
-                        ret.Add(data);
-                    }
-                }
-            }
+        //        foreach (var data in GetEnemyStandingLocations(enemySize))
+        //        {
+        //            if (data.EntityStandingHere != null)
+        //            {
+        //                ret.Add(data);
+        //            }
+        //        }
+        //    }
 
-            return ret; 
-        }
+        //    return ret; 
+        //}
 
-        public Transform GetAllyStandLocationTransform(int index)
-        {
-            return _allyStandingTransform[index].Location;
-        }
+        //public Transform GetAllyStandLocationTransform(int index)
+        //{
+        //    return _allyStandingTransform[index].Location;
+        //}
 
         //public Transform GetEnemyStandLocationTransform(int index)
         //{
@@ -192,11 +192,11 @@ namespace Vanaring
 
             if (side == ECompetatorSide.Ally)
             {
-                if (_allyStandingTransform[index].EntityStandingHere == null)
-                {
-                    _allyStandingTransform[index].EntityStandingHere = entity; 
-                    data = _allyStandingTransform[index];
-                }
+                if (_allyStandingTransform[0].EntityStandingHere != null)
+                    ReleasePosition(_allyStandingTransform[0].EntityStandingHere); 
+                
+                _allyStandingTransform[0].EntityStandingHere = entity;
+                data = _allyStandingTransform[0];
             }
             else
             { 
@@ -229,13 +229,11 @@ namespace Vanaring
             {
                 foreach (var data in _allyStandingTransform)
                 {
-                    if (data.EntityStandingHere == null)
-                    {
-                        validLocation = data;
-                        break;
-
-
-                    }
+                    if (data.EntityStandingHere != null)
+                        ReleasePosition(data.EntityStandingHere) ;
+                    
+                    validLocation = data;
+                    break; 
                 }
             }
             else
