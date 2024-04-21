@@ -97,7 +97,7 @@ namespace Vanaring
         {
             if (_visualMesh.activeSelf)
             {
-                transform.position = UISpaceSingletonHandler.ObjectToUISpace(_owner.GetComponent<CombatEntityAnimationHandler>().GetHUDSpawnTransform()) + _spawnOffset ;
+                transform.position = UISpaceSingletonHandler.ObjectToUISpace(_owner.GetComponent<CombatEntityAnimationHandler>().GetHUDSpawnTransform())   ;
             }
         }
 
