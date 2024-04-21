@@ -10,7 +10,10 @@ namespace Vanaring
     public class SideTurnDisplayerManager : MonoBehaviour
     {
         [SerializeField] private PlayableDirector playerTurn;
-        [SerializeField] private PlayableDirector enemyTurn; 
+        [SerializeField] private PlayableDirector enemyTurn;
+
+        [SerializeField]
+        private CutsceneDirector _cutsceneDirector;
 
         public IEnumerator DisplaySideRoundCoroutine(ECompetatorSide side)
         {

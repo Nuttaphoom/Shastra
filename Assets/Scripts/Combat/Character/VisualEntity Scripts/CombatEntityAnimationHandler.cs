@@ -32,11 +32,13 @@ namespace Vanaring
         private Transform _groundTransform;
         private Transform _aboveHeadTransform;
         private Transform _hudTransform;
+        private Transform _targetIconTransform; 
         private const string CharacterVisualMeshTag = "Character/VisualPivot/CharacterVisualMesh";
         private const string CharacterImpactPivotTag = "Character/VisualPivot/CharacterImpactPivot";
         private const string CharacterWorldHUDPivotTag = "Character/VisualPivot/CharacterWorldHUDPivot";
         private const string CharacterAboveHeadPivotTag = "Character/VisualPivot/CharacterAboveHeadPivot";
         private const string CharacterGroundPivotTag = "Character/VisualPivot/CharacterGroundPivot";
+        private const string CharacterTargetIconPivotTag = "Character/VisualPivot/CharacterTargetIconPivot";
 
         private void RecursiveSetUpPivot(Transform child)
         {
@@ -55,6 +57,10 @@ namespace Vanaring
             if (child.CompareTag(CharacterAboveHeadPivotTag))
                 _aboveHeadTransform = child;
 
+            if (child.CompareTag(CharacterTargetIconPivotTag))
+                _targetIconTransform = child;
+            
+             
             for (int i = 0; i < child.transform.childCount; i++)
             {
                 RecursiveSetUpPivot(child.GetChild(i));
@@ -82,6 +88,9 @@ namespace Vanaring
 
                 if (child.CompareTag(CharacterAboveHeadPivotTag))
                     _aboveHeadTransform = child;
+
+                if (child.CompareTag(CharacterTargetIconPivotTag))
+                    _targetIconTransform = child;
             }
 
             if (_visualMesh == null)
@@ -99,8 +108,25 @@ namespace Vanaring
 
             if (_aboveHeadTransform == null)
                 throw new Exception("Object with tag " + CharacterAboveHeadPivotTag + " can't be FOUND in " + gameObject.name);
+
+
+            if (_targetIconTransform == null)
+                throw new Exception("Object with tag " + CharacterTargetIconPivotTag + " can't be FOUND in " + gameObject.name);
         }
-    
+        private Transform TargetIconTransform
+        {
+            get
+            {
+                if (_targetIconTransform == null)
+                    SetUpVisualPivotTransform();
+
+                if (_targetIconTransform == null)
+                    throw new Exception("_targetIconTransform transform of " + gameObject.name + " can't be found");
+
+                return _targetIconTransform;
+            }
+        }
+
         private Transform ImpactTransform
         {
             get
@@ -196,13 +222,15 @@ namespace Vanaring
         }
         public Transform GetTargetIconTransform()
         {
-            return ImpactTransform; 
+            return TargetIconTransform ; 
         }
 
         public Transform GetCenterMesh()
         {
             return ImpactTransform; 
         }
+
+        
 
       
         /// <summary>

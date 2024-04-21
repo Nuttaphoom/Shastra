@@ -4269,8 +4269,11 @@ MonoBehaviour:
   _destroyedWithTimeline:
   - {fileID: 4764948770002274705}
   - {fileID: 1857878342784453779}
-  _directVectorTransform: []
+  ChangeLookAt: 0
   _virtualCameraToChangeLookAt: {fileID: 0}
+  ModifyMainCameraPosition: 0
+  _VMTranslationTransform: {fileID: 0}
+  _VMFaceDirectionParentTransform: {fileID: 0}
 --- !u!1 &5217008532386732627
 GameObject:
   m_ObjectHideFlags: 0
@@ -5506,13 +5509,6 @@ MonoBehaviour:
     GateFit: 2
     FocusDistance: 10
     m_SensorSize: {x: 1, y: 1}
-    Iso: 200
-    ShutterSpeed: 0.005
-    Aperture: 16
-    BladeCount: 5
-    Curvature: {x: 2, y: 11}
-    BarrelClipping: 0.25
-    Anamorphism: 0
   m_Transitions:
     m_BlendHint: 3
     m_InheritPosition: 0
@@ -7702,31 +7698,31 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 521890135331775457, guid: a113caa65fa353041b107233118b44a9, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.38
+      value: 4.4
       objectReference: {fileID: 0}
     - target: {fileID: 521890135331775457, guid: a113caa65fa353041b107233118b44a9, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 4.455441
+      value: 2.93
       objectReference: {fileID: 0}
     - target: {fileID: 521890135331775457, guid: a113caa65fa353041b107233118b44a9, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -4.91
+      value: -3.86
       objectReference: {fileID: 0}
     - target: {fileID: 521890135331775457, guid: a113caa65fa353041b107233118b44a9, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.97512877
+      value: 0.9829488
       objectReference: {fileID: 0}
     - target: {fileID: 521890135331775457, guid: a113caa65fa353041b107233118b44a9, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.04536751
+      value: 0.11530688
       objectReference: {fileID: 0}
     - target: {fileID: 521890135331775457, guid: a113caa65fa353041b107233118b44a9, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.21670991
+      value: -0.14061452
       objectReference: {fileID: 0}
     - target: {fileID: 521890135331775457, guid: a113caa65fa353041b107233118b44a9, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.010122886
+      value: 0.027268948
       objectReference: {fileID: 0}
     - target: {fileID: 521890135331775457, guid: a113caa65fa353041b107233118b44a9, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -7739,6 +7735,10 @@ PrefabInstance:
     - target: {fileID: 521890135331775457, guid: a113caa65fa353041b107233118b44a9, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1931946963289436663, guid: a113caa65fa353041b107233118b44a9, type: 3}
+      propertyPath: field of view
+      value: 98.2
       objectReference: {fileID: 0}
     - target: {fileID: 1931946963289436663, guid: a113caa65fa353041b107233118b44a9, type: 3}
       propertyPath: far clip plane

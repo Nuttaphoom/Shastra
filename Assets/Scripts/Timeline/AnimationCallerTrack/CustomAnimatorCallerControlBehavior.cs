@@ -32,7 +32,9 @@ namespace Vanaring
                     _entity = (playerData as GameObject).gameObject.GetComponent<CombatEntity>();
                 else
                 {
-                    throw new Exception("_entity can not be assigned");
+                    Debug.Log(playerData);  
+
+                    throw new Exception("_entity can not be assigned, playerData is " + playerData);
                 }
 
 
