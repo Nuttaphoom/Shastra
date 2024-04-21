@@ -153,7 +153,6 @@ namespace Vanaring
                 {
                     for (int i = 0; i < _competators.Count; i++)
                     {
-                        Debug.Log("_competators.count : " + _competators.Count);
                         Destroy(_competators[i].Competator.gameObject);
                         _competators.RemoveAt(i);
                         i--;
@@ -292,10 +291,7 @@ namespace Vanaring
         {
             while (true)
             {
-                EntityPositionManager.Instance.SetNewEnemyCurrentSize(GetCompetatorsBySide(ECompetatorSide.Hostile).Count);
-
                 yield return _sideTurnDisplayerManager.DisplaySideRoundCoroutine(_currentSide);
-
 
                 yield return _combatRefereeStateHandler.AdvanceRound();
 
@@ -424,8 +420,8 @@ namespace Vanaring
 
                 yield return SwitchControl(prevActor, GetCurrentActor()); 
 
-                if (GetCurrentActor() != null)
-                    EntityPositionManager.Instance.SetNewEnemyCurrentSize(GetCompetatorsBySide(ECompetatorSide.Hostile).Count);
+                //if (GetCurrentActor() != null)
+                //    EntityPositionManager.Instance.SetNewEnemyCurrentSize(GetCompetatorsBySide(ECompetatorSide.Hostile).Count);
 
 
             }

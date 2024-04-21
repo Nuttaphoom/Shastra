@@ -17,7 +17,6 @@ namespace Vanaring
 
         [SerializeField]
         private RuntimePartyMember _runtimePartyMemberData;
-
        
         public void LinkPartyMemberToThisEntity(RuntimePartyMember partyMember)
         {
@@ -63,7 +62,10 @@ namespace Vanaring
         {
             GetComponent<ItemUserHandler>().FactorizeItemInInventory();
     
-            EnableCamera() ; 
+            EnableCamera() ;
+
+            EntityPositionManager.Instance.SetNewEnemyCurrentSize(CombatReferee.Instance.GetCompetatorsBySide(ECompetatorSide.Hostile).Count);
+
 
             yield return base.TakeControl();
 

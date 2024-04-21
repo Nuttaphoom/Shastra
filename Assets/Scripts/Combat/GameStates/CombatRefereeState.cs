@@ -22,6 +22,7 @@ namespace Vanaring
         {
             yield return PersistentTutorialManager.Instance.CheckTuitorialNotifier("CombatBeginExplain");
 
+
             yield return new RoundEnterState(this).Execute();
 
 
@@ -41,6 +42,7 @@ namespace Vanaring
         /// <returns></returns>
         private IEnumerator AdvanceTurn()
         {
+
             //Perform Action
             yield return new PerformActionState(this).Execute() ; 
         }
