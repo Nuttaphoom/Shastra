@@ -35,6 +35,7 @@ namespace Vanaring
         {
             GameObject newTargetObj = Instantiate(targetGUI, pos, targetGUI.transform.rotation) ;
             newTargetObj.transform.parent = parent;
+            newTargetObj.transform.localScale = Vector3.one; 
             newTargetObj.SetActive(false);
             return newTargetObj;
         }
@@ -42,12 +43,17 @@ namespace Vanaring
         {
             GameObject newTargetObj = Instantiate(_breakTargetGUI, pos, Quaternion.identity, parent);
             newTargetObj.SetActive(false);
+
+            newTargetObj.transform.localScale = Vector3.one;
+
             return newTargetObj;
         }
         public GameObject InstantiateWeakGUI(Vector3 pos, Transform parent)
         {
             GameObject newTargetObj = Instantiate(_weakTargetGUI, pos , Quaternion.identity, parent);
             newTargetObj.SetActive(false);
+
+            newTargetObj.transform.localScale = Vector3.one;
             return newTargetObj;
         }
 
