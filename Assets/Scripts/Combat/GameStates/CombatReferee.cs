@@ -282,6 +282,8 @@ namespace Vanaring
 
             SetActiveActors(); 
             yield return SwitchControl(null,GetCurrentActor());
+
+
         }
 
         #endregion
@@ -290,7 +292,11 @@ namespace Vanaring
         {
             while (true)
             {
+                EntityPositionManager.Instance.SetNewEnemyCurrentSize(GetCompetatorsBySide(ECompetatorSide.Hostile).Count);
+
                 yield return _sideTurnDisplayerManager.DisplaySideRoundCoroutine(_currentSide);
+
+
                 yield return _combatRefereeStateHandler.AdvanceRound();
 
                 _currentSide = (ECompetatorSide)(((int)_currentSide + 1) % 2);
@@ -331,6 +337,7 @@ namespace Vanaring
         #region RefereeHandler Methods
         private IEnumerator SwitchControl(CombatEntity prevEntity, CombatEntity newEntity)
         {
+
             if (prevEntity != null)
             {
                 FindObjectOfType<CharacterWindowManager>().DeSetActiveEntityGUI(prevEntity);
@@ -344,6 +351,8 @@ namespace Vanaring
                 yield return newEntity.TakeControl();
 
             }
+
+
         }
 
         private IEnumerator ChangeActiveEntityIndexCoroutine(bool forward)
@@ -413,12 +422,14 @@ namespace Vanaring
 
                 SetActiveActors();
 
-                yield return SwitchControl(prevActor, GetCurrentActor());
+                yield return SwitchControl(prevActor, GetCurrentActor()); 
+
+                if (GetCurrentActor() != null)
+                    EntityPositionManager.Instance.SetNewEnemyCurrentSize(GetCompetatorsBySide(ECompetatorSide.Hostile).Count);
 
 
             }
 
-            EntityPositionManager.Instance.SetNewEnemyCurrentSize(GetCompetatorsBySide(ECompetatorSide.Hostile).Count);
 
 
 
