@@ -15,10 +15,6 @@ namespace Vanaring
         [SerializeField] private TextMeshProUGUI levelText;
 
         private RuntimeCombatMemberData member;
-        void Start()
-        {
-        
-        }
 
         public void Init(CombatRewardManager.EntityRewardData rewardStruct)
         {
@@ -31,12 +27,11 @@ namespace Vanaring
                     member = cmember;
                     expBar.fillAmount = (float)cmember.LevelAttributeHandler.GetCharacterUEXPSystem.GetCurrentEXP /
                             cmember.LevelAttributeHandler.GetCharacterUEXPSystem.GetEXPCap();
-                    StartCoroutine(RunNumberUp(cmember.LevelAttributeHandler.GetCharacterUEXPSystem.GetCurrentEXP,
+                    StartCoroutine(PlayEXPNumberAnimation(cmember.LevelAttributeHandler.GetCharacterUEXPSystem.GetCurrentEXP,
                         cmember.LevelAttributeHandler.GetCharacterUEXPSystem.GetCurrentEXP + rewardStruct.ReceivedExp,
                         rewardStruct.ReceivedExp, (int)cmember.LevelAttributeHandler.GetCharacterUEXPSystem.GetEXPCap()));
                 }
             }
-            //expRemainingNumText.text = ((float)member.LevelAttributeHandler.GetCharacterUEXPSystem.GetEXPCap() - member.LevelAttributeHandler.GetCharacterUEXPSystem.GetCurrentEXP).ToString();
             levelText.text = member.LevelAttributeHandler.GetCharacterUEXPSystem.GetCurrentLevel.ToString();
             portrait.sprite = member.GetCharacterSheet.GetCharacterIcon;
             //Debug.Log("Cur: " + member.LevelAttributeHandler.GetCharacterUEXPSystem.GetCurrentEXP + " Cap: " + member.LevelAttributeHandler.GetCharacterUEXPSystem.GetEXPCap() + " Level:" +member.LevelAttributeHandler.GetCharacterUEXPSystem.GetCurrentLevel);
@@ -44,7 +39,7 @@ namespace Vanaring
 
         }
 
-        private IEnumerator RunNumberUp(float start, float end, float gain, float max)
+        private IEnumerator PlayEXPNumberAnimation(float start, float end, float gain, float max)
         {
             yield return new WaitForSeconds(1.0f);
             seccondBar.fillAmount = (float)(member.LevelAttributeHandler.GetCharacterUEXPSystem.GetCurrentLevel + gain) / max;
@@ -58,7 +53,6 @@ namespace Vanaring
                 yield return null;
             }
             expBar.fillAmount = (float)(member.LevelAttributeHandler.GetCharacterUEXPSystem.GetCurrentLevel + gain) / max;
-            //expRunningText.text = Mathf.Round(end).ToString();
         }
     }
 }
