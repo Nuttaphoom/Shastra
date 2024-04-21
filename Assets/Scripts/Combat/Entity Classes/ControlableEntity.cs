@@ -103,7 +103,7 @@ namespace Vanaring
 
         public void EnableCamera()
         {
-             _attachedCamera.Follow = gameObject.transform ; 
+             _attachedCamera.Follow = GetComponent<CombatEntityAnimationHandler>().GetCenterMesh().transform ; 
             CameraSetUPManager.Instance.EnableCamera(_attachedCamera);
         }
 

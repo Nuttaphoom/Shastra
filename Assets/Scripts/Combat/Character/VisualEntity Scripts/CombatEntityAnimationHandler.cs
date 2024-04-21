@@ -199,6 +199,11 @@ namespace Vanaring
             return ImpactTransform; 
         }
 
+        public Transform GetCenterMesh()
+        {
+            return ImpactTransform; 
+        }
+
       
         /// <summary>
         /// return a transform in which Caster or Target position will be set to 
