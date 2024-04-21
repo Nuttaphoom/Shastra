@@ -9,29 +9,14 @@ namespace Vanaring
 {
     public class CharacterSocketGUI : MonoBehaviour
     {
-        public enum CharacterTurnStatus
-        {
-            READY,
-            STUN,
-            DEAD
-        }
-
         [Header("Image")]
-        [SerializeField]
-        private Image characterImg;
+        [SerializeField] private Image characterImg;
 
         [Header("BarScaler")]
-        [SerializeField]
-        private Image hpBar;
-        [SerializeField]
-        private Image secondHpBar;
-        private List<Image> energySlotList = new List<Image>();
-        [SerializeField]
-        private Image curveMask;
-        [SerializeField]
-        private Image mpBar;
-        [SerializeField]
-        private Image secondMpBar;
+        [SerializeField] private Image hpBar, secondHpBar;
+        [SerializeField] private Image mpBar, secondMpBar;
+        [SerializeField] private Image outterFrame, outterFill;
+        [SerializeField] private Image innerFrame, innerFill;
 
         [Header("TextMeshPro")]
         [SerializeField]
@@ -46,8 +31,7 @@ namespace Vanaring
         private GameObject statusBarLayout;
         [SerializeField]
         private Image effectIcon;
-        [SerializeField]
-        private Animator animator;
+
         [SerializeField]
         private List<float> slotBarRatios;
         [SerializeField]
@@ -100,11 +84,7 @@ namespace Vanaring
         public void Init(CombatEntity combatEntity)
         {
             _combatEntity = combatEntity;
-            _combatEntity.SubOnDamageVisualEvent(OnHPModified);
-            _combatEntity.SpellCaster.SubOnModifyEnergy(OnEnergyModified);
-            _combatEntity.SubOnHealVisualEvent(OnHPModified);
-            _combatEntity.SpellCaster.SubOnMPModified(OnMPModified);
-            _combatEntity.SubOnStatusEffectApplied(AddEffectIcon);
+            SubOnEvent();
 
             _characterSheetSO = _combatEntity.CombatCharacterSheet;
             characterImg.sprite = _characterSheetSO.GetCharacterIcon;
@@ -123,10 +103,20 @@ namespace Vanaring
             UpdateHPScaleGUI();
             UpdateMPScaleGUI();
 
-            animator = GetComponent<Animator>();
-
             InitEnergySlot();
         }
+
+        #region SubEvent
+        private void SubOnEvent()
+        {
+            _combatEntity.SubOnDamageVisualEvent(OnHPModified);
+            _combatEntity.SpellCaster.SubOnModifyEnergy(OnEnergyModified);
+            _combatEntity.SubOnHealVisualEvent(OnHPModified);
+            _combatEntity.SpellCaster.SubOnMPModified(OnMPModified);
+            _combatEntity.SubOnStatusEffectApplied(AddEffectIcon);
+        }
+        #endregion
+
         private void AddEffectIcon(EntityStatusEffectPair effect)
         {
             Image newEffectIcon = Instantiate(effectIcon, statusBarLayout.transform);
@@ -136,7 +126,11 @@ namespace Vanaring
 
         private void InitEnergySlot()
         {
-            curveMask.fillAmount = slotBarRatios[_combatEntity.SpellCaster.GetEnergyAmount(RuntimeMangicalEnergy.EnergySide.DarkEnergy)];
+            outterFrame.fillAmount = _combatEntity.SpellCaster.GetPeakEnergyAmout(RuntimeMangicalEnergy.EnergySide.DarkEnergy) / 10f;
+            innerFrame.fillAmount = _combatEntity.SpellCaster.GetPeakEnergyAmout(RuntimeMangicalEnergy.EnergySide.LightEnergy) / 10f;
+
+            outterFill.fillAmount = _combatEntity.SpellCaster.GetPeakEnergyAmout(RuntimeMangicalEnergy.EnergySide.DarkEnergy) / 10f;
+            innerFill.fillAmount = _combatEntity.SpellCaster.GetPeakEnergyAmout(RuntimeMangicalEnergy.EnergySide.LightEnergy) / 10f;
         }
 
         #region TurnStatus
@@ -193,7 +187,6 @@ namespace Vanaring
 
         private void OnHPModified(int damage)
         {
-            //animator.SetTrigger("Hit");
             hpVal = (int) _combatEntity.StatsAccumulator.GetHPAmount();
             if(hpVal <= 0)
             {
@@ -203,10 +196,6 @@ namespace Vanaring
                     grayColor = new Color(80.0f / 255.0f, 80.0f / 255.0f, 80.0f / 255.0f);
                     image.color = grayColor;
                 }
-                //foreach (GameObject item in statusBarLayout.gameObject.transform)
-                //{
-                //    Destroy(item);
-                //}
             }
             float hptemp = maxHpVal == 0 ? (hpVal == 0 ? 1 : hpVal) : maxHpVal;
             UpdateHPScaleGUI();
@@ -229,7 +218,16 @@ namespace Vanaring
 
         private void OnEnergyModified(CombatEntity caster, RuntimeMangicalEnergy.EnergySide side, int val)
         {
-            curveMask.fillAmount = slotBarRatios[_combatEntity.SpellCaster.GetEnergyAmount(RuntimeMangicalEnergy.EnergySide.DarkEnergy)];
+            if(side == RuntimeMangicalEnergy.EnergySide.LightEnergy)
+            {
+                innerFill.fillAmount = val / 10f;
+            }
+            else
+            {
+                outterFill.fillAmount = val / 10f;
+            }
+            
+            
         }
 
         private IEnumerator IEAnimateBarScale(float currentVal, float maxVal, Image secondBar)
