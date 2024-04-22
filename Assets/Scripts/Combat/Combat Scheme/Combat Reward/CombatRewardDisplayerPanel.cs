@@ -96,17 +96,28 @@ namespace Vanaring
             }
             else
             {
-                foreach (MissionItemRewardSocketGUI socket in missionItemRewardSocketList)
-                {
-                    socket.PlayAnimationMoveIn();
-                    
-                    yield return MoveVerticalPanel(itemVerticalLayout.GetComponent<RectTransform>().localPosition.y,
-                        itemVerticalLayout.GetComponent<RectTransform>().localPosition.y - 160);
-                }
+                yield return ShowItemAnimation();
             }
         }
+
+        private IEnumerator ShowItemAnimation()
+        {
+            for (int i = missionItemRewardSocketList.Count-1; i >= 0; i--)
+            {
+                Debug.Log(i);
+                if (i != missionItemRewardSocketList.Count - 1)
+                {
+                    Debug.Log("d" + i);
+                    yield return MoveVerticalPanel(itemVerticalLayout.GetComponent<RectTransform>().localPosition.y,
+                                    itemVerticalLayout.GetComponent<RectTransform>().localPosition.y - 160);
+                }
+                yield return missionItemRewardSocketList[i].PlayAnimationMoveIn();
+            }
+        }
+
         private IEnumerator MoveVerticalPanel(float start, float end)
         {
+            Debug.Log("Move Vertic");
             float elapsedTime = 0.0f;
             while (elapsedTime < 0.15f)
             {

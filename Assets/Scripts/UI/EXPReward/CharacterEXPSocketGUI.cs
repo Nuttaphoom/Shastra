@@ -32,7 +32,7 @@ namespace Vanaring
                         rewardStruct.ReceivedExp, (int)cmember.LevelAttributeHandler.GetCharacterUEXPSystem.GetEXPCap()));
                 }
             }
-            levelText.text = member.LevelAttributeHandler.GetCharacterUEXPSystem.GetCurrentLevel.ToString();
+            levelText.text = "Lv." + member.LevelAttributeHandler.GetCharacterUEXPSystem.GetCurrentLevel.ToString();
             portrait.sprite = member.GetCharacterSheet.GetCharacterIcon;
             //Debug.Log("Cur: " + member.LevelAttributeHandler.GetCharacterUEXPSystem.GetCurrentEXP + " Cap: " + member.LevelAttributeHandler.GetCharacterUEXPSystem.GetEXPCap() + " Level:" +member.LevelAttributeHandler.GetCharacterUEXPSystem.GetCurrentLevel);
             
@@ -41,7 +41,9 @@ namespace Vanaring
 
         private IEnumerator PlayEXPNumberAnimation(float start, float end, float gain, float max)
         {
-            float overVal = max - (member.LevelAttributeHandler.GetCharacterUEXPSystem.GetCurrentLevel + gain);
+            Debug.Log("curLv:" + member.LevelAttributeHandler.GetCharacterUEXPSystem.GetCurrentLevel 
+                + " " + member.LevelAttributeHandler.GetCharacterUEXPSystem.GetCurrentEXP + "/" + member.LevelAttributeHandler.GetCharacterUEXPSystem.GetEXPCap());
+            float overVal = max - (member.LevelAttributeHandler.GetCharacterUEXPSystem.GetCurrentEXP + gain);
             yield return new WaitForSeconds(1.0f);
             seccondBar.fillAmount = (float)(member.LevelAttributeHandler.GetCharacterUEXPSystem.GetCurrentLevel + gain) / max;
             if(overVal <= 0)
@@ -52,16 +54,27 @@ namespace Vanaring
             while (timer < 1)
             {
                 float expVal = Mathf.Lerp(start, end, timer / 1);
+                if(expBar.fillAmount >= 1)
+                {
+                    break;
+                }
                 expBar.fillAmount = Mathf.Round(expVal) / max;
-                expRemainingNumText.text = (Mathf.RoundToInt(max) - Mathf.RoundToInt(expVal)).ToString();
+                if ((Mathf.RoundToInt(max) - Mathf.RoundToInt(expVal)) <= 0)
+                {
+                    expRemainingNumText.text = "0";
+                }
+                else { expRemainingNumText.text = (Mathf.RoundToInt(max) - Mathf.RoundToInt(expVal)).ToString(); }
                 timer += Time.deltaTime;
                 yield return null;
             }
+            Debug.Log(overVal);
             if (overVal <= 0)
             {
+                levelText.text = "Lv." + (member.LevelAttributeHandler.GetCharacterUEXPSystem.GetCurrentLevel + 1).ToString();
+                Debug.Log("New Level: " + member.LevelAttributeHandler.GetCharacterUEXPSystem.GetEXPCap(2) + " lv:" + member.LevelAttributeHandler.GetCharacterUEXPSystem.GetCurrentLevel);
                 expBar.fillAmount = 0f;
-                expRemainingNumText.text = Mathf.RoundToInt(member.LevelAttributeHandler.GetCharacterUEXPSystem.GetEXPCap()).ToString();
-                yield return PlayEXPNumberAnimation(0f, Mathf.Abs(overVal), Mathf.Abs(overVal), (float)member.LevelAttributeHandler.GetCharacterUEXPSystem.GetEXPCap());
+                expRemainingNumText.text = Mathf.RoundToInt(member.LevelAttributeHandler.GetCharacterUEXPSystem.GetEXPCap(2)).ToString();
+                yield return PlayEXPNumberAnimation(0f, Mathf.Abs(overVal), Mathf.Abs(overVal), (float)member.LevelAttributeHandler.GetCharacterUEXPSystem.GetEXPCap(2));
             }
             //expBar.fillAmount = (float)(member.LevelAttributeHandler.GetCharacterUEXPSystem.GetCurrentLevel + gain) / max;
         }

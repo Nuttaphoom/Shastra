@@ -24,9 +24,13 @@ namespace Vanaring
         /// Formula is "4 + _currentLevel"
         /// </summary>
         /// <returns></returns>
-        public override float GetEXPCap()
-        { 
-            return  (float) 10 * _currentLevel ;
+        public override float GetEXPCap(int checkLv = -1)
+        {
+            if (checkLv != -1)
+            {
+                return (float)10 * _currentLevel;
+            }
+            return (float)10 * checkLv;
         }
 
         [Serializable]

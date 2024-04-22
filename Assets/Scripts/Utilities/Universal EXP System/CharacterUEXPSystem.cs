@@ -26,9 +26,13 @@ namespace Vanaring
         }
 
 
-        public override float GetEXPCap()
+        public override float GetEXPCap(int checkLv = -1)
         {
-            return (float)(75 * (Math.Pow(_currentLevel, 2))) - (75 * _currentLevel)+150; 
+            if (checkLv != -1)
+            {
+                return (float)(75 * (Math.Pow(checkLv, 2))) - (75 * checkLv) + 150;
+            }
+            return (float)(75 * (Math.Pow(_currentLevel, 2))) - (75 * _currentLevel) + 150;
         }
 
         [Serializable]

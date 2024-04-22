@@ -25,9 +25,11 @@ namespace Vanaring
             
         }
 
-        public void PlayAnimationMoveIn()
+        public IEnumerator PlayAnimationMoveIn()
         {
+            Debug.Log("Anim");
             anim.Play("MoveIn");
+            yield return new WaitForSeconds(anim.GetCurrentAnimatorStateInfo(0).length);
         }
     }
 }
