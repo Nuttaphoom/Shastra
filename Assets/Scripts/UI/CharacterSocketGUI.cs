@@ -126,11 +126,13 @@ namespace Vanaring
 
         private void InitEnergySlot()
         {
-            outterFrame.fillAmount = _combatEntity.SpellCaster.GetPeakEnergyAmout(RuntimeMangicalEnergy.EnergySide.DarkEnergy) / 10f;
-            innerFrame.fillAmount = _combatEntity.SpellCaster.GetPeakEnergyAmout(RuntimeMangicalEnergy.EnergySide.LightEnergy) / 10f;
+            //Debug.Log(_combatEntity.SpellCaster.GetEnergyAmount(RuntimeMangicalEnergy.EnergySide.DarkEnergy) / 10f + " " 
+            //    + _combatEntity.SpellCaster.GetEnergyAmount(RuntimeMangicalEnergy.EnergySide.LightEnergy) / 10f);
+            outterFrame.fillAmount = 1.0f;
+            innerFrame.fillAmount = 1.0f;
 
-            outterFill.fillAmount = _combatEntity.SpellCaster.GetPeakEnergyAmout(RuntimeMangicalEnergy.EnergySide.DarkEnergy) / 10f;
-            innerFill.fillAmount = _combatEntity.SpellCaster.GetPeakEnergyAmout(RuntimeMangicalEnergy.EnergySide.LightEnergy) / 10f;
+            outterFill.fillAmount = 0.167f * (_combatEntity.SpellCaster.GetEnergyAmount(RuntimeMangicalEnergy.EnergySide.DarkEnergy));
+            innerFill.fillAmount = 0.167f * (_combatEntity.SpellCaster.GetEnergyAmount(RuntimeMangicalEnergy.EnergySide.LightEnergy));
         }
 
         #region TurnStatus
@@ -218,16 +220,15 @@ namespace Vanaring
 
         private void OnEnergyModified(CombatEntity caster, RuntimeMangicalEnergy.EnergySide side, int val)
         {
+            Debug.Log(side + " val: " + val);
             if(side == RuntimeMangicalEnergy.EnergySide.LightEnergy)
             {
-                innerFill.fillAmount = val / 10f;
+                innerFill.fillAmount = val * 1.67f;
             }
             else
             {
-                outterFill.fillAmount = val / 10f;
+                outterFill.fillAmount = val * 1.67f;
             }
-            
-            
         }
 
         private IEnumerator IEAnimateBarScale(float currentVal, float maxVal, Image secondBar)

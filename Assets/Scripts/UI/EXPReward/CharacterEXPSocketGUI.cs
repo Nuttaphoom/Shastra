@@ -41,8 +41,14 @@ namespace Vanaring
 
         private IEnumerator PlayEXPNumberAnimation(float start, float end, float gain, float max)
         {
+            bool isOverExpCap = false;
+            float overVal = max - (member.LevelAttributeHandler.GetCharacterUEXPSystem.GetCurrentLevel + gain);
             yield return new WaitForSeconds(1.0f);
             seccondBar.fillAmount = (float)(member.LevelAttributeHandler.GetCharacterUEXPSystem.GetCurrentLevel + gain) / max;
+            if(overVal <= 0)
+            {
+                isOverExpCap = true;
+            }
             float timer = 0f;
             while (timer < 1)
             {
