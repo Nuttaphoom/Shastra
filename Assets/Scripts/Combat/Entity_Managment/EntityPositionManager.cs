@@ -104,7 +104,8 @@ namespace Vanaring
 
             List<StandingLocationOccupierData> oldLocationData = GetEnemyStandingLocations(_currentEnemySize);
 
-            _currentEnemySize = newSize;
+            _currentEnemySize = newSize; 
+            
             int i = 0; 
             foreach (var data in oldLocationData)
             {
