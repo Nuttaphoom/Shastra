@@ -199,6 +199,15 @@ namespace Vanaring
 
         private Animator _animator;
 
+        public void HideVisualMesh()
+        {
+            GetVisualMesh().gameObject.SetActive(false);
+        }
+
+        public void ShowVisualMesh()
+        {
+            GetVisualMesh().gameObject.SetActive(true); 
+        }
 
         #region GETTER
         

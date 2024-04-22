@@ -65,7 +65,9 @@ namespace Vanaring
             EnableCamera() ;
 
             EntityPositionManager.Instance.SetNewEnemyCurrentSize(CombatReferee.Instance.GetCompetatorsBySide(ECompetatorSide.Hostile).Count);
+            EntityPositionManager.Instance.OccupieLocation(ECompetatorSide.Ally,0,this) ;
 
+            GetComponent<CombatEntityAnimationHandler>().ShowVisualMesh(); 
 
             yield return base.TakeControl();
 
