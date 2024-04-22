@@ -216,7 +216,8 @@ namespace Vanaring
         // Take control and leave control should have its own space 
         public virtual IEnumerator TakeControl()
         {
-            GetEventBroadcaster().InvokeEvent(this, "OnTakeControl"); 
+            GetEventBroadcaster().InvokeEvent(this, "OnTakeControl");
+            GetComponent<CombatEntityAnimationHandler>().ShowVisualMesh();
 
             yield return null;
         }
