@@ -48,6 +48,8 @@ namespace Vanaring
         [Header("(Optional) Rotation of the parent (bind dynamically ) will be assigned to this object, result in rotating _VMTranslationTransform translation direction")]
         private Transform _VMFaceDirectionParentTransform ;
 
+        [Header("(Optional) If true, every entities transform will be teleported to ....Transform with respect to world center ")]
+        private bool _teleportEveryEntityWithRespectToWorldCenter = false; 
 
         private Transform _mainVMTransform;
         private Transform _formerParent; 
@@ -89,10 +91,16 @@ namespace Vanaring
 
                 //    } 
                 //}
-                if (objectWithTrackName = actionTimelineSetting.GetObjectWithTrackName(track.name))
+                if (track is CustomAnimatorCallerTrack)
                 {
-                    director.SetGenericBinding(track, objectWithTrackName);
+                    string trackName = (track as CustomAnimatorCallerTrack).TrackName;
+
+                    if (objectWithTrackName = actionTimelineSetting.GetObjectWithTrackName(track.name))
+                    {
+                        director.SetGenericBinding(track, objectWithTrackName);
+                    }
                 }
+               
                 else if (track.name == "SignalTrack")
                 {
                     director.SetGenericBinding(track, unitySignalReciver);
