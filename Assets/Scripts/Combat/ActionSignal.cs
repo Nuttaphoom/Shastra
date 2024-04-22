@@ -103,8 +103,8 @@ namespace Vanaring
         public ActionTimelineSettingStruct GetActionTimeLineSettingStruct => _actionTimeLineSettingStruct;
 
         [SerializeField]
-        private TimelineActorSetupHandler _timelineActorSetupHandler;
-        public TimelineActorSetupHandler GetTimelineActorSetupHandler => _timelineActorSetupHandler;
+        private ActionTimelinePrefab _timelineActorSetupHandler;
+        public ActionTimelinePrefab GetTimelineActorSetupHandler => _timelineActorSetupHandler;
  
          
 
@@ -145,7 +145,7 @@ namespace Vanaring
 
 
         [SerializeField]
-        private TimelineActorSetupHandler _timeLineActorSetupPrefab; 
+        private ActionTimelinePrefab _timeLineActorSetupPrefab; 
 
         #endregion
 
@@ -218,7 +218,7 @@ namespace Vanaring
             return _signalEffectBindings.Count == 0 && _readyEffectQueue.Count == 0; 
         }
 
-        public TimelineActorSetupHandler GetTimelineActorSetupHanlder => _timeLineActorSetupPrefab; 
+        public ActionTimelinePrefab GetTimelineActorSetupHanlder => _timeLineActorSetupPrefab; 
         public List<RuntimeEffectFactorySO> GetRuntimeEffects()
         {
             List<RuntimeEffectFactorySO> ret = new List<RuntimeEffectFactorySO>(); 

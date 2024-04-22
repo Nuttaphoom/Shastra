@@ -9,7 +9,7 @@ using NaughtyAttributes;
 
 namespace Vanaring
 {
-    public class TimelineActorSetupHandler : MonoBehaviour
+    public class ActionTimelinePrefab : MonoBehaviour
     {
         [Header("Caster and Target transform should be assigned in Editor, but it should be later on assigned to be child of real caster/targets on runtime ")]
         [SerializeField]
