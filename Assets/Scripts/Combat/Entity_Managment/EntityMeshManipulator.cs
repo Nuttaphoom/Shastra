@@ -2,66 +2,77 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.XR;
 
 namespace Vanaring
 {
     public class EntityMeshManipulator : MonoBehaviour
     {
+        private List<GameObject> _allyEntityMesh;
+        private List<GameObject> _enemyEntityMesh;
 
-
-
-        //private void OnCombatEntityTakeControl(CombatEntity entity)
-        //{
-        //    if (entity is ControlableEntity)
-        //    {
-        //        HideAllEntityMesh(ECompetatorSide.Hostile); 
-        //    }
-
-        //}
-        public List<CombatEntityAnimationHandler> GetEntityCombatEntityAnimationHandler(   )
+        private void Awake()
         {
-             
-            List<CombatEntityAnimationHandler> mesh = new List<CombatEntityAnimationHandler>();
+            CombatReferee.Instance.SubOnCombatPreparation(Initialization); 
+        }
 
+        private void Initialization(Null DontUse)
+        {
             foreach (ECompetatorSide side in Enum.GetValues(typeof(ECompetatorSide)))
             {
-                List<CombatEntity> entities = CombatReferee.Instance.GetCompetatorsBySide(side);
-
-                foreach (var entity in entities)
+                foreach (var entity in CombatReferee.Instance.GetCompetatorsBySide(side))
                 {
-                    mesh.Add(entity.GetComponent<CombatEntityAnimationHandler>());
+                    BindActionEvent(entity); 
                 }
-
             }
-            
 
-            return mesh;
+            CombatReferee.Instance.SubOnCompetitorEnterCombat(BindActionEvent);
+
         }
-        public List<CombatEntityAnimationHandler> GetEntityCombatEntityAnimationHandler(ECompetatorSide side)
-        {   
-            List<CombatEntityAnimationHandler> mesh = new List<CombatEntityAnimationHandler>();
-           
-            List<CombatEntity> entities = CombatReferee.Instance.GetCompetatorsBySide(ECompetatorSide.Ally);
-           
-            foreach (var entity in entities)
+
+        private void BindActionEvent(CombatEntity entity)
+        {
+            entity.SubOnPerformAction(OnEntityPerformAction);
+            entity.SubOnTakeControlEvent(OnEntityTakeControl);
+        }
+
+        private void OnEntityTakeControl(CombatEntity entity)
+        {
+            if (CombatReferee.Instance.GetCompetatorSide(entity) == ECompetatorSide.Ally)
             {
-                mesh.Add(entity.GetComponent<CombatEntityAnimationHandler>() );
+                ShowAllEntitMesh(ECompetatorSide.Hostile) ; 
             }
-
-            return mesh;  
         }
-        //public List<GameObject> GetAllEntityMesh(ECompetatorSide side)
-        //{
-        //    List<GameObject> meshes = new List<GameObject>();
-             
-        //    foreach (var mesh in GetEntityCombatEntityAnimationHandler(side))
+
+        private void OnEntityPerformAction(EntityActionPair entityActionPair)
+        {
+            List<CombatEntity> entityException = new List<CombatEntity>();
+            entityException.Add(entityActionPair.PerformedAction.GetActionCaster()); 
+
+            foreach (var entity in entityActionPair.PerformedAction.GetActionTargets())
+                entityException.Add(entity);
+
+            HideAllEntityMesh(entityException) ;
+        }
+
+
+
+        //public List<GameObject> GetEntityMesh(ECompetatorSide side)
+        //{   
+        //    List<GameObject> mesh = new List<GameObject>();
+
+        //    List<CombatEntity> entities = CombatReferee.Instance.GetCompetatorsBySide(ECompetatorSide.Ally);
+
+        //    foreach (var entity in entities)
         //    {
-        //        mesh.hide
+        //        mesh.Add(entity.GetComponent<CombatEntityAnimationHandler>().GetVisualMesh());
         //    }
-             
-        //    return meshes;
+
+        //    return mesh;  
         //}
+
         //public List<GameObject> GetAllEntityMesh()
         //{
         //    List<GameObject> meshes = new List<GameObject>(); 
@@ -75,35 +86,66 @@ namespace Vanaring
 
         //    return meshes; 
         //}
-
-        public void HideAllEntityMesh()
+        private List<CombatEntity> GetAllCompetators(ECompetatorSide side)
         {
-            foreach (var mesh in GetEntityCombatEntityAnimationHandler( ))
+            List<CombatEntity> ret = new List<CombatEntity>();
+            
+            foreach (var entity in CombatReferee.Instance.GetCompetatorsBySide(side))
             {
-                mesh.HideVisualMesh(); 
+                ret.Add(entity);
             }
+            
+            return ret;
         }
+        private List<CombatEntity> GetAllCompetators()
+        {
+            List<CombatEntity> ret = new List<CombatEntity>();
+            foreach (ECompetatorSide side in Enum.GetValues(typeof(ECompetatorSide)))
+            {
+                foreach(var entity in CombatReferee.Instance.GetCompetatorsBySide(side) ) {
+                    ret.Add(entity); 
+                }
+            }
+            return ret;
+        }
+
         public void HideAllEntityMesh (ECompetatorSide side)
         {
-            foreach (var mesh in GetEntityCombatEntityAnimationHandler(side))
+            foreach (var mesh in GetAllCompetators(side))
             {
-                mesh.HideVisualMesh();
+                mesh.GetComponent<CombatEntityAnimationHandler>().HideVisualMesh() ;//.SetActive(false);
             }
         }
-        public void ShowAllEntityMesh()
+        public void HideAllEntityMesh(List<CombatEntity> entityException = null)
         {
-            foreach (var mesh in GetEntityCombatEntityAnimationHandler())
+            foreach (var mesh in GetAllCompetators())
             {
-                mesh.ShowVisualMesh( );
+                if (entityException != null && entityException.Contains(mesh))
+                    continue;
+
+
+                mesh.GetComponent<CombatEntityAnimationHandler>().HideVisualMesh();//.SetActive(false);
             }
         }
-        public void ShowAllEntityMesh(ECompetatorSide side)
+
+
+        public void ShowAllEntitMesh(List<CombatEntity> entityException = null)
         {
-            foreach (var mesh in GetEntityCombatEntityAnimationHandler(side))
+            foreach (var mesh in GetAllCompetators())
             {
-                mesh.ShowVisualMesh( );
+                if (entityException != null && entityException.Contains(mesh))
+                    continue;
+
+                mesh.GetComponent<CombatEntityAnimationHandler>().ShowVisualMesh();//.SetActive(false);
             }
         }
-         
+
+        public void ShowAllEntitMesh(ECompetatorSide side)
+        {
+            foreach (var mesh in GetAllCompetators(side))
+            {
+                mesh.GetComponent<CombatEntityAnimationHandler>().ShowVisualMesh();//.SetActive(false);
+            }
+        }
     }
 }

@@ -10,6 +10,8 @@ namespace Vanaring
     [TrackClipType(typeof(CustomAnimatorCallerClip))]
     public class CustomAnimatorCallerTrack : TrackAsset
     {
+        
+        public string TrackName = "Caster" ;
         public CustomAnimatorCallerClip GetAnimatorCallerClip()
         {
             return GetClips() as CustomAnimatorCallerClip ; 

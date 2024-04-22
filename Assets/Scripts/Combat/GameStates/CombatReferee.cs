@@ -344,6 +344,7 @@ namespace Vanaring
             {
                 FindObjectOfType<CharacterWindowManager>().SetActiveEntityGUI(newEntity);
 
+                
                 yield return newEntity.TakeControl(); 
 
 
@@ -425,7 +426,7 @@ namespace Vanaring
                 //if (GetCurrentActor() != null)
                 //    EntityPositionManager.Instance.SetNewEnemyCurrentSize(GetCompetatorsBySide(ECompetatorSide.Hostile).Count);
 
-
+                
             }
 
 

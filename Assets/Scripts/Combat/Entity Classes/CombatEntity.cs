@@ -105,6 +105,11 @@ namespace Vanaring
         {
             ActionHandler.SubOnPerformAction(argc);
         }
+
+        public void SubOnPostPerformAction(UnityAction<EntityActionPair> argc)
+        {
+            ActionHandler.SubOnPostPerformAction(argc);
+        }
         public void SubOnTakeControlEvent(UnityAction<CombatEntity> argc)
         {
             GetEventBroadcaster().SubEvent(argc, "OnTakeControl");
@@ -124,7 +129,10 @@ namespace Vanaring
             _ailmentHandler.SubOnOnAilmentAppliedEventChannel(func);
 
         }
-
+        public void UnSubOnPostPerformAction(UnityAction<EntityActionPair> argc)
+        {
+            ActionHandler.UnSubOnPostPerformAction(argc);
+        }
         public void UnSubOnStatusEffectApplied(UnityAction<EntityStatusEffectPair> func)
         {
             _statusEffectHandler.UnSubOnStatusEffectApplied(func);
@@ -208,7 +216,8 @@ namespace Vanaring
         // Take control and leave control should have its own space 
         public virtual IEnumerator TakeControl()
         {
-            GetEventBroadcaster().InvokeEvent(this, "OnTakeControl"); 
+            GetEventBroadcaster().InvokeEvent(this, "OnTakeControl");
+            GetComponent<CombatEntityAnimationHandler>().ShowVisualMesh();
 
             yield return null;
         }

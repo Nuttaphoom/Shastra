@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,8 +19,9 @@ namespace Vanaring
         {
             if (_eventBroadcaster == null)
             {
-                _eventBroadcaster = new EventBroadcaster(); 
+                _eventBroadcaster = new EventBroadcaster();
                 _eventBroadcaster.OpenChannel<EntityActionPair>("OnPerformAction");
+                _eventBroadcaster.OpenChannel<EntityActionPair>("OnPostPerformAction");
             }
 
             return _eventBroadcaster;
@@ -32,6 +34,16 @@ namespace Vanaring
         public void UnSubOnPerformAction(UnityAction<EntityActionPair> argc)
         {
             GetEventBroadcaster().UnSubEvent(argc, "OnPerformAction");
+        }
+
+        public void SubOnPostPerformAction(UnityAction<EntityActionPair> argc)
+        {
+            GetEventBroadcaster().SubEvent(argc, "OnPostPerformAction");
+        }
+
+        public void UnSubOnPostPerformAction(UnityAction<EntityActionPair> argc)
+        {
+            GetEventBroadcaster().UnSubEvent(argc, "OnPostPerformAction");
         }
         #endregion
         private CombatEntity _performerEntity = null; 
@@ -55,11 +67,14 @@ namespace Vanaring
             //check if still be able to call the action
             if (_performerEntity.ReadyForControl())
             {
-                GetEventBroadcaster().InvokeEvent<EntityActionPair>(new EntityActionPair() { Actor = _performerEntity, PerformedAction = action }, "OnPerformAction");
+                EntityActionPair  entityActionPair =  new EntityActionPair() { Actor = _performerEntity, PerformedAction = action };
+                GetEventBroadcaster().InvokeEvent<EntityActionPair>(entityActionPair, "OnPerformAction");
 
                 yield return action.PerformAction();
 
                 yield return action.PostActionPerform();
+
+                GetEventBroadcaster().InvokeEvent<EntityActionPair>(entityActionPair, "OnPostPerformAction");
 
                 _performerEntity.IsExhausted = true;
 
