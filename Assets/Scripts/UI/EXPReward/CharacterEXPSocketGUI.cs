@@ -14,6 +14,7 @@ namespace Vanaring
         [SerializeField] private Image seccondBar;
         [SerializeField] private TextMeshProUGUI expRemainingNumText;
         [SerializeField] private TextMeshProUGUI levelText;
+        [SerializeField] private GameObject levelUpIcon;
 
         private RuntimeCombatMemberData member;
         private PlayableDirector introDirector;
@@ -23,6 +24,7 @@ namespace Vanaring
         {
             expGained = rewardStruct.ReceivedExp;
             introDirector = director;
+            levelUpIcon.SetActive(false);
 
             foreach (RuntimeCombatMemberData cmember in PersistentPlayerPersonalDataManager.Instance.CombatMemberDataLocator.GetRuntimeCombatMembers)
             {
@@ -82,6 +84,7 @@ namespace Vanaring
             Debug.Log(overVal);
             if (overVal <= 0)
             {
+                levelUpIcon.gameObject.SetActive(true);
                 levelText.text = "Lv." + (member.LevelAttributeHandler.GetCharacterUEXPSystem.GetCurrentLevel + 1).ToString();
                 Debug.Log("New Level: " + member.LevelAttributeHandler.GetCharacterUEXPSystem.GetEXPCap(member.LevelAttributeHandler.GetCharacterUEXPSystem.GetCurrentLevel + 1) + " lv:" + member.LevelAttributeHandler.GetCharacterUEXPSystem.GetCurrentLevel);
                 expBar.fillAmount = 0f;

@@ -110,6 +110,10 @@ namespace Vanaring
                         {
                             newDun.GetNodeIcon.sprite = lootIcon;
                         }
+                        if (connectNode is CombatMissionNode)
+                        {
+                            newDun.GetNodeIcon.sprite = dungeonIcon;
+                        }
                         newDun.Init(connectNode);
                         newDun.transform.SetAsLastSibling();
 
