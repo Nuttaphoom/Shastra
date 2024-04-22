@@ -33,7 +33,7 @@ namespace Vanaring
         [SerializeField] private List<ActionSignal> _currentSignal = new List<ActionSignal>();       
         private SignalReceiver _signalReceiver;
 
-        private TimelineActorSetupHandler _currentTimelineActorSetupHandler;
+        private ActionTimelinePrefab _currentTimelineActorSetupHandler;
         private PlayableDirector _currentPlayableDirector; 
         public void TransmitSignal(SignalType signal)
         {
@@ -59,7 +59,7 @@ namespace Vanaring
             //1.1) instantiate TimelineActorSetupHanlder 
             var actorSetupHandler = Instantiate( signal.GetTimelineActorSetupHanlder, signal.GetActionTimelineSettingStruct.GetObjectWithIndex(0).GetComponent<CombatEntityAnimationHandler>().GetVisualMesh().transform.position, signal.GetTimelineActorSetupHanlder.transform.rotation )  ;
             currentDirector = actorSetupHandler.GetComponent<PlayableDirector>() ;
-            _currentTimelineActorSetupHandler = actorSetupHandler.GetComponent<TimelineActorSetupHandler>();
+            _currentTimelineActorSetupHandler = actorSetupHandler.GetComponent<ActionTimelinePrefab>();
 
             // 2.) Set up the TimelineAsset
             _currentTimelineActorSetupHandler.SetUpActor(currentDirector, signal.GetActionTimelineSettingStruct, _signalReceiver); 
@@ -94,7 +94,7 @@ namespace Vanaring
             //1.1) instantiate TimelineActorSetupHanlder 
             var actorSetupHandler = Instantiate(info.GetTimelineActorSetupHandler, timelineSettingStruct.GetObjectWithIndex(0).GetComponent<CombatEntityAnimationHandler>().GetVisualMesh().transform.position, info.GetTimelineActorSetupHandler.transform.rotation);
             currentDirector = actorSetupHandler.GetComponent<PlayableDirector>();
-            _currentTimelineActorSetupHandler = actorSetupHandler.GetComponent<TimelineActorSetupHandler>();
+            _currentTimelineActorSetupHandler = actorSetupHandler.GetComponent<ActionTimelinePrefab>();
 
             // 2.) Set up the TimelineAsset
             _currentTimelineActorSetupHandler.SetUpActor(currentDirector, timelineSettingStruct, _signalReceiver);
