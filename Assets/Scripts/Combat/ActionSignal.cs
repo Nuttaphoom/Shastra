@@ -146,7 +146,9 @@ namespace Vanaring
     public class ActionSignal
     {
         #region Inspector Setting  
- 
+
+        [SerializeField]
+        private ActionTimelinePrefab _actionTimelinePrefab;
 
         [SerializeField]
         private List<SignalEffectBindingStruct> _signalEffectBindings = new List<SignalEffectBindingStruct>() ;
@@ -154,8 +156,7 @@ namespace Vanaring
         private ActionTimelineSettingStruct _actionTimelineSetting  ;
 
 
-        [SerializeField]
-        private ActionTimelinePrefab _timeLineActorSetupPrefab; 
+
 
         #endregion
 
@@ -164,17 +165,15 @@ namespace Vanaring
 
         public ActionSignal(ActionSignal copied)
         {
-            if (copied._timeLineActorSetupPrefab == null)
-            {
-                Debug.LogWarning("TimeLineActorSetUpPrefab hasn't been assigned to  " + copied);
-                return;
-            }
+            if (copied._actionTimelinePrefab == null)
+             throw new Exception("_actionTimelinePrefab hasn't been assigned to  " + copied);
+             
 
             for (int i = 0; i < copied._signalEffectBindings.Count; i++ ) 
                 _signalEffectBindings.Add(copied._signalEffectBindings[i]);
 
             _actionTimelineSetting = new ActionTimelineSettingStruct(copied._actionTimelineSetting) ;
-            _timeLineActorSetupPrefab = copied._timeLineActorSetupPrefab; 
+            _actionTimelinePrefab = copied._actionTimelinePrefab; 
         }
 
         /// <summary>
@@ -228,7 +227,7 @@ namespace Vanaring
             return _signalEffectBindings.Count == 0 && _readyEffectQueue.Count == 0; 
         }
 
-        public ActionTimelinePrefab GetTimelineActorSetupHanlder => _timeLineActorSetupPrefab; 
+        public ActionTimelinePrefab GetActionTimelinePrefab => _actionTimelinePrefab; 
         public List<RuntimeEffectFactorySO> GetRuntimeEffects()
         {
             List<RuntimeEffectFactorySO> ret = new List<RuntimeEffectFactorySO>(); 
