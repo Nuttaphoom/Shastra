@@ -16,6 +16,7 @@ namespace Vanaring
         [SerializeField] private Animator animator;
         private List<MissionPathObject> pathList = new List<MissionPathObject>();
         public List<MissionPathObject> GetPathList => pathList;
+        public Image GetNodeIcon => iconShown;
 
         private NodeState state;
         public void Init(BaseMissionNode node)

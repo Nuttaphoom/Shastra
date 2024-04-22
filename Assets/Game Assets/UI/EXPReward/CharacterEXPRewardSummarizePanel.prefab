@@ -133,8 +133,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 15.4}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -39.2, y: 79.2}
-  m_SizeDelta: {x: 200, y: 50}
+  m_AnchoredPosition: {x: 11.8473, y: 93.2607}
+  m_SizeDelta: {x: 105.5209, y: 50}
   m_Pivot: {x: 1, y: 0}
 --- !u!222 &5813950597013525645
 CanvasRenderer:
@@ -164,7 +164,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Lv.
+  m_text: LV.1
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 232cc69c4ca62dc4b947ab67308e3f23, type: 2}
   m_sharedMaterial: {fileID: 387305717881168762, guid: 232cc69c4ca62dc4b947ab67308e3f23, type: 2}
@@ -191,12 +191,12 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 22.2
+  m_fontSize: 26
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
   m_fontSizeMin: 18
-  m_fontSizeMax: 22.2
+  m_fontSizeMax: 26
   m_fontStyle: 1
   m_HorizontalAlignment: 4
   m_VerticalAlignment: 1024
@@ -357,6 +357,7 @@ MonoBehaviour:
   nextButton: {fileID: 6361183528518729086}
   itemSocketTemplate: {fileID: 5527927179196592871}
   itemVerticalLayout: {fileID: 3762690079703818419}
+  introDirector: {fileID: 2443471882890447567}
 --- !u!320 &2443471882890447567
 PlayableDirector:
   m_ObjectHideFlags: 0
@@ -368,7 +369,7 @@ PlayableDirector:
   serializedVersion: 3
   m_PlayableAsset: {fileID: 11400000, guid: 9000946de2b112e4095de0cb5369c23b, type: 2}
   m_InitialState: 1
-  m_WrapMode: 0
+  m_WrapMode: 2
   m_DirectorUpdateMode: 1
   m_InitialTime: 0
   m_SceneBindings:
@@ -386,6 +387,10 @@ PlayableDirector:
     value: {fileID: 2860451242414652404}
   - key: {fileID: 8402798592946072795, guid: 9000946de2b112e4095de0cb5369c23b, type: 2}
     value: {fileID: 3672517132257817309}
+  - key: {fileID: 3969881302780522379, guid: 9000946de2b112e4095de0cb5369c23b, type: 2}
+    value: {fileID: 5321847419228853442}
+  - key: {fileID: -6775535239530409918, guid: 9000946de2b112e4095de0cb5369c23b, type: 2}
+    value: {fileID: 5672427916050236191}
   m_ExposedReferences:
     m_References: []
 --- !u!1 &1839075105588893486
@@ -568,7 +573,7 @@ GameObject:
   - component: {fileID: 5519523311139312669}
   - component: {fileID: 7928499367560680798}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: summaryText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1119,8 +1124,9 @@ GameObject:
   - component: {fileID: 6075312529957040940}
   - component: {fileID: 8781131549596045330}
   - component: {fileID: 1802817816768687519}
+  - component: {fileID: 5321847419228853442}
   m_Layer: 5
-  m_Name: Image
+  m_Name: Panel_BG
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1184,6 +1190,27 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!95 &5321847419228853442
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5796923509667511443}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &6604459996777929860
 GameObject:
   m_ObjectHideFlags: 0
@@ -1640,7 +1667,7 @@ GameObject:
   - component: {fileID: 7755266962666647829}
   - component: {fileID: 6372333798963193155}
   m_Layer: 5
-  m_Name: MainPanel
+  m_Name: MainPanel_Edge
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2033,6 +2060,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1777864550909106270}
   - component: {fileID: 9069661331591047969}
+  - component: {fileID: 5672427916050236191}
   m_Layer: 5
   m_Name: CharacterEXPSectionHRZ
   m_TagString: Untagged
@@ -2087,6 +2115,27 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!95 &5672427916050236191
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8428131333677073572}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &8644740229109730831
 GameObject:
   m_ObjectHideFlags: 0

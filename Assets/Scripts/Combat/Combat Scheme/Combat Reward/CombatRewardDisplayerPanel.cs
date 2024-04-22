@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.Playables;
 
 namespace Vanaring
 {
@@ -16,7 +17,9 @@ namespace Vanaring
         [SerializeField] private MissionItemRewardSocketGUI itemSocketTemplate;
         [SerializeField] private GameObject itemVerticalLayout;
         private List<RuntimeCombatMemberData> memberList = new List<RuntimeCombatMemberData>();
+        private List<CharacterEXPSocketGUI> missionCharacterEXPSocketList = new List<CharacterEXPSocketGUI>();
         private List<MissionItemRewardSocketGUI> missionItemRewardSocketList = new List<MissionItemRewardSocketGUI>();
+        [SerializeField] private PlayableDirector introDirector;
 
         private int startRunningEXP = 0;
 
@@ -57,8 +60,9 @@ namespace Vanaring
             foreach (CombatRewardManager.EntityRewardData reward in rewardList.RewardForEntities)
             {
                 CharacterEXPSocketGUI newSocket = Instantiate(socketTemplate, hrzLayout.transform);
-                newSocket.Init(reward);
+                newSocket.Init(reward, introDirector);
                 newSocket.gameObject.SetActive(true);
+                missionCharacterEXPSocketList.Add(newSocket);
                 //reward.ControlEntity.CombatCharacterSheet;
 
             }
@@ -72,10 +76,16 @@ namespace Vanaring
             itemSocketTemplate.gameObject.SetActive(false);
             socketTemplate.gameObject.SetActive(false);
 
-            
+            while (introDirector.state == PlayState.Playing)
+            {
+                yield return new WaitForEndOfFrame();
+            }
 
-            
-            yield return new WaitForSeconds(1.0f);
+            foreach (CharacterEXPSocketGUI socket in missionCharacterEXPSocketList)
+            {
+                socket.StartPlayeEXPBarAnimation();
+            }
+
             yield return RunNumberUp(0, rewardList.RewardForEntities[0].ReceivedExp, 1.0f);
 
             if (missionItemRewardSocketList.Count != 0)
@@ -104,10 +114,8 @@ namespace Vanaring
         {
             for (int i = missionItemRewardSocketList.Count-1; i >= 0; i--)
             {
-                Debug.Log(i);
                 if (i != missionItemRewardSocketList.Count - 1)
                 {
-                    Debug.Log("d" + i);
                     yield return MoveVerticalPanel(itemVerticalLayout.GetComponent<RectTransform>().localPosition.y,
                                     itemVerticalLayout.GetComponent<RectTransform>().localPosition.y - 160);
                 }
@@ -141,11 +149,11 @@ namespace Vanaring
             while (timer < duration)
             {
                 float expVal = Mathf.Lerp(start, end, timer / duration);
-                expRunningText.text = Mathf.Round(expVal).ToString();
+                expRunningText.text = "+" + Mathf.Round(expVal).ToString();
                 timer += Time.deltaTime;
                 yield return null;
             }
-            expRunningText.text = Mathf.Round(end).ToString();
+            expRunningText.text = "+" + Mathf.Round(end).ToString();
         }
 
     }
