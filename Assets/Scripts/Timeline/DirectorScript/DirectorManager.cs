@@ -57,7 +57,7 @@ namespace Vanaring
             PlayableDirector currentDirector ;
  
             //1.1) instantiate TimelineActorSetupHanlder 
-            var actorSetupHandler = Instantiate( signal.GetTimelineActorSetupHanlder, signal.GetActionTimelineSettingStruct.GetObjectWithIndex(0).GetComponent<CombatEntityAnimationHandler>().GetVisualMesh().transform.position, signal.GetTimelineActorSetupHanlder.transform.rotation )  ;
+            var actorSetupHandler = Instantiate( signal.GetTimelineActorSetupHanlder, signal.GetActionTimelineSettingStruct.GetTimelineActorWithIndex(0).GetComponent<CombatEntityAnimationHandler>().GetVisualMesh().transform.position, signal.GetTimelineActorSetupHanlder.transform.rotation )  ;
             currentDirector = actorSetupHandler.GetComponent<PlayableDirector>() ;
             _currentTimelineActorSetupHandler = actorSetupHandler.GetComponent<ActionTimelinePrefab>();
 
@@ -92,7 +92,7 @@ namespace Vanaring
 
             
             //1.1) instantiate TimelineActorSetupHanlder 
-            var actorSetupHandler = Instantiate(info.GetTimelineActorSetupHandler, timelineSettingStruct.GetObjectWithIndex(0).GetComponent<CombatEntityAnimationHandler>().GetVisualMesh().transform.position, info.GetTimelineActorSetupHandler.transform.rotation);
+            var actorSetupHandler = Instantiate(info.GetTimelineActorSetupHandler, timelineSettingStruct.GetTimelineActorWithIndex(0).GetComponent<CombatEntityAnimationHandler>().GetVisualMesh().transform.position, info.GetTimelineActorSetupHandler.transform.rotation);
             currentDirector = actorSetupHandler.GetComponent<PlayableDirector>();
             _currentTimelineActorSetupHandler = actorSetupHandler.GetComponent<ActionTimelinePrefab>();
 

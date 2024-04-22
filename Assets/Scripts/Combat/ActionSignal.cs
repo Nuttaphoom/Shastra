@@ -82,7 +82,7 @@ namespace Vanaring
             //throw new Exception("Given track name " + trackName + " is not listed in this action") ;
         }
 
-        public GameObject GetObjectWithIndex(int index)
+        public GameObject GetTimelineActorWithIndex(int index)
         {
             if (index >= _timelienActors.Count)
                 return null;
@@ -90,6 +90,16 @@ namespace Vanaring
             return _timelienActors[(int)index].gameObject;
         }
 
+        public List<GameObject> GetAllTimelineActors()
+        {
+            List<GameObject> ret = new List<GameObject>(); 
+            foreach (var t in _timelienActors)
+            {
+                ret.Add(t.gameObject); 
+            }
+
+            return ret ; 
+        }
        
 
         //public List<string> TrackNames => _trackNameForActor;

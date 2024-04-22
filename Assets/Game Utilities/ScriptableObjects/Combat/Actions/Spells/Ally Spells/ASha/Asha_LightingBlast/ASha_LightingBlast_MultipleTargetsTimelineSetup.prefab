@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 7531741662943183146}
   m_Layer: 0
   m_Name: TargetTransform 2
-  m_TagString: Untagged
+  m_TagString: Combat/Animation/Action/TargetTransform
   m_Icon: {fileID: 2974397684917235467, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -128,7 +128,7 @@ GameObject:
   - component: {fileID: 245729742975759975}
   m_Layer: 0
   m_Name: TargetTransform 3
-  m_TagString: Untagged
+  m_TagString: Combat/Animation/Action/TargetTransform
   m_Icon: {fileID: 2974397684917235467, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -274,7 +274,7 @@ GameObject:
   - component: {fileID: 8326857486670328174}
   m_Layer: 0
   m_Name: TargetTransform
-  m_TagString: Untagged
+  m_TagString: Combat/Animation/Action/TargetTransform
   m_Icon: {fileID: 2974397684917235467, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -596,7 +596,7 @@ GameObject:
   - component: {fileID: 288705138225022843}
   m_Layer: 0
   m_Name: CasterTransform
-  m_TagString: Untagged
+  m_TagString: Combat/Animation/Action/CasterTransform
   m_Icon: {fileID: 7422848464349959988, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -846,21 +846,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 44aa76c08385dbf42b998e665246ee36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _casterTransform: {fileID: 8223999238057057151}
-  _targetTransform:
-  - {fileID: 6994607169353217868}
-  - {fileID: 977617720144762878}
-  - {fileID: 7634305242701964424}
-  _destroyedWithTimeline:
-  - {fileID: 4764948770002274705}
-  - {fileID: 1857878342784453779}
-  - {fileID: 403739160425621764}
-  - {fileID: 493271596485506723}
-  ChangeLookAt: 1
+  ChangeLookAt: 0
   _virtualCameraToChangeLookAt: {fileID: 1928749760965438257}
-  ModifyMainCameraPosition: 0
+  _useEntityCamera: 0
   _VMTranslationTransform: {fileID: 0}
   _VMFaceDirectionParentTransform: {fileID: 0}
+  _useActionTimelinePrefabCam: 1
 --- !u!1 &5223688672557995837
 GameObject:
   m_ObjectHideFlags: 0
