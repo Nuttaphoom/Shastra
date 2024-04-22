@@ -42,7 +42,7 @@ namespace Vanaring
             {
                 _eventBroadcaster = new EventBroadcaster();
                 _eventBroadcaster.OpenChannel<Null>("OnCombatPreparation");
-                _eventBroadcaster.OpenChannel<CombatEntity>("OnCompetitorEnterCombat"); 
+                _eventBroadcaster.OpenChannel<CombatEntity>("OnCompetitorEnterCombat");
             }
 
             return _eventBroadcaster; 
@@ -66,6 +66,8 @@ namespace Vanaring
         {
             GetEventBroadcaster().UnSubEvent<CombatEntity>(argc, "OnCompetitorEnterCombat"); 
         }
+
+       
         #endregion
 
         [SerializeField]
@@ -266,8 +268,6 @@ namespace Vanaring
 
             }
 
-
-
             yield return null; 
         }
         /// <summary>
@@ -344,7 +344,8 @@ namespace Vanaring
             {
                 FindObjectOfType<CharacterWindowManager>().SetActiveEntityGUI(newEntity);
 
-                yield return newEntity.TakeControl();
+                yield return newEntity.TakeControl(); 
+
 
             }
 
@@ -375,7 +376,8 @@ namespace Vanaring
                 return true;
             }
             return false;
-        }
+        } 
+
         public IEnumerator InstantiateCompetator(CombatEntity prefabNewCompetator, ECompetatorSide side)
         {
             List<CombatEntity> entitesWithSameSide = new List<CombatEntity>();

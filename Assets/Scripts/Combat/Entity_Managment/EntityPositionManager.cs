@@ -264,7 +264,8 @@ namespace Vanaring
             {
                 if (data.EntityStandingHere == entity)
                 {
-                    data.EntityStandingHere = null;
+                    data.EntityStandingHere.GetComponent<CombatEntityAnimationHandler>().HideVisualMesh(); 
+                    data.EntityStandingHere = null; 
                     return;
                 }
             }
