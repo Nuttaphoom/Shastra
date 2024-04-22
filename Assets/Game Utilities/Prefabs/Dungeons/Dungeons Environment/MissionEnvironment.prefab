@@ -1719,7 +1719,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _baseDungeonNode:
   - {fileID: 7225673379240972976}
-  - {fileID: 6829662913799043524}
+  - {fileID: 1978735163388726499}
   - {fileID: 2302565512682113196}
   - {fileID: 3754187075752884219}
   - {fileID: 4424497137980182463}
@@ -1850,7 +1850,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   visistationState: 0
   _connectedNode:
-  - {fileID: 6829662913799043524}
+  - {fileID: 1978735163388726499}
   - {fileID: 3754187075752884219}
   _nodeVisualTransitionHandler:
     _right_X: {fileID: 3280785109211756109}
@@ -3356,7 +3356,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   visistationState: 0
   _connectedNode:
-  - {fileID: 6829662913799043524}
+  - {fileID: 1978735163388726499}
   _nodeVisualTransitionHandler:
     _right_X: {fileID: 7292478574640917673}
     _minusRight_X: {fileID: 5731429076966262640}
@@ -3612,7 +3612,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6119251890891189600}
-  - component: {fileID: 6829662913799043524}
+  - component: {fileID: 1978735163388726499}
   m_Layer: 0
   m_Name: Node (6)
   m_TagString: Untagged
@@ -3638,7 +3638,7 @@ Transform:
   m_Father: {fileID: 7953740182424467012}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6829662913799043524
+--- !u!114 &1978735163388726499
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -3647,7 +3647,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8552899418831114466}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 287e8aa3d4af2cb47b4c09671157f58e, type: 3}
+  m_Script: {fileID: 11500000, guid: 1c247f4bb71fdeb4ea9028cfd666f210, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   visistationState: 0
@@ -3659,7 +3659,38 @@ MonoBehaviour:
     _minusRight_X: {fileID: 6157508764461982436}
     _forward_Z: {fileID: 4292233683392683295}
     _minusForward_Z: {fileID: 7612889435886955541}
-  _cutsceneData: {fileID: 11400000, guid: f95976e969f723549b43bbec897bab88, type: 2}
+  _combatSceneData: {fileID: 11400000, guid: ddbf44867eadcb8419af19eed48b2e15, type: 2}
+  _combatDungeonNodeLoaderData:
+    EnemyLoaderPool: {fileID: 11400000, guid: f7e604be6fea8554b805bd8de20671e9, type: 2}
+    CombatRewards:
+    - _rewardIsItem: 1
+      _rewardIsSpell: 0
+      _rewardIsCash: 0
+      _spellReward:
+        _rewards: {fileID: 0}
+      _itemReward:
+        _rewards: {fileID: 11400000, guid: cab6a1cf038672342bb1ea8975adc564, type: 2}
+      _cashReward:
+        _rewards:
+          _rewardData:
+            RewardName: 
+            RewardDescription: 
+            RewardIcon: {fileID: 0}
+          _amount: 0
+    - _rewardIsItem: 1
+      _rewardIsSpell: 0
+      _rewardIsCash: 0
+      _spellReward:
+        _rewards: {fileID: 0}
+      _itemReward:
+        _rewards: {fileID: 11400000, guid: cab6a1cf038672342bb1ea8975adc564, type: 2}
+      _cashReward:
+        _rewards:
+          _rewardData:
+            RewardName: 
+            RewardDescription: 
+            RewardIcon: {fileID: 0}
+          _amount: 0
 --- !u!1 &8668728826152311126
 GameObject:
   m_ObjectHideFlags: 0
