@@ -41,13 +41,12 @@ namespace Vanaring
 
         private IEnumerator PlayEXPNumberAnimation(float start, float end, float gain, float max)
         {
-            bool isOverExpCap = false;
             float overVal = max - (member.LevelAttributeHandler.GetCharacterUEXPSystem.GetCurrentLevel + gain);
             yield return new WaitForSeconds(1.0f);
             seccondBar.fillAmount = (float)(member.LevelAttributeHandler.GetCharacterUEXPSystem.GetCurrentLevel + gain) / max;
             if(overVal <= 0)
             {
-                isOverExpCap = true;
+                end = max;
             }
             float timer = 0f;
             while (timer < 1)
@@ -58,7 +57,13 @@ namespace Vanaring
                 timer += Time.deltaTime;
                 yield return null;
             }
-            expBar.fillAmount = (float)(member.LevelAttributeHandler.GetCharacterUEXPSystem.GetCurrentLevel + gain) / max;
+            if (overVal <= 0)
+            {
+                expBar.fillAmount = 0f;
+                expRemainingNumText.text = Mathf.RoundToInt(member.LevelAttributeHandler.GetCharacterUEXPSystem.GetEXPCap()).ToString();
+                yield return PlayEXPNumberAnimation(0f, Mathf.Abs(overVal), Mathf.Abs(overVal), (float)member.LevelAttributeHandler.GetCharacterUEXPSystem.GetEXPCap());
+            }
+            //expBar.fillAmount = (float)(member.LevelAttributeHandler.GetCharacterUEXPSystem.GetCurrentLevel + gain) / max;
         }
     }
 }
