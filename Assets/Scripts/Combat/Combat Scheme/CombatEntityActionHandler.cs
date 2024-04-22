@@ -40,6 +40,8 @@ namespace Vanaring
         }   
         protected Queue<ActorAction> _actionQueue = new Queue<ActorAction>();
 
+        
+
         public IEnumerator PerformActionInQueue()
         {
             ActorAction action = GetActionRuntimeEffect(); 
