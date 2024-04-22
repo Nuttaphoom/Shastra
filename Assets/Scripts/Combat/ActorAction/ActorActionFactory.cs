@@ -37,8 +37,8 @@ namespace Vanaring
         public Sprite AbilityImage => _actionDescription.FieldImage;
 
         public ActionSignal ActionSignal => _actionSignal;
-        public DescriptionBaseField DescriptionBaseField => _actionDescription; 
- 
+        public DescriptionBaseField DescriptionBaseField => _actionDescription;
+
         #endregion
 
     }
@@ -76,6 +76,8 @@ namespace Vanaring
         /// <returns>An IEnumerator representing the post-action process.</returns>
         public abstract IEnumerator PostActionPerform();
 
+    
+
         /// <summary>
         /// PerformAction resonsbile for playing animation and effect until the timeline is done playing
         /// </summary>
@@ -85,6 +87,8 @@ namespace Vanaring
         {
             //Set up 
             SetUpTimeLineActorSetting();
+
+            //DisableNoneActorCharacters(); 
 
             //Play Timeline in DirectorManager and register signal
             DirectorManager.Instance.PlayTimeline(_actionSignal);
@@ -150,11 +154,16 @@ namespace Vanaring
                 _targets.Add(entity);
             }
         }
+
+        #region GETTER
         public List<CombatEntity> GetActionTargets()
         {
             return _targets; 
         }
-        
+        public CombatEntity  GetActionCaster()
+        {
+            return _caster; 
+        }
         public TargetSelector GetTargetSelector()
         {
             return _targetSelector; 
@@ -164,7 +173,7 @@ namespace Vanaring
         {
             return _description;
         }
-
+        #endregion
 
     }
 
