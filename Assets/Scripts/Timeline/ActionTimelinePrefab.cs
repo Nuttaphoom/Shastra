@@ -30,25 +30,22 @@ namespace Vanaring
         [SerializeField]
         private bool _changeLookAt = false;
 
-        [SerializeField, AllowNesting, NaughtyAttributes.ShowIf("NeedAssignLookAtCam") ]
-        [Header("Dynamically binding look at position with center betwen target transform")]
+        [SerializeField, AllowNesting, NaughtyAttributes.ShowIf("_changeLookAt") ]
+        [Header("Camera to  change look at (Leave empty if used Entity camera)")]
         private CinemachineVirtualCamera _virtualCameraToChangeLookAt ;
 
-        private bool NeedAssignLookAtCam => _changeLookAt && !_useEntityCamera;
         ///////////////////////////
 
         /// Use Old Camera Variable (Instantiate new cam with same data as prev cam)//
-
-        [SerializeField]
-        private bool _useEntityCamera = false;
+ 
         
-        [SerializeField, AllowNesting, NaughtyAttributes.ShowIf("_useEntityCamera")]
-        [Header("Transform to put main VM in and apply translation")]
-        private Transform _VMTranslationTransform;
+        //[SerializeField, AllowNesting, NaughtyAttributes.ShowIf("_useEntityCamera")]
+        //[Header("Transform to put main VM in and apply translation")]
+        //private Transform _VMTranslationTransform;
 
-        [SerializeField, AllowNesting, NaughtyAttributes.ShowIf("_useEntityCamera")]
-        [Header("(Optional) Rotation of the parent (bind dynamically ) will be assigned to this object, result in rotating _VMTranslationTransform translation direction")]
-        private Transform _VMFaceDirectionParentTransform ;
+        //[SerializeField, AllowNesting, NaughtyAttributes.ShowIf("_useEntityCamera")]
+        //[Header("(Optional) Rotation of the parent (bind dynamically ) will be assigned to this object, result in rotating _VMTranslationTransform translation direction")]
+        //private Transform _VMFaceDirectionParentTransform ;
 
         /////////////////////////// 
 
@@ -66,22 +63,6 @@ namespace Vanaring
         {
 
             Transform objectWithTrackName;
-
-            //Tranform main camera to translation object
-            if (_useEntityCamera)
-            {
-                //CameraSetUPManager.Instance.UseLastEnableCamera(); 
-
-                GameObject animatorWithTrackName = Camera.main.GetComponent<CinemachineBrain>().ActiveVirtualCamera.VirtualCameraGameObject ;
-                if (_VMFaceDirectionParentTransform != null)
-                {
-                    _VMFaceDirectionParentTransform.transform.rotation = animatorWithTrackName.transform.parent.transform.rotation;
-                    _VMFaceDirectionParentTransform.transform.position = animatorWithTrackName.transform.position;
-                }
-                _mainVMTransform = animatorWithTrackName.transform;
-                _formerParent = _mainVMTransform.parent;
-                _mainVMTransform.parent = _VMTranslationTransform;
-            }
 
             //For every tracks 
             foreach (var track in (director.playableAsset as TimelineAsset).GetOutputTracks())
@@ -124,8 +105,8 @@ namespace Vanaring
             //Set up Target and Caster transform, place them into correct location 
             var targetActors = actionTimelineSetting.GetAllTimelineActors() ;
             var casterActor = actionTimelineSetting.GetAllTimelineActors()[0];
-            targetActors.RemoveAt(0); 
-            SetUpCasterAndTargetsTransform(casterActor, targetActors);
+            targetActors.RemoveAt(0);
+            AssignCasterAndTargetsTransformToNewParent(casterActor, targetActors);
 
             //Set up look at of the camera 
 
@@ -139,9 +120,6 @@ namespace Vanaring
         #region Set up look at 
         private void SetUpDynamicLookAtBinding(int targetSelectedAmount)
         {
-            if (_useEntityCamera)
-                _virtualCameraToChangeLookAt = Camera.main.GetComponent<CinemachineBrain>().ActiveVirtualCamera as CinemachineVirtualCamera;
-
             if (_virtualCameraToChangeLookAt == null )
                 return;
 
@@ -212,7 +190,7 @@ namespace Vanaring
             }
 
         }
-        private void SetUpCasterAndTargetsTransform(GameObject casterParent, List<GameObject> targetEntities)
+        private void AssignCasterAndTargetsTransformToNewParent(GameObject casterParent, List<GameObject> targetEntities)
         {
             if (targetEntities.Count > _targetTransform.Count)
                 throw new Exception("Targeted Entities exceed Target Transforms ==> " + targetEntities.Count + " > " + _targetTransform.Count);
@@ -240,13 +218,7 @@ namespace Vanaring
 
         public void DestroyTimelineElement()
         {
-            if (_useEntityCamera)
-            {
-                _mainVMTransform.parent = _formerParent;
-                Destroy(_VMTranslationTransform.gameObject);
-                if (_VMFaceDirectionParentTransform)
-                    Destroy(_VMFaceDirectionParentTransform.gameObject);
-            }
+            
 
             Destroy(_casterTransform.gameObject); 
             for (int i = _targetTransform.Count - 1; i >= 0 ; i--)
