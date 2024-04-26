@@ -157,11 +157,7 @@ namespace Vanaring
 
             _sceneToLoad = sceneSO;
 
-            if (_currentLoadedLocationScene != null)
-                UnloadLocation();
-
-            else
-                StartCoroutine( BeginLoadScene());
+            StartCoroutine(LoadSceneIE());
             
         }
         #endregion
@@ -197,10 +193,26 @@ namespace Vanaring
                 throw new System.Exception("_sceneToLoad is null");
 
             PersistentSaveLoadManager.Instance.CaptureToTemp();
-            yield return CreateTransitionScene();
+            //yield return CreateTransitionScene();
+            Debug.Log("Scene begin Load");
             transitionManager.TransitionObj.SubOnSceneLoaderBegin(LoadNewScene);
             LoadNewScene(null);
             yield return null;
+        }
+
+        private IEnumerator LoadSceneIE() {
+
+            yield return CreateTransitionScene();
+
+            yield return new WaitForSeconds(1.0f);
+
+            Debug.Log("Unload cur scene");
+
+            if (_currentLoadedLocationScene != null)
+                UnloadLocation();
+
+            else
+                StartCoroutine(BeginLoadScene());
         }
 
         private void LoadNewScene(Null n)

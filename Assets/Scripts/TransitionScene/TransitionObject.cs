@@ -50,12 +50,6 @@ namespace Vanaring
             //System should tell the timeline to play
         }
 
-        [ContextMenu("Test")]
-        public void TestTransition()
-        {
-            StartCoroutine(FadeInTransition());
-        }
-
         private EventBroadcaster GetEventBroadcaster()
         {
             if (_eventBroadCaster == null)
@@ -88,12 +82,15 @@ namespace Vanaring
             if (fadeInDirector != null)
             {
                 fadeInDirector.Play();
-                //Debug.Log("Transi IN");
+                Debug.Log("Transi IN");
+                //float timer = 0;
                 while (fadeInDirector.state == PlayState.Playing)
                 {
+                    //timer += Time.deltaTime;
+                    //Debug.Log(timer);
                     yield return new WaitForEndOfFrame();
                 }
-                //Debug.Log("End Transi IN");
+                Debug.Log("End Transi IN");
             }
 
             //Debug.Log("Load");
@@ -102,14 +99,14 @@ namespace Vanaring
 
         private IEnumerator FadeOutTransition()
         {
-            //Debug.Log("Transi Out");
+            Debug.Log("Transi Out");
             _tsm.UnSubOnSceneLoaderOperation(OnSceneProgressBarLoading);
             while (fadeInDirector.state == PlayState.Playing)
             {
                 yield return new WaitForEndOfFrame();
             }
             //yield return new WaitForSeconds(delayLoadingTime);
-            //Debug.Log("Load scene finish");
+            Debug.Log("Load scene finish");
             if (fadeOutDirector != null)
             {
                 fadeOutDirector.Play();

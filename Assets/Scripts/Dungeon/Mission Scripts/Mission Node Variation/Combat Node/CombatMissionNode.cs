@@ -19,7 +19,7 @@ namespace Vanaring
             yield return new WaitForSeconds(1.25f) ;
 
             PersistentSceneLoader.Instance.CreateLoaderDataUser<CombatDungeonNodeLoaderData>("CombatDungeonNodeDataUser", _combatDungeonNodeLoaderData); 
-            PersistentSceneLoader.Instance.LoadGeneralScene(_combatSceneData);
+            PersistentSceneLoader.Instance.LoadGeneralScene(_combatSceneData, 3);
         }
     }
 
