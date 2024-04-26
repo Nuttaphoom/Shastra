@@ -72,13 +72,19 @@ namespace Vanaring
             {
                 transitionCanvas.SetActive(true);
             }
-            loadingBarFill.fillAmount = val;
+            if(loadingBarFill != null)
+            {
+                loadingBarFill.fillAmount = val;
+            }
+            
         }
 
         public IEnumerator FadeInTransition()
         {
-            gfxScreen.fillAmount = 0;
-
+            if(gfxScreen != null)
+            {
+                gfxScreen.fillAmount = 0;
+            }
             if (fadeInDirector != null)
             {
                 fadeInDirector.Play();
