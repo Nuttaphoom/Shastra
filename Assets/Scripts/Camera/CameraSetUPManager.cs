@@ -216,7 +216,6 @@ namespace Vanaring
             newCamera.gameObject.SetActive(true) ;
             //previousCamera = newCamera;
 
-            Debug.Log(Camera.main.GetComponent<CinemachineBrain>().ActiveVirtualCamera);
 
         }
 

@@ -379,7 +379,6 @@ namespace Vanaring
                 }
                 _coroutine.Add(_combatEntityAnimationHandler.PlayTriggerAnimation(animationTrigger));
             }
-            Debug.Log("VisualHurt : " + dmg);
             GetEventBroadcaster().InvokeEvent(dmg, "OnDamage");
 
             yield return new WaitAll(this, _coroutine.ToArray());

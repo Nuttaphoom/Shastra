@@ -27,40 +27,26 @@ namespace Vanaring
         #endregion
 
         /// Look At Variables //
+        [Header("Dynamicall Chnage look at")]
         [SerializeField]
         private bool _changeLookAt = false;
 
-        [SerializeField, AllowNesting, NaughtyAttributes.ShowIf("_changeLookAt") ]
-        [Header("Camera to  change look at (Leave empty if used Entity camera)")]
         private CinemachineVirtualCamera _virtualCameraToChangeLookAt ;
 
-        ///////////////////////////
-
-        /// Use Old Camera Variable (Instantiate new cam with same data as prev cam)//
- 
-        
-        //[SerializeField, AllowNesting, NaughtyAttributes.ShowIf("_useEntityCamera")]
-        //[Header("Transform to put main VM in and apply translation")]
-        //private Transform _VMTranslationTransform;
-
-        //[SerializeField, AllowNesting, NaughtyAttributes.ShowIf("_useEntityCamera")]
-        //[Header("(Optional) Rotation of the parent (bind dynamically ) will be assigned to this object, result in rotating _VMTranslationTransform translation direction")]
-        //private Transform _VMFaceDirectionParentTransform ;
-
-        /////////////////////////// 
-
-        /// Use camera in AActionTimelinePrefab //
-        [SerializeField]
-        private bool _useActionTimelinePrefabCam = false;
+   
+        [SerializeField, AllowNesting, NaughtyAttributes.ShowIf("_changeLookAt") ]
+        private ActionTimelineLookAtBinder _lookAtBinder; 
 
         ////////////////////////////
-        private Transform _mainVMTransform;
-        private Transform _formerParent; 
 
-        private List<GameObject> _destroyedWithTimeline = new List<GameObject>();
+
+        //private List<GameObject> _destroyedWithTimeline = new List<GameObject>();
 
         public void SetUpActor(PlayableDirector director, ActionTimelineSettingStruct actionTimelineSetting, SignalReceiver unitySignalReciver   )
         {
+
+            if (_lookAtBinder == null)
+                _lookAtBinder = new ActionTimelineLookAtBinder(); 
 
             Transform objectWithTrackName;
 
@@ -109,46 +95,14 @@ namespace Vanaring
             AssignCasterAndTargetsTransformToNewParent(casterActor, targetActors);
 
             //Set up look at of the camera 
-
+            _lookAtBinder.BindLookAtTargetsToEnemies(_targetTransform);
 
             int targetSelectedAmount = _targetTransform.Count;
-            SetUpDynamicLookAtBinding(targetSelectedAmount);
 
 
         }
 
-        #region Set up look at 
-        private void SetUpDynamicLookAtBinding(int targetSelectedAmount)
-        {
-            if (_virtualCameraToChangeLookAt == null )
-                return;
-
-            if (targetSelectedAmount == 0)
-                return; 
-
-            Transform newLookAt = Instantiate(new GameObject().transform) ;
-
-            Vector3 averagePos = _targetTransform[0].transform.position ;
-
-
-            for (int i = 1; i < targetSelectedAmount ; i++)
-            {
-                averagePos += _targetTransform[i].transform.position;
-            }
-
-            averagePos.x /= targetSelectedAmount;
-            averagePos.y /= targetSelectedAmount ;
-            averagePos.z /= targetSelectedAmount ;
-
-            newLookAt.position = averagePos; 
-
-            _virtualCameraToChangeLookAt.LookAt = newLookAt; // [index];
-            newLookAt.gameObject.SetActive(true);
-
-            _destroyedWithTimeline.Add(newLookAt.gameObject) ;
-        }
-
-        #endregion
+       
 
         #region Caster Target Transform Set up
         private void AssignCasterTargetTransform(ActionTimelineSettingStruct actionTimelineSetting)
@@ -218,21 +172,14 @@ namespace Vanaring
 
         public void DestroyTimelineElement()
         {
-            
-
             Destroy(_casterTransform.gameObject); 
             for (int i = _targetTransform.Count - 1; i >= 0 ; i--)
             {
                 Destroy(_targetTransform[i].gameObject);
             }
 
-            for (int i = _destroyedWithTimeline.Count - 1; i >= 0; i--)
-            {
-                if (_destroyedWithTimeline[i] != null) 
-                    Destroy(_destroyedWithTimeline[i]);
-            }
-            
-            _destroyedWithTimeline.Clear();
+            _lookAtBinder.DestroySpawnedObj(); 
+           
 
             Destroy(gameObject);
         }
