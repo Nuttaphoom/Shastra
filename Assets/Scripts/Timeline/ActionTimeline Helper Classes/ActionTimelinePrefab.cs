@@ -7,6 +7,7 @@ using Cinemachine;
 using System;
 using NaughtyAttributes;
 using Vanaring.Assets.Scripts.Utilities;
+using static UnityEngine.UIElements.UxmlAttributeDescription;
 
 namespace Vanaring
 {
@@ -33,18 +34,21 @@ namespace Vanaring
 
         private CinemachineVirtualCamera _virtualCameraToChangeLookAt ;
 
-   
         [SerializeField, AllowNesting, NaughtyAttributes.ShowIf("_changeLookAt") ]
-        private ActionTimelineLookAtBinder _lookAtBinder; 
+        private ActionTimelineLookAtBinder _lookAtBinder;
 
         ////////////////////////////
+        [Header("Use ActionTimelinePrefab location")]
+        [SerializeField]
+        private bool _useActionTimelinePrefablocation = false;
+
+        private ActionAnimationLocationBinder _actionAnimationLocationBinder;  
 
 
         //private List<GameObject> _destroyedWithTimeline = new List<GameObject>();
 
         public void SetUpActor(PlayableDirector director, ActionTimelineSettingStruct actionTimelineSetting, SignalReceiver unitySignalReciver   )
         {
-
             if (_lookAtBinder == null)
                 _lookAtBinder = new ActionTimelineLookAtBinder(); 
 
@@ -92,17 +96,25 @@ namespace Vanaring
             var targetActors = actionTimelineSetting.GetAllTimelineActors() ;
             var casterActor = actionTimelineSetting.GetAllTimelineActors()[0];
             targetActors.RemoveAt(0);
-            AssignCasterAndTargetsTransformToNewParent(casterActor, targetActors);
+
+            //Uise ActionTimelinePrefab 
+            if (_useActionTimelinePrefablocation)
+            {
+                List<Transform> casterTransforms = new List<Transform>() { _casterTransform.transform };
+                _actionAnimationLocationBinder = new ActionAnimationLocationBinder(casterTransforms, _targetTransform, casterActor, targetActors);
+            }
+            else
+            {
+                AssignCasterAndTargetsTransformToNewParent(casterActor, targetActors);
+
+            }
 
             //Set up look at of the camera 
             _lookAtBinder.BindLookAtTargetsToEnemies(_targetTransform);
 
-            int targetSelectedAmount = _targetTransform.Count;
-
-
+      
         }
-
-       
+ 
 
         #region Caster Target Transform Set up
         private void AssignCasterTargetTransform(ActionTimelineSettingStruct actionTimelineSetting)
@@ -172,6 +184,9 @@ namespace Vanaring
 
         public void DestroyTimelineElement()
         {
+            if (_useActionTimelinePrefablocation)
+                _actionAnimationLocationBinder.ResetPositionBack();
+
             Destroy(_casterTransform.gameObject); 
             for (int i = _targetTransform.Count - 1; i >= 0 ; i--)
             {
@@ -182,6 +197,7 @@ namespace Vanaring
            
 
             Destroy(gameObject);
+
         }
 
     }

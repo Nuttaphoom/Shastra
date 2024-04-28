@@ -36,14 +36,7 @@ namespace Vanaring
         }
 
 
-        private void Awake()
-        {
-            if (_instance != null && _instance != this)
-                throw new System.Exception("There are more than one instance of ntityPositionManager in the scene"); 
-
-            _instance = this;
-
-        }
+       
 
         #endregion
 
@@ -52,7 +45,55 @@ namespace Vanaring
         private List<StandingLocationOccupierData> _allyStandingTransform ;
 
         [SerializeField]
-        private List<EnemyOccupierData> _enemyOccupierData;
+        private List<EnemyOccupierData> _enemyOccupierData; 
+
+        private int _currentEnemySize = -1;
+
+        public int CurrentEnemySize
+        {
+            get
+            {
+                if (_currentEnemySize == -1)
+                    throw new Exception("Current Enemy Size hasn't been set");
+
+                return _currentEnemySize;
+            }
+        }
+
+        private void Awake()
+        {
+            if (_instance != null && _instance != this)
+                throw new System.Exception("There are more than one instance of ntityPositionManager in the scene");
+
+            _instance = this;
+
+            CombatReferee.Instance.SubOnCombatPreparation(Initialization);
+
+
+        }
+        private void Initialization(Null DontUse)
+        {
+            foreach (ECompetatorSide side in Enum.GetValues(typeof(ECompetatorSide)))
+            {
+                foreach (var entity in CombatReferee.Instance.GetCompetatorsBySide(side))
+                {
+                    BindActionEvent(entity);
+                }
+            }
+
+            CombatReferee.Instance.SubOnCompetitorEnterCombat(BindActionEvent);
+
+        }
+
+        private void BindActionEvent(CombatEntity entity)
+        {
+            entity.SubOnTakeControlEvent(OnEntityTakeControl);
+        }
+
+        private void OnEntityTakeControl(CombatEntity entity)
+        {
+            
+        }
 
         /// <summary>
         /// if EnemySize hasn't been specified 
@@ -73,21 +114,10 @@ namespace Vanaring
             return ret; 
         }
 
-        [SerializeField]
-        private Transform _arenaCenterTransform;
+     
 
 
-        private int _currentEnemySize = -1 ;
-        public int CurrentEnemySize
-        {
-            get
-            {
-                if (_currentEnemySize == -1)
-                    throw new Exception("Current Enemy Size hasn't been set");
-
-                return _currentEnemySize; 
-            }
-        }
+       
         public void SetNewEnemyCurrentSize(int newSize)
         {
             if (_currentEnemySize == newSize)
@@ -118,67 +148,6 @@ namespace Vanaring
             }
         }
         
-        
-       
-        //public List<StandingLocationOccupierData> GetAllOccupiedLocation(ECompetatorSide side, int enemySize = -1)
-        //{
-        //    List<StandingLocationOccupierData> ret = new List<StandingLocationOccupierData>(); 
-        //    if (side == ECompetatorSide.Ally)
-        //    {
-        //        foreach (var data in _allyStandingTransform)
-        //        {
-        //            if (data.EntityStandingHere != null)
-        //            {
-        //                ret.Add(data);
-        //            }
-        //        }
-        //    }
-        //    else
-        //    {
-        //        if (enemySize == -1)
-        //            throw new Exception("Enemy Size is " + enemySize) ;
-                    
-        //        foreach (var data in GetEnemyStandingLocations(enemySize))
-        //        {
-        //            if (data.EntityStandingHere != null)
-        //            {
-        //                ret.Add(data);
-        //            }
-        //        }
-        //    }
-
-        //    return ret; 
-        //}
-
-        //public Transform GetAllyStandLocationTransform(int index)
-        //{
-        //    return _allyStandingTransform[index].Location;
-        //}
-
-        //public Transform GetEnemyStandLocationTransform(int index)
-        //{
-        //    return _enemyStandingTransform[index].Location;
-        //}
-
-        public Transform GetLocationFromCombatEntity(CombatEntity entity)
-        {
-            foreach (var standingLocationData in _allyStandingTransform)
-            {
-                if (standingLocationData.EntityStandingHere.CombatCharacterSheet.CharacterName == entity.CombatCharacterSheet.CharacterName)
-                    return standingLocationData.Location; 
-            }
-
-
-            for (int i = 1; i <= 6; i++)
-            {
-                foreach (var standingLocationData in GetEnemyStandingLocations(i))
-                {
-                    if (standingLocationData.EntityStandingHere.CombatCharacterSheet.CharacterName == entity.CombatCharacterSheet.CharacterName)
-                        return standingLocationData.Location;
-                }
-            }
-            throw new Exception(entity.gameObject.name + " 's location can't not be found");
-        }
 
         #region Occupy & Release Location 
        
@@ -282,7 +251,7 @@ namespace Vanaring
         }
         #endregion 
 
-        public StandingLocationOccupierData IsThisEntityOccupyLocation(CombatEntity entity)
+        private StandingLocationOccupierData IsThisEntityOccupyLocation(CombatEntity entity)
         {
             foreach (var data in _allyStandingTransform)
             {
