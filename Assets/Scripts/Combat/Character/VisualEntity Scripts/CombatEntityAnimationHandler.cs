@@ -206,7 +206,6 @@ namespace Vanaring
 
         public void ShowVisualMesh()
         {
-            Debug.Log("show visual mesh in " + gameObject.name); 
             GetVisualMesh().gameObject.SetActive(true); 
         }
 
@@ -314,11 +313,7 @@ namespace Vanaring
             }
         }
 
-        public void InstantlyHideVisualMesh()
-        {
-            _visualMesh.SetActive(false);
-        }
-
+ 
         public IEnumerator PlaySpawnVisualEffectCoroutine()
         {
             float overallTime = 0.0f ;

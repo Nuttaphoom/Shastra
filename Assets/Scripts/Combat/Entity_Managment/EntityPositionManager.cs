@@ -92,7 +92,7 @@ namespace Vanaring
 
         private void OnEntityTakeControl(CombatEntity entity)
         {
-            
+            RelocateEntityToitsOccupiedPosition(); 
         }
 
         /// <summary>
@@ -270,6 +270,41 @@ namespace Vanaring
             }
 
             return null; 
+        }
+
+        private void RelocateEntityToitsOccupiedPosition()
+        {
+            foreach (var occupiedData in GetAllOccupiedLocation())
+            {
+                occupiedData.EntityStandingHere.transform.position = occupiedData.Location.position;
+                occupiedData.EntityStandingHere.transform.rotation= occupiedData.Location.rotation;
+            }
+        }
+
+        private List<StandingLocationOccupierData> GetAllOccupiedLocation()
+        {
+            List<StandingLocationOccupierData> ret = new List<StandingLocationOccupierData>(); 
+
+            foreach (var standingData in _allyStandingTransform)
+            {
+                if (standingData.EntityStandingHere == null)
+                    continue;
+
+                ret.Add(standingData);
+            }
+
+            foreach (var enemyOccupiation in _enemyOccupierData)
+            {
+                if (enemyOccupiation.EnemySize != _currentEnemySize)
+                    continue;
+
+                if (enemyOccupiation.StandingLocationData.EntityStandingHere == null)
+                    continue;
+
+                ret.Add(enemyOccupiation.StandingLocationData); 
+            }
+
+            return ret; 
         }
 
         [Serializable]

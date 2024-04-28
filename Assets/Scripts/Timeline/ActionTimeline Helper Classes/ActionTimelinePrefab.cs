@@ -40,8 +40,9 @@ namespace Vanaring
         ////////////////////////////
         [Header("Use ActionTimelinePrefab location")]
         [SerializeField]
-        private bool _useActionTimelinePrefablocation = false;
+        private bool _useActionTimelinePrefabLocation = false;
 
+        [SerializeField, AllowNesting, NaughtyAttributes.ShowIf("_useActionTimelinePrefabLocation")]
         private ActionAnimationLocationBinder _actionAnimationLocationBinder;  
 
 
@@ -98,14 +99,28 @@ namespace Vanaring
             targetActors.RemoveAt(0);
 
             //Uise ActionTimelinePrefab 
-            if (_useActionTimelinePrefablocation)
+            if (_useActionTimelinePrefabLocation)
             {
                 List<Transform> casterTransforms = new List<Transform>() { _casterTransform.transform };
-                _actionAnimationLocationBinder = new ActionAnimationLocationBinder(casterTransforms, _targetTransform, casterActor, targetActors);
+                if (!_actionAnimationLocationBinder.MoveTargets)
+                {
+                    AssignTargetTransformsToNewParent(targetActors);
+                }
+
+                if (!_actionAnimationLocationBinder.MoveCaster)
+                {
+                    AssignCasterTransformToNewParent(casterActor);
+                } 
+
+                _actionAnimationLocationBinder.SetUpBinder(casterTransforms, _targetTransform, casterActor, targetActors);
+
+               
+
             }
             else
             {
-                AssignCasterAndTargetsTransformToNewParent(casterActor, targetActors);
+                AssignCasterTransformToNewParent(casterActor);
+                AssignTargetTransformsToNewParent(targetActors);
 
             }
 
@@ -156,27 +171,32 @@ namespace Vanaring
             }
 
         }
-        private void AssignCasterAndTargetsTransformToNewParent(GameObject casterParent, List<GameObject> targetEntities)
+        private void AssignCasterTransformToNewParent(GameObject casterParent)
         {
-            if (targetEntities.Count > _targetTransform.Count)
-                throw new Exception("Targeted Entities exceed Target Transforms ==> " + targetEntities.Count + " > " + _targetTransform.Count);
-
-            //owner.transform.position = objectWithIndex.transform.position;
             
             _casterTransform.transform.parent = casterParent.transform;
             _casterTransform.transform.position = casterParent.GetComponent<CombatEntityAnimationHandler>().GetEntityTimelineAnimationLocation(); ;
             _casterTransform.transform.rotation = casterParent.transform.rotation;
 
+            
+        }
+
+        private void AssignTargetTransformsToNewParent(List<GameObject> targetEntities)
+        {
+
+            if (targetEntities.Count > _targetTransform.Count)
+                throw new Exception("Targeted Entities exceed Target Transforms ==> " + targetEntities.Count + " > " + _targetTransform.Count);
+
             int i = 0;
 
             foreach (Transform targetTransfrom in _targetTransform)
             {
-                GameObject targetObj = targetEntities[i]; 
-                targetTransfrom.parent = targetObj.transform ;
+                GameObject targetObj = targetEntities[i];
+                targetTransfrom.parent = targetObj.transform;
                 targetTransfrom.transform.position = targetObj.GetComponent<CombatEntityAnimationHandler>().GetEntityTimelineAnimationLocation(); ;
                 targetTransfrom.transform.rotation = targetObj.transform.rotation;
 
-                i++; 
+                i++;
             }
         }
         #endregion 
@@ -184,7 +204,7 @@ namespace Vanaring
 
         public void DestroyTimelineElement()
         {
-            if (_useActionTimelinePrefablocation)
+            if (_useActionTimelinePrefabLocation)
                 _actionAnimationLocationBinder.ResetPositionBack();
 
             Destroy(_casterTransform.gameObject); 

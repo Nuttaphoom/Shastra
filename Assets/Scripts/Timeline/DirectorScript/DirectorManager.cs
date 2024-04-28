@@ -57,7 +57,7 @@ namespace Vanaring
             PlayableDirector currentDirector ;
  
             //1.1) instantiate TimelineActorSetupHanlder 
-            var actorSetupHandler = Instantiate( signal.GetActionTimelinePrefab, signal.GetActionTimelineSettingStruct.GetTimelineActorWithIndex(0).GetComponent<CombatEntityAnimationHandler>().GetVisualMesh().transform.position, signal.GetActionTimelinePrefab.transform.rotation )  ;
+            var actorSetupHandler = Instantiate( signal.GetActionTimelinePrefab, Vector3.zero /* signal.GetActionTimelineSettingStruct.GetTimelineActorWithIndex(0).GetComponent<CombatEntityAnimationHandler>().GetVisualMesh().transform.position*/, Quaternion.identity /*signal.GetActionTimelinePrefab.transform.rotation*/ )  ;
             currentDirector = actorSetupHandler.GetComponent<PlayableDirector>() ;
             _currentTimelineActorSetupHandler = actorSetupHandler.GetComponent<ActionTimelinePrefab>();
 

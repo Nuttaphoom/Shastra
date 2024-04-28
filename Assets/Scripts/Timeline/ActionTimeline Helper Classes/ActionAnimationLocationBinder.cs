@@ -4,14 +4,16 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Vanaring
-{ 
+{
     /// <summary>
     /// Dynamically assign Caster and Targets to CasterTransfrom and TargetTransform, to change its position to the Transform 
     /// location is respect to World Center (0,0,0) 
     /// </summary>
+    [Serializable]
     public class ActionAnimationLocationBinder
     {
         private class RuntimeActionLocationBinder 
@@ -34,7 +36,6 @@ namespace Vanaring
                 _movedEntity.transform.localPosition = Vector3.zero ;  
                 _movedEntity.transform.localRotation = Quaternion.identity ;
 
-                
             }
 
             public void RestoreLocation()
@@ -54,25 +55,41 @@ namespace Vanaring
 
         List<RuntimeActionLocationBinder> _runtimeActionBinded = new List<RuntimeActionLocationBinder>(); 
         private List<Transform> _casterTransform = new List<Transform>();
-        private List<Transform> _targetsTransform = new List<Transform>(); 
-        public ActionAnimationLocationBinder(List<Transform> casterTransforms ,List<Transform> targetTransform ,GameObject caster, List<GameObject> targets )
+        private List<Transform> _targetsTransform = new List<Transform>();
+
+        [SerializeField]
+        private bool _moveCasters;
+
+        public bool MoveCaster => _moveCasters;
+
+        [SerializeField]
+        private bool _moveTargets; 
+
+        public bool MoveTargets => _moveTargets;
+
+        public void SetUpBinder(List<Transform> casterTransforms ,List<Transform> targetTransform ,GameObject caster, List<GameObject> targets )
         {
             _casterTransform = casterTransforms; 
-            _targetsTransform = targetTransform; 
+            _targetsTransform = targetTransform;
 
-            foreach (var casterTransfrom in _casterTransform)
+            if (_moveCasters)
             {
-                AssignNewBinder(caster.GetComponent<CombatEntity>(),casterTransfrom) ; 
+                foreach (var casterTransfrom in _casterTransform)
+                {
+                    AssignNewBinder(caster.GetComponent<CombatEntity>(), casterTransfrom);
+                }
             }
 
-            int index = 0;
-            foreach (var t in _targetsTransform)
+            if (_moveTargets)
             {
+                int index = 0;
+                foreach (var t in _targetsTransform)
+                {
 
-                AssignNewBinder(targets[index].GetComponent<CombatEntity>(), t );
-                index++;
+                    AssignNewBinder(targets[index].GetComponent<CombatEntity>(), t);
+                    index++;
+                }
             }
-
         }
 
        public void AssignNewBinder(CombatEntity entity, Transform newParent)
