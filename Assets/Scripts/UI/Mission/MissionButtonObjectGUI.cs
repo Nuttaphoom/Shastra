@@ -14,9 +14,11 @@ namespace Vanaring
         [SerializeField] private TextMeshProUGUI missionName;
         [SerializeField] private TextMeshProUGUI missionDetail;
         [SerializeField] private TextMeshProUGUI missionTime;
+        [SerializeField] private TextMeshProUGUI missionOrderNum;
 
-        public void Init(RuntimeDungeon dungeon, DungeonMissionInstance mission)
+        public void Init(RuntimeDungeon dungeon, DungeonMissionInstance mission, int order)
         {
+            missionOrderNum.text = order.ToString();
             UnSelectThisMission();
             missionButton.onClick.AddListener(() => DungeonManagerSingleton.Instance.LoadSelectedMission(mission));      
         }

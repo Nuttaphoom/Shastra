@@ -26,10 +26,11 @@ namespace Vanaring
 
                 missionButtonList.Clear();
             }
+            int orderIndex = 1;
             foreach (DungeonMissionInstance mission in dungeon.AllDungeonMissionInstance)
             {
                 MissionButtonObjectGUI newButton = Instantiate(missionButtonTemplate, verticalLayout.transform);
-                newButton.Init(dungeon, mission);
+                newButton.Init(dungeon, mission, orderIndex);
                 newButton.UnSelectThisMission();
                 missionButtonList.Add(newButton);
             }
