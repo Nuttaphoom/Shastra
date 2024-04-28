@@ -106,9 +106,9 @@ GameObject:
   - component: {fileID: 8118364611236004154}
   - component: {fileID: 6051969092220927293}
   - component: {fileID: 5574744679427174050}
-  - component: {fileID: 5096890808264206660}
   - component: {fileID: -8301298826398955643}
   - component: {fileID: 4200218226150831750}
+  - component: {fileID: 2744726658822461192}
   m_Layer: 0
   m_Name: cm
   m_TagString: Untagged
@@ -177,30 +177,6 @@ MonoBehaviour:
   m_AmplitudeGain: 1
   m_FrequencyGain: 1
   mNoiseOffsets: {x: 0, y: 0, z: 0}
---- !u!114 &5096890808264206660
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8934888704583121149}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bd6043bde05a7fc4cba197d06915c1e3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Damping: {x: 0, y: 0, z: 0}
-  ShoulderOffset: {x: 1.39, y: -0.16, z: -0.34}
-  VerticalArmLength: 0.62
-  CameraSide: 0.96
-  CameraDistance: 1.08
-  CameraCollisionFilter:
-    serializedVersion: 2
-    m_Bits: 0
-  IgnoreTag: 
-  CameraRadius: 0.2
-  DampingIntoCollision: 0
-  DampingFromCollision: 2
 --- !u!114 &-8301298826398955643
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -255,3 +231,27 @@ MonoBehaviour:
   m_BiasX: 0
   m_BiasY: 0
   m_CenterOnActivate: 1
+--- !u!114 &2744726658822461192
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8934888704583121149}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd6043bde05a7fc4cba197d06915c1e3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Damping: {x: 0, y: 0, z: 0}
+  ShoulderOffset: {x: 2.45, y: 0, z: -0.79}
+  VerticalArmLength: 0.3
+  CameraSide: 1
+  CameraDistance: 1.1
+  CameraCollisionFilter:
+    serializedVersion: 2
+    m_Bits: 0
+  IgnoreTag: 
+  CameraRadius: 0.2
+  DampingIntoCollision: 0
+  DampingFromCollision: 2
