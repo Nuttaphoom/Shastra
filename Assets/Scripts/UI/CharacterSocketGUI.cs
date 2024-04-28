@@ -194,6 +194,7 @@ namespace Vanaring
             {
                 foreach (Image image in fadeBlackImageList)
                 {
+                    Debug.Log(image);
                     Color grayColor = image.color;
                     grayColor = new Color(80.0f / 255.0f, 80.0f / 255.0f, 80.0f / 255.0f);
                     image.color = grayColor;

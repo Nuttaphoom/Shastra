@@ -48,13 +48,14 @@ namespace Vanaring
 
         private void OnEntityPerformAction(EntityActionPair entityActionPair)
         {
-            List<CombatEntity> entityException = new List<CombatEntity>();
-            entityException.Add(entityActionPair.PerformedAction.GetActionCaster()); 
+            List<CombatEntity> entityPerformAction = new List<CombatEntity>();
+            entityPerformAction.Add(entityActionPair.PerformedAction.GetActionCaster()); 
 
             foreach (var entity in entityActionPair.PerformedAction.GetActionTargets())
-                entityException.Add(entity);
+                entityPerformAction.Add(entity);
 
-            HideAllEntityMesh(entityException) ;
+            HideAllEntityMesh(entityPerformAction);
+            ShowEntityMesh(entityPerformAction); 
         }
 
 
@@ -128,6 +129,13 @@ namespace Vanaring
             }
         }
 
+        public void ShowEntityMesh(List<CombatEntity> entityToShow)
+        {
+            foreach (var entity in entityToShow)
+            {
+                entity.GetComponent<CombatEntityAnimationHandler>().ShowVisualMesh();//.SetActive(false);
+            }
+        }
 
         public void ShowAllEntitMesh(List<CombatEntity> entityException = null)
         {
