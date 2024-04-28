@@ -25,8 +25,10 @@ namespace Vanaring
         private GameObject focusNode;
         private MissionPathObject path;
         private int runningIndex = 0;
+        [SerializeField] private Sprite lootIcon;
+        [SerializeField] private Sprite dungeonIcon;
+        [SerializeField] private Sprite cutsceneIcon;
 
-       
         [ContextMenu("Init Minimap")]
 
         private void Start()
@@ -104,6 +106,14 @@ namespace Vanaring
                         newDun.GetComponent<RectTransform>().localPosition = new Vector3(
                             rectDun.localPosition.x + xForward, rectDun.localPosition.y + yForward, rectDun.transform.localPosition.z);
                         newDun.gameObject.SetActive(true);
+                        if(connectNode is LootMissionNode)
+                        {
+                            newDun.GetNodeIcon.sprite = lootIcon;
+                        }
+                        if (connectNode is CombatMissionNode)
+                        {
+                            newDun.GetNodeIcon.sprite = dungeonIcon;
+                        }
                         newDun.Init(connectNode);
                         newDun.transform.SetAsLastSibling();
 

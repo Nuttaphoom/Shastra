@@ -374,21 +374,15 @@ namespace Vanaring
             
             while (secondhpImage.fillAmount < hpVal / maxHP)
             {
-                secondhpImage.fillAmount += 0.03f;
+                secondhpImage.fillAmount += 0.01f;
                 yield return new WaitForSeconds(tickRate);
             }
-            while (Mathf.Abs(secondhpImage.fillAmount - (hpVal / maxHP) ) > 0.03)
+            while (Mathf.Abs(secondhpImage.fillAmount - (hpVal / maxHP) ) > 0.01)
             {
-                //if (Mathf.Abs(secondhpImage.fillAmount - (hpVal / maxHP)) < 0.03f)
-                //{
-                //    break;
-                //}
-                secondhpImage.fillAmount -= 0.03f;
+                secondhpImage.fillAmount -= 0.01f;
 
                 if (hpVal <= 0)
                     break; 
-                
-
                 yield return new WaitForSeconds(tickRate);
             }
             yield return new WaitForSeconds(.25f);

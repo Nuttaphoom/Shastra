@@ -95,7 +95,7 @@ namespace Vanaring
             GetEventBroadcaster().InvokeEvent<int>(_currentLevel, "OnLevelUp"); 
         }
 
-        public abstract float GetEXPCap();
+        public abstract float GetEXPCap(int checkLevel = -1);
 
     }
 }

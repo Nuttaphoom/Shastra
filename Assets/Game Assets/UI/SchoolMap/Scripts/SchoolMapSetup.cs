@@ -12,6 +12,8 @@ namespace Vanaring
         [SerializeField]
         private Image _mapImage;
 
+        [SerializeField] private SceneDataSO _shortcutSceneSO;
+
         [System.Serializable]
         public struct Pin
         {

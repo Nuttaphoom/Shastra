@@ -189,8 +189,10 @@ namespace Vanaring
 
         private void OnHPModified(int damage)
         {
+            
             hpVal = (int) _combatEntity.StatsAccumulator.GetHPAmount();
-            if(hpVal <= 0)
+            Debug.Log(hpVal);
+            if (hpVal <= 0)
             {
                 foreach (Image image in fadeBlackImageList)
                 {
@@ -202,7 +204,7 @@ namespace Vanaring
             }
             float hptemp = maxHpVal == 0 ? (hpVal == 0 ? 1 : hpVal) : maxHpVal;
             UpdateHPScaleGUI();
-            StopAllCoroutines();
+            //StopAllCoroutines();
             StartCoroutine(IEAnimateBarScale(hpVal, hptemp, secondHpBar));
         }
 

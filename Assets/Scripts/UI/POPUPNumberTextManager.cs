@@ -84,8 +84,13 @@ namespace Vanaring
         private GameObject InstantiatedTextPrefab(GameObject template, string text, CombatEntity showToThisEntity)
         {
             GameObject ret = MonoBehaviour.Instantiate(template, transform);
-            ret.GetComponent<TextMeshProUGUI>().text = text;
-            ret.GetComponent<TextMeshProUGUI>().fontSize = Random.Range(50f, 85f);
+            TextMeshProUGUI tex = ret.GetComponentInChildren<TextMeshProUGUI>();
+            if (tex != null)
+            {
+                tex.text = text;
+            }
+
+            tex.fontSize = Random.Range(50f, 85f);
             ret.transform.position = UISpaceSingletonHandler.ObjectToUISpace(showToThisEntity.CombatEntityAnimationHandler.GetTargetIconTransform());
             ret.transform.position = RandomPointInCircle(ret.transform.position, 10f);
 
