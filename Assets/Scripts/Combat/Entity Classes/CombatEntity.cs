@@ -217,13 +217,11 @@ namespace Vanaring
         public virtual IEnumerator TakeControl()
         {
             GetEventBroadcaster().InvokeEvent(this, "OnTakeControl");
-            GetComponent<CombatEntityAnimationHandler>().ShowVisualMesh();
 
             yield return null;
         }
         public virtual IEnumerator TakeControlLeave()
         {
-            Debug.Log("Take control leave");
             GetEventBroadcaster().InvokeEvent(this, "OnTakeControlLeave");
 
             GetComponent<EntityCameraManager>().DisableAllAttachedCamera(); 

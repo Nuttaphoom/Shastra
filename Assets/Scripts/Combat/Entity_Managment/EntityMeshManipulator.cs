@@ -41,6 +41,9 @@ namespace Vanaring
 
         private void OnEntityTakeControl(CombatEntity entity)
         {
+            List<CombatEntity> entitiesTakeControl = new List<CombatEntity>() {  entity };
+            ShowEntityMesh(entitiesTakeControl);
+            
             RestoreRotateMeshLookAt(); 
 
             if (CombatReferee.Instance.GetCompetatorSide(entity) == ECompetatorSide.Ally)

@@ -157,7 +157,7 @@ namespace Vanaring
         #endregion
 
         #region EventListener 
-        private void OnTargetSelectionEnter(CombatEntity actor)
+        private void OnTargetSelectionEnter(TargetSelectingData data)
         {
             HideCurrentWindow(); 
         }

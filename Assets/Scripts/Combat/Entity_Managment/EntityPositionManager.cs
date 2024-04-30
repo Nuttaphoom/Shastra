@@ -45,8 +45,11 @@ namespace Vanaring
 
         [Header("Transform is easier assiged manually, no need to create Tag for them")]
         [SerializeField]
-        private StandingLocationOccupierData _allyMainStandLocation  ;
+        private StandingLocationOccupierData _allyMainStandLocation ;
 
+        [SerializeField]
+        private List<StandingLocationOccupierData> _allyFullTimeLocation ;  
+        
         [SerializeField]
         private List<EnemyOccupierData> _enemyOccupierData; 
 
@@ -83,9 +86,23 @@ namespace Vanaring
                     BindActionEvent(entity);
                 }
             }
+            TargetSelectionFlowControl.Instance.SubOnTargetSelectionEnter(OnTargetSelectionStart_AdjustAllyPosition);
 
             CombatReferee.Instance.SubOnCompetitorEnterCombat(BindActionEvent);
 
+        }
+        #region Observer Methods
+        private void OnTargetSelectionStart_AdjustAllyPosition(TargetSelectingData data)
+        {
+            if (!data.targetSelector.TargetAllyTeam || CombatReferee.Instance.GetCompetatorSide(data.caster) != ECompetatorSide.Ally)
+                return;
+
+            int index = 0; 
+            foreach (var entity in CombatReferee.Instance.GetCompetatorsBySide(ECompetatorSide.Ally))
+            {
+                index++; 
+                OccupieLocation(ECompetatorSide.Ally, index, entity);
+            }
         }
 
         private void BindActionEvent(CombatEntity entity)
@@ -98,6 +115,8 @@ namespace Vanaring
             
             RelocateEntityToitsOccupiedPosition(); 
         }
+
+        #endregion
 
         /// <summary>
         /// if EnemySize hasn't been specified 
@@ -162,15 +181,21 @@ namespace Vanaring
 
             if (side == ECompetatorSide.Ally)
             {
-                 
-                if (_allyMainStandLocation.EntityStandingHere != null)
-                    ReleasePosition(_allyMainStandLocation.EntityStandingHere); 
-                
-                _allyMainStandLocation.EntityStandingHere = entity;
-                data = _allyMainStandLocation;
+                if (index == 0)
+                {
+                    data = _allyMainStandLocation;
+                }else
+                {
+                    data = _allyFullTimeLocation[index - 1]; 
+                }
+
+                if (data.EntityStandingHere != null)
+                    ReleasePosition(data.EntityStandingHere);
+
+                data.EntityStandingHere = entity;
             }
             else
-            { 
+            {
 
                 var enemyOccupation = GetEnemyStandingLocations(CurrentEnemySize);
                 if (enemyOccupation[index].EntityStandingHere == null)
@@ -178,9 +203,10 @@ namespace Vanaring
                     enemyOccupation[index].EntityStandingHere = entity;
                     data = enemyOccupation[index];
                 }
-           
+
             }
 
+            entity.GetComponent<CombatEntityAnimationHandler>().ShowVisualMesh();
             entity.transform.position = data.Location.transform.position ;
             entity.transform.forward = data.Location.transform.forward; 
 
@@ -216,9 +242,9 @@ namespace Vanaring
             }
 
             if (validLocation == null)
-                throw new Exception("validLocation is null"); 
+                throw new Exception("validLocation is null");
 
-
+            entity.GetComponent<CombatEntityAnimationHandler>().ShowVisualMesh();
             validLocation.EntityStandingHere = entity;
             entity.transform.position = validLocation.Location.position;
 
@@ -237,7 +263,6 @@ namespace Vanaring
                 }
             }
            
-
             foreach (var data in GetEnemyStandingLocations(_currentEnemySize))
             {
                 if (data.EntityStandingHere == entity)
@@ -245,8 +270,15 @@ namespace Vanaring
                     data.EntityStandingHere = null;
                     return;
                 }
-            }
+            } 
         }
+
+
+        public void EnalbeFullAllyTeamCamera()
+        {
+
+        }
+        
         #endregion 
 
         private StandingLocationOccupierData IsThisEntityOccupyLocation(CombatEntity entity)

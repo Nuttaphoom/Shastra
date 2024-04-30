@@ -39,6 +39,7 @@ namespace Vanaring
         private bool _forceStop = false;
 
         #region GETTER
+        
         private EventBroadcaster GetEventBroadcaster()
         {
             if (_eventBroadcaster == null)
@@ -46,7 +47,7 @@ namespace Vanaring
                 _eventBroadcaster = new EventBroadcaster();
 
                 _eventBroadcaster.OpenChannel<bool>("OnTargetSelectionEnd");
-                _eventBroadcaster.OpenChannel<CombatEntity>("OnTargetSelectionEnter");
+                _eventBroadcaster.OpenChannel<TargetSelectingData>("OnTargetSelectionEnter");
             }
 
 
@@ -89,8 +90,7 @@ namespace Vanaring
                 }
             }
 
-            //Arrange entity index according to the camera
-            //_validTargets = ArrangeEntityListInXAxis(_validTargets);
+            
 
         }
 
@@ -226,7 +226,11 @@ namespace Vanaring
 
             _activlySelecting = true;
 
-            _eventBroadcaster.InvokeEvent<CombatEntity>(caster, "OnTargetSelectionEnter");
+            TargetSelectingData targetSelectingData = new TargetSelectingData() { caster = caster, 
+                targetSelector = actorAction.GetTargetSelector() 
+            }; 
+
+            _eventBroadcaster.InvokeEvent(targetSelectingData, "OnTargetSelectionEnter");
 
             CentralInputReceiver.Instance().AddInputReceiverIntoStack(this);
 
@@ -307,10 +311,11 @@ namespace Vanaring
 
                     else
                     {
-                        _validTargets = ArrangeEntityListInXAxis(_validTargets, Vector3.zero );
 
                         //CameraSetUPManager.Instance.SetLookAtTarget(_selectingTarget[0].GetComponent<CombatEntityAnimationHandler>().GetGUISpawnTransform());
                     }
+                    _validTargets = ArrangeEntityListInXAxis(_validTargets, Vector3.zero);
+
                 }
 
                 yield return new WaitForEndOfFrame();
@@ -354,6 +359,7 @@ namespace Vanaring
 
         #region SubEvents Methods 
 
+        
  
         public void SubOnTargetSelectionEnd(UnityAction<bool> argc)
         {
@@ -364,11 +370,11 @@ namespace Vanaring
             GetEventBroadcaster().UnSubEvent(argc, "OnTargetSelectionEnd");
         }
 
-        public void SubOnTargetSelectionEnter(UnityAction<CombatEntity> argc)
+        public void SubOnTargetSelectionEnter(UnityAction<TargetSelectingData> argc)
         {
             GetEventBroadcaster().SubEvent(argc, "OnTargetSelectionEnter");
         }
-        public void UnSubOnTargetSelectionEnter(UnityAction<CombatEntity> argc)
+        public void UnSubOnTargetSelectionEnter(UnityAction<TargetSelectingData> argc)
         {
             GetEventBroadcaster().UnSubEvent(argc, "OnTargetSelectionEnter");
         }
@@ -376,6 +382,12 @@ namespace Vanaring
         #endregion
     }
 
+
+    public struct TargetSelectingData
+    {
+        public TargetSelector targetSelector;
+        public CombatEntity caster;
+    }
 
     [Serializable]
     public class TargetSelector
