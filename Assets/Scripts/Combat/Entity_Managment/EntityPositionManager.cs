@@ -92,6 +92,7 @@ namespace Vanaring
 
         private void OnEntityTakeControl(CombatEntity entity)
         {
+            
             RelocateEntityToitsOccupiedPosition(); 
         }
 
@@ -113,10 +114,6 @@ namespace Vanaring
 
             return ret; 
         }
-
-     
-
-
        
         public void SetNewEnemyCurrentSize(int newSize)
         {

@@ -42,7 +42,8 @@ namespace Vanaring
         {
             if (CombatReferee.Instance.GetCompetatorSide(entity) == ECompetatorSide.Ally)
             {
-                ShowAllEntitMesh(ECompetatorSide.Hostile) ; 
+                ShowAllEntitMesh(ECompetatorSide.Hostile) ;  
+
             }
         }
 
@@ -56,6 +57,11 @@ namespace Vanaring
 
             HideAllEntityMesh(entityPerformAction);
             ShowEntityMesh(entityPerformAction); 
+        }
+
+        private void RotateMeshToLookToThisPosition(Vector3 worldPosition)
+        {
+
         }
 
 
