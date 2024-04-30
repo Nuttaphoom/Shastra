@@ -199,6 +199,14 @@ namespace Vanaring
 
         private Animator _animator;
 
+        private void Awake()
+        {
+            SetUpVisualPivotTransform();
+
+            _animator = GetVisualMesh().GetComponent<Animator>();
+        }
+
+        #region Mesh Methods 
         public void HideVisualMesh()
         {
             GetVisualMesh().gameObject.SetActive(false);
@@ -208,9 +216,34 @@ namespace Vanaring
         {
             GetVisualMesh().gameObject.SetActive(true); 
         }
+        public IEnumerator DestroyVisualMesh()
+        {
+            if (_deadVisualEffect)
+            {
+                _deadVisualEffect.gameObject.SetActive(true);
+                _deadVisualEffect.Play();
+            }
 
+            yield return new WaitForSeconds(0.6f);
+
+            if (_deadAnimationTrigger == "NONE")
+            {
+                _visualMesh.transform.Translate(new Vector2(10000000, 1000000));
+                yield return new WaitForSeconds(2.5f);
+                if (_deadVisualEffect)
+                {
+                    Destroy(_deadVisualEffect.gameObject);
+                }
+
+            }
+            else
+            {
+                yield return PlayTriggerAnimation(_deadAnimationTrigger);
+            }
+        }
+        #endregion 
         #region GETTER
-        
+
         public GameObject GetVisualMesh()
         {
             if (_visualMesh == null)
@@ -264,14 +297,7 @@ namespace Vanaring
 
         #endregion
 
-       
-        private void Awake()
-        {
-            SetUpVisualPivotTransform(); 
-
-            _animator = GetVisualMesh().GetComponent<Animator>();
-        }
-
+        #region Animation Methods 
         public IEnumerator PlayTriggerAnimation(string triggerName)
         {
             _animator.SetTrigger(triggerName);
@@ -286,42 +312,14 @@ namespace Vanaring
 
             yield return new WaitForSeconds(3.0f);
         }
-
-        public IEnumerator DestroyVisualMesh()
-        {
-            if (_deadVisualEffect)
-            {
-                _deadVisualEffect.gameObject.SetActive(true);
-                _deadVisualEffect.Play();
-            }
-
-            yield return new WaitForSeconds(0.6f);
-
-            if (_deadAnimationTrigger == "NONE")
-            {
-                _visualMesh.transform.Translate(new Vector2(10000000, 1000000));
-                yield return new WaitForSeconds(2.5f);
-                if (_deadVisualEffect)
-                {
-                    Destroy(_deadVisualEffect.gameObject);
-                }
-
-            }
-            else
-            {
-                yield return PlayTriggerAnimation(_deadAnimationTrigger);
-            }
-        }
-
- 
         public IEnumerator PlaySpawnVisualEffectCoroutine()
         {
-            float overallTime = 0.0f ;
+            float overallTime = 0.0f;
             if (_spawnVisualEffect != null)
             {
                 _spawnVisualEffect.gameObject.SetActive(true);
                 _spawnVisualEffect.Play();
-                overallTime = _spawnVisualEffect.main.duration; 
+                overallTime = _spawnVisualEffect.main.duration;
                 yield return new WaitForSeconds(overallTime / 2);
             }
 
@@ -331,11 +329,12 @@ namespace Vanaring
 
             if (_spawnVisualEffect != null)
             {
-                _spawnVisualEffect.gameObject.SetActive(false); 
+                _spawnVisualEffect.gameObject.SetActive(false);
             }
         }
+        #endregion
 
-
+        #region VFX Methods 
         /// <summary>
         /// Attahment position include 
         /// "HEAD" , "CENTERMESH" 
@@ -345,27 +344,27 @@ namespace Vanaring
         public void AttachVFXToMeshComponent(GameObject vfxPrefab, string whereToAttach, string vfxName)
         {
 
-            Transform parent = GetAttachmentFromName(whereToAttach) ;
-     
+            Transform parent = GetAttachmentFromName(whereToAttach);
+
             var newVFX = Instantiate(vfxPrefab, parent);
 
             newVFX.name = vfxName;
             newVFX.transform.position = parent.position;
-            newVFX.transform.rotation = parent.rotation; 
+            newVFX.transform.rotation = parent.rotation;
         }
 
         public void DeAttachVFXFromMeshComponent(string vfxName, string whereToAttach)
         {
             Transform parent = GetAttachmentFromName(whereToAttach);
 
-            Destroy(parent.Find(vfxName).gameObject) ;
+            Destroy(parent.Find(vfxName).gameObject);
         }
 
         private Transform GetAttachmentFromName(string whereToAttach)
         {
             if (whereToAttach == "HEAD")
             {
-                return AboveHeadTransform ;
+                return AboveHeadTransform;
             }
 
             else if (whereToAttach == "CENTERMESH")
@@ -374,13 +373,39 @@ namespace Vanaring
             }
             else if (whereToAttach == "VFXPOS")
             {
-                return ImpactTransform ; 
+                return ImpactTransform;
             }
             else
             {
                 throw new Exception("whereToAttach is not match");
             }
         }
+        #endregion
+        public void RotateMeshLookAtToThisPosition(Vector3 worldPosition)
+        {
+            Vector3 lookAtVector = worldPosition - GetVisualMesh().transform.position; 
+
+            // Create a rotation that looks at the specified position
+            Quaternion rotation = Quaternion.LookRotation(lookAtVector);
+
+            // Apply the rotation to the visual mesh
+            GetVisualMesh().transform.rotation = rotation;
+
+
+        }
+
+        public void RestoreLookAt()
+        {
+            GetVisualMesh().transform.rotation = transform.rotation; 
+        }
+
+
+
+
+
+
+
+
 
 
 

@@ -29,6 +29,7 @@ namespace Vanaring
             }
 
             CombatReferee.Instance.SubOnCompetitorEnterCombat(BindActionEvent);
+            CombatReferee.Instance.SubOnNewRoundBegin(OnNewRoundBegin);
 
         }
 
@@ -40,10 +41,12 @@ namespace Vanaring
 
         private void OnEntityTakeControl(CombatEntity entity)
         {
+            RestoreRotateMeshLookAt(); 
+
             if (CombatReferee.Instance.GetCompetatorSide(entity) == ECompetatorSide.Ally)
             {
-                ShowAllEntitMesh(ECompetatorSide.Hostile) ;  
-
+                ShowAllEntitMesh(ECompetatorSide.Hostile) ;
+                RotateMeshToLookToThisPosition(entity.transform.position); 
             }
         }
 
@@ -59,10 +62,27 @@ namespace Vanaring
             ShowEntityMesh(entityPerformAction); 
         }
 
+        private void OnNewRoundBegin(Null n)
+        {
+            RestoreRotateMeshLookAt(); 
+        }
+
         private void RotateMeshToLookToThisPosition(Vector3 worldPosition)
         {
-
+            foreach(var entity in GetAllCompetators() ){
+                entity.GetComponent<CombatEntityAnimationHandler>().RotateMeshLookAtToThisPosition(worldPosition);
+            }
         }
+
+        private void RestoreRotateMeshLookAt()
+        {
+            foreach (var entity in GetAllCompetators())
+            {
+                entity.GetComponent<CombatEntityAnimationHandler>().RestoreLookAt(); 
+            }
+        }
+
+        
 
 
 

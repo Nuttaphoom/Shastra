@@ -10,6 +10,9 @@ using UnityEngine;
 
 namespace Vanaring
 {
+    /// <summary>
+    /// EntityPositionManager will change position of the "Root GameObject" of that entity 
+    /// </summary>
     public class EntityPositionManager : MonoBehaviour  
     {
         [Serializable]
@@ -42,7 +45,7 @@ namespace Vanaring
 
         [Header("Transform is easier assiged manually, no need to create Tag for them")]
         [SerializeField]
-        private List<StandingLocationOccupierData> _allyStandingTransform ;
+        private StandingLocationOccupierData _allyMainStandLocation  ;
 
         [SerializeField]
         private List<EnemyOccupierData> _enemyOccupierData; 
@@ -159,11 +162,12 @@ namespace Vanaring
 
             if (side == ECompetatorSide.Ally)
             {
-                if (_allyStandingTransform[0].EntityStandingHere != null)
-                    ReleasePosition(_allyStandingTransform[0].EntityStandingHere); 
+                 
+                if (_allyMainStandLocation.EntityStandingHere != null)
+                    ReleasePosition(_allyMainStandLocation.EntityStandingHere); 
                 
-                _allyStandingTransform[0].EntityStandingHere = entity;
-                data = _allyStandingTransform[0];
+                _allyMainStandLocation.EntityStandingHere = entity;
+                data = _allyMainStandLocation;
             }
             else
             { 
@@ -194,14 +198,10 @@ namespace Vanaring
 
             if (side == ECompetatorSide.Ally)
             {
-                foreach (var data in _allyStandingTransform)
-                {
-                    if (data.EntityStandingHere != null)
-                        ReleasePosition(data.EntityStandingHere) ;
-                    
-                    validLocation = data;
-                    break; 
-                }
+                if (_allyMainStandLocation.EntityStandingHere != null)
+                    ReleasePosition(_allyMainStandLocation.EntityStandingHere);
+
+                validLocation = _allyMainStandLocation;
             }
             else
             {
@@ -227,15 +227,16 @@ namespace Vanaring
 
         public void ReleasePosition(CombatEntity entity)
         {
-            foreach (var data in _allyStandingTransform)
+            foreach (var data in GetAllAllyStandingLocation( ))
             {
                 if (data.EntityStandingHere == entity)
                 {
-                    data.EntityStandingHere.GetComponent<CombatEntityAnimationHandler>().HideVisualMesh(); 
-                    data.EntityStandingHere = null; 
+                    data.EntityStandingHere.GetComponent<CombatEntityAnimationHandler>().HideVisualMesh();
+                    data.EntityStandingHere = null;
                     return;
                 }
             }
+           
 
             foreach (var data in GetEnemyStandingLocations(_currentEnemySize))
             {
@@ -250,11 +251,14 @@ namespace Vanaring
 
         private StandingLocationOccupierData IsThisEntityOccupyLocation(CombatEntity entity)
         {
-            foreach (var data in _allyStandingTransform)
+            foreach (var data in GetAllAllyStandingLocation())
             {
+                if (data.EntityStandingHere == null)
+                    continue; 
+
                 if (data.EntityStandingHere == entity)
                 {
-                    return data ;
+                    return data;
                 }
             }
 
@@ -278,11 +282,19 @@ namespace Vanaring
             }
         }
 
+        private List<StandingLocationOccupierData> GetAllAllyStandingLocation()
+        {
+            List<StandingLocationOccupierData> ret = new List<StandingLocationOccupierData>();
+
+            ret.Add(_allyMainStandLocation);
+            return ret;
+        } 
+
         private List<StandingLocationOccupierData> GetAllOccupiedLocation()
         {
             List<StandingLocationOccupierData> ret = new List<StandingLocationOccupierData>(); 
 
-            foreach (var standingData in _allyStandingTransform)
+            foreach (var standingData in GetAllAllyStandingLocation() )
             {
                 if (standingData.EntityStandingHere == null)
                     continue;

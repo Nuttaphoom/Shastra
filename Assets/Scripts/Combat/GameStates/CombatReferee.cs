@@ -43,6 +43,7 @@ namespace Vanaring
                 _eventBroadcaster = new EventBroadcaster();
                 _eventBroadcaster.OpenChannel<Null>("OnCombatPreparation");
                 _eventBroadcaster.OpenChannel<CombatEntity>("OnCompetitorEnterCombat");
+                _eventBroadcaster.OpenChannel<Null>("OnNewRoundBegin");
             }
 
             return _eventBroadcaster; 
@@ -67,7 +68,16 @@ namespace Vanaring
             GetEventBroadcaster().UnSubEvent<CombatEntity>(argc, "OnCompetitorEnterCombat"); 
         }
 
-       
+        public void SubOnNewRoundBegin(UnityAction<Null> argc)
+        {
+            GetEventBroadcaster().SubEvent<Null>(argc, "OnNewRoundBegin");
+        }
+
+        public void UnSubOnNewRoundBegin(UnityAction<Null> argc)
+        {
+            GetEventBroadcaster().UnSubEvent<Null>(argc, "OnNewRoundBegin");
+        }
+
         #endregion
 
         [SerializeField]
@@ -291,7 +301,9 @@ namespace Vanaring
         {
             while (true)
             {
-                yield return _sideTurnDisplayerManager.DisplaySideRoundCoroutine(_currentSide);
+                yield return _sideTurnDisplayerManager.DisplaySideRoundCoroutine(_currentSide); 
+
+                GetEventBroadcaster().InvokeEvent<Null>(null,"OnNewRoundBegin");
 
                 yield return _combatRefereeStateHandler.AdvanceRound();
 
