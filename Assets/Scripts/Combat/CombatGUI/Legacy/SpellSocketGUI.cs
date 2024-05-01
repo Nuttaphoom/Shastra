@@ -61,7 +61,7 @@ namespace Vanaring
             _spellSO = spell;
             this._caster = combatEntity;
             _actionButton.onClick.AddListener(ChooseSpell);
-            Debug.Log(spell.AbilityName.ToString());
+            //Debug.Log(spell.AbilityName.ToString());
             _textMeshProUGUI.text = spell.AbilityName.ToString();
             if(spell.MPCost > 0)
             {

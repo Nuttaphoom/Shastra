@@ -318,10 +318,13 @@ namespace Vanaring
                             CameraSetUPManager.Instance.SetVMTOAllAlly(); 
                             continue;
                         }
-                           
-                        
+
+
                         //_selectingTarget[0].GetComponent<EntityCameraManager>().EnableShoulderCamera();
-                        //_validTargets = ArrangeEntityListInXAxis( _validTargets, _selectingTarget[0].GetComponent<EntityCameraManager>().GetRightVectorShoulderCam() );
+                        //throw new Exception("The problem is axis correction can't not be perform until we swap cam, meaning we can't set the first cam "); 
+                        //We multuiply -1 because we want to change the right direction of vector 
+
+                        _validTargets = ArrangeEntityListInXAxis( _validTargets, _selectingTarget[0].GetComponent<EntityCameraManager>().GetRightVectorShoulderCam()   );
                         _selectingTarget.Clear(); 
                         _selectingTarget.Add(_validTargets[_currentSelectIndex]);
                         _selectingTarget[0].GetComponent<EntityCameraManager>().EnableShoulderCamera();
