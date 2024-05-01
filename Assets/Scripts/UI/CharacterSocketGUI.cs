@@ -43,6 +43,8 @@ namespace Vanaring
         private int maxHpVal;
         private int mpVal;
         private int maxMpVal;
+        private int lightVal = 3;
+        private int darkVal = 3;
 
         private CombatCharacterSheetSO _characterSheetSO;
 
@@ -226,11 +228,19 @@ namespace Vanaring
             Debug.Log(side + " val: " + val);
             if(side == RuntimeMangicalEnergy.EnergySide.LightEnergy)
             {
-                innerFill.fillAmount = val * 1.67f;
+                if(lightVal > 0 && lightVal < 3)
+                {
+                    lightVal += val;
+                }
+                innerFill.fillAmount = lightVal * 0.167f;
             }
             else
             {
-                outterFill.fillAmount = val * 1.67f;
+                if (darkVal > 0 && darkVal < 3)
+                {
+                    darkVal += val;
+                }
+                outterFill.fillAmount = darkVal * 0.167f;
             }
         }
 

@@ -11,7 +11,11 @@ namespace Vanaring
     {
 
         [SerializeField]
-        private Button _nodeTransitionButton; 
+        private Button _nodeTransitionButton;
+        [SerializeField] private Sprite forwardArrow;
+        [SerializeField] private Sprite backwardArrow;
+        [SerializeField] private Sprite rightArrow;
+        [SerializeField] private Sprite leftArrow;
 
         private NodeTransitionData transitionData;
 
@@ -44,6 +48,25 @@ namespace Vanaring
             transform.position = startNode.transform.position;
 
             _nodeTransitionButton.onClick.AddListener(EnableTransition) ;
+
+            Sprite newSprite = null;
+            switch (direction)
+            {
+                case TransitionDirection.Forward_Z:
+                    newSprite = forwardArrow;
+                    break;
+                case TransitionDirection.MinusForward_Z:
+                    newSprite = backwardArrow;
+                    break;
+                case TransitionDirection.MinusRight_X:
+                    newSprite = rightArrow;
+                    break;
+                case TransitionDirection.Right_X:
+                    newSprite = leftArrow;
+                    break;
+            }
+
+            _nodeTransitionButton.GetComponent<Image>().sprite = newSprite;
         }
 
         private void EnableTransition()
