@@ -209,7 +209,6 @@ namespace Vanaring
             yield return null; 
         }
  
-
         public abstract IEnumerator LoadDataFromDatabase(); 
         public abstract IEnumerator GetAction();
 

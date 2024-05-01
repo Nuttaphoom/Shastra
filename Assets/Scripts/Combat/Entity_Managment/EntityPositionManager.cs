@@ -48,7 +48,7 @@ namespace Vanaring
         private StandingLocationOccupierData _allyMainStandLocation ;
 
         [SerializeField]
-        private List<StandingLocationOccupierData> _allyFullTimeLocation ;  
+        private List<StandingLocationOccupierData> _allyFullTeamLocation ;  
         
         [SerializeField]
         private List<EnemyOccupierData> _enemyOccupierData; 
@@ -74,7 +74,7 @@ namespace Vanaring
             _instance = this;
 
             CombatReferee.Instance.SubOnCombatPreparation(Initialization);
-
+            
 
         }
         private void Initialization(Null DontUse)
@@ -87,11 +87,34 @@ namespace Vanaring
                 }
             }
             TargetSelectionFlowControl.Instance.SubOnTargetSelectionEnter(OnTargetSelectionStart_AdjustAllyPosition);
-
+            TargetSelectionFlowControl.Instance.SubOnTargetSelectionEnd(OnTargetSelectionEnd_ReturnOccupiedAllyPosition);
             CombatReferee.Instance.SubOnCompetitorEnterCombat(BindActionEvent);
 
         }
         #region Observer Methods
+        private void OnTargetSelectionEnd_ReturnOccupiedAllyPosition(TargetSelectingData data)
+        {
+            if (!data.targetSelector.TargetAllyTeam || CombatReferee.Instance.GetCompetatorSide(data.caster) != ECompetatorSide.Ally)
+                return;
+
+            foreach (var entity in CombatReferee.Instance.GetCompetatorsBySide(ECompetatorSide.Ally))
+            {                   
+
+                if (data.caster == entity && ! data.isSucesfullySelected)
+                {
+                    Debug.Log("Auto Occupie new location");
+
+                    OccupieLocation(ECompetatorSide.Ally, 0, entity);
+
+                    continue; 
+                }
+                
+                ReleasePosition(entity);
+                 
+            }
+
+        }
+
         private void OnTargetSelectionStart_AdjustAllyPosition(TargetSelectingData data)
         {
             if (!data.targetSelector.TargetAllyTeam || CombatReferee.Instance.GetCompetatorSide(data.caster) != ECompetatorSide.Ally)
@@ -186,7 +209,7 @@ namespace Vanaring
                     data = _allyMainStandLocation;
                 }else
                 {
-                    data = _allyFullTimeLocation[index - 1]; 
+                    data = _allyFullTeamLocation[index - 1]; 
                 }
 
                 if (data.EntityStandingHere != null)
@@ -257,7 +280,7 @@ namespace Vanaring
             {
                 if (data.EntityStandingHere == entity)
                 {
-                    data.EntityStandingHere.GetComponent<CombatEntityAnimationHandler>().HideVisualMesh();
+                    //data.EntityStandingHere.GetComponent<CombatEntityAnimationHandler>().HideVisualMesh();
                     data.EntityStandingHere = null;
                     return;
                 }
@@ -318,7 +341,13 @@ namespace Vanaring
         {
             List<StandingLocationOccupierData> ret = new List<StandingLocationOccupierData>();
 
-            ret.Add(_allyMainStandLocation);
+            ret.Add(_allyMainStandLocation); 
+
+            foreach (var data in _allyFullTeamLocation)
+            {
+                ret.Add(data); 
+            } 
+
             return ret;
         } 
 

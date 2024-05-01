@@ -38,7 +38,7 @@ namespace Vanaring
 
         private bool _forceStop = false;
 
-        #region GETTER
+        #region Event Broadcaster 
         
         private EventBroadcaster GetEventBroadcaster()
         {
@@ -46,7 +46,7 @@ namespace Vanaring
             {
                 _eventBroadcaster = new EventBroadcaster();
 
-                _eventBroadcaster.OpenChannel<bool>("OnTargetSelectionEnd");
+                _eventBroadcaster.OpenChannel<TargetSelectingData>("OnTargetSelectionEnd");
                 _eventBroadcaster.OpenChannel<TargetSelectingData>("OnTargetSelectionEnter");
             }
 
@@ -54,6 +54,25 @@ namespace Vanaring
 
             return _eventBroadcaster;
         }
+
+        public void SubOnTargetSelectionEnd(UnityAction<TargetSelectingData> argc)
+        {
+            GetEventBroadcaster().SubEvent(argc, "OnTargetSelectionEnd");
+        }
+        public void UnSubOnTargetSelectionEnd(UnityAction<TargetSelectingData> argc)
+        {
+            GetEventBroadcaster().UnSubEvent(argc, "OnTargetSelectionEnd");
+        }
+
+        public void SubOnTargetSelectionEnter(UnityAction<TargetSelectingData> argc)
+        {
+            GetEventBroadcaster().SubEvent(argc, "OnTargetSelectionEnter");
+        }
+        public void UnSubOnTargetSelectionEnter(UnityAction<TargetSelectingData> argc)
+        {
+            GetEventBroadcaster().UnSubEvent(argc, "OnTargetSelectionEnter");
+        }
+
         #endregion
 
         private void Awake()
@@ -227,7 +246,8 @@ namespace Vanaring
             _activlySelecting = true;
 
             TargetSelectingData targetSelectingData = new TargetSelectingData() { caster = caster, 
-                targetSelector = actorAction.GetTargetSelector() 
+                targetSelector = actorAction.GetTargetSelector() ,
+                isSucesfullySelected = false 
             }; 
 
             _eventBroadcaster.InvokeEvent(targetSelectingData, "OnTargetSelectionEnter");
@@ -344,7 +364,13 @@ namespace Vanaring
 
             //OnTargetSelectionSchemeEnd.PlayEvent(caster);
             //Broadcast Ending of target selection with Sucesfful status
-            _eventBroadcaster.InvokeEvent<bool>(!_forceStop, "OnTargetSelectionEnd");
+           
+            _eventBroadcaster.InvokeEvent(new TargetSelectingData()
+            {
+                caster = caster,
+                targetSelector = actorAction.GetTargetSelector(),
+                isSucesfullySelected = ! _forceStop
+            }, "OnTargetSelectionEnd");
 
 
             CentralInputReceiver.Instance().RemoveInputReceiverIntoStack(this);
@@ -357,29 +383,7 @@ namespace Vanaring
 
         #endregion
 
-        #region SubEvents Methods 
-
-        
- 
-        public void SubOnTargetSelectionEnd(UnityAction<bool> argc)
-        {
-            GetEventBroadcaster().SubEvent(argc, "OnTargetSelectionEnd");
-        }
-        public void UnSubOnTargetSelectionEnd (UnityAction<bool> argc)
-        {
-            GetEventBroadcaster().UnSubEvent(argc, "OnTargetSelectionEnd");
-        }
-
-        public void SubOnTargetSelectionEnter(UnityAction<TargetSelectingData> argc)
-        {
-            GetEventBroadcaster().SubEvent(argc, "OnTargetSelectionEnter");
-        }
-        public void UnSubOnTargetSelectionEnter(UnityAction<TargetSelectingData> argc)
-        {
-            GetEventBroadcaster().UnSubEvent(argc, "OnTargetSelectionEnter");
-        }
-
-        #endregion
+      
     }
 
 
@@ -387,6 +391,7 @@ namespace Vanaring
     {
         public TargetSelector targetSelector;
         public CombatEntity caster;
+        public bool isSucesfullySelected ; 
     }
 
     [Serializable]

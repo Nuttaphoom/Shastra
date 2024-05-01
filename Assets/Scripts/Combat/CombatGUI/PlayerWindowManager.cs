@@ -162,9 +162,9 @@ namespace Vanaring
             HideCurrentWindow(); 
         }
 
-        private void OnTargetSelectionEnd(bool sucessfullySelect )
+        private void OnTargetSelectionEnd(TargetSelectingData data )
         {
-            if ( sucessfullySelect)
+            if (data.isSucesfullySelected)
             {
                 CloseWindow(); 
             }else

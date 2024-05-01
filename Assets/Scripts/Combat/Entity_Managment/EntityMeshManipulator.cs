@@ -5,6 +5,7 @@ using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.XR;
+using static UnityEditor.ShaderGraph.Internal.KeywordDependentCollection;
 
 namespace Vanaring
 {
@@ -12,7 +13,8 @@ namespace Vanaring
     {
         private List<GameObject> _allyEntityMesh;
         private List<GameObject> _enemyEntityMesh;
-
+       
+        
         private void Awake()
         {
             CombatReferee.Instance.SubOnCombatPreparation(Initialization); 
@@ -24,16 +26,28 @@ namespace Vanaring
             {
                 foreach (var entity in CombatReferee.Instance.GetCompetatorsBySide(side))
                 {
-                    BindActionEvent(entity); 
+                    BindEntityEvent(entity); 
                 }
             }
 
-            CombatReferee.Instance.SubOnCompetitorEnterCombat(BindActionEvent);
+            CombatReferee.Instance.SubOnCompetitorEnterCombat(BindEntityEvent);
             CombatReferee.Instance.SubOnNewRoundBegin(OnNewRoundBegin);
 
+            TargetSelectionFlowControl.Instance.SubOnTargetSelectionEnd(OnTargetSelectionEnd_HideAllyVisualMesh); 
         }
 
-        private void BindActionEvent(CombatEntity entity)
+        private void OnTargetSelectionEnd_HideAllyVisualMesh(TargetSelectingData data)
+        {
+            if (!data.targetSelector.TargetAllyTeam || CombatReferee.Instance.GetCompetatorSide(data.caster) != ECompetatorSide.Ally)
+                return;
+
+            List<CombatEntity> entityException = new List<CombatEntity>();
+            entityException.Add(data.caster); 
+
+            HideAllEntityMesh(ECompetatorSide.Ally,entityException);
+
+        }
+        private void BindEntityEvent(CombatEntity entity)
         {
             entity.SubOnPerformAction(OnEntityPerformAction);
             entity.SubOnTakeControlEvent(OnEntityTakeControl);
@@ -49,6 +63,7 @@ namespace Vanaring
             if (CombatReferee.Instance.GetCompetatorSide(entity) == ECompetatorSide.Ally)
             {
                 ShowAllEntitMesh(ECompetatorSide.Hostile) ;
+                HideAllEntityMesh(ECompetatorSide.Ally, entitiesTakeControl);
                 RotateMeshToLookToThisPosition(entity.transform.position); 
             }
         }
@@ -139,10 +154,13 @@ namespace Vanaring
             return ret;
         }
 
-        public void HideAllEntityMesh (ECompetatorSide side)
+        public void HideAllEntityMesh (ECompetatorSide side, List<CombatEntity> entityException = null)
         {
             foreach (var mesh in GetAllCompetators(side))
             {
+                if (entityException.Contains(mesh))
+                    continue; 
+
                 mesh.GetComponent<CombatEntityAnimationHandler>().HideVisualMesh() ;//.SetActive(false);
             }
         }
