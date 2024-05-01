@@ -39,7 +39,7 @@ namespace Vanaring
             TransitionDirection direction = CalculateTransitionDirect(startNode, destinationNode);
  
             NodeTransition nodeTransition = MonoBehaviour.Instantiate(_nodeTransitionTemplate, _transitionCanvas.transform);
-            nodeTransition.SetUpTransitionData(startNode, destinationNode);
+            nodeTransition.SetUpTransitionData(startNode, destinationNode, direction);
 
             nodeTransition.transform.position = UISpaceSingletonHandler.ObjectToUISpace(startNode.NodeVisualTransitionHandler.GetCorrectPosition(direction));
 

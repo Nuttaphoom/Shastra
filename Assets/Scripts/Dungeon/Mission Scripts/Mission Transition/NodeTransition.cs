@@ -31,7 +31,7 @@ namespace Vanaring
         }
         #endregion
 
-        public void SetUpTransitionData(BaseMissionNode startNode, BaseMissionNode destinationNode)
+        public void SetUpTransitionData(BaseMissionNode startNode, BaseMissionNode destinationNode, TransitionDirection direction)
         {
             _isSetup = true; 
 
