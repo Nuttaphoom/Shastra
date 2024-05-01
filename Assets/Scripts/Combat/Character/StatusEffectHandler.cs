@@ -50,6 +50,7 @@ namespace Vanaring
             GetEventBroadcaster().UnSubEvent(func, "OnStatusEffectApplied");
         }
         #endregion
+     
         private CombatEntity _appliedEntity;
 
         Dictionary<string, List<StatusRuntimeEffect>> _effects = new Dictionary<string, List<StatusRuntimeEffect>>();
@@ -83,9 +84,8 @@ namespace Vanaring
         /// </summary>
         /// <param name="factory"></param>
         /// <returns></returns>
-        private IEnumerator LogicApplyNewEffect(StatusRuntimeEffectFactorySO factory, CombatEntity applier)
+        private IEnumerator LogicApplyNewEffect(StatusRuntimeEffect effect, StatusRuntimeEffectFactorySO factory, CombatEntity applier)
         {
-            StatusRuntimeEffect effect = factory.Factorize(new List<CombatEntity>() { _appliedEntity }) as StatusRuntimeEffect;
 
             string key = factory.Property.StackID();
 
@@ -93,10 +93,7 @@ namespace Vanaring
             {
                 _effects.Add(key, new List<StatusRuntimeEffect>());
 
-
             }
-             
-
                 
             if (_effects[key].Count == 0)
             {
@@ -127,13 +124,16 @@ namespace Vanaring
 
         public IEnumerator ApplyNewEffect(StatusRuntimeEffectFactorySO statusEffectFactory, StatusEffectApplierRuntimeEffect applierFactory, CombatEntity applier)
         {
-            yield return LogicApplyNewEffect(statusEffectFactory, applier);
+            StatusRuntimeEffect runtimeEffect = statusEffectFactory.Factorize(new List<CombatEntity>() { _appliedEntity }) as StatusRuntimeEffect;
+
+            yield return LogicApplyNewEffect(runtimeEffect, statusEffectFactory, applier);
 
             GetEventBroadcaster().InvokeEvent(new EntityStatusEffectPair()
             {
                 Actor = applier,
                 StatusEffectFactory = statusEffectFactory, 
-                ApplierFactory = applierFactory 
+                ApplierFactory = applierFactory,
+                StatusRuntime = runtimeEffect 
             }, "OnStatusEffectApplied") ;
 
             //create Status UI

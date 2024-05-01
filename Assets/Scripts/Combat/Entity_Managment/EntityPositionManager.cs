@@ -231,9 +231,13 @@ namespace Vanaring
 
             entity.GetComponent<CombatEntityAnimationHandler>().ShowVisualMesh();
             entity.transform.position = data.Location.transform.position ;
-            entity.transform.forward = data.Location.transform.forward; 
+            entity.transform.forward = data.Location.transform.forward;   
 
-            return  ; 
+
+            ColorfulLogger.LogWithColor("" + entity.gameObject.name + " forward is set to 's " + data.Location.gameObject.name , Color.yellow) ;
+            ColorfulLogger.LogWithColor("" + entity.gameObject.name + " forward is " + entity.transform.forward, Color.yellow);
+
+            return; 
 
         } 
         public void OccupieAnyValidLocation(ECompetatorSide side, CombatEntity entity   )
@@ -271,8 +275,9 @@ namespace Vanaring
             validLocation.EntityStandingHere = entity;
             entity.transform.position = validLocation.Location.position;
 
-            entity.transform.forward = validLocation.Location.forward; 
-         }
+            entity.transform.forward = validLocation.Location.forward;
+
+        }
 
         public void ReleasePosition(CombatEntity entity)
         {

@@ -7,6 +7,7 @@ using System.Diagnostics.Eventing.Reader;
 using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEditor;
 using Unity.VisualScripting;
+using UnityEngine.Events;
 
 namespace Vanaring 
 {
@@ -79,10 +80,54 @@ namespace Vanaring
         
     }
 
-
     //All of the status effect should have "target" assigned to them 
     public abstract class StatusRuntimeEffect : RuntimeEffect
     {
+        #region Events
+        public EventBroadcaster _eventBroadcaster; 
+
+        public EventBroadcaster EventBroadcaster
+        {
+            get
+            {
+                if (_eventBroadcaster == null)
+                {
+                    _eventBroadcaster = new EventBroadcaster();
+                    _eventBroadcaster.OpenChannel<int>("OnTTLUpdate");
+                    _eventBroadcaster.OpenChannel<bool>("OnStatusEffectExpire");
+                    _eventBroadcaster.OpenChannel<bool>("OnStatusEffectBreak");
+                }
+                return _eventBroadcaster;
+            }
+        }
+
+        public void SubOnTTLUpdate(UnityAction<int> func)
+        {
+            _eventBroadcaster.SubEvent<int>(func, "OnTTLUpdate"); 
+        }
+        public void UnSubOnTTLUpdate(UnityAction<int> func)
+        {
+            _eventBroadcaster.UnSubEvent<int>(func, "OnTTLUpdate");
+        }
+        public void SubOnStatusEffectExpire(UnityAction<bool> func)
+        {
+            _eventBroadcaster.SubEvent<bool>(func, "OnStatusEffectExpire");
+        }
+        public void UnSubOnStatusEffectExpire(UnityAction<bool> func)
+        {
+            _eventBroadcaster.UnSubEvent<bool>(func, "OnStatusEffectExpire");
+        }
+        public void SubOnStatusEffectBreak(UnityAction<bool> func)
+        {
+            _eventBroadcaster.SubEvent<bool>(func, "OnStatusEffectBreak");
+        }
+        public void UnSubOnStatusEffectBreak(UnityAction<bool> func)
+        {
+            _eventBroadcaster.UnSubEvent<bool>(func, "OnStatusEffectBreak");
+        }
+
+        #endregion
+
         //Turn base TTL
         protected int _timeToLive = 0;
 
@@ -90,7 +135,7 @@ namespace Vanaring
 
         protected DescriptionBaseField _statusEffectDescription;
 
-        protected StatusEffectProperty _property ;
+        protected StatusEffectProperty _property ; 
         
         public StatusRuntimeEffect(StatusRuntimeEffectFactorySO effectFactory)
         {
@@ -142,22 +187,28 @@ namespace Vanaring
 
         public bool IsExpired()
         {
+            _eventBroadcaster.InvokeEvent<bool>(_timeToLive <= 0, "OnStatusEffectExpire") ;
             return _timeToLive <= 0.0f;
         }
 
         public bool IsBreakWhenStun()
         {
+            _eventBroadcaster.InvokeEvent<bool>(_property.OverflowBreak, "OnStatusEffectBreak") ;
             return _property.OverflowBreak; 
         }
 
         public void ForceExpire()
         {
+            _eventBroadcaster.InvokeEvent<bool>(true, "OnStatusEffectExpire");
             _timeToLive = 0; 
         }
         public void UpdateTTLCondition()
         {
             if (! _property.InfiniteTTL)
                 _timeToLive -= 1;
+
+            _eventBroadcaster.InvokeEvent<int>(_timeToLive, "OnTTLUpdate");
+
         }
         public bool IsCorrectEvokeKey(EEvokeKey evokeKey)
         {
