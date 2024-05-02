@@ -53,16 +53,17 @@ namespace Vanaring
             switch (direction)
             {
                 case TransitionDirection.Forward_Z:
-                    newSprite = forwardArrow;
-                    break;
-                case TransitionDirection.MinusForward_Z:
-                    newSprite = backwardArrow;
-                    break;
-                case TransitionDirection.MinusRight_X:
                     newSprite = rightArrow;
                     break;
-                case TransitionDirection.Right_X:
+                case TransitionDirection.MinusForward_Z:
                     newSprite = leftArrow;
+                    break;
+                case TransitionDirection.MinusRight_X:
+                    newSprite = backwardArrow;
+                    break;
+                case TransitionDirection.Right_X:
+                    newSprite = forwardArrow;
+                    
                     break;
             }
 

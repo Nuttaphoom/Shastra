@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 1577817613652048466}
   - component: {fileID: 144850582302752927}
   - component: {fileID: 9139678385301961750}
+  - component: {fileID: 8717011956154610647}
   m_Layer: 5
   m_Name: NodeTransitionButton
   m_TagString: Untagged
@@ -35,10 +36,10 @@ RectTransform:
   m_Father: {fileID: 3494260126101868726}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 209, y: 125}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1577817613652048466
 CanvasRenderer:
@@ -68,9 +69,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 9f4e06805f645db4987507bf3bbdd4d9, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 155be970b3078be4f9cd62e06b4f33fc, type: 3}
   m_Type: 0
-  m_PreserveAspect: 0
+  m_PreserveAspect: 1
   m_FillCenter: 1
   m_FillMethod: 4
   m_FillAmount: 1
@@ -122,6 +123,18 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &8717011956154610647
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 785455125421450209}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5947f78139576954fb2d49ef8eef22a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &9174558683682881801
 GameObject:
   m_ObjectHideFlags: 0
@@ -158,7 +171,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
+  m_SizeDelta: {x: 150, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &6972646205625464792
 MonoBehaviour:
@@ -173,10 +186,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _nodeTransitionButton: {fileID: 9139678385301961750}
-  forwardArrow: {fileID: 21300000, guid: 9f4e06805f645db4987507bf3bbdd4d9, type: 3}
-  backwardArrow: {fileID: 21300112, guid: 7ab74e659e1f0a34d9cfec21c478fc12, type: 3}
-  rightArrow: {fileID: 21300000, guid: 603e8237c611adf40b129ba50ec6fa28, type: 3}
-  leftArrow: {fileID: 21300000, guid: 7a575bd2397bccf4a8de378f84d83237, type: 3}
+  forwardArrow: {fileID: 21300000, guid: bad9fa838e658784cb9892ae85fe6d44, type: 3}
+  backwardArrow: {fileID: 21300000, guid: 6af47b4d9461c0244b591198e4aac0ec, type: 3}
+  rightArrow: {fileID: 21300000, guid: 042c557762bea4c4ab87b16914194b18, type: 3}
+  leftArrow: {fileID: 21300000, guid: 155be970b3078be4f9cd62e06b4f33fc, type: 3}
 --- !u!1 &9201455701680601191
 GameObject:
   m_ObjectHideFlags: 0
@@ -194,7 +207,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &3498437244206469107
 RectTransform:
   m_ObjectHideFlags: 0
@@ -212,7 +225,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 16.6, y: 6.5}
+  m_AnchoredPosition: {x: 16.599976, y: 6.5}
   m_SizeDelta: {x: -91.4144, y: -54.6737}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4829810336947677286
@@ -270,7 +283,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 44
+  m_fontSize: 72
   m_fontSizeBase: 70.46
   m_fontWeight: 400
   m_enableAutoSizing: 1
