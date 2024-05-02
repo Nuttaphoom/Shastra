@@ -35,12 +35,12 @@ namespace Vanaring
             GetEventBroadcaster().SubEvent(func,"OnStatusEffectApplied");
         }
 
-        public void SubOnStatusEffectExpired(UnityAction<EntityStatusEffectPair> func)
+        public void SubOnStatusEffectExpired(UnityAction<StatusRuntimeEffect> func)
         {
             GetEventBroadcaster().SubEvent(func, "OnStatusEffectExpired");
         }
 
-        public void UnSubOnStatusEffectExpired(UnityAction<EntityStatusEffectPair> func)
+        public void UnSubOnStatusEffectExpired(UnityAction<StatusRuntimeEffect> func)
         {
             GetEventBroadcaster().UnSubEvent(func, "OnStatusEffectExpired");
         }
