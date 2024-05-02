@@ -214,6 +214,7 @@ namespace Vanaring
 
         public void ShowVisualMesh()
         {
+            Debug.Log("show visual mesh"); 
             GetVisualMesh().gameObject.SetActive(true); 
         }
         public IEnumerator DestroyVisualMesh()

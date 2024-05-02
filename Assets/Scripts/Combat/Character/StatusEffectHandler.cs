@@ -86,13 +86,11 @@ namespace Vanaring
         /// <returns></returns>
         private IEnumerator LogicApplyNewEffect(StatusRuntimeEffect effect, StatusRuntimeEffectFactorySO factory, CombatEntity applier)
         {
-
             string key = factory.Property.StackID();
 
             if (!_effects.ContainsKey(key))
             {
                 _effects.Add(key, new List<StatusRuntimeEffect>());
-
             }
                 
             if (_effects[key].Count == 0)
@@ -117,9 +115,6 @@ namespace Vanaring
                 _effects[key].Add(effect);                
                 yield return effect.OnStatusEffectApplied(applier);
             }
-
-             
-
         }
 
         public IEnumerator ApplyNewEffect(StatusRuntimeEffectFactorySO statusEffectFactory, StatusEffectApplierRuntimeEffect applierFactory, CombatEntity applier)
@@ -137,10 +132,9 @@ namespace Vanaring
             }, "OnStatusEffectApplied") ;
 
             //create Status UI
-            UpdateStatusUI();
+            UpdateStatusUI() ;
 
-            yield return null; 
-
+            yield return null ; 
         }
 
 
