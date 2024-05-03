@@ -366,25 +366,24 @@ namespace Vanaring
             bool _callingDeadScheme = false;
 
             List<IEnumerator> _coroutine = new List<IEnumerator>();
-
-            if (animationTrigger != "No Animation")
+            if (IsDead)
             {
-                if (IsDead)
-                {
-                    _coroutine.Add(DeadVisualClear());
-                    _callingDeadScheme = true;
-                }
-                _coroutine.Add(_combatEntityAnimationHandler.PlayTriggerAnimation(animationTrigger));
+                _coroutine.Add(DeadVisualAnimationScheme());
+                _callingDeadScheme = true;
+            }
+            else if (animationTrigger != "No Animation")
+            {
+                _coroutine.Add(_combatEntityAnimationHandler.PlayTriggerAnimation(animationTrigger)); 
             }
             GetEventBroadcaster().InvokeEvent(dmg, "OnDamage");
 
             yield return new WaitAll(this, _coroutine.ToArray());
 
-            //If done playing animation, visually destroy the character (animation) not game object
-            if (IsDead && ! _callingDeadScheme)
-            {
-                yield return DeadVisualClear();
-            }
+            ////If done playing animation, visually destroy the character (animation) not game object
+            //if (IsDead && ! _callingDeadScheme)
+            //{
+            //    yield return DeadVisualAnimationScheme();
+            //}
 
             yield return null;
 
@@ -408,7 +407,7 @@ namespace Vanaring
 
         }
 
-        public IEnumerator DeadVisualClear()
+        public IEnumerator DeadVisualAnimationScheme()
         {
             yield return _combatEntityAnimationHandler.DestroyVisualMesh();
         }
