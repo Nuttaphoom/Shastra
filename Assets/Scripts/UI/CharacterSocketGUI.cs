@@ -86,6 +86,7 @@ namespace Vanaring
         public void Init(CombatEntity combatEntity)
         {
             _combatEntity = combatEntity;
+            effectIcon.gameObject.SetActive(false);
             SubOnEvent();
 
             _characterSheetSO = _combatEntity.CombatCharacterSheet;
@@ -116,15 +117,29 @@ namespace Vanaring
             _combatEntity.SubOnHealVisualEvent(OnHPModified);
             _combatEntity.SpellCaster.SubOnMPModified(OnMPModified);
             _combatEntity.SubOnStatusEffectApplied(AddEffectIcon);
+            _combatEntity.SubOnStatusEffectExpired(RemoveExpiredEffect);
         }
         #endregion
 
+        #region StatusEffect
         private void AddEffectIcon(EntityStatusEffectPair effect)
         {
+            Debug.Log("Effect: " + effect.StatusRuntime.ToString() + effect.StatusEffectFactory.ToString() + effect.ApplierFactory.ToString());
             Image newEffectIcon = Instantiate(effectIcon, statusBarLayout.transform);
             newEffectIcon.gameObject.SetActive(true);
             effectIcon.sprite = effect.StatusEffectFactory.StatusImage;
+
+            //Actor ;
+            //public StatusRuntimeEffectFactorySO StatusEffectFactory ;
+            //public StatusEffectApplierRuntimeEffect ApplierFactory ;
+            //public StatusRuntimeEffect StatusRuntime;
         }
+
+        private void RemoveExpiredEffect(StatusRuntimeEffect ed)
+        {
+
+        }
+        #endregion
 
         private void InitEnergySlot()
         {
