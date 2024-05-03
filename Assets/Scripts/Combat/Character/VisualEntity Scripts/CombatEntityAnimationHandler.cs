@@ -214,6 +214,7 @@ namespace Vanaring
 
         public void ShowVisualMesh()
         {
+            Debug.Log("show visual mesh"); 
             GetVisualMesh().gameObject.SetActive(true); 
         }
         public IEnumerator DestroyVisualMesh()
@@ -222,9 +223,11 @@ namespace Vanaring
             {
                 _deadVisualEffect.gameObject.SetActive(true);
                 _deadVisualEffect.Play();
+
+                yield return new WaitForSeconds(0.6f);
+
             }
 
-            yield return new WaitForSeconds(0.6f);
 
             if (_deadAnimationTrigger == "NONE")
             {
@@ -300,6 +303,7 @@ namespace Vanaring
         #region Animation Methods 
         public IEnumerator PlayTriggerAnimation(string triggerName)
         {
+            Debug.Log("Play trigger animation " + triggerName);
             _animator.SetTrigger(triggerName);
 
             // Get the hash of the animation state

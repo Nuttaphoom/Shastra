@@ -124,8 +124,9 @@ namespace Vanaring
 
             }
 
-            //Set up look at of the camera 
-            _lookAtBinder.BindLookAtTargetsToEnemies(_targetTransform);
+            if (_changeLookAt)
+                //Set up look at of the camera 
+                _lookAtBinder.BindLookAtTargetsToEnemies(_targetTransform);
 
       
         }

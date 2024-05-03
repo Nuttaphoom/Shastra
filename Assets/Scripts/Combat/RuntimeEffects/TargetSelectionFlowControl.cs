@@ -325,6 +325,7 @@ namespace Vanaring
                         //We multuiply -1 because we want to change the right direction of vector 
 
                         _validTargets = ArrangeEntityListInXAxis( _validTargets, _selectingTarget[0].GetComponent<EntityCameraManager>().GetRightVectorShoulderCam()   );
+                        
                         _selectingTarget.Clear(); 
                         _selectingTarget.Add(_validTargets[_currentSelectIndex]);
                         _selectingTarget[0].GetComponent<EntityCameraManager>().EnableShoulderCamera();

@@ -84,9 +84,9 @@ namespace Vanaring
     public abstract class StatusRuntimeEffect : RuntimeEffect
     {
         #region Events
-        public EventBroadcaster _eventBroadcaster; 
+        private EventBroadcaster _eventBroadcaster; 
 
-        public EventBroadcaster EventBroadcaster
+        private EventBroadcaster EventBroadcaster
         {
             get
             {
@@ -103,27 +103,27 @@ namespace Vanaring
 
         public void SubOnTTLUpdate(UnityAction<int> func)
         {
-            _eventBroadcaster.SubEvent<int>(func, "OnTTLUpdate"); 
+            EventBroadcaster.SubEvent<int>(func, "OnTTLUpdate"); 
         }
         public void UnSubOnTTLUpdate(UnityAction<int> func)
         {
-            _eventBroadcaster.UnSubEvent<int>(func, "OnTTLUpdate");
+            EventBroadcaster.UnSubEvent<int>(func, "OnTTLUpdate");
         }
         public void SubOnStatusEffectExpire(UnityAction<bool> func)
         {
-            _eventBroadcaster.SubEvent<bool>(func, "OnStatusEffectExpire");
+            EventBroadcaster.SubEvent<bool>(func, "OnStatusEffectExpire");
         }
         public void UnSubOnStatusEffectExpire(UnityAction<bool> func)
         {
-            _eventBroadcaster.UnSubEvent<bool>(func, "OnStatusEffectExpire");
+            EventBroadcaster.UnSubEvent<bool>(func, "OnStatusEffectExpire");
         }
         public void SubOnStatusEffectBreak(UnityAction<bool> func)
         {
-            _eventBroadcaster.SubEvent<bool>(func, "OnStatusEffectBreak");
+            EventBroadcaster.SubEvent<bool>(func, "OnStatusEffectBreak");
         }
         public void UnSubOnStatusEffectBreak(UnityAction<bool> func)
         {
-            _eventBroadcaster.UnSubEvent<bool>(func, "OnStatusEffectBreak");
+            EventBroadcaster.UnSubEvent<bool>(func, "OnStatusEffectBreak");
         }
 
         #endregion
@@ -187,19 +187,19 @@ namespace Vanaring
 
         public bool IsExpired()
         {
-            _eventBroadcaster.InvokeEvent<bool>(_timeToLive <= 0, "OnStatusEffectExpire") ;
+            EventBroadcaster.InvokeEvent<bool>(_timeToLive <= 0, "OnStatusEffectExpire") ;
             return _timeToLive <= 0.0f;
         }
 
         public bool IsBreakWhenStun()
         {
-            _eventBroadcaster.InvokeEvent<bool>(_property.OverflowBreak, "OnStatusEffectBreak") ;
+            EventBroadcaster.InvokeEvent<bool>(_property.OverflowBreak, "OnStatusEffectBreak") ;
             return _property.OverflowBreak; 
         }
 
         public void ForceExpire()
         {
-            _eventBroadcaster.InvokeEvent<bool>(true, "OnStatusEffectExpire");
+            EventBroadcaster.InvokeEvent<bool>(true, "OnStatusEffectExpire");
             _timeToLive = 0; 
         }
         public void UpdateTTLCondition()
@@ -207,7 +207,7 @@ namespace Vanaring
             if (! _property.InfiniteTTL)
                 _timeToLive -= 1;
 
-            _eventBroadcaster.InvokeEvent<int>(_timeToLive, "OnTTLUpdate");
+            EventBroadcaster.InvokeEvent<int>(_timeToLive, "OnTTLUpdate");
 
         }
         public bool IsCorrectEvokeKey(EEvokeKey evokeKey)

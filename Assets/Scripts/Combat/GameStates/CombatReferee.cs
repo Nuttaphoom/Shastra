@@ -285,7 +285,7 @@ namespace Vanaring
         /// </summary>
         /// <returns></returns>
         public IEnumerator PrepareRefereeForNewRound()
-        {
+        {   
             //_currentSide = ECompetatorSide.Ally;
             //_currentEntityIndex = 0;
 
