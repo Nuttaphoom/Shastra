@@ -15,6 +15,7 @@ using UnityEngine.VFX;
 using Cinemachine;
 using DG.Tweening;
 using System.Runtime.InteropServices;
+using PixelCrushers.DialogueSystem.UnityGUI;
 
 namespace Vanaring 
 {
@@ -193,6 +194,8 @@ namespace Vanaring
         [SerializeField]
         private string _deadAnimationTrigger = "NONE";
 
+        private CombatEntity _combatEntity;
+
         //[Header("Use for specially set where (CastTransform, TarTransform) position will be set to #Can leave blank")]
         //[SerializeField]
         //public Transform _timelineAnimationRootLocation ; 
@@ -204,6 +207,7 @@ namespace Vanaring
             SetUpVisualPivotTransform();
 
             _animator = GetVisualMesh().GetComponent<Animator>();
+            _combatEntity = GetComponent<CombatEntity>();   
         }
 
         #region Mesh Methods 
@@ -214,7 +218,9 @@ namespace Vanaring
 
         public void ShowVisualMesh()
         {
-            Debug.Log("show visual mesh"); 
+            if (_combatEntity.IsDead)
+                return; 
+
             GetVisualMesh().gameObject.SetActive(true); 
         }
         public IEnumerator DestroyVisualMesh()
