@@ -6,6 +6,7 @@ using System.Linq;
 using System.Runtime.Remoting.Messaging;
 using System.Text;
 using System.Threading.Tasks;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -163,10 +164,10 @@ namespace Vanaring
 
         private Queue<RuntimeEffectFactorySO> _readyEffectQueue = new Queue<RuntimeEffectFactorySO>();
 
-        public ActionSignal(ActionSignal copied)
+        public ActionSignal(ActionSignal copied, ActorActionFactory factory)
         {
             if (copied._actionTimelinePrefab == null)
-             throw new Exception("_actionTimelinePrefab hasn't been assigned to  " + copied);
+             throw new Exception("_actionTimelinePrefab hasn't been assigned to  " + factory.name);
              
 
             for (int i = 0; i < copied._signalEffectBindings.Count; i++ ) 

@@ -82,9 +82,10 @@ namespace Vanaring
         //    }
         //}
 
-        public void SetVMTOAllAlly()
+        public CinemachineVirtualCamera SetVMTOAllAlly()
         {
             EnableCamera(AllAllyCamera);
+            return AllAllyCamera; 
         }
         public void SetLookAtTarget(Transform lookat)
         {

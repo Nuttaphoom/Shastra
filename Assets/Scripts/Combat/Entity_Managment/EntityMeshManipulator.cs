@@ -64,7 +64,7 @@ namespace Vanaring
             {
                 ShowAllEntitMesh(ECompetatorSide.Hostile) ;
                 HideAllEntityMesh(ECompetatorSide.Ally, entitiesTakeControl);
-                RotateMeshToLookToThisPosition(entity.transform.position); 
+                RotateMeshToLookToThisPosition(entity.transform.position, ECompetatorSide.Hostile); 
             }
         }
 
@@ -85,9 +85,11 @@ namespace Vanaring
             RestoreRotateMeshLookAt(); 
         }
 
-        private void RotateMeshToLookToThisPosition(Vector3 worldPosition)
+        private void RotateMeshToLookToThisPosition(Vector3 worldPosition, ECompetatorSide side)
         {
-            foreach(var entity in GetAllCompetators() ){
+
+            foreach(var entity in GetAllCompetators(side) ){
+            
                 entity.GetComponent<CombatEntityAnimationHandler>().RotateMeshLookAtToThisPosition(worldPosition);
             }
         }

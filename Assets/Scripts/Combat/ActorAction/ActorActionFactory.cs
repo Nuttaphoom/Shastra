@@ -59,7 +59,7 @@ namespace Vanaring
         {
             _description = actionFactory.DescriptionBaseField ;
             _targetSelector = actionFactory.TargetSelect ;
-            _actionSignal = new ActionSignal(actionFactory.ActionSignal) ;
+            _actionSignal = new ActionSignal(actionFactory.ActionSignal, actionFactory) ;
             
             _caster = caster; 
         }

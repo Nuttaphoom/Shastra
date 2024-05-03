@@ -313,9 +313,16 @@ namespace Vanaring
                         if (CombatReferee.Instance.GetCompetatorSide(caster) != ECompetatorSide.Ally)
                             continue;
 
-                        if (_selectingTarget.Count != 1)
+                        if (_selectingTarget.Count != 1 || true)
                         {
-                            CameraSetUPManager.Instance.SetVMTOAllAlly(); 
+                            var cam = CameraSetUPManager.Instance.SetVMTOAllAlly();
+                            _validTargets = ArrangeEntityListInXAxis(_validTargets,cam.transform.right);
+                            //_selectingTarget.Clear();
+                            Debug.Log("_valid target.count : " + _validTargets.Count);
+                            Debug.Log("currently select is " + _currentSelectIndex); 
+                            //_selectingTarget.Add(_validTargets[_currentSelectIndex]);  
+
+
                             continue;
                         }
 
@@ -324,11 +331,11 @@ namespace Vanaring
                         //throw new Exception("The problem is axis correction can't not be perform until we swap cam, meaning we can't set the first cam "); 
                         //We multuiply -1 because we want to change the right direction of vector 
 
-                        _validTargets = ArrangeEntityListInXAxis( _validTargets, _selectingTarget[0].GetComponent<EntityCameraManager>().GetRightVectorShoulderCam()   );
-                        
-                        _selectingTarget.Clear(); 
-                        _selectingTarget.Add(_validTargets[_currentSelectIndex]);
-                        _selectingTarget[0].GetComponent<EntityCameraManager>().EnableShoulderCamera();
+                        //_validTargets = ArrangeEntityListInXAxis(_validTargets, _selectingTarget[0].GetComponent<EntityCameraManager>().GetRightVectorShoulderCam());
+                        //_selectingTarget.Clear();
+                        //_selectingTarget.Add(_validTargets[_currentSelectIndex]);
+                        //if want to display shoulder camera separatly, do it here
+                        //_selectingTarget[0].GetComponent<EntityCameraManager>().EnableShoulderCamera();
 
 
                     }
