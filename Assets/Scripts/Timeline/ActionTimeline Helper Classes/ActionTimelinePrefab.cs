@@ -138,8 +138,7 @@ namespace Vanaring
             List<GameObject> casterTransforms = ObjectFindingTool.QueryObjectInChildren(transform, CasterTransformTag);
             List<GameObject> targetTransforms = ObjectFindingTool.QueryObjectInChildren(transform, TargetTransformTag);
 
-            foreach (var c in casterTransforms)
-                Debug.Log(c.gameObject.name);
+       
 
             if (casterTransforms.Count != 1)
                 throw new Exception("CasterTransform count is not right, foundObject.count is " + casterTransforms.Count);

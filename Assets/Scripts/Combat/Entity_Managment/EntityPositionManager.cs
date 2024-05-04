@@ -138,9 +138,9 @@ namespace Vanaring
 
         private void OnEntityPerformAction(EntityActionPair actionPair)
         {
-            List<CombatEntity> caster = new List<CombatEntity>() { actionPair.Actor } ; 
+            List<CombatEntity> caster = new List<CombatEntity>() { actionPair.Actor } ;
 
-            RelocateEntityToitsOccupiedPosition(caster); 
+            RelocateEntityToitsOccupiedPosition();
         }
 
         private void OnEntityTakeControl(CombatEntity entity)
@@ -353,9 +353,10 @@ namespace Vanaring
                 {
                     if (! onlyThisEntity.Contains(occupiedData.EntityStandingHere))
                         continue;
-                } 
+                }
 
-                    
+                ColorfulLogger.LogWithColor("occupiedData.EntityStandingHere : " + occupiedData.EntityStandingHere.gameObject.name, Color.yellow);
+
                 occupiedData.EntityStandingHere.transform.position = occupiedData.Location.position;
                 occupiedData.EntityStandingHere.transform.rotation= occupiedData.Location.rotation;
             }
