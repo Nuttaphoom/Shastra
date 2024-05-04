@@ -56,12 +56,12 @@ namespace Vanaring
         private void OnEntityTakeControl(CombatEntity entity)
         {
             List<CombatEntity> entitiesTakeControl = new List<CombatEntity>() {  entity };
-            ShowEntityMesh(entitiesTakeControl);
             
             RestoreRotateMeshLookAt(); 
 
             if (CombatReferee.Instance.GetCompetatorSide(entity) == ECompetatorSide.Ally)
             {
+                ShowEntityMesh(entitiesTakeControl);
                 ShowAllEntitMesh(ECompetatorSide.Hostile) ;
                 HideAllEntityMesh(ECompetatorSide.Ally, entitiesTakeControl);
                 RotateMeshToLookToThisPosition(entity.transform.position, ECompetatorSide.Hostile); 
