@@ -415,7 +415,7 @@ namespace Vanaring
 
         public IEnumerator DeadVisualAnimationScheme()
         {
-            yield return _combatEntityAnimationHandler.DestroyVisualMesh();
+            yield return _combatEntityAnimationHandler.DeadVisualPresentation();
         }
 
  

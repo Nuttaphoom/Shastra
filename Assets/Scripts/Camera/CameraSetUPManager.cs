@@ -82,9 +82,10 @@ namespace Vanaring
         //    }
         //}
 
-        public void SetVMTOAllAlly()
+        public CinemachineVirtualCamera SetVMTOAllAlly()
         {
             EnableCamera(AllAllyCamera);
+            return AllAllyCamera; 
         }
         public void SetLookAtTarget(Transform lookat)
         {
@@ -99,7 +100,11 @@ namespace Vanaring
 
         public void RestoreVMCameraState()
         {
+            if (_savedVMCamera == null)
+                return; 
+
             Camera.main.GetComponent<CinemachineBrain>().ActiveVirtualCamera.VirtualCameraGameObject.SetActive(false);
+
 
             _savedVMCamera.gameObject.SetActive(true);
             _savedVMCamera.GetComponent<CinemachineVirtualCamera>().LookAt = _oldAimPoint; 

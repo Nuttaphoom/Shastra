@@ -15,6 +15,7 @@ using UnityEngine.VFX;
 using Cinemachine;
 using DG.Tweening;
 using System.Runtime.InteropServices;
+using PixelCrushers.DialogueSystem.UnityGUI;
 
 namespace Vanaring 
 {
@@ -190,8 +191,9 @@ namespace Vanaring
         [SerializeField]
         public VisualEffect _deadVisualEffect;
 
-        [SerializeField]
-        private string _deadAnimationTrigger = "NONE";
+        private const string _deadAnimationTrigger = "Dead";
+
+        private CombatEntity _combatEntity;
 
         //[Header("Use for specially set where (CastTransform, TarTransform) position will be set to #Can leave blank")]
         //[SerializeField]
@@ -204,6 +206,7 @@ namespace Vanaring
             SetUpVisualPivotTransform();
 
             _animator = GetVisualMesh().GetComponent<Animator>();
+            _combatEntity = GetComponent<CombatEntity>();   
         }
 
         #region Mesh Methods 
@@ -214,23 +217,22 @@ namespace Vanaring
 
         public void ShowVisualMesh()
         {
-            Debug.Log("show visual mesh"); 
+            if (_combatEntity.IsDead)
+                return; 
+
             GetVisualMesh().gameObject.SetActive(true); 
         }
-        public IEnumerator DestroyVisualMesh()
+        public IEnumerator DeadVisualPresentation()
         {
             if (_deadVisualEffect)
             {
+                StartCoroutine(PlayTriggerAnimation("Hurt") ) ;
+
                 _deadVisualEffect.gameObject.SetActive(true);
                 _deadVisualEffect.Play();
 
                 yield return new WaitForSeconds(0.6f);
 
-            }
-
-
-            if (_deadAnimationTrigger == "NONE")
-            {
                 _visualMesh.transform.Translate(new Vector2(10000000, 1000000));
                 yield return new WaitForSeconds(2.5f);
                 if (_deadVisualEffect)
@@ -239,6 +241,7 @@ namespace Vanaring
                 }
 
             }
+
             else
             {
                 yield return PlayTriggerAnimation(_deadAnimationTrigger);

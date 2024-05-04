@@ -50,8 +50,6 @@ namespace Vanaring
                 _eventBroadcaster.OpenChannel<TargetSelectingData>("OnTargetSelectionEnter");
             }
 
-
-
             return _eventBroadcaster;
         }
 
@@ -203,39 +201,7 @@ namespace Vanaring
                 _forceStop = true;
             }
         }
-        //public IEnumerator InitializeTargetSelectionSchemeWithoutSelect(List<CombatEntity> _targets)
-        //{
-        //    if (_activlySelecting)
-        //        throw new Exception("Try to active selection scheme while it is already active");
-
-        //    _activlySelecting = true;
-        //    ValidateData();
-
-        //    foreach (var v in _targets)
-        //    {
-        //        _validTargets.Add(v);
-        //    }
-
-        //    transform.DOMove(Vector3.zero, 3.0f);
-        //    while (true)
-        //    {
-        //        if (_forceStop)
-        //        {
-        //            _forceStop = false;
-        //            ColorfulLogger.LogWithColor("Cancel Target Selection", Color.green);
-        //            goto End;
-        //        }
-
-        //        //_targetSelectionGUI.SelectTargetPointer(_validTargets[_currentSelectIndex]);
-
-        //        yield return _validTargets[_currentSelectIndex];
-
-        //    }
-
-        //End:
-        //    _targetSelectionGUI.EndSelectionScheme();
-        //    _activlySelecting = false;
-        //}
+        
         public IEnumerator InitializeActionTargetSelectionScheme(CombatEntity caster, ActorAction actorAction, bool randomTarget = false)
         {
             //ColorfulLogger.LogWithColor("Start target selection with " + actorAction , Color.green);
@@ -313,9 +279,15 @@ namespace Vanaring
                         if (CombatReferee.Instance.GetCompetatorSide(caster) != ECompetatorSide.Ally)
                             continue;
 
-                        if (_selectingTarget.Count != 1)
+                        if (_selectingTarget.Count != 1 || true)
                         {
-                            CameraSetUPManager.Instance.SetVMTOAllAlly(); 
+                            var cam = CameraSetUPManager.Instance.SetVMTOAllAlly();
+                            _validTargets = ArrangeEntityListInXAxis(_validTargets,cam.transform.right);
+                            //_selectingTarget.Clear();
+     
+                            //_selectingTarget.Add(_validTargets[_currentSelectIndex]);  
+
+
                             continue;
                         }
 
@@ -324,11 +296,11 @@ namespace Vanaring
                         //throw new Exception("The problem is axis correction can't not be perform until we swap cam, meaning we can't set the first cam "); 
                         //We multuiply -1 because we want to change the right direction of vector 
 
-                        _validTargets = ArrangeEntityListInXAxis( _validTargets, _selectingTarget[0].GetComponent<EntityCameraManager>().GetRightVectorShoulderCam()   );
-                        
-                        _selectingTarget.Clear(); 
-                        _selectingTarget.Add(_validTargets[_currentSelectIndex]);
-                        _selectingTarget[0].GetComponent<EntityCameraManager>().EnableShoulderCamera();
+                        //_validTargets = ArrangeEntityListInXAxis(_validTargets, _selectingTarget[0].GetComponent<EntityCameraManager>().GetRightVectorShoulderCam());
+                        //_selectingTarget.Clear();
+                        //_selectingTarget.Add(_validTargets[_currentSelectIndex]);
+                        //if want to display shoulder camera separatly, do it here
+                        //_selectingTarget[0].GetComponent<EntityCameraManager>().EnableShoulderCamera();
 
 
                     }
@@ -361,7 +333,7 @@ namespace Vanaring
                 caster.ActionHandler.AddActionQueue(actorAction);
             }
 
-            else if (!randomTarget)
+            if (!randomTarget)
             {
                 CameraSetUPManager.Instance.RestoreVMCameraState();
             }

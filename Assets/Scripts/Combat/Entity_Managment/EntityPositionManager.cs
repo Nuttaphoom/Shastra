@@ -234,8 +234,8 @@ namespace Vanaring
             entity.transform.forward = data.Location.transform.forward;   
 
 
-            ColorfulLogger.LogWithColor("" + entity.gameObject.name + " forward is set to 's " + data.Location.gameObject.name , Color.yellow) ;
-            ColorfulLogger.LogWithColor("" + entity.gameObject.name + " forward is " + entity.transform.forward, Color.yellow);
+            //ColorfulLogger.LogWithColor("" + entity.gameObject.name + " forward is set to 's " + data.Location.gameObject.name , Color.yellow) ;
+            //ColorfulLogger.LogWithColor("" + entity.gameObject.name + " forward is " + entity.transform.forward, Color.yellow);
 
             return; 
 
@@ -270,9 +270,7 @@ namespace Vanaring
 
             if (validLocation == null)
                 throw new Exception("validLocation is null");
-
-            Debug.Log("Entity is " + entity);
-            Debug.Log("" + entity.GetComponent<CombatEntityAnimationHandler>()); 
+ 
             entity.GetComponent<CombatEntityAnimationHandler>().ShowVisualMesh();
             validLocation.EntityStandingHere = entity;
             entity.transform.position = validLocation.Location.position;
