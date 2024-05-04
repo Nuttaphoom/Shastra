@@ -18,7 +18,7 @@ namespace Vanaring
 
         public IEnumerator OnNotifySceneLoadingComplete()
         {
-            Debug.Log(DungeonManagerSingleton.Instance.GetAllActiveDungeon.Count);
+            //Debug.Log(DungeonManagerSingleton.Instance.GetAllActiveDungeon.Count);
             dungeonList = DungeonManagerSingleton.Instance.GetAllActiveDungeon;
            
             int dungeonIndex = 0;
