@@ -223,20 +223,17 @@ namespace Vanaring
 
             GetVisualMesh().gameObject.SetActive(true); 
         }
-        public IEnumerator DestroyVisualMesh()
+        public IEnumerator DeadVisualPresentation()
         {
             if (_deadVisualEffect)
             {
+                StartCoroutine(PlayTriggerAnimation("Hurt") ) ;
+
                 _deadVisualEffect.gameObject.SetActive(true);
                 _deadVisualEffect.Play();
 
                 yield return new WaitForSeconds(0.6f);
 
-            }
-
-
-            if (_deadAnimationTrigger == "NONE")
-            {
                 _visualMesh.transform.Translate(new Vector2(10000000, 1000000));
                 yield return new WaitForSeconds(2.5f);
                 if (_deadVisualEffect)
@@ -245,9 +242,10 @@ namespace Vanaring
                 }
 
             }
+
             else
             {
-                yield return PlayTriggerAnimation(_deadAnimationTrigger);
+                yield return PlayTriggerAnimation("Dead");
             }
         }
         #endregion 

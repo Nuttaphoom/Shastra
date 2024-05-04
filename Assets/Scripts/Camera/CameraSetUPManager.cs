@@ -105,7 +105,6 @@ namespace Vanaring
 
             Camera.main.GetComponent<CinemachineBrain>().ActiveVirtualCamera.VirtualCameraGameObject.SetActive(false);
 
-            Debug.Log("Disable " + Camera.main.GetComponent<CinemachineBrain>().ActiveVirtualCamera.VirtualCameraGameObject); 
 
             _savedVMCamera.gameObject.SetActive(true);
             _savedVMCamera.GetComponent<CinemachineVirtualCamera>().LookAt = _oldAimPoint; 

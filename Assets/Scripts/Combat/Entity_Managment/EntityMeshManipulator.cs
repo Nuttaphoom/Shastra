@@ -77,7 +77,10 @@ namespace Vanaring
                 entityPerformAction.Add(entity);
 
             HideAllEntityMesh(entityPerformAction);
-            ShowEntityMesh(entityPerformAction); 
+            ShowEntityMesh(entityPerformAction);
+
+            RestoreRotateMeshLookAt(); 
+
         }
 
         private void OnNewRoundBegin(Null n)
@@ -172,7 +175,6 @@ namespace Vanaring
             {
                 if (entityException != null && entityException.Contains(mesh))
                     continue;
-
 
                 mesh.GetComponent<CombatEntityAnimationHandler>().HideVisualMesh();//.SetActive(false);
             }
