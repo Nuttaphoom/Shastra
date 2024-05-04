@@ -191,8 +191,7 @@ namespace Vanaring
         [SerializeField]
         public VisualEffect _deadVisualEffect;
 
-        [SerializeField]
-        private string _deadAnimationTrigger = "NONE";
+        private const string _deadAnimationTrigger = "Dead";
 
         private CombatEntity _combatEntity;
 
@@ -245,7 +244,7 @@ namespace Vanaring
 
             else
             {
-                yield return PlayTriggerAnimation("Dead");
+                yield return PlayTriggerAnimation(_deadAnimationTrigger);
             }
         }
         #endregion 
