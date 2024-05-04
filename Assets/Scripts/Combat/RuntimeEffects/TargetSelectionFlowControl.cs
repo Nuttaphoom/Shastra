@@ -50,8 +50,6 @@ namespace Vanaring
                 _eventBroadcaster.OpenChannel<TargetSelectingData>("OnTargetSelectionEnter");
             }
 
-
-
             return _eventBroadcaster;
         }
 
@@ -203,39 +201,7 @@ namespace Vanaring
                 _forceStop = true;
             }
         }
-        //public IEnumerator InitializeTargetSelectionSchemeWithoutSelect(List<CombatEntity> _targets)
-        //{
-        //    if (_activlySelecting)
-        //        throw new Exception("Try to active selection scheme while it is already active");
-
-        //    _activlySelecting = true;
-        //    ValidateData();
-
-        //    foreach (var v in _targets)
-        //    {
-        //        _validTargets.Add(v);
-        //    }
-
-        //    transform.DOMove(Vector3.zero, 3.0f);
-        //    while (true)
-        //    {
-        //        if (_forceStop)
-        //        {
-        //            _forceStop = false;
-        //            ColorfulLogger.LogWithColor("Cancel Target Selection", Color.green);
-        //            goto End;
-        //        }
-
-        //        //_targetSelectionGUI.SelectTargetPointer(_validTargets[_currentSelectIndex]);
-
-        //        yield return _validTargets[_currentSelectIndex];
-
-        //    }
-
-        //End:
-        //    _targetSelectionGUI.EndSelectionScheme();
-        //    _activlySelecting = false;
-        //}
+        
         public IEnumerator InitializeActionTargetSelectionScheme(CombatEntity caster, ActorAction actorAction, bool randomTarget = false)
         {
             //ColorfulLogger.LogWithColor("Start target selection with " + actorAction , Color.green);
@@ -318,8 +284,7 @@ namespace Vanaring
                             var cam = CameraSetUPManager.Instance.SetVMTOAllAlly();
                             _validTargets = ArrangeEntityListInXAxis(_validTargets,cam.transform.right);
                             //_selectingTarget.Clear();
-                            Debug.Log("_valid target.count : " + _validTargets.Count);
-                            Debug.Log("currently select is " + _currentSelectIndex); 
+     
                             //_selectingTarget.Add(_validTargets[_currentSelectIndex]);  
 
 
@@ -368,7 +333,7 @@ namespace Vanaring
                 caster.ActionHandler.AddActionQueue(actorAction);
             }
 
-            else if (!randomTarget)
+            if (!randomTarget)
             {
                 CameraSetUPManager.Instance.RestoreVMCameraState();
             }
