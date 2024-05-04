@@ -32,7 +32,6 @@ namespace Vanaring
                     _entity = (playerData as GameObject).gameObject.GetComponent<CombatEntity>();
                 else
                 {
-                    Debug.Log(playerData);  
 
                     throw new Exception("_entity can not be assigned, playerData is " + playerData);
                 }
@@ -41,6 +40,7 @@ namespace Vanaring
                 if (_entity != null)
                     _entity.StartCoroutine(_entity.GetComponent<CombatEntityAnimationHandler>().PlayTriggerAnimation(_triggerID));
                 else if ((playerData as GameObject).TryGetComponent(out Animator animator)){
+                    ColorfulLogger.LogWithColor("" + (playerData as GameObject).gameObject.name + " play trigger " + _triggerID + " in timeline clip", Color.red);
                     animator.SetTrigger(_triggerID); 
                 }else
                 {
