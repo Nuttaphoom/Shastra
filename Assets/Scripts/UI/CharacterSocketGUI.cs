@@ -43,8 +43,8 @@ namespace Vanaring
         private int maxHpVal;
         private int mpVal;
         private int maxMpVal;
-        private int lightVal = 3;
-        private int darkVal = 3;
+        private int lightVal;
+        private int darkVal;
 
         private CombatCharacterSheetSO _characterSheetSO;
 
@@ -100,6 +100,12 @@ namespace Vanaring
             maxHpVal = (int)_combatEntity.StatsAccumulator.GetPeakHPAmount();
             mpVal = (int)_combatEntity.SpellCaster.GetMP;
             maxMpVal = (int)_combatEntity.SpellCaster.GetPeakMP;
+
+            //lightVal = (int)_combatEntity.SpellCaster.GetPeakEnergyAmout(RuntimeMangicalEnergy.EnergySide.LightEnergy);
+            //darkVal = (int)_combatEntity.SpellCaster.GetPeakEnergyAmout(RuntimeMangicalEnergy.EnergySide.DarkEnergy);
+
+            lightVal = 3;
+            darkVal = 3;
 
             secondHpBar.fillAmount = (float)hpVal / maxHpVal;
 
@@ -241,20 +247,25 @@ namespace Vanaring
         private void OnEnergyModified(CombatEntity caster, RuntimeMangicalEnergy.EnergySide side, int val)
         {
             Debug.Log(side + " val: " + val);
-            if(side == RuntimeMangicalEnergy.EnergySide.LightEnergy)
+            
+            if (side == RuntimeMangicalEnergy.EnergySide.LightEnergy)
             {
-                if(lightVal > 0 && lightVal < 3)
+                Debug.Log(lightVal);
+                if (lightVal > 0)
                 {
                     lightVal += val;
                 }
+                lightVal = Mathf.Clamp(lightVal, 0, 3);
                 innerFill.fillAmount = lightVal * 0.167f;
             }
             else
             {
-                if (darkVal > 0 && darkVal < 3)
+                Debug.Log(darkVal);
+                if (darkVal > 0)
                 {
                     darkVal += val;
                 }
+                darkVal = Mathf.Clamp(darkVal, 0, 3);
                 outterFill.fillAmount = darkVal * 0.167f;
             }
         }

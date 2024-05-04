@@ -194,7 +194,7 @@ namespace Vanaring
 
             PersistentSaveLoadManager.Instance.CaptureToTemp();
             //yield return CreateTransitionScene();
-            Debug.Log("Scene begin Load");
+            //Debug.Log("Scene begin Load");
             transitionManager.TransitionObj.SubOnSceneLoaderBegin(LoadNewScene);
             LoadNewScene(null);
             yield return null;
@@ -206,7 +206,7 @@ namespace Vanaring
 
             yield return new WaitForSeconds(1.0f);
 
-            Debug.Log("Unload cur scene");
+            //Debug.Log("Unload cur scene");
 
             if (_currentLoadedLocationScene != null)
                 UnloadLocation();

@@ -36,7 +36,7 @@ namespace Vanaring
             }
             missionButtonList[selectingIndex].SelectThisMission();
             missionButtonTemplate.gameObject.SetActive(false);
-            Debug.Log(missionButtonList.Count);
+            //Debug.Log(missionButtonList.Count);
         }
 
         public void NextMissionIndex()
