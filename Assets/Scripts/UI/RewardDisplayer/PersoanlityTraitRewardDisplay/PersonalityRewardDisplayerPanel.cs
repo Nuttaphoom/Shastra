@@ -127,6 +127,7 @@ namespace Vanaring
 
                 if (Math.Floor(curExpGain) >= expReqVal) //level up condition
                 {
+                    Debug.Log("curExpGain : " + curExpGain); 
                     curExpGain = curExpGain - expReqVal;
                     isTraitHasReward = true;
                     personalityTrait.SetStat(type, personalityTrait.GetStat(type).Getlevel()+1, curExpGain);
