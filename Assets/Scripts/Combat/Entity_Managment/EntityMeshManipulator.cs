@@ -189,6 +189,7 @@ namespace Vanaring
 
         public void ShowEntityMesh(List<CombatEntity> entityToShow)
         {
+
             foreach (var entity in entityToShow)
             {
                 entity.GetComponent<CombatEntityAnimationHandler>().ShowVisualMesh();//.SetActive(false);

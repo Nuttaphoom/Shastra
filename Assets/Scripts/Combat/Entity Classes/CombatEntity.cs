@@ -231,7 +231,6 @@ namespace Vanaring
 
         public virtual IEnumerator TurnEnter()
         {
-            
             _isExhausted = false;
 
             if (_statusEffectHandler == null)

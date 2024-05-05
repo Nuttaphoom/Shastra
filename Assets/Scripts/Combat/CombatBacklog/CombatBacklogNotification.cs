@@ -134,7 +134,6 @@ namespace Vanaring
 
         private void NotifyOnStatusEffectApplied(EntityStatusEffectPair pair)
         {
-            Debug.Log("try to  NotifyOnStatusEffectApplied          ");
 
             string comment = GetStatusEffectComment(pair, true);
             
@@ -145,7 +144,6 @@ namespace Vanaring
         }
         private void NotifyOnEntityPerformAction(EntityActionPair entityActionPair)
         {
-            Debug.Log("try to  NotifyOnEntityPerformAction          ");
 
             string comment = GetPerformedActionBacklog(entityActionPair);
 
