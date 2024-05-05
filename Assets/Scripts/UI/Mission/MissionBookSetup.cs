@@ -31,6 +31,7 @@ namespace Vanaring
             {
                 MissionButtonObjectGUI newButton = Instantiate(missionButtonTemplate, verticalLayout.transform);
                 newButton.Init(dungeon, mission, orderIndex);
+                newButton.gameObject.SetActive(true);
                 newButton.UnSelectThisMission();
                 missionButtonList.Add(newButton);
             }
