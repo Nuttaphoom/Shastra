@@ -93,33 +93,6 @@ namespace Vanaring
        
         #endregion
 
-        #region HighlightSet
-        public void SetHighlightActiveEntity(CombatEntity entity)
-        {
-            for (int i = 0; i < combatEntityList.Count; i++)
-            {
-                if (combatEntityList[i] == entity)
-                {
-                    characterSocketList[i].ToggleOnTurnHighlightDisplay(true);
-                    return;
-                }
-            }
-        }
-
-        public void SetUnHighlightActiveEntity(CombatEntity entity)
-        {
-            for (int i = 0; i < combatEntityList.Count; i++)
-            {
-                if (combatEntityList[i] == entity)
-                {
-                    characterSocketList[i].ToggleOnTurnHighlightDisplay(false);
-                    return; 
-                }
-            }
-
-        }
-        #endregion
-
         #region SizingSet
         public void SetSizeExpandGUI(CombatEntity entity)
         {

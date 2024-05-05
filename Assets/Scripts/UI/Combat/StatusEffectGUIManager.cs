@@ -52,6 +52,8 @@ namespace Vanaring
 
             statusRuntime.SubOnTTLUpdate((int ttl) => { UpdateEffectTTL(statusStackID, ttl); });
 
+            ColorfulLogger.LogWithColor(effect.StatusEffectFactory.StatusName + " applied to " + _ownerCombatEntity.CombatCharacterSheet.CharacterName, Color.cyan);
+
             if (!statusEffectIconDict.ContainsKey(statusStackID))
             {
                 CreateNewEffectIcon(effect, statusStackID);

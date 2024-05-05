@@ -380,6 +380,45 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_ShowMaskGraphic: 1
+--- !u!1 &1183278535913337950
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1692169796083875621}
+  m_Layer: 5
+  m_Name: HPBarSection
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1692169796083875621
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1183278535913337950}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 5450001921188758881}
+  - {fileID: 5690824242704018638}
+  - {fileID: 7755207832288029834}
+  m_Father: {fileID: 8535295995205973850}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1324319070020519762
 GameObject:
   m_ObjectHideFlags: 0
@@ -545,7 +584,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
-  m_Father: {fileID: 8535295995205973850}
+  m_Father: {fileID: 1692169796083875621}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -960,6 +999,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7569447226861023604}
   - component: {fileID: 8937944928045761869}
+  - component: {fileID: 2893328576359448893}
   m_Layer: 5
   m_Name: BuffDebuffSlot
   m_TagString: Untagged
@@ -1014,6 +1054,20 @@ MonoBehaviour:
   m_ChildScaleWidth: 1
   m_ChildScaleHeight: 1
   m_ReverseArrangement: 0
+--- !u!114 &2893328576359448893
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2704827284780447326}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a4d7f63a06ed9a479145bf71ce035a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  templateIcon: {fileID: 3804660575994861708}
+  statusBarLayout: {fileID: 2704827284780447326}
 --- !u!1 &3031685804229790324
 GameObject:
   m_ObjectHideFlags: 0
@@ -1288,6 +1342,7 @@ MonoBehaviour:
   hpNumText: {fileID: 4091361209421053035}
   mpNumText: {fileID: 1982809684909445300}
   statusBarLayout: {fileID: 2704827284780447326}
+  _statusEffectGUIManager: {fileID: 2893328576359448893}
   effectIcon: {fileID: 3804660575994861708}
   slotBarRatios:
   - 0
@@ -2076,7 +2131,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
-  m_Father: {fileID: 8535295995205973850}
+  m_Father: {fileID: 1692169796083875621}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -2134,7 +2189,7 @@ GameObject:
   - component: {fileID: 962380378494507686}
   - component: {fileID: 5985947689926244980}
   m_Layer: 5
-  m_Name: ManaBarSection
+  m_Name: MPBarSection
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2610,10 +2665,8 @@ RectTransform:
   m_Children:
   - {fileID: 5800834521115473583}
   - {fileID: 5678318249654399888}
-  - {fileID: 5450001921188758881}
-  - {fileID: 5690824242704018638}
+  - {fileID: 1692169796083875621}
   - {fileID: 2337464702680097323}
-  - {fileID: 7755207832288029834}
   - {fileID: 7498984309132376196}
   - {fileID: 5886118824515504570}
   - {fileID: 3212582220597648249}
@@ -3024,10 +3077,10 @@ RectTransform:
   m_GameObject: {fileID: 8424162992614836484}
   m_LocalRotation: {x: -0, y: -0, z: 0.0073718056, w: 0.9999728}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.8, y: 0.8, z: 0.8}
+  m_LocalScale: {x: 0.8000001, y: 0.8000001, z: 0.8}
   m_ConstrainProportionsScale: 1
   m_Children: []
-  m_Father: {fileID: 8535295995205973850}
+  m_Father: {fileID: 1692169796083875621}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0.845}
   m_AnchorMin: {x: 0, y: 0}
@@ -3224,6 +3277,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   timeToLiveText: {fileID: 8851505740955777194}
   effectImage: {fileID: 6883267056966900429}
+  cur_ttl: 99
 --- !u!1 &8663233090791473715
 GameObject:
   m_ObjectHideFlags: 0
