@@ -17,7 +17,7 @@ namespace Vanaring
         
         private const string CasterTransformTag = "Combat/Animation/Action/CasterTransform";
         private const string TargetTransformTag = "Combat/Animation/Action/TargetTransform";
-        
+
         #endregion
 
         #region Caster/Target Transform  
@@ -43,7 +43,7 @@ namespace Vanaring
         private bool _useActionTimelinePrefabLocation = false;
 
         [SerializeField, AllowNesting, NaughtyAttributes.ShowIf("_useActionTimelinePrefabLocation")]
-        private ActionAnimationLocationBinder _actionAnimationLocationBinder;  
+        private ActionAnimationLocationBinder _actionAnimationLocationBinder;
 
 
         //private List<GameObject> _destroyedWithTimeline = new List<GameObject>();
@@ -129,22 +129,22 @@ namespace Vanaring
                 _lookAtBinder.BindLookAtTargetsToEnemies(_targetTransform);
 
         }
- 
+
 
         #region Caster Target Transform Set up
         private void AssignCasterTargetTransform(ActionTimelineSettingStruct actionTimelineSetting)
         {
             //Find Caster Transform 
             List<GameObject> casterTransforms = ObjectFindingTool.QueryObjectInChildren(transform, CasterTransformTag);
-            List<GameObject> targetTransforms = ObjectFindingTool.QueryObjectInChildren(transform, TargetTransformTag);
-
-       
-
+            List<GameObject> targetTransforms = ObjectFindingTool.QueryObjectInChildren(transform, TargetTransformTag); 
+ 
+            
             if (casterTransforms.Count != 1)
                 throw new Exception("CasterTransform count is not right, foundObject.count is " + casterTransforms.Count);
 
             if (targetTransforms.Count == 0)
                 throw new Exception("Target transform can not be found");
+      
 
             //Assign Caster and Target Transforms
             _casterTransform = casterTransforms[0].transform ;
