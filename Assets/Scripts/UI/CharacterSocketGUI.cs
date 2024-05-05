@@ -152,7 +152,6 @@ namespace Vanaring
 
             if (!effectIconDict.ContainsKey(statusStackID))
             {
-                //Debug.Log(statusStackID);
                 EffectIconGUI newEffectIcon = Instantiate(effectIcon, statusBarLayout.transform);
                 newEffectIcon.Init(statusRuntime);
                 newEffectIcon.gameObject.SetActive(true);
@@ -182,7 +181,7 @@ namespace Vanaring
             if (!isexpire)
                 return;
             Debug.Log("Destroy effect");
-            Destroy(effectIconDict[stackID]);
+            Destroy(effectIconDict[stackID].gameObject);
             effectIconDict.Remove(stackID);
         }
 
