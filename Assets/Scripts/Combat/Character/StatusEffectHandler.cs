@@ -125,7 +125,8 @@ namespace Vanaring
 
             GetEventBroadcaster().InvokeEvent(new EntityStatusEffectPair()
             {
-                Actor = applier,
+                ApplierEntity = applier,
+                AppliedEntity = _appliedEntity,
                 StatusEffectFactory = statusEffectFactory, 
                 ApplierFactory = applierFactory,
                 StatusRuntime = runtimeEffect 

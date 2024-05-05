@@ -14,10 +14,11 @@ namespace Vanaring
     {
         [SerializeField]
         private string _comment;
-        public string GetComment(CombatEntity characterInConversation)
+        public string GetComment(CombatEntity characterInConversation )
         {
             string characterName = characterInConversation.CombatCharacterSheet.CharacterName;
-            return _comment.Replace("[CharacterName]", characterName);
+            _comment = _comment.Replace("[CharacterName]", characterName);
+            return _comment ;
         }
     }
     [CreateAssetMenu(fileName = "CommentatorSO", menuName = "ScriptableObject/CombatBacklog/Commentator")]
