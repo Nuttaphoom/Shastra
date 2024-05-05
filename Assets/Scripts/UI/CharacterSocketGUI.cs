@@ -48,7 +48,7 @@ namespace Vanaring
 
         private CombatCharacterSheetSO _characterSheetSO;
 
-        Dictionary<string, EffectIconGUI> effectIconDict = new Dictionary<string, EffectIconGUI>();
+        private Dictionary<string, EffectIconGUI> effectIconDict = new Dictionary<string, EffectIconGUI>();
 
         private CombatEntity _combatEntity;
 
@@ -140,19 +140,40 @@ namespace Vanaring
 
             statusRuntime.SubOnTTLUpdate((int ttl) => { UpdateEffectTTL(statusStackID, ttl); });
 
-            EffectIconGUI newEffectIcon = Instantiate(effectIcon, statusBarLayout.transform);
-            newEffectIcon.Init(statusRuntime);
-            newEffectIcon.gameObject.SetActive(true);
             //effectIcon.sprite = effect.StatusEffectFactory.StatusImage;
+
+            Debug.Log("effectIconDict.count :  " + effectIconDict.Count);
+
+            foreach (var key in effectIconDict.Keys)
+            {
+                ColorfulLogger.LogWithColor("key is " + key, Color.red) ;
+            }
+
 
             if (!effectIconDict.ContainsKey(statusStackID))
             {
+                //Debug.Log(statusStackID);
+                EffectIconGUI newEffectIcon = Instantiate(effectIcon, statusBarLayout.transform);
+                newEffectIcon.Init(statusRuntime);
+                newEffectIcon.gameObject.SetActive(true);
+
                 effectIconDict.Add(statusStackID, newEffectIcon);
+
+                
                 Debug.Log("Add new effect icon");
             }
             else
             {
-                UpdateEffectTTL(statusStackID, effect.StatusRuntime.TimeToLive);
+                Debug.Log("Add same debuff");
+                Destroy(effectIconDict[statusStackID]);
+                effectIconDict.Remove(statusStackID);
+
+                EffectIconGUI newEffectIcon = Instantiate(effectIcon, statusBarLayout.transform);
+                newEffectIcon.Init(statusRuntime);
+                newEffectIcon.gameObject.SetActive(true);
+                effectIconDict.Add(statusStackID, newEffectIcon);
+                
+                //UpdateEffectTTL(statusStackID, effect.StatusRuntime.TimeToLive);
             }
         }
 
@@ -160,14 +181,13 @@ namespace Vanaring
         {
             if (!isexpire)
                 return;
+            Debug.Log("Destroy effect");
             Destroy(effectIconDict[stackID]);
             effectIconDict.Remove(stackID);
         }
 
         private void UpdateEffectTTL(string effect, int currentTTL)
         {
-            //Debug.Log("CurTTL: " + currentTTL);
-            Debug.Log(effectIconDict[effect].cur_ttl);
             if (effectIconDict.ContainsKey(effect))
             {
                 effectIconDict[effect].SetTimetoLiveText(currentTTL.ToString());
