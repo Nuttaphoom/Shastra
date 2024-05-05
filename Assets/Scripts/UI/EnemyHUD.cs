@@ -26,11 +26,11 @@ namespace Vanaring
         [SerializeField]
         private TextMeshProUGUI enemyName;
 
+        [SerializeField] private StatusEffectGUIManager _statusEffectGUIManager;
+
         [Header("Energy bar value")]
         private int lightScale = 1;
         private int darkScale = 1;
-
-        [SerializeField] private Image lightImage;
 
         [Header("HP bar value")]
         private float hpVal;
@@ -42,43 +42,42 @@ namespace Vanaring
         [Header("EnergySlot")]
         [SerializeField] private Image lightSlotImg;
         [SerializeField] private Image darkSlotImg;
-        private Color defaultSlotColor;
-        private List<Image> energySlotList = new List<Image>();
         private int maxLight = 0;
         private int maxDark = 0;
-        private bool isSlotBreakDisplay = false;
         [SerializeField] private GameObject horizontalLayout;
-        [SerializeField] private TextMeshProUGUI lightTmpText;
-        [SerializeField] private TextMeshProUGUI darkTmpText;
-
         [SerializeField] private List<Image> darkSlotList;
         [SerializeField] private List<Image> lightSlotList;
         [SerializeField] private List<Image> highlightSlotList;
 
-        #region ConstantValue
-        const float _time_BeforeHideHUD = 1.0f ;
-
-        #endregion
-
+        #region Init
         public void Init(CombatEntity owner)
         {
             _owner = owner;
+            Debug.Log("Init EnemyHUD");
 
-            SubAllEvents(); 
+            SubAllEvents();
 
+            _statusEffectGUIManager.Init(_owner);
+
+            enemyName.text = _owner.CombatCharacterSheet.CharacterName.ToString();
+
+            InitHPBar();
+            InitEnergySlot();
+        }
+        private void InitHPBar()
+        {
             hpVal = _owner.StatsAccumulator.GetHPAmount();
             hpImage.fillAmount = hpVal / _owner.StatsAccumulator.GetPeakHPAmount();
             secondhpImage.fillAmount = hpVal / _owner.StatsAccumulator.GetPeakHPAmount();
 
             maxHP = _owner.StatsAccumulator.GetPeakHPAmount();
-
+        }
+        private void InitEnergySlot()
+        {
             lightScale = _owner.SpellCaster.GetEnergyAmount(RuntimeMangicalEnergy.EnergySide.LightEnergy);
             darkScale = _owner.SpellCaster.GetEnergyAmount(RuntimeMangicalEnergy.EnergySide.DarkEnergy);
             maxLight = _owner.SpellCaster.GetPeakEnergyAmout(RuntimeMangicalEnergy.EnergySide.LightEnergy);
             maxDark = _owner.SpellCaster.GetPeakEnergyAmout(RuntimeMangicalEnergy.EnergySide.DarkEnergy);
-
-            lightTmpText.text = lightScale.ToString();
-            darkTmpText.text = darkScale.ToString();
 
             if (maxLight > maxDark)
             {
@@ -88,20 +87,9 @@ namespace Vanaring
             {
                 DisplayEnergySlot(RuntimeMangicalEnergy.EnergySide.DarkEnergy, maxLight, maxDark, false);
             }
-            //DisplayEnergyBreakSlotOnTarget(RuntimeMangicalEnergy.EnergySide.DarkEnergy, 2);
-
-            enemyName.text = _owner.CombatCharacterSheet.CharacterName.ToString();
         }
-
-        private void Update()
-        {
-            if (_visualMesh.activeSelf)
-            {
-                transform.position = UISpaceSingletonHandler.ObjectToUISpace(_owner.GetComponent<CombatEntityAnimationHandler>().GetHUDSpawnTransform())   ;
-            }
-        }
-
-        
+        #endregion
+        #region SubEvent
         private void OnEnable()
         {
             if (_owner == null)
@@ -113,7 +101,6 @@ namespace Vanaring
         {
             UnSubAllEvents();
         }
-
         private void SubAllEvents()
         {
             _owner.SpellCaster.SubOnModifyEnergy(OnEnergyModified);
@@ -129,9 +116,7 @@ namespace Vanaring
             _owner.SpellCaster.UnSubOnSimulateEnergy(SimulateDisplayEnergyBreakSlotOnTarget);
             _owner.UnSubOnHealVisualEvent(OnHPModified);
         }
-
-    
-
+        #endregion
         #region Energy
         /// <summary>
         /// val = increased value
@@ -207,7 +192,6 @@ namespace Vanaring
                 }
             }
         }
-
         public void SimulateDisplayEnergyBreakSlotOnTarget(EnergyModifyerEffectPair effectPiar )
         {
             int highlightAmount = Mathf.Abs(effectPiar.Amount)  ;
@@ -255,8 +239,6 @@ namespace Vanaring
                 }
             }
         }
-
-
         private void OnEnergyModified(CombatEntity caster, RuntimeMangicalEnergy.EnergySide side, int val)
         {
             if(val == 0)
@@ -273,65 +255,19 @@ namespace Vanaring
                 DisplayEnergySlot(RuntimeMangicalEnergy.EnergySide.DarkEnergy, lightScale, darkScale, true);
             }
         }
-
-        //private IEnumerator SlotBreak(int maxSlot, int curScale)
-        //{
-        //    //Debug.Log("max= " + maxSlot + " cur= " + curScale);
-        //    for (int i = maxSlot-1; i >= 0; i--)
-        //    {
-        //        if (i+1 > curScale)
-        //        {
-        //            //Break
-        //            Color curColor = energySlotList[i].color;
-        //            curColor.a = 0.3f;
-        //            energySlotList[i].color = curColor;
-        //        }
-        //        else
-        //        {
-        //            //Stay
-        //            Color curColor = energySlotList[i].color;
-        //            curColor.a = 1.0f;
-        //            energySlotList[i].color = curColor;
-        //        }
-        //        yield return new WaitForSeconds(0.1f);
-        //    }
-        //    yield return null;
-        //}
-
-        //private IEnumerator SlotRecovery()
-        //{
-        //    int i = 0;
-        //    foreach (Image slot in energySlotList)
-        //    {
-        //        //Set recovery pop
-        //        Color curColor = energySlotList[i].color;
-        //        curColor.a = 1.0f;
-        //        curColor = Color.white;
-        //        energySlotList[i].color = curColor;
-        //        yield return new WaitForSeconds(0.1f);
-        //        //Set default sprite
-        //        defaultSlotColor.a = 1.0f;
-        //        energySlotList[i].color = defaultSlotColor;
-        //        i++;
-        //    }
-        //    yield return null;
-        //}
-
         public void HideHUDVisual()
         {
             if (!_visualMesh.activeSelf)
                 return;
-            
-            isSlotBreakDisplay = false;
+           
             _visualMesh.gameObject.SetActive(false); 
         }
-
         public void DisplayHUDVisual()
         {
             if (_visualMesh.activeSelf)
                 return;
 
-            isSlotBreakDisplay = true;
+            Debug.Log("_visualMesh is " + _visualMesh); 
             _visualMesh.gameObject.SetActive(true); 
         }
         public void ClearBreakSlotHighlight()
@@ -348,7 +284,6 @@ namespace Vanaring
                 slot.gameObject.SetActive(false);
             }
         }
-         
         #endregion
         #region HP
         private void OnHPModified(int damage)
@@ -395,48 +330,13 @@ namespace Vanaring
                 Destroy(gameObject);
             }
         }
-
-        //private IEnumerator OnModifyEnergyVisualUpdateCoroutine(CombatEntity caster, RuntimeMangicalEnergy.EnergySide side, int val)
-        //{
-        //    DisplayHUDVisual();
-
-        //    if (side == RuntimeMangicalEnergy.EnergySide.LightEnergy)
-        //    {
-        //        if (_owner.SpellCaster.GetEnergyAmount(RuntimeMangicalEnergy.EnergySide.LightEnergy) + val >= 0)
-        //        {
-        //            lightScale += val;
-        //            lightTmpText.text = lightScale.ToString();
-        //            if (val < 0)
-        //            {
-        //                yield return (SlotBreak(_owner.SpellCaster.GetPeakEnergyAmout(RuntimeMangicalEnergy.EnergySide.LightEnergy), (int)lightScale));
-        //            }
-        //            else
-        //            {
-        //                yield return (SlotRecovery());
-        //            }
-        //        }
-        //    }
-        //    else
-        //    {
-        //        if (_owner.SpellCaster.GetEnergyAmount(RuntimeMangicalEnergy.EnergySide.DarkEnergy) + val >= 0)
-        //        {
-        //            darkScale += val;
-        //            darkTmpText.text = darkScale.ToString();
-        //            if (val < 0)
-        //            {
-        //                yield return (SlotBreak(_owner.SpellCaster.GetPeakEnergyAmout(RuntimeMangicalEnergy.EnergySide.DarkEnergy), (int)darkScale));
-        //            }
-        //            else
-        //            {
-        //                yield return (SlotRecovery());
-        //            }
-        //        }
-        //    }
-
-        //    yield return new WaitForSeconds(0.5f); 
-
-        //    HideHUDVisual(); 
-        //}
         #endregion
+        private void Update()
+        {
+            if (_visualMesh.activeSelf)
+            {
+                transform.position = UISpaceSingletonHandler.ObjectToUISpace(_owner.GetComponent<CombatEntityAnimationHandler>().GetHUDSpawnTransform());
+            }
+        }
     }
 }

@@ -16,10 +16,11 @@ namespace Vanaring
             timeToLiveText.text = ttl;
         }
         
-        public void Init(StatusRuntimeEffect sre)
+        public void Init(EntityStatusEffectPair statusEffectData)
         {
-            timeToLiveText.text = sre.TimeToLive.ToString();
-            cur_ttl = sre.TimeToLive;
+            timeToLiveText.text = statusEffectData.StatusRuntime.TimeToLive.ToString();
+            cur_ttl = statusEffectData.StatusRuntime.TimeToLive;
+            effectImage.sprite = statusEffectData.StatusEffectFactory.StatusImage;
         }
 
     }
