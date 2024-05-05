@@ -26,6 +26,8 @@ namespace Vanaring
         [SerializeField]
         private TextMeshProUGUI enemyName;
 
+        [SerializeField] private StatusEffectGUIManager _statusEffectGUIManager;
+
         [Header("Energy bar value")]
         private int lightScale = 1;
         private int darkScale = 1;
@@ -64,7 +66,9 @@ namespace Vanaring
         {
             _owner = owner;
 
-            SubAllEvents(); 
+            SubAllEvents();
+
+            _statusEffectGUIManager.Init(_owner);
 
             hpVal = _owner.StatsAccumulator.GetHPAmount();
             hpImage.fillAmount = hpVal / _owner.StatsAccumulator.GetPeakHPAmount();
