@@ -32,7 +32,6 @@ namespace Vanaring
 
         private void UnSubAllEvent()
         {
-            Debug.Log("unsub all event");
 
             _ownerCombatEntity.UnSubOnStatusEffectApplied(AddNewStatusEffectIcon);
         }
@@ -40,7 +39,6 @@ namespace Vanaring
         public void Init(CombatEntity combatEntity)
         {
             _ownerCombatEntity = combatEntity;
-            Debug.Log("Init StatusEffectGUIManager");
             SubAllEvent();
         }
 

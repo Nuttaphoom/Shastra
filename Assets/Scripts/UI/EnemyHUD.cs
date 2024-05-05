@@ -53,7 +53,6 @@ namespace Vanaring
         public void Init(CombatEntity owner)
         {
             _owner = owner;
-            Debug.Log("Init EnemyHUD");
 
             SubAllEvents();
 

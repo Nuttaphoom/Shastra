@@ -160,10 +160,11 @@ namespace Vanaring
                     yield return statusEffect.OnExecuteRuntimeDone(_appliedEntity);
 
                     statusEffect.UpdateTTLCondition();
+
                 }
             }
-
-            RunStatusEffectExpiredScheme(); 
+            Debug.Log("ExecuteStatusRuntimeEffectCoroutine");
+            yield return RunStatusEffectExpiredScheme(); 
         }
 
         public IEnumerator ExecuteAttackStatusRuntimeEffectCoroutine()
