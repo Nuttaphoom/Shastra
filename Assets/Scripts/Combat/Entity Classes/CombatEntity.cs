@@ -241,6 +241,7 @@ namespace Vanaring
 
             yield return (_statusEffectHandler.ExecuteStatusRuntimeEffectCoroutine());
 
+
             yield return _ailmentHandler.CheckForExpiration();
 
             _ailmentHandler.ProgressAlimentTTL();

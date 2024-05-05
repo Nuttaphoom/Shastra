@@ -157,6 +157,8 @@ namespace Vanaring
                     statusEffect.UpdateTTLCondition();
                 }
             }
+
+            RunStatusEffectExpiredScheme(); 
         }
 
         public IEnumerator ExecuteAttackStatusRuntimeEffectCoroutine()
