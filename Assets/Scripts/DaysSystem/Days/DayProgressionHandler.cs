@@ -66,6 +66,9 @@ namespace Vanaring
             SceneDataSO dayDataSO = PersistentAddressableResourceLoader.Instance.LoadResourceOperation<SceneDataSO>(DayProgressionSceneAddress);
             PersistentSceneLoader.Instance.LoadGeneralScene(dayDataSO);
 
+            while (PersistentSceneLoader.Instance.IsSceneLoading) 
+                yield return new WaitForEndOfFrame() ;
+
             DayDataSO PreviousDayData  = GetSemesterDataSO.GetDayData(_currentDate);
             DayDataSO NextDayData = GetSemesterDataSO.GetDayData(_currentDate + 1); 
             yield return (_progressionDisplayer.DisplayRewardUICoroutine(new DayProgressionData() { 

@@ -16,12 +16,21 @@ MonoBehaviour:
   maxPoint: 100
   Checkpoint:
   - cp_requirepoint: 100
-    RewardIsItem: 0
-    RewardIsSpell: 1
-    cp_spellReward:
-      _rewards: {fileID: 11400000, guid: 7859a9868c90cae4e863cdca4ce1ec1d, type: 2}
-    cp_itemReward:
-      _rewards: {fileID: 11400000, guid: cab6a1cf038672342bb1ea8975adc564, type: 2}
+    _eventRewardData:
+      _rewardIsItem: 1
+      _rewardIsSpell: 0
+      _rewardIsCash: 0
+      _spellReward:
+        _rewards: {fileID: 0}
+      _itemReward:
+        _rewards: {fileID: 11400000, guid: cab6a1cf038672342bb1ea8975adc564, type: 2}
+      _cashReward:
+        _rewards:
+          _rewardData:
+            RewardName: 
+            RewardDescription: 
+            RewardIcon: {fileID: 0}
+          _amount: -1
   lectureRequieBoosts:
   - trait: 3
     requirelevel: 1
@@ -30,15 +39,15 @@ MonoBehaviour:
     _fieldDescription: 'Learn the art of <b>Herbology</b>, harnessing the power of
       herbs and plants to support you in combat.
 
-      
 
-      
 
-      
 
-      
 
-      
+
+
+
+
+
 
 '
     _fieldImage: {fileID: 21300000, guid: fc18948e51aff8d4daf02e6275b7d979, type: 3}

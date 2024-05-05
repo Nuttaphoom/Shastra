@@ -42,10 +42,14 @@ namespace Vanaring
 
         private IEnumerator WaitUntilDisplayFinish()
         {
+            Debug.Log("waiting for rewardpanel : " + _rewardPanel.gameObject.name);
             while (_rewardPanel.GetComponent<RewardPanelType>().IsFinishingDisplayUI == false)
             {
+                Debug.Log("waiting  : " + _rewardPanel.gameObject.name);
+
                 yield return new WaitForEndOfFrame();
             }
+            Debug.Log("end waiting rewardpanel in  : " + _rewardPanel.gameObject.name);
 
             MonoBehaviour.Destroy(_rewardPanel.gameObject);
             _rewardPanel = null; 

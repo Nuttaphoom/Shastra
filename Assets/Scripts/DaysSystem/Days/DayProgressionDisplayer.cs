@@ -34,6 +34,8 @@ namespace Vanaring
             rewardDisplayGOTemplate.ReceiveDayProgressionDetail(_dayProgressionData);
             yield return null;
         }
+
+        
     }
 
 

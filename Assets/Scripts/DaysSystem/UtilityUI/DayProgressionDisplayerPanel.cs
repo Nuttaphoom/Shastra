@@ -84,5 +84,7 @@ namespace Vanaring
         {
             dayText.text = weekDays[progressionData.NextDay % 6] + " <color=#FEFF94>" + GetOrdinalNumText((progressionData.NextDay + 1).ToString()) + "</color>";
         }
+
+       
     }
 }

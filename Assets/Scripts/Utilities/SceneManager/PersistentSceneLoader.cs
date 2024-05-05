@@ -21,6 +21,7 @@ namespace Vanaring
         private SceneDataSO _sceneToLoad;
         private TransitionObject transitionScreenObj;
 
+        
 
         [SerializeField]
         private TransitionSceneManager transitionManager;
@@ -40,13 +41,13 @@ namespace Vanaring
         //Renenber last scene to load, this include both Location and general scene 
         private List<SceneDataSO> _stackLoadedSceneData = new List<SceneDataSO>()  ;
 
-        #region GETTER
+         #region GETTER
         public SceneDataSO GetStackLoadedDataScene(int depth = 0)
         {
-            return _stackLoadedSceneData[_stackLoadedSceneData.Count - 1 - depth];
-             
+            return _stackLoadedSceneData[_stackLoadedSceneData.Count - 1 - depth]; 
+        }
 
-         }
+        public bool IsSceneLoading => _isLoading ; 
 
         #endregion
 
