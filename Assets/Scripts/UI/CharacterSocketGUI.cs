@@ -144,15 +144,14 @@ namespace Vanaring
 
             Debug.Log("effectIconDict.count :  " + effectIconDict.Count);
 
-            foreach (var key in effectIconDict.Keys)
-            {
-                ColorfulLogger.LogWithColor("key is " + key, Color.red) ;
-            }
+            //foreach (var key in effectIconDict.Keys)
+            //{
+            //    ColorfulLogger.LogWithColor("key is " + key, Color.red) ;
+            //}
 
 
             if (!effectIconDict.ContainsKey(statusStackID))
             {
-                //Debug.Log(statusStackID);
                 EffectIconGUI newEffectIcon = Instantiate(effectIcon, statusBarLayout.transform);
                 newEffectIcon.Init(statusRuntime);
                 newEffectIcon.gameObject.SetActive(true);
@@ -165,7 +164,7 @@ namespace Vanaring
             else
             {
                 Debug.Log("Add same debuff");
-                Destroy(effectIconDict[statusStackID]);
+                Destroy(effectIconDict[statusStackID].gameObject);
                 effectIconDict.Remove(statusStackID);
 
                 EffectIconGUI newEffectIcon = Instantiate(effectIcon, statusBarLayout.transform);
@@ -182,7 +181,7 @@ namespace Vanaring
             if (!isexpire)
                 return;
             Debug.Log("Destroy effect");
-            Destroy(effectIconDict[stackID]);
+            Destroy(effectIconDict[stackID].gameObject);
             effectIconDict.Remove(stackID);
         }
 
