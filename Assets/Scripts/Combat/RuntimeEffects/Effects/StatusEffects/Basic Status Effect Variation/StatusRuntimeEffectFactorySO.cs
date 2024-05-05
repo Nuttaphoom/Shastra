@@ -207,7 +207,6 @@ namespace Vanaring
             if (! _property.InfiniteTTL)
                 _timeToLive -= 1;
 
-            Debug.Log("Update TTL to " + _timeToLive);
 
             EventBroadcaster.InvokeEvent<int>(_timeToLive, "OnTTLUpdate");
 
@@ -218,7 +217,12 @@ namespace Vanaring
             return (_evokeKey == evokeKey) ;
         }
 
-        public virtual IEnumerator OnStatusEffecExpire(CombatEntity caster) 
+        /// <summary>
+        /// applier is NOT the applied entity
+        /// </summary>
+        /// <param name="applier"></param>
+        /// <returns></returns>
+        public virtual IEnumerator OnStatusEffecExpire(CombatEntity applier) 
         {
             yield return null; 
         }

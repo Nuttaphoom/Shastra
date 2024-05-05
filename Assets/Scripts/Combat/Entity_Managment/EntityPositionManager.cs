@@ -246,15 +246,11 @@ namespace Vanaring
             entity.transform.forward = data.Location.transform.forward;   
 
 
-            //ColorfulLogger.LogWithColor("" + entity.gameObject.name + " forward is set to 's " + data.Location.gameObject.name , Color.yellow) ;
-            //ColorfulLogger.LogWithColor("" + entity.gameObject.name + " forward is " + entity.transform.forward, Color.yellow);
-
             return; 
 
         } 
         public void OccupieAnyValidLocation(ECompetatorSide side, CombatEntity entity   )
         {
-            ColorfulLogger.LogWithColor(entity.gameObject.name + " OccupieAnyValidLocation", Color.yellow);
 
 
             if (IsThisEntityOccupyLocation(entity) != null) {
@@ -345,7 +341,6 @@ namespace Vanaring
 
         private void RelocateEntityToitsOccupiedPosition(List<CombatEntity> onlyThisEntity = null)
         {
-            ColorfulLogger.LogWithColor("RelocateEntityToitsOccupiedPosition", Color.yellow);
 
             foreach (var occupiedData in GetAllOccupiedLocation())
             {
@@ -355,7 +350,6 @@ namespace Vanaring
                         continue;
                 }
 
-                ColorfulLogger.LogWithColor("occupiedData.EntityStandingHere : " + occupiedData.EntityStandingHere.gameObject.name, Color.yellow);
 
                 occupiedData.EntityStandingHere.transform.position = occupiedData.Location.position;
                 occupiedData.EntityStandingHere.transform.rotation= occupiedData.Location.rotation;
