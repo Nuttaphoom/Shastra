@@ -88,7 +88,7 @@ namespace Vanaring
 
         public string GetStatusEffectComment(EntityStatusEffectPair pair, bool onApplied)
         {
-            CombatEntity entity = pair.Actor;
+            CombatEntity entity = pair.AppliedEntity ;
             var action = pair.ApplierFactory;
             string comment = null ;
             
@@ -119,6 +119,7 @@ namespace Vanaring
         }
         private void NotifyAilmentControl(EntityAilmentEffectPair ailment)
         {
+
             string comment = GetAilmentBacklog(ailment.Actor, ailment.Ailment, true, false);
 
             if (comment != "")
@@ -133,7 +134,10 @@ namespace Vanaring
 
         private void NotifyOnStatusEffectApplied(EntityStatusEffectPair pair)
         {
+            Debug.Log("try to  NotifyOnStatusEffectApplied          ");
+
             string comment = GetStatusEffectComment(pair, true);
+            
 
             if (comment != "")
                 _combatBacklogDisplayer.EnqueueUtilityTab(comment);
@@ -141,8 +145,10 @@ namespace Vanaring
         }
         private void NotifyOnEntityPerformAction(EntityActionPair entityActionPair)
         {
+            Debug.Log("try to  NotifyOnEntityPerformAction          ");
+
             string comment = GetPerformedActionBacklog(entityActionPair);
-            
+
             if (comment != "")
                 _combatBacklogDisplayer.EnqueueActionTab(comment); 
         }

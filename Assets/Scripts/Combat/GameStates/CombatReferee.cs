@@ -301,7 +301,9 @@ namespace Vanaring
         {
             while (true)
             {
-                yield return _sideTurnDisplayerManager.DisplaySideRoundCoroutine(_currentSide); 
+                yield return _sideTurnDisplayerManager.DisplaySideRoundCoroutine(_currentSide);
+
+                yield return _combatRefereeStateHandler.StateEnter(); 
 
                 GetEventBroadcaster().InvokeEvent<Null>(null,"OnNewRoundBegin");
 

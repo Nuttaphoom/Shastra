@@ -109,8 +109,13 @@ namespace Vanaring
             
             else if (factory.Property.Overwrite) 
             {
-                while (_effects[key].Count > 0)   
+                Debug.Log("effect with key " + key + " is overwriteed");
+                while (_effects[key].Count > 0)
+                {
+                    Debug.Log("try to call on status effect explire");
+                    yield return _effects[key][0].OnStatusEffecExpire(applier) ; 
                     _effects[key].RemoveAt(0);
+                }
 
                 _effects[key].Add(effect);                
                 yield return effect.OnStatusEffectApplied(applier);
@@ -125,7 +130,8 @@ namespace Vanaring
 
             GetEventBroadcaster().InvokeEvent(new EntityStatusEffectPair()
             {
-                Actor = applier,
+                ApplierEntity = applier,
+                AppliedEntity = _appliedEntity,
                 StatusEffectFactory = statusEffectFactory, 
                 ApplierFactory = applierFactory,
                 StatusRuntime = runtimeEffect 
@@ -156,6 +162,8 @@ namespace Vanaring
                     statusEffect.UpdateTTLCondition();
                 }
             }
+
+            RunStatusEffectExpiredScheme(); 
         }
 
         public IEnumerator ExecuteAttackStatusRuntimeEffectCoroutine()

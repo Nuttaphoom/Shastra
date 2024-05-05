@@ -53,7 +53,10 @@ namespace Vanaring
         {
             yield return base.OnStatusEffecExpire(caster);
             foreach (var target in _targets)
+            {
+                Debug.Log("" + target.gameObject.name + " attribute mode effect is removed");
                 target.StatsAccumulator.RemoveModifierSecondaryAttributes(secondaryAttributeType, statsMod);
+            }
         }
 
 

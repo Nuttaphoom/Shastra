@@ -87,22 +87,33 @@ namespace Vanaring
                 }
             }
             TargetSelectionFlowControl.Instance.SubOnTargetSelectionEnter(OnTargetSelectionStart_AdjustAllyPosition);
-            TargetSelectionFlowControl.Instance.SubOnTargetSelectionEnd(OnTargetSelectionEnd_ReturnOccupiedAllyPosition);
+            TargetSelectionFlowControl.Instance.SubOnTargetSelectionEnd(OnTargetSelectionEnd_ReturnOccupiedAllyPosition); 
+
             CombatReferee.Instance.SubOnCompetitorEnterCombat(BindActionEvent);
+            CombatReferee.Instance.SubOnNewRoundBegin(OnNewRound_RelocateEntityBack);
+
+            DirectorManager.Instance.SubOnPlayTimelineWithActor(PrepareEnittyLocationForTimelineAnimation); 
 
         }
         #region Observer Methods
+        private void PrepareEnittyLocationForTimelineAnimation(List<CombatEntity> actors = null)
+        {
+            RelocateEntityToitsOccupiedPosition();
+        }
+        private void OnNewRound_RelocateEntityBack(Null n)
+        {
+            RelocateEntityToitsOccupiedPosition(); 
+        }
         private void OnTargetSelectionEnd_ReturnOccupiedAllyPosition(TargetSelectingData data)
         {
             if (!data.targetSelector.TargetAllyTeam || CombatReferee.Instance.GetCompetatorSide(data.caster) != ECompetatorSide.Ally)
-                return;
+                return; 
 
             foreach (var entity in CombatReferee.Instance.GetCompetatorsBySide(ECompetatorSide.Ally))
             {                   
 
                 if (data.caster == entity && ! data.isSucesfullySelected)
                 {
-                    Debug.Log("Auto Occupie new location");
 
                     OccupieLocation(ECompetatorSide.Ally, 0, entity);
 
@@ -131,12 +142,18 @@ namespace Vanaring
         private void BindActionEvent(CombatEntity entity)
         {
             entity.SubOnTakeControlEvent(OnEntityTakeControl);
+            entity.SubOnPerformAction(OnEntityPerformAction); 
+        }
+
+        private void OnEntityPerformAction(EntityActionPair actionPair)
+        {
+            PrepareEnittyLocationForTimelineAnimation(); 
         }
 
         private void OnEntityTakeControl(CombatEntity entity)
         {
-            
-            RelocateEntityToitsOccupiedPosition(); 
+            if (CombatReferee.Instance.GetCompetatorSide(entity) == ECompetatorSide.Ally)
+                RelocateEntityToitsOccupiedPosition();
         }
 
         #endregion
@@ -195,6 +212,8 @@ namespace Vanaring
        
         public void OccupieLocation(ECompetatorSide side, int index,CombatEntity entity )
         {
+            ColorfulLogger.LogWithColor( entity.gameObject.name + " OccupieLocation", Color.yellow);
+
             if (IsThisEntityOccupyLocation(entity) != null)
             {
                 ReleasePosition(entity);
@@ -234,15 +253,13 @@ namespace Vanaring
             entity.transform.forward = data.Location.transform.forward;   
 
 
-            //ColorfulLogger.LogWithColor("" + entity.gameObject.name + " forward is set to 's " + data.Location.gameObject.name , Color.yellow) ;
-            //ColorfulLogger.LogWithColor("" + entity.gameObject.name + " forward is " + entity.transform.forward, Color.yellow);
-
             return; 
 
         } 
         public void OccupieAnyValidLocation(ECompetatorSide side, CombatEntity entity   )
         {
-            
+
+
             if (IsThisEntityOccupyLocation(entity) != null) {
                 ReleasePosition(entity);
             }
@@ -301,11 +318,7 @@ namespace Vanaring
             } 
         }
 
-
-        public void EnalbeFullAllyTeamCamera()
-        {
-
-        }
+ 
         
         #endregion 
 
@@ -333,10 +346,18 @@ namespace Vanaring
             return null; 
         }
 
-        private void RelocateEntityToitsOccupiedPosition()
+        private void RelocateEntityToitsOccupiedPosition(List<CombatEntity> onlyThisEntity = null)
         {
+
             foreach (var occupiedData in GetAllOccupiedLocation())
             {
+                if (onlyThisEntity != null)
+                {
+                    if (! onlyThisEntity.Contains(occupiedData.EntityStandingHere))
+                        continue;
+                }
+
+
                 occupiedData.EntityStandingHere.transform.position = occupiedData.Location.position;
                 occupiedData.EntityStandingHere.transform.rotation= occupiedData.Location.rotation;
             }

@@ -29,11 +29,10 @@ namespace Vanaring
         [Header("Components")]
         [SerializeField]
         private GameObject statusBarLayout;
+        [SerializeField] private StatusEffectGUIManager _statusEffectGUIManager;
         [SerializeField]
-        private Image effectIcon;
+        private EffectIconGUI effectIcon;
 
-        [SerializeField]
-        private List<float> slotBarRatios;
         [SerializeField]
         private List<Image> fadeBlackImageList = new List<Image>();
         [SerializeField]
@@ -50,44 +49,13 @@ namespace Vanaring
 
         private CombatEntity _combatEntity;
 
-         
-        private void OnEnable()
-        {
-            if(_combatEntity != null)
-            {
-                _combatEntity.SubOnDamageVisualEvent(OnHPModified);
-                _combatEntity.SpellCaster.SubOnModifyEnergy(OnEnergyModified);
-                _combatEntity.SubOnHealVisualEvent(OnHPModified);
-                _combatEntity.SpellCaster.SubOnMPModified(OnMPModified);
-            }
-        }
-
-        private void OnDisable()
-        {
-            _combatEntity.UnSubOnDamageVisualEvent(OnHPModified);
-            _combatEntity.SpellCaster.UnSubOnModifyEnergy(OnEnergyModified);
-            _combatEntity.UnSubOnHealVisualEvent(OnHPModified);
-            _combatEntity.SpellCaster.UnSubOnMPModified(OnMPModified);
-        }
-
-        private void Update()
-        {
-            
-            if(_combatEntity != null)
-            {
-                Color imageColor = characterImg.color;
-                if (_combatEntity.IsExhausted) { imageColor.a = 0.7f; }
-                else { imageColor.a = 1.0f; }
-                characterImg.color = imageColor;
-            }
-            
-        }
-
+        #region Init
         public void Init(CombatEntity combatEntity)
         {
             _combatEntity = combatEntity;
             effectIcon.gameObject.SetActive(false);
-            SubOnEvent();
+            SubAllEvent();
+            _statusEffectGUIManager.Init(_combatEntity);
 
             _characterSheetSO = _combatEntity.CombatCharacterSheet;
             characterImg.sprite = _characterSheetSO.GetCharacterIcon;
@@ -103,7 +71,6 @@ namespace Vanaring
 
             //lightVal = (int)_combatEntity.SpellCaster.GetPeakEnergyAmout(RuntimeMangicalEnergy.EnergySide.LightEnergy);
             //darkVal = (int)_combatEntity.SpellCaster.GetPeakEnergyAmout(RuntimeMangicalEnergy.EnergySide.DarkEnergy);
-
             lightVal = 3;
             darkVal = 3;
 
@@ -114,60 +81,39 @@ namespace Vanaring
 
             InitEnergySlot();
         }
-
-        #region SubEvent
-        private void SubOnEvent()
-        {
-            _combatEntity.SubOnDamageVisualEvent(OnHPModified);
-            _combatEntity.SpellCaster.SubOnModifyEnergy(OnEnergyModified);
-            _combatEntity.SubOnHealVisualEvent(OnHPModified);
-            _combatEntity.SpellCaster.SubOnMPModified(OnMPModified);
-            _combatEntity.SubOnStatusEffectApplied(AddEffectIcon);
-            _combatEntity.SubOnStatusEffectExpired(RemoveExpiredEffect);
-        }
-        #endregion
-
-        #region StatusEffect
-        private void AddEffectIcon(EntityStatusEffectPair effect)
-        {
-            Debug.Log("Effect: " + effect.StatusRuntime.ToString() + effect.StatusEffectFactory.ToString() + effect.ApplierFactory.ToString());
-            Image newEffectIcon = Instantiate(effectIcon, statusBarLayout.transform);
-            newEffectIcon.gameObject.SetActive(true);
-            effectIcon.sprite = effect.StatusEffectFactory.StatusImage;
-
-            //Actor ;
-            //public StatusRuntimeEffectFactorySO StatusEffectFactory ;
-            //public StatusEffectApplierRuntimeEffect ApplierFactory ;
-            //public StatusRuntimeEffect StatusRuntime;
-        }
-
-        private void RemoveExpiredEffect(StatusRuntimeEffect ed)
-        {
-
-        }
-        #endregion
-
         private void InitEnergySlot()
         {
-            //Debug.Log(_combatEntity.SpellCaster.GetEnergyAmount(RuntimeMangicalEnergy.EnergySide.DarkEnergy) / 10f + " " 
-            //    + _combatEntity.SpellCaster.GetEnergyAmount(RuntimeMangicalEnergy.EnergySide.LightEnergy) / 10f);
             outterFrame.fillAmount = 1.0f;
             innerFrame.fillAmount = 1.0f;
 
             outterFill.fillAmount = 0.167f * (_combatEntity.SpellCaster.GetEnergyAmount(RuntimeMangicalEnergy.EnergySide.DarkEnergy));
             innerFill.fillAmount = 0.167f * (_combatEntity.SpellCaster.GetEnergyAmount(RuntimeMangicalEnergy.EnergySide.LightEnergy));
         }
-
-        #region TurnStatus
-        //public void ToggleTurnStatusDisplay(bool b)
-        //{
-        //    _turnStatusImage.gameObject.SetActive(b);
-        //}
         #endregion
-        public void ToggleOnTurnHighlightDisplay(bool b)
-        {     
+        #region SubEvent
+        private void OnEnable()
+        {
+            if (_combatEntity != null)
+            {
+                SubAllEvent();
+            }
         }
-
+        private void OnDisable()
+        {
+            _combatEntity.UnSubOnDamageVisualEvent(OnHPModified);
+            _combatEntity.SpellCaster.UnSubOnModifyEnergy(OnEnergyModified);
+            _combatEntity.UnSubOnHealVisualEvent(OnHPModified);
+            _combatEntity.SpellCaster.UnSubOnMPModified(OnMPModified);
+        }
+        private void SubAllEvent()
+        {
+            _combatEntity.SubOnDamageVisualEvent(OnHPModified);
+            _combatEntity.SpellCaster.SubOnModifyEnergy(OnEnergyModified);
+            _combatEntity.SubOnHealVisualEvent(OnHPModified);
+            _combatEntity.SpellCaster.SubOnMPModified(OnMPModified);
+        }
+        #endregion
+        #region GUIHighlighter
         public void ToggleExpandSizeUI()
         {
             gameObject.transform.localScale = new Vector3(1.2f, 1.2f, 1.2f);
@@ -189,7 +135,7 @@ namespace Vanaring
             if (characterArrow.activeSelf) 
                 characterArrow.SetActive(false);
         }
-
+        #endregion
         #region STAT
         private void UpdateHPScaleGUI()
         {
@@ -302,5 +248,15 @@ namespace Vanaring
         }
 
         #endregion
+        private void Update()
+        {
+            if (_combatEntity != null)
+            {
+                Color imageColor = characterImg.color;
+                if (_combatEntity.IsExhausted) { imageColor.a = 0.7f; }
+                else { imageColor.a = 1.0f; }
+                characterImg.color = imageColor;
+            }
+        }
     }
 }

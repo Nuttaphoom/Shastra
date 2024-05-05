@@ -191,9 +191,12 @@ namespace Vanaring
         [SerializeField]
         public VisualEffect _deadVisualEffect;
 
+        private List<GameObject> _attachedVFXs = new List<GameObject>() ;
+
         private const string _deadAnimationTrigger = "Dead";
 
         private CombatEntity _combatEntity;
+
 
         //[Header("Use for specially set where (CastTransform, TarTransform) position will be set to #Can leave blank")]
         //[SerializeField]
@@ -212,18 +215,27 @@ namespace Vanaring
         #region Mesh Methods 
         public void HideVisualMesh()
         {
+            foreach (var attachedvfx in _attachedVFXs)
+                attachedvfx.gameObject.SetActive(false); 
+             
             GetVisualMesh().gameObject.SetActive(false);
         }
 
         public void ShowVisualMesh()
         {
             if (_combatEntity.IsDead)
-                return; 
+                return;
+
+            foreach (var attachedvfx in _attachedVFXs)
+                attachedvfx.gameObject.SetActive(true);
 
             GetVisualMesh().gameObject.SetActive(true); 
         }
         public IEnumerator DeadVisualPresentation()
         {
+            for (int i =  _attachedVFXs.Count - 1; i >= 0; i--)
+                Destroy(_attachedVFXs[i].gameObject) ; 
+
             if (_deadVisualEffect)
             {
                 StartCoroutine(PlayTriggerAnimation("Hurt") ) ;
@@ -237,7 +249,7 @@ namespace Vanaring
                 yield return new WaitForSeconds(2.5f);
                 if (_deadVisualEffect)
                 {
-                    Destroy(_deadVisualEffect.gameObject);
+                    Destroy(_deadVisualEffect.gameObject); 
                 }
 
             }
@@ -306,7 +318,6 @@ namespace Vanaring
         #region Animation Methods 
         public IEnumerator PlayTriggerAnimation(string triggerName)
         {
-            Debug.Log("Play trigger animation " + triggerName);
             _animator.SetTrigger(triggerName);
 
             // Get the hash of the animation state
@@ -350,10 +361,18 @@ namespace Vanaring
         /// <param name="whereToAttach"></param>
         public void AttachVFXToMeshComponent(GameObject vfxPrefab, string whereToAttach, string vfxName)
         {
+            if (_attachedVFXs.Contains(vfxPrefab))
+            {
+                throw new Exception("vfxPrefab of same object is trying to attached multiple time"); 
+            }
+
 
             Transform parent = GetAttachmentFromName(whereToAttach);
 
             var newVFX = Instantiate(vfxPrefab, parent);
+
+            _attachedVFXs.Add(newVFX);
+
 
             newVFX.name = vfxName;
             newVFX.transform.position = parent.position;
@@ -363,8 +382,10 @@ namespace Vanaring
         public void DeAttachVFXFromMeshComponent(string vfxName, string whereToAttach)
         {
             Transform parent = GetAttachmentFromName(whereToAttach);
+            
+            _attachedVFXs.Remove(parent.Find(vfxName).gameObject) ; 
+            Destroy(parent.Find(vfxName).gameObject) ; 
 
-            Destroy(parent.Find(vfxName).gameObject);
         }
 
         private Transform GetAttachmentFromName(string whereToAttach)

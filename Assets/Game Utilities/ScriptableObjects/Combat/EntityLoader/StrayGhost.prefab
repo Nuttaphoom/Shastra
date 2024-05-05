@@ -44,7 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e50745e7c22bef46832cfc1275190f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _owner: {fileID: 5562888234735126922}
+  _owner: {fileID: 0}
   lightNumText: {fileID: 0}
   darkNumText: {fileID: 0}
   lightImage: {fileID: 0}
@@ -335,7 +335,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6372633111618651101}
-  - component: {fileID: 5562888234735126922}
   - component: {fileID: 2524119204172734917}
   - component: {fileID: 3183956409549396090}
   - component: {fileID: 230340289741595676}
@@ -370,22 +369,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5562888234735126922
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8010838884609612702}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: acd9ffed6d6cced4a96205cc907deed7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _characterSheet: {fileID: 11400000, guid: 9bf244f74bc901741b1b6974f46a7836, type: 2}
-  _spellCaster: {fileID: 230340289741595676}
-  _itemUser: {fileID: 0}
-  _combatEntityAnimationHandler: {fileID: 2524119204172734917}
 --- !u!114 &2524119204172734917
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -398,13 +381,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d0b4c94e51503647971675bfb7fce7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _visualMesh: {fileID: 1380964054971269540}
-  _guiPos: {fileID: 6538828595972744590}
-  _deadVisualEffect: {fileID: 1482325246012760531}
-  _deadAnimationTrigger: NONE
   _spawnVisualEffect: {fileID: 3817284471429559123}
-  _head_position: {fileID: 3240901259003009513}
-  _timelineAnimationRootLocation: {fileID: 76209274940009860}
+  _deadVisualEffect: {fileID: 1482325246012760531}
 --- !u!114 &3183956409549396090
 MonoBehaviour:
   m_ObjectHideFlags: 0

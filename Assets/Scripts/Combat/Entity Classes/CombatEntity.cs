@@ -93,11 +93,6 @@ namespace Vanaring
             _statusEffectHandler.SubOnStatusEffectApplied(func); 
         }
 
-        public void SubOnStatusEffectExpired(UnityAction<StatusRuntimeEffect> func)
-        {
-            _statusEffectHandler.SubOnStatusEffectExpired(func);
-        }
-
         public void SubOnDamageVisualEvent(UnityAction<int> argc)
         {
             GetEventBroadcaster().SubEvent(argc, "OnDamage");
@@ -236,6 +231,7 @@ namespace Vanaring
 
         public virtual IEnumerator TurnEnter()
         {
+            
             _isExhausted = false;
 
             if (_statusEffectHandler == null)
@@ -249,6 +245,7 @@ namespace Vanaring
             yield return _ailmentHandler.CheckForExpiration();
 
             _ailmentHandler.ProgressAlimentTTL();
+
         }
 
         public virtual IEnumerator TurnLeave()
