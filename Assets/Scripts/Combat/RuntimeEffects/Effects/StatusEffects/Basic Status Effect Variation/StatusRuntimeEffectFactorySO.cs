@@ -207,8 +207,11 @@ namespace Vanaring
             if (! _property.InfiniteTTL)
                 _timeToLive -= 1;
 
+            Debug.Log("Update TTL to " + _timeToLive);
+
             EventBroadcaster.InvokeEvent<int>(_timeToLive, "OnTTLUpdate");
 
+            
         }
         public bool IsCorrectEvokeKey(EEvokeKey evokeKey)
         {
