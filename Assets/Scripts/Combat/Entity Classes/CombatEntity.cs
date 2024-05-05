@@ -93,11 +93,6 @@ namespace Vanaring
             _statusEffectHandler.SubOnStatusEffectApplied(func); 
         }
 
-        public void SubOnStatusEffectExpired(UnityAction<StatusRuntimeEffect> func)
-        {
-            _statusEffectHandler.SubOnStatusEffectExpired(func);
-        }
-
         public void SubOnDamageVisualEvent(UnityAction<int> argc)
         {
             GetEventBroadcaster().SubEvent(argc, "OnDamage");

@@ -392,7 +392,7 @@ GameObject:
   - component: {fileID: 1404002782862390269}
   - component: {fileID: 8851505740955777194}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: TTLText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1288,7 +1288,7 @@ MonoBehaviour:
   hpNumText: {fileID: 4091361209421053035}
   mpNumText: {fileID: 1982809684909445300}
   statusBarLayout: {fileID: 2704827284780447326}
-  effectIcon: {fileID: 6883267056966900429}
+  effectIcon: {fileID: 3804660575994861708}
   slotBarRatios:
   - 0
   - 0.5
@@ -3143,6 +3143,7 @@ GameObject:
   - component: {fileID: 527611318536863649}
   - component: {fileID: 2401679422523274177}
   - component: {fileID: 6883267056966900429}
+  - component: {fileID: 3804660575994861708}
   m_Layer: 5
   m_Name: EffectIcon
   m_TagString: Untagged
@@ -3209,6 +3210,20 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &3804660575994861708
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8495483634895486624}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7be38f8a03baca74db225f2cc50c93dd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  timeToLiveText: {fileID: 8851505740955777194}
+  effectImage: {fileID: 6883267056966900429}
 --- !u!1 &8663233090791473715
 GameObject:
   m_ObjectHideFlags: 0

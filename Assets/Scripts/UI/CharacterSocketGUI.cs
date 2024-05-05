@@ -30,7 +30,7 @@ namespace Vanaring
         [SerializeField]
         private GameObject statusBarLayout;
         [SerializeField]
-        private Image effectIcon;
+        private EffectIconGUI effectIcon;
 
         [SerializeField]
         private List<float> slotBarRatios;
@@ -47,6 +47,8 @@ namespace Vanaring
         private int darkVal;
 
         private CombatCharacterSheetSO _characterSheetSO;
+
+        private Dictionary<string, EffectIconGUI> effectIconDict = new Dictionary<string, EffectIconGUI>();
 
         private CombatEntity _combatEntity;
 
@@ -123,27 +125,77 @@ namespace Vanaring
             _combatEntity.SubOnHealVisualEvent(OnHPModified);
             _combatEntity.SpellCaster.SubOnMPModified(OnMPModified);
             _combatEntity.SubOnStatusEffectApplied(AddEffectIcon);
-            _combatEntity.SubOnStatusEffectExpired(RemoveExpiredEffect);
         }
         #endregion
 
         #region StatusEffect
         private void AddEffectIcon(EntityStatusEffectPair effect)
         {
-            Debug.Log("Effect: " + effect.StatusRuntime.ToString() + effect.StatusEffectFactory.ToString() + effect.ApplierFactory.ToString());
-            Image newEffectIcon = Instantiate(effectIcon, statusBarLayout.transform);
-            newEffectIcon.gameObject.SetActive(true);
-            effectIcon.sprite = effect.StatusEffectFactory.StatusImage;
+            var statusRuntime = effect.StatusRuntime;
+            var statusStackID = effect.StatusEffectFactory.Property.StackID();
 
-            //Actor ;
-            //public StatusRuntimeEffectFactorySO StatusEffectFactory ;
-            //public StatusEffectApplierRuntimeEffect ApplierFactory ;
-            //public StatusRuntimeEffect StatusRuntime;
+            statusRuntime.SubOnStatusEffectBreak((bool isExpired) => { RemoveExpiredEffect(statusStackID, isExpired); });
+
+            statusRuntime.SubOnStatusEffectExpire((bool isExpired) => { RemoveExpiredEffect(statusStackID, isExpired);  });
+
+            statusRuntime.SubOnTTLUpdate((int ttl) => { UpdateEffectTTL(statusStackID, ttl); });
+
+            //effectIcon.sprite = effect.StatusEffectFactory.StatusImage;
+
+            Debug.Log("effectIconDict.count :  " + effectIconDict.Count);
+
+            foreach (var key in effectIconDict.Keys)
+            {
+                ColorfulLogger.LogWithColor("key is " + key, Color.red) ;
+            }
+
+
+            if (!effectIconDict.ContainsKey(statusStackID))
+            {
+                //Debug.Log(statusStackID);
+                EffectIconGUI newEffectIcon = Instantiate(effectIcon, statusBarLayout.transform);
+                newEffectIcon.Init(statusRuntime);
+                newEffectIcon.gameObject.SetActive(true);
+
+                effectIconDict.Add(statusStackID, newEffectIcon);
+
+                
+                Debug.Log("Add new effect icon");
+            }
+            else
+            {
+                Debug.Log("Add same debuff");
+                Destroy(effectIconDict[statusStackID]);
+                effectIconDict.Remove(statusStackID);
+
+                EffectIconGUI newEffectIcon = Instantiate(effectIcon, statusBarLayout.transform);
+                newEffectIcon.Init(statusRuntime);
+                newEffectIcon.gameObject.SetActive(true);
+                effectIconDict.Add(statusStackID, newEffectIcon);
+                
+                //UpdateEffectTTL(statusStackID, effect.StatusRuntime.TimeToLive);
+            }
         }
 
-        private void RemoveExpiredEffect(StatusRuntimeEffect ed)
+        private void RemoveExpiredEffect(string stackID, bool isexpire)
         {
+            if (!isexpire)
+                return;
+            Debug.Log("Destroy effect");
+            Destroy(effectIconDict[stackID]);
+            effectIconDict.Remove(stackID);
+        }
 
+        private void UpdateEffectTTL(string effect, int currentTTL)
+        {
+            if (effectIconDict.ContainsKey(effect))
+            {
+                effectIconDict[effect].SetTimetoLiveText(currentTTL.ToString());
+            }
+            else
+            {
+                Debug.Log("No effect gui detect");
+            }
         }
         #endregion
 
