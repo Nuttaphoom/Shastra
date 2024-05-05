@@ -27,17 +27,21 @@ namespace Vanaring
 
         private void SubAllEvent()
         {
+            Debug.Log("sub all event"); 
             _ownerCombatEntity.SubOnStatusEffectApplied(AddNewStatusEffectIcon);
         }
 
         private void UnSubAllEvent()
         {
+            Debug.Log("unsub all event");
+
             _ownerCombatEntity.UnSubOnStatusEffectApplied(AddNewStatusEffectIcon);
         }
 
         public void Init(CombatEntity combatEntity)
         {
             _ownerCombatEntity = combatEntity;
+            Debug.Log("Init StatusEffectGUIManager");
             SubAllEvent();
         }
 

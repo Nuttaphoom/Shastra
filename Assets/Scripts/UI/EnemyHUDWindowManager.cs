@@ -12,7 +12,35 @@ namespace Vanaring
         [SerializeField] private EnemyHUD enemyHudTemplate;
         private List<EnemyHUD> enemyHUDList = new List<EnemyHUD>();
         private Dictionary<CombatEntity, EnemyHUD> instantiatedEnemyHUD = new Dictionary<CombatEntity, EnemyHUD>();
-       
+
+        void OnEnable()
+        {
+            CombatReferee.Instance.SubOnCombatPreparation(OnPreparing);
+        }
+        void OnDisable()
+        {
+            CombatReferee.Instance.UnSubOnCombatPreparation(OnPreparing);
+        }
+
+        private void OnPreparing(Null n)
+        {
+            CreateAllEnemyHUD();
+        }
+        
+        private void CreateAllEnemyHUD()
+        {
+            foreach (var combatEntity in CombatReferee.Instance.GetCompetatorsBySide(ECompetatorSide.Hostile))
+            {
+                if (!instantiatedEnemyHUD.ContainsKey(combatEntity))
+                {
+                    EnemyHUD newEnemyHUD = Instantiate(enemyHudTemplate, transform);
+                    newEnemyHUD.Init(combatEntity);
+                    newEnemyHUD.HideHUDVisual();
+                    instantiatedEnemyHUD.Add(combatEntity, newEnemyHUD);
+                }
+            }
+        }
+
         public void DisplayEnemyHUD(List<CombatEntity> entities)
         {
             if (entities.Count <= 0)
@@ -23,17 +51,10 @@ namespace Vanaring
 
             foreach (EnemyHUD hud in GetAllInstantiatedHUD())
                 hud.HideHUDVisual();
-            
-            foreach (var combatEntity in entities)
+
+            foreach (CombatEntity combatEntity in entities)
             {
-                if (!instantiatedEnemyHUD.ContainsKey(combatEntity))
-                {
-                    EnemyHUD newEnemyHUD = Instantiate(enemyHudTemplate, transform);
-                    newEnemyHUD.Init(combatEntity) ;
-                    instantiatedEnemyHUD.Add(combatEntity, newEnemyHUD );
-                }
-                 
-                instantiatedEnemyHUD[combatEntity].DisplayHUDVisual()  ;
+                instantiatedEnemyHUD[combatEntity].DisplayHUDVisual();
             }
         }
 
