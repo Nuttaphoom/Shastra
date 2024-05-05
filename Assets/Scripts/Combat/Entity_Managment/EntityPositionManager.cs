@@ -87,24 +87,33 @@ namespace Vanaring
                 }
             }
             TargetSelectionFlowControl.Instance.SubOnTargetSelectionEnter(OnTargetSelectionStart_AdjustAllyPosition);
-            TargetSelectionFlowControl.Instance.SubOnTargetSelectionEnd(OnTargetSelectionEnd_ReturnOccupiedAllyPosition);
+            TargetSelectionFlowControl.Instance.SubOnTargetSelectionEnd(OnTargetSelectionEnd_ReturnOccupiedAllyPosition); 
+
             CombatReferee.Instance.SubOnCompetitorEnterCombat(BindActionEvent);
+            CombatReferee.Instance.SubOnNewRoundBegin(OnNewRound_RelocateEntityBack);
+
+            DirectorManager.Instance.SubOnPlayTimelineWithActor(PrepareEnittyLocationForTimelineAnimation); 
 
         }
         #region Observer Methods
+        private void PrepareEnittyLocationForTimelineAnimation(List<CombatEntity> actors = null)
+        {
+            RelocateEntityToitsOccupiedPosition();
+        }
+        private void OnNewRound_RelocateEntityBack(Null n)
+        {
+            RelocateEntityToitsOccupiedPosition(); 
+        }
         private void OnTargetSelectionEnd_ReturnOccupiedAllyPosition(TargetSelectingData data)
         {
             if (!data.targetSelector.TargetAllyTeam || CombatReferee.Instance.GetCompetatorSide(data.caster) != ECompetatorSide.Ally)
                 return; 
-
-            ColorfulLogger.LogWithColor("OnTargetSelectionEnd_ReturnOccupiedAllyPosition", Color.yellow);
 
             foreach (var entity in CombatReferee.Instance.GetCompetatorsBySide(ECompetatorSide.Ally))
             {                   
 
                 if (data.caster == entity && ! data.isSucesfullySelected)
                 {
-                    Debug.Log("Auto Occupie new location");
 
                     OccupieLocation(ECompetatorSide.Ally, 0, entity);
 
@@ -138,9 +147,7 @@ namespace Vanaring
 
         private void OnEntityPerformAction(EntityActionPair actionPair)
         {
-            List<CombatEntity> caster = new List<CombatEntity>() { actionPair.Actor } ;
-
-            RelocateEntityToitsOccupiedPosition();
+            PrepareEnittyLocationForTimelineAnimation(); 
         }
 
         private void OnEntityTakeControl(CombatEntity entity)

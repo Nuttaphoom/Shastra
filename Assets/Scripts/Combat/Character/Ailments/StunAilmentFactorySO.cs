@@ -41,7 +41,10 @@ namespace Vanaring
         
         public override IEnumerator AilmentRecover()
         {
-           yield return DirectorManager.Instance.PlayTimelineCoroutine(_basicDataInfo.RecoverTimelineInfo, new List<GameObject>() {_entity.gameObject})  ;
+            Debug.Log("Stun ailment before recover timeline ");
+            yield return DirectorManager.Instance.PlayTimelineCoroutine(_basicDataInfo.RecoverTimelineInfo, new List<CombatEntity>() {_entity})  ;
+            Debug.Log("Stun ailment after recover timeline");
+ 
             _entity.GetComponent<CombatEntityAnimationHandler>().DeAttachVFXFromMeshComponent("STARSTUNAILMENT", "HEAD");
             yield return _entity.GetComponent<EnergyOverflowHandler>().ResetOverflow() ;
 

@@ -6,13 +6,40 @@ using UnityEngine.Playables;
 using UnityEngine.Rendering;
 using Unity.VisualScripting;
 using System.Management.Instrumentation;
+using UnityEngine.Events;
+using Language.Lua;
 
 namespace Vanaring
 {
     [RequireComponent(typeof(SignalReceiver))]
     public class DirectorManager : MonoBehaviour
     {
+        #region Event Broadcaster 
+        private EventBroadcaster _eventBroadcaster;
 
+        private EventBroadcaster GetEventBroadcaster()
+        {
+            if (_eventBroadcaster == null)
+            {
+                _eventBroadcaster = new EventBroadcaster();
+                _eventBroadcaster.OpenChannel<List<CombatEntity>>("OnPlayTimelineWithActor");
+        
+            }
+
+            return _eventBroadcaster;
+        }
+
+        public void SubOnPlayTimelineWithActor(UnityAction<List<CombatEntity>> argc)
+        {
+            GetEventBroadcaster().SubEvent<List<CombatEntity>>(argc, "OnPlayTimelineWithActor");
+        }
+
+        public void UnSubOnPlayTimelineWithActor(UnityAction<List<CombatEntity>> argc)
+        {
+            GetEventBroadcaster().UnSubEvent<List<CombatEntity>>(argc, "OnPlayTimelineWithActor");
+        }
+
+        #endregion
         public static DirectorManager Instance;
 
         private bool _playingTimeline = false;
@@ -49,7 +76,8 @@ namespace Vanaring
         public void PlayTimeline(ActionSignal signal)
         {
             if (_currentPlayableDirector != null)
-                throw new System.Exception("Try to play multiple timeline simutanouly"); 
+                throw new System.Exception("Try to play multiple timeline simutanouly");
+
 
             _currentSignal.Add(signal); 
 
@@ -63,6 +91,7 @@ namespace Vanaring
 
             // 2.) Set up the TimelineAsset
             _currentTimelineActorSetupHandler.SetUpActor(currentDirector, signal.GetActionTimelineSettingStruct, _signalReceiver); 
+
 
             // 3.) Set currentSignal waiting
             currentDirector.Play();
@@ -78,8 +107,10 @@ namespace Vanaring
         /// </summary>
         /// <param name="timelineActorSetupHandler"></param>
         /// <param name="actionTimelineSettingStruct"></param>
-        public IEnumerator PlayTimelineCoroutine(TimelineInfo info, List<GameObject> actors )
+        public IEnumerator PlayTimelineCoroutine(TimelineInfo info, List<CombatEntity> actors )
         {
+            GetEventBroadcaster().InvokeEvent<List<CombatEntity>>(actors, "OnPlayTimelineWithActor");
+
             // 1.) Create PlayableDirector
             PlayableDirector currentDirector;
 
@@ -88,7 +119,7 @@ namespace Vanaring
             var timelineSettingStruct = new ActionTimelineSettingStruct(info.GetActionTimeLineSettingStruct) ;
 
             foreach (var actor in actors)
-                timelineSettingStruct.AddActors(actor); 
+                timelineSettingStruct.AddActors(actor.gameObject); 
 
             
             //1.1) instantiate TimelineActorSetupHanlder 
