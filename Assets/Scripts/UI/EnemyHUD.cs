@@ -267,7 +267,6 @@ namespace Vanaring
             if (_visualMesh.activeSelf)
                 return;
 
-            Debug.Log("_visualMesh is " + _visualMesh); 
             _visualMesh.gameObject.SetActive(true); 
         }
         public void ClearBreakSlotHighlight()

@@ -212,7 +212,6 @@ namespace Vanaring
        
         public void OccupieLocation(ECompetatorSide side, int index,CombatEntity entity )
         {
-            ColorfulLogger.LogWithColor( entity.gameObject.name + " OccupieLocation", Color.yellow);
 
             if (IsThisEntityOccupyLocation(entity) != null)
             {
