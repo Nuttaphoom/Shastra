@@ -25,6 +25,7 @@ namespace Vanaring
 
         public void SetStat(Trait.Trait_Type type, int level, float exp)
         {
+            Debug.Log("Trait " + type + " level is set to " + level);
             traits[type].SetTraitData(level, exp);
         }
 

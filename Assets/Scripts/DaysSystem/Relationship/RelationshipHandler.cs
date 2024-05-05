@@ -167,7 +167,7 @@ namespace Vanaring
 
             #region ForTestingOnly 
             if (cs.CharacterName == "Pear")
-                _expSystem = new RelationshipUEXPSystem(1,4);
+                _expSystem = new RelationshipUEXPSystem(1,5);
             else 
                 _expSystem = new RelationshipUEXPSystem();
             #endregion
