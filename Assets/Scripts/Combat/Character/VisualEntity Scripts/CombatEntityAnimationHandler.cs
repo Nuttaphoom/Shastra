@@ -306,7 +306,6 @@ namespace Vanaring
         #region Animation Methods 
         public IEnumerator PlayTriggerAnimation(string triggerName)
         {
-            Debug.Log("Play trigger animation " + triggerName);
             _animator.SetTrigger(triggerName);
 
             // Get the hash of the animation state
