@@ -27,7 +27,6 @@ namespace Vanaring
 
         private void SubAllEvent()
         {
-            Debug.Log("sub all event"); 
             _ownerCombatEntity.SubOnStatusEffectApplied(AddNewStatusEffectIcon);
         }
 

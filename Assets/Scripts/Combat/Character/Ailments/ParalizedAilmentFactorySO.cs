@@ -43,7 +43,7 @@ namespace Vanaring
 
         public override IEnumerator AilmentRecover()
         {
-            yield return DirectorManager.Instance.PlayTimelineCoroutine(_basicDataInfo.RecoverTimelineInfo, new List<GameObject>() { _entity.gameObject });
+            yield return DirectorManager.Instance.PlayTimelineCoroutine(_basicDataInfo.RecoverTimelineInfo, new List<CombatEntity>() { _entity });
             _entity.GetComponent<CombatEntityAnimationHandler>().DeAttachVFXFromMeshComponent("SHOCKSAILMENTVFX", "VFXPOS") ;
 
         }

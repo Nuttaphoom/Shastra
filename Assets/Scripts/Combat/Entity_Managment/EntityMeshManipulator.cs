@@ -31,9 +31,19 @@ namespace Vanaring
             }
 
             CombatReferee.Instance.SubOnCompetitorEnterCombat(BindEntityEvent);
-            CombatReferee.Instance.SubOnNewRoundBegin(OnNewRoundBegin);
+            CombatReferee.Instance.SubOnNewRoundBegin(OnNewRoundBegin); 
+
+            DirectorManager.Instance.SubOnPlayTimelineWithActor(PrepareEnittyMeshForTimelineAnimation);
 
             TargetSelectionFlowControl.Instance.SubOnTargetSelectionEnd(OnTargetSelectionEnd_HideAllyVisualMesh); 
+        }
+        
+        private void PrepareEnittyMeshForTimelineAnimation(List<CombatEntity> actors)
+        {
+            HideAllEntityMesh(actors);
+            ShowEntityMesh(actors);
+
+            RestoreRotateMeshLookAt();
         }
 
         private void OnTargetSelectionEnd_HideAllyVisualMesh(TargetSelectingData data)
@@ -76,16 +86,14 @@ namespace Vanaring
             foreach (var entity in entityActionPair.PerformedAction.GetActionTargets())
                 entityPerformAction.Add(entity);
 
-            HideAllEntityMesh(entityPerformAction);
-            ShowEntityMesh(entityPerformAction);
-
-            RestoreRotateMeshLookAt(); 
+            PrepareEnittyMeshForTimelineAnimation(entityPerformAction);
 
         }
 
         private void OnNewRoundBegin(Null n)
         {
-            RestoreRotateMeshLookAt(); 
+            RestoreRotateMeshLookAt();
+            //ShowAllEntitMesh();
         }
 
         private void RotateMeshToLookToThisPosition(Vector3 worldPosition, ECompetatorSide side)
@@ -104,7 +112,6 @@ namespace Vanaring
                 entity.GetComponent<CombatEntityAnimationHandler>().RestoreLookAt(); 
             }
         }
-
         
 
 

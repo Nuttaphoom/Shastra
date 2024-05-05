@@ -231,6 +231,7 @@ namespace Vanaring
 
         public virtual IEnumerator TurnEnter()
         {
+            
             _isExhausted = false;
 
             if (_statusEffectHandler == null)
@@ -241,10 +242,10 @@ namespace Vanaring
 
             yield return (_statusEffectHandler.ExecuteStatusRuntimeEffectCoroutine());
 
-
             yield return _ailmentHandler.CheckForExpiration();
 
             _ailmentHandler.ProgressAlimentTTL();
+
         }
 
         public virtual IEnumerator TurnLeave()
