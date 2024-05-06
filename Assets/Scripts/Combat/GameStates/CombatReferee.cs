@@ -266,6 +266,13 @@ namespace Vanaring
                 _allIEs.Add(entity.InitializeEntityIntoCombat());
             }
 
+            if (side == ECompetatorSide.Ally)
+            {
+                foreach (var entity in entites)
+                {
+                    entity.GetComponent<CombatEntityAnimationHandler>().HideVisualMesh(); 
+                }
+            }
 
             yield return new WaitAll(this, _allIEs.ToArray());
 
@@ -277,6 +284,8 @@ namespace Vanaring
                 GetEventBroadcaster().InvokeEvent<CombatEntity>(entity, "OnCompetitorEnterCombat");
 
             }
+
+           
 
             yield return null; 
         }
