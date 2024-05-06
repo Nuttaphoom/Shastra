@@ -20,6 +20,7 @@ namespace Vanaring
         [SerializeField] private GameObject itemTranform;
         [SerializeField] private GameObject arrowUp;
         [SerializeField] private GameObject arrowDown;
+        [SerializeField] private List<GameObject> hidenableObjectList = new List<GameObject>();
         private int itemIndexFocusUpMin = 0;
         private int itemIndexFocusUpMax = 3;
         private int itemIndexFocusDownMin = 0;
@@ -55,7 +56,12 @@ namespace Vanaring
         public override void LoadWindowData(CombatEntity entity)
         {
             if (entity.ItemUser.Items.Count <= 0)
-                return;  
+            {
+                DisplayArrowIndicator();
+                SetUIActive(false);
+                _itemSocketTemplate.gameObject.SetActive(false);
+                return;
+            }
              
             int tmpItemIndex = 0;
             ClearData();
@@ -73,6 +79,7 @@ namespace Vanaring
                 ItemSocketGUI newSocket = Instantiate(_itemSocketTemplate, itemTranform.transform) ;
                 newSocket.Init(item, entity, entity.ItemUser.ItemsAmount[tmpItemIndex]);
                 newSocket.transform.SetAsFirstSibling();
+                newSocket.gameObject.SetActive(true);
                 itemSocketGUIList.Add(newSocket);
                 if (itemSocketGUIList.Count > 3)
                 {
@@ -88,6 +95,7 @@ namespace Vanaring
                 i++;
             }
 
+            
             if (entity.ItemUser.Items.Count == 0)
             {
                 DisplayArrowIndicator();
@@ -98,6 +106,15 @@ namespace Vanaring
             _itemSocketTemplate.gameObject.SetActive(false);
             itemLogText.text = itemSocketGUIList[currentSelectedIndex].GetItemDescription();
             itemSocketGUIList[0].HightlightedButton();
+        }
+
+        private void SetUIActive(bool isActive)
+        {
+            //Debug.Log("Hide");
+            foreach (var item in hidenableObjectList)
+            {
+                item.gameObject.SetActive(isActive);
+            }
         }
         private void ScrollToNext()
         {
@@ -126,7 +143,6 @@ namespace Vanaring
             UpdateIndexFocusOnInputCall();
             DisplayArrowIndicator();
         }
-
         private void ScrollToPrevious()
         {
             //select above index
@@ -156,7 +172,7 @@ namespace Vanaring
         }
         private void DisplayArrowIndicator()
         {
-            if (currentSelectedIndex < itemSocketGUIList.Count - 1 && itemSocketGUIList.Count > 1)
+            if (currentSelectedIndex < itemSocketGUIList.Count - 1 && itemSocketGUIList.Count > 1 && itemSocketGUIList.Count != 1)
             {
                 arrowDown.SetActive(true);
             }
@@ -164,7 +180,7 @@ namespace Vanaring
             {
                 arrowDown.SetActive(false);
             }
-            if (currentSelectedIndex > 0 && itemSocketGUIList.Count > 1)
+            if (currentSelectedIndex > 0 && itemSocketGUIList.Count > 1 && itemSocketGUIList.Count != 1)
             {
                 arrowUp.SetActive(true);
             }
@@ -173,7 +189,6 @@ namespace Vanaring
                 arrowUp.SetActive(false);
             }
         }
-
         private void UpdateIndexFocusOnInputCall()
         {
             switch (currentSelectedIndex)
@@ -213,7 +228,6 @@ namespace Vanaring
             //Debug.Log("FocusUpMin: " + spellIndexFocusUpMin + " FocusUpMax: " + spellIndexFocusUpMax);
             //Debug.Log("FocusDownMin: " + spellIndexFocusDownMin + " FocusDownMax: " + spellIndexFocusDownMax);
         }
-
         public override void ReceiveKeysFromWindowManager(KeyCode key)
         {
             if (key == KeyCode.Q)

@@ -101,6 +101,9 @@ namespace Vanaring
         }
         private IEnumerator GuageDisplay(float currentVal , float rewardVal, Trait.Trait_Type type, PersonalityTraitRewardUIObject gaugeObj)
         {
+           // ColorfulLogger.LogWithColor("curLv" + currentVal + " rewardval" + rewardVal, Color.green);
+           // ColorfulLogger.LogWithColor(type.ToString() +" cap: " + personalityTrait.GetCurrentTraitRequireEXP(type).ToString(), Color.green);
+           //yield return new WaitForSeconds(5.0f);
             float currentTime = 0f;
             float startValue = 0f;
             float endValue = rewardVal;

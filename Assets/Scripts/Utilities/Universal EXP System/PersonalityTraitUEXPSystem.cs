@@ -26,7 +26,7 @@ namespace Vanaring
         /// <returns></returns>
         public override float GetEXPCap(int checkLv = -1)
         {
-            if (checkLv != -1)
+            if (checkLv == -1)
             {
                 return (float)10 * _currentLevel;
             }
