@@ -40,7 +40,6 @@ namespace Vanaring
                     ret.RemoveAt(ret.Count - 1);
                 }
             }
-
             return _backpackItemSO;
         }
 
