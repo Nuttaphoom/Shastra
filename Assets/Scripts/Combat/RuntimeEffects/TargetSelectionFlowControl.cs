@@ -13,7 +13,6 @@ namespace Vanaring
 {
     public class TargetSelectionFlowControl : MonoBehaviour, IInputReceiver   
     {
-        private EventBroadcaster _eventBroadcaster;
 
         [SerializeField]
         private TargetSelectionGUI _targetSelectionGUI ;
@@ -39,7 +38,8 @@ namespace Vanaring
         private bool _forceStop = false;
 
         #region Event Broadcaster 
-        
+        private EventBroadcaster _eventBroadcaster;
+
         private EventBroadcaster GetEventBroadcaster()
         {
             if (_eventBroadcaster == null)
@@ -111,24 +111,6 @@ namespace Vanaring
 
         }
 
-        private List<CombatEntity> ArrangeEntityListInXAxis(List<CombatEntity> entities, Vector3 rightVector )
-        {
-            if (rightVector != Vector3.zero )
-            {
-                if (rightVector.x > 0)
-                    entities.Sort((entity1, entity2) => entity1.transform.position.x.CompareTo(entity2.transform.position.x));
-                else
-                    entities.Sort((entity1, entity2) => entity2.transform.position.x.CompareTo(entity1.transform.position.x));
-            }
-            else
-            {
-                if (Camera.main.transform.right.x > 0)
-                    entities.Sort((entity1, entity2) => entity1.transform.position.x.CompareTo(entity2.transform.position.x));
-                else
-                    entities.Sort((entity1, entity2) => entity2.transform.position.x.CompareTo(entity1.transform.position.x));
-            }
-            return entities;
-        }
 
         private void ValidateData()
         {
@@ -209,26 +191,25 @@ namespace Vanaring
             if (_activlySelecting)
                 throw new Exception(caster + " Try to active selection scheme while it is already active");
 
+            ValidateData();
+
             _activlySelecting = true;
 
             TargetSelectingData targetSelectingData = new TargetSelectingData() { caster = caster, 
                 targetSelector = actorAction.GetTargetSelector() ,
                 isSucesfullySelected = false 
-            }; 
+            };
 
-            _eventBroadcaster.InvokeEvent(targetSelectingData, "OnTargetSelectionEnter");
-
-            CentralInputReceiver.Instance().AddInputReceiverIntoStack(this);
-
-            ValidateData();
+            CentralInputReceiver.Instance().AddInputReceiverIntoStack(this); 
 
             AssignPossibleTargets(caster, actorAction.GetTargetSelector());
 
+            PrepareCameraForTargetSelection(randomTarget, actorAction.GetTargetSelector().TargetAllyTeam, caster);
 
-            if (!randomTarget)
-                CameraSetUPManager.Instance.CaptureVMCamera();
 
             _validTargets = ArrangeEntityListInXAxis(_validTargets, Vector3.zero);
+
+            _eventBroadcaster.InvokeEvent(targetSelectingData, "OnTargetSelectionEnter");
 
             while (_selectedTarget.Count < actorAction.GetTargetSelector().MaxTarget )
             {
@@ -273,43 +254,43 @@ namespace Vanaring
                         yield return EnergySimulation(selectedEntity, actorAction);
                     }
 
-                    if (actorAction.GetTargetSelector().TargetAllyTeam)
-                    {
+                    //if (actorAction.GetTargetSelector().TargetAllyTeam)
+                    //{
 
-                        if (CombatReferee.Instance.GetCompetatorSide(caster) != ECompetatorSide.Ally)
-                            continue;
+                    //    if (CombatReferee.Instance.GetCompetatorSide(caster) != ECompetatorSide.Ally)
+                    //        continue;
 
-                        if (_selectingTarget.Count != 1 || true)
-                        {
-                            var cam = CameraSetUPManager.Instance.SetVMTOAllAlly();
-                            _validTargets = ArrangeEntityListInXAxis(_validTargets,cam.transform.right);
-                            //_selectingTarget.Clear();
+                    //    if (_selectingTarget.Count != 1 || true)
+                    //    {
+                    //        var cam = CameraSetUPManager.Instance.SetVMTOAllAlly();
+                    //        _validTargets = ArrangeEntityListInXAxis(_validTargets,cam.transform.right);
+                    //        //_selectingTarget.Clear();
      
-                            //_selectingTarget.Add(_validTargets[_currentSelectIndex]);  
+                    //        //_selectingTarget.Add(_validTargets[_currentSelectIndex]);  
 
 
-                            continue;
-                        }
+                    //        continue;
+                    //    }
 
 
-                        //_selectingTarget[0].GetComponent<EntityCameraManager>().EnableShoulderCamera();
-                        //throw new Exception("The problem is axis correction can't not be perform until we swap cam, meaning we can't set the first cam "); 
-                        //We multuiply -1 because we want to change the right direction of vector 
+                    //    //_selectingTarget[0].GetComponent<EntityCameraManager>().EnableShoulderCamera();
+                    //    //throw new Exception("The problem is axis correction can't not be perform until we swap cam, meaning we can't set the first cam "); 
+                    //    //We multuiply -1 because we want to change the right direction of vector 
 
-                        //_validTargets = ArrangeEntityListInXAxis(_validTargets, _selectingTarget[0].GetComponent<EntityCameraManager>().GetRightVectorShoulderCam());
-                        //_selectingTarget.Clear();
-                        //_selectingTarget.Add(_validTargets[_currentSelectIndex]);
-                        //if want to display shoulder camera separatly, do it here
-                        //_selectingTarget[0].GetComponent<EntityCameraManager>().EnableShoulderCamera();
+                    //    //_validTargets = ArrangeEntityListInXAxis(_validTargets, _selectingTarget[0].GetComponent<EntityCameraManager>().GetRightVectorShoulderCam());
+                    //    //_selectingTarget.Clear();
+                    //    //_selectingTarget.Add(_validTargets[_currentSelectIndex]);
+                    //    //if want to display shoulder camera separatly, do it here
+                    //    //_selectingTarget[0].GetComponent<EntityCameraManager>().EnableShoulderCamera();
 
 
-                    }
+                    //}
 
-                    else
-                    {
+                    //else
+                    //{
 
-                        //CameraSetUPManager.Instance.SetLookAtTarget(_selectingTarget[0].GetComponent<CombatEntityAnimationHandler>().GetGUISpawnTransform());
-                    }
+                    //    //CameraSetUPManager.Instance.SetLookAtTarget(_selectingTarget[0].GetComponent<CombatEntityAnimationHandler>().GetGUISpawnTransform());
+                    //}
                     _validTargets = ArrangeEntityListInXAxis(_validTargets, Vector3.zero);
 
                 }
@@ -359,7 +340,58 @@ namespace Vanaring
 
         #endregion
 
-      
+        #region Camera / Arrange Entity Helper Function 
+
+        private List<CombatEntity> ArrangeEntityListInXAxis(List<CombatEntity> entities, Vector3 rightVector)
+        {
+            if (rightVector != Vector3.zero)
+            {
+                if (rightVector.x > 0)
+                    entities.Sort((entity1, entity2) => entity1.transform.position.x.CompareTo(entity2.transform.position.x));
+                else
+                    entities.Sort((entity1, entity2) => entity2.transform.position.x.CompareTo(entity1.transform.position.x));
+            }
+            else
+            {
+                if (Camera.main.transform.right.x > 0)
+                    entities.Sort((entity1, entity2) => entity1.transform.position.x.CompareTo(entity2.transform.position.x));
+                else
+                    entities.Sort((entity1, entity2) => entity2.transform.position.x.CompareTo(entity1.transform.position.x));
+            }
+            return entities;
+        }
+
+        private void PrepareCameraForTargetSelection(bool randomTarget, bool targetAlly, CombatEntity caster)
+        {
+            //If random target, we don't have to do anything about the camera
+            if (randomTarget)
+                return;
+                
+    
+            CameraSetUPManager.Instance.CaptureVMCamera();
+
+            //If Target ally, and the caster is player's
+            if (targetAlly)
+            {
+
+                if (CombatReferee.Instance.GetCompetatorSide(caster) != ECompetatorSide.Ally)
+                    return ;
+
+                if (_selectingTarget.Count != 1 || true)
+                {
+                    var cam = CameraSetUPManager.Instance.SetVMTOAllAlly();
+                    _validTargets = ArrangeEntityListInXAxis(_validTargets, cam.transform.right);
+                    return; ;
+                }
+
+
+                
+
+            }
+        }
+
+        
+        #endregion
     }
 
 

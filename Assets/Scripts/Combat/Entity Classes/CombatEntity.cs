@@ -322,7 +322,8 @@ namespace Vanaring
 
             //Check if attack hit sucessfully 
             //Hit 
-            if (hitDice < hitchance)
+            //Rn we disable dodge 
+            if (hitDice < hitchance || true)
             {
                 _runtimeCharacterStatsAccumulator.ModifyHPStat(mod);
                 //Right now we don't use complex dmg formula 

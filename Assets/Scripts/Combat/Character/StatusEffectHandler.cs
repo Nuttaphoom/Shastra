@@ -163,7 +163,6 @@ namespace Vanaring
 
                 }
             }
-            Debug.Log("ExecuteStatusRuntimeEffectCoroutine");
             yield return RunStatusEffectExpiredScheme(); 
         }
 
