@@ -103,7 +103,7 @@ namespace Vanaring
             if (missionItemRewardSocketList.Count == 1)
             {
                 Debug.Log("PlayAnimation");
-                missionItemRewardSocketList[0].PlayAnimationMoveIn();
+                yield return missionItemRewardSocketList[0].PlayAnimationMoveIn();
             }
             else
             {
