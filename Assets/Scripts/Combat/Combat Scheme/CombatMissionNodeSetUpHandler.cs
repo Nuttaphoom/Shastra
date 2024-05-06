@@ -69,6 +69,7 @@ namespace Vanaring
 
             //Play intro 
 
+
             CombatReferee.Instance.BeginNewBattle();
         }
 
