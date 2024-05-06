@@ -16,6 +16,7 @@ namespace Vanaring
     {
         [SerializeField] private GameObject gfx;
         [SerializeField] private GameObject socketGFX;
+        [SerializeField] private GameObject glow;
         [SerializeField] private Button nextButton;
         [SerializeField] private List<IRewardable> allRewardList = new List<IRewardable>();
         [SerializeField] private Image rewardImage;
@@ -83,6 +84,7 @@ namespace Vanaring
                 yield return PlayMissionRewardPopup(rewardData.Key, rewardData.Value);
             }
             socketGFX.SetActive(false);
+            glow.SetActive(false);
             gfx.SetActive(false);
             _uiAnimationDone = true;
             yield return null;
@@ -91,6 +93,7 @@ namespace Vanaring
         private IEnumerator PlayMissionRewardPopup(string name, RewardSocketData data)
         {
             socketGFX.SetActive(true);
+            glow.SetActive(true);
 
             animator.Play("NodeRewardFadeUp");
             rewardImage.sprite = data.rewardImage;
