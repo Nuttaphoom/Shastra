@@ -61,8 +61,6 @@ namespace Vanaring
             if (_itemInventory == null)
                 _itemInventory = new List<ItemInventoryData>();
 
-            Debug.Log(backpackItems.Count);
-
             for (int i = 0; i < backpackItems.Count; i++)
             {
                 BackpackItemData backpackItem = backpackItems[i]; 
@@ -72,8 +70,6 @@ namespace Vanaring
                     amount = backpackItem.Amount ,
                     backpackItemData = backpackItem 
                 });
-
-                ColorfulLogger.LogWithColor("Try to add " + backpackItem.BackpackItem.name, Color.white);
             }
 
             for (int i = 0; i < _itemInventory.Count; i++)

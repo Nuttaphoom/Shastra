@@ -1,5 +1,6 @@
 using UnityEditor;
 using UnityEngine;
+#if UNITY_EDITOR                 
 
 namespace Vanaring.Editor
 {
@@ -52,3 +53,4 @@ namespace Vanaring.Editor
         }
     }
 }
+#endif

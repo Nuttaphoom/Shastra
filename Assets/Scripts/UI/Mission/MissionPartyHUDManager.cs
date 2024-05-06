@@ -18,6 +18,7 @@ namespace Vanaring
         public IEnumerator OnNotifySceneLoadingComplete()
         {
             //Debug.LogWarning("Mission Party HUD manager is disable on purpose");
+            StartCoroutine(PersistentTutorialManager.Instance.CheckTuitorialNotifier("DungeonExplain"));
             socketTemplate.gameObject.SetActive(true);
             foreach (RuntimePartyMember member in DungeonManagerSingleton.Instance.MissionManager.DungeonPartyHandler.PartyMembers)
             {

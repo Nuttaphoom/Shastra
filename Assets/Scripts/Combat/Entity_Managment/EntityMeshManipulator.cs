@@ -5,7 +5,6 @@ using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.XR;
-using static UnityEditor.ShaderGraph.Internal.KeywordDependentCollection;
 
 namespace Vanaring
 {
