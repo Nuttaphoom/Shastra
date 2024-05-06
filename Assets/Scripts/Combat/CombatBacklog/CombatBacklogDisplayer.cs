@@ -33,8 +33,11 @@ namespace Vanaring
 
         public void EnqueueUtilityTab(string comment)
         {
-            if (_queuingComment.Contains(comment) ) 
-                return;
+            //Debug.Log("Enqueue Tab comment : " + comment);
+
+            //if (_queuingComment.Contains(comment) ) 
+            //    return;
+
 
             _queuingComment.Add(comment);
             _displayUtilityTabQueue.Enqueue(DisplayUtilityTabCoroutine(comment));

@@ -32,7 +32,6 @@ namespace Vanaring
             {
                 if (_destroyedWithTimeline[i] != null)
                 {
-                    Debug.Log("Destroy : " + _destroyedWithTimeline[i].gameObject);
                     MonoBehaviour.Destroy(_destroyedWithTimeline[i]);
                 }
             }
