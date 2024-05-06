@@ -81,12 +81,12 @@ namespace Vanaring
                 timer += Time.deltaTime;
                 yield return null;
             }
-            Debug.Log(overVal);
+            //Debug.Log(overVal);
             if (overVal <= 0)
             {
                 levelUpIcon.gameObject.SetActive(true);
                 levelText.text = "Lv." + (member.LevelAttributeHandler.GetCharacterUEXPSystem.GetCurrentLevel + 1).ToString();
-                Debug.Log("New Level: " + member.LevelAttributeHandler.GetCharacterUEXPSystem.GetEXPCap(member.LevelAttributeHandler.GetCharacterUEXPSystem.GetCurrentLevel + 1) + " lv:" + member.LevelAttributeHandler.GetCharacterUEXPSystem.GetCurrentLevel);
+                //Debug.Log("New Level: " + member.LevelAttributeHandler.GetCharacterUEXPSystem.GetEXPCap(member.LevelAttributeHandler.GetCharacterUEXPSystem.GetCurrentLevel + 1) + " lv:" + member.LevelAttributeHandler.GetCharacterUEXPSystem.GetCurrentLevel);
                 expBar.fillAmount = 0f;
                 seccondBar.fillAmount = Mathf.Abs(overVal) / member.LevelAttributeHandler.GetCharacterUEXPSystem.GetEXPCap(member.LevelAttributeHandler.GetCharacterUEXPSystem.GetCurrentLevel + 1);
                 expRemainingNumText.text = Mathf.RoundToInt(member.LevelAttributeHandler.GetCharacterUEXPSystem.GetEXPCap(member.LevelAttributeHandler.GetCharacterUEXPSystem.GetCurrentLevel + 1)).ToString();

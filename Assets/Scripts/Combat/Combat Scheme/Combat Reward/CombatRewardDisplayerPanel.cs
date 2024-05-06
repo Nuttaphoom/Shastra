@@ -68,6 +68,7 @@ namespace Vanaring
             }
             foreach (EventRewardData eventReward in rewardList.Rewards)
             {
+                Debug.Log("Reward Count: "+ rewardList.Rewards.Count);
                 MissionItemRewardSocketGUI newSocket = Instantiate(itemSocketTemplate, itemVerticalLayout.transform);
                 newSocket.InitSocket(eventReward);
                 missionItemRewardSocketList.Add(newSocket);
