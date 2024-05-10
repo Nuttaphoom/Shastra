@@ -92,7 +92,7 @@ namespace Vanaring
 
             tex.fontSize = Random.Range(50f, 85f);
             ret.transform.position = UISpaceSingletonHandler.ObjectToUISpace(showToThisEntity.CombatEntityAnimationHandler.GetTargetIconTransform());
-            ret.transform.position = RandomPointInCircle(ret.transform.position, 10f);
+            //ret.transform.position = RandomPointInCircle(ret.transform.position, 10f);
 
             return ret; 
         }

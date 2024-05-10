@@ -41,6 +41,7 @@ namespace Vanaring
             
             resumeButton.onClick.AddListener(() => _pauseMenuWindowGUI.HideCurrentWindow());
             characterButton.onClick.AddListener(() => _pauseMenuWindowGUI.OpenWindow(EPauseWindowGUI.Party));
+            quitButton.onClick.AddListener(Application.Quit);
 
             pauseButtonList.Add(resumeButton);
             pauseButtonList.Add(characterButton);

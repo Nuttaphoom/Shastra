@@ -82,7 +82,8 @@ namespace Vanaring
                
                 else if (track.name == "SignalTrack")
                 {
-                    director.SetGenericBinding(track, unitySignalReciver);
+                    Debug.Log("Signal Track");
+                    director.SetGenericBinding(track, unitySignalReciver.gameObject);
                 }
                 else if (track is CinemachineTrack)
                 {

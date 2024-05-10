@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace Vanaring
 {
-    public class PersistentTutorialManager : PersistentInstantiatedObject<PersistentTutorialManager>
+    public class PersistentTutorialManager : PersistentInstantiatedObject<PersistentTutorialManager>, IInputReceiver
     {
         [SerializeField]
         private bool EnableDebuggingMode = false;
@@ -63,14 +63,20 @@ namespace Vanaring
 
         private IEnumerator PlayTutorial(TuitorialInstanceData tuitorialData)
         {
+            CentralInputReceiver.Instance().AddInputReceiverIntoStack(this); 
             tuitorialData.TuitorialCutscene.gameObject.SetActive(true) ;
             yield return tuitorialData.TuitorialCutscene.PlayCutscene();
 
             Destroy(tuitorialData.TuitorialCutscene.gameObject);
 
             _tuitorialInstanceDatas.Remove(tuitorialData);
+            CentralInputReceiver.Instance().RemoveInputReceiverIntoStack(this);
+
         }
 
-
+        public void ReceiveKeys(KeyCode key)
+        {
+    
+        }
     }
 }

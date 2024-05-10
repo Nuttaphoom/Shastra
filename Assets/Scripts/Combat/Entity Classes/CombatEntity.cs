@@ -312,6 +312,7 @@ namespace Vanaring
 
         public void LogicHurt(CombatEntity attacker, StatModifier mod      )
         {
+            Debug.Log("Hurt Call");
             //Calculate hit chance 
             float attackerACC = attacker._runtimeCharacterStatsAccumulator.GetAccuracyAmount();
             float defenderEVS = _runtimeCharacterStatsAccumulator.GetEvasionAmount(); 

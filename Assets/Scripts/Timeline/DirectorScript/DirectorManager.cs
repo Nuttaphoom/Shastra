@@ -64,6 +64,7 @@ namespace Vanaring
         private PlayableDirector _currentPlayableDirector; 
         public void TransmitSignal(SignalType signal)
         {
+            
             if (_currentSignal.Count == 0)
                 Debug.LogError("No registered signal");
             

@@ -98,7 +98,7 @@ namespace Vanaring
             animator.Play("NodeRewardFadeUp");
             rewardImage.sprite = data.rewardImage;
             rewardName.text = name;
-            rewardAmount.text = data.amount.ToString();
+            rewardAmount.text = "x"+data.amount.ToString();
 
             yield return new WaitForSeconds(1.5f);
             //while (!socketGFX.activeSelf)

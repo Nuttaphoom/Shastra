@@ -23,7 +23,7 @@ namespace Vanaring
 
         private string[] weekDays =
         {
-            "Monday", "Tueday", "Wednesday", "Thursday",
+            "Monday", "Tuesday", "Wednesday", "Thursday",
             "Friday", "Saturday", "Sunday"
         };
 
