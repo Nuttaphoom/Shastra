@@ -321,6 +321,9 @@ namespace Vanaring
 
         public IEnumerator LogicModifyEnergy(CombatEntity target, EnergyModifierData energyModiiferData)
         {
+            if (target.SpellCaster.IsEnergyOverflow())
+                goto End; 
+                    
             target.LogicModifiedEnergy(energyModiiferData);
 
             if (target.SpellCaster.IsEnergyOverflow())
@@ -328,6 +331,9 @@ namespace Vanaring
                 yield return target.OverflowHandler.OverflowResolve();
                 _breakTriggerHandler.EnableTriggerAction(target);
             }
+
+        End:
+            yield return null; 
 
         }
 

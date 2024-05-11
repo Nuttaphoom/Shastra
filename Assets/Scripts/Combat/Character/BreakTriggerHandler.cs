@@ -35,12 +35,19 @@ namespace Vanaring
             if (_triggerActionSO[0] == null)
                 throw new Exception("there is no valid _triggerActionSO") ; 
             
-            ActorAction action = _triggerActionSO[0].FactorizeRuntimeAction(_entity);
-            throw new Exception("Right now we need to determine the target detail within TriggeActionSO"); 
+            ActorAction action = _triggerActionSO[0].FactorizeTriggerEffect(_entity, _currentTriggerStatus.BrokenTargets); 
+            
+            
+             
+            
+                
+            //throw new Exception("Right now we need to determine the target detail within TriggeActionSO"); 
 
-            action.SetActionTarget(_currentTriggerStatus.BrokenTargets) ;
+            action.SetActionTarget(_currentTriggerStatus.BrokenTargets) ; 
 
             _entity.ActionHandler.AddActionQueue(action);
+
+            _currentTriggerStatus = null; 
         }
         public void EnableTriggerAction(CombatEntity target)
         {
