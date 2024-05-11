@@ -182,12 +182,12 @@ namespace Vanaring
         /// </summary>
         /// <param name="signal"></param>
         public void ReceiveSignal(SignalType signal)
-        {
+        { 
             foreach (var signalBinding in _signalEffectBindings)
             {
                 if (signalBinding.IsSameSignalType(signal))
                 {
-
+                    Debug.Log("Signal " + signal + " add action queue ") ; 
                     foreach (var effect in signalBinding.RuntimeEffects) { 
                         _readyEffectQueue.Enqueue(effect);
                     }

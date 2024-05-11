@@ -35,6 +35,14 @@ namespace Vanaring
                 return _levelAttributeHandler;
             }
         }
+
+        public List<TriggerActionSO> GetTriggerActionSOs
+        {
+            get
+            {
+                throw new Exception("Haven't implement loading system yet"); 
+            }
+        }
         public List<SpellActionSO> GetRegisteredSpellActionSO
         {
             get

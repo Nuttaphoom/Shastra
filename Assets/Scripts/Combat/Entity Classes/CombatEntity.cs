@@ -32,7 +32,9 @@ namespace Vanaring
         [SerializeField]
         private ItemUserHandler _itemUser;
 
-        [SerializeField]
+        [SerializeField] 
+        protected BreakTriggerHandler _breakTriggerHandler ;
+
         private StatusEffectHandler _statusEffectHandler;
 
         protected RuntimeCharacterStatsAccumulator _runtimeCharacterStatsAccumulator;
@@ -201,6 +203,8 @@ namespace Vanaring
             _statusEffectHandler = new StatusEffectHandler(this);
             _combatEntityActionHandler = new CombatEntityActionHandler(this); 
 
+            _breakTriggerHandler.Initialize(this);
+
             if (_spellCaster == null)
             {
                 throw new Exception("SpellCaster haven't been assigned (should never use 'GetComponent' for SpellCaster as it will be too slow') ");
@@ -241,6 +245,7 @@ namespace Vanaring
 
             yield return _ailmentHandler.CheckForExpiration();
 
+
             _ailmentHandler.ProgressAlimentTTL();
 
         }
@@ -253,12 +258,16 @@ namespace Vanaring
 
             yield return _statusEffectHandler.RunStatusEffectExpiredScheme();
         }
-         
+
         public bool ReadyForControl()
         {
-            return  !IsDead && !IsExhausted;
+            return !IsDead && !IsExhausted;
         }
-
+        
+        public bool ReadyToPerformAction()
+        {//We can add functionality to prevent performing action when there is an ailment later 
+            return !IsDead ;
+        }
 
         #endregion
 
@@ -266,18 +275,16 @@ namespace Vanaring
         /// <summary>
         /// Invoked before this character perform any action
         /// </summary>
-        public virtual IEnumerator OnPerformAction(   )
+        public virtual IEnumerator OnPerformAction(  )
         {
             yield return ActionHandler.PerformActionInQueue();
-            
-
+    
             _isExhausted = true;
-
         }
+
 
         public IEnumerator OnPostPerformAction()
         {
-    
             //2. check status effect 
             yield return _statusEffectHandler.RunStatusEffectExpiredScheme();
         }
@@ -390,7 +397,6 @@ namespace Vanaring
         #endregion
 
         #region Status Effect Methods 
-
         public IEnumerator ApplyNewEffect(StatusRuntimeEffectFactorySO  statusEffect, StatusEffectApplierRuntimeEffect applierFactory, CombatEntity applier)
         {
             yield return _statusEffectHandler.ApplyNewEffect(statusEffect,applierFactory, applier);
@@ -404,7 +410,6 @@ namespace Vanaring
         {
             _statusEffectHandler.StunBreakStatusEffect(this);
         }
-
         #endregion
 
         public IEnumerator DeadVisualAnimationScheme()

@@ -209,7 +209,7 @@ namespace Vanaring
             SetUpVisualPivotTransform();
 
             _animator = GetVisualMesh().GetComponent<Animator>();
-            _combatEntity = GetComponent<CombatEntity>();   
+            _combatEntity = GetComponent<CombatEntity>();
         }
 
         #region Mesh Methods 
@@ -223,6 +223,9 @@ namespace Vanaring
 
         public void ShowVisualMesh()
         {
+            //if (_combatEntity == null)
+            //    _combatEntity = GetComponent<CombatEntity>(); 
+             
             if (_combatEntity.IsDead)
                 return;
 
