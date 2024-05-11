@@ -13,38 +13,40 @@ using UnityEngine;
 namespace Vanaring
 {
     [CreateAssetMenu(fileName = "Trigger Ability", menuName = "ScriptableObject/Combat/TriggerActionSO")]
-    public class TriggerActionSO : ActorActionFactory
+    public class TriggerActionSO : ScriptableObject
     {
-        public override ActorAction FactorizeRuntimeAction(CombatEntity caster)
+        [SerializeField]
+        private ActorActionFactory triggerAction; 
+        public ActorAction FactorizeRuntimeAction(CombatEntity caster)
         {
-            return new TriggerActionAbilityRuntime(caster, this);
+            return triggerAction.FactorizeRuntimeAction(caster) ;  // new TriggerActionAbilityRuntime(caster, this);
         }
     }
 
-    public class TriggerActionAbilityRuntime : ActorAction
-    {
-        public TriggerActionAbilityRuntime(CombatEntity caster, ActorActionFactory factory) : base(factory, caster)
-        {
+    //public class TriggerActionAbilityRuntime : ActorAction
+    //{
+    //    public TriggerActionAbilityRuntime(CombatEntity caster, ActorActionFactory factory) : base(factory, caster)
+    //    {
 
-        }
+    //    }
 
-        public override IEnumerator PreActionPerform()
-        {
-            yield return null;
-        }
+    //    public override IEnumerator PreActionPerform()
+    //    {
+    //        yield return null;
+    //    }
 
-        public override IEnumerator PostActionPerform()
-        {
-            yield return null;
-        }
+    //    public override IEnumerator PostActionPerform()
+    //    {
+    //        yield return null;
+    //    }
 
-        public override IEnumerator Simulate(CombatEntity target)
-        {
-            yield return null;
-        }
+    //    public override IEnumerator Simulate(CombatEntity target)
+    //    {
+    //        yield return null;
+    //    }
 
 
-    }
+    //}
 
 
 }

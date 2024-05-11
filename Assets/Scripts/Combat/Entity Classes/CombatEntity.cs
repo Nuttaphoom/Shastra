@@ -287,6 +287,9 @@ namespace Vanaring
         {
             //2. check status effect 
             yield return _statusEffectHandler.RunStatusEffectExpiredScheme();
+
+            _breakTriggerHandler.ResolveTrigger();
+
         }
 
         public IEnumerator GetAilmentAction()
@@ -320,7 +323,11 @@ namespace Vanaring
         {
             target.LogicModifiedEnergy(energyModiiferData);
 
-            yield return target.OverflowHandler.OverflowResolve() ;
+            if (target.SpellCaster.IsEnergyOverflow())
+            {
+                yield return target.OverflowHandler.OverflowResolve();
+                _breakTriggerHandler.EnableTriggerAction(target);
+            }
 
         }
 
