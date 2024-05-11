@@ -29,10 +29,8 @@ namespace Vanaring
 
         public ActorAction FactorizeTriggerEffect(CombatEntity caster, List<CombatEntity> brokenEntities   )
         {
-
             var actorAction = triggerAction.FactorizeRuntimeAction(caster);
  
-
             actorAction.SetActionTarget(GetValidTarget(actorAction, caster, brokenEntities) );
 
             return actorAction;  // new TriggerActionAbilityRuntime(caster, this);
@@ -46,8 +44,6 @@ namespace Vanaring
             {
                 if (brokenEntities == null)
                     throw new Exception("target want to cast on broken entities but there is no given broken entites ");
-
-
             }
             else
             {

@@ -285,9 +285,10 @@ namespace Vanaring
 
         public IEnumerator OnPostPerformAction()
         {
-            //2. check status effect 
+            //1. check status effect 
             yield return _statusEffectHandler.RunStatusEffectExpiredScheme();
-
+            //2. check if there are any reaction 
+            //2.1) check Break Trigger effect 
             _breakTriggerHandler.ResolveTrigger();
 
         }

@@ -37,12 +37,6 @@ namespace Vanaring
             
             ActorAction action = _triggerActionSO[0].FactorizeTriggerEffect(_entity, _currentTriggerStatus.BrokenTargets); 
             
-            
-             
-            
-                
-            //throw new Exception("Right now we need to determine the target detail within TriggeActionSO"); 
-
             action.SetActionTarget(_currentTriggerStatus.BrokenTargets) ; 
 
             _entity.ActionHandler.AddActionQueue(action);
