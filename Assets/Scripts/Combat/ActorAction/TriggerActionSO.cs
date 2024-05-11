@@ -23,8 +23,13 @@ namespace Vanaring
         private ActorActionFactory triggerAction;
 
         [Header("Trigger Target Selector Rule")]
+        [Header("Overflow entities will be the target")]
         [SerializeField]
-        private bool _castOnBrokenEntities; 
+        private bool _castOnBrokenEntities;
+
+        [Header("Ally entities will be the target")]
+        [SerializeField]
+        private bool _castOnAlly; 
         
 
         public ActorAction FactorizeTriggerEffect(CombatEntity caster, List<CombatEntity> brokenEntities   )
@@ -43,7 +48,13 @@ namespace Vanaring
             if (_castOnBrokenEntities)
             {
                 if (brokenEntities == null)
-                    throw new Exception("target want to cast on broken entities but there is no given broken entites ");
+                    throw new Exception("target want to cast on broken entities but there is no given broken entites "); 
+
+                validTarget = brokenEntities; 
+            }
+            else if (_castOnAlly)
+            {
+
             }
             else
             {
