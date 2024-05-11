@@ -315,6 +315,21 @@ namespace Vanaring
         #endregion
 
         #region Attack Hurt Methods  
+
+        public IEnumerator LogicModifyEnergy(CombatEntity target, EnergyModifierData energyModiiferData)
+        {
+            target.LogicModifiedEnergy(energyModiiferData);
+
+            yield return target.OverflowHandler.OverflowResolve() ;
+
+        }
+
+        public void LogicModifiedEnergy(EnergyModifierData energyModiiferData)
+        {
+            SpellCaster.ModifyEnergy(energyModiiferData.Side, energyModiiferData.Amount);
+
+        }
+
         public IEnumerator LogicAttack(List<CombatEntity> targets, EDamageScaling scaling)
         {
             //Prepare for status effect  

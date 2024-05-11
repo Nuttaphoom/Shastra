@@ -21,9 +21,10 @@ namespace Vanaring
     
         }
         
-        public IEnumerator TriggerAction()
+        public void TriggerAction()
         {
-            return _entity.GetAction();
+            ActorAction action = _triggerActionSO[0].FactorizeRuntimeAction(_entity);
+            _entity.ActionHandler.AddActionQueue(action) ;
         }
 
         public void LoadTriggerActionFromDatabase(List<TriggerActionSO> loadedTriggerAction)
