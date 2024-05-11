@@ -42,24 +42,19 @@ namespace Vanaring
 
         private EnergyOverflowHandler _energyOverflowHandler;
 
-        private POPUPNumberTextHandler _dmgOutputPopHanlder;
-
         protected AilmentHandler _ailmentHandler;
 
         protected CombatEntityActionHandler _combatEntityActionHandler; 
-
-
 
         /// <summary>
         /// TODO : these IsDead, Is.... variables should be removed
         /// </summary>
         private bool _isDead = false ;
         private bool _isExhausted = true ;
-        public bool IsDead => _isDead;
-        public bool IsExhausted { get => _isExhausted; set => _isExhausted = value;  } 
+     
 
 
-        #region GetEventBroadcaster Methods 
+        #region EventBroadcaster Methods 
 
         private EventBroadcaster _eventBroadcaster;
         private EventBroadcaster GetEventBroadcaster()
@@ -186,7 +181,11 @@ namespace Vanaring
         }
 
         #endregion
-       
+
+        #region Abstract Methods 
+        public abstract IEnumerator LoadDataFromDatabase();
+        public abstract IEnumerator GetAction();
+        #endregion
 
         #region Turn Handler Methods 
         /// <summary>
@@ -197,7 +196,7 @@ namespace Vanaring
         public virtual IEnumerator InitializeEntityIntoCombat()
         {
             _ailmentHandler = new AilmentHandler(this);
-            _dmgOutputPopHanlder = new POPUPNumberTextHandler(this);
+            POPUPNumberTextHandler _dmgOutputPopHanlder = new POPUPNumberTextHandler(this);
             _energyOverflowHandler = GetComponent<EnergyOverflowHandler>();
             _statusEffectHandler = new StatusEffectHandler(this);
             _combatEntityActionHandler = new CombatEntityActionHandler(this); 
@@ -210,8 +209,7 @@ namespace Vanaring
             yield return null; 
         }
  
-        public abstract IEnumerator LoadDataFromDatabase(); 
-        public abstract IEnumerator GetAction();
+
 
         // Take control and leave control should have its own space 
         public virtual IEnumerator TakeControl()
@@ -263,15 +261,8 @@ namespace Vanaring
 
 
         #endregion
-        public IEnumerator GetAilmentAction()
-        {
-            if (_ailmentHandler.DoesAilmentOccur())
-            {
-                yield return _ailmentHandler.AlimentControlGetAction();
-            }
-        }
-        
 
+        #region Actor Action Methods 
         /// <summary>
         /// Invoked before this character perform any action
         /// </summary>
@@ -291,7 +282,19 @@ namespace Vanaring
             yield return _statusEffectHandler.RunStatusEffectExpiredScheme();
         }
 
+        public IEnumerator GetAilmentAction()
+        {
+            if (_ailmentHandler.DoesAilmentOccur())
+            {
+                yield return _ailmentHandler.AlimentControlGetAction();
+            }
+        }
+
+        #endregion
+
         #region GETTER
+        public bool IsDead => _isDead;
+        public bool IsExhausted { get => _isExhausted; set => _isExhausted = value; }
 
         public CombatEntityActionHandler ActionHandler => _combatEntityActionHandler; 
         public EnergyOverflowHandler OverflowHandler => _energyOverflowHandler ;
@@ -304,22 +307,32 @@ namespace Vanaring
 
         #endregion
 
-        #region Combat Methods 
-        public IEnumerator ApplyNewEffect(StatusRuntimeEffectFactorySO  statusEffect, StatusEffectApplierRuntimeEffect applierFactory, CombatEntity applier)
+        #region Attack Hurt Methods  
+        public IEnumerator LogicAttack(List<CombatEntity> targets, EDamageScaling scaling)
         {
-            yield return _statusEffectHandler.ApplyNewEffect(statusEffect,applierFactory, applier); 
-        }
+            //Prepare for status effect  
+            yield return _statusEffectHandler.ExecuteAttackStatusRuntimeEffectCoroutine();
 
-        public void LogicHurt(CombatEntity attacker, StatModifier mod      )
+            //1.) Do apply dmg 
+            float realDMG = VanaringMathConst.GetATKWithNoise(scaling, StatsAccumulator.GetPhysicalATKAmount());
+
+            StatModifier statsModifer = new StatModifier(-realDMG, StatModType.Flat);
+
+            foreach (CombatEntity target in targets)
+            {
+                target.LogicHurt(this, statsModifer);
+            }
+
+        }
+        public void LogicHurt(CombatEntity attacker, StatModifier mod)
         {
-            Debug.Log("Hurt Call");
             //Calculate hit chance 
             float attackerACC = attacker._runtimeCharacterStatsAccumulator.GetAccuracyAmount();
-            float defenderEVS = _runtimeCharacterStatsAccumulator.GetEvasionAmount(); 
+            float defenderEVS = _runtimeCharacterStatsAccumulator.GetEvasionAmount();
 
-            float hitchance = AttributeFormulaLocator.CalculateHitChance(attackerACC , defenderEVS);
+            float hitchance = AttributeFormulaLocator.CalculateHitChance(attackerACC, defenderEVS);
 
-            int hitDice = UnityEngine.Random.Range(0,100) ; 
+            int hitDice = UnityEngine.Random.Range(0, 100);
 
             //Check if attack hit sucessfully 
             //Hit 
@@ -328,8 +341,8 @@ namespace Vanaring
             {
                 _runtimeCharacterStatsAccumulator.ModifyHPStat(mod);
                 //Right now we don't use complex dmg formula 
-                int finalDMG = (int)mod.Value ; 
-                
+                int finalDMG = (int)mod.Value;
+
                 //_dmgOutputPopHanlder.AccumulateDMG(finalDMG);
 
                 if (_runtimeCharacterStatsAccumulator.GetHPAmount() <= 0)
@@ -346,70 +359,53 @@ namespace Vanaring
                 Debug.Log("Miss with " + hitDice + " > " + hitchance);
                 GetEventBroadcaster().InvokeEvent<Null>(null, "OnDodgeAttack");
             }
-            
-            
-            
-
         }
-
         public void LogicHeal(StatModifier statModifier)
         {
             StatsAccumulator.ModifyHPStat(statModifier);
-            //_dmgOutputPopHanlder.AccumulateHP((int) statModifier.Value);
-
-            StartCoroutine(VisualHeal((int) statModifier.Value )); 
+            StartCoroutine(VisualHeal((int)statModifier.Value));
         }
-
-        public IEnumerator VisualHeal(int healAmount  )
+        public IEnumerator VisualHeal(int healAmount)
         {
             GetEventBroadcaster().InvokeEvent<int>((int)healAmount, "OnHeal");
-            yield return null; 
+            yield return null;
         }
-        public IEnumerator VisualHurt(int dmg, string animationTrigger = "No Animation" )
+        public IEnumerator VisualHurt(int dmg, string animationTrigger = "No Animation")
         {
-            bool _callingDeadScheme = false;
 
             List<IEnumerator> _coroutine = new List<IEnumerator>();
             if (IsDead)
             {
                 _coroutine.Add(DeadVisualAnimationScheme());
-                _callingDeadScheme = true;
             }
             else if (animationTrigger != "No Animation")
             {
-                _coroutine.Add(_combatEntityAnimationHandler.PlayTriggerAnimation(animationTrigger)); 
+                _coroutine.Add(_combatEntityAnimationHandler.PlayTriggerAnimation(animationTrigger));
             }
             GetEventBroadcaster().InvokeEvent(dmg, "OnDamage");
 
             yield return new WaitAll(this, _coroutine.ToArray());
 
-            ////If done playing animation, visually destroy the character (animation) not game object
-            //if (IsDead && ! _callingDeadScheme)
-            //{
-            //    yield return DeadVisualAnimationScheme();
-            //}
-
-            yield return null;
-
         }
+        #endregion
 
-        //Receive animation info and play it accordingly 
-        public IEnumerator LogicAttack(List<CombatEntity> targets, EDamageScaling scaling)
+        #region Status Effect Methods 
+
+        public IEnumerator ApplyNewEffect(StatusRuntimeEffectFactorySO  statusEffect, StatusEffectApplierRuntimeEffect applierFactory, CombatEntity applier)
         {
-            //Prepare for status effect  
-            yield return _statusEffectHandler.ExecuteAttackStatusRuntimeEffectCoroutine();
-
-            //1.) Do apply dmg 
-            float realDMG = VanaringMathConst.GetATKWithNoise(scaling, StatsAccumulator.GetPhysicalATKAmount()) ;
-
-            StatModifier statsModifer = new StatModifier(-realDMG, StatModType.Flat) ;
-            
-            foreach (CombatEntity target in targets)
-            {
-                target.LogicHurt(this, statsModifer );
-            }
+            yield return _statusEffectHandler.ApplyNewEffect(statusEffect,applierFactory, applier);
+        }
+        public IEnumerator ApplyAilment(Ailment ailment)
+        {
+            yield return _ailmentHandler.LogicApplyAilment(ailment);
 
         }
+        public virtual void ApplyOverflow()
+        {
+            _statusEffectHandler.StunBreakStatusEffect(this);
+        }
+
+        #endregion
 
         public IEnumerator DeadVisualAnimationScheme()
         {
@@ -418,16 +414,8 @@ namespace Vanaring
 
  
 
-        public IEnumerator ApplyAilment(Ailment ailment)
-        {
-            yield return _ailmentHandler.LogicApplyAilment(ailment);
+       
 
-        }
-
-        public virtual void ApplyOverflow()
-        {
-            _statusEffectHandler.StunBreakStatusEffect(this);
-        }
-        #endregion
+        
     }
 }

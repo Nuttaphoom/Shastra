@@ -13,6 +13,7 @@ namespace Vanaring
 
         public POPUPNumberTextHandler(CombatEntity _owner)
         {
+            Debug.Log("Sub");
             _entity = _owner;
             _entity.SubOnDamageVisualEvent(OnDamaged_DisplayAccumulatedDMG);
             _entity.SubOnHealVisualEvent(OnHeal_DisplayAccumulatedHeal);
@@ -23,6 +24,7 @@ namespace Vanaring
 
         ~POPUPNumberTextHandler()
         {
+            Debug.Log("UnSub");
             _entity.UnSubOnDamageVisualEvent(OnDamaged_DisplayAccumulatedDMG);
             _entity.UnSubOnHealVisualEvent(OnHeal_DisplayAccumulatedHeal);
             _entity.UnSubOnOnAilmentAppliedEventChannel(OnAilmentAppliedAttemp);
