@@ -424,7 +424,6 @@ namespace Vanaring
 
         public IEnumerator OnCharacterPerformAction(CombatEntity actor )
         {
-            var prevActor = GetCurrentActor();
 
             yield return actor.OnPerformAction( );
 
@@ -432,52 +431,63 @@ namespace Vanaring
 
             ResolveEntityDead();
 
+            yield return CheckForReactionAction(); 
+
+        }
+
+        private IEnumerator CheckForReactionAction()
+        {
+            List<CombatEntity> allEntities = new List<CombatEntity>();
+            foreach (var entity in GetCompetatorsBySide(ECompetatorSide.Ally))
+                allEntities.Add(entity);
+
+            foreach (var entity in GetCompetatorsBySide(ECompetatorSide.Hostile))
+                allEntities.Add(entity);
+
+
+            foreach (var entity in allEntities)
+            {
+                //yield return new WaitForSeconds(1.0f);
+
+                if (entity.IsDead)
+                    continue;
+
+                if (!entity.ActionHandler.ActionQueueReady())
+                    continue;
+
+
+                yield return OnCharacterPerformAction(entity);
+
+                break;
+            }
+        }
+
+        public IEnumerator ResolveOnEntityPerformAction()
+        {
+            var prevActor = GetCurrentActor();
+
             if (IsGameEnd())
             {
-                yield return FindObjectOfType<CombatRewardManager>().CombatRewardSchemeStart(this) ;
+                yield return FindObjectOfType<CombatRewardManager>().CombatRewardSchemeStart(this);
                 PersistentSceneLoader.Instance.LoadGeneralScene(PersistentSceneLoader.Instance.GetStackLoadedDataScene(1));
                 //FindObjectOfType<ThanksForPlayingDisplayer>().ShowThankForPlayingMenu();
             }
             else
-            { 
+            {
                 //yield return SwitchControl((), null);
 
                 SetActiveActors();
 
-                yield return SwitchControl(prevActor, GetCurrentActor()); 
+                yield return SwitchControl(prevActor, GetCurrentActor());
 
                 //if (GetCurrentActor() != null)
                 //    EntityPositionManager.Instance.SetNewEnemyCurrentSize(GetCompetatorsBySide(ECompetatorSide.Hostile).Count);
 
-                
+
             }
-
-
-
-
         }
 
-        //private int CombatEnd()
-        //{
-        //    for (int i = 0;  i< GetCompetatorsBySide(ECompetatorSide.Ally).Count; i++)
-        //    {
-        //        var comp = GetCompetatorsBySide(ECompetatorSide.Ally)[i];
-
-        //        if (!comp.IsDead)
-        //        {
-        //            break;
-        //        }
-
-        //        else if (i == GetCompetatorsBySide(ECompetatorSide.Ally).Count - 1)
-        //            return 2; 
-
-        //    }
-
-        //    if (GetCompetatorsBySide(ECompetatorSide.Hostile).Count == 0)
-        //        return  1;  
-
-        //    return 0 ; 
-        //}
+        
 
         private void ResolveEntityDead()
         {

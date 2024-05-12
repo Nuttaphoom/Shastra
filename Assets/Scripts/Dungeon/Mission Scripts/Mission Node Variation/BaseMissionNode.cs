@@ -184,16 +184,7 @@ namespace Vanaring
 
         public virtual NodeRuntimeData CaptureNodeData()
         {
-            Debug.Log("" + gameObject.name + "Visite Status is " + visistationState); 
-            if (IsCurrentlyVisiting)
-            {
-                Debug.Log("Capture Currently visisted in " + gameObject.name);
-            }
-
-            if (IsThisNodeVisited)
-            {
-                Debug.Log("Capture Visisted in " + gameObject.name);
-            }
+             
 
             return new NodeRuntimeData()
             {

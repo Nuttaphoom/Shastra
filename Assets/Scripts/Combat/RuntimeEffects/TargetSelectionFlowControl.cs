@@ -311,7 +311,9 @@ namespace Vanaring
                     entityCam.DisableAllAttachedCamera();
                 }
                 actorAction.SetActionTarget(_selectedTarget);
+                
                 caster.ActionHandler.AddActionQueue(actorAction);
+                
             }
 
             if (!randomTarget)

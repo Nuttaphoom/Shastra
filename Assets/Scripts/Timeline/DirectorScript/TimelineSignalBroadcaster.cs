@@ -20,7 +20,7 @@ namespace Vanaring
         [SerializeField] DirectorManager directorManager;
         public void RecieveSignal(string signal)
         {
-            Debug.Log("Recieve Signal");
+            Debug.Log("Recieve Signal" + signal) ;
             SignalType broadcastSignal = SignalType.None  ;
             switch (signal)
             {
