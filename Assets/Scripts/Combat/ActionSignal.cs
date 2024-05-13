@@ -187,7 +187,7 @@ namespace Vanaring
             {
                 if (signalBinding.IsSameSignalType(signal))
                 {
-                    Debug.Log("Signal " + signal + " add action queue ") ; 
+                    //Debug.Log("Signal " + signal + " add action queue ") ; 
                     foreach (var effect in signalBinding.RuntimeEffects) { 
                         _readyEffectQueue.Enqueue(effect);
                     }

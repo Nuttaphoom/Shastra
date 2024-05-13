@@ -424,12 +424,15 @@ namespace Vanaring
 
         public IEnumerator OnCharacterPerformAction(CombatEntity actor )
         {
+            Debug.Log("on perform action");
 
             yield return actor.OnPerformAction( );
 
-            yield return PostPerformActionInEveryCharacter();
-
+            Debug.Log("Call post perform in every entity");
+             
             ResolveEntityDead();
+
+            yield return PostPerformActionInEveryCharacter();
 
             yield return CheckForReactionAction(); 
 

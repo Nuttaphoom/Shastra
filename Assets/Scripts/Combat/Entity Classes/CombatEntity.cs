@@ -277,8 +277,10 @@ namespace Vanaring
         /// </summary>
         public virtual IEnumerator OnPerformAction(  )
         {
+
             yield return ActionHandler.PerformActionInQueue();
-    
+
+
             _isExhausted = true;
         }
 
@@ -334,6 +336,7 @@ namespace Vanaring
             }
 
         End:
+            Debug.Log("Logic Modify energy end");
             yield return null; 
 
         }

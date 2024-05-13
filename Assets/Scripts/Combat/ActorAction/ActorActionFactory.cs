@@ -115,21 +115,30 @@ namespace Vanaring
             }
             while (DirectorManager.Instance.IsPlayingTimeline)
             {
-
                 yield return new WaitForEndOfFrame();
-            }
-            DirectorManager.Instance.ClearCurrentTimeline();
+            } 
 
+            DirectorManager.Instance.ClearCurrentTimeline();
 
         }
 
+        /// <summary>
+        /// Use for interrupt ActionAnimation , don't wait for all effect to be applied as long as no key is waiting (effect still applied, but just not wait for
+        /// animation 
+        /// </summary>
+        /// <exception cref="NotImplementedException"></exception>
+        public void ForceEndAction()
+        {
+            
+            throw new NotImplementedException();
+        }
 
         private IEnumerator CasterStartExecuteEffectCoroutine(RuntimeEffect effect)
-        {
+        { 
             yield return effect.ExecuteRuntimeCoroutine(_caster);
             yield return effect.OnExecuteRuntimeDone(_caster);
             _ongoingEffect.RemoveAt(0);
-        }
+         }
 
         private void SetUpTimeLineActorSetting()
         {

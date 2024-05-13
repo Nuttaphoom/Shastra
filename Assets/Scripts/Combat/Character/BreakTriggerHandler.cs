@@ -49,7 +49,7 @@ namespace Vanaring
 
             _currentTriggerStatus.BrokenTargets.Add(target); 
 
-            Debug.Log("Right now we just call TriggerAction everytime Caster break energy");
+            //Debug.Log("Right now we just call TriggerAction everytime Caster break energy");
 
         }
 

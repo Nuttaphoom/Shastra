@@ -57,6 +57,7 @@ namespace Vanaring
 
         public IEnumerator PerformActionInQueue()
         {
+
             ActorAction action = GetActionRuntimeEffect(); 
 
             //Call on perform action of the ActorAction
@@ -80,7 +81,8 @@ namespace Vanaring
                 _performerEntity.IsExhausted = true;
 
             }
-        } 
+
+        }
 
         public bool ActionQueueReady ()
         {

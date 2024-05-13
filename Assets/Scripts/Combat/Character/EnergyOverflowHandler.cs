@@ -117,7 +117,6 @@ namespace Vanaring
         {
             StartCoroutine(RunnintOverheatVisualEffect()); 
             yield return (_combatEntity.VisualHurt(0,"Stun"));
-
         }
 
         private IEnumerator RunnintOverheatVisualEffect()
@@ -125,7 +124,7 @@ namespace Vanaring
             //_starVFX_Instantied = Instantiate(_star_circle_stunVFX, _above_head_transform);
             //_starVFX_Instantied.transform.position = _above_head_transform.position;
 
-            yield return new WaitForSecondsRealtime(0.2f); 
+            yield return new WaitForSecondsRealtime(0.1f); 
             Time.timeScale = 0.25f;
 
             yield return new WaitForSecondsRealtime(0.5f);

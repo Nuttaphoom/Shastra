@@ -121,7 +121,7 @@ namespace Vanaring
             RuntimeCombatMemberData partyMemberRuntimeData = PersistentPlayerPersonalDataManager.Instance.CombatMemberDataLocator.GetRuntimeData(characterName);
 
             LoadUnLockedSpell(partyMemberRuntimeData) ;
-            LoadBreakTriggerHandler(partyMemberRuntimeData);
+            //LoadBreakTriggerHandler(partyMemberRuntimeData);
 
             yield return null;
         }

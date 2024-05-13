@@ -6,7 +6,6 @@ using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 using Unity.VisualScripting;
-using UnityEditorInternal;
 using UnityEngine;
 
 namespace Vanaring 
@@ -149,7 +148,6 @@ namespace Vanaring
                 else
                 {
                     yield return _stateHandler.Referee.OnCharacterPerformAction(_actor);
-
 
                     yield return _stateHandler.Referee.ResolveOnEntityPerformAction();
 
