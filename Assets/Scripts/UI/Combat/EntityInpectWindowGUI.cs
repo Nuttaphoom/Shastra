@@ -39,6 +39,8 @@ namespace Vanaring
 
         private List<GameObject> allyButtonList = new List<GameObject>();
         private List<GameObject> enemyButtonList = new List<GameObject>();
+        private int allyIndex = 0;
+        private bool isAllyMode = true;
         [SerializeField] private GameObject allyHRZ;
         [SerializeField] private GameObject enemyHRZ;
 
@@ -76,7 +78,7 @@ namespace Vanaring
                 entityButtonTemplate.gameObject.SetActive(false);
             }
 
-            allyButtonList[0].GetComponent<Button>().onClick.Invoke();
+            SetupInfo();
             CentralInputReceiver.Instance().AddInputReceiverIntoStack(this);
         }
 
@@ -112,8 +114,34 @@ namespace Vanaring
 
         public void ReceiveKeys(KeyCode key)
         {
-            
-            
+            if (key == KeyCode.A)
+            {
+                allyIndex = Math.Clamp(allyIndex - 1, 0, 2);
+                SetupInfo();
+            }
+            if (key == KeyCode.D)
+            {
+                allyIndex = Math.Clamp(allyIndex + 1, 0, 2);
+                SetupInfo();
+            }
+            if (key == KeyCode.C)
+            {
+                allyIndex = 0;
+                isAllyMode = !isAllyMode;
+                SetupInfo();
+            }
+        }
+
+        private void SetupInfo()
+        {
+            if (isAllyMode)
+            {
+                allyButtonList[allyIndex].GetComponent<Button>().onClick.Invoke();
+            }
+            else
+            {
+                enemyButtonList[allyIndex].GetComponent<Button>().onClick.Invoke();
+            }
         }
     }
 }
