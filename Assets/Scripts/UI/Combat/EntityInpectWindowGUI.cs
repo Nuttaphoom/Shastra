@@ -8,7 +8,7 @@ using UnityEngine.Playables;
 
 namespace Vanaring
 {
-    public class EntityInpectWindowGUI : MonoBehaviour, IInputReceiver
+    public class EntityInpectWindowGUI : CombatWindowGUI
     {
         [SerializeField] private GameObject gfx;
         [SerializeField] private PlayableDirector introDirector;
@@ -79,12 +79,12 @@ namespace Vanaring
             }
 
             SetupInfo();
-            CentralInputReceiver.Instance().AddInputReceiverIntoStack(this);
+            //CentralInputReceiver.Instance().AddInputReceiverIntoStack(this);
         }
 
         public void ClosePanel()
         {
-            CentralInputReceiver.Instance().RemoveInputReceiverIntoStack(this);
+            //CentralInputReceiver.Instance().RemoveInputReceiverIntoStack(this);
             gfx.SetActive(false);
         }
 
@@ -100,7 +100,15 @@ namespace Vanaring
 
             if (isAlly)
             {
+                //if(PersistentPlayerPersonalDataManager.Instance != null)
+                //{
+                //    foreach (RuntimeCombatMemberData cmember in PersistentPlayerPersonalDataManager.Instance.CombatMemberDataLocator.GetRuntimeCombatMembers)
+                //    {
+                //        entityLevel.text = "Lv." + cmember.LevelAttributeHandler.GetCharacterUEXPSystem.GetCurrentLevel.ToString();
+                //    }
+                //}
                 
+
                 mpNumText.text = "MP: " + entity.SpellCaster.GetMP + "/" + entity.SpellCaster.GetPeakMP;
                 mpFillBar.fillAmount = (float)entity.SpellCaster.GetMP / entity.SpellCaster.GetPeakMP;
 
@@ -112,7 +120,36 @@ namespace Vanaring
             }
         }
 
-        public void ReceiveKeys(KeyCode key)
+        private void SetupInfo()
+        {
+            if (isAllyMode)
+            {
+                allyButtonList[allyIndex].GetComponent<Button>().onClick.Invoke();
+            }
+            else
+            {
+                enemyButtonList[allyIndex].GetComponent<Button>().onClick.Invoke();
+            }
+        }
+
+        public override void ClearData()
+        {
+        }
+
+        public override void OnWindowActive()
+        {
+        }
+
+        public override void OnWindowDeActive()
+        {
+        }
+
+        public override void LoadWindowData(CombatEntity entity)
+        {
+            Init();
+        }
+
+        public override void ReceiveKeysFromWindowManager(KeyCode key)
         {
             if (key == KeyCode.A)
             {
@@ -130,17 +167,22 @@ namespace Vanaring
                 isAllyMode = !isAllyMode;
                 SetupInfo();
             }
-        }
-
-        private void SetupInfo()
-        {
-            if (isAllyMode)
+            if(key == KeyCode.Q)
             {
-                allyButtonList[allyIndex].GetComponent<Button>().onClick.Invoke();
+                _windowManager.OpenWindow(EWindowGUI.Main);
             }
-            else
+            if (key == KeyCode.T)
             {
-                enemyButtonList[allyIndex].GetComponent<Button>().onClick.Invoke();
+                _windowManager.OpenWindow(EWindowGUI.Main);
+                //gfx.SetActive(false);
+                //if (!gfx.activeSelf)
+                //{
+                //    gfx.SetActive(true);
+                //}
+                //else
+                //{
+                    
+                //}
             }
         }
     }
