@@ -159,7 +159,10 @@ namespace Vanaring
                 _lastWindowOpen.ReceiveKeysFromWindowManager(key);
             if (key == KeyCode.T)
             {
-                OpenWindow(EWindowGUI.Inspect);
+                if (!_entityInpectWindow.gameObject.activeSelf)
+                {
+                    OpenWindow(EWindowGUI.Inspect);
+                }
             }
         }
 

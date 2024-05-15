@@ -43,6 +43,7 @@ namespace Vanaring
         private bool isAllyMode = true;
         [SerializeField] private GameObject allyHRZ;
         [SerializeField] private GameObject enemyHRZ;
+        public bool isDebugingMode = true;
 
         [ContextMenu("Init")]
         public void Init()
@@ -84,8 +85,11 @@ namespace Vanaring
 
         public void ClosePanel()
         {
-            //CentralInputReceiver.Instance().RemoveInputReceiverIntoStack(this);
-            gfx.SetActive(false);
+            //if (gameObject.activeSelf)
+            //{
+            //    _windowManager.OpenWindow(EWindowGUI.Main);
+            //}
+            _windowManager.OpenWindow(EWindowGUI.Main);
         }
 
         private void LoadAllyEntityDetail(CombatEntity entity, bool isAlly)
@@ -98,16 +102,18 @@ namespace Vanaring
             hpNumText.text = "HP: " + entity.StatsAccumulator.GetHPAmount() + "/" + entity.StatsAccumulator.GetPeakHPAmount();
             hpFillBar.fillAmount = (float)entity.StatsAccumulator.GetHPAmount() / entity.StatsAccumulator.GetPeakHPAmount();
 
+
+
             if (isAlly)
             {
-                //if(PersistentPlayerPersonalDataManager.Instance != null)
-                //{
-                //    foreach (RuntimeCombatMemberData cmember in PersistentPlayerPersonalDataManager.Instance.CombatMemberDataLocator.GetRuntimeCombatMembers)
-                //    {
-                //        entityLevel.text = "Lv." + cmember.LevelAttributeHandler.GetCharacterUEXPSystem.GetCurrentLevel.ToString();
-                //    }
-                //}
-                
+                if (!isDebugingMode)
+                {
+                    foreach (RuntimeCombatMemberData cmember in PersistentPlayerPersonalDataManager.Instance.CombatMemberDataLocator.GetRuntimeCombatMembers)
+                    {
+                        entityLevel.text = "Lv." + cmember.LevelAttributeHandler.GetCharacterUEXPSystem.GetCurrentLevel.ToString();
+                    }
+                }
+
 
                 mpNumText.text = "MP: " + entity.SpellCaster.GetMP + "/" + entity.SpellCaster.GetPeakMP;
                 mpFillBar.fillAmount = (float)entity.SpellCaster.GetMP / entity.SpellCaster.GetPeakMP;
@@ -167,23 +173,14 @@ namespace Vanaring
                 isAllyMode = !isAllyMode;
                 SetupInfo();
             }
-            if(key == KeyCode.Q)
+            if(key == KeyCode.Q || key == KeyCode.T)
             {
                 _windowManager.OpenWindow(EWindowGUI.Main);
             }
-            if (key == KeyCode.T)
-            {
-                _windowManager.OpenWindow(EWindowGUI.Main);
-                //gfx.SetActive(false);
-                //if (!gfx.activeSelf)
-                //{
-                //    gfx.SetActive(true);
-                //}
-                //else
-                //{
-                    
-                //}
-            }
+            //if (key == KeyCode.T)
+            //{
+            //    ClosePanel();
+            //}
         }
     }
 }

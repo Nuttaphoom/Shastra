@@ -52,6 +52,19 @@ namespace Vanaring
         [SerializeField] private GameObject HorizontalSlotLayout;
         [SerializeField] private GameObject HorizontalSlotLayout2;
 
+        private int _socketTransformIndex;
+        public int SocketTransformIndex
+        {
+            get
+            {
+                return _socketTransformIndex;
+            }
+            set
+            {
+                _socketTransformIndex = value;
+            }
+        }
+
         private SpellActionSO _spellSO;
         private CombatEntity _caster;
 
@@ -77,11 +90,6 @@ namespace Vanaring
             //init slot layout
             if (spell.RequiredSide == RuntimeMangicalEnergy.EnergySide.LightEnergy)
             {
-                //if(_spellRequireAmount > 0)
-                //{
-                //    _actionButton.GetComponent<Image>().sprite = lightSpellSprite;
-                //    _actionButton.GetComponent<Image>().color = Color.white;
-                //}
                 for (int i = 0; i < _spellRequireAmount; i++)
                 {
                     if(_spellRequireAmount <= 3)
@@ -107,11 +115,6 @@ namespace Vanaring
             }
             else
             {
-                //if (_spellRequireAmount > 0)
-                //{
-                //    _actionButton.GetComponent<Image>().sprite = darkSpellSprite;
-                //    _actionButton.GetComponent<Image>().color = Color.white;
-                //}
                 for (int i = 0; i < _spellRequireAmount; i++)
                 {
                     if (_spellRequireAmount <= 3)
