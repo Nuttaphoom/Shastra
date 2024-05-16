@@ -39,16 +39,20 @@ namespace Vanaring
 
         private List<GameObject> allyButtonList = new List<GameObject>();
         private List<GameObject> enemyButtonList = new List<GameObject>();
+        private List<SocketGUI> effSocketList = new List<SocketGUI>();
         private int allyIndex = 0;
         private bool isAllyMode = true;
         [SerializeField] private GameObject allyHRZ;
         [SerializeField] private GameObject enemyHRZ;
+        [SerializeField] private GameObject effVTCL;
+        [SerializeField] private SocketGUI effSocket;
         public bool isDebugingMode = true;
 
         [ContextMenu("Init")]
         public void Init()
         {
             gfx.SetActive(true);
+            effSocket.gameObject.SetActive(false);
             if (CombatReferee.Instance != null)
             {
                 foreach (var item in allyButtonList)
@@ -61,6 +65,7 @@ namespace Vanaring
                     Destroy(item);
                 }
                 enemyButtonList.Clear();
+                
                 foreach (CombatEntity entity in CombatReferee.Instance.GetCompetatorsBySide(ECompetatorSide.Ally))
                 {
                     GameObject newAllyButton = Instantiate(entityButtonTemplate, allyHRZ.transform);
@@ -80,15 +85,10 @@ namespace Vanaring
             }
 
             SetupInfo();
-            //CentralInputReceiver.Instance().AddInputReceiverIntoStack(this);
         }
 
         public void ClosePanel()
         {
-            //if (gameObject.activeSelf)
-            //{
-            //    _windowManager.OpenWindow(EWindowGUI.Main);
-            //}
             _windowManager.OpenWindow(EWindowGUI.Main);
         }
 
@@ -102,7 +102,23 @@ namespace Vanaring
             hpNumText.text = "HP: " + entity.StatsAccumulator.GetHPAmount() + "/" + entity.StatsAccumulator.GetPeakHPAmount();
             hpFillBar.fillAmount = (float)entity.StatsAccumulator.GetHPAmount() / entity.StatsAccumulator.GetPeakHPAmount();
 
-
+            foreach (var item in effSocketList)
+            {
+                Destroy(item.gameObject);
+            }
+            effSocketList.Clear();
+            foreach (string key in entity.StatusEffectHandler.Effects.Keys)
+            {
+                List<StatusRuntimeEffect> effs = entity.StatusEffectHandler.Effects[key];
+                foreach (StatusRuntimeEffect eff in effs)
+                {
+                    SocketGUI newSocket = Instantiate(effSocket, effVTCL.transform);
+                    DescriptionBaseField desc = eff.GetStatusEffectDescription();
+                    newSocket.Init(desc.FieldName, eff.TimeToLive.ToString(), desc.FieldImage);
+                    newSocket.gameObject.SetActive(true);
+                    effSocketList.Add(newSocket);
+                }
+            }
 
             if (isAlly)
             {
@@ -124,6 +140,11 @@ namespace Vanaring
                 agiStatText.text = "AGI " + entity.CombatCharacterSheet.GetModAgility;
                 lckStatText.text = "LCK " + entity.CombatCharacterSheet.GetModLuck;
             }
+        }
+
+        private Transform FindGameObjectTransformByName(Transform transform, string name)
+        {
+            return transform.Find(name);
         }
 
         private void SetupInfo()

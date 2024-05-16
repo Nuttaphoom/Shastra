@@ -312,6 +312,7 @@ namespace Vanaring
         public CombatEntityActionHandler ActionHandler => _combatEntityActionHandler; 
         public EnergyOverflowHandler OverflowHandler => _energyOverflowHandler ;
         public RuntimeCharacterStatsAccumulator StatsAccumulator => _runtimeCharacterStatsAccumulator;
+        public StatusEffectHandler StatusEffectHandler => _statusEffectHandler;
         public SpellCasterHandler SpellCaster => _spellCaster;
         public ItemUserHandler ItemUser => _itemUser;
         public CombatCharacterSheetSO CombatCharacterSheet => _characterSheet; 
