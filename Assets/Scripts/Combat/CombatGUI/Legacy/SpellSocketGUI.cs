@@ -15,9 +15,6 @@ namespace Vanaring
      
     public class SpellSocketGUI : MonoBehaviour 
     {
-
-      
-
         [Header("Main Skill Information")]
         [SerializeField]
         private Button _actionButton ;
@@ -52,19 +49,6 @@ namespace Vanaring
         [SerializeField] private GameObject HorizontalSlotLayout;
         [SerializeField] private GameObject HorizontalSlotLayout2;
 
-        private int _socketTransformIndex;
-        public int SocketTransformIndex
-        {
-            get
-            {
-                return _socketTransformIndex;
-            }
-            set
-            {
-                _socketTransformIndex = value;
-            }
-        }
-
         private SpellActionSO _spellSO;
         private CombatEntity _caster;
 
@@ -74,7 +58,6 @@ namespace Vanaring
             _spellSO = spell;
             this._caster = combatEntity;
             _actionButton.onClick.AddListener(ChooseSpell);
-            //Debug.Log(spell.AbilityName.ToString());
             _textMeshProUGUI.text = spell.AbilityName.ToString();
             if(spell.MPCost > 0)
             {

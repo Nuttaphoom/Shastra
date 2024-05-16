@@ -21,22 +21,15 @@ namespace Vanaring  {
         [SerializeField] private GameObject arrowDown;
         [SerializeField] private GameObject notificationBox;
         [SerializeField] private TextMeshProUGUI notificationText;
-        private int spellIndexFocusUpMin = 0;
-        private int spellIndexFocusUpMax = 3;
-        private int spellIndexFocusDownMin = 0;
-        private int spellIndexFocusDownMax = 2;
         private int currentSelectedIndex = 0;
-
         public override void OnWindowActive()
         {
             StartCoroutine(PersistentTutorialManager.Instance.CheckTuitorialNotifier("SpellCastExplain"));
         }
-
         public override void OnWindowDeActive()
         {
 
         }
-
         public override void ClearData()
         {
             for (int index = spellSocketGUIList.Count - 1; index >= 0; index--)
@@ -57,18 +50,12 @@ namespace Vanaring  {
             ClearData();
             _spellSocket.gameObject.SetActive(true);
             notificationBox.SetActive(false);
-            spellIndexFocusUpMin = 0;
-            spellIndexFocusUpMax = 3;
-            spellIndexFocusDownMin = 0;
-            spellIndexFocusDownMax = 2;
-            currentSelectedIndex = 0;
 
             int i = 3;
             if (entity is ControlableEntity controlableEntity)
             {
                 foreach (SpellActionSO spellAction in controlableEntity.GetControlableEntityActionRegistry.GetSpellAction)
                 {
-                    
                     SpellSocketGUI newSocket = Instantiate(_spellSocket, spellTransform.transform);
                     newSocket.transform.SetAsFirstSibling();
                     newSocket.Init(spellAction, entity);
@@ -77,13 +64,11 @@ namespace Vanaring  {
                     {
                         newSocket.transform.position = spellTransformList[6].transform.position;
                         displayingSpellIndexList.Add(6);
-                        newSocket.SocketTransformIndex = 6;
                     }
                     else
                     {
                         newSocket.transform.position = spellTransformList[i].transform.position;
                         displayingSpellIndexList.Add(i);
-                        newSocket.SocketTransformIndex = 6;
                     }
                     newSocket.UnHighlightedButton();
                     if (!newSocket.IsEnergySufficeientToUseThisSpell())
@@ -106,7 +91,6 @@ namespace Vanaring  {
         }
         public override void ReceiveKeysFromWindowManager(KeyCode key)
         {
-
             if (key == KeyCode.Q)
             {
                 _windowManager.OpenWindow(EWindowGUI.Main);
@@ -144,14 +128,6 @@ namespace Vanaring  {
             {
                 if (spell != null)
                 {
-                    if (displayingSpellIndexList[i] < 0 || displayingSpellIndexList[i] > spellTransformList.Length - 1)
-                    {
-                        throw new Exception("Can't assign socket to transform that out of range");
-                    }
-                    if (spellTransformList[displayingSpellIndexList[i]] == null)
-                    {
-                        throw new Exception("No Transform can be assigned");
-                    }
                     if (displayingSpellIndexList[i] == 6)
                     {
                         displayingSpellIndexList[i] = displayingSpellIndexList[i] - 1;
@@ -160,11 +136,9 @@ namespace Vanaring  {
                     }
                     if (displayingSpellIndexList[i] != 0 && displayingSpellIndexList[i] != 6)
                     {
-                        //Debug.Log(i + ": " + displayingSpellIndexList[i].ToString());
                         displayingSpellIndexList[i] = displayingSpellIndexList[i] - 1;
                         spell.GetComponent<RectTransform>().DOAnchorPos(spellTransformList[displayingSpellIndexList[i]].localPosition, 0.1f);
                     }
-
                 }
                 else
                 {
@@ -176,7 +150,6 @@ namespace Vanaring  {
             currentSelectedIndex++;
             DisplaySocketHighlight();
             spellLogText.text = spellSocketGUIList[currentSelectedIndex].GetSpellDescription();
-            UpdateIndexFocusOnInputCall();
             DisplayArrowIndicator();
         }
         private void ScrollToPrevious()
@@ -186,22 +159,17 @@ namespace Vanaring  {
             {
                 if (spellSocketGUIList[i] != null)
                 {
-                    //if (displayingSpellIndexList[i] <= spellTransformList.Length-1 && i >= spellIndexFocusDownMin && i <= spellIndexFocusDownMax)
-                    //{
-                    //    displayingSpellIndexList[i] = displayingSpellIndexList[i] + 1;
-                    //    spell.GetComponent<RectTransform>().DOAnchorPos(spellTransformList[displayingSpellIndexList[i]].localPosition, 0.1f);
-                    //}
                     if (displayingSpellIndexList[i] == 0)
                     {
                         displayingSpellIndexList[i] = displayingSpellIndexList[i] + 1;
-                        Debug.Log(i + ": " + displayingSpellIndexList[i].ToString());
+                        
                         spellSocketGUIList[i].GetComponent<RectTransform>().DOAnchorPos(spellTransformList[displayingSpellIndexList[i]].localPosition, 0.1f);
                         break;
                     }
                     if (displayingSpellIndexList[i] != 0 && displayingSpellIndexList[i] != 6)
                     {
                         displayingSpellIndexList[i] = displayingSpellIndexList[i] + 1;
-                        Debug.Log(i + ": " + displayingSpellIndexList[i].ToString());
+                        
                         spellSocketGUIList[i].GetComponent<RectTransform>().DOAnchorPos(spellTransformList[displayingSpellIndexList[i]].localPosition, 0.1f);
                     }
                 }
@@ -210,40 +178,10 @@ namespace Vanaring  {
                     Debug.Log("Spell null");
                 }
             }
-            //foreach (SpellSocketGUI spell in spellSocketGUIList)
-            //{
-            //    if (spell != null)
-            //    {
-            //        //if (displayingSpellIndexList[i] <= spellTransformList.Length-1 && i >= spellIndexFocusDownMin && i <= spellIndexFocusDownMax)
-            //        //{
-            //        //    displayingSpellIndexList[i] = displayingSpellIndexList[i] + 1;
-            //        //    spell.GetComponent<RectTransform>().DOAnchorPos(spellTransformList[displayingSpellIndexList[i]].localPosition, 0.1f);
-            //        //}
-            //        if (displayingSpellIndexList[i] == 0)
-            //        {
-            //            displayingSpellIndexList[i] = displayingSpellIndexList[i] + 1;
-            //            Debug.Log(i + ": " + displayingSpellIndexList[i].ToString());
-            //            spell.GetComponent<RectTransform>().DOAnchorPos(spellTransformList[displayingSpellIndexList[i]].localPosition, 0.1f);
-            //            break;
-            //        }
-            //        if (displayingSpellIndexList[i] != 0 && displayingSpellIndexList[i] != 6)
-            //        {
-            //            displayingSpellIndexList[i] = displayingSpellIndexList[i] + 1;
-            //            Debug.Log(i + ": " + displayingSpellIndexList[i].ToString());
-            //            spell.GetComponent<RectTransform>().DOAnchorPos(spellTransformList[displayingSpellIndexList[i]].localPosition, 0.1f);
-            //        }
-            //    }
-            //    else
-            //    {
-            //        Debug.Log("Spell null");
-            //    }
-            //    i--;
-            //}
             spellSocketGUIList[currentSelectedIndex].UnHighlightedButton();
             currentSelectedIndex--;
             DisplaySocketHighlight();
             spellLogText.text = spellSocketGUIList[currentSelectedIndex].GetSpellDescription();
-            UpdateIndexFocusOnInputCall();
             DisplayArrowIndicator();
         }
         private void DisplaySocketHighlight()
@@ -279,49 +217,6 @@ namespace Vanaring  {
             {
                 arrowUp.SetActive(false);
             }
-        }
-        private void UpdateIndexFocusOnInputCall()
-        {
-            switch (currentSelectedIndex)
-            {
-                case 0:
-                    spellIndexFocusUpMin = 0; //force
-                    spellIndexFocusUpMax = 3; //force
-                    spellIndexFocusDownMin = 0; //force
-                    spellIndexFocusDownMax = 2; //force
-                    break;
-                case 1:
-                    spellIndexFocusUpMin = 0; //force
-                    spellIndexFocusUpMax = 4; //+1
-                    spellIndexFocusDownMin = 0; 
-                    spellIndexFocusDownMax = 3;
-                    break;
-                case 2:
-                    spellIndexFocusUpMin = 0;
-                    spellIndexFocusUpMax = 4;
-                    spellIndexFocusDownMin = 0;
-                    spellIndexFocusDownMax = 4;
-                    break; 
-                case 3:
-                    spellIndexFocusUpMin = 1;
-                    spellIndexFocusUpMax = 4;
-                    spellIndexFocusDownMin = 0;
-                    spellIndexFocusDownMax = 4;
-                    break;
-                case 4:
-                    spellIndexFocusUpMin = 2;
-                    spellIndexFocusUpMax = 4;
-                    spellIndexFocusDownMin = 1;
-                    spellIndexFocusDownMax = 4;
-                    break;
-
-            }
-            //Debug.Log("FocusUpMin: " + spellIndexFocusUpMin + " FocusUpMax: " + spellIndexFocusUpMax);
-            //Debug.Log("FocusDownMin: " + spellIndexFocusDownMin + " FocusDownMax: " + spellIndexFocusDownMax);
-        }
-        private void ReloadSocketHighlight()
-        {
-
         }
     }
 }
