@@ -15,6 +15,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using Vanaring.Assets.Scripts.Combat.Utilities;
 using Vanaring_Utility_Tool;
+using UnityEngine; 
 using static UnityEngine.EventSystems.EventTrigger;
 using static UnityEngine.UI.CanvasScaler;
 
@@ -35,6 +36,9 @@ namespace Vanaring
         List<CompetatorDetailStruct> _competators;
         #region EventBroadcaster
         private EventBroadcaster _eventBroadcaster;
+
+        [SerializeField]
+        private CharacterEntityPrefabDatabaseSO _testAllyEntityLoaderPrefab; 
 
         private EventBroadcaster GetEventBroadcaster()
         {
@@ -160,17 +164,17 @@ namespace Vanaring
 
             }else
             {
-                //Unused data for debuging mode is need be clear
-                if (_competators.Count > 0)
-                {
-                    for (int i = 0; i < _competators.Count; i++)
-                    {
-                        Destroy(_competators[i].Competator.gameObject);
-                        _competators.RemoveAt(i);
-                        i--;
-                    }
-                    _competators.Clear();
-                }
+                ////Unused data for debuging mode is need be clear
+                //if (_competators.Count > 0)
+                //{
+                //    for (int i = 0; i < _competators.Count; i++)
+                //    {
+                //        Destroy(_competators[i].Competator.gameObject);
+                //        _competators.RemoveAt(i);
+                //        i--;
+                //    }
+                //    _competators.Clear();
+                //}
 
 
 
@@ -196,15 +200,78 @@ namespace Vanaring
 
         private IEnumerator LoadAllyEntityRuntimeData(List<RuntimePartyMember> playerParty)
         {
-            //Load controlable entities from Party data 
+            
             List<CombatEntity> entities = new List<CombatEntity>();
-            foreach (RuntimePartyMember partyMember in playerParty)
-            {
-                ControlableEntity newEntity = partyMember.InitializeCombatEntity as ControlableEntity ;
-                newEntity.LinkPartyMemberToThisEntity(partyMember); 
-                entities.Add(newEntity) ;
-            }
 
+            ////test loading from Address 
+            //var prefab = Resources.Load<CombatEntity>("Ally Prefabs/Asha-Entity Ally Prefab");  /*PersistentAddressableResourceLoader.Instance.LoadResourceOperation<GameObject>("Asha_Entity_Prefab");*/
+
+            //CombatEntity newEntity = Instantiate(prefab); 
+
+            ////newEntity.GetComponent<ControlableEntity>().LinkPartyMemberToThisEntity( );
+            //entities.Add(newEntity ); 
+
+            foreach (var prefab in _testAllyEntityLoaderPrefab.GetAllControlableEntiites)
+            {
+                foreach (RuntimePartyMember partyMember in playerParty)
+                {
+                    if (partyMember.GetCharacterSheet.CharacterName == prefab.CombatCharacterSheet.CharacterName)
+                    {
+                        CombatEntity newEntity = Instantiate(prefab);
+                        entities.Add(newEntity);
+                        (newEntity as ControlableEntity).LinkPartyMemberToThisEntity(partyMember);
+                        break;
+                    }
+                }
+            }
+            //Load controlable entities from Party data 
+            //1.)
+            //foreach (RuntimePartyMember partyMember in playerParty)
+            //{
+            //    CombatEntity newEntity = Instantiate(partyMember.GetCharacterSheet.GetCombatEntityPrefab);
+            //    newEntity.GetComponent<ControlableEntity>().LinkPartyMemberToThisEntity(partyMember);
+            //    entities.Add(newEntity);
+            //}
+
+            //2.)
+            //foreach (CombatEntity entity in FindObjectsOfType<CombatEntity>())
+            //{
+            //    var newEntity = Instantiate(entity);
+            //    entities.Add(newEntity);
+            //}
+
+
+            ////Test : instanite from Competators 
+            //foreach (var en in _competators)
+            //{
+            //    if (en.Side == ECompetatorSide.Ally)
+            //    {
+            //        foreach (RuntimePartyMember partyMember in playerParty)
+            //        {
+            //            if (partyMember.GetCharacterSheet.CharacterName == en.Competator.CombatCharacterSheet.CharacterName)
+            //            {
+            //                (en.Competator as ControlableEntity).LinkPartyMemberToThisEntity(partyMember);
+            //            }
+            //        }
+            //        entities.Add(Instantiate(en.Competator));
+            //    }
+            //}
+
+            //Unused data for debuging mode is need be clear
+            if (_competators.Count > 0)
+            {
+                for (int i = 0; i < _competators.Count; i++)
+                {
+                    //if (_competators[i].Side == ECompetatorSide.Ally)
+                    //{
+                    //    entities.Add(_competators[i].Competator); 
+                    //}
+                    Destroy(_competators[i].Competator.gameObject);
+                    _competators.RemoveAt(i);
+                    i--;
+                }
+                _competators.Clear();
+            }
 
             yield return AssignCompetators(entities, ECompetatorSide.Ally); 
         }
