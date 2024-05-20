@@ -60,7 +60,7 @@ namespace Vanaring
         private  Sprite _characterIconGUI;
     
         [SerializeField]
-        private AssetReferenceT<GameObject> _combatEntityPrefabAddress;
+        private ControlableEntity _combatEntityPrefabAddress;
 
         #region GETTER 
         public AilmentResistantDataInfo ResistantData => _ailmentResistantDataInfo;
@@ -96,17 +96,16 @@ namespace Vanaring
         public int Get_Base_SecondaryAttribute_MaxMP => AttributeFormulaLocator.CalculateMaxMP(_intellect); 
         public int Get_Base_SecondaryAttribute_PhysicalATK => AttributeFormulaLocator.CalculatePhysicalATK(_strength); 
         public int Get_Base_SecondaryAttribute_MagicalATK => AttributeFormulaLocator.CalculateMagicalATK(_intellect);  
-
         public float Get_Base_SecondaryAttribute_Evasion => AttributeFormulaLocator.CalculateEvasion(_agility);
         public float Get_Base_SecondaryAttribute_ACC => AttributeFormulaLocator.CalculateACC(_agility);
-        public GameObject GetCombatEntityPrefab
+        public ControlableEntity GetCombatEntityPrefab
         {
             get
             {
                 if (_combatEntityPrefabAddress == null)
                     throw new Exception("" + name + "combat entity prefab address hasn't never been asisigned");
 
-                return PersistentAddressableResourceLoader.Instance.LoadResourceOperation<GameObject>(_combatEntityPrefabAddress) ; 
+                return  _combatEntityPrefabAddress ; 
             }
         }
 
