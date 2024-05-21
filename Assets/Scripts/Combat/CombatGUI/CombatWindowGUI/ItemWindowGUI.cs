@@ -21,23 +21,16 @@ namespace Vanaring
         [SerializeField] private GameObject arrowUp;
         [SerializeField] private GameObject arrowDown;
         [SerializeField] private List<GameObject> hidenableObjectList = new List<GameObject>();
-        private int itemIndexFocusUpMin = 0;
-        private int itemIndexFocusUpMax = 3;
-        private int itemIndexFocusDownMin = 0;
-        private int itemIndexFocusDownMax = 2;
         private int currentSelectedIndex = 0;
-
         public override void OnWindowActive()
         {
             
         }
-
         public override void OnWindowDeActive()
         {
             
 
         }
-
         public override void ClearData()
         {
             for (int index = itemSocketGUIList.Count - 1; index >= 0; index--)
@@ -62,14 +55,9 @@ namespace Vanaring
                 _itemSocketTemplate.gameObject.SetActive(false);
                 return;
             }
-             
             int tmpItemIndex = 0;
             ClearData();
             _itemSocketTemplate.gameObject.SetActive(true);
-            itemIndexFocusUpMin = 0;
-            itemIndexFocusUpMax = 3;
-            itemIndexFocusDownMin = 0;
-            itemIndexFocusDownMax = 2;
             currentSelectedIndex = 0;
             int i = 3 ; 
             foreach (ItemAbilityRuntime item in entity.ItemUser.Items)
@@ -94,8 +82,6 @@ namespace Vanaring
                 newSocket.UnHighlightedButton();
                 i++;
             }
-
-            
             if (entity.ItemUser.Items.Count == 0)
             {
                 DisplayArrowIndicator();
@@ -107,7 +93,6 @@ namespace Vanaring
             itemLogText.text = itemSocketGUIList[currentSelectedIndex].GetItemDescription();
             itemSocketGUIList[0].HightlightedButton();
         }
-
         private void SetUIActive(bool isActive)
         {
             //Debug.Log("Hide");
@@ -124,7 +109,13 @@ namespace Vanaring
             {
                 if (item != null)
                 {
-                    if (displayingItemIndexList[i] > 0 && i >= itemIndexFocusUpMin && i <= itemIndexFocusUpMax)
+                    if (displayingItemIndexList[i] == 6)
+                    {
+                        displayingItemIndexList[i] = displayingItemIndexList[i] - 1;
+                        item.GetComponent<RectTransform>().DOAnchorPos(itemTransformList[displayingItemIndexList[i]].localPosition, 0.1f);
+                        break;
+                    }
+                    if (displayingItemIndexList[i] != 0 && displayingItemIndexList[i] != 6)
                     {
                         displayingItemIndexList[i] = displayingItemIndexList[i] - 1;
                         item.GetComponent<RectTransform>().DOAnchorPos(itemTransformList[displayingItemIndexList[i]].localPosition, 0.1f);
@@ -140,34 +131,37 @@ namespace Vanaring
             currentSelectedIndex++;
             itemLogText.text = itemSocketGUIList[currentSelectedIndex].GetItemDescription();
             itemSocketGUIList[currentSelectedIndex].HightlightedButton();
-            UpdateIndexFocusOnInputCall();
             DisplayArrowIndicator();
         }
         private void ScrollToPrevious()
         {
             //select above index
-            int i = 0;
-            foreach (ItemSocketGUI spell in itemSocketGUIList)
+            for (int i = itemSocketGUIList.Count - 1; i >= 0; i--)
             {
-                if (spell != null)
+                if (itemSocketGUIList[i] != null)
                 {
-                    if (displayingItemIndexList[i] <= itemTransformList.Length - 1 && i >= itemIndexFocusDownMin && i <= itemIndexFocusDownMax)
+                    if (displayingItemIndexList[i] == 6)
                     {
                         displayingItemIndexList[i] = displayingItemIndexList[i] + 1;
-                        spell.GetComponent<RectTransform>().DOAnchorPos(itemTransformList[displayingItemIndexList[i]].localPosition, 0.1f);
+                        itemSocketGUIList[i].GetComponent<RectTransform>().DOAnchorPos(itemTransformList[displayingItemIndexList[i]].localPosition, 0.1f);
+                        break;
+                    }
+                    if (displayingItemIndexList[i] != 0 && displayingItemIndexList[i] != 6)
+                    {
+                        displayingItemIndexList[i] = displayingItemIndexList[i] + 1;
+                        itemSocketGUIList[i].GetComponent<RectTransform>().DOAnchorPos(itemTransformList[displayingItemIndexList[i]].localPosition, 0.1f);
                     }
                 }
                 else
                 {
                     Debug.Log("Spell null");
                 }
-                i++;
             }
+
             itemSocketGUIList[currentSelectedIndex].UnHighlightedButton();
             currentSelectedIndex--;
             itemLogText.text = itemSocketGUIList[currentSelectedIndex].GetItemDescription();
             itemSocketGUIList[currentSelectedIndex].HightlightedButton();
-            UpdateIndexFocusOnInputCall();
             DisplayArrowIndicator();
         }
         private void DisplayArrowIndicator()
@@ -188,45 +182,6 @@ namespace Vanaring
             {
                 arrowUp.SetActive(false);
             }
-        }
-        private void UpdateIndexFocusOnInputCall()
-        {
-            switch (currentSelectedIndex)
-            {
-                case 0:
-                    itemIndexFocusUpMin = 0;
-                    itemIndexFocusUpMax = 3;
-                    itemIndexFocusDownMin = 0;
-                    itemIndexFocusDownMax = 2;
-                    break;
-                case 1:
-                    itemIndexFocusUpMin = 0;
-                    itemIndexFocusUpMax = 4;
-                    itemIndexFocusDownMin = 0;
-                    itemIndexFocusDownMax = 3;
-                    break;
-                case 2:
-                    itemIndexFocusUpMin = 0;
-                    itemIndexFocusUpMax = 4;
-                    itemIndexFocusDownMin = 0;
-                    itemIndexFocusDownMax = 4;
-                    break;
-                case 3:
-                    itemIndexFocusUpMin = 1;
-                    itemIndexFocusUpMax = 4;
-                    itemIndexFocusDownMin = 0;
-                    itemIndexFocusDownMax = 4;
-                    break;
-                case 4:
-                    itemIndexFocusUpMin = 2;
-                    itemIndexFocusUpMax = 4;
-                    itemIndexFocusDownMin = 1;
-                    itemIndexFocusDownMax = 4;
-                    break;
-
-            }
-            //Debug.Log("FocusUpMin: " + spellIndexFocusUpMin + " FocusUpMax: " + spellIndexFocusUpMax);
-            //Debug.Log("FocusDownMin: " + spellIndexFocusDownMin + " FocusDownMax: " + spellIndexFocusDownMax);
         }
         public override void ReceiveKeysFromWindowManager(KeyCode key)
         {
