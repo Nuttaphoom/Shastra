@@ -18,6 +18,16 @@ namespace Vanaring
             dialogueSystemController.conversationStarted  += OnStartConversation;
 
         }
+
+        private void OnDisable()
+        {
+            DialogueSystemController dialogueSystemController = GetComponent<DialogueSystemController>();
+
+            dialogueSystemController.conversationEnded -= OnEndConversation;
+            dialogueSystemController.conversationStarted -= OnStartConversation;
+
+        }
+
         public void OnStartConversation(Transform actor )
         {
             CentralInputReceiver.Instance().AddInputReceiverIntoStack(this);
