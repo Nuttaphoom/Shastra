@@ -94,6 +94,7 @@ namespace Vanaring
 
         private void LoadAllyEntityDetail(CombatEntity entity, bool isAlly)
         {
+            return;
             entityLevelSection.gameObject.SetActive(isAlly);
             mpSection.gameObject.SetActive(isAlly);
             priStatSection.gameObject.SetActive(isAlly);

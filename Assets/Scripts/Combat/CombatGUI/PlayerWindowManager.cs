@@ -95,7 +95,6 @@ namespace Vanaring
             else if (newWindowType == EWindowGUI.Spell)
             {
                 windowToOpen = _spellWindow;
-
             }
             else if (newWindowType == EWindowGUI.Item)
             {
@@ -104,7 +103,8 @@ namespace Vanaring
             else if (newWindowType == EWindowGUI.Weapon)
             {
                 windowToOpen = _weaponWindow;
-            }else if (newWindowType == EWindowGUI.Inspect)
+            }
+            else if (newWindowType == EWindowGUI.Inspect)
             {
                 windowToOpen = _entityInpectWindow;
             }
