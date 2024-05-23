@@ -18,6 +18,7 @@ namespace Vanaring
         [SerializeField] private ItemWindowGUI _itemWindow;
         [SerializeField] private WeaponWindowGUI _weaponWindow;
         [SerializeField] private MainWindowGUI _mainWindow;
+        [SerializeField] private EntityInpectWindowGUI _entityInpectWindow;
 
         private CombatWindowGUI _lastWindowOpen;
 
@@ -45,6 +46,7 @@ namespace Vanaring
             allWindows.Add(_spellWindow);
             allWindows.Add(_itemWindow);
             allWindows.Add(_weaponWindow);
+            allWindows.Add(_entityInpectWindow);
             allWindows.Add(_mainWindow);
 
             return allWindows; 
@@ -93,7 +95,6 @@ namespace Vanaring
             else if (newWindowType == EWindowGUI.Spell)
             {
                 windowToOpen = _spellWindow;
-
             }
             else if (newWindowType == EWindowGUI.Item)
             {
@@ -102,6 +103,10 @@ namespace Vanaring
             else if (newWindowType == EWindowGUI.Weapon)
             {
                 windowToOpen = _weaponWindow;
+            }
+            else if (newWindowType == EWindowGUI.Inspect)
+            {
+                windowToOpen = _entityInpectWindow;
             }
 
             TryOpenWindow(windowToOpen);
@@ -152,6 +157,13 @@ namespace Vanaring
         {
             if (_lastWindowOpen != null) 
                 _lastWindowOpen.ReceiveKeysFromWindowManager(key);
+            if (key == KeyCode.T)
+            {
+                if (!_entityInpectWindow.gameObject.activeSelf)
+                {
+                    OpenWindow(EWindowGUI.Inspect);
+                }
+            }
         }
 
         #endregion
