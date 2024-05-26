@@ -55,7 +55,6 @@ namespace Vanaring
 
         private void OnDamaged_DisplayAccumulatedDMG(int finalDMG)
         {
-            Debug.Log("final dmg : " + finalDMG);
             POPUPNumberTextManager.Instance.DisplayDamageText(finalDMG, _entity);
   
         }

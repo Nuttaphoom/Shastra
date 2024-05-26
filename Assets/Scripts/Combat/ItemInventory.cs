@@ -59,7 +59,7 @@ namespace Vanaring
             List<BackpackItemData> backpackItems =  PersistentPlayerPersonalDataManager.Instance.GetBackpack.GetCombatUseableItemSOs();
 
             if (_itemInventory == null)
-                _itemInventory = new List<ItemInventoryData>(); 
+                _itemInventory = new List<ItemInventoryData>();
 
             for (int i = 0; i < backpackItems.Count; i++)
             {
@@ -70,9 +70,12 @@ namespace Vanaring
                     amount = backpackItem.Amount ,
                     backpackItemData = backpackItem 
                 });
+            }
 
-                PersistentPlayerPersonalDataManager.Instance.GetBackpack.RemoveItemFromBackpack(backpackItem.BackpackItem, backpackItem.Amount);
-
+            for (int i = 0; i < _itemInventory.Count; i++)
+            {
+                PersistentPlayerPersonalDataManager.Instance.GetBackpack.RemoveItemFromBackpack(
+                    _itemInventory[i].backpackItemData.BackpackItem, _itemInventory[i].backpackItemData.Amount);
             }
 
             SetUpRuntimeItemFromItemInventory(); 

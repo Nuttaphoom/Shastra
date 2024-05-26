@@ -19,6 +19,7 @@ namespace Vanaring
         }
         void OnDisable()
         {
+            if (CombatReferee.Instance != null)
             CombatReferee.Instance.UnSubOnCombatPreparation(OnPreparing);
         }
 

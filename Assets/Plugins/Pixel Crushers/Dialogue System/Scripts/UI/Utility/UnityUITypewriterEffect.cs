@@ -200,6 +200,7 @@ namespace PixelCrushers.DialogueSystem
             StopTypewriterCoroutine();
             original = text;
             StartTypewriterCoroutine(fromIndex);
+
         }
 
         public override void StopTyping()

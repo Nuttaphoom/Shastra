@@ -15,6 +15,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using Vanaring.Assets.Scripts.Combat.Utilities;
 using Vanaring_Utility_Tool;
+using UnityEngine; 
 using static UnityEngine.EventSystems.EventTrigger;
 using static UnityEngine.UI.CanvasScaler;
 
@@ -35,6 +36,9 @@ namespace Vanaring
         List<CompetatorDetailStruct> _competators;
         #region EventBroadcaster
         private EventBroadcaster _eventBroadcaster;
+
+        [SerializeField]
+        private CharacterEntityPrefabDatabaseSO _testAllyEntityLoaderPrefab; 
 
         private EventBroadcaster GetEventBroadcaster()
         {
@@ -160,17 +164,17 @@ namespace Vanaring
 
             }else
             {
-                //Unused data for debuging mode is need be clear
-                if (_competators.Count > 0)
-                {
-                    for (int i = 0; i < _competators.Count; i++)
-                    {
-                        Destroy(_competators[i].Competator.gameObject);
-                        _competators.RemoveAt(i);
-                        i--;
-                    }
-                    _competators.Clear();
-                }
+                ////Unused data for debuging mode is need be clear
+                //if (_competators.Count > 0)
+                //{
+                //    for (int i = 0; i < _competators.Count; i++)
+                //    {
+                //        Destroy(_competators[i].Competator.gameObject);
+                //        _competators.RemoveAt(i);
+                //        i--;
+                //    }
+                //    _competators.Clear();
+                //}
 
 
 
@@ -196,15 +200,78 @@ namespace Vanaring
 
         private IEnumerator LoadAllyEntityRuntimeData(List<RuntimePartyMember> playerParty)
         {
-            //Load controlable entities from Party data 
+            
             List<CombatEntity> entities = new List<CombatEntity>();
-            foreach (RuntimePartyMember partyMember in playerParty)
-            {
-                ControlableEntity newEntity = partyMember.InitializeCombatEntity as ControlableEntity ;
-                newEntity.LinkPartyMemberToThisEntity(partyMember); 
-                entities.Add(newEntity) ;
-            }
 
+            ////test loading from Address 
+            //var prefab = Resources.Load<CombatEntity>("Ally Prefabs/Asha-Entity Ally Prefab");  /*PersistentAddressableResourceLoader.Instance.LoadResourceOperation<GameObject>("Asha_Entity_Prefab");*/
+
+            //CombatEntity newEntity = Instantiate(prefab); 
+
+            ////newEntity.GetComponent<ControlableEntity>().LinkPartyMemberToThisEntity( );
+            //entities.Add(newEntity ); 
+
+            foreach (var prefab in _testAllyEntityLoaderPrefab.GetAllControlableEntiites)
+            {
+                foreach (RuntimePartyMember partyMember in playerParty)
+                {
+                    if (partyMember.GetCharacterSheet.CharacterName == prefab.CombatCharacterSheet.CharacterName)
+                    {
+                        CombatEntity newEntity = Instantiate(prefab);
+                        entities.Add(newEntity);
+                        (newEntity as ControlableEntity).LinkPartyMemberToThisEntity(partyMember);
+                        break;
+                    }
+                }
+            }
+            //Load controlable entities from Party data 
+            //1.)
+            //foreach (RuntimePartyMember partyMember in playerParty)
+            //{
+            //    CombatEntity newEntity = Instantiate(partyMember.GetCharacterSheet.GetCombatEntityPrefab);
+            //    newEntity.GetComponent<ControlableEntity>().LinkPartyMemberToThisEntity(partyMember);
+            //    entities.Add(newEntity);
+            //}
+
+            //2.)
+            //foreach (CombatEntity entity in FindObjectsOfType<CombatEntity>())
+            //{
+            //    var newEntity = Instantiate(entity);
+            //    entities.Add(newEntity);
+            //}
+
+
+            ////Test : instanite from Competators 
+            //foreach (var en in _competators)
+            //{
+            //    if (en.Side == ECompetatorSide.Ally)
+            //    {
+            //        foreach (RuntimePartyMember partyMember in playerParty)
+            //        {
+            //            if (partyMember.GetCharacterSheet.CharacterName == en.Competator.CombatCharacterSheet.CharacterName)
+            //            {
+            //                (en.Competator as ControlableEntity).LinkPartyMemberToThisEntity(partyMember);
+            //            }
+            //        }
+            //        entities.Add(Instantiate(en.Competator));
+            //    }
+            //}
+
+            //Unused data for debuging mode is need be clear
+            if (_competators.Count > 0)
+            {
+                for (int i = 0; i < _competators.Count; i++)
+                {
+                    //if (_competators[i].Side == ECompetatorSide.Ally)
+                    //{
+                    //    entities.Add(_competators[i].Competator); 
+                    //}
+                    Destroy(_competators[i].Competator.gameObject);
+                    _competators.RemoveAt(i);
+                    i--;
+                }
+                _competators.Clear();
+            }
 
             yield return AssignCompetators(entities, ECompetatorSide.Ally); 
         }
@@ -266,6 +333,13 @@ namespace Vanaring
                 _allIEs.Add(entity.InitializeEntityIntoCombat());
             }
 
+            if (side == ECompetatorSide.Ally)
+            {
+                foreach (var entity in entites)
+                {
+                    entity.GetComponent<CombatEntityAnimationHandler>().HideVisualMesh(); 
+                }
+            }
 
             yield return new WaitAll(this, _allIEs.ToArray());
 
@@ -277,6 +351,8 @@ namespace Vanaring
                 GetEventBroadcaster().InvokeEvent<CombatEntity>(entity, "OnCompetitorEnterCombat");
 
             }
+
+           
 
             yield return null; 
         }
@@ -415,60 +491,73 @@ namespace Vanaring
 
         public IEnumerator OnCharacterPerformAction(CombatEntity actor )
         {
-            var prevActor = GetCurrentActor();
+            Debug.Log("on perform action");
 
             yield return actor.OnPerformAction( );
 
+            Debug.Log("Call post perform in every entity");
+             
+            ResolveEntityDead();
+
             yield return PostPerformActionInEveryCharacter();
 
-            ResolveEntityDead();
+            yield return CheckForReactionAction(); 
+
+        }
+
+        private IEnumerator CheckForReactionAction()
+        {
+            List<CombatEntity> allEntities = new List<CombatEntity>();
+            foreach (var entity in GetCompetatorsBySide(ECompetatorSide.Ally))
+                allEntities.Add(entity);
+
+            foreach (var entity in GetCompetatorsBySide(ECompetatorSide.Hostile))
+                allEntities.Add(entity);
+
+
+            foreach (var entity in allEntities)
+            {
+                //yield return new WaitForSeconds(1.0f);
+
+                if (entity.IsDead)
+                    continue;
+
+                if (!entity.ActionHandler.ActionQueueReady())
+                    continue;
+
+
+                yield return OnCharacterPerformAction(entity);
+
+                break;
+            }
+        }
+
+        public IEnumerator ResolveOnEntityPerformAction()
+        {
+            var prevActor = GetCurrentActor();
 
             if (IsGameEnd())
             {
-                yield return FindObjectOfType<CombatRewardManager>().CombatRewardSchemeStart(this) ;
+                yield return FindObjectOfType<CombatRewardManager>().CombatRewardSchemeStart(this);
                 PersistentSceneLoader.Instance.LoadGeneralScene(PersistentSceneLoader.Instance.GetStackLoadedDataScene(1));
                 //FindObjectOfType<ThanksForPlayingDisplayer>().ShowThankForPlayingMenu();
             }
             else
-            { 
+            {
                 //yield return SwitchControl((), null);
 
                 SetActiveActors();
 
-                yield return SwitchControl(prevActor, GetCurrentActor()); 
+                yield return SwitchControl(prevActor, GetCurrentActor());
 
                 //if (GetCurrentActor() != null)
                 //    EntityPositionManager.Instance.SetNewEnemyCurrentSize(GetCompetatorsBySide(ECompetatorSide.Hostile).Count);
 
-                
+
             }
-
-
-
-
         }
 
-        //private int CombatEnd()
-        //{
-        //    for (int i = 0;  i< GetCompetatorsBySide(ECompetatorSide.Ally).Count; i++)
-        //    {
-        //        var comp = GetCompetatorsBySide(ECompetatorSide.Ally)[i];
-
-        //        if (!comp.IsDead)
-        //        {
-        //            break;
-        //        }
-
-        //        else if (i == GetCompetatorsBySide(ECompetatorSide.Ally).Count - 1)
-        //            return 2; 
-
-        //    }
-
-        //    if (GetCompetatorsBySide(ECompetatorSide.Hostile).Count == 0)
-        //        return  1;  
-
-        //    return 0 ; 
-        //}
+        
 
         private void ResolveEntityDead()
         {

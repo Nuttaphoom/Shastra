@@ -17,6 +17,7 @@ namespace Vanaring
 
         [SerializeField]
         private RuntimePartyMember _runtimePartyMemberData;
+
        
         public void LinkPartyMemberToThisEntity(RuntimePartyMember partyMember)
         {
@@ -25,9 +26,6 @@ namespace Vanaring
 
         public override IEnumerator InitializeEntityIntoCombat()
         {
-
-
-
             yield return base.InitializeEntityIntoCombat();
 
             //Set up runtime value according to Party member data
@@ -119,25 +117,29 @@ namespace Vanaring
         public override IEnumerator LoadDataFromDatabase()
         {
             string characterName = CombatCharacterSheet.CharacterName;
-            
-            List<SpellActionSO> spellList = new List<SpellActionSO>();
 
+            RuntimeCombatMemberData partyMemberRuntimeData = PersistentPlayerPersonalDataManager.Instance.CombatMemberDataLocator.GetRuntimeData(characterName);
 
-            var partyMemberRuntimeData = PersistentPlayerPersonalDataManager.Instance.CombatMemberDataLocator.GetRuntimeData(characterName);
-            
-            spellList = partyMemberRuntimeData.GetRegisteredSpellActionSO;
-
-            //Debug.Log("loaded spell list.count : " + spellList.Count);
-            //foreach (var spell in spellList)
-            //{
-            //    Debug.Log("spell : " + spell.AbilityName);
-            //}
-            _controlableEntityActionRegistry.RegisterSpell(spellList);
+            LoadUnLockedSpell(partyMemberRuntimeData) ;
+            //LoadBreakTriggerHandler(partyMemberRuntimeData);
 
             yield return null;
         }
 
-     
+        private void LoadUnLockedSpell(RuntimeCombatMemberData partyMemberRuntimeData)
+        {
+            List<SpellActionSO> spellList = new List<SpellActionSO>();
+
+            spellList = partyMemberRuntimeData.GetRegisteredSpellActionSO;
+            _controlableEntityActionRegistry.RegisterSpell(spellList);
+
+        }
+         
+        private void LoadBreakTriggerHandler(RuntimeCombatMemberData partyMemberRuntimeData)
+        {
+            List<TriggerActionSO> triggerList = partyMemberRuntimeData.GetTriggerActionSOs ; 
+            _breakTriggerHandler.LoadTriggerActionFromDatabase(triggerList); 
+        }
 
 
 

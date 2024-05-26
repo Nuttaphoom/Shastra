@@ -3,20 +3,28 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.UI;
+using TMPro;
 
 namespace Vanaring
 {
+    public struct RewardSocketData
+    {
+        public Sprite rewardImage;
+        public int amount;
+    }
     public class DungeonObtainDisplayerPanel : BaseRewardDisplayerPanel
     {
-        // Start is called before the first frame update
-        [SerializeField] private RewardIconObjectGUI guiTemplate;
-        [SerializeField] private GameObject hrz;
         [SerializeField] private GameObject gfx;
-        [SerializeField] private PlayableDirector introDirector;
-        [SerializeField] private List<IRewardable> allRewardList = new List<IRewardable>();
+        [SerializeField] private GameObject socketGFX;
+        [SerializeField] private GameObject glow;
         [SerializeField] private Button nextButton;
+        [SerializeField] private List<IRewardable> allRewardList = new List<IRewardable>();
+        [SerializeField] private Image rewardImage;
+        [SerializeField] private TextMeshProUGUI rewardName;
+        [SerializeField] private TextMeshProUGUI rewardAmount;
+        [SerializeField] private Animator animator;
 
-        private Dictionary<string, RewardIconObjectGUI> rewardObjectDictionary = new Dictionary<string, RewardIconObjectGUI>();
+        private Dictionary<string, RewardSocketData> rewardObjectDictionary = new Dictionary<string, RewardSocketData>();
 
 
         public void SetupData(List<IRewardable> allRewardList)
@@ -28,7 +36,7 @@ namespace Vanaring
         {
             //nextButton.onClick.AddListener(() => Destroy(gameObject));
             gfx.SetActive(true);
-            yield return GetReward(allRewardList);
+            yield return SetUpReward(allRewardList);
         }
 
         public override void ForceSetUpNumber()
@@ -45,48 +53,59 @@ namespace Vanaring
                 ForceSetUpNumber();
         }
 
-        private IEnumerator GetReward(List<IRewardable> rewardList)
+        private IEnumerator SetUpReward(List<IRewardable> rewardList)
         {
-            introDirector.Play();
-            while (introDirector.state == PlayState.Playing)
-            {
-                yield return new WaitForEndOfFrame();
-            }
-            introDirector.Stop();
-
             foreach (IRewardable reward in rewardList)
             {
                 bool isDuplicate = false;
 
-                // Check for duplicates based on RewardName
                 foreach (var existingReward in rewardObjectDictionary.Keys)
                 {
                     if (existingReward == reward.GetRewardData().RewardName)
                     {
                         isDuplicate = true;
+
+                        int newAmount = rewardObjectDictionary[reward.GetRewardData().RewardName].amount + 1;
+                        rewardObjectDictionary[reward.GetRewardData().RewardName] = 
+                            new RewardSocketData { rewardImage = reward.GetRewardData().RewardIcon, amount = newAmount };
                         break;
                     }
                 }
 
-                if (isDuplicate)
+                if(!isDuplicate)
                 {
-                    // If the reward is already in the dictionary, call AddAmount
-                    rewardObjectDictionary[reward.GetRewardData().RewardName].AddAmount();
-                }
-                else
-                {
-                    RewardIconObjectGUI newIcon = Instantiate(guiTemplate, hrz.transform);
-                    newIcon.gameObject.name = reward.GetRewardData().RewardName;
-                    newIcon.gameObject.SetActive(true);
-                    newIcon.Init(reward);
-                    rewardObjectDictionary.Add(reward.GetRewardData().RewardName, newIcon);
-                    yield return new WaitForSeconds(0.1f);
+                    rewardObjectDictionary.Add(reward.GetRewardData().RewardName, 
+                        new RewardSocketData { rewardImage = reward.GetRewardData().RewardIcon, amount = 1 });
                 }
             }
-            _uiAnimationDone = true;
 
-            guiTemplate.gameObject.SetActive(false);
+            foreach (KeyValuePair<string, RewardSocketData> rewardData in rewardObjectDictionary)
+            {
+                yield return PlayMissionRewardPopup(rewardData.Key, rewardData.Value);
+            }
+            socketGFX.SetActive(false);
+            glow.SetActive(false);
+            gfx.SetActive(false);
+            _uiAnimationDone = true;
             yield return null;
+        }
+
+        private IEnumerator PlayMissionRewardPopup(string name, RewardSocketData data)
+        {
+            socketGFX.SetActive(true);
+            glow.SetActive(true);
+
+            animator.Play("NodeRewardFadeUp");
+            rewardImage.sprite = data.rewardImage;
+            rewardName.text = name;
+            rewardAmount.text = "x"+data.amount.ToString();
+
+            yield return new WaitForSeconds(1.5f);
+            //while (!socketGFX.activeSelf)
+            //{
+            //    yield return new WaitForEndOfFrame();
+            //}
+
         }
     }
 }

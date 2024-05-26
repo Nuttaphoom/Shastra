@@ -15,9 +15,6 @@ namespace Vanaring
      
     public class SpellSocketGUI : MonoBehaviour 
     {
-
-      
-
         [Header("Main Skill Information")]
         [SerializeField]
         private Button _actionButton ;
@@ -61,7 +58,6 @@ namespace Vanaring
             _spellSO = spell;
             this._caster = combatEntity;
             _actionButton.onClick.AddListener(ChooseSpell);
-            //Debug.Log(spell.AbilityName.ToString());
             _textMeshProUGUI.text = spell.AbilityName.ToString();
             if(spell.MPCost > 0)
             {
@@ -77,11 +73,6 @@ namespace Vanaring
             //init slot layout
             if (spell.RequiredSide == RuntimeMangicalEnergy.EnergySide.LightEnergy)
             {
-                //if(_spellRequireAmount > 0)
-                //{
-                //    _actionButton.GetComponent<Image>().sprite = lightSpellSprite;
-                //    _actionButton.GetComponent<Image>().color = Color.white;
-                //}
                 for (int i = 0; i < _spellRequireAmount; i++)
                 {
                     if(_spellRequireAmount <= 3)
@@ -107,11 +98,6 @@ namespace Vanaring
             }
             else
             {
-                //if (_spellRequireAmount > 0)
-                //{
-                //    _actionButton.GetComponent<Image>().sprite = darkSpellSprite;
-                //    _actionButton.GetComponent<Image>().color = Color.white;
-                //}
                 for (int i = 0; i < _spellRequireAmount; i++)
                 {
                     if (_spellRequireAmount <= 3)

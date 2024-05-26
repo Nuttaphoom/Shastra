@@ -5,6 +5,7 @@ using System.Linq;
 using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Vanaring 
@@ -26,10 +27,6 @@ namespace Vanaring
         }
         public IEnumerator AdvanceRound()
         {
-
-
-
-
             while (_referee.GetCurrentActiveEntities().Count > 0)
             {
                 yield return AdvanceTurn();
@@ -102,25 +99,14 @@ namespace Vanaring
                 yield return entity.TurnEnter();     
             }
 
-
-
-            ////2.) Notify UI elements
-            //if (team.Count > 0)
-            //{
-            //    for (int i = 0; i < team.Count; i++)
-            //    {
-            //        MonoBehaviour.FindObjectOfType<CharacterWindowManager>().SetHighlightActiveEntity(team[i]);
-            //    }
-            //    _currentEntityIndex = 0;
-            //    yield return SwitchControl(-1, _currentEntityIndex);
-            //}
             foreach (CombatEntity actor in team)
             {
                 yield return actor.GetAilmentAction(); 
 
-                if (actor.ActionHandler.IsReadyForAction() )
+                if (actor.ActionHandler.ActionQueueReady() )
                 {
                     yield return _stateHandler.Referee.OnCharacterPerformAction(actor);
+                    yield return _stateHandler.Referee.ResolveOnEntityPerformAction();
                 }
             }
 
@@ -146,7 +132,6 @@ namespace Vanaring
         {
             CombatEntity _actor;
 
-
             _stateHandler.Referee.SetActiveActors(); 
 
             while (true)
@@ -157,23 +142,21 @@ namespace Vanaring
                 if (_actor == null)
                     break; 
                  
-                if (( ! _actor.ActionHandler.IsReadyForAction()) )  
+                if (( ! _actor.ActionHandler.ActionQueueReady()) )  
                     yield return _actor.GetAction() ;
 
                 else
                 {
                     yield return _stateHandler.Referee.OnCharacterPerformAction(_actor);
-                    
+
+                    yield return _stateHandler.Referee.ResolveOnEntityPerformAction();
+
+
                     break; 
                 }    
                 yield return new WaitForEndOfFrame(); 
-            
             }
-
-
         }
-
-       
 
         protected override IEnumerator StateEnter()
         {

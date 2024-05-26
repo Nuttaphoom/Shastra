@@ -25,6 +25,6 @@ namespace Vanaring
 
     public enum EWindowGUI
     {
-        Main, Item, Spell, Weapon
+        Main, Item, Spell, Weapon, Inspect
     }
 }

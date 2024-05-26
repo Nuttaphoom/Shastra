@@ -48,10 +48,10 @@ namespace Vanaring
             possessesCharacter.sprite = _pauseMenuWindowGUI.SelectCharacter.GetCharacterIcon;
             //Debug.Log(_pauseMenuWindowGUI.SelectCharacter.CharacterName);
 
-            if (_pauseMenuWindowGUI.SelectCharacter.GetCombatEntityPrefab.GetComponent<CombatEntity>() is ControlableEntity controlEntity)
-            {
-                spellList = controlEntity.GetControlableEntityActionRegistry.GetSpellAction;
-            }
+            //if (_pauseMenuWindowGUI.SelectCharacter.GetCombatEntityPrefab.GetComponent<CombatEntity>() is ControlableEntity controlEntity)
+            //{
+            //    spellList = controlEntity.GetControlableEntityActionRegistry.GetSpellAction;
+            //}
 
             spellImgTemplate.gameObject.SetActive(true);
             foreach (SpellActionSO spellAction in spellList)

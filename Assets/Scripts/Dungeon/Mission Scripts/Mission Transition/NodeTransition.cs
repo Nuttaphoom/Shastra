@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -53,10 +52,10 @@ namespace Vanaring
             switch (direction)
             {
                 case TransitionDirection.Forward_Z:
-                    newSprite = rightArrow;
+                    newSprite = leftArrow;
                     break;
                 case TransitionDirection.MinusForward_Z:
-                    newSprite = leftArrow;
+                    newSprite = rightArrow;
                     break;
                 case TransitionDirection.MinusRight_X:
                     newSprite = backwardArrow;

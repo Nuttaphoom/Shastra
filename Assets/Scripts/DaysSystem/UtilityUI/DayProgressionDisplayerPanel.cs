@@ -23,7 +23,7 @@ namespace Vanaring
 
         private string[] weekDays =
         {
-            "Monday", "Tueday", "Wednesday", "Thursday",
+            "Monday", "Tuesday", "Wednesday", "Thursday",
             "Friday", "Saturday", "Sunday"
         };
 
@@ -84,5 +84,7 @@ namespace Vanaring
         {
             dayText.text = weekDays[progressionData.NextDay % 6] + " <color=#FEFF94>" + GetOrdinalNumText((progressionData.NextDay + 1).ToString()) + "</color>";
         }
+
+       
     }
 }

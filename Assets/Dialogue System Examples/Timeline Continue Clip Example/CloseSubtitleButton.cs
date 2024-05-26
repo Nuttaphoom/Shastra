@@ -5,7 +5,17 @@ public class CloseSubtitleButton : MonoBehaviour
 {
     public void CloseSubtitle()
     {
-        //GetComponentInParent<StandardUISubtitlePanel>().Close();
-        Sequencer.Message("ClosedSubtitle");
+        Debug.Log("speed : " + TypewriterUtility.GetTypewriterSpeed(DialogueManager.standardDialogueUI.conversationUIElements.subtitlePanels[0].subtitleText)); 
+
+        if (false)
+        {
+            TypewriterUtility.StopTyping(DialogueManager.standardDialogueUI.conversationUIElements.subtitlePanels[0].subtitleText);
+
+        }
+        else
+        {
+            Sequencer.Message("ClosedSubtitle");
+
+        }
     }
 }

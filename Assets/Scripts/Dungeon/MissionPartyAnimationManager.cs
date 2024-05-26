@@ -40,7 +40,7 @@ namespace Vanaring
         public IEnumerator OnCharacterMoveToNode(BaseMissionNode nodeToVisit)
         {
             Vector3 direction = (nodeToVisit.transform.position - transform.position).normalized;
-            Debug.Log("Direction - x: " + direction.x + ", y: " + direction.y + ", z: " + direction.z);
+            //Debug.Log("Direction - x: " + direction.x + ", y: " + direction.y + ", z: " + direction.z);
 
             Vector3 prevUIPos = transform.position;
             float progression = 0;

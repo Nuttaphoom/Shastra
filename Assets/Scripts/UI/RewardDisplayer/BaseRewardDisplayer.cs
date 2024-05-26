@@ -44,6 +44,7 @@ namespace Vanaring
         {
             while (_rewardPanel.GetComponent<RewardPanelType>().IsFinishingDisplayUI == false)
             {
+
                 yield return new WaitForEndOfFrame();
             }
 

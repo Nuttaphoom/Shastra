@@ -5,7 +5,6 @@ using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.XR;
-using static UnityEditor.ShaderGraph.Internal.KeywordDependentCollection;
 
 namespace Vanaring
 {
@@ -189,6 +188,7 @@ namespace Vanaring
 
         public void ShowEntityMesh(List<CombatEntity> entityToShow)
         {
+
             foreach (var entity in entityToShow)
             {
                 entity.GetComponent<CombatEntityAnimationHandler>().ShowVisualMesh();//.SetActive(false);

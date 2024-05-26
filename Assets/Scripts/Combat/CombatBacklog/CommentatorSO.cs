@@ -17,8 +17,9 @@ namespace Vanaring
         public string GetComment(CombatEntity characterInConversation )
         {
             string characterName = characterInConversation.CombatCharacterSheet.CharacterName;
-            _comment = _comment.Replace("[CharacterName]", characterName);
-            return _comment ;
+            string s = _comment.Replace("[CharacterName]", characterName);
+            Debug.Log("characterName : " + characterName + " so get comment " + s) ;
+            return s ;
         }
     }
     [CreateAssetMenu(fileName = "CommentatorSO", menuName = "ScriptableObject/CombatBacklog/Commentator")]

@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Unity.VisualScripting;
+using UnityEngine;
 using UnityEngine.Events;
 using static UnityEngine.EventSystems.EventTrigger;
 
@@ -56,6 +57,7 @@ namespace Vanaring
 
         public IEnumerator PerformActionInQueue()
         {
+
             ActorAction action = GetActionRuntimeEffect(); 
 
             //Call on perform action of the ActorAction
@@ -65,7 +67,7 @@ namespace Vanaring
             //var eff = action.GetRuntimeEffect();
 
             //check if still be able to call the action
-            if (_performerEntity.ReadyForControl())
+            if (_performerEntity.ReadyToPerformAction())
             {
                 EntityActionPair  entityActionPair =  new EntityActionPair() { Actor = _performerEntity, PerformedAction = action };
                 GetEventBroadcaster().InvokeEvent<EntityActionPair>(entityActionPair, "OnPerformAction");
@@ -79,9 +81,10 @@ namespace Vanaring
                 _performerEntity.IsExhausted = true;
 
             }
-        } 
 
-        public bool IsReadyForAction()
+        }
+
+        public bool ActionQueueReady ()
         {
             if (_actionQueue == null)
                 return false;

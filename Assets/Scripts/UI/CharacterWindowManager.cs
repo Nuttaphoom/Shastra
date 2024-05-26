@@ -12,6 +12,8 @@ namespace Vanaring
         private CharacterSocketGUI _templatePrefab;
         [SerializeField]
         private Transform _socketVerticalLayout;
+        [SerializeField] private GameObject indicatorA;
+        [SerializeField] private GameObject indicatorD;
         //private GameObject _entities;
         private List<CombatEntity> entities = new List<CombatEntity>();
 
@@ -25,8 +27,8 @@ namespace Vanaring
         private void SetUpCharacterHUD(Null n)
         {
             entities = CombatReferee.Instance.GetCompetatorsBySide(ECompetatorSide.Ally);
-            
-
+            indicatorA.SetActive(true);
+            indicatorD.SetActive(true);
             for (int i = entities.Count-1; i >= 0; i--)
             {
                 CharacterSocketGUI newSocket = Instantiate(_templatePrefab, _socketVerticalLayout.transform);

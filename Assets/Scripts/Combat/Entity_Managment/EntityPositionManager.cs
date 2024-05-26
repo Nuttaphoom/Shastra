@@ -5,7 +5,6 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using Unity.VisualScripting;
-using UnityEditorInternal;
 using UnityEngine; 
 
 namespace Vanaring
@@ -212,7 +211,6 @@ namespace Vanaring
        
         public void OccupieLocation(ECompetatorSide side, int index,CombatEntity entity )
         {
-            ColorfulLogger.LogWithColor( entity.gameObject.name + " OccupieLocation", Color.yellow);
 
             if (IsThisEntityOccupyLocation(entity) != null)
             {

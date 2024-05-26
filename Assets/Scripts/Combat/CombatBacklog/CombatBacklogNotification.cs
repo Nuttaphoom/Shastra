@@ -119,8 +119,8 @@ namespace Vanaring
         }
         private void NotifyAilmentControl(EntityAilmentEffectPair ailment)
         {
-
             string comment = GetAilmentBacklog(ailment.Actor, ailment.Ailment, true, false);
+            Debug.Log("NotifyAilmentControl with actor " + ailment.Actor + "get comment : " + comment) ;
 
             if (comment != "")
                 _combatBacklogDisplayer.EnqueueUtilityTab(comment);
@@ -134,10 +134,8 @@ namespace Vanaring
 
         private void NotifyOnStatusEffectApplied(EntityStatusEffectPair pair)
         {
-            Debug.Log("try to  NotifyOnStatusEffectApplied          ");
 
             string comment = GetStatusEffectComment(pair, true);
-            
 
             if (comment != "")
                 _combatBacklogDisplayer.EnqueueUtilityTab(comment);
@@ -145,7 +143,6 @@ namespace Vanaring
         }
         private void NotifyOnEntityPerformAction(EntityActionPair entityActionPair)
         {
-            Debug.Log("try to  NotifyOnEntityPerformAction          ");
 
             string comment = GetPerformedActionBacklog(entityActionPair);
 

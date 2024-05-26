@@ -16,6 +16,7 @@ namespace Vanaring
                 ExitDungeon = true ,
             };
 
+            Debug.Log("Onvisit ExitNode");
             DungeonManagerSingleton.Instance.ExitMission(status); 
             //MissionManagerSingleton.Instance.ExitDungeon(status);
             

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 using static Vanaring.CombatRewardManager;
 
 namespace Vanaring
@@ -42,13 +43,7 @@ namespace Vanaring
             }
         }
 
-        public CombatEntity InitializeCombatEntity
-        {
-            get
-            {
-                return MonoBehaviour.Instantiate(GetCharacterSheet.GetCombatEntityPrefab).GetComponent<CombatEntity>()   ;
-            }
-        }
+       
 
         public float GetCurrentPartyMemberHP => _currentHP;
         public float GetCurrentPartyMemberMP => _currentMP;

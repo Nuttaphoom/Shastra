@@ -50,7 +50,9 @@ namespace PixelCrushers.DialogueSystem
 
         public static void StopTyping(UITextField textField)
         {
+            
             var typewriter = GetTypewriter(textField);
+            
             if (typewriter != null && typewriter.enabled) typewriter.StopTyping();
         }
 

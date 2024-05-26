@@ -53,7 +53,6 @@ namespace Vanaring
         public void Init(CombatEntity owner)
         {
             _owner = owner;
-            Debug.Log("Init EnemyHUD");
 
             SubAllEvents();
 
@@ -267,7 +266,6 @@ namespace Vanaring
             if (_visualMesh.activeSelf)
                 return;
 
-            Debug.Log("_visualMesh is " + _visualMesh); 
             _visualMesh.gameObject.SetActive(true); 
         }
         public void ClearBreakSlotHighlight()

@@ -50,6 +50,9 @@ namespace Vanaring
 
         public List<RuntimeLocation> GetAvailableLocationAccordingToDayTime()
         {
+            if (! _runtimeLocations.ContainsKey(_currentTime)) 
+                return new List<RuntimeLocation>();
+                    
             return _runtimeLocations[_currentTime]; 
         }
 
