@@ -23,11 +23,13 @@ namespace Vanaring
         {
             DialogueSystemController dialogueSystemController = GetComponent<DialogueSystemController>();
 
-            dialogueSystemController.conversationEnded -= OnEndConversation;
-            dialogueSystemController.conversationStarted -= OnStartConversation;
+            if (dialogueSystemController == null)
+                throw new System.Exception("DialogueSystemController can not be found within " + gameObject.name);
+
+            dialogueSystemController.conversationEnded += OnEndConversation;
+            dialogueSystemController.conversationStarted  += OnStartConversation;
 
         }
-
         public void OnStartConversation(Transform actor )
         {
             CentralInputReceiver.Instance().AddInputReceiverIntoStack(this);
