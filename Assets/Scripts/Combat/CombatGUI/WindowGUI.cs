@@ -14,7 +14,7 @@ namespace Vanaring
         public abstract void OnWindowDeActive();
         public abstract void LoadWindowData(CombatEntity entity);
 
-        public abstract void ReceiveKeysFromWindowManager(KeyCode key);
+        public abstract void ReceiveKeysFromWindowManager(InputCode key);
 
 
     }

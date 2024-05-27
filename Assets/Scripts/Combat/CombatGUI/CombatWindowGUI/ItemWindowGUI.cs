@@ -183,24 +183,24 @@ namespace Vanaring
                 arrowUp.SetActive(false);
             }
         }
-        public override void ReceiveKeysFromWindowManager(KeyCode key)
+        public override void ReceiveKeysFromWindowManager(InputCode key)
         {
-            if (key == KeyCode.Q)
+            if (key == InputCode.Skill)
             {
                 _windowManager.OpenWindow(EWindowGUI.Main);
             }
-            else if (key == KeyCode.Space)
+            else if (key == InputCode.Select)
             {
                 itemSocketGUIList[currentSelectedIndex].CallButtonCallback();
             }
-            else if (key == KeyCode.S)
+            else if (key == InputCode.Down)
             {
                 if (currentSelectedIndex < itemSocketGUIList.Count - 1 && itemSocketGUIList.Count > 1)
                 {
                     ScrollToNext();
                 }
             }
-            else if (key == KeyCode.W)
+            else if (key == InputCode.Up)
             {
                 if (currentSelectedIndex > 0 && itemSocketGUIList.Count > 1)
                 {

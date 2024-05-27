@@ -56,9 +56,9 @@ namespace Vanaring
             pauseButtonList.Clear();
         }
 
-        public override void ReceiveKeysFromWindowManager(KeyCode key)
+        public override void ReceiveKeysFromWindowManager(InputCode key)
         {
-            if (key == KeyCode.W)
+            if (key == InputCode.Up)
             {
                 if (buttonSelectingIndex > 0)
                 {
@@ -67,7 +67,7 @@ namespace Vanaring
                 
                 SwitchOption();
             }
-            if (key == KeyCode.S)
+            if (key == InputCode.Down)
             {
                 if (buttonSelectingIndex < pauseButtonList.Count - 1)
                 {
@@ -75,11 +75,11 @@ namespace Vanaring
                 }
                 SwitchOption();
             }
-            if (key == KeyCode.Space)
+            if (key == InputCode.Select)
             {
                 pauseButtonList[buttonSelectingIndex].onClick?.Invoke();
             }
-            if (key == KeyCode.Escape)
+            if (key == InputCode.Escape)
             {
                 _pauseMenuWindowGUI.HideCurrentWindow();
             }

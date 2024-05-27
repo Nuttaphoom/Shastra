@@ -37,30 +37,30 @@ namespace Vanaring
             return; 
         }
 
-        public override void ReceiveKeysFromWindowManager(KeyCode key)
+        public override void ReceiveKeysFromWindowManager(InputCode key)
         {
-            if (key == (KeyCode.Q))
+            if (key == (InputCode.Skill))
             {
                 _windowManager.OpenWindow(EWindowGUI.Spell);
             }
 
-            if (key == (KeyCode.E))
+            if (key == (InputCode.Item))
             {
                 _windowManager.OpenWindow(EWindowGUI.Item);
             }
 
-            if (key == (KeyCode.A))
+            if (key == (InputCode.Left))
             {
                 if (CombatReferee.Instance.ChangeActiveEntityIndex(true))
                     TargetSelectionFlowControl.Instance.ForceStop();
 
             }
-            if (key == (KeyCode.D))
+            if (key == (InputCode.Right))
             {
                 if (CombatReferee.Instance.ChangeActiveEntityIndex(false))
                     TargetSelectionFlowControl.Instance.ForceStop();
             }
-            if (key == KeyCode.T)
+            if (key == InputCode.T)
             {
                 _windowManager.OpenWindow(EWindowGUI.Inspect);
             }

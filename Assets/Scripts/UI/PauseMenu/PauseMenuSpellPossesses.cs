@@ -70,13 +70,13 @@ namespace Vanaring
             
         }
 
-        public override void ReceiveKeysFromWindowManager(KeyCode key)
+        public override void ReceiveKeysFromWindowManager(InputCode key)
         {
-            if (key == KeyCode.Q || key == KeyCode.Escape)
+            if (key == InputCode.Up || key == InputCode.Escape)
             {
                 _pauseMenuWindowGUI.OpenWindow(EPauseWindowGUI.Party);
             }
-            if (key == KeyCode.A)
+            if (key == InputCode.Left)
             {
                 if(spellIndex > 0)
                 {
@@ -84,7 +84,7 @@ namespace Vanaring
                 }
                 SwitchSpellIndex();
             }
-            if (key == KeyCode.D)
+            if (key == InputCode.Right)
             {
                 if(spellIndex < spellList.Count - 1)
                 {

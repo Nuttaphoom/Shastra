@@ -66,7 +66,7 @@ namespace Vanaring
         {
 
             _currentSelectedWindow = 0;
-            CentralInputReceiver.Instance().AddInputReceiverIntoStack(this);
+            CentralInputReceiver.Instance.AddInputReceiverIntoStack(this);
 
             
 
@@ -75,55 +75,55 @@ namespace Vanaring
         public void ReleaseInputControl()
         {
 
-            CentralInputReceiver.Instance().RemoveInputReceiverIntoStack(this);
+            CentralInputReceiver.Instance.RemoveInputReceiverIntoStack(this);
             TargetSelectionFlowControl.Instance.ForceStop();
 
 
 
         }
 
-        public void ReceiveKeys(KeyCode key)
+        public void ReceiveKeys(InputCode key)
         {
             UnhightlightButton(_currentSelectedWindow);
             int tempWindow = _currentSelectedWindow; 
 
-            if (key == KeyCode.W)
+            if (key == InputCode.Up)
             {
                 _currentSelectedWindow -= 1;
                 if (_currentSelectedWindow < 0)
                     _currentSelectedWindow = 0;
             }
-            else if (key == KeyCode.S)
+            else if (key == InputCode.Down)
             {
                 _currentSelectedWindow += 1;
                 if (_currentSelectedWindow > 2)
                     _currentSelectedWindow = 2;
 
             }
-            else if (key == KeyCode.Space)
+            else if (key == InputCode.Select)
             {
                 _buttons[_currentSelectedWindow].onClick?.Invoke();
             }
-            else if (key == (KeyCode.A))
+            else if (key == (InputCode.Left))
             {
                 if (CombatReferee.Instance.ChangeActiveEntityIndex(true))
                     TargetSelectionFlowControl.Instance.ForceStop();
 
             }
-            else if (key == (KeyCode.D))
+            else if (key == (InputCode.Right))
             {
                 //throw new NotImplementedException();
 
                 if (CombatReferee.Instance.ChangeActiveEntityIndex(false))
                     TargetSelectionFlowControl.Instance.ForceStop();
             }
-            else if (key == (KeyCode.RightArrow))
-            {
-                TargetSelectionFlowControl.Instance.ReceiveKeys(KeyCode.D);
-            }else if (key == (KeyCode.LeftArrow))
-            {
-                TargetSelectionFlowControl.Instance.ReceiveKeys(KeyCode.A);
-            }
+            //else if (key == (KeyCode.RightArrow))
+            //{
+            //    TargetSelectionFlowControl.Instance.ReceiveKeys(KeyCode.D);
+            //}else if (key == (KeyCode.LeftArrow))
+            //{
+            //    TargetSelectionFlowControl.Instance.ReceiveKeys(KeyCode.A);
+            //}
 
             if (tempWindow != _currentSelectedWindow)
             {
@@ -176,7 +176,7 @@ namespace Vanaring
             _currentSelectedWindow = 0; 
             HightLightButton(_currentSelectedWindow);  
              
-            CentralInputReceiver.Instance().AddInputReceiverIntoStack(this);
+            CentralInputReceiver.Instance.AddInputReceiverIntoStack(this);
             //_targetingCoroutine = StartCoroutine(TargettingTarget());
             SetGraphicMenuActive(true);
 
@@ -190,7 +190,7 @@ namespace Vanaring
             }
 
             TargetSelectionFlowControl.Instance.ForceStop();
-            CentralInputReceiver.Instance().RemoveInputReceiverIntoStack(this);
+            CentralInputReceiver.Instance.RemoveInputReceiverIntoStack(this);
 
             SetGraphicMenuActive(false);
         }
