@@ -29,7 +29,12 @@ namespace Vanaring
 
         [Header("Ally entities will be the target")]
         [SerializeField]
-        private bool _castOnAlly; 
+        private bool _castOnAlly;
+
+        [Header("Target all of the enemies")]
+        [SerializeField]
+        private bool _castOnAllHostileTargets; 
+        
         
 
         public ActorAction FactorizeTriggerEffect(CombatEntity caster, List<CombatEntity> brokenEntities   )
@@ -55,6 +60,10 @@ namespace Vanaring
             else if (_castOnAlly)
             {
 
+            }else if (_castOnAllHostileTargets)
+            {
+                ECompetatorSide side =  CombatReferee.Instance.GetCompetatorSide(CombatReferee.Instance.GetCurrentActor());
+                validTarget = CombatReferee.Instance.GetCompetatorsBySide((ECompetatorSide) ((int)(side + 1 ) % 2) ) ; 
             }
             else
             {
