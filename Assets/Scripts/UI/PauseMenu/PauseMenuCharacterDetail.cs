@@ -64,18 +64,18 @@ namespace Vanaring
   
         }
 
-        public override void ReceiveKeysFromWindowManager(KeyCode key)
+        public override void ReceiveKeysFromWindowManager(InputCode key)
         {
-            if (key == KeyCode.Escape)
+            if (key == InputCode.Escape)
             {
                 _pauseMenuWindowGUI.OpenWindow(EPauseWindowGUI.Main);
             }
-            else if (key == KeyCode.Q)
+            else if (key == InputCode.Skill)
             {
                 _pauseMenuWindowGUI.SelectCharacter = combatCharacterSheet[characterIndex];
                 _pauseMenuWindowGUI.OpenWindow(EPauseWindowGUI.Spell);
             }
-            else if (key == KeyCode.W)
+            else if (key == InputCode.Up)
             {
                 if (characterIndex > 0)
                 {
@@ -83,7 +83,7 @@ namespace Vanaring
                 }
                 SwitchCharacter();
             }
-            else if (key == KeyCode.S)
+            else if (key == InputCode.Down)
             {
                 if (characterIndex < combatCharacterSheet.Count - 1)
                 {

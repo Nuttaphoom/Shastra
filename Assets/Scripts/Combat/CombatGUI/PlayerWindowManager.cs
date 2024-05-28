@@ -123,13 +123,13 @@ namespace Vanaring
 
             OpenWindow(EWindowGUI.Main);
 
-            CentralInputReceiver.Instance().AddInputReceiverIntoStack(this);
+            CentralInputReceiver.Instance.AddInputReceiverIntoStack(this);
 
         }
 
         public void CloseWindow(CombatEntity combatEntity = null)
         {
-            CentralInputReceiver.Instance().RemoveInputReceiverIntoStack(this);
+            CentralInputReceiver.Instance.RemoveInputReceiverIntoStack(this);
 
             if (_lastWindowOpen != null)
                 return;
@@ -153,14 +153,16 @@ namespace Vanaring
                 _lastWindowOpen.gameObject.SetActive(false);
         }
 
-        public void ReceiveKeys(KeyCode key)
+        public void ReceiveKeys(InputCode key)
         {
             if (_lastWindowOpen != null) 
                 _lastWindowOpen.ReceiveKeysFromWindowManager(key);
-            if (key == KeyCode.T && _entityInpectWindow.gameObject.activeSelf)
+            if (key == InputCode.T)
             {
-                Debug.Log(_entityInpectWindow.gameObject.activeSelf);
-                OpenWindow(EWindowGUI.Inspect);
+                if (!_entityInpectWindow.gameObject.activeSelf)
+                {
+                    OpenWindow(EWindowGUI.Inspect);
+                }
             }
         }
 

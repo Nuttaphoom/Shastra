@@ -89,13 +89,14 @@ namespace Vanaring  {
             spellLogText.text = spellSocketGUIList[currentSelectedIndex].GetSpellDescription();
             spellSocketGUIList[currentSelectedIndex].HightlightedButton();
         }
-        public override void ReceiveKeysFromWindowManager(KeyCode key)
+        public override void ReceiveKeysFromWindowManager(InputCode key)
         {
-            if (key == KeyCode.Q)
+            if (key == InputCode.DeSelect)
             {
                 _windowManager.OpenWindow(EWindowGUI.Main);
             }
-            else if (key == KeyCode.Space)
+
+            else if (key == InputCode.Select)
             {
                 spellSocketGUIList[currentSelectedIndex].CallButtonCallback();
                 if (!spellSocketGUIList[currentSelectedIndex].IsEnergySufficeientToUseThisSpell())
@@ -103,7 +104,7 @@ namespace Vanaring  {
                     notificationBox.SetActive(true);
                 }
             }
-            else if(key == KeyCode.S)
+            else if(key == InputCode.Down)
             {
                 if (currentSelectedIndex < spellSocketGUIList.Count - 1 && spellSocketGUIList.Count > 1)
                 {
@@ -111,7 +112,7 @@ namespace Vanaring  {
                 }
                 notificationBox.SetActive(false);
             }
-            else if (key == KeyCode.W)
+            else if (key == InputCode.Up)
             {
                 if (currentSelectedIndex > 0 && spellSocketGUIList.Count > 1)
                 {

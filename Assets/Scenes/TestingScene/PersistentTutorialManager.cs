@@ -63,18 +63,18 @@ namespace Vanaring
 
         private IEnumerator PlayTutorial(TuitorialInstanceData tuitorialData)
         {
-            CentralInputReceiver.Instance().AddInputReceiverIntoStack(this); 
+            CentralInputReceiver.Instance.AddInputReceiverIntoStack(this); 
             tuitorialData.TuitorialCutscene.gameObject.SetActive(true) ;
             yield return tuitorialData.TuitorialCutscene.PlayCutscene();
 
             Destroy(tuitorialData.TuitorialCutscene.gameObject);
 
             _tuitorialInstanceDatas.Remove(tuitorialData);
-            CentralInputReceiver.Instance().RemoveInputReceiverIntoStack(this);
+            CentralInputReceiver.Instance.RemoveInputReceiverIntoStack(this);
 
         }
 
-        public void ReceiveKeys(KeyCode key)
+        public void ReceiveKeys(InputCode key)
         {
     
         }

@@ -132,11 +132,11 @@ namespace Vanaring
 
         
 
-        public void ReceiveKeys(KeyCode key)
+        public void ReceiveKeys(InputCode action)
         {
             _itemSocketGUI[_currentIndex].UnHighlightedButton();
 
-            if (key == KeyCode.W)
+            if (action == InputCode.Up)
             {
                 _currentIndex -= 1;
                 if (_currentIndex < 0)
@@ -146,7 +146,7 @@ namespace Vanaring
                     _currentIndex = 0;
                 }
             }
-            else if (key == KeyCode.S)
+            else if (action == InputCode.Down)
             {
                 _currentIndex += 1;
 
@@ -157,11 +157,11 @@ namespace Vanaring
 
                 }
             }
-            else if (key == KeyCode.Space)
+            else if (action == InputCode.Select)
             {
                 _itemSocketGUI[_currentIndex].CallButtonCallback();
             }
-            else if (key == KeyCode.Q)
+            else if (action == InputCode.Skill)
             {
                 this._combatGraphicalHandler.DisplayMainMenu();
             }
@@ -177,7 +177,7 @@ namespace Vanaring
                 _itemSocketGUI[i].UnHighlightedButton();
 
             _currentIndex = 0; 
-            CentralInputReceiver.Instance().AddInputReceiverIntoStack(this);
+            CentralInputReceiver.Instance.AddInputReceiverIntoStack(this);
             _itemSocketGUI[_currentIndex].HightlightedButton();
 
             _combatGraphicalHandler = graophicalHandler; 
@@ -186,7 +186,7 @@ namespace Vanaring
 
         public override void OnWindowOverlayed()
         {
-            CentralInputReceiver.Instance().RemoveInputReceiverIntoStack(this) ;
+            CentralInputReceiver.Instance.RemoveInputReceiverIntoStack(this);
             for (int i = 0;  i < _itemSocketGUI.Count; i++) 
                 _itemSocketGUI[i].UnHighlightedButton();
 

@@ -177,25 +177,25 @@ namespace Vanaring
             Init();
         }
 
-        public override void ReceiveKeysFromWindowManager(KeyCode key)
+        public override void ReceiveKeysFromWindowManager(InputCode key)
         {
-            if (key == KeyCode.A)
+            if (key == InputCode.Left)
             {
                 allyIndex = Math.Clamp(allyIndex - 1, 0, 2);
                 SetupInfo();
             }
-            if (key == KeyCode.D)
+            if (key == InputCode.Right)
             {
                 allyIndex = Math.Clamp(allyIndex + 1, 0, 2);
                 SetupInfo();
             }
-            if (key == KeyCode.C)
+            if (key == InputCode.C)
             {
                 allyIndex = 0;
                 isAllyMode = !isAllyMode;
                 SetupInfo();
             }
-            if(key == KeyCode.Q || key == KeyCode.T)
+            if(key == InputCode.Skill || key == InputCode.T)
             {
                 _windowManager.OpenWindow(EWindowGUI.Main);
             }

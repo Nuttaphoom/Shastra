@@ -12,20 +12,30 @@ using UnityEngine.TextCore.Text;
 
 namespace Vanaring 
 {
-    public class CentralInputReceiver 
+    public enum InputCode 
+    { 
+        Up = 0, 
+        Down = 1, 
+        Left = 2, 
+        Right = 3, 
+        Select = 4, 
+        Item = 5, 
+        Skill = 6,
+
+        T = 7,
+        Escape = 8,
+        C = 9,
+        DeSelect = 10,
+    }
+
+    public class CentralInputReceiver : PersistentInstantiatedObject<CentralInputReceiver>
     {
         private  Dictionary<char, KeyCode> _keycodeCache = new Dictionary<char, KeyCode>();
 
-        private static CentralInputReceiver instance;
-
-        private static Stack<IInputReceiver> _receiverStack = new Stack<IInputReceiver>()  ;
+        private static Stack<IInputReceiver> _receiverStack = new Stack<IInputReceiver>();
 
         public CentralInputReceiver()
         {
-            InputSystem.onAnyButtonPress
-                 .Call(ctrl => TransmitInput(ctrl.name));
-
-
             _keycodeCache = new Dictionary<char, KeyCode>();
             _receiverStack = new Stack<IInputReceiver>(); 
         } 
@@ -34,50 +44,85 @@ namespace Vanaring
             _receiverStack.Clear(); 
         } 
 
-        public static CentralInputReceiver Instance()
-        {
-            if (instance == null)
-            {
-                instance = new CentralInputReceiver();
-            }
-
-            return instance;
-        }
-
-        private void TransmitInput(string str)
+        private void TransmitInput(InputCode key)
         {
             if (_receiverStack.Count > 0) {
-                _receiverStack.Peek().ReceiveKeys(GetKeyCode(str));
+                _receiverStack.Peek().ReceiveKeys(key);
             } 
         }
 
-        private KeyCode GetKeyCode(string key)
+        private void OnNavigate(InputValue value)
         {
-            if (key.Count() > 1)
-            {
-                if (key == "space")
-                    return KeyCode.Space;
-                else if (key == "escape")
-                    return KeyCode.Escape;
-                else if (key == "rightArrow")
-                    return KeyCode.RightArrow;
-                else if (key == "leftArrow")
-                    return KeyCode.LeftArrow;
+            Vector2 inputValue = value.Get<Vector2>();
+            Debug.Log(inputValue);
 
+            if (inputValue.Equals(new Vector2(1.0f,0.0f)))
+            {
+                TransmitInput(InputCode.Right);
+            }
+            else if (inputValue.Equals(new Vector2(0.0f, 1.0f)))
+            {
+                TransmitInput(InputCode.Up);
+            }
+            else if (inputValue.Equals(new Vector2(-1.0f, 0.0f)))
+            {
+                TransmitInput(InputCode.Left);
+            }
+            else if (inputValue.Equals(new Vector2(0.0f, -1.0f)))
+            {
+                TransmitInput(InputCode.Down);
             }
 
-            char character = key[0];
-            // Get from cache if it was taken before to prevent unnecessary enum parse
-            KeyCode code;
-            if (_keycodeCache.TryGetValue(character, out code)) return code;
-
-            // Cast to it's integer value
-            int alphaValue = character;
-            code = (KeyCode)Enum.Parse(typeof(KeyCode), alphaValue.ToString());
-            _keycodeCache.Add(character, code);
-
-            return code;
         }
+
+        private void OnSelect()
+        {
+            Debug.Log("Select");
+
+            TransmitInput(InputCode.Select);
+        }
+
+        private void OnSkill()
+        {
+            Debug.Log("OnSkill");
+
+            TransmitInput(InputCode.Skill);
+        }
+
+        private void OnItem()
+        {
+            Debug.Log("OnItem");
+
+            TransmitInput(InputCode.Item);
+        }
+
+        //private KeyCode GetKeyCode(string key)
+        //{
+        //    if (key.Count() > 1)
+        //    {
+        //        if (key == "space")
+        //            return KeyCode.Space;
+        //        else if (key == "escape")
+        //            return KeyCode.Escape;
+        //        else if (key == "rightArrow")
+        //            return KeyCode.RightArrow;
+        //        else if (key == "leftArrow")
+        //            return KeyCode.LeftArrow;
+
+        //    }
+
+        //    char character = key[0];
+        //    // Get from cache if it was taken before to prevent unnecessary enum parse
+        //    KeyCode code;
+        //    if (_keycodeCache.TryGetValue(character, out code)) return code;
+
+        //    // Cast to it's integer value
+        //    int alphaValue = character;
+        //    code = (KeyCode)Enum.Parse(typeof(KeyCode), alphaValue.ToString());
+        //    _keycodeCache.Add(character, code);
+
+        //    return code;
+        //}
 
         public void AddInputReceiverIntoStack(IInputReceiver receiver)
         {
@@ -122,6 +167,6 @@ namespace Vanaring
 
     public interface IInputReceiver
     {
-        public void ReceiveKeys(KeyCode key);
+        public void ReceiveKeys(InputCode key);
     }
 }
