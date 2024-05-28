@@ -91,10 +91,11 @@ namespace Vanaring  {
         }
         public override void ReceiveKeysFromWindowManager(InputCode key)
         {
-            if (key == InputCode.Skill)
+            if (key == InputCode.DeSelect)
             {
                 _windowManager.OpenWindow(EWindowGUI.Main);
             }
+
             else if (key == InputCode.Select)
             {
                 spellSocketGUIList[currentSelectedIndex].CallButtonCallback();

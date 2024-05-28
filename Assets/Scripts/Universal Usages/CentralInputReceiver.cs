@@ -25,6 +25,7 @@ namespace Vanaring
         T = 7,
         Escape = 8,
         C = 9,
+        DeSelect = 10,
     }
 
     public class CentralInputReceiver : PersistentInstantiatedObject<CentralInputReceiver>
