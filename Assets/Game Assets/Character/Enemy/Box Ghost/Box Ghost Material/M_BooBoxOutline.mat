@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-2055059850914511453
+--- !u!114 &-6379574516297616624
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
@@ -20,9 +20,9 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: UV
-  m_Shader: {fileID: -6465566751694194690, guid: 15e7814d2453acd46b377747aadc5961, type: 3}
-  m_Parent: {fileID: 2100000, guid: 509da3e144281d74c9fcebdc9c88d20c, type: 2}
+  m_Name: M_BooBoxOutline
+  m_Shader: {fileID: -6465566751694194690, guid: bc00b49230e1e56438514494f0202904, type: 3}
+  m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
   m_InvalidKeywords: []
@@ -36,23 +36,23 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
-    - _PolkaTexture:
+    - unity_Lightmaps:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _ShadeTexture:
+    - unity_LightmapsInd:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_ShadowMasks:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _FreshnelOffset: 0
-    - _FreshnelPower: 10
-    - _PolkaHardness: 0.01
-    - _PolkaSize: 0
-    - _Smoothness: 0.5
+    - _OutlineThickness: 0.005
+    - _QueueControl: 0
+    - _QueueOffset: 0
     m_Colors:
-    - _LightVector: {r: 1, g: 1, b: 1, a: 0}
-    - _RimLightColor: {r: 1, g: 0.8811243, b: 0.41981128, a: 0}
-    - _TintColor: {r: 1, g: 0, b: 0, a: 0}
+    - _OutlineColor: {r: 0, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []
