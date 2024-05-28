@@ -140,22 +140,22 @@ namespace Vanaring
         }
 
         #region Public Method
-        public void ReceiveKeys(KeyCode key)
+        public void ReceiveKeys(InputCode key)
         {
             if (_activlySelecting)
             {
-                if (key == (KeyCode.D))
+                if (key == (InputCode.Right))
                 {
                     _currentSelectIndex = (_currentSelectIndex + 1) > (_validTargets.Count - 1) ? _currentSelectIndex : (_currentSelectIndex + 1);
                     _targetSelectionGUI.HideAllPointer( );
 
                 }
-                else if (key == (KeyCode.A))
+                else if (key == (InputCode.Left))
                 {
                     _currentSelectIndex = (_currentSelectIndex - 1) < 0 ? 0 : (_currentSelectIndex - 1);
                     _targetSelectionGUI.HideAllPointer(); 
                 }
-                else if (key == (KeyCode.Space))
+                else if (key == (InputCode.Select))
                 {
                     foreach (var entity in _selectingTarget)
                     {
@@ -167,7 +167,7 @@ namespace Vanaring
                         _currentSelectIndex = _currentSelectIndex % _validTargets.Count;
 
                 }
-                else if (key == (KeyCode.Q))
+                else if (key == (InputCode.Skill))
                 {
                     ForceStop();
                     _enemyHUDWindowManager.RemoveSlotBreakHighlightOnHUD();
@@ -200,7 +200,7 @@ namespace Vanaring
                 isSucesfullySelected = false 
             };
 
-            CentralInputReceiver.Instance().AddInputReceiverIntoStack(this); 
+            CentralInputReceiver.Instance.AddInputReceiverIntoStack(this); 
 
             AssignPossibleTargets(caster, actorAction.GetTargetSelector());
 
@@ -332,7 +332,7 @@ namespace Vanaring
             }, "OnTargetSelectionEnd");
 
 
-            CentralInputReceiver.Instance().RemoveInputReceiverIntoStack(this);
+            CentralInputReceiver.Instance.RemoveInputReceiverIntoStack(this);
 
             _forceStop = false;
             _activlySelecting = false;

@@ -32,15 +32,15 @@ namespace Vanaring
         }
         public void OnStartConversation(Transform actor )
         {
-            CentralInputReceiver.Instance().AddInputReceiverIntoStack(this);
+            CentralInputReceiver.Instance.AddInputReceiverIntoStack(this);
         }
 
         public void OnEndConversation(Transform actor)
         {
-            CentralInputReceiver.Instance().RemoveInputReceiverIntoStack(this); 
+            CentralInputReceiver.Instance.RemoveInputReceiverIntoStack(this); 
         }
 
-        public void ReceiveKeys(KeyCode key)
+        public void ReceiveKeys(InputCode key)
         {
             bool isType = TypewriterUtility.GetTypewriter(DialogueManager.standardDialogueUI.conversationUIElements.subtitlePanels[0].subtitleText).isPlaying; 
 

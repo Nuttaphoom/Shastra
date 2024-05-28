@@ -256,26 +256,26 @@ namespace Vanaring
 
 
         } 
-        public void ReceiveKeys(KeyCode key)
+        public void ReceiveKeys(InputCode key)
         {
             _spellSockets[_currentIndex].UnHighlightedButton();
 
-            if (key == KeyCode.W)
+            if (key == InputCode.Up)
             {
                 ChangeSelectedIndex(true);
             }
-            else if (key == KeyCode.S)
+            else if (key == InputCode.Down)
             {
                 ChangeSelectedIndex(false);
                 //Debug.Log(_currentIndex);
 
 
             }
-            else if (key == KeyCode.Q)
+            else if (key == InputCode.Skill)
             {
                 this._combatGraphicalHandler.DisplayMainMenu(); 
             }
-            else if (key == KeyCode.Space)
+            else if (key == InputCode.Select)
             {
                 _spellSockets[_currentIndex].CallButtonCallback(); 
             }
@@ -305,7 +305,7 @@ namespace Vanaring
             _spellSockets[_currentIndex].HightlightedButton();
 
             this._combatGraphicalHandler = graophicalHandler;
-            CentralInputReceiver.Instance().AddInputReceiverIntoStack(this);
+            CentralInputReceiver.Instance.AddInputReceiverIntoStack(this);
             SetGraphicMenuActive(true); 
         }
 
@@ -314,7 +314,7 @@ namespace Vanaring
             for (int i  = 0;  i< _spellSockets.Count; i++)  
                 _spellSockets[i].UnHighlightedButton();
 
-            CentralInputReceiver.Instance().RemoveInputReceiverIntoStack(this);
+            CentralInputReceiver.Instance.RemoveInputReceiverIntoStack(this);
             SetGraphicMenuActive(false); 
         }
 
