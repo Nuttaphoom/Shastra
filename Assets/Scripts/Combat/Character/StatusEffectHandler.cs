@@ -258,7 +258,6 @@ namespace Vanaring
                 for (int i = 0; i < _effects[key].Count; i++)
                     _effects[key][i].ForceExpire();
 
-                Debug.Log("Break " + key); 
 
             }
         }
