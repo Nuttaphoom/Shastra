@@ -27,7 +27,7 @@ namespace Vanaring
         {
 
         }
-        public override void ReceiveKeysFromWindowManager(KeyCode key)
+        public override void ReceiveKeysFromWindowManager(InputCode key)
         {
 
         }
