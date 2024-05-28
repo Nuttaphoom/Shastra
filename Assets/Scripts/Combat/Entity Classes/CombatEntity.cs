@@ -355,11 +355,13 @@ namespace Vanaring
 
             //1.) Do apply dmg 
             float realDMG = VanaringMathConst.GetATKWithNoise(scaling, StatsAccumulator.GetPhysicalATKAmount());
-
-            StatModifier statsModifer = new StatModifier(-realDMG, StatModType.Flat);
+             
 
             foreach (CombatEntity target in targets)
             {
+                float finalDMG = realDMG + (UnityEngine.Random.Range(realDMG / 100 * 10, -realDMG / 100 * 10));
+                StatModifier statsModifer = new StatModifier(-finalDMG, StatModType.Flat);
+
                 target.LogicHurt(this, statsModifer);
             }
 
@@ -422,7 +424,8 @@ namespace Vanaring
             {
                 _coroutine.Add(_combatEntityAnimationHandler.PlayTriggerAnimation(animationTrigger));
             }
-            GetEventBroadcaster().InvokeEvent(dmg, "OnDamage");
+            if (dmg != 0) 
+                GetEventBroadcaster().InvokeEvent(dmg, "OnDamage");
 
             yield return new WaitAll(this, _coroutine.ToArray());
 

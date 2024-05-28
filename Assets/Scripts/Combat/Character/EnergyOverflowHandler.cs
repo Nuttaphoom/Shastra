@@ -72,7 +72,6 @@ namespace Vanaring
 
                 RuntimeEffect effect = _stunApplier.Factorize(new List<CombatEntity>() { _combatEntity });
                 StartCoroutine(effect.ExecuteRuntimeCoroutine(_combatEntity));
-                
                 //_combatEntity.LogicHurt(null, _combatEntity.StatsAccumulator.GetATKAmount());
                 _combatEntity.ApplyOverflow();
 
@@ -87,6 +86,7 @@ namespace Vanaring
                     //yield return (_combatEntity.VisualHurt(null, "Die"));
                 } 
             }
+            Debug.Log("Overflow !");
 
             yield return null; 
         }
