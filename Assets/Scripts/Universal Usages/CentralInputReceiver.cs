@@ -1,3 +1,4 @@
+using PixelCrushers.DialogueSystem;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -7,6 +8,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Users;
 using UnityEngine.InputSystem.Utilities;
 using UnityEngine.TextCore.Text;
 
@@ -34,6 +36,39 @@ namespace Vanaring
 
         private static Stack<IInputReceiver> _receiverStack = new Stack<IInputReceiver>();
 
+        public PlayerInput playerInput_;
+
+        public enum ControlScheme
+        {
+            ps4,
+            keyboard,
+            xbox
+        }
+
+        private ControlScheme currentScheme;
+
+        void Awake()
+        {
+            if (playerInput_ == null)
+            {
+                playerInput_ = GetComponent<PlayerInput>();
+            }
+        }
+
+        void Check()
+        {
+            // Check if Input is Playstation 4
+            if (playerInput_.user.index == 1)
+            {
+                //currentScheme = ControlScheme.keyboard;
+                currentScheme = ControlScheme.ps4;
+            }
+            else
+            {
+                currentScheme = ControlScheme.keyboard;
+            }
+        }
+
         public CentralInputReceiver()
         {
             _keycodeCache = new Dictionary<char, KeyCode>();
@@ -53,9 +88,9 @@ namespace Vanaring
 
         private void OnNavigate(InputValue value)
         {
-            Vector2 inputValue = value.Get<Vector2>();
-            Debug.Log(inputValue);
+            Check();
 
+            Vector2 inputValue = value.Get<Vector2>();
             if (inputValue.Equals(new Vector2(1.0f,0.0f)))
             {
                 TransmitInput(InputCode.Right);
@@ -77,23 +112,26 @@ namespace Vanaring
 
         private void OnSelect()
         {
-            Debug.Log("Select");
-
+            Check();
             TransmitInput(InputCode.Select);
         }
 
         private void OnSkill()
         {
-            Debug.Log("OnSkill");
-
+            Check();
             TransmitInput(InputCode.Skill);
         }
 
         private void OnItem()
         {
-            Debug.Log("OnItem");
-
+            Check();
             TransmitInput(InputCode.Item);
+        }
+
+        private void OnDeSelect()
+        {
+            Check();
+            TransmitInput(InputCode.DeSelect);
         }
 
         //private KeyCode GetKeyCode(string key)
