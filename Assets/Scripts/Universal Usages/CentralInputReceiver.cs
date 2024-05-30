@@ -30,6 +30,13 @@ namespace Vanaring
         DeSelect = 10,
     }
 
+    public enum ControlScheme
+    {
+        ps5,
+        keyboard,
+        xbox
+    }
+
     public class CentralInputReceiver : PersistentInstantiatedObject<CentralInputReceiver>
     {
         private  Dictionary<char, KeyCode> _keycodeCache = new Dictionary<char, KeyCode>();
@@ -38,14 +45,61 @@ namespace Vanaring
 
         public PlayerInput playerInput_;
 
-        public enum ControlScheme
+        [SerializeField]
+        private ControlScheme currentScheme;
+
+        [Serializable]
+        struct ControlSchemeUI
         {
-            ps4,
-            keyboard,
-            xbox
+            [SerializeField]
+            public ControlScheme _scheme;
+
+            [SerializeField]
+            public UIInputSetSO _uiInputSetSO;
         }
 
-        private ControlScheme currentScheme;
+        [SerializeField]
+        private List<ControlSchemeUI> controlSchemeSets;
+
+        #region EventBroadcaster
+        private EventBroadcaster _eventBroadcaster;
+
+        private EventBroadcaster GetEventBroadcaster()
+        {
+            if (_eventBroadcaster == null)
+            {
+                _eventBroadcaster = new EventBroadcaster();
+                _eventBroadcaster.OpenChannel<ControlScheme>("OnControllerSchemeChange");
+            }
+
+            return _eventBroadcaster;
+        }
+
+        public void SubOnControllerSchemeChange(UnityAction<ControlScheme> argc)
+        {
+            GetEventBroadcaster().SubEvent<ControlScheme>(argc, "OnControllerSchemeChange");
+        }
+
+        public void UnSubOnControllerSchemeChange(UnityAction<ControlScheme> argc)
+        {
+            GetEventBroadcaster().UnSubEvent<ControlScheme>(argc, "OnControllerSchemeChange");
+        }
+
+        #endregion
+
+        public Sprite GetUISprite(InputCode code)
+        {
+            for (int i = 0; i < controlSchemeSets.Count; i++)
+            {
+                if (controlSchemeSets[i]._scheme == currentScheme)
+                {
+                    return controlSchemeSets[i]._uiInputSetSO.GetSprite(code);
+                }
+            }
+
+            Debug.LogError("NULL");
+            return null;
+        }
 
         void Awake()
         {
@@ -58,15 +112,16 @@ namespace Vanaring
         void Check()
         {
             // Check if Input is Playstation 4
-            if (playerInput_.user.index == 1)
-            {
-                //currentScheme = ControlScheme.keyboard;
-                currentScheme = ControlScheme.ps4;
-            }
-            else
+            if (playerInput_.devices[0].description.deviceClass == "Keyboard")
             {
                 currentScheme = ControlScheme.keyboard;
             }
+            else
+            {
+                currentScheme = ControlScheme.ps5;
+            }
+
+            GetEventBroadcaster().InvokeEvent(currentScheme, "OnControllerSchemeChange");
         }
 
         public CentralInputReceiver()
