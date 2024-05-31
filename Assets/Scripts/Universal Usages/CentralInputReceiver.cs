@@ -1,3 +1,4 @@
+using PixelCrushers.DialogueSystem;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -7,6 +8,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Users;
 using UnityEngine.InputSystem.Utilities;
 using UnityEngine.TextCore.Text;
 
@@ -28,11 +30,99 @@ namespace Vanaring
         DeSelect = 10,
     }
 
+    public enum ControlScheme
+    {
+        ps5,
+        keyboard,
+        xbox
+    }
+
     public class CentralInputReceiver : PersistentInstantiatedObject<CentralInputReceiver>
     {
         private  Dictionary<char, KeyCode> _keycodeCache = new Dictionary<char, KeyCode>();
 
         private static Stack<IInputReceiver> _receiverStack = new Stack<IInputReceiver>();
+
+        public PlayerInput playerInput_;
+
+        [SerializeField]
+        private ControlScheme currentScheme;
+
+        [Serializable]
+        struct ControlSchemeUI
+        {
+            [SerializeField]
+            public ControlScheme _scheme;
+
+            [SerializeField]
+            public UIInputSetSO _uiInputSetSO;
+        }
+
+        [SerializeField]
+        private List<ControlSchemeUI> controlSchemeSets;
+
+        #region EventBroadcaster
+        private EventBroadcaster _eventBroadcaster;
+
+        private EventBroadcaster GetEventBroadcaster()
+        {
+            if (_eventBroadcaster == null)
+            {
+                _eventBroadcaster = new EventBroadcaster();
+                _eventBroadcaster.OpenChannel<ControlScheme>("OnControllerSchemeChange");
+            }
+
+            return _eventBroadcaster;
+        }
+
+        public void SubOnControllerSchemeChange(UnityAction<ControlScheme> argc)
+        {
+            GetEventBroadcaster().SubEvent<ControlScheme>(argc, "OnControllerSchemeChange");
+        }
+
+        public void UnSubOnControllerSchemeChange(UnityAction<ControlScheme> argc)
+        {
+            GetEventBroadcaster().UnSubEvent<ControlScheme>(argc, "OnControllerSchemeChange");
+        }
+
+        #endregion
+
+        public Sprite GetUISprite(InputCode code)
+        {
+            for (int i = 0; i < controlSchemeSets.Count; i++)
+            {
+                if (controlSchemeSets[i]._scheme == currentScheme)
+                {
+                    return controlSchemeSets[i]._uiInputSetSO.GetSprite(code);
+                }
+            }
+
+            Debug.LogError("NULL");
+            return null;
+        }
+
+        void Awake()
+        {
+            if (playerInput_ == null)
+            {
+                playerInput_ = GetComponent<PlayerInput>();
+            }
+        }
+
+        void Check()
+        {
+            // Check if Input is Playstation 4
+            if (playerInput_.devices[0].description.deviceClass == "Keyboard")
+            {
+                currentScheme = ControlScheme.keyboard;
+            }
+            else
+            {
+                currentScheme = ControlScheme.ps5;
+            }
+
+            GetEventBroadcaster().InvokeEvent(currentScheme, "OnControllerSchemeChange");
+        }
 
         public CentralInputReceiver()
         {
@@ -53,9 +143,9 @@ namespace Vanaring
 
         private void OnNavigate(InputValue value)
         {
-            Vector2 inputValue = value.Get<Vector2>();
-            Debug.Log(inputValue);
+            Check();
 
+            Vector2 inputValue = value.Get<Vector2>();
             if (inputValue.Equals(new Vector2(1.0f,0.0f)))
             {
                 TransmitInput(InputCode.Right);
@@ -77,23 +167,26 @@ namespace Vanaring
 
         private void OnSelect()
         {
-            Debug.Log("Select");
-
+            Check();
             TransmitInput(InputCode.Select);
         }
 
         private void OnSkill()
         {
-            Debug.Log("OnSkill");
-
+            Check();
             TransmitInput(InputCode.Skill);
         }
 
         private void OnItem()
         {
-            Debug.Log("OnItem");
-
+            Check();
             TransmitInput(InputCode.Item);
+        }
+
+        private void OnDeSelect()
+        {
+            Check();
+            TransmitInput(InputCode.DeSelect);
         }
 
         //private KeyCode GetKeyCode(string key)
