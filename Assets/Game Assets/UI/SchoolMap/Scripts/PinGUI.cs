@@ -30,6 +30,13 @@ namespace Vanaring
         private Transform horizontalLayout;
         private List<BaseLocationActionCommand> commandList;
 
+        [SerializeField]
+        private Animator anim;
+        [SerializeField]
+        private GameObject highlightObject;
+        [SerializeField]
+        private Button button;
+
         //[SerializeField]
         //private List<LocationSelectionCommandRegister> baseCommand;
 
@@ -78,6 +85,23 @@ namespace Vanaring
         public void OnShrink()
         {
             gameObject.transform.localScale = Vector3.one;
+        }
+
+        public void OnHoverButton()
+        {
+            button.Select();
+            anim.enabled = true;
+            OnExpansion();
+            anim.Play("PinOnHover");
+            highlightObject.SetActive(true);
+        }
+
+        public void UnHoverButton()
+        {
+            anim.enabled = true;
+            OnShrink();
+            anim.Play("PinOnNotHover");
+            highlightObject.SetActive(false);
         }
 
         //public void OnHoverEnterUIEventWindow(BaseEventData eventData)

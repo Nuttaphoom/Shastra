@@ -79,6 +79,7 @@ namespace Vanaring
                 PinGUI newPin = Instantiate(pinTemplate, pinTransformList[locationIndex]);
                 newPin.Init(location);
                 pinObject.Add(newPin);
+                newPin.OnHoverButton();
             }
         }
 

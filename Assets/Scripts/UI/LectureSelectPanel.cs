@@ -83,6 +83,7 @@ namespace Vanaring
                     //lectureButtonList[buttonIndex].onClick.AddListener(() => action.OnSelectLecture(availableLectures[currentIndex]));
                     lectureButtonList[buttonIndex].onClick.AddListener(() => PerformAction(action, currentIndex));
                     lectureButtonList[buttonIndex].gameObject.SetActive(true);
+                    lectureButtonList[buttonIndex].Select();
                     lectureObjList[buttonIndex].SetActive(true);
                     lectureNameList[buttonIndex].text = availableLectures[i].GetAvailableLecture.GetLectureName;
                     lectureDesList[buttonIndex].text = availableLectures[i].GetAvailableLecture.GetLectureDestcription;

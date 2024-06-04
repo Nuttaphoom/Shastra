@@ -32,6 +32,7 @@ namespace Vanaring
                 confirmButton.onClick.RemoveAllListeners();
 
             confirmButton.onClick.AddListener(action);
+            confirmButton.Select();
         }
 
     }
