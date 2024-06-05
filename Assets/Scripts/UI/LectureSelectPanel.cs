@@ -22,6 +22,7 @@ namespace Vanaring
         [SerializeField] private GameObject gfx;
         [SerializeField] private PlayableDirector inDirector;
         [SerializeField] private PlayableDirector outDirector;
+        [SerializeField] private Button closeButton;
         private GameObject confirmPanel;
         private int pageCount = 1;
         private int maxPage = 1;
@@ -29,7 +30,7 @@ namespace Vanaring
         private List<LectureParticipationActionCommand.ParticpationLectureData> availableLectures;
         public void InitPanel(List<LectureParticipationActionCommand.ParticpationLectureData> availableLectures, LectureParticipationActionCommand action)
         {
-
+            Debug.Log("InitPanel");
             this.action = action;
             this.availableLectures = availableLectures;
             gameObject.SetActive(true);
@@ -84,6 +85,7 @@ namespace Vanaring
                     lectureButtonList[buttonIndex].onClick.AddListener(() => PerformAction(action, currentIndex));
                     lectureButtonList[buttonIndex].gameObject.SetActive(true);
                     lectureButtonList[buttonIndex].Select();
+                    lectureButtonList[buttonIndex].onClick.AddListener(delegate { PersistentButtonSelector.Instance.AddPreviousButton(lectureButtonList[buttonIndex]); });
                     lectureObjList[buttonIndex].SetActive(true);
                     lectureNameList[buttonIndex].text = availableLectures[i].GetAvailableLecture.GetLectureName;
                     lectureDesList[buttonIndex].text = availableLectures[i].GetAvailableLecture.GetLectureDestcription;
@@ -91,6 +93,7 @@ namespace Vanaring
                 }
                 buttonIndex++;
             }
+            closeButton.onClick.AddListener(PersistentButtonSelector.Instance.SelectPreviousButton);
         }
 
         private void PerformAction(LectureParticipationActionCommand action, int index)

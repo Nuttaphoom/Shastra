@@ -85,6 +85,7 @@ namespace Vanaring
                 mapButton.navigation = NewNav;
 
                 actualButton.Select();
+                actualButton.onClick.AddListener(delegate { PersistentButtonSelector.Instance.AddPreviousButton(actualButton); });
 
                 //Set Button Description
                 TextMeshProUGUI[] textComponents = newActionButton.GetComponentsInChildren<TextMeshProUGUI>(true);
