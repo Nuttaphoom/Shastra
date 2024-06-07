@@ -8,7 +8,7 @@ using TMPro;
 
 namespace Vanaring
 {
-    public class PinGUI : MonoBehaviour
+    public class PinGUI : MonoBehaviour, ISelectHandler, IDeselectHandler
     {
         [SerializeField]
         private GameObject EventWindow;
@@ -102,6 +102,16 @@ namespace Vanaring
             OnShrink();
             anim.Play("PinOnNotHover");
             highlightObject.SetActive(false);
+        }
+
+        public void OnSelect(BaseEventData eventData)
+        {
+            OnHoverButton();
+        }
+
+        public void OnDeselect(BaseEventData eventData)
+        {
+            UnHoverButton();
         }
 
         //public void OnHoverEnterUIEventWindow(BaseEventData eventData)

@@ -30,9 +30,6 @@ namespace Vanaring
         private PinGUI pinTemplate;
         private List<RuntimeLocation> availableLocationList;
 
-
-
-
         private void Awake()
         {
             if (_mapImage == null)
@@ -50,6 +47,7 @@ namespace Vanaring
             //Instantiate PinTemplates
             pinObject = new List<PinGUI>();
             int locationIndex = 0;
+            bool isFirstPin = true;
             foreach (RuntimeLocation location in availableLocationList)
             {
                 switch (location.LocationName)
@@ -79,7 +77,12 @@ namespace Vanaring
                 PinGUI newPin = Instantiate(pinTemplate, pinTransformList[locationIndex]);
                 newPin.Init(location);
                 pinObject.Add(newPin);
-                newPin.OnHoverButton();
+                // Select only the first pin
+                if (isFirstPin)
+                {
+                    newPin.OnHoverButton();
+                    isFirstPin = false;
+                }
             }
         }
 
