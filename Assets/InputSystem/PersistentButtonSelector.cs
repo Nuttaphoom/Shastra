@@ -8,7 +8,7 @@ namespace Vanaring
     public class PersistentButtonSelector : PersistentInstantiatedObject<PersistentButtonSelector>
     {
         [SerializeField]
-        public List<Button> previousButtons;
+        public List<Button> previousButtons = new List<Button>();
 
         public void AddPreviousButton(Button button)
         {

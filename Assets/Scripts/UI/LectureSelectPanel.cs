@@ -30,7 +30,6 @@ namespace Vanaring
         private List<LectureParticipationActionCommand.ParticpationLectureData> availableLectures;
         public void InitPanel(List<LectureParticipationActionCommand.ParticpationLectureData> availableLectures, LectureParticipationActionCommand action)
         {
-            Debug.Log("InitPanel");
             this.action = action;
             this.availableLectures = availableLectures;
             gameObject.SetActive(true);
@@ -85,7 +84,11 @@ namespace Vanaring
                     lectureButtonList[buttonIndex].onClick.AddListener(() => PerformAction(action, currentIndex));
                     lectureButtonList[buttonIndex].gameObject.SetActive(true);
                     lectureButtonList[buttonIndex].Select();
-                    lectureButtonList[buttonIndex].onClick.AddListener(delegate { PersistentButtonSelector.Instance.AddPreviousButton(lectureButtonList[buttonIndex]); });
+
+                    //actualButton.Select();
+                    //actualButton.onClick.AddListener(delegate { PersistentButtonSelector.Instance.AddPreviousButton(actualButton); });
+
+                    lectureButtonList[buttonIndex].onClick.AddListener(delegate { PersistentButtonSelector.Instance.AddPreviousButton(lectureButtonList[currentIndex]); });
                     lectureObjList[buttonIndex].SetActive(true);
                     lectureNameList[buttonIndex].text = availableLectures[i].GetAvailableLecture.GetLectureName;
                     lectureDesList[buttonIndex].text = availableLectures[i].GetAvailableLecture.GetLectureDestcription;
@@ -93,7 +96,9 @@ namespace Vanaring
                 }
                 buttonIndex++;
             }
+            
             closeButton.onClick.AddListener(PersistentButtonSelector.Instance.SelectPreviousButton);
+            closeButton.onClick.AddListener(PersistentButtonSelector.Instance.RemoveLastPreviousButton);
         }
 
         private void PerformAction(LectureParticipationActionCommand action, int index)
@@ -142,8 +147,22 @@ namespace Vanaring
 
         public void OpenPanel()
         {
+            SelectButton();
             outDirector.Stop();
             inDirector.Play();
+        }
+
+        private void SelectButton() 
+        {
+            int buttonIndex = 0;
+            for (int i = (pageCount * 3) - 3; i < (pageCount * 3); i++)
+            {
+                if (i < availableLectures.Count)
+                {
+                    lectureButtonList[buttonIndex].Select();
+                }
+                buttonIndex++;
+            }
         }
 
         public void ClosePanel()

@@ -14,7 +14,7 @@ namespace Vanaring
         private GameObject EventWindow;
 
         [SerializeField]
-        private Button _eventButton;
+        public Button _eventButton;
 
         [SerializeField]
         private Image pinImage;

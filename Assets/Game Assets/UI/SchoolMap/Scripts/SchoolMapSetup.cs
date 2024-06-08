@@ -76,6 +76,7 @@ namespace Vanaring
                 }
                 PinGUI newPin = Instantiate(pinTemplate, pinTransformList[locationIndex]);
                 newPin.Init(location);
+                newPin._eventButton.onClick.AddListener(delegate { PersistentButtonSelector.Instance.AddPreviousButton(newPin._eventButton); } );
                 pinObject.Add(newPin);
                 // Select only the first pin
                 if (isFirstPin)
