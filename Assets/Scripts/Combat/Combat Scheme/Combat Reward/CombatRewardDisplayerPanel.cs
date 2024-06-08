@@ -63,6 +63,8 @@ namespace Vanaring
                 newSocket.Init(reward, introDirector);
                 newSocket.gameObject.SetActive(true);
                 missionCharacterEXPSocketList.Add(newSocket);
+
+                nextButton.Select();
                 //reward.ControlEntity.CombatCharacterSheet;
 
             }

@@ -112,6 +112,7 @@ namespace Vanaring
         public void OpenPanel()
         {
             confirmPanel.SetActive(true);
+            confirmButton.Select();
         }
         public void ClosePanel()
         {

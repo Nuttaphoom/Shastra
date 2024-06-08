@@ -94,6 +94,7 @@ namespace Vanaring
         {
             socketGFX.SetActive(true);
             glow.SetActive(true);
+            nextButton.Select();
 
             animator.Play("NodeRewardFadeUp");
             rewardImage.sprite = data.rewardImage;
