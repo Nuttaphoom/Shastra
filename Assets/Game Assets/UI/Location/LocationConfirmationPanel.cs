@@ -11,6 +11,7 @@ namespace Vanaring
     {
         [SerializeField] private TextMeshProUGUI warningText;
         [SerializeField] private Button confirmButton;
+        [SerializeField] private Button cancelButton;
         [SerializeField] private GameObject gfx;
         public GameObject GFX => gfx;
 
@@ -18,6 +19,8 @@ namespace Vanaring
         {
             gameObject.GetComponent<Canvas>().sortingOrder = 10;
 
+            cancelButton.onClick.AddListener(PersistentButtonSelector.Instance.SelectPreviousButton);
+            cancelButton.onClick.AddListener(PersistentButtonSelector.Instance.RemoveLastPreviousButton);
         }
 
         public TextMeshProUGUI WarningText
@@ -32,6 +35,7 @@ namespace Vanaring
                 confirmButton.onClick.RemoveAllListeners();
 
             confirmButton.onClick.AddListener(action);
+            confirmButton.Select();
         }
 
     }

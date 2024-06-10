@@ -23,6 +23,8 @@ namespace Vanaring
         private List<BonusTraitObject> reachBonusTraitObjectList = new List<BonusTraitObject>();
         [SerializeField]
         private GameObject bonusVerticalLayout;
+        [SerializeField] 
+        private Button nextButton;
 
         private List<LectureChechpoint> obtainedRewardList = new List<LectureChechpoint>();
         private List<Sprite> obtainedRewardIcon = new List<Sprite>();
@@ -36,6 +38,11 @@ namespace Vanaring
 
         private List<LectureRewardObject> rewardObjList = new List<LectureRewardObject>();
         private LectureRewardStruct lectureProgressBarData;
+
+        private void Start()
+        {
+            nextButton.Select();
+        }
 
         public void ReceiveRewardDetail(LectureRewardStruct rewardData)
         {

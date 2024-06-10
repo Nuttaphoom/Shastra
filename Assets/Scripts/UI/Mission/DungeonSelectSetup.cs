@@ -11,6 +11,9 @@ namespace Vanaring
         [SerializeField] private MissionBookSetup missionBook;
         [SerializeField] private List<Button> dungeonButton = new List<Button>();
 
+        [SerializeField] private Button closeButton;
+        [SerializeField] private Button initialMissionButton;
+
         public IEnumerator OnNewSceneLoad_BeforeSaveLoadPerform()
         {
             yield return null;
@@ -26,9 +29,13 @@ namespace Vanaring
             foreach (RuntimeDungeon dungeon in dungeonList)
             {
                 dungeonButton[dungeonIndex].onClick.AddListener(() => LoadAllMission(dungeon));
+                Button button = dungeonButton[dungeonIndex];
+                dungeonButton[dungeonIndex].onClick.AddListener(delegate { PersistentButtonSelector.Instance.AddPreviousButton(button); } );
                 dungeonIndex++;
             }
             //template.gameObject.SetActive(false);
+            closeButton.onClick.AddListener(PersistentButtonSelector.Instance.SelectPreviousButton);
+            closeButton.onClick.AddListener(PersistentButtonSelector.Instance.RemoveLastPreviousButton);
             yield return null;
         }
 
@@ -40,6 +47,10 @@ namespace Vanaring
             //DungeonManagerSingleton.Instance.LoadSelectedMission(dungeon.GetSelectMission(0));
         }
 
-        
+        public void SelectInitialButton()
+        {
+            initialMissionButton.Select();
+        }
+
     }
 }
