@@ -11,6 +11,7 @@ namespace Vanaring
 
         [SerializeField]
         private Button _nodeTransitionButton;
+        public Button NodeTransitionButton => _nodeTransitionButton;
         [SerializeField] private Sprite forwardArrow;
         [SerializeField] private Sprite backwardArrow;
         [SerializeField] private Sprite rightArrow;

@@ -19,6 +19,7 @@ namespace Vanaring
         [SerializeField] private Image bondFilledBar;
         [SerializeField] private PlayableDirector outTimeline;
         [SerializeField] private PlayableDirector inTimeline;
+        [SerializeField] private Button closeButton;
 
         private CharacterRelationshipDataSO charRelationDataSO;
 
@@ -33,6 +34,9 @@ namespace Vanaring
             DisableRelationshipButton(talkButton);
             DisableRelationshipButton(eventButton);
             DisableRelationshipButton(bondButton);
+            bondButton.Select();
+            closeButton.onClick.AddListener( PersistentButtonSelector.Instance.SelectPreviousButton );
+            closeButton.onClick.AddListener( PersistentButtonSelector.Instance.RemoveLastPreviousButton );
         }
 
         private void DisableRelationshipButton(Button button)
@@ -40,7 +44,7 @@ namespace Vanaring
             if (button.onClick.GetPersistentEventCount() <= 0)
             {
                 button.interactable = false;
-                button.GetComponent<EventTrigger>().enabled = false;
+                //button.GetComponent<EventTrigger>().enabled = false;
                 button.GetComponentInChildren<Image>().gameObject.SetActive(true);
             }
         }
@@ -56,6 +60,7 @@ namespace Vanaring
         {
             talkButton.onClick.AddListener(action);
             talkButton.interactable = true;
+            talkButton.Select();
             for (int i = 0; i < talkButton.transform.childCount; i++)
             {
                 Transform child = talkButton.transform.GetChild(i);
@@ -71,6 +76,7 @@ namespace Vanaring
         {
             eventButton.onClick.AddListener(action);
             eventButton.interactable = true;
+            eventButton.Select();
             for (int i = 0; i < eventButton.transform.childCount; i++)
             {
                 Transform child = eventButton.transform.GetChild(i);
@@ -84,7 +90,8 @@ namespace Vanaring
         public void SetBondButtonListener(UnityAction action)
         {
             bondButton.onClick.AddListener(action);
-            bondButton.interactable = true ; 
+            bondButton.interactable = true ;
+            bondButton.Select();
             for (int i = 0; i < bondButton.transform.childCount ; i++){
                 Transform child = bondButton.transform.GetChild(i); 
                 if (child.TryGetComponent(out Image image))
@@ -106,6 +113,7 @@ namespace Vanaring
 
         public void ButtonOpenPanel()
         {
+            bondButton.Select();
             StartCoroutine(OpenPanel());
         }
         public void ButtonClosePanel()

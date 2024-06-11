@@ -42,6 +42,8 @@ namespace Vanaring
 
             nodeTransition.transform.position = UISpaceSingletonHandler.ObjectToUISpace(startNode.NodeVisualTransitionHandler.GetCorrectPosition(direction));
 
+            nodeTransition.NodeTransitionButton.Select();
+
             _nodeTransitions.Add(nodeTransition);
 
             yield return null;
