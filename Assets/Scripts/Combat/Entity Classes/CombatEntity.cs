@@ -35,6 +35,13 @@ namespace Vanaring
         [SerializeField] 
         protected BreakTriggerHandler _breakTriggerHandler ;
 
+        public BreakTriggerHandler BreakTriggerHandler {
+            get
+            {
+                return _breakTriggerHandler; 
+            }
+        } 
+
         private StatusEffectHandler _statusEffectHandler;
 
         protected RuntimeCharacterStatsAccumulator _runtimeCharacterStatsAccumulator;
@@ -325,6 +332,7 @@ namespace Vanaring
 
         public IEnumerator LogicModifyEnergy(CombatEntity target, EnergyModifierData energyModiiferData)
         {
+
             if (target.SpellCaster.IsEnergyOverflow())
                 goto End; 
                     
@@ -332,12 +340,12 @@ namespace Vanaring
 
             if (target.SpellCaster.IsEnergyOverflow())
             {
-                yield return target.OverflowHandler.OverflowResolve();
                 _breakTriggerHandler.EnableTriggerAction(target);
+
+                yield return target.OverflowHandler.OverflowResolve();
             }
 
         End:
-            Debug.Log("Logic Modify energy end");
             yield return null; 
 
         }

@@ -86,7 +86,6 @@ namespace Vanaring
                     //yield return (_combatEntity.VisualHurt(null, "Die"));
                 } 
             }
-            Debug.Log("Overflow !");
 
             yield return null; 
         }
