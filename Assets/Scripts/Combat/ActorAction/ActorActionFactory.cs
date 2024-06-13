@@ -123,13 +123,14 @@ namespace Vanaring
             {
                 if (_caster.BreakTriggerHandler.TriggerActive)
                 {
-                    throw new Exception("Trigger Active !!");
+                    goto End;
                 } 
 
                 yield return new WaitForEndOfFrame();
             }
            
 
+            End: 
             DirectorManager.Instance.ClearCurrentTimeline();
 
         }

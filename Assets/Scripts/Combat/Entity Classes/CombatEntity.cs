@@ -298,7 +298,7 @@ namespace Vanaring
             yield return _statusEffectHandler.RunStatusEffectExpiredScheme();
             //2. check if there are any reaction 
             //2.1) check Break Trigger effect 
-            _breakTriggerHandler.ResolveTrigger();
+            yield return _breakTriggerHandler.ResolveTrigger();
 
         }
 
