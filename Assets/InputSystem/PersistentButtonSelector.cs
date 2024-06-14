@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -20,10 +21,10 @@ namespace Vanaring
 
         private void Awake() 
         {
-            PersistentSceneLoader.Instance;
+            PersistentSceneLoader.Instance.GetTransitionManager.SubOnSceneLoaderComplete(ResetInitialButtonSelected);
         }
 
-        public void ResetInitialButtonSelected()
+        public void ResetInitialButtonSelected(Null n)
         {
             initialButtonSelected = false;
         }

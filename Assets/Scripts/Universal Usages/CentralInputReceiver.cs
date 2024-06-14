@@ -136,7 +136,7 @@ namespace Vanaring
 
         private void TransmitInput(InputCode key)
         {
-            Debug.Log("TransmitInput");
+            //Debug.Log("TransmitInput");
             SelectButtonCheck();
             if (_receiverStack.Count > 0) {
                 
