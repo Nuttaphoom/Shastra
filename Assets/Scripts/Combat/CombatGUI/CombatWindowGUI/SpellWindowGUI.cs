@@ -86,6 +86,10 @@ namespace Vanaring  {
                 throw new Exception("No spell found in SpellRegister (due to empty spell) of " + entity.CombatCharacterSheet.CharacterName);
 
             _spellSocket.gameObject.SetActive(false);
+            if(spellSocketGUIList[0] != null)
+            {
+                currentSelectedIndex = 0;
+            }
             spellLogText.text = spellSocketGUIList[currentSelectedIndex].GetSpellDescription();
             spellSocketGUIList[currentSelectedIndex].HightlightedButton();
         }
