@@ -42,16 +42,20 @@ namespace Vanaring
 
         public void ReceiveKeys(InputCode key)
         {
-            bool isType = TypewriterUtility.GetTypewriter(DialogueManager.standardDialogueUI.conversationUIElements.subtitlePanels[0].subtitleText).isPlaying; 
+            bool isType = TypewriterUtility.GetTypewriter(DialogueManager.standardDialogueUI.conversationUIElements.subtitlePanels[0].subtitleText).isPlaying;
 
-            if (isType)
+            if (key == InputCode.Select)
             {
-                TypewriterUtility.StopTyping(DialogueManager.standardDialogueUI.conversationUIElements.subtitlePanels[0].subtitleText);
+                if (isType)
+                {
+                    TypewriterUtility.StopTyping(DialogueManager.standardDialogueUI.conversationUIElements.subtitlePanels[0].subtitleText);
 
-            }else
-            {
-                Sequencer.Message("ClosedSubtitle");
+                }
+                else
+                {
+                    Sequencer.Message("ClosedSubtitle");
 
+                }
             }
         }
 
