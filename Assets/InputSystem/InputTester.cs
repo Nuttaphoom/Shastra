@@ -2,21 +2,65 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 namespace Vanaring
 {
     public class InputTester : MonoBehaviour
     {
-        private Vector2 moveInputValue;
-        private void OnNavigate(InputValue value) 
+        public GameObject _inputSystem;
+        public Button _button;
+        public Button _dummyButton;
+
+        [ContextMenu("Active")]
+        private void Active()
         {
-            moveInputValue = value.Get<Vector2>();
-            Debug.Log(moveInputValue);
+            if (_inputSystem != null) {
+                _inputSystem.SetActive(true);
+            }
+
         }
 
-        private void OnSelect()
+        [ContextMenu("Deactive")]
+        private void Deactive()
         {
-            Debug.Log("Select");
+            if ( _inputSystem != null )
+            {
+                _inputSystem.SetActive(false);
+            }
+
+        }
+
+        [ContextMenu("ButtonSelect")]
+        private void ButtonSelect()
+        {
+            if (_button != null) {
+                _button.Select();
+            }
+            
+        }
+
+        private void Update() 
+        { 
+            if (Input.GetKeyDown(KeyCode.O))
+            {
+                Active();
+            }
+            if (Input.GetKeyDown(KeyCode.P))
+            {
+                Deactive();
+            }
+            if (Input.GetKeyDown(KeyCode.I))
+            {
+                ButtonSelect();
+            }
+            if (Input.GetKeyDown(KeyCode.K))
+            {
+                if (_dummyButton != null)
+                {
+                    _dummyButton.Select();
+                }
+            }
         }
     }
 }

@@ -249,6 +249,7 @@ namespace Vanaring
             {
                 _receiverStack.Pop();
             }
+            Debug.Log("RemoveInputReceiverIntoStack");
         }
 
         public void ClearStack()
