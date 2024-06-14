@@ -23,6 +23,9 @@ namespace Vanaring
         [SerializeField]
         private List<TuitorialInstanceData> _tuitorialInstanceDatas;
 
+        private bool _showingTutorial = false;
+        public bool IsShowingTutorial => _showingTutorial;
+
 
         private void Awake()
         {
@@ -63,6 +66,7 @@ namespace Vanaring
 
         private IEnumerator PlayTutorial(TuitorialInstanceData tuitorialData)
         {
+            _showingTutorial = true;
             CentralInputReceiver.Instance.AddInputReceiverIntoStack(this); 
             tuitorialData.TuitorialCutscene.gameObject.SetActive(true) ;
             yield return tuitorialData.TuitorialCutscene.PlayCutscene();
@@ -71,7 +75,7 @@ namespace Vanaring
 
             _tuitorialInstanceDatas.Remove(tuitorialData);
             CentralInputReceiver.Instance.RemoveInputReceiverIntoStack(this);
-
+            _showingTutorial = false;
         }
 
         public void ReceiveKeys(InputCode key)

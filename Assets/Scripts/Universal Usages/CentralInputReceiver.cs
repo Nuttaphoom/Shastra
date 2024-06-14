@@ -136,9 +136,22 @@ namespace Vanaring
 
         private void TransmitInput(InputCode key)
         {
+            Debug.Log("TransmitInput");
+            SelectButtonCheck();
             if (_receiverStack.Count > 0) {
+                
                 _receiverStack.Peek().ReceiveKeys(key);
             } 
+        }
+
+        //if button is not select and not in tutorial select it.
+        private void SelectButtonCheck()
+        {
+            if (!PersistentTutorialManager.Instance.IsShowingTutorial)
+            {
+                //Debug.Log("Selected");
+                PersistentButtonSelector.Instance.SelectInitialButtons();
+            }
         }
 
         private void OnNavigate(InputValue value)
@@ -249,7 +262,8 @@ namespace Vanaring
             {
                 _receiverStack.Pop();
             }
-            Debug.Log("RemoveInputReceiverIntoStack");
+            //PersistentButtonSelector.Instance.SelectInitialButtons();
+            //Debug.Log("RemoveInputReceiverIntoStack");
         }
 
         public void ClearStack()

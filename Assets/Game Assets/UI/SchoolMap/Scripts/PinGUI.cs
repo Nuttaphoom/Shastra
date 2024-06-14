@@ -89,7 +89,8 @@ namespace Vanaring
 
         public void OnHoverButton()
         {
-            button.Select();
+            PersistentButtonSelector.Instance.AssignInitialButtons(button);
+            //button.Select();
             anim.enabled = true;
             OnExpansion();
             anim.Play("PinOnHover");

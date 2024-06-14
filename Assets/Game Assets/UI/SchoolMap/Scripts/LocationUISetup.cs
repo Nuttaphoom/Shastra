@@ -84,7 +84,8 @@ namespace Vanaring
                 NewNav.selectOnLeft = actualButton;
                 mapButton.navigation = NewNav;
 
-                actualButton.Select();
+                PersistentButtonSelector.Instance.AssignInitialButtons(actualButton);
+                //actualButton.Select();
                 actualButton.onClick.AddListener(delegate { PersistentButtonSelector.Instance.AddPreviousButton(actualButton); });
 
                 //Set Button Description
