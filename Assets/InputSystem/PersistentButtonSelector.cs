@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,6 +10,52 @@ namespace Vanaring
     {
         [SerializeField]
         public List<Button> previousButtons = new List<Button>();
+
+        [SerializeField]
+        private Button initialButton;
+
+        [SerializeField]
+        private Button dummyButton;
+
+        private bool initialButtonSelected = false;
+
+        private void Awake() 
+        {
+            PersistentSceneLoader.Instance.GetTransitionManager.SubOnSceneLoaderComplete(ResetInitialButtonSelected);
+        }
+
+        public void ResetInitialButtonSelected(Null n)
+        {
+            initialButtonSelected = false;
+        }
+
+        public void AssignInitialButtons(Button button)
+        {
+            initialButton = button;
+        }
+        public void SelectInitialButtons()
+        {
+            if (initialButton == null)
+            {
+                Debug.LogWarning("initialButton is null");
+                return;
+            }
+            if (!initialButtonSelected)
+            {
+                initialButton.Select();
+                initialButtonSelected = true;
+            }
+        }
+        public void DeselectButton()
+        {
+            if (dummyButton == null)
+            {
+                Debug.LogWarning("dummyButton is null");
+                return;
+            }
+
+            dummyButton.Select();
+        }
 
         public void AddPreviousButton(Button button)
         {

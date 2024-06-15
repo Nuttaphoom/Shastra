@@ -25,6 +25,7 @@ namespace Vanaring
 
         [SerializeField]
         private TransitionSceneManager transitionManager;
+        public TransitionSceneManager GetTransitionManager => transitionManager;
 
         //For loading last visisted location scene 
         private SceneDataSO _last_visisted_location; 

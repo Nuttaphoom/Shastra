@@ -78,6 +78,7 @@ namespace Vanaring
                 newPin.Init(location);
                 newPin._eventButton.onClick.AddListener(delegate { PersistentButtonSelector.Instance.AddPreviousButton(newPin._eventButton); } );
                 pinObject.Add(newPin);
+                //newPin.OnHoverButton();
                 // Select only the first pin
                 if (isFirstPin)
                 {
