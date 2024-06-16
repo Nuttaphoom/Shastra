@@ -9,11 +9,28 @@ namespace Vanaring
 {
     public class InputTester : MonoBehaviour
     {
-        public GameObject currentSelected;
+        public GameObject previousButton;
+        public GameObject currentButton;
         private void Update()
         {
-            //Debug.Log(EventSystem.current.currentSelectedGameObject + " is selected");
-            currentSelected = EventSystem.current.currentSelectedGameObject;
+            if (previousButton != EventSystem.current.currentSelectedGameObject)
+            {
+                if (!EventSystem.current.currentSelectedGameObject.CompareTag("UI/NonInteractable"))
+                {
+                    previousButton = EventSystem.current.currentSelectedGameObject;
+                }
+                else
+                {
+                    if (previousButton != null)
+                    {
+                        Button prev = previousButton.GetComponent<Button>();
+                        prev.Select();
+                    }
+                }
+                
+            }
+
+            currentButton = EventSystem.current.currentSelectedGameObject;
         }
     }
 }

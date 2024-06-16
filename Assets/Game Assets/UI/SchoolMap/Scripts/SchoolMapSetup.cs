@@ -14,6 +14,8 @@ namespace Vanaring
 
         [SerializeField] private SceneDataSO _shortcutSceneSO;
 
+        [SerializeField] private Button _dungeonButton;
+
         [System.Serializable]
         public struct Pin
         {
@@ -25,6 +27,7 @@ namespace Vanaring
         public Pin[] mapPinList;
         [SerializeField]
         private List<Transform> pinTransformList = new List<Transform>();
+        [SerializeField]
         private List<PinGUI> pinObject;
         [SerializeField]
         private PinGUI pinTemplate;
@@ -47,7 +50,6 @@ namespace Vanaring
             //Instantiate PinTemplates
             pinObject = new List<PinGUI>();
             int locationIndex = 0;
-            bool isFirstPin = true;
             foreach (RuntimeLocation location in availableLocationList)
             {
                 switch (location.LocationName)
@@ -76,15 +78,22 @@ namespace Vanaring
                 }
                 PinGUI newPin = Instantiate(pinTemplate, pinTransformList[locationIndex]);
                 newPin.Init(location);
-                newPin._eventButton.onClick.AddListener(delegate { PersistentButtonSelector.Instance.AddPreviousButton(newPin._eventButton); } );
+                newPin.EventButton.onClick.AddListener(delegate { PersistentButtonSelector.Instance.AddPreviousButton(newPin.EventButton); } );
                 pinObject.Add(newPin);
-                //newPin.OnHoverButton();
-                // Select only the first pin
-                if (isFirstPin)
-                {
-                    newPin.OnHoverButton();
-                    isFirstPin = false;
-                }
+            }
+            for (int i = 0; i < pinObject.Count; i++)
+            {
+                Navigation NewNav = new Navigation();
+                NewNav.mode = Navigation.Mode.Explicit;
+                NewNav.selectOnDown = _dungeonButton;
+                NewNav.selectOnLeft = pinObject[((i - 1) < 0)? (pinObject.Count -1) : (i - 1)].TemplateButton;
+                NewNav.selectOnRight = pinObject[(i + 1) % pinObject.Count].TemplateButton;
+                pinObject[i].TemplateButton.navigation = NewNav;
+            }
+            // Setting Button Navigation with input control
+            if (pinObject.Count > 0)
+            {
+                pinObject[0].OnHoverButton();
             }
         }
 

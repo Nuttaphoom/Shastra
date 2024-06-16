@@ -14,7 +14,8 @@ namespace Vanaring
         private GameObject EventWindow;
 
         [SerializeField]
-        public Button _eventButton;
+        private Button _eventButton;
+        public Button EventButton => _eventButton;
 
         [SerializeField]
         private Image pinImage;
@@ -36,6 +37,7 @@ namespace Vanaring
         private GameObject highlightObject;
         [SerializeField]
         private Button button;
+        public Button TemplateButton => button;
 
         //[SerializeField]
         //private List<LocationSelectionCommandRegister> baseCommand;
