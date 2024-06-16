@@ -61,7 +61,6 @@ namespace Vanaring
 
                 if (isType)
                 {
-                    Debug.Log("is typeing, stop type");
                     TypewriterUtility.StopTyping(DialogueManager.standardDialogueUI.conversationUIElements.subtitlePanels[0].subtitleText);
 
                 }
@@ -70,6 +69,8 @@ namespace Vanaring
 
                     Debug.Log("closed subtitle");
                     Sequencer.Message("ClosedSubtitle");
+
+                    
 
                 }
             }
