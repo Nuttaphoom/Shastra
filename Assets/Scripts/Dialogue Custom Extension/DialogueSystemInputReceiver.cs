@@ -1,6 +1,7 @@
 using PixelCrushers.DialogueSystem;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -42,17 +43,32 @@ namespace Vanaring
 
         public void ReceiveKeys(InputCode key)
         {
-            bool isType = TypewriterUtility.GetTypewriter(DialogueManager.standardDialogueUI.conversationUIElements.subtitlePanels[0].subtitleText).isPlaying;
+           
 
             if (key == InputCode.Select)
             {
+                var subtitlePanels  = DialogueManager.standardDialogueUI.conversationUIElements.subtitlePanels;
+                bool isType = false; 
+
+                for (int i = 0; i < subtitlePanels.Length; i++)
+                {
+                    if (subtitlePanels[i].gameObject.activeSelf)
+                    {
+                       isType = TypewriterUtility.GetTypewriter(DialogueManager.standardDialogueUI.conversationUIElements.subtitlePanels[i].subtitleText).isPlaying;
+
+                    }
+                }
+
                 if (isType)
                 {
+                    Debug.Log("is typeing, stop type");
                     TypewriterUtility.StopTyping(DialogueManager.standardDialogueUI.conversationUIElements.subtitlePanels[0].subtitleText);
 
                 }
                 else
                 {
+
+                    Debug.Log("closed subtitle");
                     Sequencer.Message("ClosedSubtitle");
 
                 }
