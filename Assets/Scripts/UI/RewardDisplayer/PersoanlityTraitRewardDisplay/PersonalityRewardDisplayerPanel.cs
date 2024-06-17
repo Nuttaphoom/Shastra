@@ -98,6 +98,7 @@ namespace Vanaring
             {
                 StartCoroutine(DisplayLevelUp(traitRewardShowList));
             }
+            
         }
         private IEnumerator GuageDisplay(float currentVal , float rewardVal, Trait.Trait_Type type, PersonalityTraitRewardUIObject gaugeObj)
         {
@@ -173,7 +174,13 @@ namespace Vanaring
         {
             if(key == InputCode.Select)
             {
-                levelUpPanel.SetActive(false);
+                if (levelUpPanel.activeSelf)
+                {
+                    levelUpPanel.SetActive(false);
+                }else
+                {
+                    OnContinueButtonClick();
+                }
             }
         }
     }
