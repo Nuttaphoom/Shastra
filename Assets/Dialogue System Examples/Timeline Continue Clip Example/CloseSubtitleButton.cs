@@ -5,7 +5,6 @@ public class CloseSubtitleButton : MonoBehaviour
 {
     public void CloseSubtitle()
     {
-        Debug.Log("speed : " + TypewriterUtility.GetTypewriterSpeed(DialogueManager.standardDialogueUI.conversationUIElements.subtitlePanels[0].subtitleText)); 
 
         if (false)
         {

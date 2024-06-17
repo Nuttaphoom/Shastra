@@ -48,20 +48,26 @@ namespace Vanaring
             if (key == InputCode.Select)
             {
                 var subtitlePanels  = DialogueManager.standardDialogueUI.conversationUIElements.subtitlePanels;
-                bool isType = false; 
+                bool isType = false;
+                int subtitleIndex = -1 ;
 
                 for (int i = 0; i < subtitlePanels.Length; i++)
                 {
                     if (subtitlePanels[i].gameObject.activeSelf)
                     {
+                        subtitleIndex = i;
                        isType = TypewriterUtility.GetTypewriter(DialogueManager.standardDialogueUI.conversationUIElements.subtitlePanels[i].subtitleText).isPlaying;
 
                     }
                 }
 
+                if (subtitleIndex == -1)
+                    throw new System.Exception("Subtitle index is -1, no subtitlePanels is active"); 
+
+
                 if (isType)
                 {
-                    TypewriterUtility.StopTyping(DialogueManager.standardDialogueUI.conversationUIElements.subtitlePanels[0].subtitleText);
+                    TypewriterUtility.StopTyping(DialogueManager.standardDialogueUI.conversationUIElements.subtitlePanels[subtitleIndex].subtitleText);
 
                 }
                 else

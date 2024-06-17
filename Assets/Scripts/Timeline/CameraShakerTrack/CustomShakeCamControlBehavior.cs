@@ -31,6 +31,16 @@ namespace Vanaring
             {
                 firstTime = true;
 
+                if (Camera.main == null  )
+                {
+                    Debug.LogWarning("cam shake can not be played due to Camera.main == null");
+                    return;
+                }
+                if ( Camera.main.GetComponent<CinemachineBrain>().ActiveVirtualCamera == null)
+                {
+                    Debug.LogWarning("cam shake can not be played due to  Camera.main.GetComponent<CinemachineBrain>().ActiveVirtualCamera == null ");
+                    return;
+                }
                 CinemachineVirtualCamera vm =  Camera.main.GetComponent<CinemachineBrain>().ActiveVirtualCamera.VirtualCameraGameObject.GetComponent<CinemachineVirtualCamera>();   
 
                 _multiChannelPerlin = vm.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();

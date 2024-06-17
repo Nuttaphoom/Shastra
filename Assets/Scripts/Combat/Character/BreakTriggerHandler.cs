@@ -42,7 +42,7 @@ namespace Vanaring
         {
             if (_currentTriggerStatus == null)
             {
-                ColorfulLogger.LogWithColor("Trigger Not Active", Color.red);
+                //ColorfulLogger.LogWithColor("Trigger Not Active", Color.red);
 
 
                 goto End;            

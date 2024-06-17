@@ -68,10 +68,15 @@ namespace Vanaring
         {
             foreach (var pair in _records)
             {
-                if (pair.GetRecorded() == type)
+                if (pair.GetRecorded().GetType() == type.GetType())
                     return pair.GetKey(); 
             }
 
+            Debug.LogWarning("----List of item found in records ---------------------------");
+            foreach (var pair in _records)
+            {
+                Debug.Log("Found Only" + pair.GetRecorded().name ) ;
+            }
             throw new Exception("" + type + "could not be found in database of type " + typeof(RecordType));
 
         }

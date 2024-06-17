@@ -172,6 +172,12 @@ namespace Vanaring
                     ForceStop();
                     _enemyHUDWindowManager.RemoveSlotBreakHighlightOnHUD();
                 }
+                else if (key == (InputCode.DeSelect))
+                {
+                    ForceStop();
+                    _enemyHUDWindowManager.RemoveSlotBreakHighlightOnHUD();
+
+                }
             }
         }
 
