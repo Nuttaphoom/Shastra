@@ -12,7 +12,7 @@ using UnityEngine.UI;
 
 namespace Vanaring 
 {
-    public class PersonalityRewardDisplayerPanel : BaseRewardDisplayerPanel
+    public class PersonalityRewardDisplayerPanel : BaseRewardDisplayerPanel, IInputReceiver
     {
         [SerializeField]
         private float _animationDuration = 3.0f;
@@ -151,6 +151,7 @@ namespace Vanaring
 
         private IEnumerator DisplayLevelUp(List<Trait.Trait_Type> displayTraitRewardList)
         {
+            CentralInputReceiver.Instance.AddInputReceiverIntoStack(this);
             for (int i = 0; i < displayTraitRewardList.Count; i++)
             {
                 levelUpPanel.SetActive(true);
@@ -158,13 +159,22 @@ namespace Vanaring
                 levelUpRewardText.text = displayTraitRewardList[i].ToString() + " rank up";
                 prevLevelUpRewardText.text = "Rank " + "<color=#ffde00>" + (personalityTrait.GetStat(displayTraitRewardList[i]).Getlevel()-1).ToString() + "</color>";
                 nextlevelUpRewardText.text = "Rank " + "<color=#ffde00>" + personalityTrait.GetStat(displayTraitRewardList[i]).Getlevel().ToString() + "</color>";
-                while (levelUpPanel.activeSelf)
+                while (levelUpPanel.activeSelf /*|| Next level reward*/)
                 {
                     yield return new WaitForEndOfFrame();
                 }
             }
             traitRewardShowList.Clear();
+            CentralInputReceiver.Instance.RemoveInputReceiverIntoStack(this);
             yield return null;
+        }
+
+        public void ReceiveKeys(InputCode key)
+        {
+            if(key == InputCode.Select)
+            {
+                levelUpPanel.SetActive(false);
+            }
         }
     }
 }
