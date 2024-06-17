@@ -47,6 +47,8 @@ namespace Vanaring
 
             _nodeTransitions.Add(nodeTransition);
 
+            PersistentButtonSelector.Instance.ResetInitialButtonSelected(null);
+
             yield return null;
         } 
 
