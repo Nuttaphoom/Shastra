@@ -70,7 +70,9 @@ namespace Vanaring
         }
         public void EnableTriggerAction(CombatEntity target)
         {
-            Debug.Log("Enalbe Trigger Action"); 
+
+            if (_triggerActionSO == null ||  _triggerActionSO.Count == 0)
+                return;
 
             if (_currentTriggerStatus == null)
                 _currentTriggerStatus = new TriggerStatus();

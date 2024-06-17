@@ -43,8 +43,6 @@ namespace Vanaring
 
         public void ReceiveKeys(InputCode key)
         {
-           
-
             if (key == InputCode.Select)
             {
                 var subtitlePanels  = DialogueManager.standardDialogueUI.conversationUIElements.subtitlePanels;
@@ -62,8 +60,10 @@ namespace Vanaring
                 }
 
                 if (subtitleIndex == -1)
-                    throw new System.Exception("Subtitle index is -1, no subtitlePanels is active"); 
-
+                {
+                    Debug.LogWarning("Subtitle index is -1, no subtitlePanels is active");
+                    return;
+                }
 
                 if (isType)
                 {
