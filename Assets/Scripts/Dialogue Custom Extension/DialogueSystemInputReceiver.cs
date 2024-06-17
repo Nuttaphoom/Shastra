@@ -9,6 +9,10 @@ namespace Vanaring
 {
     public class DialogueSystemInputReceiver : MonoBehaviour, IInputReceiver
     {
+
+        private const float maxInputDiffTime = 0.05f;
+        //TODO : Remove temp 
+        private float preventInputSpam = .05f;
         private void Awake()
         {
             DialogueSystemController dialogueSystemController = GetComponent<DialogueSystemController>();    
@@ -17,7 +21,15 @@ namespace Vanaring
 
             dialogueSystemController.conversationEnded += OnEndConversation;
             dialogueSystemController.conversationStarted  += OnStartConversation;
+            preventInputSpam = maxInputDiffTime ;
 
+        }
+        private void Update()
+        {
+            if (preventInputSpam > 0.0f)
+            {
+                preventInputSpam -= 1.0f * Time.deltaTime;
+            }
         }
 
         private void OnDisable()
@@ -43,6 +55,11 @@ namespace Vanaring
 
         public void ReceiveKeys(InputCode key)
         {
+            if (preventInputSpam > 0)
+                return;
+
+            preventInputSpam = maxInputDiffTime;
+
             if (key == InputCode.Select)
             {
                 var subtitlePanels  = DialogueManager.standardDialogueUI.conversationUIElements.subtitlePanels;
