@@ -449,9 +449,10 @@ RectTransform:
   m_Children:
   - {fileID: 1722166650850256202}
   - {fileID: 6369701535768294297}
+  - {fileID: 8093653717876810553}
   - {fileID: 3070783142092560052}
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -493,10 +494,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
@@ -536,6 +537,7 @@ MonoBehaviour:
   missionBook: {fileID: 2880522911181934447}
   dungeonButton:
   - {fileID: 5193252025083718033}
+  closeButton: {fileID: 0}
   initialMissionButton: {fileID: 0}
 --- !u!1 &847426989912516335
 GameObject:
@@ -1030,9 +1032,9 @@ RectTransform:
   m_Father: {fileID: 5057639323899401734}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 33.2133, y: -30.2521}
   m_SizeDelta: {x: 66.4266, y: 56.882}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4815538311250670197
@@ -1638,7 +1640,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.000022888184, y: -31.3}
+  m_AnchoredPosition: {x: 6.2, y: -31.3}
   m_SizeDelta: {x: 37.1312, y: -102.1066}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5149748744776892478
@@ -1875,9 +1877,9 @@ RectTransform:
   m_Father: {fileID: 5057639323899401734}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 534.1565, y: -30.2521}
   m_SizeDelta: {x: 162.33, y: 53.7567}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8177140554908060266
@@ -2249,6 +2251,82 @@ MonoBehaviour:
   m_Sprite: {fileID: 21300000, guid: c12eb74fc74ed9c4d85a76eced073035, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!1 &5223545383029631375
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8093653717876810553}
+  - component: {fileID: 278192145490515757}
+  - component: {fileID: 2885745671068507317}
+  m_Layer: 5
+  m_Name: HighlightDungeon
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!224 &8093653717876810553
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5223545383029631375}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 3.5, y: 3.5, z: 3.5}
+  m_ConstrainProportionsScale: 1
+  m_Children: []
+  m_Father: {fileID: 4621253849980784281}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 1, y: 0}
+  m_AnchorMax: {x: 1, y: 0}
+  m_AnchoredPosition: {x: -50.28076, y: 14.349243}
+  m_SizeDelta: {x: 74.0128, y: 68.9005}
+  m_Pivot: {x: 1, y: 0}
+--- !u!222 &278192145490515757
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5223545383029631375}
+  m_CullTransparentMesh: 1
+--- !u!114 &2885745671068507317
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5223545383029631375}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 0, b: 0.98137283, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: 1419d623a820f1a4eba210ec2da7f8e4, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 1
   m_FillCenter: 1
   m_FillMethod: 4
   m_FillAmount: 1
@@ -3056,6 +3134,7 @@ GameObject:
   - component: {fileID: 4233278774699847139}
   - component: {fileID: 5193252025083718033}
   - component: {fileID: 7267770386488854526}
+  - component: {fileID: 2028683490841146802}
   m_Layer: 5
   m_Name: DungeonShortcutButton
   m_TagString: Untagged
@@ -3072,18 +3151,18 @@ RectTransform:
   m_GameObject: {fileID: 6682319055084974434}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2.4, y: 2.4, z: 2.4}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 2.6399999, y: 2.6399999, z: 2.6399999}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 1424515675662621538}
   m_Father: {fileID: 4621253849980784281}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 1, y: 0}
-  m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -47, y: 32}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 783.2, y: -405.2}
   m_SizeDelta: {x: 74.0128, y: 68.9005}
-  m_Pivot: {x: 1, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8360259507758832723
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3202,6 +3281,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 5223545383029631375}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &7267770386488854526
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3215,6 +3306,51 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _dungeonData: {fileID: 11400000, guid: 32fdb31b0c377d846b87276c239beffb, type: 2}
+--- !u!114 &2028683490841146802
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6682319055084974434}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 9
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 5223545383029631375}
+          m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+          m_MethodName: SetActive
+          m_Mode: 6
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 1
+          m_CallState: 2
+  - eventID: 10
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 5223545383029631375}
+          m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+          m_MethodName: SetActive
+          m_Mode: 6
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &6736469094647684960
 GameObject:
   m_ObjectHideFlags: 0
@@ -3540,9 +3676,9 @@ RectTransform:
   m_Father: {fileID: 5057639323899401734}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 259.70905, y: -30.2521}
   m_SizeDelta: {x: 386.5649, y: 53.1011}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2318077140561232652
@@ -3812,9 +3948,9 @@ RectTransform:
   m_Father: {fileID: 1021172801092592416}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 307.66, y: -28.2546}
   m_SizeDelta: {x: 615.32, y: 56.5092}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &5627673401101046278
@@ -3830,6 +3966,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   missionButton: {fileID: 8514794511807881492}
+  closeButton: {fileID: 0}
   selectIcon: {fileID: 5047553274577742471}
   missionIcon: {fileID: 0}
   missionName: {fileID: 528031200667780133}
