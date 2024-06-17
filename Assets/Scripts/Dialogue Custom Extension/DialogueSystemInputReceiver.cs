@@ -12,7 +12,7 @@ namespace Vanaring
 
         private const float maxInputDiffTime = 0.05f;
         //TODO : Remove temp 
-        private float preventInputSpam = .05f;
+        private float preventInputSpam = .25f;
         private void Awake()
         {
             DialogueSystemController dialogueSystemController = GetComponent<DialogueSystemController>();    
@@ -55,8 +55,7 @@ namespace Vanaring
 
         public void ReceiveKeys(InputCode key)
         {
-            if (preventInputSpam > 0)
-                return;
+           
 
             preventInputSpam = maxInputDiffTime;
 
@@ -84,6 +83,9 @@ namespace Vanaring
 
                 if (isType)
                 {
+                    if (preventInputSpam > 0)
+                        return;
+
                     TypewriterUtility.StopTyping(DialogueManager.standardDialogueUI.conversationUIElements.subtitlePanels[subtitleIndex].subtitleText);
 
                 }

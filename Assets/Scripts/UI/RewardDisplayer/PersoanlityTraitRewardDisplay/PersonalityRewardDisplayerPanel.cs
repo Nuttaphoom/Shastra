@@ -62,7 +62,10 @@ namespace Vanaring
         public override void OnContinueButtonClick()
         {
             if (IsSettingUpSucessfully)
-                _displayingUIDone = true; 
+            {
+                CentralInputReceiver.Instance.RemoveInputReceiverIntoStack(this);
+                _displayingUIDone = true;
+            }
 
             else
                 ForceSetUpNumber(); 
@@ -166,7 +169,6 @@ namespace Vanaring
                 }
             }
             traitRewardShowList.Clear();
-            CentralInputReceiver.Instance.RemoveInputReceiverIntoStack(this);
             yield return null;
         }
 
