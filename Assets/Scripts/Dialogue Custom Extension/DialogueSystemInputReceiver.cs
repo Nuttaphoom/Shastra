@@ -57,7 +57,6 @@ namespace Vanaring
         {
            
 
-            preventInputSpam = maxInputDiffTime;
 
             if (key == InputCode.Select)
             {
@@ -83,6 +82,7 @@ namespace Vanaring
 
                 if (isType)
                 {
+
                     if (preventInputSpam > 0)
                         return;
 
@@ -98,6 +98,9 @@ namespace Vanaring
                     
 
                 }
+
+                preventInputSpam = maxInputDiffTime;
+
             }
         }
 
