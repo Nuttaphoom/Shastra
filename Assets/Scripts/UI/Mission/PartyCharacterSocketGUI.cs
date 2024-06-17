@@ -9,6 +9,7 @@ namespace Vanaring
     public class PartyCharacterSocketGUI : MonoBehaviour
     {
         [SerializeField] private Image characterPortrait;
+        [SerializeField] private TextMeshProUGUI characterName;
         [SerializeField] private Image hpBar;
         [SerializeField] private Image mpBar;
         [SerializeField] private TextMeshProUGUI hpNUM;
@@ -19,6 +20,7 @@ namespace Vanaring
         {
             this.member = member;
             characterPortrait.sprite = member.GetRuntimeCombatMemberData.GetCharacterSheet.GetCharacterIcon;
+            characterName.text = member.GetRuntimeCombatMemberData.GetCharacterSheet.CharacterName;
             hpBar.fillAmount = (float)member.GetCurrentPartyMemberHP / member.GetRuntimeCombatMemberData.LevelAttributeHandler.GetSecondaryAttribute_MaxHP;
             mpBar.fillAmount = (float)member.GetCurrentPartyMemberMP / member.GetRuntimeCombatMemberData.LevelAttributeHandler.GetSecondaryAttribute_MaxMP;
             hpNUM.text = member.GetRuntimeCombatMemberData.LevelAttributeHandler.GetSecondaryAttribute_MaxHP.ToString();
