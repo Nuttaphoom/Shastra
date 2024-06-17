@@ -18,32 +18,60 @@ namespace Vanaring
         [SerializeField]
         private List<TriggerActionSO> _triggerActionSO = new List<TriggerActionSO>() ;
 
+        [SerializeField]
+        private CutsceneDirector _breakTriggerDirector ; 
+
         private CombatEntity _entity;
 
         private TriggerStatus _currentTriggerStatus; 
+
+        public bool TriggerActive
+        {
+            get
+            {
+                return _currentTriggerStatus != null;
+            }
+        } 
+
         public void Initialize(CombatEntity entity)
         {
             _entity = entity;  
-    
         }
          
-        public void ResolveTrigger()
+        public IEnumerator ResolveTrigger()
         {
             if (_currentTriggerStatus == null)
-                return;
+            {
+                ColorfulLogger.LogWithColor("Trigger Not Active", Color.red);
+
+
+                goto End;            
+            
+            }
+
+            var s = MonoBehaviour.Instantiate(_breakTriggerDirector); 
+            yield return s.PlayCutscene(); 
+
+            MonoBehaviour.Destroy(s.gameObject) ;
 
             if (_triggerActionSO[0] == null)
                 throw new Exception("there is no valid _triggerActionSO") ; 
             
-            ActorAction action = _triggerActionSO[0].FactorizeTriggerEffect(_entity, _currentTriggerStatus.BrokenTargets); 
             
+            ActorAction action = _triggerActionSO[0].FactorizeTriggerEffect(_entity, _currentTriggerStatus.BrokenTargets);
 
+            
             _entity.ActionHandler.AddActionQueue(action);
 
-            _currentTriggerStatus = null; 
+            _currentTriggerStatus = null;
+
+            End:
+            yield return null;
         }
         public void EnableTriggerAction(CombatEntity target)
         {
+            Debug.Log("Enalbe Trigger Action"); 
+
             if (_currentTriggerStatus == null)
                 _currentTriggerStatus = new TriggerStatus();
 

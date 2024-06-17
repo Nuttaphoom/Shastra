@@ -491,12 +491,8 @@ namespace Vanaring
 
         public IEnumerator OnCharacterPerformAction(CombatEntity actor )
         {
-            Debug.Log("on perform action");
-
             yield return actor.OnPerformAction( );
 
-            Debug.Log("Call post perform in every entity");
-             
             ResolveEntityDead();
 
             yield return PostPerformActionInEveryCharacter();
@@ -585,6 +581,8 @@ namespace Vanaring
             {
                 foreach (var entity in GetCompetatorsBySide(side))
                 {
+                    ColorfulLogger.LogWithColor("Resolve Trigger ! ", Color.red);
+
                     yield return entity.OnPostPerformAction();
                 }
             }

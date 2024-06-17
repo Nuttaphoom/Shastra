@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.SqlServer.Server;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -105,19 +106,31 @@ namespace Vanaring
                     RuntimeEffect effect = factory.Factorize(_targets);
                     _ongoingEffect.Add(_caster.StartCoroutine(CasterStartExecuteEffectCoroutine(effect)));
                 }
+ 
 
                 yield return new WaitForEndOfFrame();
-            } while ((!_actionSignal.SignalTerminated())); 
-
-            while (_ongoingEffect.Count > 0)
-            {
-                yield return new WaitForEndOfFrame();
-            }
+            } while ((!_actionSignal.SignalTerminated()));
             while (DirectorManager.Instance.IsPlayingTimeline)
             {
-                yield return new WaitForEndOfFrame();
-            } 
+                //if (_caster.BreakTriggerHandler.TriggerActive)
+                //{
+                //    throw new Exception("Trigger Active !!");
+                //}
 
+                yield return new WaitForEndOfFrame();
+            }
+            while (_ongoingEffect.Count > 0)
+            {
+                if (_caster.BreakTriggerHandler.TriggerActive)
+                {
+                    goto End;
+                } 
+
+                yield return new WaitForEndOfFrame();
+            }
+           
+
+            End: 
             DirectorManager.Instance.ClearCurrentTimeline();
 
         }

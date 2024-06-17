@@ -14,6 +14,8 @@ namespace Vanaring
 
         [SerializeField] private SceneDataSO _shortcutSceneSO;
 
+        [SerializeField] private Button _dungeonButton;
+
         [System.Serializable]
         public struct Pin
         {
@@ -25,13 +27,11 @@ namespace Vanaring
         public Pin[] mapPinList;
         [SerializeField]
         private List<Transform> pinTransformList = new List<Transform>();
+        [SerializeField]
         private List<PinGUI> pinObject;
         [SerializeField]
         private PinGUI pinTemplate;
         private List<RuntimeLocation> availableLocationList;
-
-
-
 
         private void Awake()
         {
@@ -78,7 +78,22 @@ namespace Vanaring
                 }
                 PinGUI newPin = Instantiate(pinTemplate, pinTransformList[locationIndex]);
                 newPin.Init(location);
+                newPin.EventButton.onClick.AddListener(delegate { PersistentButtonSelector.Instance.AddPreviousButton(newPin.EventButton); } );
                 pinObject.Add(newPin);
+            }
+            for (int i = 0; i < pinObject.Count; i++)
+            {
+                Navigation NewNav = new Navigation();
+                NewNav.mode = Navigation.Mode.Explicit;
+                NewNav.selectOnDown = _dungeonButton;
+                NewNav.selectOnLeft = pinObject[((i - 1) < 0)? (pinObject.Count -1) : (i - 1)].TemplateButton;
+                NewNav.selectOnRight = pinObject[(i + 1) % pinObject.Count].TemplateButton;
+                pinObject[i].TemplateButton.navigation = NewNav;
+            }
+            // Setting Button Navigation with input control
+            if (pinObject.Count > 0)
+            {
+                pinObject[0].OnHoverButton();
             }
         }
 

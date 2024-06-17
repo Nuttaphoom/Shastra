@@ -9,6 +9,7 @@ namespace Vanaring
     public class MissionButtonObjectGUI : MonoBehaviour
     {
         [SerializeField] private Button missionButton;
+        [SerializeField] private Button closeButton;
         [SerializeField] private Image selectIcon;
         [SerializeField] private Image missionIcon;
         [SerializeField] private TextMeshProUGUI missionName;
@@ -20,7 +21,13 @@ namespace Vanaring
         {
             missionOrderNum.text = order.ToString();
             UnSelectThisMission();
-            missionButton.onClick.AddListener(() => DungeonManagerSingleton.Instance.LoadSelectedMission(mission));      
+            missionButton.onClick.AddListener(() => DungeonManagerSingleton.Instance.LoadSelectedMission(mission));
+
+            // Setting Button Navigation with input control
+            Navigation NewNav = new Navigation();
+            NewNav.mode = Navigation.Mode.Explicit;
+            NewNav.selectOnDown = missionButton;
+            closeButton.navigation = NewNav;
         }
 
         public void SelectThisMission()

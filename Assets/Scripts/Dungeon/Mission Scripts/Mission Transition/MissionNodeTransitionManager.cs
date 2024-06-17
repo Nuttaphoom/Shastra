@@ -42,7 +42,12 @@ namespace Vanaring
 
             nodeTransition.transform.position = UISpaceSingletonHandler.ObjectToUISpace(startNode.NodeVisualTransitionHandler.GetCorrectPosition(direction));
 
+            PersistentButtonSelector.Instance.AssignInitialButtons(nodeTransition.NodeTransitionButton);
+            //nodeTransition.NodeTransitionButton.Select();
+
             _nodeTransitions.Add(nodeTransition);
+
+            PersistentButtonSelector.Instance.ResetInitialButtonSelected(null);
 
             yield return null;
         } 

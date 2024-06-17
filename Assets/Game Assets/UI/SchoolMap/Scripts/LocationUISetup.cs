@@ -76,9 +76,18 @@ namespace Vanaring
                     actualButton.onClick.AddListener(() => action.ExecuteCommand()); 
                 }
                 
-                
-                actualButton.GetComponent<Image>().sprite = action.GetActionIconSprite;  
-                
+                actualButton.GetComponent<Image>().sprite = action.GetActionIconSprite;
+
+                // Setting Button Navigation with input control
+                Navigation NewNav = new Navigation();
+                NewNav.mode = Navigation.Mode.Explicit;
+                NewNav.selectOnLeft = actualButton;
+                mapButton.navigation = NewNav;
+
+                PersistentButtonSelector.Instance.AssignInitialButtons(actualButton);
+                //actualButton.Select();
+                actualButton.onClick.AddListener(delegate { PersistentButtonSelector.Instance.AddPreviousButton(actualButton); });
+
                 //Set Button Description
                 TextMeshProUGUI[] textComponents = newActionButton.GetComponentsInChildren<TextMeshProUGUI>(true);
                 textComponents[0].text = action.GetActionName;
@@ -104,6 +113,7 @@ namespace Vanaring
         public void OpenPanel()
         {
             confirmPanel.SetActive(true);
+            confirmButton.Select();
         }
         public void ClosePanel()
         {
