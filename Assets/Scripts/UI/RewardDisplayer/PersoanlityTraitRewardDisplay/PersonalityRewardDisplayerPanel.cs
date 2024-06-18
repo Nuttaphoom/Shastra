@@ -12,7 +12,7 @@ using UnityEngine.UI;
 
 namespace Vanaring 
 {
-    public class PersonalityRewardDisplayerPanel : BaseRewardDisplayerPanel
+    public class PersonalityRewardDisplayerPanel : BaseRewardDisplayerPanel, IInputReceiver
     {
         [SerializeField]
         private float _animationDuration = 3.0f;
@@ -62,7 +62,10 @@ namespace Vanaring
         public override void OnContinueButtonClick()
         {
             if (IsSettingUpSucessfully)
-                _displayingUIDone = true; 
+            {
+                CentralInputReceiver.Instance.RemoveInputReceiverIntoStack(this);
+                _displayingUIDone = true;
+            }
 
             else
                 ForceSetUpNumber(); 
@@ -98,6 +101,7 @@ namespace Vanaring
             {
                 StartCoroutine(DisplayLevelUp(traitRewardShowList));
             }
+            
         }
         private IEnumerator GuageDisplay(float currentVal , float rewardVal, Trait.Trait_Type type, PersonalityTraitRewardUIObject gaugeObj)
         {
@@ -151,6 +155,7 @@ namespace Vanaring
 
         private IEnumerator DisplayLevelUp(List<Trait.Trait_Type> displayTraitRewardList)
         {
+            CentralInputReceiver.Instance.AddInputReceiverIntoStack(this);
             for (int i = 0; i < displayTraitRewardList.Count; i++)
             {
                 levelUpPanel.SetActive(true);
@@ -158,13 +163,28 @@ namespace Vanaring
                 levelUpRewardText.text = displayTraitRewardList[i].ToString() + " rank up";
                 prevLevelUpRewardText.text = "Rank " + "<color=#ffde00>" + (personalityTrait.GetStat(displayTraitRewardList[i]).Getlevel()-1).ToString() + "</color>";
                 nextlevelUpRewardText.text = "Rank " + "<color=#ffde00>" + personalityTrait.GetStat(displayTraitRewardList[i]).Getlevel().ToString() + "</color>";
-                while (levelUpPanel.activeSelf)
+                while (levelUpPanel.activeSelf /*|| Next level reward*/)
                 {
                     yield return new WaitForEndOfFrame();
                 }
             }
             traitRewardShowList.Clear();
             yield return null;
+        }
+
+        public void ReceiveKeys(InputCode key)
+        {
+            if(key == InputCode.Select)
+            {
+                if (levelUpPanel.activeSelf)
+                {
+                    levelUpPanel.SetActive(false);
+                }else
+                {
+                    CentralInputReceiver.Instance.RemoveInputReceiverIntoStack(this);
+                    OnContinueButtonClick();
+                }
+            }
         }
     }
 }

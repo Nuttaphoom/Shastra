@@ -37,7 +37,7 @@ namespace Vanaring
         {
             if (initialButton == null)
             {
-                Debug.LogWarning("initialButton is null");
+                //Debug.LogWarning("initialButton is null");
                 return;
             }
             if (!initialButtonSelected)
@@ -50,7 +50,7 @@ namespace Vanaring
         {
             if (dummyButton == null)
             {
-                Debug.LogWarning("dummyButton is null");
+                //Debug.LogWarning("dummyButton is null");
                 return;
             }
 

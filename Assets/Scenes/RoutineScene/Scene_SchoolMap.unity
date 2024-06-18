@@ -1385,6 +1385,18 @@ PrefabInstance:
       value: -30.2521
       objectReference: {fileID: 0}
     - target: {fileID: 5193252025083718033, guid: fb85fb762f7c6f043900862356e58f8d, type: 3}
+      propertyPath: m_Colors.m_SelectedColor.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5193252025083718033, guid: fb85fb762f7c6f043900862356e58f8d, type: 3}
+      propertyPath: m_Colors.m_SelectedColor.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5193252025083718033, guid: fb85fb762f7c6f043900862356e58f8d, type: 3}
+      propertyPath: m_Colors.m_SelectedColor.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5193252025083718033, guid: fb85fb762f7c6f043900862356e58f8d, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
       objectReference: {fileID: 1366099301}
@@ -1412,6 +1424,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -30.2521
       objectReference: {fileID: 0}
+    - target: {fileID: 8093653717876810553, guid: fb85fb762f7c6f043900862356e58f8d, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 14.349243
+      objectReference: {fileID: 0}
     - target: {fileID: 8514794511807881492, guid: fb85fb762f7c6f043900862356e58f8d, type: 3}
       propertyPath: m_Colors.m_NormalColor.b
       value: 0.41960788
@@ -1434,7 +1450,7 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 6682319055084974434, guid: fb85fb762f7c6f043900862356e58f8d, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 5087183028426340889}
+      addedObject: {fileID: 5087183028426340890}
   m_SourcePrefab: {fileID: 100100000, guid: fb85fb762f7c6f043900862356e58f8d, type: 3}
 --- !u!114 &5087183028426340886 stripped
 MonoBehaviour:
@@ -1463,7 +1479,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &5087183028426340889
+--- !u!114 &5087183028426340890
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1472,7 +1488,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 5087183028426340887}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 974dd467779c83f4d82eae4fcc25adfc, type: 3}
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentSelected: {fileID: 0}
+  m_Delegates:
+  - eventID: 9
+    callback:
+      m_PersistentCalls:
+        m_Calls: []
+  - eventID: 10
+    callback:
+      m_PersistentCalls:
+        m_Calls: []

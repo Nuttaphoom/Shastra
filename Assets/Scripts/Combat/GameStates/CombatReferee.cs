@@ -581,7 +581,7 @@ namespace Vanaring
             {
                 foreach (var entity in GetCompetatorsBySide(side))
                 {
-                    ColorfulLogger.LogWithColor("Resolve Trigger ! ", Color.red);
+                    //ColorfulLogger.LogWithColor("Resolve Trigger ! ", Color.red);
 
                     yield return entity.OnPostPerformAction();
                 }

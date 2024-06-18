@@ -23,10 +23,12 @@ namespace Vanaring
         public RuntimeMangicalEnergy.EnergySide RequiredSide => _requiredEnergy.Side ;
         public int RequiredAmout => _requiredEnergy.Amount > 0 ? (_requiredEnergy.Amount * -1) : (_requiredEnergy.Amount);
 
+        [SerializeField]
+        private bool _isInvokeTrigger = true ;
         public int MPCost => _MPCost    ;
         public override ActorAction FactorizeRuntimeAction(CombatEntity caster)
         {
-            return new SpellAbilityRuntime(RequiredSide, MPCost, caster, this);
+            return new SpellAbilityRuntime(RequiredSide, MPCost, caster, this, _isInvokeTrigger);
         }
 
         public RewardData GetRewardData()
@@ -50,11 +52,15 @@ namespace Vanaring
         private int _requiredEnergy;
         private RuntimeMangicalEnergy.EnergySide _requiredSide ; 
         private int _MPCost;
-        public SpellAbilityRuntime(RuntimeMangicalEnergy.EnergySide  side, int MPCost, CombatEntity caster, ActorActionFactory factory) : base(factory,caster)
+        private bool _isInvokeTrigger = false;
+
+        public bool IsInvokeTrigger => _isInvokeTrigger; 
+        public SpellAbilityRuntime(RuntimeMangicalEnergy.EnergySide  side, int MPCost, CombatEntity caster, ActorActionFactory factory, bool invokeTrigger) : base(factory,caster)
         {
             _requiredEnergy = MPCost; 
             _requiredSide = side ;
-            _MPCost = MPCost; 
+            _MPCost = MPCost;
+            _isInvokeTrigger = invokeTrigger;
 
             if (_requiredEnergy > 0)
                  _requiredEnergy = -1 * _requiredEnergy; 
@@ -64,12 +70,14 @@ namespace Vanaring
         public override IEnumerator PreActionPerform()
         {
             _caster.SpellCaster.ModifyMP(new StatModifier(_MPCost > 0 ? -_MPCost : _MPCost, StatModType.Flat));
-
+            _caster.BreakTriggerHandler.DisableTriggerChecker(! _isInvokeTrigger);
             yield return null;
         }
 
         public override IEnumerator PostActionPerform()
         {
+            _caster.BreakTriggerHandler.DisableTriggerChecker(false) ;
+
             //_caster.SpellCaster.ModifyEnergy(_requiredSide, _requiredEnergy );
             yield return null;
         }

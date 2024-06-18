@@ -23,8 +23,15 @@ namespace Vanaring
 
         private CombatEntity _entity;
 
-        private TriggerStatus _currentTriggerStatus; 
+        private TriggerStatus _currentTriggerStatus;
 
+        private bool ShouldCheckTrigger = true ;
+
+        public void DisableTriggerChecker(bool disable)
+        {
+            ShouldCheckTrigger = ! disable;
+
+        }
         public bool TriggerActive
         {
             get
@@ -42,7 +49,7 @@ namespace Vanaring
         {
             if (_currentTriggerStatus == null)
             {
-                ColorfulLogger.LogWithColor("Trigger Not Active", Color.red);
+                //ColorfulLogger.LogWithColor("Trigger Not Active", Color.red);
 
 
                 goto End;            
@@ -70,7 +77,11 @@ namespace Vanaring
         }
         public void EnableTriggerAction(CombatEntity target)
         {
-            Debug.Log("Enalbe Trigger Action"); 
+            if (! ShouldCheckTrigger)
+                return;
+            
+            if (_triggerActionSO == null ||  _triggerActionSO.Count == 0)
+                return;
 
             if (_currentTriggerStatus == null)
                 _currentTriggerStatus = new TriggerStatus();

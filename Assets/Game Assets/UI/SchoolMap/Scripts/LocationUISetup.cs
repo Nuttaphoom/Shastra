@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.Playables;
+using UnityEngine.EventSystems;
 
 namespace Vanaring
 {
@@ -23,7 +24,6 @@ namespace Vanaring
         private GameObject _lectureSelectPanel;
         [SerializeField]
         private Button tmpLectureButton;
-        //[SerializeField] private Button testButton;
         [SerializeField] private List<Transform> buttonTransform = new List<Transform>();
         private LoadLocationMenuCommandData currentLocationSO;
         public string GetLocationName => currentLocationSO.LocationName.ToString();

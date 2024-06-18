@@ -48,6 +48,7 @@ namespace Vanaring
 
         public void OnPostPerformSchoolAction(int actionPointDecreased = 1)
         {
+            Debug.Log("Post");
             _runtimeDayData.ProgressCurrentTime(); 
             _dayProgressionHandler.OnPostPerformSchoolAction(actionPointDecreased); 
         } 
@@ -72,6 +73,7 @@ namespace Vanaring
 
         public EDayTime GetCurrentDayTime()
         {
+            ColorfulLogger.LogWithColor("Current time is " + _runtimeDayData.GetCurrentDayTime, Color.red); 
             return _runtimeDayData.GetCurrentDayTime; 
         }
         public RuntimeDayData GetActiveDayData

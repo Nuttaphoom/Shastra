@@ -81,7 +81,13 @@ namespace Vanaring
             dateText.text = date + "/" + (month + 1);
             weekdayText.text = days[weekDay];
             weekdayText.color = weekColor[weekDay];
-            dayTimeText.text = dayTime[(int)PersistentActiveDayDatabase.Instance.GetCurrentDayTime()].ToString();
+            //Debug.Log((int)PersistentActiveDayDatabase.Instance.GetCurrentDayTime());
+            int dayTimeIndex = (int)PersistentActiveDayDatabase.Instance.GetCurrentDayTime();
+            if (dayTimeIndex > 2)
+            {
+                Debug.LogError("Daytime out of bound!");
+            }
+            dayTimeText.text = dayTime[dayTimeIndex].ToString();
             //Debug.Log("Date: " + date + ", Month: " + month+1 + ", Day: " + days[weekDay]);
         }
 

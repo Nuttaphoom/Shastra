@@ -10,7 +10,7 @@ using Vanaring.Assets.Scripts.DaysSystem.SchoolAction;
 
 namespace Vanaring
 {
-    public class NPCHangoutActionScheme : MonoBehaviour, ISchoolAction
+    public class NPCHangoutActionScheme : MonoBehaviour, ISchoolAction, IInputReceiver
     {
         [SerializeField]
         private CutsceneDirector _director;
@@ -22,6 +22,8 @@ namespace Vanaring
         //private PersonalityTraitRewardDisplayer _rewardDisplayer;
 
         List<PersonalityRewardData> _personalityRewards;
+
+        bool isAlreadyShowReward = false;
 
 
         private void Awake()
@@ -43,17 +45,19 @@ namespace Vanaring
         {
             yield return _director.PlayCutscene();
 
-            _tempUIPop.gameObject.SetActive(true); 
-            yield return _tempUIPop.PlayCutscene(); 
+            _tempUIPop.gameObject.SetActive(true);
+            
+            yield return _tempUIPop.PlayCutscene();
+            CentralInputReceiver.Instance.AddInputReceiverIntoStack(this);
+            isAlreadyShowReward = true;
 
-            StartCoroutine(PostPerformActivity());
+            //StartCoroutine(PostPerformActivity());
 
         }
 
         public IEnumerator PostPerformActivity()
         {
             //yield return (_rewardDisplayer.DisplayRewardUICoroutine(_personalityRewards));
-
             yield return null; 
             PersistentActiveDayDatabase.Instance.OnPostPerformSchoolAction(); //.GetDayProgressionHandler.();
 
@@ -63,6 +67,19 @@ namespace Vanaring
         public void SubmitActionReward()
         {
             throw new NotImplementedException();
+        }
+
+        public void ReceiveKeys(InputCode key)
+        {
+            Debug.Log("Update key" + key);
+            if (key == InputCode.Select)
+            {
+                if (isAlreadyShowReward)
+                {
+                    CentralInputReceiver.Instance.RemoveInputReceiverIntoStack(this);
+                    PersistentActiveDayDatabase.Instance.OnPostPerformSchoolAction();
+                }
+            }
         }
     }
 }

@@ -52,9 +52,7 @@ namespace Vanaring
 
         private IEnumerator PlayEXPNumberAnimation(float start, float end, float gain, float max)
         {
-            Debug.Log("curLv:" + member.LevelAttributeHandler.GetCharacterUEXPSystem.GetCurrentLevel 
-                + " " + member.LevelAttributeHandler.GetCharacterUEXPSystem.GetCurrentEXP + "/" + member.LevelAttributeHandler.GetCharacterUEXPSystem.GetEXPCap());
-            float overVal = max - (member.LevelAttributeHandler.GetCharacterUEXPSystem.GetCurrentEXP + gain);
+                 float overVal = max - (member.LevelAttributeHandler.GetCharacterUEXPSystem.GetCurrentEXP + gain);
             seccondBar.fillAmount = (float)end / max;
             if(overVal <= 0)
             {
