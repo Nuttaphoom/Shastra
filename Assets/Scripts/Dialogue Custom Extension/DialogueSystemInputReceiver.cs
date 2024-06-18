@@ -92,7 +92,6 @@ namespace Vanaring
                 else
                 {
 
-                    Debug.Log("closed subtitle");
                     Sequencer.Message("ClosedSubtitle");
 
                     
