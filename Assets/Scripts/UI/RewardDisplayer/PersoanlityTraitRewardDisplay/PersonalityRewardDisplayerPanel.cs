@@ -181,6 +181,7 @@ namespace Vanaring
                     levelUpPanel.SetActive(false);
                 }else
                 {
+                    CentralInputReceiver.Instance.RemoveInputReceiverIntoStack(this);
                     OnContinueButtonClick();
                 }
             }
