@@ -72,6 +72,7 @@ namespace Vanaring
 
         public EDayTime GetCurrentDayTime()
         {
+            ColorfulLogger.LogWithColor("Current time is " + _runtimeDayData.GetCurrentDayTime, Color.red); 
             return _runtimeDayData.GetCurrentDayTime; 
         }
         public RuntimeDayData GetActiveDayData
