@@ -178,7 +178,6 @@ namespace Vanaring
             {
                 if (!_uiAnimationDone)
                 {
-                    _uiAnimationDone = true;
                     OnContinueButtonClick();
                 }
                 else if (levelUpPanel.activeSelf)
