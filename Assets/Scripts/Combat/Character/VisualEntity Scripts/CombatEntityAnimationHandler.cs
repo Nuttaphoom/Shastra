@@ -216,8 +216,12 @@ namespace Vanaring
         public void HideVisualMesh()
         {
             foreach (var attachedvfx in _attachedVFXs)
-                attachedvfx.gameObject.SetActive(false); 
-             
+            {
+                if (attachedvfx != null)
+                {
+                    attachedvfx.gameObject.SetActive(false);
+                }
+            }
             GetVisualMesh().gameObject.SetActive(false);
         }
 
@@ -230,7 +234,12 @@ namespace Vanaring
                 return;
 
             foreach (var attachedvfx in _attachedVFXs)
-                attachedvfx.gameObject.SetActive(true);
+            {
+                if (attachedvfx != null)
+                {
+                    attachedvfx.gameObject.SetActive(true);
+                }
+            }
 
             GetVisualMesh().gameObject.SetActive(true); 
         }
