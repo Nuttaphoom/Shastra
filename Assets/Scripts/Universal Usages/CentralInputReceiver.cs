@@ -112,16 +112,21 @@ namespace Vanaring
         void Check()
         {
             // Check if Input is Playstation 4
-            if (playerInput_.devices[0].description.deviceClass == "Keyboard")
+            Debug.Log("Device count: " + playerInput_.devices.Count);
+            if (playerInput_.devices.Count > 0)
             {
-                currentScheme = ControlScheme.keyboard;
-            }
-            else
-            {
-                currentScheme = ControlScheme.ps5;
-            }
+                if (playerInput_.devices[0].description.deviceClass == "Keyboard")
+                {
+                    currentScheme = ControlScheme.keyboard;
+                }
+                else
+                {
+                    currentScheme = ControlScheme.ps5;
+                }
 
-            GetEventBroadcaster().InvokeEvent(currentScheme, "OnControllerSchemeChange");
+                GetEventBroadcaster().InvokeEvent(currentScheme, "OnControllerSchemeChange");
+            }
+           
         }
 
         public CentralInputReceiver()
