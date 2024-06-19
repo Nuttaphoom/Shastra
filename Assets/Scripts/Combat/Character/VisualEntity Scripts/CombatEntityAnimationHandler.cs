@@ -245,7 +245,7 @@ namespace Vanaring
         }
         public IEnumerator DeadVisualPresentation()
         {
-            for (int i =  _attachedVFXs.Count - 1; i >= 0; i--)
+            for (int i =  _attachedVFXs.Count - 1; i >= 0; i--) 
                 Destroy(_attachedVFXs[i].gameObject) ; 
 
             if (_deadVisualEffect)
@@ -394,8 +394,9 @@ namespace Vanaring
         public void DeAttachVFXFromMeshComponent(string vfxName, string whereToAttach)
         {
             Transform parent = GetAttachmentFromName(whereToAttach);
-            
-            _attachedVFXs.Remove(parent.Find(vfxName).gameObject) ; 
+
+            _attachedVFXs.Remove(parent.Find(vfxName).gameObject);
+ 
             Destroy(parent.Find(vfxName).gameObject) ; 
 
         }
