@@ -63,7 +63,6 @@ namespace Vanaring
         {
             if (IsSettingUpSucessfully)
             {
-                CentralInputReceiver.Instance.RemoveInputReceiverIntoStack(this);
                 _displayingUIDone = true;
             }
 
@@ -90,10 +89,12 @@ namespace Vanaring
                 }
                 coroutineRunningCount++;
             }
+            CentralInputReceiver.Instance.AddInputReceiverIntoStack(this);
             while (coroutineRunningCount > 0)
             {
                 yield return null;
             }
+            
             _uiAnimationDone = true;
             //Snap
             yield return new WaitForSeconds(0.5f);
@@ -155,7 +156,6 @@ namespace Vanaring
 
         private IEnumerator DisplayLevelUp(List<Trait.Trait_Type> displayTraitRewardList)
         {
-            CentralInputReceiver.Instance.AddInputReceiverIntoStack(this);
             for (int i = 0; i < displayTraitRewardList.Count; i++)
             {
                 levelUpPanel.SetActive(true);
@@ -176,7 +176,12 @@ namespace Vanaring
         {
             if(key == InputCode.Select)
             {
-                if (levelUpPanel.activeSelf)
+                if (!_uiAnimationDone)
+                {
+                    _uiAnimationDone = true;
+                    OnContinueButtonClick();
+                }
+                else if (levelUpPanel.activeSelf)
                 {
                     levelUpPanel.SetActive(false);
                 }else
@@ -184,6 +189,8 @@ namespace Vanaring
                     CentralInputReceiver.Instance.RemoveInputReceiverIntoStack(this);
                     OnContinueButtonClick();
                 }
+
+                //OnContinueButtonClick();
             }
         }
     }
