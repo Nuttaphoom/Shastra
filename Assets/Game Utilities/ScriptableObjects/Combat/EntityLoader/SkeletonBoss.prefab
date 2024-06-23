@@ -784,7 +784,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _spawnVisualEffect: {fileID: 0}
   _deadVisualEffect: {fileID: 1482325246012760531}
-  _deadAnimationTrigger: Dead
 --- !u!114 &3183956409549396090
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -953,6 +952,9 @@ MonoBehaviour:
   _characterSheet: {fileID: 11400000, guid: 2a8c7a22650501c40bf23e047a38f6a5, type: 2}
   _spellCaster: {fileID: 230340289741595676}
   _itemUser: {fileID: 0}
+  _breakTriggerHandler:
+    _triggerActionSO: []
+    _breakTriggerDirector: {fileID: 0}
   _combatEntityAnimationHandler: {fileID: 2524119204172734917}
 --- !u!1 &8149838307054936125
 GameObject:
@@ -1040,7 +1042,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 03a5c6752b9e9c24091df9f82a74cb54, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -1.55
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 03a5c6752b9e9c24091df9f82a74cb54, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1079,9 +1081,17 @@ PrefabInstance:
       value: Character/VisualPivot/CharacterVisualMesh
       objectReference: {fileID: 0}
     - target: {fileID: 4638535940344525852, guid: 03a5c6752b9e9c24091df9f82a74cb54, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4638535940344525852, guid: 03a5c6752b9e9c24091df9f82a74cb54, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 480023e4147ae2a4e84f151ec71ef87b, type: 2}
+    - target: {fileID: 4638535940344525852, guid: 03a5c6752b9e9c24091df9f82a74cb54, type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: f1c3a0767ac53684999cd9e444f449a2, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
