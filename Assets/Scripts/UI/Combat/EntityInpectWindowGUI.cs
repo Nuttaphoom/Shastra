@@ -195,7 +195,7 @@ namespace Vanaring
                 isAllyMode = !isAllyMode;
                 SetupInfo();
             }
-            if(key == InputCode.Skill || key == InputCode.T)
+            if(key == InputCode.Skill || key == InputCode.InspectionOpen)
             {
                 _windowManager.OpenWindow(EWindowGUI.Main);
             }

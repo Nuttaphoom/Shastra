@@ -156,8 +156,9 @@ namespace Vanaring
         public void ReceiveKeys(InputCode key)
         {
             if (_lastWindowOpen != null) 
-                _lastWindowOpen.ReceiveKeysFromWindowManager(key);
-            if (key == InputCode.T)
+                _lastWindowOpen.ReceiveKeysFromWindowManager(key); 
+
+            if (key == InputCode.InspectionOpen)
             {
                 if (!_entityInpectWindow.gameObject.activeSelf)
                 {

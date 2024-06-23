@@ -60,7 +60,7 @@ namespace Vanaring
                 if (CombatReferee.Instance.ChangeActiveEntityIndex(false))
                     TargetSelectionFlowControl.Instance.ForceStop();
             }
-            if (key == InputCode.T)
+            if (key == InputCode.InspectionOpen)
             {
                 _windowManager.OpenWindow(EWindowGUI.Inspect);
             }

@@ -24,7 +24,7 @@ namespace Vanaring
         Item = 5, 
         Skill = 6,
 
-        T = 7,
+        InspectionOpen = 7,
         Escape = 8,
         C = 9,
         DeSelect = 10,
@@ -61,7 +61,7 @@ namespace Vanaring
         [SerializeField]
         private List<ControlSchemeUI> controlSchemeSets;
 
-        #region EventBroadcaster
+        #region EventBroadcasterS
         private EventBroadcaster _eventBroadcaster;
 
         private EventBroadcaster GetEventBroadcaster()
@@ -112,7 +112,7 @@ namespace Vanaring
         void Check()
         {
             // Check if Input is Playstation 4
-            Debug.Log("Device count: " + playerInput_.devices.Count);
+            //Debug.Log("Device count: " + playerInput_.devices.Count);
             if (playerInput_.devices.Count > 0)
             {
                 if (playerInput_.devices[0].description.deviceClass == "Keyboard")
@@ -152,6 +152,7 @@ namespace Vanaring
         //if button is not select and not in tutorial select it.
         private void SelectButtonCheck()
         {
+
             if (!PersistentTutorialManager.Instance.IsShowingTutorial)
             {
                 //Debug.Log("Selected");
@@ -159,8 +160,10 @@ namespace Vanaring
             }
         }
 
+
         private void OnNavigate(InputValue value)
         {
+            
             Check();
 
             Vector2 inputValue = value.Get<Vector2>();
@@ -182,9 +185,16 @@ namespace Vanaring
             }
 
         }
+        private void OnInspectionOpen()
+        {
+            Check();
+            TransmitInput(InputCode.InspectionOpen); 
+        }
+
 
         private void OnSelect()
         {
+            Debug.Log("onselect called"); 
             Check();
             TransmitInput(InputCode.Select);
         }

@@ -89,7 +89,7 @@ namespace Vanaring
 
         }
 
-        private void OnNewRoundBegin(Null n)
+        private void OnNewRoundBegin(ECompetatorSide n)
         {
             RestoreRotateMeshLookAt();
             //ShowAllEntitMesh();

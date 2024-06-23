@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using Vanaring.Assets.Scripts.Combat.Utilities;
+using Vanaring.Assets.Scripts.Utilities;
 
 namespace Vanaring 
 {
@@ -13,9 +14,6 @@ namespace Vanaring
     {
         // TODO : Not singleton inventory
         public static ItemInventory instance = null;
-
-        [SerializeField]
-        private bool DebuggingMode = false;
 
         [Serializable]
         public class ItemInventoryData
@@ -45,7 +43,7 @@ namespace Vanaring
         private void Awake()
         {
             instance = this;
-            if (DebuggingMode)
+            if (EnableDebuggingChecker.Instance.IsDebugingModeEnable)
             {
                 SetUpRuntimeItemFromItemInventory(); 
             }else
