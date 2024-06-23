@@ -3,13 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
+using Vanaring.Assets.Scripts.Utilities;
 
 namespace Vanaring
 {
     public class CombatMissionNodeSetUpHandler : MonoBehaviour, ISceneLoaderWaitForSignal
     {
-        [SerializeField]
-        private bool _onDebugMode = false;
+ 
 
         [SerializeField, AllowNesting, NaughtyAttributes.ShowIf("_onDebugMode")]
         private EntityLoaderPoolSO _debugPool;
@@ -19,7 +19,7 @@ namespace Vanaring
 
         private void Awake()
         {
-            if (_onDebugMode)
+            if (EnableDebuggingChecker.Instance.IsDebugingModeEnable)
             {
                 FindObjectOfType<EntityLoader>().ReceiveEntityLoaderPool(_debugPool);
 
@@ -27,7 +27,7 @@ namespace Vanaring
         }
         private void Start  ()
         {
-            if (_onDebugMode)
+            if (EnableDebuggingChecker.Instance.IsDebugingModeEnable)
             {
                 StartCoroutine(InitializeCombat());
             }
@@ -41,7 +41,7 @@ namespace Vanaring
         public IEnumerator OnNotifySceneLoadingComplete()
         {
 
-            if (! _onDebugMode)
+            if (!EnableDebuggingChecker.Instance.IsDebugingModeEnable)
             {
 
                 _combatDungeonNodeLoaderData = (PersistentSceneLoader.Instance.ExtractSavedData<CombatDungeonNodeLoaderData>("CombatDungeonNodeDataUser") ).GetData() ;  
@@ -60,7 +60,7 @@ namespace Vanaring
         {
             List<RuntimePartyMember> memberInParty = null; 
 
-            if (!_onDebugMode)
+            if (!EnableDebuggingChecker.Instance.IsDebugingModeEnable)
             {
                 memberInParty = DungeonManagerSingleton.Instance.MissionManager.DungeonPartyHandler.PartyMembers;
             } 

@@ -99,7 +99,7 @@ namespace Vanaring
         {
             RelocateEntityToitsOccupiedPosition();
         }
-        private void OnNewRound_RelocateEntityBack(Null n)
+        private void OnNewRound_RelocateEntityBack(ECompetatorSide n)
         {
             RelocateEntityToitsOccupiedPosition(); 
         }

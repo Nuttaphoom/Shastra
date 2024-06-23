@@ -18,6 +18,7 @@ using Vanaring_Utility_Tool;
 using UnityEngine; 
 using static UnityEngine.EventSystems.EventTrigger;
 using static UnityEngine.UI.CanvasScaler;
+using Vanaring.Assets.Scripts.Utilities;
 
 
 namespace Vanaring
@@ -30,8 +31,7 @@ namespace Vanaring
 
     public class CombatReferee : MonoBehaviour
     {
-        [SerializeField]
-        private bool _OnDebugMode;
+     
         [SerializeField, AllowNesting, NaughtyAttributes.ShowIf("_OnDebugMode")]
         List<CompetatorDetailStruct> _competators;
         #region EventBroadcaster
@@ -47,7 +47,7 @@ namespace Vanaring
                 _eventBroadcaster = new EventBroadcaster();
                 _eventBroadcaster.OpenChannel<Null>("OnCombatPreparation");
                 _eventBroadcaster.OpenChannel<CombatEntity>("OnCompetitorEnterCombat");
-                _eventBroadcaster.OpenChannel<Null>("OnNewRoundBegin");
+                _eventBroadcaster.OpenChannel<ECompetatorSide>("OnNewRoundBegin");
             }
 
             return _eventBroadcaster; 
@@ -72,14 +72,14 @@ namespace Vanaring
             GetEventBroadcaster().UnSubEvent<CombatEntity>(argc, "OnCompetitorEnterCombat"); 
         }
 
-        public void SubOnNewRoundBegin(UnityAction<Null> argc)
+        public void SubOnNewRoundBegin(UnityAction<ECompetatorSide> argc)
         {
-            GetEventBroadcaster().SubEvent<Null>(argc, "OnNewRoundBegin");
+            GetEventBroadcaster().SubEvent<ECompetatorSide>(argc, "OnNewRoundBegin");
         }
 
-        public void UnSubOnNewRoundBegin(UnityAction<Null> argc)
+        public void UnSubOnNewRoundBegin(UnityAction<ECompetatorSide> argc)
         {
-            GetEventBroadcaster().UnSubEvent<Null>(argc, "OnNewRoundBegin");
+            GetEventBroadcaster().UnSubEvent<ECompetatorSide>(argc, "OnNewRoundBegin");
         }
 
         #endregion
@@ -149,7 +149,7 @@ namespace Vanaring
         #region SettingUpRound
         public IEnumerator InitializeCombat(List<RuntimePartyMember> playerParty)
         {
-            if (_OnDebugMode)
+            if (EnableDebuggingChecker.Instance.IsDebugingModeEnable)
             {
                 List<CombatEntity> entities = new List<CombatEntity>();
                 foreach (var en in _competators)
@@ -381,7 +381,7 @@ namespace Vanaring
 
                 yield return _combatRefereeStateHandler.StateEnter(); 
 
-                GetEventBroadcaster().InvokeEvent<Null>(null,"OnNewRoundBegin");
+                GetEventBroadcaster().InvokeEvent<ECompetatorSide>(_currentSide ,"OnNewRoundBegin");
 
                 yield return _combatRefereeStateHandler.AdvanceRound();
 
