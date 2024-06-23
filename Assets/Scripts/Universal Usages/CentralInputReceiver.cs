@@ -112,7 +112,7 @@ namespace Vanaring
         void Check()
         {
             // Check if Input is Playstation 4
-            Debug.Log("Device count: " + playerInput_.devices.Count);
+            //Debug.Log("Device count: " + playerInput_.devices.Count);
             if (playerInput_.devices.Count > 0)
             {
                 if (playerInput_.devices[0].description.deviceClass == "Keyboard")
