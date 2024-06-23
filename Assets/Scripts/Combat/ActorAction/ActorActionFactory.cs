@@ -86,6 +86,9 @@ namespace Vanaring
         /// 
         public IEnumerator PerformAction()
         {
+            //if there is another unclear actor actio animation, clear it 
+            DirectorManager.Instance.ClearCurrentTimeline(); 
+
             //Set up 
             SetUpTimeLineActorSetting();
 
@@ -128,10 +131,10 @@ namespace Vanaring
 
                 yield return new WaitForEndOfFrame();
             }
-           
 
-            End: 
-            DirectorManager.Instance.ClearCurrentTimeline();
+
+        End:
+            yield return null; 
 
         }
 

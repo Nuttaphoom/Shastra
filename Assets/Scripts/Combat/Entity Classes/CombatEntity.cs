@@ -233,8 +233,11 @@ namespace Vanaring
         {
             GetEventBroadcaster().InvokeEvent(this, "OnTakeControlLeave");
 
-            GetComponent<EntityCameraManager>().DisableAllAttachedCamera(); 
-            
+            GetComponent<EntityCameraManager>().DisableAllAttachedCamera();
+
+            DirectorManager.Instance.ClearCurrentTimeline();
+
+
             yield return null;
         }
 
