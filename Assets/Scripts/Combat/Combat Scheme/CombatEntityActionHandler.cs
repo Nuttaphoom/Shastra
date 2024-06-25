@@ -72,13 +72,14 @@ namespace Vanaring
                 EntityActionPair  entityActionPair =  new EntityActionPair() { Actor = _performerEntity, PerformedAction = action };
                 GetEventBroadcaster().InvokeEvent<EntityActionPair>(entityActionPair, "OnPerformAction");
 
+                _performerEntity.SetExhaunst(true);// = true;
+
                 yield return action.PerformAction();
 
                 yield return action.PostActionPerform();
 
                 GetEventBroadcaster().InvokeEvent<EntityActionPair>(entityActionPair, "OnPostPerformAction");
 
-                _performerEntity.IsExhausted = true;
 
             }
 

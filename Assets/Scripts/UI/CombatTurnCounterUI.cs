@@ -18,12 +18,8 @@ namespace Vanaring
         {
             if (EnableDebuggingChecker.Instance.IsDebugingModeEnable)
             {
-                Debug.Log("Debug mode enable");
                 StartCoroutine(OnNotifySceneLoadingComplete());
-            }else
-            {
-                Debug.Log("Debug mode disable");
-            }
+            } 
         }
         public void IncreaseTurn(ECompetatorSide currentSide)
         {

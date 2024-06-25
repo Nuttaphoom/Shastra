@@ -365,7 +365,7 @@ namespace Vanaring
             //_currentSide = ECompetatorSide.Ally;
             //_currentEntityIndex = 0;
 
-            SetActiveActors(); 
+            yield return SetActiveActors(); 
             yield return SwitchControl(null,GetCurrentActor());
 
 
@@ -542,8 +542,9 @@ namespace Vanaring
             {
                 //yield return SwitchControl((), null);
 
-                SetActiveActors();
+                yield return SetActiveActors();
 
+                Debug.Log("switch control to " + GetCurrentActor()); 
                 yield return SwitchControl(prevActor, GetCurrentActor());
 
                 //if (GetCurrentActor() != null)
@@ -593,8 +594,9 @@ namespace Vanaring
         /// <summary>
         /// this function should be called everytime an action is finished performed
         /// </summary>
-        public void SetActiveActors()
+        public IEnumerator SetActiveActors()
         {
+ 
             var team = GetCurrentTeam();
 
             _activeCombatEntities.Reset();
@@ -609,6 +611,41 @@ namespace Vanaring
 
                 _activeCombatEntities.Add(team[i]); 
             }
+
+            for (int i = 0; i < _activeCombatEntities.Count(); i++)
+            {
+
+                if (_activeCombatEntities[i].WasGetForcedRelieved(true))
+                {
+                    int repeatition = 0;
+                    while (!_activeCombatEntities[0].WasGetForcedRelieved(true))
+                    {
+                        repeatition++;
+                        if (repeatition > 10)
+                            throw new Exception("repeatition exceeed 10");
+
+                        _activeCombatEntities.Progress(true); 
+                    }
+                    Debug.Log("exit loop with " + _activeCombatEntities[0] + " at 0");
+                }
+            }
+
+            ////search for force relieve entities 
+            //for (int i =0 ; i < _activeCombatEntities.Count() ; i++)
+            //{
+            //    if (_activeCombatEntities[i].WasGetForcedRelieved())
+            //    {
+
+            //        //var temp = _activeCombatEntities[0];
+            //        _activeCombatEntities[0] = _activeCombatEntities[i];
+            //        //_activeCombatEntities[i] = temp;
+            //        break; 
+            //    }
+            //}
+
+            //Debug.Log("Exit loop with 0 is " + _activeCombatEntities[0].gameObject);
+
+            yield return null ;
 
         } 
 
@@ -636,8 +673,12 @@ namespace Vanaring
 
         public CombatEntity GetCurrentActor()
         {
+
             if (_activeCombatEntities.Count() == 0)
-                return null; 
+                return null;
+
+            
+
 
             return _activeCombatEntities[0]; 
         }

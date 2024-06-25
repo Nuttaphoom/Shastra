@@ -60,6 +60,9 @@ namespace Vanaring
         /// </summary>
         private bool _isDead = false ;
         private bool _isExhausted = true ;
+
+
+        private bool _forceRelieve = false; 
      
 
 
@@ -243,7 +246,7 @@ namespace Vanaring
 
         public virtual IEnumerator TurnEnter()
         {
-            _isExhausted = false;
+            SetExhaunst(false);
 
             if (_statusEffectHandler == null)
                 throw new Exception("Status Effect Handler hasn't never been init");
@@ -262,8 +265,7 @@ namespace Vanaring
 
         public virtual IEnumerator TurnLeave()
         {
-            _isExhausted = false; 
-
+            SetExhaunst(false); 
             //yield return _runtimeCharacterStatsAccumulator.ResetTemporaryIncreasedValue();
 
             yield return _statusEffectHandler.RunStatusEffectExpiredScheme();
@@ -273,7 +275,9 @@ namespace Vanaring
         {
             return !IsDead && !IsExhausted;
         }
-        
+
+
+
         public bool ReadyToPerformAction()
         {//We can add functionality to prevent performing action when there is an ailment later 
             return !IsDead ;
@@ -287,11 +291,14 @@ namespace Vanaring
         /// </summary>
         public virtual IEnumerator OnPerformAction(  )
         {
+            Debug.Log("is exhaunted set ");
+
+            SetExhaunst(true);
+
 
             yield return ActionHandler.PerformActionInQueue();
 
 
-            _isExhausted = true;
         }
 
 
@@ -317,7 +324,31 @@ namespace Vanaring
 
         #region GETTER
         public bool IsDead => _isDead;
-        public bool IsExhausted { get => _isExhausted; set => _isExhausted = value; }
+        public void SetExhaunst(bool exhaunt, bool forceRelieve = false )
+        {
+            //_forceRelieve = false;
+
+            _isExhausted = exhaunt;
+
+            if (forceRelieve && !exhaunt)
+                _forceRelieve = true; 
+        }
+
+        public bool WasGetForcedRelieved(bool notRemove = false)
+        {
+            if (_forceRelieve)
+            {
+                if (!notRemove)
+                {
+                    _forceRelieve = false;
+                }
+
+                return true;
+            }
+            else
+                return false;
+        }
+        public bool IsExhausted { get => _isExhausted;  }
 
         public CombatEntityActionHandler ActionHandler => _combatEntityActionHandler; 
         public EnergyOverflowHandler OverflowHandler => _energyOverflowHandler ;

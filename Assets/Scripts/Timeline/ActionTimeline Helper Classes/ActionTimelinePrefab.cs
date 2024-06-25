@@ -146,7 +146,7 @@ namespace Vanaring
                 throw new Exception("CasterTransform count is not right, foundObject.count is " + casterTransforms.Count);
 
             if (targetTransforms.Count == 0)
-                throw new Exception("Target transform can not be found");
+                throw new Exception("Target transform can not be found on ");
       
 
             //Assign Caster and Target Transforms

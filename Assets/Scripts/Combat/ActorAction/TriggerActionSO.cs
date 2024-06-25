@@ -33,7 +33,11 @@ namespace Vanaring
 
         [Header("Target all of the enemies")]
         [SerializeField]
-        private bool _castOnAllHostileTargets; 
+        private bool _castOnAllHostileTargets;
+
+        [Header("Cast on self")]
+        [SerializeField]
+        private bool _castOnSelf; 
         
         
 
@@ -64,6 +68,9 @@ namespace Vanaring
             {
                 ECompetatorSide side =  CombatReferee.Instance.GetCompetatorSide(CombatReferee.Instance.GetCurrentActor());
                 validTarget = CombatReferee.Instance.GetCompetatorsBySide((ECompetatorSide) ((int)(side + 1 ) % 2) ) ; 
+            }else if (_castOnSelf)
+            {
+                validTarget.Add(caster); 
             }
             else
             {

@@ -132,7 +132,7 @@ namespace Vanaring
         {
             CombatEntity _actor;
 
-            _stateHandler.Referee.SetActiveActors(); 
+            //yield return _stateHandler.Referee.SetActiveActors(); 
 
             while (true)
             {

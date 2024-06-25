@@ -10,26 +10,25 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2f5d27031a83ca845945ea045c3f11b6, type: 3}
-  m_Name: Spell_Aranya_Shout
+  m_Name: Spell_Aranaya_TriggerExhaunst
   m_EditorClassIdentifier: 
   _actionDescription:
-    _fieldName: Shout
-    _fieldDescription: 'Deal Dark <b>Normal</b> Damage to a Single target. '
-    _fieldImage: {fileID: 21300000, guid: 2ec27227494514442b7d202009ab60de, type: 3}
+    _fieldName: 
+    _fieldDescription: 
+    _fieldImage: {fileID: 0}
   _targetSelector:
     _maxTargetSize: 1
     _targetAlly: 0
-    _targetOppose: 1
-    _targetSelf: 0
+    _targetOppose: 0
+    _targetSelf: 1
   _actionSignal:
-    _actionTimelinePrefab: {fileID: -8615740222444698358, guid: 0acc395ed73c5194aaf54311a45a45d3, type: 3}
+    _actionTimelinePrefab: {fileID: -8615740222444698358, guid: 2bc8cd117b583ad48af3eafff50148ea, type: 3}
     _signalEffectBindings:
     - _signalType: 1
       _runtimeEffects:
-      - {fileID: 11400000, guid: 71a9d2440e2dc134fa824ccf032e428a, type: 2}
-      - {fileID: 11400000, guid: 90cd324290233bd4c897d1f2bbd2146c, type: 2}
+      - {fileID: 11400000, guid: 51de5909696fd264e9b639cc13fab9ad, type: 2}
   _requiredEnergy:
-    _side: 1
-    _amount: 3
-  _MPCost: 15
+    _side: 0
+    _amount: 1
+  _MPCost: 30
   _isInvokeTrigger: 1
