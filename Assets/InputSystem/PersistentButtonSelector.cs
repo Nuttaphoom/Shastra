@@ -19,9 +19,27 @@ namespace Vanaring
 
         private bool initialButtonSelected = false;
 
+        private bool isSub = false;
+
         private void Awake() 
         {
-            PersistentSceneLoader.Instance.GetTransitionManager.SubOnSceneLoaderComplete(ResetInitialButtonSelected);
+            SubSelectSceneLoader(); 
+        }
+
+        private void FixedUpdate()
+        {
+            SubSelectSceneLoader(); 
+        }
+        private void SubSelectSceneLoader()
+        {
+            if (isSub)
+                return;
+    
+            if (PersistentSceneLoader.Instance.GetTransitionManager != null)
+            {
+                isSub = true; 
+                PersistentSceneLoader.Instance.GetTransitionManager.SubOnSceneLoaderComplete(ResetInitialButtonSelected);
+            }
         }
 
         public void ResetInitialButtonSelected(Null n)

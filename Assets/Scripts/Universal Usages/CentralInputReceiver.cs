@@ -185,7 +185,7 @@ namespace Vanaring
             }
 
         }
-        private void OnInspectionOpen()
+        private void OnInspectionUIOpen()
         {
             Check();
             TransmitInput(InputCode.InspectionOpen); 
