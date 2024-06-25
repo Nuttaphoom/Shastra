@@ -194,7 +194,6 @@ namespace Vanaring
 
         private void OnSelect()
         {
-            Debug.Log("onselect called"); 
             Check();
             TransmitInput(InputCode.Select);
         }

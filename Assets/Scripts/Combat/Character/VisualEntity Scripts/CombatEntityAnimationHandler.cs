@@ -33,9 +33,12 @@ namespace Vanaring
         private Transform _groundTransform;
         private Transform _aboveHeadTransform;
         private Transform _hudTransform;
-        private Transform _targetIconTransform; 
+        private Transform _targetIconTransform;
+        private Transform _characterCenterTransform; 
         private const string CharacterVisualMeshTag = "Character/VisualPivot/CharacterVisualMesh";
         private const string CharacterImpactPivotTag = "Character/VisualPivot/CharacterImpactPivot";
+        private const string CharacterCenterPivotTag = "Character/VisualPivot/CharacterCenterPivot";
+
         private const string CharacterWorldHUDPivotTag = "Character/VisualPivot/CharacterWorldHUDPivot";
         private const string CharacterAboveHeadPivotTag = "Character/VisualPivot/CharacterAboveHeadPivot";
         private const string CharacterGroundPivotTag = "Character/VisualPivot/CharacterGroundPivot";
@@ -61,6 +64,10 @@ namespace Vanaring
             if (child.CompareTag(CharacterTargetIconPivotTag))
                 _targetIconTransform = child;
             
+            if (child.CompareTag(CharacterCenterPivotTag))
+            {
+                _characterCenterTransform = child; 
+            }
              
             for (int i = 0; i < child.transform.childCount; i++)
             {
@@ -92,6 +99,10 @@ namespace Vanaring
 
                 if (child.CompareTag(CharacterTargetIconPivotTag))
                     _targetIconTransform = child;
+
+                if (child.CompareTag(CharacterCenterPivotTag))
+                    _characterCenterTransform = child;
+                
             }
 
             if (_visualMesh == null)
@@ -110,9 +121,12 @@ namespace Vanaring
             if (_aboveHeadTransform == null)
                 throw new Exception("Object with tag " + CharacterAboveHeadPivotTag + " can't be FOUND in " + gameObject.name);
 
-
             if (_targetIconTransform == null)
                 throw new Exception("Object with tag " + CharacterTargetIconPivotTag + " can't be FOUND in " + gameObject.name);
+        
+            if (_characterCenterTransform == null)
+                throw new Exception("Object with tag " + CharacterCenterPivotTag + " can't be FOUND in " + gameObject.name);
+
         }
         private Transform TargetIconTransform
         {
@@ -299,7 +313,12 @@ namespace Vanaring
 
         public Transform GetCenterMesh()
         {
-            return ImpactTransform; 
+            return _characterCenterTransform ; 
+        }
+
+        public Transform GetImpactTransform()
+        {
+            return _impactTransform.transform ;
         }
 
         

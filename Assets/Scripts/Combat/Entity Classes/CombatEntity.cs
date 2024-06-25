@@ -291,7 +291,6 @@ namespace Vanaring
         /// </summary>
         public virtual IEnumerator OnPerformAction(  )
         {
-            Debug.Log("is exhaunted set ");
 
             SetExhaunst(true);
 

@@ -18,6 +18,8 @@ namespace Vanaring
         private const string CasterTransformTag = "Combat/Animation/Action/CasterTransform";
         private const string TargetTransformTag = "Combat/Animation/Action/TargetTransform";
 
+        private const string AttachToImpactTransformTag = "Combat/Animation/Action/AttachToImpactTransform"; 
+
         #endregion
 
         #region Caster/Target Transform  
@@ -131,23 +133,82 @@ namespace Vanaring
                 //Set up look at of the camera 
                 _lookAtBinder.BindLookAtTargetsToEnemies(_targetTransform);
 
-        }
 
+            RelocateImpactVFXtoImpactTransform(casterActor, targetActors); 
+
+        }
+         
+        private void RelocateImpactVFXtoImpactTransform(GameObject casters, List<GameObject> targets)
+        {
+
+            //Assign Target's first 
+            //Target now is inside the TargetTransform
+            var allTargetTransform = ObjectFindingTool.QueryObjectInChildren(transform, TargetTransformTag);
+
+            if (_actionAnimationLocationBinder.MoveTargets)
+            {
+                for (int i = 0; i < targets.Count; i++)
+                {
+                    Debug.Log("targets for relocation :  " + targets[i].gameObject.name);
+
+                    var target = targets[i];
+
+                    List<GameObject> allVFXs = ObjectFindingTool.QueryObjectInChildren(allTargetTransform[i].transform, AttachToImpactTransformTag);
+
+                    Transform impactTransform = target.GetComponent<CombatEntityAnimationHandler>().GetImpactTransform();
+
+                    for (int j = 0; j < allVFXs.Count; j++)
+                    {
+                        Debug.Log("vfx for relocation :  " + allVFXs[j].gameObject.name);
+
+                        allVFXs[j].transform.parent = impactTransform;
+                        allVFXs[j].transform.position = impactTransform.position;
+                        allVFXs[j].transform.rotation = impactTransform.rotation;
+                    }
+                }
+            }
+            //TargetTransform is now inside Targets 
+            else
+            {
+                Debug.Log("try to relocate vfxs is ");
+
+                for(int i = 0  ; i < targets.Count;i++) {
+                    Debug.Log("targets for relocation :  " + targets[i].gameObject.name) ;
+
+                    var target = targets[i];  
+
+                    List<GameObject> allVFXs = ObjectFindingTool.QueryObjectInChildren(allTargetTransform[i].transform, AttachToImpactTransformTag); 
+
+                    Transform  impactTransform = target.GetComponent<CombatEntityAnimationHandler>().GetImpactTransform(); 
+
+                    for (int j =0; j <allVFXs.Count; j++)
+                    {
+                        Debug.Log("vfx for relocation :  " + allVFXs[i].gameObject.name);
+
+                        allVFXs[j].transform.parent = impactTransform               ;
+                        allVFXs[j].transform.position = impactTransform.position    ;
+                        allVFXs[j].transform.rotation = impactTransform.rotation    ;
+                    }
+                }
+            }
+
+            //Assign Caster's
+        }
 
         #region Caster Target Transform Set up
         private void AssignCasterTargetTransform(ActionTimelineSettingStruct actionTimelineSetting)
         {
             //Find Caster Transform 
             List<GameObject> casterTransforms = ObjectFindingTool.QueryObjectInChildren(transform, CasterTransformTag);
-            List<GameObject> targetTransforms = ObjectFindingTool.QueryObjectInChildren(transform, TargetTransformTag); 
- 
+            List<GameObject> targetTransforms = ObjectFindingTool.QueryObjectInChildren(transform, TargetTransformTag);
+
             
             if (casterTransforms.Count != 1)
                 throw new Exception("CasterTransform count is not right, foundObject.count is " + casterTransforms.Count);
 
             if (targetTransforms.Count == 0)
                 throw new Exception("Target transform can not be found on ");
-      
+
 
             //Assign Caster and Target Transforms
             _casterTransform = casterTransforms[0].transform ;

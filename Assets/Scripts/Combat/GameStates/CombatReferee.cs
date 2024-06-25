@@ -430,7 +430,7 @@ namespace Vanaring
                 yield return prevEntity.TakeControlLeave();
             }
 
-            if (prevEntity != newEntity && newEntity != null)
+            if (/*prevEntity != newEntity &&*/ newEntity != null)
             {
                 FindObjectOfType<CharacterWindowManager>().SetActiveEntityGUI(newEntity);
 

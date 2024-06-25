@@ -35,7 +35,6 @@ namespace Vanaring
 
         public override IEnumerator ExecuteRuntimeCoroutine(CombatEntity caster)
         {
-            Debug.Log("start to relieve with target.count : " + _targets.Count);
             if (this.relieveExhaunt)
             {
                 foreach (var target in _targets)
