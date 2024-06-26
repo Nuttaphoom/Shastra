@@ -16,6 +16,7 @@ using Cinemachine;
 using DG.Tweening;
 using System.Runtime.InteropServices;
 using PixelCrushers.DialogueSystem.UnityGUI;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 namespace Vanaring 
 {
@@ -227,6 +228,27 @@ namespace Vanaring
         }
 
         #region Mesh Methods 
+
+
+        private int capturedAnimatorHash;
+        private void CaptureAnimatorState()
+        {
+            var animator = GetVisualMesh().GetComponent<Animator>();
+            var stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+            int subState = Animator.StringToHash("Stun Stay") ;
+            capturedAnimatorHash = animator.GetCurrentAnimatorStateInfo(0).fullPathHash ;
+            
+        }
+
+
+        private void RestoreAnimatorState()
+        {
+            var animator = GetVisualMesh().GetComponent<Animator>();
+                
+            animator.Play(capturedAnimatorHash, 0, 1.0f);
+             
+        }
+
         public void HideVisualMesh()
         {
             foreach (var attachedvfx in _attachedVFXs)
@@ -236,14 +258,14 @@ namespace Vanaring
                     attachedvfx.gameObject.SetActive(false);
                 }
             }
+            CaptureAnimatorState();
+
             GetVisualMesh().gameObject.SetActive(false);
+
         }
 
         public void ShowVisualMesh()
-        {
-            //if (_combatEntity == null)
-            //    _combatEntity = GetComponent<CombatEntity>(); 
-             
+        {       
             if (_combatEntity.IsDead)
                 return;
 
@@ -255,7 +277,9 @@ namespace Vanaring
                 }
             }
 
-            GetVisualMesh().gameObject.SetActive(true); 
+            GetVisualMesh().gameObject.SetActive(true);
+
+            RestoreAnimatorState(); 
         }
         public IEnumerator DeadVisualPresentation()
         {

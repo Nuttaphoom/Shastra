@@ -150,7 +150,7 @@ namespace Vanaring
 
                 for (int i = 0; i < targets.Count; i++)
                 {
-                    Debug.Log("targets for relocation :  " + targets[i].gameObject.name);
+                    //Debug.Log("targets for relocation :  " + targets[i].gameObject.name);
 
                     var target = targets[i];
 
@@ -160,7 +160,7 @@ namespace Vanaring
 
                     for (int j = 0; j < allVFXs.Count; j++)
                     {
-                        Debug.Log("vfx for relocation :  " + allVFXs[j].gameObject.name);
+                        //Debug.Log("vfx for relocation :  " + allVFXs[j].gameObject.name);
 
                         allVFXs[j].transform.parent = impactTransform;
                         allVFXs[j].transform.position = impactTransform.position;
@@ -172,10 +172,10 @@ namespace Vanaring
             else
             {
 
-                Debug.Log("try to relocate vfxs is ");
+                //Debug.Log("try to relocate vfxs is ");
 
                 for(int i = 0  ; i < targets.Count;i++) {
-                    Debug.Log("targets for relocation :  " + targets[i].gameObject.name) ;
+                    //Debug.Log("targets for relocation :  " + targets[i].gameObject.name) ;
                     var allTargetTransform = ObjectFindingTool.QueryObjectInChildren(targets[i].transform, TargetTransformTag);
 
 
