@@ -143,10 +143,11 @@ namespace Vanaring
 
             //Assign Target's first 
             //Target now is inside the TargetTransform
-            var allTargetTransform = ObjectFindingTool.QueryObjectInChildren(transform, TargetTransformTag);
 
             if (_actionAnimationLocationBinder.MoveTargets)
             {
+                var allTargetTransform = ObjectFindingTool.QueryObjectInChildren(transform, TargetTransformTag);
+
                 for (int i = 0; i < targets.Count; i++)
                 {
                     Debug.Log("targets for relocation :  " + targets[i].gameObject.name);
@@ -170,10 +171,13 @@ namespace Vanaring
             //TargetTransform is now inside Targets 
             else
             {
+
                 Debug.Log("try to relocate vfxs is ");
 
                 for(int i = 0  ; i < targets.Count;i++) {
                     Debug.Log("targets for relocation :  " + targets[i].gameObject.name) ;
+                    var allTargetTransform = ObjectFindingTool.QueryObjectInChildren(targets[i].transform, TargetTransformTag);
+
 
                     var target = targets[i];  
 
