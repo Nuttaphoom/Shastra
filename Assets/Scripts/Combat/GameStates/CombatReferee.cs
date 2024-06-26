@@ -544,7 +544,7 @@ namespace Vanaring
 
                 yield return SetActiveActors();
 
-                Debug.Log("switch control to " + GetCurrentActor()); 
+                //Debug.Log("switch control to " + GetCurrentActor()); 
                 yield return SwitchControl(prevActor, GetCurrentActor());
 
                 //if (GetCurrentActor() != null)
@@ -626,7 +626,7 @@ namespace Vanaring
 
                         _activeCombatEntities.Progress(true); 
                     }
-                    Debug.Log("exit loop with " + _activeCombatEntities[0] + " at 0");
+                    //Debug.Log("exit loop with " + _activeCombatEntities[0] + " at 0");
                 }
             }
 
