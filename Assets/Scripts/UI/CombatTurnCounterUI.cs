@@ -13,6 +13,8 @@ namespace Vanaring
 
         [SerializeField]
         private TextMeshProUGUI _roundCoutnerText ;
+        [SerializeField]
+        private Animator turnAnim;
 
         private void Awake()
         {
@@ -28,15 +30,25 @@ namespace Vanaring
             {
                 _currentPlayerRound += 1;
 
-                UpdateTurnCounter();
+                StartCoroutine(UpdateTurnCounter());
             }
         }
 
-        private void UpdateTurnCounter()
+        private IEnumerator UpdateTurnCounter()
         {
             if (_currentPlayerRound < 10)
             {
+                turnAnim.Play("NextTurnOut");
+                //while (turnAnim.GetCurrentAnimatorStateInfo(0).IsName("NextTurnOut"))
+                //{
+                //    yield return new WaitForEndOfFrame();
+                //}
+
+                yield return new WaitForSeconds(0.15f);
+                
                 _roundCoutnerText.text = "0" + _currentPlayerRound.ToString();
+
+                turnAnim.SetTrigger("TurnIn");
             }
         }
 
@@ -49,7 +61,7 @@ namespace Vanaring
         {
             _currentPlayerRound = 0;
 
-            UpdateTurnCounter();
+            yield return UpdateTurnCounter();
 
             CombatReferee.Instance.SubOnNewRoundBegin(IncreaseTurn);
 
