@@ -76,6 +76,7 @@ namespace Vanaring
                 }
                 foreach (CombatEntity entity in CombatReferee.Instance.GetCompetatorsBySide(ECompetatorSide.Hostile))
                 {
+                    Debug.Log("ene");
                     GameObject newEnemyButton = Instantiate(entityButtonTemplate, enemyHRZ.transform);
                     newEnemyButton.GetComponent<Button>().onClick.AddListener(() => LoadAllyEntityDetail(entity, false));
                     newEnemyButton.gameObject.SetActive(true);
@@ -94,13 +95,13 @@ namespace Vanaring
 
         private void LoadAllyEntityDetail(CombatEntity entity, bool isAlly)
         {
-            return;
+            //return;
             entityLevelSection.gameObject.SetActive(isAlly);
             mpSection.gameObject.SetActive(isAlly);
             priStatSection.gameObject.SetActive(isAlly);
 
             entityName.text = entity.CombatCharacterSheet.CharacterName;
-            hpNumText.text = "HP: " + entity.StatsAccumulator.GetHPAmount() + "/" + entity.StatsAccumulator.GetPeakHPAmount();
+            hpNumText.text = (int)entity.StatsAccumulator.GetHPAmount() + "/" + entity.StatsAccumulator.GetPeakHPAmount();
             hpFillBar.fillAmount = (float)entity.StatsAccumulator.GetHPAmount() / entity.StatsAccumulator.GetPeakHPAmount();
 
             foreach (var item in effSocketList)
@@ -132,14 +133,14 @@ namespace Vanaring
                 }
 
 
-                mpNumText.text = "MP: " + entity.SpellCaster.GetMP + "/" + entity.SpellCaster.GetPeakMP;
+                mpNumText.text = entity.SpellCaster.GetMP + "/" + entity.SpellCaster.GetPeakMP;
                 mpFillBar.fillAmount = (float)entity.SpellCaster.GetMP / entity.SpellCaster.GetPeakMP;
 
-                strStatText.text = "STR " + entity.CombatCharacterSheet.GetModStrength;
-                vitStatText.text = "VIT " + entity.CombatCharacterSheet.GetModVitality;
-                intStatText.text = "INT " + entity.CombatCharacterSheet.GetModIntellect;
-                agiStatText.text = "AGI " + entity.CombatCharacterSheet.GetModAgility;
-                lckStatText.text = "LCK " + entity.CombatCharacterSheet.GetModLuck;
+                strStatText.text = "" + entity.CombatCharacterSheet.GetModStrength;
+                vitStatText.text = "" + entity.CombatCharacterSheet.GetModVitality;
+                intStatText.text = "" + entity.CombatCharacterSheet.GetModIntellect;
+                agiStatText.text = "" + entity.CombatCharacterSheet.GetModAgility;
+                lckStatText.text = "" + entity.CombatCharacterSheet.GetModLuck;
             }
         }
 
@@ -150,6 +151,7 @@ namespace Vanaring
 
         private void SetupInfo()
         {
+            Debug.Log(allyIndex);
             if (isAllyMode)
             {
                 allyButtonList[allyIndex].GetComponent<Button>().onClick.Invoke();
@@ -181,16 +183,42 @@ namespace Vanaring
         {
             if (key == InputCode.Left)
             {
-                allyIndex = Math.Clamp(allyIndex - 1, 0, 2);
+                allyIndex--;// = Math.Clamp(allyIndex - 1, 0, 2);
+
+                if (!isAllyMode && allyIndex + 1 < enemyButtonList.Count)
+                {
+                    allyIndex = 2;
+                    isAllyMode = true;
+                }
+
+                if (allyIndex < 0)
+                {
+                    allyIndex = 0;
+                    //isAllyMode = false;
+                }
+
                 SetupInfo();
             }
             if (key == InputCode.Right)
             {
-                allyIndex = Math.Clamp(allyIndex + 1, 0, 2);
+                allyIndex++; //= Math.Clamp(allyIndex + 1, 0, 2);
+                
+                if(!isAllyMode && allyIndex+1 > enemyButtonList.Count)
+                {
+                    allyIndex--;
+                }
+
+                if(allyIndex > 2)
+                {
+                    allyIndex = 0;
+                    isAllyMode = false;
+                }
+
                 SetupInfo();
             }
             if (key == InputCode.C)
             {
+                Debug.Log("Change Inspect Mode");
                 allyIndex = 0;
                 isAllyMode = !isAllyMode;
                 SetupInfo();
