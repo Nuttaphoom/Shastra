@@ -36,9 +36,12 @@ namespace Vanaring
         [SerializeField] private TextMeshProUGUI lckStatText;
 
         [SerializeField] private GameObject entityButtonTemplate;
+        [SerializeField] private ControlBox currentControlBoxTemplate;
+        [SerializeField] private GameObject hrzControlBox;
 
         private List<GameObject> allyButtonList = new List<GameObject>();
         private List<GameObject> enemyButtonList = new List<GameObject>();
+        private List<ControlBox> controlBoxList = new List<ControlBox>();
         private List<SocketGUI> effSocketList = new List<SocketGUI>();
         private int allyIndex = 0;
         private bool isAllyMode = true;
@@ -65,7 +68,12 @@ namespace Vanaring
                     Destroy(item);
                 }
                 enemyButtonList.Clear();
-                
+                foreach (var item in controlBoxList)
+                {
+                    Destroy(item);
+                }
+                controlBoxList.Clear();
+
                 foreach (CombatEntity entity in CombatReferee.Instance.GetCompetatorsBySide(ECompetatorSide.Ally))
                 {
                     GameObject newAllyButton = Instantiate(entityButtonTemplate, allyHRZ.transform);
@@ -78,10 +86,25 @@ namespace Vanaring
                 {
                     Debug.Log("ene");
                     GameObject newEnemyButton = Instantiate(entityButtonTemplate, enemyHRZ.transform);
+
                     newEnemyButton.GetComponent<Button>().onClick.AddListener(() => LoadAllyEntityDetail(entity, false));
                     newEnemyButton.gameObject.SetActive(true);
                     enemyButtonList.Add(newEnemyButton);
                 }
+
+                int count = CombatReferee.Instance.GetCompetatorsBySide(ECompetatorSide.Ally).Count + CombatReferee.Instance.GetCompetatorsBySide(ECompetatorSide.Hostile).Count;
+
+                for (int i = 0; i < count; i++)
+                {
+                    Debug.Log(count);
+                    ControlBox newBox = Instantiate(currentControlBoxTemplate, hrzControlBox.transform);
+                    newBox.SetActiveImage(false);
+                    newBox.gameObject.SetActive(true);
+                    controlBoxList.Add(newBox);
+                }
+                currentControlBoxTemplate.gameObject.SetActive(false);
+                controlBoxList[0].SetActiveImage(true);
+
                 entityButtonTemplate.gameObject.SetActive(false);
             }
 
@@ -151,7 +174,19 @@ namespace Vanaring
 
         private void SetupInfo()
         {
-            Debug.Log(allyIndex);
+            foreach (var item in controlBoxList)
+            {
+                item.SetActiveImage(false);
+            }
+            if (isAllyMode)
+            {
+                controlBoxList[allyIndex].SetActiveImage(true);
+
+            }
+            else
+            {
+                controlBoxList[3+allyIndex].SetActiveImage(true);
+            }
             if (isAllyMode)
             {
                 allyButtonList[allyIndex].GetComponent<Button>().onClick.Invoke();
@@ -168,6 +203,8 @@ namespace Vanaring
 
         public override void OnWindowActive()
         {
+            allyIndex = 0;
+            isAllyMode = true;
         }
 
         public override void OnWindowDeActive()
