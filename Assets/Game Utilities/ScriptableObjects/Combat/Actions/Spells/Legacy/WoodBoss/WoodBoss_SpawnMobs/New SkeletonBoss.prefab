@@ -777,7 +777,7 @@ GameObject:
   - component: {fileID: 4949649627718088338}
   - component: {fileID: 2117947570672614965}
   m_Layer: 0
-  m_Name: SkeletonBoss
+  m_Name: New SkeletonBoss
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -903,58 +903,6 @@ MonoBehaviour:
     _comboHandler:
       _combo: 0
       _breakOnStun: 0
-  - _behaviorDescription: 'Phase 1 : HP is more than 50% but can''t spawn'
-    OR: 0
-    AND: 1
-    _behaviorCondition:
-    - {fileID: 11400000, guid: 6e8099e63ecd9fb4fa315b03c86c4314, type: 2}
-    _invokeOrder: 0
-    _actions:
-    - _actionFactory: {fileID: 11400000, guid: b3804f44d756b6846a25846624466128, type: 2}
-      _possibility: 0.3
-    - _actionFactory: {fileID: 11400000, guid: 305b4391a8a79b043b172a56bd99e8f6, type: 2}
-      _possibility: 0.2
-    - _actionFactory: {fileID: 11400000, guid: 6ac4a95938ffa8d418ff985afad004ef, type: 2}
-      _possibility: 0.5
-    _priority: 2
-    _comboHandler:
-      _combo: 0
-      _breakOnStun: 0
-  - _behaviorDescription: 'Phase 2 : HP is less than 50%'
-    OR: 0
-    AND: 1
-    _behaviorCondition:
-    - {fileID: 11400000, guid: d3727bcf82879ae499b71a82f632b1a5, type: 2}
-    - {fileID: 11400000, guid: be1fae307d6613a4089bac45eaca5a85, type: 2}
-    _invokeOrder: 0
-    _actions:
-    - _actionFactory: {fileID: 11400000, guid: 7d2d43a5d65714c4c9ba450ffb097f65, type: 2}
-      _possibility: 0.4
-    - _actionFactory: {fileID: 11400000, guid: 6ac4a95938ffa8d418ff985afad004ef, type: 2}
-      _possibility: 0.6
-    _priority: 102
-    _comboHandler:
-      _combo: 0
-      _breakOnStun: 0
-  - _behaviorDescription: 'Phase 2 : HP is less than 50% but can''t spawn'
-    OR: 0
-    AND: 1
-    _behaviorCondition:
-    - {fileID: 11400000, guid: d3727bcf82879ae499b71a82f632b1a5, type: 2}
-    _invokeOrder: 1
-    _actions:
-    - _actionFactory: {fileID: 11400000, guid: b3804f44d756b6846a25846624466128, type: 2}
-      _possibility: 1
-    - _actionFactory: {fileID: 11400000, guid: 6d613c4a62da6f745b2aa8768ff50f93, type: 2}
-      _possibility: 1
-    - _actionFactory: {fileID: 11400000, guid: 6d613c4a62da6f745b2aa8768ff50f93, type: 2}
-      _possibility: 1
-    - _actionFactory: {fileID: 11400000, guid: 1483fad09cb7f9a46abab07929ebbf3c, type: 2}
-      _possibility: 1
-    _priority: 101
-    _comboHandler:
-      _combo: 1
-      _breakOnStun: 1
 --- !u!114 &4949649627718088338
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -44,17 +44,17 @@ namespace Vanaring
 
         public override IEnumerator ExecuteRuntimeCoroutine(CombatEntity caster)
         {
-            throw new NotImplementedException(); 
-            //    List<IEnumerator> ie = new List<IEnumerator>();
-            //    foreach (var entityData in _entitiesData)
-            //    {
-            //        var prefabTemplate = entityData.CombatEntity;
-            //        var side = entityData.Side; 
+            //throw new NotImplementedException(); 
+            List<IEnumerator> ie = new List<IEnumerator>();
+            foreach (var entityData in _entitiesData)
+            {
+                var prefabTemplate = entityData.CombatEntity;
+                var side = entityData.Side;
 
-            //        ie.Add(CombatReferee.Instance.InstantiateCompetator( prefabTemplate,  side)) ;
-            //    }
+                ie.Add(CombatReferee.Instance.InstantiateCompetator(prefabTemplate, side, true));
+            }
 
-            //    yield return new WaitAll(caster,ie.ToArray() );
+            yield return new WaitAll(caster, ie.ToArray());
         }
 
 

@@ -320,13 +320,21 @@ namespace Vanaring
         /// <param name="entites"></param>
         /// <param name="side"></param>
         /// <returns></returns>
-        private IEnumerator AssignCompetators(List<CombatEntity> entites, ECompetatorSide side)
+        private IEnumerator AssignCompetators(List<CombatEntity> entites, ECompetatorSide side, bool addDuringCombat = false)
         {
             List<IEnumerator> _allIEs = new List<IEnumerator>();
 
             if (side == ECompetatorSide.Hostile)
-                EntityPositionManager.Instance.SetNewEnemyCurrentSize(entites.Count); 
-            
+            {
+                int newEnemySize = entites.Count ; 
+                if (addDuringCombat)
+                {
+                    newEnemySize = EntityPositionManager.Instance.CurrentEnemySize + entites.Count; 
+                }
+                 
+                EntityPositionManager.Instance.SetNewEnemyCurrentSize(newEnemySize);
+
+            }
 
             foreach (var entity in entites) {
                 EntityPositionManager.Instance.OccupieAnyValidLocation(side, entity); 
@@ -469,7 +477,7 @@ namespace Vanaring
             return false;
         } 
 
-        public IEnumerator InstantiateCompetator(CombatEntity prefabNewCompetator, ECompetatorSide side)
+        public IEnumerator InstantiateCompetator(CombatEntity prefabNewCompetator, ECompetatorSide side, bool addDurningCombat = false)
         {
             List<CombatEntity> entitesWithSameSide = new List<CombatEntity>();
             entitesWithSameSide = GetCompetatorsBySide(side);
@@ -479,7 +487,7 @@ namespace Vanaring
             
             CombatEntity entity = _entityLoader.SpawnPrefab(prefabNewCompetator) ;
 
-            yield return AssignCompetators(new List<CombatEntity>() { entity } , side);
+            yield return AssignCompetators(new List<CombatEntity>() { entity } , side, addDurningCombat);
 
            
              

@@ -55,6 +55,9 @@ namespace Vanaring
 
             foreach (CombatEntity combatEntity in entities)
             {
+                if (! instantiatedEnemyHUD.ContainsKey(combatEntity))
+                    CreateAllEnemyHUD(); 
+                
                 instantiatedEnemyHUD[combatEntity].DisplayHUDVisual();
             }
         }
