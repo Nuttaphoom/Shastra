@@ -5,6 +5,8 @@ using TMPro;
 using UnityEngine.UI;
 using System;
 using UnityEngine.Playables;
+using UnityEngine.Rendering;
+using Vanaring.Assets.Scripts.Utilities;
 
 namespace Vanaring
 {
@@ -49,8 +51,7 @@ namespace Vanaring
         [SerializeField] private GameObject enemyHRZ;
         [SerializeField] private GameObject effVTCL;
         [SerializeField] private SocketGUI effSocket;
-        public bool isDebugingMode = true;
-
+ 
         [ContextMenu("Init")]
         public void Init()
         {
@@ -84,7 +85,7 @@ namespace Vanaring
                 }
                 foreach (CombatEntity entity in CombatReferee.Instance.GetCompetatorsBySide(ECompetatorSide.Hostile))
                 {
-                    Debug.Log("ene");
+                    //Debug.Log("ene");
                     GameObject newEnemyButton = Instantiate(entityButtonTemplate, enemyHRZ.transform);
 
                     newEnemyButton.GetComponent<Button>().onClick.AddListener(() => LoadAllyEntityDetail(entity, false));
@@ -96,7 +97,7 @@ namespace Vanaring
 
                 for (int i = 0; i < count; i++)
                 {
-                    Debug.Log(count);
+                    //Debug.Log(count);
                     ControlBox newBox = Instantiate(currentControlBoxTemplate, hrzControlBox.transform);
                     newBox.SetActiveImage(false);
                     newBox.gameObject.SetActive(true);
@@ -147,7 +148,7 @@ namespace Vanaring
 
             if (isAlly)
             {
-                if (!isDebugingMode)
+                if (!EnableDebuggingChecker.Instance.IsDebugingModeEnable )
                 {
                     foreach (RuntimeCombatMemberData cmember in PersistentPlayerPersonalDataManager.Instance.CombatMemberDataLocator.GetRuntimeCombatMembers)
                     {
