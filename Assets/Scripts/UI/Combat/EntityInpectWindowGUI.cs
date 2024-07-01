@@ -94,6 +94,7 @@ namespace Vanaring
                 }
 
                 int count = CombatReferee.Instance.GetCompetatorsBySide(ECompetatorSide.Ally).Count + CombatReferee.Instance.GetCompetatorsBySide(ECompetatorSide.Hostile).Count;
+                Debug.Log(count);
 
                 for (int i = 0; i < count; i++)
                 {
