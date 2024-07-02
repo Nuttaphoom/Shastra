@@ -149,6 +149,10 @@ namespace Vanaring
             _windowManager.OpenWindow(EWindowGUI.Main);
         }
 
+        public void InvokeEvent()
+        {
+
+        }
         
 
         private void LoadAllyEntityDetail(CombatEntity entity, bool isAlly)
@@ -208,13 +212,13 @@ namespace Vanaring
             {
                 controlBoxList[allyIndex].SetActiveImage(true);
                 allyButtonList[allyIndex].GetComponent<Button>().onClick.Invoke();
-                GetEventBroadcaster().InvokeEvent<CombatEntity>(entityList[allyIndex] , "OnEntityInspect");
+                
             }
             else
             {
                 controlBoxList[3+allyIndex].SetActiveImage(true);
                 enemyButtonList[allyIndex].GetComponent<Button>().onClick.Invoke();
-                GetEventBroadcaster().InvokeEvent<CombatEntity>(entityList[3 + allyIndex], "OnEntityInspect");
+                
             }
         }
 
@@ -254,6 +258,14 @@ namespace Vanaring
                     allyIndex = 0;
                     //isAllyMode = false;
                 }
+                if (isAllyMode)
+                {
+                    _eventBroadcaster.InvokeEvent<CombatEntity>(entityList[allyIndex], "OnEntityInspect");
+                }
+                else
+                {
+                    _eventBroadcaster.InvokeEvent<CombatEntity>(entityList[3 + allyIndex], "OnEntityInspect");
+                }
 
                 SetupInfo();
             }
@@ -270,6 +282,14 @@ namespace Vanaring
                 {
                     allyIndex = 0;
                     isAllyMode = false;
+                }
+                if (isAllyMode)
+                {
+                    _eventBroadcaster.InvokeEvent<CombatEntity>(entityList[allyIndex], "OnEntityInspect");
+                }
+                else
+                {
+                    _eventBroadcaster.InvokeEvent<CombatEntity>(entityList[3 + allyIndex], "OnEntityInspect");
                 }
 
                 SetupInfo();
