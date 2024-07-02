@@ -38,10 +38,10 @@ namespace Vanaring
 
             TargetSelectionFlowControl.Instance.SubOnTargetSelectionEnd(OnTargetSelectionEnd_HideAllyVisualMesh);
 
-            if (_entityInspectWindowGUI == null)
-                throw new Exception("_entityInspectWindowGUI hasn't never been assigned");
+            //if (_entityInspectWindowGUI == null)
+            //    throw new Exception("_entityInspectWindowGUI hasn't never been assigned");
 
-            _entityInspectWindowGUI.SubOnEntityInspect(OnEntityInspection); 
+            //_entityInspectWindowGUI.SubOnEntityInspect(OnEntityInspection); 
         }
 
         private void OnEntityInspection(CombatEntity inspectOnThisEntity)

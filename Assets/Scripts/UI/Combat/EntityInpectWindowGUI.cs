@@ -208,13 +208,13 @@ namespace Vanaring
             {
                 controlBoxList[allyIndex].SetActiveImage(true);
                 allyButtonList[allyIndex].GetComponent<Button>().onClick.Invoke();
-                _eventBroadcaster.InvokeEvent<CombatEntity>(entityList[allyIndex] , "OnEntityInspect");
+                GetEventBroadcaster().InvokeEvent<CombatEntity>(entityList[allyIndex] , "OnEntityInspect");
             }
             else
             {
                 controlBoxList[3+allyIndex].SetActiveImage(true);
                 enemyButtonList[allyIndex].GetComponent<Button>().onClick.Invoke();
-                _eventBroadcaster.InvokeEvent<CombatEntity>(entityList[3 + allyIndex], "OnEntityInspect");
+                GetEventBroadcaster().InvokeEvent<CombatEntity>(entityList[3 + allyIndex], "OnEntityInspect");
             }
         }
 
