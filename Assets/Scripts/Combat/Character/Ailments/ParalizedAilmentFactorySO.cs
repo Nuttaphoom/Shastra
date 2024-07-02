@@ -21,9 +21,10 @@ namespace Vanaring
         [SerializeField]
         private ParalizedAilmentAilmentDataType _data;
 
+
         public override Ailment FactorizeAilment(CombatEntity patient, int ttl)
         {
-            var stunAilment = new ParalizedAilment(patient, ttl);
+            var stunAilment = new ParalizedAilment(patient, ttl, _descriptionBaseField);
             stunAilment.Init(_basicInfo, _data);
             return stunAilment;
         }
@@ -31,7 +32,7 @@ namespace Vanaring
 
     public class ParalizedAilment : Ailment<ParalizedAilmentAilmentDataType>
     {
-        public ParalizedAilment(CombatEntity patient, int ttl) : base(patient, ttl)
+        public ParalizedAilment(CombatEntity patient, int ttl, DescriptionBaseField _descriptionBaseField) : base(patient, ttl, _descriptionBaseField)
         {
 
         }

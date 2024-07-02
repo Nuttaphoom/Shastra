@@ -21,7 +21,7 @@ namespace Vanaring
         
         public override Ailment FactorizeAilment(CombatEntity patient,int ttl)
         {
-            var stunAilment = new StunAilment(patient, ttl);
+            var stunAilment = new StunAilment(patient, ttl, _descriptionBaseField);
             stunAilment.Init(_basicInfo,_data);
             return stunAilment;
         }
@@ -29,7 +29,7 @@ namespace Vanaring
 
     public class StunAilment : Ailment<StunAilmentDataType>
     {
-        public StunAilment(CombatEntity patient,int ttl) : base(patient,   ttl) 
+        public StunAilment(CombatEntity patient,int ttl, DescriptionBaseField descriptionBaseField) : base(patient, ttl, descriptionBaseField) 
         {
 
         }
