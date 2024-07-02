@@ -234,10 +234,20 @@ namespace Vanaring
         private int capturedAnimatorHash = -1 ;
         private void CaptureAnimatorState()
         {
+            if (gameObject.GetComponent<AIEntity>() != null)
+            {
+                ColorfulLogger.LogWithColor("Capture " + gameObject.name + " animation state", Color.yellow); 
+            }
+
+            
             var animator = GetVisualMesh().GetComponent<Animator>();
             var stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+
+            if (! stateInfo.IsName("Idle") || stateInfo.IsName("Stun Stay"))
+                return;
+            
             captured_normalizedTimeAnimation = animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
-            ColorfulLogger.LogWithColor("captutred captured_normalizedTimeAnimation  in " + gameObject.name + " : " +  captured_normalizedTimeAnimation , Color.blue); 
+
             capturedAnimatorHash = animator.GetCurrentAnimatorStateInfo(0).fullPathHash ;
             
         }
@@ -245,22 +255,34 @@ namespace Vanaring
 
         private void RestoreAnimatorState()
         {
+            if (gameObject.GetComponent<AIEntity>() != null)
+            {
+                ColorfulLogger.LogWithColor("Restore " + gameObject.name + " animation state", Color.green);
+            }
             if (capturedAnimatorHash == -1 || captured_normalizedTimeAnimation == -1)
                 return; 
 
             var animator = GetVisualMesh().GetComponent<Animator>();
 
-            ColorfulLogger.LogWithColor("restore captured_normalizedTimeAnimation in " + gameObject.name +" : " + captured_normalizedTimeAnimation, Color.red);
+            //ColorfulLogger.LogWithColor("restore captured_normalizedTimeAnimation in " + gameObject.name +" : " + captured_normalizedTimeAnimation, Color.red);
             animator.Play(capturedAnimatorHash, 0, captured_normalizedTimeAnimation);
 
-            capturedAnimatorHash = -1;
-            captured_normalizedTimeAnimation = -1; 
+            ResetCapturedAnimationData(); 
 
 
         }
 
+        public void ResetCapturedAnimationData()
+        {
+            capturedAnimatorHash = -1;
+            captured_normalizedTimeAnimation = -1;
+        } 
+
         public void HideVisualMesh()
         {
+            if (! GetVisualMesh().gameObject.activeSelf)
+                return;
+
             foreach (var attachedvfx in _attachedVFXs)
             {
                 if (attachedvfx != null)
@@ -275,7 +297,11 @@ namespace Vanaring
         }
 
         public void ShowVisualMesh()
-        {       
+        {
+            if (GetVisualMesh().gameObject.activeSelf)
+                return;
+
+
             if (_combatEntity.IsDead)
                 return;
 

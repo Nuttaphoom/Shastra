@@ -187,7 +187,7 @@ namespace Vanaring
 
         public bool IsExpired()
         {
-            Debug.Log("Check  TTL  is expired : " + _timeToLive); 
+            //Debug.Log("Check  TTL  is expired : " + _timeToLive); 
 
             EventBroadcaster.InvokeEvent<bool>(_timeToLive <= 0, "OnStatusEffectExpire") ; 
             return _timeToLive <= 0.0f;

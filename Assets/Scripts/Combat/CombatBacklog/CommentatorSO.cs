@@ -18,7 +18,7 @@ namespace Vanaring
         {
             string characterName = characterInConversation.CombatCharacterSheet.CharacterName;
             string s = _comment.Replace("[CharacterName]", characterName);
-            Debug.Log("characterName : " + characterName + " so get comment " + s) ;
+            //Debug.Log("characterName : " + characterName + " so get comment " + s) ;
             return s ;
         }
     }

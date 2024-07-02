@@ -58,8 +58,7 @@ namespace Vanaring
 
         public override IEnumerator TakeControl()
         {
-            //Debug.Log("" + gameObject.name + " took control");
-
+            
             GetComponent<ItemUserHandler>().FactorizeItemInInventory();
     
             EnableCamera() ;

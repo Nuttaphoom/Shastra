@@ -167,6 +167,7 @@ namespace Vanaring
 
         public void HideAllEntityMesh (ECompetatorSide side, List<CombatEntity> entityException = null)
         {
+            
             foreach (var mesh in GetAllCompetators(side))
             {
                 if (entityException.Contains(mesh))
