@@ -11,9 +11,11 @@ namespace Vanaring
     {
  
 
-        [SerializeField, AllowNesting, NaughtyAttributes.ShowIf("_onDebugMode")]
+        [SerializeField]
         private EntityLoaderPoolSO _debugPool;
- 
+
+        
+    
 
         private CombatDungeonNodeLoaderData _combatDungeonNodeLoaderData ;
 

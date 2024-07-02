@@ -31,8 +31,9 @@ namespace Vanaring
 
     public class CombatReferee : MonoBehaviour
     {
-     
-        [SerializeField, AllowNesting, NaughtyAttributes.ShowIf("_OnDebugMode")]
+
+        [Header("Competators for debugging")]
+        [SerializeField ]
         List<CompetatorDetailStruct> _competators;
         #region EventBroadcaster
         private EventBroadcaster _eventBroadcaster;

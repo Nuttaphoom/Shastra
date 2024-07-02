@@ -70,7 +70,7 @@ namespace Vanaring
             {
                 _eventBroadcaster = new EventBroadcaster();
                 _eventBroadcaster.OpenChannel<ControlScheme>("OnControllerSchemeChange");
-            }
+            } 
 
             return _eventBroadcaster;
         }
