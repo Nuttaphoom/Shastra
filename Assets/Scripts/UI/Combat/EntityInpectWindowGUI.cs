@@ -243,7 +243,7 @@ namespace Vanaring
             {
                 allyIndex--;// = Math.Clamp(allyIndex - 1, 0, 2);
 
-                if (!isAllyMode && allyIndex + 1 < enemyButtonList.Count)
+                if (!isAllyMode && allyIndex < 0)
                 {
                     allyIndex = 2;
                     isAllyMode = true;
