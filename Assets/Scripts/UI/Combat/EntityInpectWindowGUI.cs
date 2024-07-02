@@ -19,6 +19,9 @@ namespace Vanaring
         [SerializeField] private GameObject entityLevelSection;
         [SerializeField] private TextMeshProUGUI entityLevel;
 
+        [SerializeField] private GameObject bondSection;
+        [SerializeField] private TextMeshProUGUI bondValueText;
+
         [Header("HP")]
         [SerializeField] private GameObject hpSection;
         [SerializeField] private TextMeshProUGUI hpNumText;
@@ -30,7 +33,6 @@ namespace Vanaring
         [SerializeField] private Image mpFillBar;
 
         [Header("PrimaryStat")]
-        [SerializeField] private GameObject priStatSection;
         [SerializeField] private TextMeshProUGUI strStatText;
         [SerializeField] private TextMeshProUGUI vitStatText;
         [SerializeField] private TextMeshProUGUI intStatText;
@@ -45,6 +47,7 @@ namespace Vanaring
         private List<GameObject> enemyButtonList = new List<GameObject>();
         private List<ControlBox> controlBoxList = new List<ControlBox>();
         private List<SocketGUI> effSocketList = new List<SocketGUI>();
+        private List<CombatEntity> entityList = new List<CombatEntity>();
         private int allyIndex = 0;
         private bool isAllyMode = true;
         [SerializeField] private GameObject allyHRZ;
@@ -74,6 +77,11 @@ namespace Vanaring
                     Destroy(item);
                 }
                 controlBoxList.Clear();
+                foreach (var item in entityList)
+                {
+                    Destroy(item);
+                }
+                entityList.Clear();
 
                 foreach (CombatEntity entity in CombatReferee.Instance.GetCompetatorsBySide(ECompetatorSide.Ally))
                 {
@@ -82,23 +90,22 @@ namespace Vanaring
                     newAllyButton.GetComponentInChildren<Image>().sprite = entity.CombatCharacterSheet.GetCharacterIcon;
                     newAllyButton.gameObject.SetActive(true);
                     allyButtonList.Add(newAllyButton);
+                    entityList.Add(entity);
                 }
                 foreach (CombatEntity entity in CombatReferee.Instance.GetCompetatorsBySide(ECompetatorSide.Hostile))
                 {
-                    //Debug.Log("ene");
                     GameObject newEnemyButton = Instantiate(entityButtonTemplate, enemyHRZ.transform);
 
                     newEnemyButton.GetComponent<Button>().onClick.AddListener(() => LoadAllyEntityDetail(entity, false));
                     newEnemyButton.gameObject.SetActive(true);
                     enemyButtonList.Add(newEnemyButton);
+                    entityList.Add(entity);
                 }
 
                 int count = CombatReferee.Instance.GetCompetatorsBySide(ECompetatorSide.Ally).Count + CombatReferee.Instance.GetCompetatorsBySide(ECompetatorSide.Hostile).Count;
-                Debug.Log(count);
 
                 for (int i = 0; i < count; i++)
                 {
-                    //Debug.Log(count);
                     ControlBox newBox = Instantiate(currentControlBoxTemplate, hrzControlBox.transform);
                     newBox.SetActiveImage(false);
                     newBox.gameObject.SetActive(true);
@@ -112,7 +119,6 @@ namespace Vanaring
 
             SetupInfo();
         }
-
         public void ClosePanel()
         {
             _windowManager.OpenWindow(EWindowGUI.Main);
@@ -120,10 +126,8 @@ namespace Vanaring
 
         private void LoadAllyEntityDetail(CombatEntity entity, bool isAlly)
         {
-            //return;
             entityLevelSection.gameObject.SetActive(isAlly);
             mpSection.gameObject.SetActive(isAlly);
-            priStatSection.gameObject.SetActive(isAlly);
 
             entityName.text = entity.CombatCharacterSheet.CharacterName;
             hpNumText.text = (int)entity.StatsAccumulator.GetHPAmount() + "/" + entity.StatsAccumulator.GetPeakHPAmount();
@@ -146,6 +150,11 @@ namespace Vanaring
                     effSocketList.Add(newSocket);
                 }
             }
+            strStatText.text = "" + entity.CombatCharacterSheet.GetStrength;
+            vitStatText.text = "" + entity.CombatCharacterSheet.GetVitality;
+            intStatText.text = "" + entity.CombatCharacterSheet.GetIntellect;
+            agiStatText.text = "" + entity.CombatCharacterSheet.GetAgility;
+            lckStatText.text = "" + entity.CombatCharacterSheet.GetLuck;
 
             if (isAlly)
             {
@@ -157,21 +166,9 @@ namespace Vanaring
                     }
                 }
 
-
                 mpNumText.text = entity.SpellCaster.GetMP + "/" + entity.SpellCaster.GetPeakMP;
                 mpFillBar.fillAmount = (float)entity.SpellCaster.GetMP / entity.SpellCaster.GetPeakMP;
-
-                strStatText.text = "" + entity.CombatCharacterSheet.GetModStrength;
-                vitStatText.text = "" + entity.CombatCharacterSheet.GetModVitality;
-                intStatText.text = "" + entity.CombatCharacterSheet.GetModIntellect;
-                agiStatText.text = "" + entity.CombatCharacterSheet.GetModAgility;
-                lckStatText.text = "" + entity.CombatCharacterSheet.GetModLuck;
             }
-        }
-
-        private Transform FindGameObjectTransformByName(Transform transform, string name)
-        {
-            return transform.Find(name);
         }
 
         private void SetupInfo()
@@ -183,7 +180,6 @@ namespace Vanaring
             if (isAllyMode)
             {
                 controlBoxList[allyIndex].SetActiveImage(true);
-
             }
             else
             {
@@ -266,10 +262,6 @@ namespace Vanaring
             {
                 _windowManager.OpenWindow(EWindowGUI.Main);
             }
-            //if (key == KeyCode.T)
-            //{
-            //    ClosePanel();
-            //}
         }
     }
 }
