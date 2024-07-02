@@ -24,11 +24,8 @@ namespace Vanaring
             }
 
             return retEffect;
-        }
-
-        
+        }        
     }
-
 
     public class AilmentAppilerRuntimeEffect : RuntimeEffect
     {
