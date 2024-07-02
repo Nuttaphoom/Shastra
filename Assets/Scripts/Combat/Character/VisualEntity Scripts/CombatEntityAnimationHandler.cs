@@ -229,13 +229,15 @@ namespace Vanaring
 
         #region Mesh Methods 
 
+        private float captured_normalizedTimeAnimation = -1;
 
-        private int capturedAnimatorHash;
+        private int capturedAnimatorHash = -1 ;
         private void CaptureAnimatorState()
         {
             var animator = GetVisualMesh().GetComponent<Animator>();
             var stateInfo = animator.GetCurrentAnimatorStateInfo(0);
-            int subState = Animator.StringToHash("Stun Stay") ;
+            captured_normalizedTimeAnimation = animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
+            ColorfulLogger.LogWithColor("captutred captured_normalizedTimeAnimation  in " + gameObject.name + " : " +  captured_normalizedTimeAnimation , Color.blue); 
             capturedAnimatorHash = animator.GetCurrentAnimatorStateInfo(0).fullPathHash ;
             
         }
@@ -243,10 +245,18 @@ namespace Vanaring
 
         private void RestoreAnimatorState()
         {
+            if (capturedAnimatorHash == -1 || captured_normalizedTimeAnimation == -1)
+                return; 
+
             var animator = GetVisualMesh().GetComponent<Animator>();
-                
-            animator.Play(capturedAnimatorHash, 0, 1.0f);
-             
+
+            ColorfulLogger.LogWithColor("restore captured_normalizedTimeAnimation in " + gameObject.name +" : " + captured_normalizedTimeAnimation, Color.red);
+            animator.Play(capturedAnimatorHash, 0, captured_normalizedTimeAnimation);
+
+            capturedAnimatorHash = -1;
+            captured_normalizedTimeAnimation = -1; 
+
+
         }
 
         public void HideVisualMesh()
