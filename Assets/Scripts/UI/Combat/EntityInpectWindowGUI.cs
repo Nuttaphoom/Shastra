@@ -102,10 +102,6 @@ namespace Vanaring
                     Destroy(item);
                 }
                 controlBoxList.Clear();
-                foreach (var item in entityList)
-                {
-                    Destroy(item);
-                }
                 entityList.Clear();
 
                 foreach (CombatEntity entity in CombatReferee.Instance.GetCompetatorsBySide(ECompetatorSide.Ally))
