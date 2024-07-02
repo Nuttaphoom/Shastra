@@ -20,7 +20,8 @@ namespace Vanaring
             public StandingLocationOccupierData StandingLocationData;
             [Header("Enemy size need to match to use this location")]
             public int EnemySize;
-        }
+        } 
+
         #region Singleton 
         private static EntityPositionManager _instance ; 
         public static EntityPositionManager Instance

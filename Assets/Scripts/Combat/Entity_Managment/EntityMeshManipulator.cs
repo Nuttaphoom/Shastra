@@ -13,7 +13,6 @@ namespace Vanaring
         private List<GameObject> _allyEntityMesh;
         private List<GameObject> _enemyEntityMesh;
        
-        
         private void Awake()
         {
             CombatReferee.Instance.SubOnCombatPreparation(Initialization); 
