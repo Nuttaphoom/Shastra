@@ -7,6 +7,7 @@ using System;
 using UnityEngine.Playables;
 using UnityEngine.Rendering;
 using Vanaring.Assets.Scripts.Utilities;
+using UnityEngine.Events;
 
 namespace Vanaring
 {
@@ -54,8 +55,32 @@ namespace Vanaring
         [SerializeField] private GameObject enemyHRZ;
         [SerializeField] private GameObject effVTCL;
         [SerializeField] private SocketGUI effSocket;
- 
-        [ContextMenu("Init")]
+
+        #region EventBroadcast
+        private EventBroadcaster _eventBroadcaster;
+
+        private EventBroadcaster GetEventBroadcaster()
+        {
+            if (_eventBroadcaster == null)
+            {
+                _eventBroadcaster = new EventBroadcaster();
+                _eventBroadcaster.OpenChannel<CombatEntity>("OnEntityInspect");
+            }
+
+            return _eventBroadcaster;
+        }
+
+        public void SubOnEntityInspect(UnityAction<CombatEntity> argc)
+        {
+            GetEventBroadcaster().SubEvent<CombatEntity>(argc, "OnEntityInspect");
+        }
+
+        public void UnSubOnEntityInspect(UnityAction<CombatEntity> argc)
+        {
+            GetEventBroadcaster().UnSubEvent<CombatEntity>(argc, "OnEntityInspect");
+        }
+        #endregion EventBroadcast
+
         public void Init()
         {
             gfx.SetActive(true);
@@ -124,6 +149,8 @@ namespace Vanaring
             _windowManager.OpenWindow(EWindowGUI.Main);
         }
 
+        
+
         private void LoadAllyEntityDetail(CombatEntity entity, bool isAlly)
         {
             entityLevelSection.gameObject.SetActive(isAlly);
@@ -180,18 +207,14 @@ namespace Vanaring
             if (isAllyMode)
             {
                 controlBoxList[allyIndex].SetActiveImage(true);
+                allyButtonList[allyIndex].GetComponent<Button>().onClick.Invoke();
+                _eventBroadcaster.InvokeEvent<CombatEntity>(entityList[allyIndex] , "OnEntityInspect");
             }
             else
             {
                 controlBoxList[3+allyIndex].SetActiveImage(true);
-            }
-            if (isAllyMode)
-            {
-                allyButtonList[allyIndex].GetComponent<Button>().onClick.Invoke();
-            }
-            else
-            {
                 enemyButtonList[allyIndex].GetComponent<Button>().onClick.Invoke();
+                _eventBroadcaster.InvokeEvent<CombatEntity>(entityList[3 + allyIndex], "OnEntityInspect");
             }
         }
 
