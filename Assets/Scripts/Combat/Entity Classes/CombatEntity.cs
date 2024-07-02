@@ -61,10 +61,7 @@ namespace Vanaring
         private bool _isDead = false ;
         private bool _isExhausted = true ;
 
-
         private bool _forceRelieve = false; 
-     
-
 
         #region EventBroadcaster Methods 
 

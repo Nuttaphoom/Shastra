@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.Rendering;
 using static Vanaring.AilmentLocator;
@@ -13,7 +14,10 @@ using static Vanaring.AilmentLocator;
 namespace Vanaring 
 {
     public abstract class AilmentFactorySO : ScriptableObject
-    {
+    { 
+        [SerializeField]
+        protected DescriptionBaseField _descriptionBaseField;
+
         [SerializeField]
         protected AilmentBasicDataInfo _basicInfo; 
         public abstract Ailment FactorizeAilment(CombatEntity patient,int ttl);
@@ -27,13 +31,16 @@ namespace Vanaring
     public abstract class Ailment
     {
         protected CombatEntity _entity; 
-
+        
         protected int _ttl = 0;
 
-        public Ailment(CombatEntity entity, int ttl)
+        protected DescriptionBaseField _descriptionBaseField;  
+
+        public Ailment(CombatEntity entity, int ttl , DescriptionBaseField descriptionBaseField)
         {
             _entity = entity;
-            _ttl = ttl; 
+            _ttl = ttl;
+            _descriptionBaseField = descriptionBaseField;  
         }
         public bool AlimentExpired()
         {
@@ -52,7 +59,7 @@ namespace Vanaring
         public abstract bool ShouldOverwrittenOthers();
         public abstract bool ResistOverwritten();
         public abstract AilmentLocator.AilmentType GetAilmentType(); 
-
+        public DescriptionBaseField GetDescription => _descriptionBaseField; 
 
         #region Comments 
         public abstract Comment GetOnTakeControlComment();
@@ -72,7 +79,7 @@ namespace Vanaring
         public AilmentBasicDataInfo _basicDataInfo ;
         protected DataType _dataType;
 
-        public Ailment(CombatEntity entity,int ttl) : base(entity,ttl) 
+        public Ailment(CombatEntity entity,int ttl, DescriptionBaseField _descriptionBaseField) : base(entity,ttl, _descriptionBaseField) 
         { 
 
         }
