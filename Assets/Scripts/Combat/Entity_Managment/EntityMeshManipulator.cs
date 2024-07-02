@@ -12,7 +12,10 @@ namespace Vanaring
     {
         private List<GameObject> _allyEntityMesh;
         private List<GameObject> _enemyEntityMesh;
-       
+
+        [SerializeField]
+        private EntityInpectWindowGUI _entityInspectWindowGUI; 
+
         private void Awake()
         {
             CombatReferee.Instance.SubOnCombatPreparation(Initialization); 
@@ -33,7 +36,18 @@ namespace Vanaring
 
             DirectorManager.Instance.SubOnPlayTimelineWithActor(PrepareEnittyMeshForTimelineAnimation);
 
-            TargetSelectionFlowControl.Instance.SubOnTargetSelectionEnd(OnTargetSelectionEnd_HideAllyVisualMesh); 
+            TargetSelectionFlowControl.Instance.SubOnTargetSelectionEnd(OnTargetSelectionEnd_HideAllyVisualMesh);
+
+            if (_entityInspectWindowGUI == null)
+                throw new Exception("_entityInspectWindowGUI hasn't never been assigned");
+
+            _entityInspectWindowGUI.SubOnEntityInspect(OnEntityInspection); 
+        }
+
+        private void OnEntityInspection(CombatEntity inspectOnThisEntity)
+        {
+            //HideAllEntityMesh();
+            //ShowEntityMesh(new List<CombatEntity>() { inspectOnThisEntity }) ; 
         }
         
         private void PrepareEnittyMeshForTimelineAnimation(List<CombatEntity> actors)

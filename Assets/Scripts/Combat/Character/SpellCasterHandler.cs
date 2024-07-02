@@ -126,7 +126,7 @@ namespace Vanaring
             //Debug.Log(GetEnergyAmount(side) + " - " + MathF.Abs(spell.RequiredAmout));
             //return  ( GetEnergyAmount(side) - MathF.Abs(spell.RequiredAmout ) ) > 0;
        
-            return (_MPStats.Value > spell.MPCost) ;
+            return (_MPStats.Value >= spell.MPCost) ;
 
         }
         public int GetEnergyAmount(RuntimeMangicalEnergy.EnergySide side)
