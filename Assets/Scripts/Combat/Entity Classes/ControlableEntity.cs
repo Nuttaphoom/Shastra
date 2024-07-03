@@ -60,14 +60,21 @@ namespace Vanaring
         {
             
             GetComponent<ItemUserHandler>().FactorizeItemInInventory();
-    
-            EnableCamera() ;
+
+            SetUpCameraAndPositio(); 
+
+             
+            yield return base.TakeControl();
+
+        }
+
+        public void SetUpCameraAndPositio()
+        {
+            EnableCamera();
 
             EntityPositionManager.Instance.SetNewEnemyCurrentSize(CombatReferee.Instance.GetCompetatorsBySide(ECompetatorSide.Hostile).Count);
-            EntityPositionManager.Instance.OccupieLocation(ECompetatorSide.Ally,0,this) ;
+            EntityPositionManager.Instance.OccupieLocation(ECompetatorSide.Ally, 0, this);
 
-
-            yield return base.TakeControl();
 
         }
 
