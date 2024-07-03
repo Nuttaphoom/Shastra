@@ -59,6 +59,7 @@ namespace Vanaring
                     newSprite = rightArrow;
                     break;
                 case TransitionDirection.MinusRight_X:
+                    gameObject.GetComponent<RectTransform>().localScale = new Vector3(1.15f, 1.15f, 1.15f);
                     newSprite = backwardArrow;
                     break;
                 case TransitionDirection.Right_X:
