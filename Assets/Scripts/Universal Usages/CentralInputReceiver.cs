@@ -37,10 +37,12 @@ namespace Vanaring
         xbox
     }
 
+    
     public class CentralInputReceiver : PersistentInstantiatedObject<CentralInputReceiver>
     {
         private  Dictionary<char, KeyCode> _keycodeCache = new Dictionary<char, KeyCode>();
 
+        [SerializeField]
         private static Stack<IInputReceiver> _receiverStack = new Stack<IInputReceiver>();
 
         public PlayerInput playerInput_;
@@ -134,17 +136,17 @@ namespace Vanaring
             _keycodeCache = new Dictionary<char, KeyCode>();
             _receiverStack = new Stack<IInputReceiver>(); 
         } 
-         ~CentralInputReceiver()
-        {
-            _receiverStack.Clear(); 
-        } 
+        // ~CentralInputReceiver()
+        //{
+        //    _receiverStack.Clear(); 
+        //} 
 
         private void TransmitInput(InputCode key)
         {
-            //Debug.Log("TransmitInput");
+            ColorfulLogger.LogWithColor("Transmit Input key : " + key,Color.cyan) ;
             SelectButtonCheck();
             if (_receiverStack.Count > 0) {
-                
+                ColorfulLogger.LogWithColor("transmit to  : " + _receiverStack.Peek(), Color.cyan);
                 _receiverStack.Peek().ReceiveKeys(key);
             } 
         }
@@ -246,7 +248,7 @@ namespace Vanaring
 
         public void AddInputReceiverIntoStack(IInputReceiver receiver)
         {
-            //Debug.Log("Add Input from: " + receiver);
+            ColorfulLogger.LogWithColor("Add Input into stack : " + receiver, Color.green);
             if (! _receiverStack.Contains(receiver))
             {
                 _receiverStack.Push(receiver); 
@@ -257,28 +259,48 @@ namespace Vanaring
         {
             if (receiver != null)
             {
+                ColorfulLogger.LogWithColor("Removing Input from stack: " + receiver, Color.red);
+
                 Stack<IInputReceiver> tempStack = new Stack<IInputReceiver>();
 
+                // Traverse the original stack
                 while (_receiverStack.Count > 0)
                 {
                     IInputReceiver element = _receiverStack.Pop();
-                    if (element != receiver)
+
+                    // Check if the current element is the one to remove
+                    if (!element.Equals(receiver))
                     {
-                        tempStack.Push(element);
+                        tempStack.Push(element); // Push elements other than 'receiver' to temp stack
+                    }
+                    else
+                    {
+                        break; // Stop traversing once 'receiver' is found and removed
                     }
                 }
 
+                // Push elements back to the original stack in their original order
                 while (tempStack.Count > 0)
                 {
                     _receiverStack.Push(tempStack.Pop());
                 }
+
+                if (_receiverStack.Count == 0)
+                {
+                    Debug.Log("remove everything in stack") ;  
+                }
             }
-            else if (_receiverStack.Count > 0)
+            else
             {
-                _receiverStack.Pop();
+                // Handle the case where receiver is null (if needed)
+                Debug.LogError("Attempted to remove null receiver.");
             }
-            //PersistentButtonSelector.Instance.SelectInitialButtons();
-            //Debug.Log("RemoveInputReceiverIntoStack");
+
+
+
+            // Additional actions if needed (e.g., triggering an event, updating UI)
+            // PersistentButtonSelector.Instance.SelectInitialButtons();
+            // Debug.Log("RemoveInputReceiverIntoStack");
         }
 
         public void ClearStack()

@@ -6,14 +6,35 @@ using TMPro;
 
 namespace Vanaring
 {
-    public class MissionBookSetup : MonoBehaviour
+    public class MissionBookSetup : MonoBehaviour, IInputReceiver
     {
         private List<MissionButtonObjectGUI> missionButtonList = new List<MissionButtonObjectGUI>();
         private int selectingIndex;
         [SerializeField] private MissionButtonObjectGUI missionButtonTemplate;
         [SerializeField] private GameObject verticalLayout;
+
+        [SerializeField]
+        private Button mapbutton; 
         //[SerializeField] private 
-        
+
+        private void OnEnable()
+        {
+            CentralInputReceiver.Instance.AddInputReceiverIntoStack(this);
+        }
+
+        private void OnDisable()
+        {
+            CentralInputReceiver.Instance.RemoveInputReceiverIntoStack(this);
+        }
+
+        public void ReceiveKeys(InputCode key)
+        {
+            if (key == InputCode.DeSelect)
+            {
+                mapbutton.onClick?.Invoke();
+            }
+        }
+
         public void Init(RuntimeDungeon dungeon)
         {
             selectingIndex = 0;
@@ -85,5 +106,7 @@ namespace Vanaring
                 
             }
         }
+
+       
     }
 }

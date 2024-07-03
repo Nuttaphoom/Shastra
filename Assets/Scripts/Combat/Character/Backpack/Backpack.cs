@@ -156,8 +156,8 @@ namespace Vanaring
                 {
                     var key = m_inventoryDatabase.GetRecordKey(backpackItem.BackpackItem);
                     keys.Add(key);
-                    Debug.Log("capture key " + key + "with item " + backpackItem.BackpackItem);
-                    Debug.Log("backpackItem.Amount : " + backpackItem.Amount);
+                    //Debug.Log("capture key " + key + "with item " + backpackItem.BackpackItem);
+                    //Debug.Log("backpackItem.Amount : " + backpackItem.Amount);
 
                 }
             }
@@ -188,7 +188,7 @@ namespace Vanaring
             for (int i = 0; i < uniqueID.Count; i++)
             {
                 BackpackItemSO item = m_inventoryDatabase.GetRecord(uniqueID[i]);
-                Debug.Log("add " + item + "with uniqueID : " + uniqueID[i]) ;
+                //Debug.Log("add " + item + "with uniqueID : " + uniqueID[i]) ;
                 // already contains key add amount instead
                 if (currentBackpackItem.ContainsKey(item))
                 {

@@ -55,7 +55,7 @@ namespace Vanaring
             int i = 0; 
             foreach (ItemActionFactorySO factory in _itemInventory)
             {
-                ColorfulLogger.LogWithColor("Factorize " + factory + "with amount " + _runtimeItemsAmount[i], Color.green); 
+                //ColorfulLogger.LogWithColor("Factorize " + factory + "with amount " + _runtimeItemsAmount[i], Color.green); 
                 _runtimeItems.Add(factory.FactorizeRuntimeAction(_combatEntity) as ItemAbilityRuntime);
                 i++; 
             }

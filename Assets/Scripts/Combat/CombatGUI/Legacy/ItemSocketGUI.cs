@@ -46,7 +46,7 @@ namespace Vanaring
         private bool _init = false; 
         public void Init(ItemAbilityRuntime item, CombatEntity combatEntity, int amount)
         {
-            Debug.Log("Init Socket with item " + item.ItemName + " amount " + amount); 
+            //Debug.Log("Init Socket with item " + item.ItemName + " amount " + amount); 
 
             _init  = true; 
             _item = item;
