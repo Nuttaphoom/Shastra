@@ -42,13 +42,30 @@ namespace Vanaring
                 throw new Exception("_entityInspectWindowGUI hasn't never been assigned");
 
             _entityInspectWindowGUI.SubOnEntityInspect(OnEntityInspection);
+            _entityInspectWindowGUI.SubOnCloseInspectWindow(OnEntityInspectionEnd);
         }
 
+        private CombatEntity lastInspectEntity; 
         private void OnEntityInspection(CombatEntity inspectOnThisEntity)
         {
             HideAllEntityMesh();
             ShowEntityMesh(new List<CombatEntity>() { inspectOnThisEntity });
-            inspectOnThisEntity.GetComponent<EntityCameraManager>().EnableFaceCamera(); 
+            inspectOnThisEntity.GetComponent<EntityCameraManager>().EnableFaceCamera();
+
+            lastInspectEntity = inspectOnThisEntity; 
+        }
+
+        private void OnEntityInspectionEnd(Null n)
+        {
+            HideAllEntityMesh(); 
+
+            ShowAllEntitMesh(ECompetatorSide.Hostile);
+            lastInspectEntity.GetComponent<EntityCameraManager>().DisableAllAttachedCamera(); 
+
+            ShowEntityMesh(new List<CombatEntity>() { CombatReferee.Instance.GetCurrentActor() } ) ;
+
+            (CombatReferee.Instance.GetCurrentActor() as ControlableEntity).SetUpCameraAndPositio();  
+
         }
         
         private void PrepareEnittyMeshForTimelineAnimation(List<CombatEntity> actors)

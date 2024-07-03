@@ -86,7 +86,7 @@ namespace Vanaring
 
         public void SubOnCloseInspectWindow(UnityAction<Null> argc)
         {
-            GetEventBroadcaster().UnSubEvent<Null>(argc, "OnCloseInspectWindow");
+            GetEventBroadcaster().SubEvent<Null>(argc, "OnCloseInspectWindow");
         }
 
         public void UnSubOnCloseInspectWindow(UnityAction<Null> argc)
