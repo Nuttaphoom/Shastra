@@ -14,7 +14,7 @@ namespace Vanaring
         private CinemachineVirtualCamera _shoulderCam ;
         public void EnableFaceCamera()
         {
-            Debug.Log("enable face camera in " + gameObject.name); 
+            //Debug.Log("enable face camera in " + gameObject.name); 
             CameraSetUPManager.Instance.EnableCamera(_faceCamera); 
         }
 

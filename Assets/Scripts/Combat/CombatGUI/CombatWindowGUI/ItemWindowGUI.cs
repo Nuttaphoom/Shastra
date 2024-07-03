@@ -62,6 +62,9 @@ namespace Vanaring
             int i = 3 ; 
             foreach (ItemAbilityRuntime item in entity.ItemUser.Items)
             {
+                if (entity.ItemUser.ItemsAmount.Count <= tmpItemIndex)
+                    throw new Exception("tmpItemIndex in more than ItemAmount.count"); 
+
                 if (entity.ItemUser.ItemsAmount[tmpItemIndex] <= 0)
                     continue;
                 ItemSocketGUI newSocket = Instantiate(_itemSocketTemplate, itemTranform.transform) ;
@@ -81,6 +84,7 @@ namespace Vanaring
                 }
                 newSocket.UnHighlightedButton();
                 i++;
+                tmpItemIndex++; 
             }
             if (entity.ItemUser.Items.Count == 0)
             {

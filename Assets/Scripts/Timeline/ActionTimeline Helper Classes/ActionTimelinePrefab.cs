@@ -187,7 +187,7 @@ namespace Vanaring
 
                     for (int j =0; j <allVFXs.Count; j++)
                     {
-                        Debug.Log("vfx for relocation :  " + allVFXs[i].gameObject.name);
+                        //Debug.Log("vfx for relocation :  " + allVFXs[i].gameObject.name);
 
                         allVFXs[j].transform.parent = impactTransform               ;
                         allVFXs[j].transform.position = impactTransform.position    ;

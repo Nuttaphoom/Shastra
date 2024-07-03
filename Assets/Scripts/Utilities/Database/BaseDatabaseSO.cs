@@ -68,7 +68,8 @@ namespace Vanaring
         {
             foreach (var pair in _records)
             {
-                if (pair.GetRecorded().GetType() == type.GetType())
+                Debug.Log("recorded type is " + pair.GetRecorded().name + " vs type.gettype() : " + type.name); 
+                if (pair.GetRecorded().name == type.name )
                     return pair.GetKey(); 
             }
 

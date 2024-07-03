@@ -68,6 +68,8 @@ namespace Vanaring
                     amount = backpackItem.Amount ,
                     backpackItemData = backpackItem 
                 });
+
+                ColorfulLogger.LogWithColor("insert " + backpackItem.BackpackItem.name + " amount : " + backpackItem.Amount, Color.cyan);
             }
 
             for (int i = 0; i < _itemInventory.Count; i++)
@@ -140,6 +142,8 @@ namespace Vanaring
 
             foreach (ItemInventoryData item in _itemInventory)
             {
+                ColorfulLogger.LogWithColor("set up " + item.itemData.name + " amount : " + item.amount, Color.red);
+
                 _itemInventoryAbility.Add(item.itemData);
                 _itemInventoryAmount.Add(item.amount);
             }
