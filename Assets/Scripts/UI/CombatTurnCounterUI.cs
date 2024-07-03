@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 using Vanaring.Assets.Scripts.Utilities;
 
 namespace Vanaring
@@ -15,6 +16,16 @@ namespace Vanaring
         private TextMeshProUGUI _roundCoutnerText ;
         [SerializeField]
         private Animator turnAnim;
+        [SerializeField]
+        private Animator sideAnim;
+        [SerializeField]
+        private Sprite allyTurnSprite;
+        [SerializeField]
+        private Sprite enemyTurnSprite;
+        [SerializeField]
+        private Image turnImage;
+        [SerializeField]
+        private TextMeshProUGUI sideText;
 
         private void Awake()
         {
@@ -28,10 +39,27 @@ namespace Vanaring
 
             if (currentSide == ECompetatorSide.Ally)
             {
+                StartCoroutine(UpdateTurnSide("Player's Turn", allyTurnSprite));
                 _currentPlayerRound += 1;
 
                 StartCoroutine(UpdateTurnCounter());
             }
+
+            if (currentSide == ECompetatorSide.Hostile)
+            {
+                StartCoroutine(UpdateTurnSide("Enemy's Turn", enemyTurnSprite));
+            }
+        }
+
+        private IEnumerator UpdateTurnSide(string t, Sprite s)
+        {
+            sideAnim.Play("NextTurnSide");
+
+            yield return new WaitForSeconds(0.15f);
+            sideText.text = t;
+            turnImage.sprite = s;
+
+            sideAnim.SetTrigger("TurnIn");
         }
 
         private IEnumerator UpdateTurnCounter()
@@ -39,10 +67,6 @@ namespace Vanaring
             if (_currentPlayerRound < 10)
             {
                 turnAnim.Play("NextTurnOut");
-                //while (turnAnim.GetCurrentAnimatorStateInfo(0).IsName("NextTurnOut"))
-                //{
-                //    yield return new WaitForEndOfFrame();
-                //}
 
                 yield return new WaitForSeconds(0.15f);
                 
