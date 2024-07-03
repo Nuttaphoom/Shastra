@@ -274,7 +274,7 @@ namespace Vanaring
             }
             else
             {
-                Debug.Log(" GetEnemyStandingLocations( " + _currentEnemySize + "  ) : " + GetEnemyStandingLocations(_currentEnemySize).Count); 
+                //Debug.Log(" GetEnemyStandingLocations( " + _currentEnemySize + "  ) : " + GetEnemyStandingLocations(_currentEnemySize).Count); 
                 foreach (var data in GetEnemyStandingLocations(_currentEnemySize))
                 {
                     if (data.EntityStandingHere == null)

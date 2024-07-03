@@ -235,7 +235,7 @@ namespace Vanaring
         {
             if (gameObject.GetComponent<AIEntity>() != null)
             {
-                ColorfulLogger.LogWithColor("Capture " + gameObject.name + " animation state", Color.yellow); 
+                //ColorfulLogger.LogWithColor("Capture " + gameObject.name + " animation state", Color.yellow); 
             }
 
             
@@ -256,7 +256,7 @@ namespace Vanaring
         {
             if (gameObject.GetComponent<AIEntity>() != null)
             {
-                ColorfulLogger.LogWithColor("Restore " + gameObject.name + " animation state", Color.green);
+                //ColorfulLogger.LogWithColor("Restore " + gameObject.name + " animation state", Color.green);
             }
             if (capturedAnimatorHash == -1 || captured_normalizedTimeAnimation == -1)
                 return; 

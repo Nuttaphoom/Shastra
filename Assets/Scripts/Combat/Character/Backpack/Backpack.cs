@@ -75,6 +75,8 @@ namespace Vanaring
 
         public void AddItemIntoBackpack(BackpackItemSO itemSO, int amount)
         {
+            Debug.Log("add new item into backpacks"); 
+
             if (_backpackItemSO == null)
                 _backpackItemSO = new List<BackpackItemData>();
 
@@ -137,10 +139,6 @@ namespace Vanaring
 
             m_inventoryDatabase = PersistentAddressableResourceLoader.Instance.LoadResourceOperation<InventoryDatabaseSO>(DatabaseAddressLocator.GetInventoryDatabaseAddress);
         }
-
-        
-
-        
        
         #region Save System
 
@@ -156,7 +154,11 @@ namespace Vanaring
             {
                 for (int i = 0; i < backpackItem.Amount ; i++)
                 {
-                    keys.Add(m_inventoryDatabase.GetRecordKey(backpackItem.BackpackItem));
+                    var key = m_inventoryDatabase.GetRecordKey(backpackItem.BackpackItem);
+                    keys.Add(key);
+                    Debug.Log("capture key " + key + "with item " + backpackItem.BackpackItem);
+                    Debug.Log("backpackItem.Amount : " + backpackItem.Amount);
+
                 }
             }
             BackpackSaveData ret = new BackpackSaveData()
@@ -186,14 +188,18 @@ namespace Vanaring
             for (int i = 0; i < uniqueID.Count; i++)
             {
                 BackpackItemSO item = m_inventoryDatabase.GetRecord(uniqueID[i]);
+                Debug.Log("add " + item + "with uniqueID : " + uniqueID[i]) ;
                 // already contains key add amount instead
                 if (currentBackpackItem.ContainsKey(item))
                 {
                     currentBackpackItem[item] += 1;
                     continue;
                 }
-                // add unique
-                currentBackpackItem.Add(item, 1);
+                else
+                {
+                    // add unique
+                    currentBackpackItem.Add(item, 1);
+                }
             }
 
             foreach (var data in currentBackpackItem)
