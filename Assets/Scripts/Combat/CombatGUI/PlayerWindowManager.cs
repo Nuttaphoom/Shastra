@@ -162,6 +162,7 @@ namespace Vanaring
             {
                 if (!_entityInpectWindow.gameObject.activeSelf)
                 {
+                    Debug.Log("Open Inspect");
                     OpenWindow(EWindowGUI.Inspect);
                 }
             }

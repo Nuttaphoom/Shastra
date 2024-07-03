@@ -8,6 +8,7 @@ using UnityEngine.Playables;
 using UnityEngine.Rendering;
 using Vanaring.Assets.Scripts.Utilities;
 using UnityEngine.Events;
+using Unity.VisualScripting;
 
 namespace Vanaring
 {
@@ -67,6 +68,7 @@ namespace Vanaring
             {
                 _eventBroadcaster = new EventBroadcaster();
                 _eventBroadcaster.OpenChannel<CombatEntity>("OnEntityInspect");
+                _eventBroadcaster.OpenChannel<Null>("OnCloseInspectWindow");
             }
 
             return _eventBroadcaster;
@@ -80,6 +82,16 @@ namespace Vanaring
         public void UnSubOnEntityInspect(UnityAction<CombatEntity> argc)
         {
             GetEventBroadcaster().UnSubEvent<CombatEntity>(argc, "OnEntityInspect");
+        }
+
+        public void SubOnCloseInspectWindow(UnityAction<Null> argc)
+        {
+            GetEventBroadcaster().UnSubEvent<Null>(argc, "OnCloseInspectWindow");
+        }
+
+        public void UnSubOnCloseInspectWindow(UnityAction<Null> argc)
+        {
+            GetEventBroadcaster().UnSubEvent<Null>(argc, "OnCloseInspectWindow");
         }
         #endregion EventBroadcast
 
@@ -230,6 +242,7 @@ namespace Vanaring
         {
             allyIndex = 0;
             isAllyMode = true;
+            _eventBroadcaster.InvokeEvent<CombatEntity>(entityList[allyIndex], "OnEntityInspect");
         }
 
         public override void OnWindowDeActive()
@@ -256,7 +269,6 @@ namespace Vanaring
                 if (allyIndex < 0)
                 {
                     allyIndex = 0;
-                    //isAllyMode = false;
                 }
                 if (isAllyMode)
                 {
@@ -294,15 +306,9 @@ namespace Vanaring
 
                 SetupInfo();
             }
-            if (key == InputCode.C)
-            {
-                Debug.Log("Change Inspect Mode");
-                allyIndex = 0;
-                isAllyMode = !isAllyMode;
-                SetupInfo();
-            }
             if(key == InputCode.Skill || key == InputCode.InspectionOpen)
             {
+                _eventBroadcaster.InvokeEvent<Null>(null, "OnCloseInspectWindow");
                 _windowManager.OpenWindow(EWindowGUI.Main);
             }
         }
