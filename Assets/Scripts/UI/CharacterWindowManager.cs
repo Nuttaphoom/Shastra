@@ -14,6 +14,7 @@ namespace Vanaring
         private Transform _socketVerticalLayout;
         [SerializeField] private GameObject indicatorA;
         [SerializeField] private GameObject indicatorD;
+        [SerializeField] private Animator gfxAnim;
         //private GameObject _entities;
         private List<CombatEntity> entities = new List<CombatEntity>();
 
@@ -39,6 +40,16 @@ namespace Vanaring
                 combatEntityList.Add(_cet);
                 newSocket.transform.SetAsFirstSibling();
             }
+        }
+
+        public void ShowPanel()
+        {
+            gfxAnim.Play("SlideUp");
+        }
+
+        public void HidePanel()
+        {
+            gfxAnim.Play("SlideDown");
         }
 
 

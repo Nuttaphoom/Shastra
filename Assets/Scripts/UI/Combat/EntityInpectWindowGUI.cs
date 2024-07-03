@@ -23,6 +23,8 @@ namespace Vanaring
         [SerializeField] private GameObject bondSection;
         [SerializeField] private TextMeshProUGUI bondValueText;
 
+        [SerializeField] private GameObject levelSection;
+
         [Header("HP")]
         [SerializeField] private GameObject hpSection;
         [SerializeField] private TextMeshProUGUI hpNumText;
@@ -99,7 +101,7 @@ namespace Vanaring
                 enemyButtonList.Clear();
                 foreach (var item in controlBoxList)
                 {
-                    Destroy(item);
+                    Destroy(item.gameObject);
                 }
                 controlBoxList.Clear();
                 entityList.Clear();
@@ -155,6 +157,8 @@ namespace Vanaring
         {
             entityLevelSection.gameObject.SetActive(isAlly);
             mpSection.gameObject.SetActive(isAlly);
+            bondSection.SetActive(isAlly);
+            levelSection.SetActive(isAlly);
 
             entityName.text = entity.CombatCharacterSheet.CharacterName;
             hpNumText.text = (int)entity.StatsAccumulator.GetHPAmount() + "/" + entity.StatsAccumulator.GetPeakHPAmount();
