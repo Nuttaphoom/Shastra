@@ -402,7 +402,7 @@ namespace Vanaring
             }
         }
 
-        private bool IsGameEnd()
+        public bool IsGameEnd()
         {
             for (int i = 0 ; i < GetCompetatorsBySide(ECompetatorSide.Ally).Count; i++)
             {

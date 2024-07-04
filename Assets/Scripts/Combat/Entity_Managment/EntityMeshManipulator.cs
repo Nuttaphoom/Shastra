@@ -129,10 +129,10 @@ namespace Vanaring
         private void RotateMeshToLookToThisPosition(Vector3 worldPosition, ECompetatorSide side)
         {
 
-            foreach(var entity in GetAllCompetators(side) ){
+            //foreach(var entity in GetAllCompetators(side) ){
             
-                entity.GetComponent<CombatEntityAnimationHandler>().RotateMeshLookAtToThisPosition(worldPosition);
-            }
+            //    entity.GetComponent<CombatEntityAnimationHandler>().RotateMeshLookAtToThisPosition(worldPosition);
+            //}
         }
 
         private void RestoreRotateMeshLookAt()

@@ -82,6 +82,19 @@ namespace Vanaring
 
                         director.SetGenericBinding(track, objectWithTrackName);
                     }
+                }else if (track is CustomEntityMeshHiddenTrack)
+                {
+                    string trackName = (track as CustomEntityMeshHiddenTrack).TrackName;
+
+
+                    Debug.Log("track is CustoMeNTITYHiddenTrack with track name " + trackName); 
+
+                    if (objectWithTrackName = actionTimelineSetting.GetObjectWithTrackName(track.name))
+                    {
+                        //Debug.Log( track.name + " bind with " + objectWithTrackName.name);
+
+                        director.SetGenericBinding(track, objectWithTrackName);
+                    }
                 }
                
                 else if (track.name == "SignalTrack")

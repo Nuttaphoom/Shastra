@@ -47,7 +47,7 @@ namespace Vanaring
          
         public IEnumerator ResolveTrigger()
         {
-            if (_currentTriggerStatus == null)
+            if (_currentTriggerStatus == null || CombatReferee.Instance.IsGameEnd() )
             {
                 //ColorfulLogger.LogWithColor("Trigger Not Active", Color.red);
 
