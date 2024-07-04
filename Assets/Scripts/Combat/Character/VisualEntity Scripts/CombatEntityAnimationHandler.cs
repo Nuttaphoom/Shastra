@@ -16,6 +16,7 @@ using Cinemachine;
 using DG.Tweening;
 using System.Runtime.InteropServices;
 using PixelCrushers.DialogueSystem.UnityGUI;
+using UnityEditor.SceneManagement;
 
 namespace Vanaring 
 {
@@ -473,9 +474,14 @@ namespace Vanaring
         {
             Transform parent = GetAttachmentFromName(whereToAttach);
 
-            _attachedVFXs.Remove(parent.Find(vfxName).gameObject);
+            GameObject removedObj = parent.Find(vfxName).gameObject;
+
+            if (removedObj == null)
+                return; 
+
+            _attachedVFXs.Remove(removedObj);
  
-            Destroy(parent.Find(vfxName).gameObject) ; 
+            Destroy(removedObj) ; 
 
         }
 
