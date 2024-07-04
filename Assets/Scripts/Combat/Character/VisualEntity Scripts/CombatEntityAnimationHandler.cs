@@ -16,7 +16,7 @@ using Cinemachine;
 using DG.Tweening;
 using System.Runtime.InteropServices;
 using PixelCrushers.DialogueSystem.UnityGUI;
-using UnityEditor.SceneManagement;
+//using UnityEditor.SceneManagement;
 
 namespace Vanaring 
 {
