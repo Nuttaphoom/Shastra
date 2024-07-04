@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
+using Vanaring.Assets.Scripts.Utilities.StringConstant;
 using static UnityEngine.EventSystems.EventTrigger;
 
 namespace Vanaring
@@ -69,6 +70,8 @@ namespace Vanaring
             //check if still be able to call the action
             if (_performerEntity.ReadyToPerformAction())
             {
+                
+
                 EntityActionPair  entityActionPair =  new EntityActionPair() { Actor = _performerEntity, PerformedAction = action };
                 GetEventBroadcaster().InvokeEvent<EntityActionPair>(entityActionPair, "OnPerformAction");
 
