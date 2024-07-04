@@ -52,9 +52,14 @@ namespace Vanaring
                 //ColorfulLogger.LogWithColor("Trigger Not Active", Color.red);
 
 
-                goto End;            
-            
+                goto End;
+
             }
+
+            ActorAction action = _triggerActionSO[0].FactorizeTriggerEffect(_entity, _currentTriggerStatus.BrokenTargets);
+            
+            if (action.GetActionTargets().Count == 0)
+                goto End;
 
             var s = MonoBehaviour.Instantiate(_breakTriggerDirector); 
             yield return s.PlayCutscene(); 
@@ -65,8 +70,8 @@ namespace Vanaring
                 throw new Exception("there is no valid _triggerActionSO") ; 
             
             
-            ActorAction action = _triggerActionSO[0].FactorizeTriggerEffect(_entity, _currentTriggerStatus.BrokenTargets);
 
+       
             
             _entity.ActionHandler.AddActionQueue(action);
 
