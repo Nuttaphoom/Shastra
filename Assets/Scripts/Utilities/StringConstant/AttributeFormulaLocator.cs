@@ -15,12 +15,12 @@ namespace Vanaring.Assets.Scripts.Utilities.StringConstant
 
         public static int CalculateMaxMP(float Intellect)
         {
-            return (int)(70 + (Intellect * 4));
+            return (int)(150 + (Intellect * 5));
         }
 
         public static int CalculatePhysicalATK(float strength)
         {
-            return (int)(20 + (strength * 3));
+            return (int)(40 + (strength * 3));
         }
         public static int CalculateMagicalATK(float intellect)
         {
