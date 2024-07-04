@@ -15,6 +15,7 @@ namespace Vanaring
         private AilmentResistantHandler _ailmentResistantHandler; 
         private CombatEntity _user;
         private Ailment _currentAilment;
+        public Ailment GetCurrentAilment => _currentAilment;
 
         #region EventBroadcaster 
         private EventBroadcaster _eventBroadcaster;

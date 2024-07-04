@@ -10,12 +10,14 @@ namespace Vanaring
     {
         [SerializeField] private TextMeshProUGUI nameText;
         [SerializeField] private TextMeshProUGUI numText;
+        [SerializeField] private TextMeshProUGUI desText;
         [SerializeField] private Image iconImg;
-        public void Init(string name, string num, Sprite img)
+        public void Init(string name, string num, Sprite img, string des)
         {
             nameText.text = name;
             numText.text = num;
             iconImg.sprite = img;
+            desText.text = des;
         }
     }
 }

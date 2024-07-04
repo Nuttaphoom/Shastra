@@ -188,10 +188,18 @@ namespace Vanaring
                 {
                     SocketGUI newSocket = Instantiate(effSocket, effVTCL.transform);
                     DescriptionBaseField desc = eff.GetStatusEffectDescription();
-                    newSocket.Init(desc.FieldName, eff.TimeToLive.ToString(), desc.FieldImage);
+                    newSocket.Init(desc.FieldName, eff.TimeToLive.ToString(), desc.FieldImage, desc.FieldDescription);
                     newSocket.gameObject.SetActive(true);
                     effSocketList.Add(newSocket);
                 }
+            }
+            if (entity.GetAilmentHandler.GetCurrentAilment != null)
+            {
+                SocketGUI newSocket = Instantiate(effSocket, effVTCL.transform);
+                DescriptionBaseField desc = entity.GetAilmentHandler.GetCurrentAilment.GetDescription;
+                newSocket.Init(desc.FieldName, "", desc.FieldImage, desc.FieldDescription);
+                newSocket.gameObject.SetActive(true);
+                effSocketList.Add(newSocket);
             }
             strStatText.text = "" + entity.CombatCharacterSheet.GetStrength;
             vitStatText.text = "" + entity.CombatCharacterSheet.GetVitality;

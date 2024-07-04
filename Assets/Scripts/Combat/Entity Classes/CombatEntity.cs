@@ -352,8 +352,8 @@ namespace Vanaring
         public StatusEffectHandler StatusEffectHandler => _statusEffectHandler;
         public SpellCasterHandler SpellCaster => _spellCaster;
         public ItemUserHandler ItemUser => _itemUser;
-        public CombatCharacterSheetSO CombatCharacterSheet => _characterSheet; 
-
+        public CombatCharacterSheetSO CombatCharacterSheet => _characterSheet;
+        public AilmentHandler GetAilmentHandler => _ailmentHandler;
         public CombatEntityAnimationHandler CombatEntityAnimationHandler => _combatEntityAnimationHandler;
 
         #endregion
