@@ -143,7 +143,7 @@ namespace Vanaring
 
         private void TransmitInput(InputCode key)
         {
-            ColorfulLogger.LogWithColor("Transmit Input key : " + key,Color.cyan) ;
+            //ColorfulLogger.LogWithColor("Transmit Input key : " + key,Color.cyan) ;     
             SelectButtonCheck();
             if (_receiverStack.Count > 0) {
                 ColorfulLogger.LogWithColor("transmit to  : " + _receiverStack.Peek(), Color.cyan);

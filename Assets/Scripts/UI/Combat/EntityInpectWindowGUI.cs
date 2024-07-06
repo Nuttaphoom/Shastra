@@ -314,7 +314,7 @@ namespace Vanaring
 
                 SetupInfo();
             }
-            if(key == InputCode.Skill || key == InputCode.InspectionOpen)
+            if(key == InputCode.DeSelect )
             {
                 _eventBroadcaster.InvokeEvent<Null>(null, "OnCloseInspectWindow");
                 _windowManager.OpenWindow(EWindowGUI.Main);

@@ -18,12 +18,18 @@ namespace Vanaring
         //private GameObject _entities;
         private List<CombatEntity> entities = new List<CombatEntity>();
 
+        [SerializeField]
+        private EntityInpectWindowGUI inspectWindow;
+
         private List<CharacterSocketGUI> characterSocketList = new List<CharacterSocketGUI>();
         private List<CombatEntity> combatEntityList = new List<CombatEntity>();
 
         private void Start()
         {
             CombatReferee.Instance.SubOnCombatPreparation(SetUpCharacterHUD);
+            inspectWindow.SubOnCloseInspectWindow(ShowPanel);
+            inspectWindow.SubOnEntityInspect(HidePanel);
+
         }
         private void SetUpCharacterHUD(Null n)
         {
@@ -42,12 +48,12 @@ namespace Vanaring
             }
         }
 
-        public void ShowPanel()
+        public void ShowPanel(Null n)
         {
             gfxAnim.Play("SlideUp");
         }
 
-        public void HidePanel()
+        public void HidePanel(CombatEntity entity)
         {
             gfxAnim.Play("SlideDown");
         }
