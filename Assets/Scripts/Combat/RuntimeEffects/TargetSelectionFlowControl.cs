@@ -167,11 +167,11 @@ namespace Vanaring
                         _currentSelectIndex = _currentSelectIndex % _validTargets.Count;
 
                 }
-                else if (key == (InputCode.Skill))
-                {
-                    ForceStop();
-                    _enemyHUDWindowManager.RemoveSlotBreakHighlightOnHUD();
-                }
+                //else if (key == (InputCode.Skill))
+                //{
+                //    ForceStop();
+                //    _enemyHUDWindowManager.RemoveSlotBreakHighlightOnHUD();
+                //}
                 else if (key == (InputCode.DeSelect))
                 {
                     ForceStop();

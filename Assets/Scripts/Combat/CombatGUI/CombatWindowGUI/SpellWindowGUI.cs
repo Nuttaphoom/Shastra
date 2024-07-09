@@ -92,7 +92,7 @@ namespace Vanaring  {
             }
             spellLogText.text = spellSocketGUIList[currentSelectedIndex].GetSpellDescription();
             spellSocketGUIList[currentSelectedIndex].HightlightedButton();
-        }
+        }  
         public override void ReceiveKeysFromWindowManager(InputCode key)
         {
             if (key == InputCode.DeSelect)
