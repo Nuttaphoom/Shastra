@@ -149,9 +149,9 @@ namespace Vanaring
         }
         private void UpdateMPScaleGUI()
         {
-            Debug.Log(mpVal + " / " + maxMpVal);
+            //Debug.Log(mpVal + " / " + maxMpVal);
             float fixMpVal = ((float)mpVal / maxMpVal) * 0.375f;
-            Debug.Log("MP:" + fixMpVal);
+            //Debug.Log("MP:" + fixMpVal);
             mpBar.fillAmount = (float)fixMpVal;
             mpNumText.text = mpVal.ToString();
             if (mpVal < 0)
