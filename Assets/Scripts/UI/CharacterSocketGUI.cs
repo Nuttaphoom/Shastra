@@ -75,6 +75,7 @@ namespace Vanaring
             darkVal = 3;
 
             secondHpBar.fillAmount = (float)hpVal / maxHpVal;
+            secondMpBar.fillAmount = (float)mpVal / maxMpVal;
 
             UpdateHPScaleGUI();
             UpdateMPScaleGUI();
@@ -148,7 +149,10 @@ namespace Vanaring
         }
         private void UpdateMPScaleGUI()
         {
-            mpBar.fillAmount = (float)mpVal / maxMpVal;
+            Debug.Log(mpVal + " / " + maxMpVal);
+            float fixMpVal = ((float)mpVal / maxMpVal) * 0.375f;
+            Debug.Log("MP:" + fixMpVal);
+            mpBar.fillAmount = (float)fixMpVal;
             mpNumText.text = mpVal.ToString();
             if (mpVal < 0)
             {
@@ -185,9 +189,12 @@ namespace Vanaring
                 mpBar.fillAmount = 0;
             }
             float mptemp = maxMpVal == 0 ? (mpVal == 0 ? 1 : mpVal) : maxMpVal;
+
+            float fixRatioVal = ((float)mpVal / maxMpVal) * 0.375f;
+
             UpdateMPScaleGUI();
             StopAllCoroutines();
-            StartCoroutine(IEAnimateBarScale(mpVal, mptemp, secondMpBar));
+            StartCoroutine(IEAnimateBarScale(fixRatioVal, mptemp, secondMpBar));
         }
 
         private void OnEnergyModified(CombatEntity caster, RuntimeMangicalEnergy.EnergySide side, int val)

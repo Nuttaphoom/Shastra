@@ -39,7 +39,6 @@ namespace Vanaring
 
         public override void ReceiveKeysFromWindowManager(InputCode key)
         {
-            Debug.Log("main window receive key is " + key);
             if (key == (InputCode.Skill))
             {
                 _windowManager.OpenWindow(EWindowGUI.Spell);

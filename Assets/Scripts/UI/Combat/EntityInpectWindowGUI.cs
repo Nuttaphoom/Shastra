@@ -173,6 +173,8 @@ namespace Vanaring
             levelSection.SetActive(isAlly);
 
             entityName.text = entity.CombatCharacterSheet.CharacterName;
+            Vector2 textSize = entityName.GetPreferredValues(entity.CombatCharacterSheet.CharacterName);
+            entityName.rectTransform.localScale = textSize + Vector2.one;
             hpNumText.text = (int)entity.StatsAccumulator.GetHPAmount() + "/" + entity.StatsAccumulator.GetPeakHPAmount();
             hpFillBar.fillAmount = (float)entity.StatsAccumulator.GetHPAmount() / entity.StatsAccumulator.GetPeakHPAmount();
 
