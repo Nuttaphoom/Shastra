@@ -54,10 +54,12 @@ namespace Vanaring
         private List<CombatEntity> entityList = new List<CombatEntity>();
         private int allyIndex = 0;
         private bool isAllyMode = true;
+
         [SerializeField] private GameObject allyHRZ;
         [SerializeField] private GameObject enemyHRZ;
         [SerializeField] private GameObject effVTCL;
         [SerializeField] private SocketGUI effSocket;
+        [SerializeField] private Animator switchSideAnim;
 
         #region EventBroadcast
         private EventBroadcaster _eventBroadcaster;
@@ -173,8 +175,7 @@ namespace Vanaring
             levelSection.SetActive(isAlly);
 
             entityName.text = entity.CombatCharacterSheet.CharacterName;
-            Vector2 textSize = entityName.GetPreferredValues(entity.CombatCharacterSheet.CharacterName);
-            entityName.rectTransform.localScale = textSize + Vector2.one;
+            entityName.rectTransform.sizeDelta = new Vector2(30+(entity.CombatCharacterSheet.CharacterName.Length * 50), 67f);
             hpNumText.text = (int)entity.StatsAccumulator.GetHPAmount() + "/" + entity.StatsAccumulator.GetPeakHPAmount();
             hpFillBar.fillAmount = (float)entity.StatsAccumulator.GetHPAmount() / entity.StatsAccumulator.GetPeakHPAmount();
 
@@ -318,8 +319,21 @@ namespace Vanaring
             }
             if(key == InputCode.DeSelect )
             {
-                _eventBroadcaster.InvokeEvent<Null>(null, "OnCloseInspectWindow");
-                _windowManager.OpenWindow(EWindowGUI.Main);
+                if (isAllyMode)
+                {
+                    isAllyMode = !isAllyMode;
+                    switchSideAnim.Play("EnemySwitch");
+                }
+                else
+                {
+                    isAllyMode = !isAllyMode;
+                    switchSideAnim.Play("AllySwitch");
+                }
+                
+                
+                
+                //_eventBroadcaster.InvokeEvent<Null>(null, "OnCloseInspectWindow");
+                //_windowManager.OpenWindow(EWindowGUI.Main);
             }
         }
     }
