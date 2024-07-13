@@ -117,12 +117,12 @@ namespace Vanaring
         #region GUIHighlighter
         public void ToggleExpandSizeUI()
         {
-            gameObject.transform.localScale = new Vector3(1.2f, 1.2f, 1.2f);
+            gameObject.transform.localScale = new Vector3(1.3f, 1.3f, 1.3f);
         }
 
         public void ToggleShrinkSizeGUI()
         {
-            gameObject.transform.localScale = new Vector3(0.9f, 0.9f, 0.9f);
+            gameObject.transform.localScale = new Vector3(1f, 1f, 1f);
         }
 
         public void DisplayArrowOnTargetCharacter()
