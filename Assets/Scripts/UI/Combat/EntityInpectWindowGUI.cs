@@ -51,7 +51,8 @@ namespace Vanaring
         private List<GameObject> enemyButtonList = new List<GameObject>();
         private List<ControlBox> controlBoxList = new List<ControlBox>();
         private List<SocketGUI> effSocketList = new List<SocketGUI>();
-        private List<CombatEntity> entityList = new List<CombatEntity>();
+        private List<CombatEntity> allyEntityList = new List<CombatEntity>();
+        private List<CombatEntity> enemyEntityList = new List<CombatEntity>();
         private int allyIndex = 0;
         private bool isAllyMode = true;
 
@@ -118,7 +119,8 @@ namespace Vanaring
                     Destroy(item.gameObject);
                 }
                 controlBoxList.Clear();
-                entityList.Clear();
+                allyEntityList.Clear();
+                enemyEntityList.Clear();
 
                 foreach (CombatEntity entity in CombatReferee.Instance.GetCompetatorsBySide(ECompetatorSide.Ally))
                 {
@@ -127,7 +129,7 @@ namespace Vanaring
                     newAllyButton.GetComponentInChildren<Image>().sprite = entity.CombatCharacterSheet.GetCharacterIcon;
                     newAllyButton.gameObject.SetActive(true);
                     allyButtonList.Add(newAllyButton);
-                    entityList.Add(entity);
+                    allyEntityList.Add(entity);
                 }
                 foreach (CombatEntity entity in CombatReferee.Instance.GetCompetatorsBySide(ECompetatorSide.Hostile))
                 {
@@ -136,12 +138,10 @@ namespace Vanaring
                     newEnemyButton.GetComponent<Button>().onClick.AddListener(() => LoadAllyEntityDetail(entity, false));
                     newEnemyButton.gameObject.SetActive(true);
                     enemyButtonList.Add(newEnemyButton);
-                    entityList.Add(entity);
+                    enemyEntityList.Add(entity);
                 }
 
-                int count = CombatReferee.Instance.GetCompetatorsBySide(ECompetatorSide.Ally).Count + CombatReferee.Instance.GetCompetatorsBySide(ECompetatorSide.Hostile).Count;
-
-                for (int i = 0; i < count; i++)
+                for (int i = 0; i < CombatReferee.Instance.GetCompetatorsBySide(ECompetatorSide.Ally).Count; i++)
                 {
                     ControlBox newBox = Instantiate(currentControlBoxTemplate, hrzControlBox.transform);
                     newBox.SetActiveImage(false);
@@ -161,9 +161,38 @@ namespace Vanaring
             _windowManager.OpenWindow(EWindowGUI.Main);
         }
 
-        public void InvokeEvent()
+        public void SwitchSide()
         {
-
+            int entityCount;
+            foreach (var item in controlBoxList)
+            {
+                Destroy(item.gameObject);
+            }
+            controlBoxList.Clear();
+            allyIndex = 0;
+            if (isAllyMode)
+            {
+                entityCount = CombatReferee.Instance.GetCompetatorsBySide(ECompetatorSide.Hostile).Count;
+                _eventBroadcaster.InvokeEvent<CombatEntity>(enemyEntityList[allyIndex], "OnEntityInspect");
+                isAllyMode = !isAllyMode;
+                switchSideAnim.Play("EnemySwitch");
+            }
+            else
+            {
+                entityCount = CombatReferee.Instance.GetCompetatorsBySide(ECompetatorSide.Ally).Count;
+                _eventBroadcaster.InvokeEvent<CombatEntity>(allyEntityList[allyIndex], "OnEntityInspect");
+                isAllyMode = !isAllyMode;
+                switchSideAnim.Play("AllySwitch");
+            }
+            for (int i = 0; i < entityCount; i++)
+            {
+                ControlBox newBox = Instantiate(currentControlBoxTemplate, hrzControlBox.transform);
+                newBox.SetActiveImage(false);
+                newBox.gameObject.SetActive(true);
+                controlBoxList.Add(newBox);
+            }
+            controlBoxList[0].SetActiveImage(true);
+            SetupInfo();
         }
         
 
@@ -231,15 +260,14 @@ namespace Vanaring
             {
                 item.SetActiveImage(false);
             }
+            controlBoxList[allyIndex].SetActiveImage(true);
             if (isAllyMode)
             {
-                controlBoxList[allyIndex].SetActiveImage(true);
                 allyButtonList[allyIndex].GetComponent<Button>().onClick.Invoke();
                 
             }
             else
             {
-                controlBoxList[3+allyIndex].SetActiveImage(true);
                 enemyButtonList[allyIndex].GetComponent<Button>().onClick.Invoke();
                 
             }
@@ -253,7 +281,7 @@ namespace Vanaring
         {
             allyIndex = 0;
             isAllyMode = true;
-            _eventBroadcaster.InvokeEvent<CombatEntity>(entityList[allyIndex], "OnEntityInspect");
+            _eventBroadcaster.InvokeEvent<CombatEntity>(allyEntityList[allyIndex], "OnEntityInspect");
         }
 
         public override void OnWindowDeActive()
@@ -265,75 +293,56 @@ namespace Vanaring
             Init();
         }
 
+        public void ClampEntityList()
+        {
+            if (allyIndex < 0)
+            {
+                allyIndex = 0;
+            }
+            if (isAllyMode)
+            {
+                if (allyIndex > allyEntityList.Count - 1)
+                {
+                    allyIndex = allyEntityList.Count - 1;
+                }
+                _eventBroadcaster.InvokeEvent<CombatEntity>(allyEntityList[allyIndex], "OnEntityInspect");
+            }
+            else
+            {
+                if (allyIndex > enemyEntityList.Count - 1)
+                {
+                    allyIndex = enemyEntityList.Count - 1;
+                }
+                _eventBroadcaster.InvokeEvent<CombatEntity>(enemyEntityList[allyIndex], "OnEntityInspect");
+            }
+        }
+
         public override void ReceiveKeysFromWindowManager(InputCode key)
         {
             if (key == InputCode.Left)
             {
                 allyIndex--;// = Math.Clamp(allyIndex - 1, 0, 2);
 
-                if (!isAllyMode && allyIndex < 0)
-                {
-                    allyIndex = 2;
-                    isAllyMode = true;
-                }
-
-                if (allyIndex < 0)
-                {
-                    allyIndex = 0;
-                }
-                if (isAllyMode)
-                {
-                    _eventBroadcaster.InvokeEvent<CombatEntity>(entityList[allyIndex], "OnEntityInspect");
-                }
-                else
-                {
-                    _eventBroadcaster.InvokeEvent<CombatEntity>(entityList[3 + allyIndex], "OnEntityInspect");
-                }
+                ClampEntityList();
 
                 SetupInfo();
             }
             if (key == InputCode.Right)
             {
-                allyIndex++; //= Math.Clamp(allyIndex + 1, 0, 2);
-                
-                if(!isAllyMode && allyIndex+1 > enemyButtonList.Count)
-                {
-                    allyIndex--;
-                }
+                allyIndex++; //= Math.Clamp(allyIndex + 1, 0, 2);              
 
-                if(allyIndex > 2)
-                {
-                    allyIndex = 0;
-                    isAllyMode = false;
-                }
-                if (isAllyMode)
-                {
-                    _eventBroadcaster.InvokeEvent<CombatEntity>(entityList[allyIndex], "OnEntityInspect");
-                }
-                else
-                {
-                    _eventBroadcaster.InvokeEvent<CombatEntity>(entityList[3 + allyIndex], "OnEntityInspect");
-                }
+                ClampEntityList();
 
                 SetupInfo();
             }
-            if(key == InputCode.DeSelect )
+            if(key == InputCode.InspectionOpen)
             {
-                if (isAllyMode)
-                {
-                    isAllyMode = !isAllyMode;
-                    switchSideAnim.Play("EnemySwitch");
-                }
-                else
-                {
-                    isAllyMode = !isAllyMode;
-                    switchSideAnim.Play("AllySwitch");
-                }
-                
-                
-                
-                //_eventBroadcaster.InvokeEvent<Null>(null, "OnCloseInspectWindow");
-                //_windowManager.OpenWindow(EWindowGUI.Main);
+                SwitchSide();
+            }
+            if(key == InputCode.DeSelect)
+            {
+                _eventBroadcaster.InvokeEvent<Null>(null, "OnCloseInspectWindow");
+                _windowManager.OpenWindow(EWindowGUI.Main);
             }
         }
     }
