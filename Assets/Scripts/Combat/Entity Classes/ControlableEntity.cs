@@ -61,9 +61,9 @@ namespace Vanaring
             
             GetComponent<ItemUserHandler>().FactorizeItemInInventory();
 
-            SetUpCameraAndPositio(); 
+            SetUpCameraAndPositio();
 
-             
+
             yield return base.TakeControl();
 
         }

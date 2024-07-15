@@ -18,11 +18,13 @@ namespace Vanaring
 
         public override void OnWindowActive()
         {
+            //FindObjectOfType<EnemyHUDWindowManager>().DisplayEnemyHUD(CombatReferee.Instance.GetCompetatorsBySide(ECompetatorSide.Hostile));
 
         }
 
         public override void OnWindowDeActive()
         {
+            //FindObjectOfType<EnemyHUDWindowManager>().DisableEnemyHUD();
 
         }
         public override void LoadWindowData(CombatEntity entity)

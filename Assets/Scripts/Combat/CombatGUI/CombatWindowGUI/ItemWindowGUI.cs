@@ -24,7 +24,8 @@ namespace Vanaring
         private int currentSelectedIndex = 0;
         public override void OnWindowActive()
         {
-            
+            FindObjectOfType<EnemyHUDWindowManager>().DisplayEnemyHUD(CombatReferee.Instance.GetCompetatorsBySide(ECompetatorSide.Hostile));
+
         }
         public override void OnWindowDeActive()
         {

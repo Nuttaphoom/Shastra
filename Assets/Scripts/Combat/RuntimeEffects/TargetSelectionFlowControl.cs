@@ -176,7 +176,6 @@ namespace Vanaring
                 {
                     ForceStop();
                     _enemyHUDWindowManager.RemoveSlotBreakHighlightOnHUD();
-
                 }
             }
         }
@@ -185,8 +184,8 @@ namespace Vanaring
         {
             if (_activlySelecting)
             {
-                _activlySelecting = false;
-                _forceStop = true;
+                _activlySelecting = false   ;
+                _forceStop = true   ;
             }
         }
         
@@ -251,6 +250,7 @@ namespace Vanaring
                     //need to display every ui first before doing anythign 
                     _targetSelectionGUI.SelectTargetPointer(_selectingTarget);
 
+                    //we automaticall display enemy when enter control
                     _enemyHUDWindowManager.DisplayEnemyHUD(_selectingTarget);
 
                     _characterWindowManager.DisplayArrowOnTargetCharacter(_selectingTarget);

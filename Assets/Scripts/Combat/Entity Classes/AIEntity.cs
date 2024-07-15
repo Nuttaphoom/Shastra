@@ -60,6 +60,8 @@ namespace Vanaring
 
         public override IEnumerator TakeControl()
         {
+            FindObjectOfType<EnemyHUDWindowManager>().DisableEnemyHUD();
+
             yield return base.TakeControl(); 
         
         }
