@@ -18,8 +18,7 @@ namespace Vanaring
 
         public override void OnWindowActive()
         {
-            //FindObjectOfType<EnemyHUDWindowManager>().DisplayEnemyHUD(CombatReferee.Instance.GetCompetatorsBySide(ECompetatorSide.Hostile));
-
+            FindObjectOfType<EnemyHUDWindowManager>().DisableEnemyHUD( );
         }
 
         public override void OnWindowDeActive()

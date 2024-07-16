@@ -182,8 +182,8 @@ namespace Vanaring
             {
                 CloseWindow(); 
             }else
-            {
-                DisplayCurrentWindow(); 
+            { 
+                TryOpenWindow(_lastWindowOpen) ; 
             }
         }
 
