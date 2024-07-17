@@ -422,9 +422,21 @@ namespace Vanaring
                 _animator.SetTrigger(triggerName);
             }
         }
+
+
         #region Animation Methods 
+    
+        public void PrepareEntityAnimationForAction() {
+
+            _animator.Play("Idle", 0);
+
+        }
+
         public IEnumerator PlayTriggerAnimation(string triggerName)
         {
+            var stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
+
+              
             _animator.SetTrigger(triggerName);
 
             // Get the hash of the animation state

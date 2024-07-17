@@ -47,6 +47,15 @@ namespace Vanaring
             _timelienActors.Add(actor.transform);
         }
 
+        public void PrepareEntityAnimationForAction()
+        {
+            foreach (var timelineActor in _timelienActors)
+            {
+                timelineActor.GetComponent<CombatEntity>().CombatEntityAnimationHandler.PrepareEntityAnimationForAction();
+            }
+        }
+
+
         public Transform GetObjectWithTrackName(string trackName)
         {
             if (trackName == CasterTrackName)
