@@ -52,6 +52,8 @@ namespace Vanaring
 
         public void SetUpActor(PlayableDirector director, ActionTimelineSettingStruct actionTimelineSetting, SignalReceiver unitySignalReciver   )
         {
+            actionTimelineSetting.PrepareEntityAnimationForAction(); 
+
             if (_lookAtBinder == null)
                 _lookAtBinder = new ActionTimelineLookAtBinder(); 
 
