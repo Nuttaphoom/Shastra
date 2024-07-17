@@ -26,6 +26,8 @@ namespace Vanaring
     {
         private GameObject _visualMesh ;
 
+        [Header("Use for Enemy location, entity wtih dedicated location won't be move from that location as long as the location is available")]
+        private int _dedicateLocation = -1; 
         //Pivot Position for Visualization 
 
         #region Pivot Params

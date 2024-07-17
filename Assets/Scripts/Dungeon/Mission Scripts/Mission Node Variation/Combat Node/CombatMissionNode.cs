@@ -13,16 +13,20 @@ namespace Vanaring
         [SerializeField]
         private CombatDungeonNodeLoaderData _combatDungeonNodeLoaderData;
 
+
         protected override IEnumerator OnVisiteThisNodeFirstTimeOnMission()
         {
             yield return base.OnVisiteThisNodeFirstTimeOnMission();
             //yield return new WaitForSeconds(1.25f) ;
 
-            PersistentSceneLoader.Instance.CreateLoaderDataUser<CombatDungeonNodeLoaderData>("CombatDungeonNodeDataUser", _combatDungeonNodeLoaderData); 
-            PersistentSceneLoader.Instance.LoadGeneralScene(_combatSceneData, 3); 
+            if (!dontInvokeNodeEvent)
+            {
+                PersistentSceneLoader.Instance.CreateLoaderDataUser<CombatDungeonNodeLoaderData>("CombatDungeonNodeDataUser", _combatDungeonNodeLoaderData);
+                PersistentSceneLoader.Instance.LoadGeneralScene(_combatSceneData, 3);
 
-            while (PersistentSceneLoader.Instance.IsSceneLoading)
-                yield return new WaitForEndOfFrame();
+                while (PersistentSceneLoader.Instance.IsSceneLoading)
+                    yield return new WaitForEndOfFrame();
+            }
         }
     }
 
