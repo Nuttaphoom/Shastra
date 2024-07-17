@@ -268,6 +268,7 @@ namespace Vanaring
 
             //ColorfulLogger.LogWithColor("restore captured_normalizedTimeAnimation in " + gameObject.name +" : " + captured_normalizedTimeAnimation, Color.red);
             animator.Play(capturedAnimatorHash, 0, captured_normalizedTimeAnimation);
+            
 
             ResetCapturedAnimationData(); 
 
