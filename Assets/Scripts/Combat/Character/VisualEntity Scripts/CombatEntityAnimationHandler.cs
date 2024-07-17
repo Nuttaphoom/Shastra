@@ -228,6 +228,10 @@ namespace Vanaring
             _animator = GetVisualMesh().GetComponent<Animator>();
             _combatEntity = GetComponent<CombatEntity>();
         }
+        private void Start()
+        {
+            StartCoroutine(TriggerAnimation("Idle2"));
+        }
 
         #region Mesh Methods 
 
@@ -408,6 +412,16 @@ namespace Vanaring
 
         #endregion
 
+        private IEnumerator TriggerAnimation(string triggerName)
+        {
+            while (true)
+            {
+                float waitTime = UnityEngine.Random.Range(12f, 60f);
+                yield return new WaitForSeconds(waitTime);
+                Debug.Log("play Idle02");
+                _animator.SetTrigger(triggerName);
+            }
+        }
         #region Animation Methods 
         public IEnumerator PlayTriggerAnimation(string triggerName)
         {
