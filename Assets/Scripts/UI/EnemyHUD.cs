@@ -258,8 +258,8 @@ namespace Vanaring
         {
             if (!_visualMesh.activeSelf)
                 return;
-           
-            _visualMesh.gameObject.SetActive(false); 
+
+            _visualMesh.gameObject.SetActive(false);
         }
         public void DisplayHUDVisual()
         {

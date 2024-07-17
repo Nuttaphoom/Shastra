@@ -75,6 +75,7 @@ namespace Vanaring
             darkVal = 3;
 
             secondHpBar.fillAmount = (float)hpVal / maxHpVal;
+            secondMpBar.fillAmount = (float)mpVal / maxMpVal;
 
             UpdateHPScaleGUI();
             UpdateMPScaleGUI();
@@ -116,12 +117,12 @@ namespace Vanaring
         #region GUIHighlighter
         public void ToggleExpandSizeUI()
         {
-            gameObject.transform.localScale = new Vector3(1.2f, 1.2f, 1.2f);
+            gameObject.transform.localScale = new Vector3(1.3f, 1.3f, 1.3f);
         }
 
         public void ToggleShrinkSizeGUI()
         {
-            gameObject.transform.localScale = new Vector3(0.9f, 0.9f, 0.9f);
+            gameObject.transform.localScale = new Vector3(1f, 1f, 1f);
         }
 
         public void DisplayArrowOnTargetCharacter()
@@ -148,6 +149,10 @@ namespace Vanaring
         }
         private void UpdateMPScaleGUI()
         {
+            //Debug.Log(mpVal + " / " + maxMpVal);
+            //float fixMpVal = ((float)mpVal / maxMpVal) * 0.375f;
+            ////Debug.Log("MP:" + fixMpVal);
+            //mpBar.fillAmount = (float)fixMpVal;
             mpBar.fillAmount = (float)mpVal / maxMpVal;
             mpNumText.text = mpVal.ToString();
             if (mpVal < 0)
@@ -185,6 +190,9 @@ namespace Vanaring
                 mpBar.fillAmount = 0;
             }
             float mptemp = maxMpVal == 0 ? (mpVal == 0 ? 1 : mpVal) : maxMpVal;
+
+            //float fixRatioVal = ((float)mpVal / maxMpVal) * 0.375f;
+
             UpdateMPScaleGUI();
             StopAllCoroutines();
             StartCoroutine(IEAnimateBarScale(mpVal, mptemp, secondMpBar));

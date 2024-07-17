@@ -168,6 +168,7 @@ namespace Vanaring
         //}
         public override void OnWindowDisplay(CombatGraphicalHandler graophicalHandler)
         {
+
             for (int i = 0; i < _buttons.Count; i++)
             {
                 UnhightlightButton(i); 

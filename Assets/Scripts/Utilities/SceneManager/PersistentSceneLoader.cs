@@ -76,10 +76,10 @@ namespace Vanaring
                 transitionScreenObj.Init(transitionManager);
                 yield return transitionScreenObj.FadeInTransition();
             }
-            else
-            {
-                throw new System.Exception("non-destroy transition object found.");
-            }
+            //else
+            //{
+            //    throw new System.Exception("non-destroy transition object found.");
+            //}
         }
         public void OnCompleteLoadedNewLocationScene(AsyncOperation asy)
         {

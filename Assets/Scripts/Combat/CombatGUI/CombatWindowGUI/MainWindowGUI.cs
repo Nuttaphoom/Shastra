@@ -18,11 +18,12 @@ namespace Vanaring
 
         public override void OnWindowActive()
         {
-
+            FindObjectOfType<EnemyHUDWindowManager>().DisableEnemyHUD( );
         }
 
         public override void OnWindowDeActive()
         {
+            //FindObjectOfType<EnemyHUDWindowManager>().DisableEnemyHUD();
 
         }
         public override void LoadWindowData(CombatEntity entity)
@@ -39,7 +40,6 @@ namespace Vanaring
 
         public override void ReceiveKeysFromWindowManager(InputCode key)
         {
-            Debug.Log("main window receive key is " + key);
             if (key == (InputCode.Skill))
             {
                 _windowManager.OpenWindow(EWindowGUI.Spell);

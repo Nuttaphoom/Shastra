@@ -301,7 +301,6 @@ namespace Vanaring
             if (GetVisualMesh().gameObject.activeSelf)
                 return;
 
-
             if (_combatEntity.IsDead)
                 return;
 

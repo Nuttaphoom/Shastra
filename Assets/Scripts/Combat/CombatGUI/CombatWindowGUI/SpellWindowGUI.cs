@@ -24,6 +24,8 @@ namespace Vanaring  {
         private int currentSelectedIndex = 0;
         public override void OnWindowActive()
         {
+            FindObjectOfType<EnemyHUDWindowManager>().DisplayEnemyHUD(CombatReferee.Instance.GetCompetatorsBySide(ECompetatorSide.Hostile));
+
             StartCoroutine(PersistentTutorialManager.Instance.CheckTuitorialNotifier("SpellCastExplain"));
         }
         public override void OnWindowDeActive()
@@ -92,7 +94,7 @@ namespace Vanaring  {
             }
             spellLogText.text = spellSocketGUIList[currentSelectedIndex].GetSpellDescription();
             spellSocketGUIList[currentSelectedIndex].HightlightedButton();
-        }
+        }  
         public override void ReceiveKeysFromWindowManager(InputCode key)
         {
             if (key == InputCode.DeSelect)
