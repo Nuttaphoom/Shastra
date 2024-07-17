@@ -79,7 +79,7 @@ namespace Vanaring
             if (directionVector == -startNode.transform.forward)
                 return TransitionDirection.MinusForward_Z;
 
-            throw new System.Exception("DirectionVector of " + directionVector + " doesn't match with direction vector of startNode"); 
+            throw new System.Exception("DirectionVector of " + directionVector + " from  " + startNode.gameObject.name + " doesn't match with direction vector of  "  + destinationNode.gameObject.name); 
 
         }
 
