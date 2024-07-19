@@ -65,7 +65,8 @@ namespace Vanaring
             _textMeshProUGUI.text = spell.AbilityName.ToString();
             if(spell.MPCost > 0)
             {
-                _spellCost.text = spell.MPCost.ToString() + " MP";
+                _spellCost.text = spell.MPCost.ToString() + "\nMP";/* + " MP";*/
+                
             }
             else
             {
@@ -82,6 +83,7 @@ namespace Vanaring
             //init slot layout
             if (spell.RequiredSide == RuntimeMangicalEnergy.EnergySide.LightEnergy)
             {
+                _actionButton.GetComponent<Image>().sprite = lightSpellSprite;
                 for (int i = 0; i < _spellRequireAmount; i++)
                 {
                     if(_spellRequireAmount <= 3)
@@ -107,6 +109,7 @@ namespace Vanaring
             }
             else
             {
+                _actionButton.GetComponent<Image>().sprite = darkSpellSprite;
                 for (int i = 0; i < _spellRequireAmount; i++)
                 {
                     if (_spellRequireAmount <= 3)
