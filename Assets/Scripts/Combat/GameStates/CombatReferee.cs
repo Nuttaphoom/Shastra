@@ -401,6 +401,8 @@ namespace Vanaring
             {
                 yield return _sideTurnDisplayerManager.DisplaySideRoundCoroutine(_currentSide);
 
+                Debug.Log("Dislpay side turn done");
+
                 yield return _combatRefereeStateHandler.StateEnter(); 
 
                 GetEventBroadcaster().InvokeEvent<ECompetatorSide>(_currentSide ,"OnNewRoundBegin");
@@ -619,7 +621,6 @@ namespace Vanaring
         public IEnumerator SetActiveActors()
         {
 
-            HanderRefereeOrder();
  
             var team = GetCurrentTeam();
 
@@ -638,7 +639,6 @@ namespace Vanaring
 
             for (int i = 0; i < _activeCombatEntities.Count(); i++)
             {
-
                 if (_activeCombatEntities[i].WasGetForcedRelieved(true))
                 {
                     int repeatition = 0;
@@ -652,6 +652,13 @@ namespace Vanaring
                     }
                     //Debug.Log("exit loop with " + _activeCombatEntities[0] + " at 0");
                 }
+            }
+
+            if (_activeCombatEntities.Count() > 0)
+            {
+                //If there is one active character, handle referee order 
+                HanderRefereeOrder();
+
             }
 
             ////search for force relieve entities 
