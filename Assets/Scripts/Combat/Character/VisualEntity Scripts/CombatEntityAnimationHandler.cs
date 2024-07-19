@@ -415,7 +415,6 @@ namespace Vanaring
             {
                 float waitTime = UnityEngine.Random.Range(12f, 60f);
                 yield return new WaitForSeconds(waitTime);
-                Debug.Log("play Idle02");
                 _animator.SetTrigger(triggerName);
             }
         }

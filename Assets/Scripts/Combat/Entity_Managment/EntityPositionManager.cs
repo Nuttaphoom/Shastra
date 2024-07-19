@@ -251,7 +251,7 @@ namespace Vanaring
 
             entity.GetComponent<CombatEntityAnimationHandler>().ShowVisualMesh();
 
-            Debug.Log("Entity is " + entity + " assign to " + data.Location.name + " with index " + index); 
+            Debug.Log("Entity is " + entity + " assign to " + data.Location.name + " with index " + index);     
 
             entity.transform.position = data.Location.transform.position ;
             entity.transform.forward = data.Location.transform.forward;   
