@@ -24,6 +24,10 @@ namespace Vanaring
 
         [SerializeField]
         private Image _skillImage;
+        [SerializeField]
+        private Image _targetAmountIconImage;
+        [SerializeField]
+        private Sprite aoeIcon;
 
         [SerializeField]
         private Image _spellEnergyCostType;
@@ -70,6 +74,10 @@ namespace Vanaring
             
             _fadeBlack.gameObject.SetActive(false);
             _skillImage.sprite = _spellSO.DescriptionBaseField.FieldImage;
+            if (_spellSO.IsAOETargetAction()){
+                _targetAmountIconImage.sprite = aoeIcon;
+            }
+            
 
             //init slot layout
             if (spell.RequiredSide == RuntimeMangicalEnergy.EnergySide.LightEnergy)
