@@ -64,6 +64,11 @@ namespace Vanaring
             
             _caster = caster; 
         }
+
+        public bool IsAOETargetAction()
+        {
+            return _targetSelector.MaxTarget > 1; 
+        }
         public abstract IEnumerator Simulate(CombatEntity target); 
         /// <summary>
         /// This method should be invoked prior to taking any action as it might causes the Actor to be exhaunted.

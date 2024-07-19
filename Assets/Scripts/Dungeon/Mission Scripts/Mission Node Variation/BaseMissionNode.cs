@@ -60,8 +60,10 @@ namespace Vanaring
             EventBroadcaster.UnSubEvent(func, "OnBeforeExitThisNode");
         }
 
-        #endregion 
+        #endregion
 
+        [SerializeField]
+        protected bool dontInvokeNodeEvent;
         public enum VisitationState
         {
             NotVisited,

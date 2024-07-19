@@ -31,6 +31,12 @@ namespace Vanaring
         [SerializeField] private TextMeshProUGUI hpNumText;
         [SerializeField] private Image hpFillBar;
 
+        [Header("EnergyArmor")]
+        [SerializeField] private GameObject energySection;
+        [SerializeField] private Image armorSlotTemplate;
+        [SerializeField] private GameObject energyHRZ;
+        private List<Image> armorSlotList = new List<Image>();
+
         [Header("MP")]
         [SerializeField] private GameObject mpSection;
         [SerializeField] private TextMeshProUGUI mpNumText;
@@ -202,6 +208,7 @@ namespace Vanaring
             mpSection.gameObject.SetActive(isAlly);
             bondSection.SetActive(isAlly);
             levelSection.SetActive(isAlly);
+            energySection.SetActive(!isAlly);
 
             entityName.text = entity.CombatCharacterSheet.CharacterName;
             entityName.rectTransform.sizeDelta = new Vector2(30+(entity.CombatCharacterSheet.CharacterName.Length * 50), 67f);
@@ -252,6 +259,43 @@ namespace Vanaring
                 mpNumText.text = entity.SpellCaster.GetMP + "/" + entity.SpellCaster.GetPeakMP;
                 mpFillBar.fillAmount = (float)entity.SpellCaster.GetMP / entity.SpellCaster.GetPeakMP;
             }
+            else
+            {
+                InitArmorSlot(entity);
+            }
+        }
+
+        private void InitArmorSlot(CombatEntity entity)
+        {
+            foreach (var item in armorSlotList)
+            {
+                Destroy(item.gameObject);
+            }
+            armorSlotList.Clear();
+            Color newColor;
+            RuntimeMangicalEnergy.EnergySide side;
+            if (entity.SpellCaster.GetPeakEnergyAmout(RuntimeMangicalEnergy.EnergySide.LightEnergy) > entity.SpellCaster.GetPeakEnergyAmout(RuntimeMangicalEnergy.EnergySide.DarkEnergy))
+            {
+                side = RuntimeMangicalEnergy.EnergySide.LightEnergy;
+                newColor = new Color(254f/255f,219f/255f,62f/255f);
+            }
+            else
+            {
+                side = RuntimeMangicalEnergy.EnergySide.DarkEnergy;
+                newColor = new Color(209f/255f, 0f, 254f/255f);
+            }
+
+            for (int i = 0; i < entity.SpellCaster.GetPeakEnergyAmout(side); i++)
+            {
+                Image newSlot = Instantiate(armorSlotTemplate, energyHRZ.transform);
+                newSlot.gameObject.SetActive(true);
+                armorSlotList.Add(newSlot);
+            }
+            armorSlotTemplate.gameObject.SetActive(false);
+            for (int i = 0; i < entity.SpellCaster.GetEnergyAmount(side); i++)
+            {
+                armorSlotList[i].color = newColor;
+            }
         }
 
         private void SetupInfo()
@@ -281,6 +325,7 @@ namespace Vanaring
         {
             allyIndex = 0;
             isAllyMode = true;
+            Init();
             _eventBroadcaster.InvokeEvent<CombatEntity>(allyEntityList[allyIndex], "OnEntityInspect");
         }
 

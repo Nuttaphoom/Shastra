@@ -25,11 +25,10 @@ namespace Vanaring
     public class CombatEntityAnimationHandler : MonoBehaviour
     {
         private GameObject _visualMesh ;
-
-        //Pivot Position for Visualization 
+ //Pivot Position for Visualization 
 
         #region Pivot Params
-        
+
         private Transform _impactTransform;
         private Transform _groundTransform;
         private Transform _aboveHeadTransform;
@@ -226,6 +225,10 @@ namespace Vanaring
             _animator = GetVisualMesh().GetComponent<Animator>();
             _combatEntity = GetComponent<CombatEntity>();
         }
+        private void Start()
+        {
+            StartCoroutine(TriggerAnimation("Idle2"));
+        }
 
         #region Mesh Methods 
 
@@ -266,6 +269,7 @@ namespace Vanaring
 
             //ColorfulLogger.LogWithColor("restore captured_normalizedTimeAnimation in " + gameObject.name +" : " + captured_normalizedTimeAnimation, Color.red);
             animator.Play(capturedAnimatorHash, 0, captured_normalizedTimeAnimation);
+            
 
             ResetCapturedAnimationData(); 
 
@@ -405,9 +409,31 @@ namespace Vanaring
 
         #endregion
 
+        private IEnumerator TriggerAnimation(string triggerName)
+        {
+            while (true)
+            {
+                float waitTime = UnityEngine.Random.Range(12f, 60f);
+                yield return new WaitForSeconds(waitTime);
+                Debug.Log("play Idle02");
+                _animator.SetTrigger(triggerName);
+            }
+        }
+
+
         #region Animation Methods 
+    
+        public void PrepareEntityAnimationForAction() {
+
+            _animator.Play("Idle", 0);
+
+        }
+
         public IEnumerator PlayTriggerAnimation(string triggerName)
         {
+            var stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
+
+              
             _animator.SetTrigger(triggerName);
 
             // Get the hash of the animation state
@@ -523,6 +549,29 @@ namespace Vanaring
             GetVisualMesh().transform.rotation = transform.rotation; 
         }
 
+
+        #region  Dedicate Location Handler 
+        [Header("Use for Enemy location, entity wtih dedicated location won't be move from that location as long as the location is available")]
+        private int _dedicateLocation = -1;
+
+        public void SetDedicateLocation(int dedicateLocation)
+        {
+            _dedicateLocation = dedicateLocation;
+        }
+
+        public bool DedicateToLocation
+        {
+            get
+            {
+                return _dedicateLocation != -1;
+            }
+        }
+
+        public int GetDedicateLocation
+        {
+            get { return _dedicateLocation; }
+        }
+        #endregion
 
 
 

@@ -45,12 +45,14 @@ namespace Vanaring
             Vector3 prevUIPos = transform.position;
             float progression = 0;
 
+            Vector3 destinationToVisit = new Vector3(nodeToVisit.transform.position.x, nodeToVisit.transform.position.y + 0.4f, nodeToVisit.transform.position.z);
+
             PerformMoveAnimation(direction);
 
             while (progression < 1)
             {
 
-                transform.position = Vector3.Lerp(prevUIPos, nodeToVisit.transform.position, progression);
+                transform.position = Vector3.Lerp(prevUIPos, destinationToVisit, progression);
                 progression += Time.deltaTime / 1.7f;
 
                 yield return null;
