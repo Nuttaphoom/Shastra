@@ -28,6 +28,10 @@ namespace Vanaring
         [SerializeField]
         protected ActionSignal _actionSignal;
 
+        public bool IsAOETargetAction()
+        {
+            return _targetSelector.MaxTarget > 1;
+        }
 
         public abstract ActorAction FactorizeRuntimeAction(CombatEntity combatEntity );
 
