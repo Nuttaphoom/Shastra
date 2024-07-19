@@ -18,7 +18,7 @@ namespace Vanaring
         private EnergyModifierData _requiredEnergy;
 
         [SerializeField]
-        private int _MPCost; 
+        private int _MPCost;
 
         public RuntimeMangicalEnergy.EnergySide RequiredSide => _requiredEnergy.Side ;
         public int RequiredAmout => _requiredEnergy.Amount > 0 ? (_requiredEnergy.Amount * -1) : (_requiredEnergy.Amount);
@@ -49,6 +49,7 @@ namespace Vanaring
 
     public class SpellAbilityRuntime : ActorAction
     {
+        
         private int _requiredEnergy;
         private RuntimeMangicalEnergy.EnergySide _requiredSide ; 
         private int _MPCost;

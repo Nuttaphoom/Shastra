@@ -107,15 +107,14 @@ namespace Vanaring
         private struct CompetatorDetailStruct
         {
             [SerializeField]
-            private ECompetatorSide _side;
+            public ECompetatorSide Side;
             [SerializeField]
-            private CombatEntity _entity;
-            public ECompetatorSide Side => _side;
-            public CombatEntity Competator => _entity;
+            public CombatEntity Competator;
+    
             public CompetatorDetailStruct(ECompetatorSide side, CombatEntity entity)
             {
-                _side = side;
-                _entity = entity;
+                Side = side;
+                Competator = entity;
             }
         }
 
@@ -323,6 +322,8 @@ namespace Vanaring
         /// <returns></returns>
         private IEnumerator AssignCompetators(List<CombatEntity> entites, ECompetatorSide side, bool addDuringCombat = false)
         {
+            Debug.Log("assign competator of side " + side);
+
             List<IEnumerator> _allIEs = new List<IEnumerator>();
 
             if (side == ECompetatorSide.Hostile)
@@ -337,10 +338,7 @@ namespace Vanaring
 
             }
 
-            foreach (var entity in entites) {
-                EntityPositionManager.Instance.OccupieAnyValidLocation(side, entity); 
-                _allIEs.Add(entity.InitializeEntityIntoCombat());
-            }
+           
 
             if (side == ECompetatorSide.Ally)
             {
@@ -350,15 +348,30 @@ namespace Vanaring
                 }
             }
 
-            yield return new WaitAll(this, _allIEs.ToArray());
 
             foreach (var entity in entites)
             {
                 CompetatorDetailStruct c = new CompetatorDetailStruct(side, entity);
                 _competators.Add(c);
+            }
+
+            HanderRefereeOrder();
+
+            for  (int i =0; i< GetCompetatorsBySide(side).Count; i++)
+            {
+                var e = GetCompetatorsBySide(side); 
+                EntityPositionManager.Instance.OccupieLocation(side,i, e[i]);
+                _allIEs.Add(e[i].InitializeEntityIntoCombat());
+            }
+
+            yield return new WaitAll(this, _allIEs.ToArray());
+
+
+            foreach (var entity in entites)
+            {
+ 
 
                 GetEventBroadcaster().InvokeEvent<CombatEntity>(entity, "OnCompetitorEnterCombat");
-
             }
 
            
@@ -605,6 +618,8 @@ namespace Vanaring
         /// </summary>
         public IEnumerator SetActiveActors()
         {
+
+            HanderRefereeOrder();
  
             var team = GetCurrentTeam();
 
@@ -656,8 +671,63 @@ namespace Vanaring
 
             yield return null ;
 
-        } 
+        }
+        private void HanderRefereeOrder()
+        {
 
+            foreach (ECompetatorSide side in Enum.GetValues(typeof(ECompetatorSide)))
+            {
+                bool changeIndex = false;
+                var entities = GetCompetatorsBySide(side);
+                for (int i = 0; i < entities.Count; i++)
+                {
+
+                    if (!entities[i].CombatEntityAnimationHandler.DedicateToLocation)
+                        continue;
+
+                    if (entities[i].CombatEntityAnimationHandler.GetDedicateLocation == i)
+                        continue;
+
+                    if (entities[i].CombatEntityAnimationHandler.GetDedicateLocation >= entities.Count)
+                        continue;
+
+
+                    var e = _competators[i];
+
+                    changeIndex = true;
+
+                    var temp = entities[i];
+                    entities[i] = entities[entities[i].CombatEntityAnimationHandler.GetDedicateLocation];
+                    entities[temp.CombatEntityAnimationHandler.GetDedicateLocation] = temp;
+
+                }
+
+                if (changeIndex)
+                {
+
+                    for (int i = 0; i < _competators.Count; i++)
+                    {
+                        if (_competators[i].Side == side)
+                        {
+                            _competators.RemoveAt(i);
+                            i--;
+                        }
+                    }
+
+                    for (int i = 0; i < entities.Count; i++)
+                    {
+                        _competators.Add(new CompetatorDetailStruct(side, entities[i]));
+                    }
+
+                   
+                }
+
+                if (side == ECompetatorSide.Hostile)
+                {
+                    EntityPositionManager.Instance.SetNewEnemyCurrentSize(entities.Count);
+                }
+            }
+        }
         #region GETTER 
         public List<CombatEntity> GetCurrentActiveEntities()
         {

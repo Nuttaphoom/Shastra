@@ -179,8 +179,8 @@ namespace Vanaring
        
         public void SetNewEnemyCurrentSize(int newSize)
         {
-            if (_currentEnemySize == newSize)
-                return ; 
+            //if (_currentEnemySize == newSize)
+            //    return ; 
 
             if (_currentEnemySize == -1)
             {
@@ -206,6 +206,8 @@ namespace Vanaring
                 i++;
             }
         }
+
+     
         
 
         #region Occupy & Release Location 
@@ -248,6 +250,9 @@ namespace Vanaring
             }
 
             entity.GetComponent<CombatEntityAnimationHandler>().ShowVisualMesh();
+
+            Debug.Log("Entity is " + entity + " assign to " + data.Location.name + " with index " + index); 
+
             entity.transform.position = data.Location.transform.position ;
             entity.transform.forward = data.Location.transform.forward;   
 

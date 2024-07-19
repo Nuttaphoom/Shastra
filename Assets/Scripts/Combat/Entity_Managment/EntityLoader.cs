@@ -28,7 +28,8 @@ namespace Vanaring
             int index = 0;
             foreach (var entityPrefabPool in pool.GetEntityPrefabPoolStruct)
             {
-                ret.Add( SpawnPrefab(entityPrefabPool.Prefab, entityPrefabPool.DedicatedLocation)); 
+                ret.Add( SpawnPrefab(entityPrefabPool.Prefab, entityPrefabPool.DedicatedLocation));
+                ret[index].CombatEntityAnimationHandler.SetDedicateLocation(entityPrefabPool.DedicatedLocation) ;
                 index++;
             }
 

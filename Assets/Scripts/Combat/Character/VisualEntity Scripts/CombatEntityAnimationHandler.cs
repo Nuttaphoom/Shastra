@@ -25,13 +25,10 @@ namespace Vanaring
     public class CombatEntityAnimationHandler : MonoBehaviour
     {
         private GameObject _visualMesh ;
-
-        [Header("Use for Enemy location, entity wtih dedicated location won't be move from that location as long as the location is available")]
-        private int _dedicateLocation = -1; 
-        //Pivot Position for Visualization 
+ //Pivot Position for Visualization 
 
         #region Pivot Params
-        
+
         private Transform _impactTransform;
         private Transform _groundTransform;
         private Transform _aboveHeadTransform;
@@ -552,6 +549,29 @@ namespace Vanaring
             GetVisualMesh().transform.rotation = transform.rotation; 
         }
 
+
+        #region  Dedicate Location Handler 
+        [Header("Use for Enemy location, entity wtih dedicated location won't be move from that location as long as the location is available")]
+        private int _dedicateLocation = -1;
+
+        public void SetDedicateLocation(int dedicateLocation)
+        {
+            _dedicateLocation = dedicateLocation;
+        }
+
+        public bool DedicateToLocation
+        {
+            get
+            {
+                return _dedicateLocation != -1;
+            }
+        }
+
+        public int GetDedicateLocation
+        {
+            get { return _dedicateLocation; }
+        }
+        #endregion
 
 
 
