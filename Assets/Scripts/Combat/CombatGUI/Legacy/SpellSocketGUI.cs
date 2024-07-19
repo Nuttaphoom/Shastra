@@ -68,7 +68,8 @@ namespace Vanaring
                 _spellCost.text = "";
             }
             
-            _fadeBlack.gameObject.SetActive(false); ;
+            _fadeBlack.gameObject.SetActive(false);
+            _skillImage.sprite = _spellSO.DescriptionBaseField.FieldImage;
 
             //init slot layout
             if (spell.RequiredSide == RuntimeMangicalEnergy.EnergySide.LightEnergy)
