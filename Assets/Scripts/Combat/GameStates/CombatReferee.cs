@@ -350,8 +350,6 @@ namespace Vanaring
 
             for (int i = 0; i < entites.Count; i++)
             {
-                
-
                 CompetatorDetailStruct c = new CompetatorDetailStruct(side, entites[i]);
                 _competators.Add(c);
 
@@ -366,7 +364,8 @@ namespace Vanaring
             for (int i =0; i< GetCompetatorsBySide(side).Count; i++)
             {
                 var e = GetCompetatorsBySide(side);
-                EntityPositionManager.Instance.OccupieLocation(side,i, e[i]);
+                //ColorfulLogger.LogWithColor("IDK WHY THIS IS CCALLED", Color.yellow);
+                EntityPositionManager.Instance.OccupieLocation(side, i, e[i]);
             }
 
             yield return new WaitAll(this, _allIEs.ToArray());
@@ -523,11 +522,13 @@ namespace Vanaring
 
         public IEnumerator OnCharacterPerformAction(CombatEntity actor )
         {
+            Debug.Log("On Perform action");
             yield return actor.OnPerformAction( );
 
             ResolveEntityDead();
 
             yield return PostPerformActionInEveryCharacter();
+
 
             yield return CheckForReactionAction(); 
 
@@ -628,8 +629,6 @@ namespace Vanaring
         /// </summary>
         public IEnumerator SetActiveActors()
         {
-
- 
             var team = GetCurrentTeam();
 
             _activeCombatEntities.Reset();
@@ -662,12 +661,12 @@ namespace Vanaring
                 }
             }
 
-            if (_activeCombatEntities.Count() > 0)
-            {
-                //If there is one active character, handle referee order 
-                HanderRefereeOrder();
+            //if (_activeCombatEntities.Count() > 0)
+            //{
+            //    //If there is one active character, handle referee order 
+            //    //HanderRefereeOrder();
 
-            }
+            //}
 
             ////search for force relieve entities 
             //for (int i =0 ; i < _activeCombatEntities.Count() ; i++)
@@ -689,6 +688,7 @@ namespace Vanaring
         }
         private void HanderRefereeOrder()
         {
+            Debug.Log("hander referee order");
 
             foreach (ECompetatorSide side in Enum.GetValues(typeof(ECompetatorSide)))
             {

@@ -282,7 +282,7 @@ namespace Vanaring
         }
         public void HideHUDVisual()
         {
-            Debug.Log("disable display hud ");
+            //Debug.Log("disable display hud ");
             isHighlightSlotInit = false;
             if (!_visualMesh.activeSelf)
                 return;
@@ -291,7 +291,7 @@ namespace Vanaring
         }
         public void DisplayHUDVisual()
         {
-            Debug.Log("display hud ");
+            //Debug.Log("display hud ");
             if (_visualMesh.activeSelf)
                 return;
 

@@ -215,8 +215,6 @@ namespace Vanaring
        
         public void OccupieLocation(ECompetatorSide side, int index,CombatEntity entity )
         {
-            Debug.Log("Call occupie with index " + index); 
-
             if (IsThisEntityOccupyLocation(entity) != null)
             {
                 ReleasePosition(entity);
@@ -256,56 +254,57 @@ namespace Vanaring
 
             entity.GetComponent<CombatEntityAnimationHandler>().ShowVisualMesh();
 
-            Debug.Log("Entity is " + entity + " with index " + index);
-            Debug.Log(" assign to " + data.Location.name ); 
+            Debug.Log("check p ") ; 
 
             entity.transform.position = data.Location.transform.position ;
-            entity.transform.forward = data.Location.transform.forward;   
+            entity.transform.forward = data.Location.transform.forward;
+            Debug.Log("check position2 ");
 
 
             return; 
 
         } 
-        public void OccupieAnyValidLocation(ECompetatorSide side, CombatEntity entity   )
-        {
+        //public void OccupieAnyValidLocation(ECompetatorSide side, CombatEntity entity   )
+        //{
+        //    Debug.Log("occupy any location called ");
 
 
-            if (IsThisEntityOccupyLocation(entity) != null) {
-                ReleasePosition(entity);
-            }
+        //    if (IsThisEntityOccupyLocation(entity) != null) {
+        //        ReleasePosition(entity);
+        //    }
 
-            StandingLocationOccupierData validLocation = null ;
+        //    StandingLocationOccupierData validLocation = null ;
 
-            if (side == ECompetatorSide.Ally)
-            {
-                if (_allyMainStandLocation.EntityStandingHere != null)
-                    ReleasePosition(_allyMainStandLocation.EntityStandingHere);
+        //    if (side == ECompetatorSide.Ally)
+        //    {
+        //        if (_allyMainStandLocation.EntityStandingHere != null)
+        //            ReleasePosition(_allyMainStandLocation.EntityStandingHere);
 
-                validLocation = _allyMainStandLocation;
-            }
-            else
-            {
-                //Debug.Log(" GetEnemyStandingLocations( " + _currentEnemySize + "  ) : " + GetEnemyStandingLocations(_currentEnemySize).Count); 
-                foreach (var data in GetEnemyStandingLocations(_currentEnemySize))
-                {
-                    if (data.EntityStandingHere == null)
-                    {
-                        validLocation = data;
-                        break;
-                    }
-                }
-            }
+        //        validLocation = _allyMainStandLocation;
+        //    }
+        //    else
+        //    {
+        //        //Debug.Log(" GetEnemyStandingLocations( " + _currentEnemySize + "  ) : " + GetEnemyStandingLocations(_currentEnemySize).Count); 
+        //        foreach (var data in GetEnemyStandingLocations(_currentEnemySize))
+        //        {
+        //            if (data.EntityStandingHere == null)
+        //            {
+        //                validLocation = data;
+        //                break;
+        //            }
+        //        }
+        //    }
 
-            if (validLocation == null)
-                throw new Exception("validLocation is null");
+        //    if (validLocation == null)
+        //        throw new Exception("validLocation is null");
  
-            entity.GetComponent<CombatEntityAnimationHandler>().ShowVisualMesh();
-            validLocation.EntityStandingHere = entity;
-            entity.transform.position = validLocation.Location.position;
+        //    entity.GetComponent<CombatEntityAnimationHandler>().ShowVisualMesh();
+        //    validLocation.EntityStandingHere = entity;
+        //    entity.transform.position = validLocation.Location.position;
 
-            entity.transform.forward = validLocation.Location.forward;
+        //    entity.transform.forward = validLocation.Location.forward;
 
-        }
+        //}
 
         public void ReleasePosition(CombatEntity entity)
         {
@@ -395,6 +394,7 @@ namespace Vanaring
 
         private void RelocateEntityToitsOccupiedPosition(List<CombatEntity> onlyThisEntity = null)
         {
+            Debug.Log("relocate entity to its occupied position");
 
             foreach (var occupiedData in GetAllOccupiedLocation())
             {
