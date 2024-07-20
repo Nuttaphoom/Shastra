@@ -50,9 +50,12 @@ namespace Vanaring
             if (entities[0] is not AIEntity) 
                 return;
 
-            foreach (EnemyHUD hud in GetAllInstantiatedHUD())
-                hud.HideHUDVisual();
 
+            foreach (EnemyHUD hud in GetAllInstantiatedHUD())
+            {
+                if (! entities.Contains(hud.GetHUDOwner))
+                    hud.HideHUDVisual();
+            }
             foreach (CombatEntity combatEntity in entities)
             {
                 if (! instantiatedEnemyHUD.ContainsKey(combatEntity))

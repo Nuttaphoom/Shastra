@@ -23,6 +23,8 @@ namespace Vanaring
 
         private CombatEntity _owner;
 
+        public CombatEntity GetHUDOwner => _owner; 
+
         [SerializeField]
         private TextMeshProUGUI enemyName;
 
@@ -48,6 +50,8 @@ namespace Vanaring
         [SerializeField] private List<Image> darkSlotList;
         [SerializeField] private List<Image> lightSlotList;
         [SerializeField] private List<Image> highlightSlotList;
+
+        private bool isHighlightSlotInit = false;
 
         #region Init
         public void Init(CombatEntity owner)
@@ -94,6 +98,7 @@ namespace Vanaring
             if (_owner == null)
                 return;
             SubAllEvents();
+            
         }
 
         private void OnDisable()
@@ -193,7 +198,20 @@ namespace Vanaring
         }
         public void SimulateDisplayEnergyBreakSlotOnTarget(EnergyModifyerEffectPair effectPiar )
         {
+            if (isHighlightSlotInit)
+            {
+                return;
+            }
+
             int highlightAmount = Mathf.Abs(effectPiar.Amount)  ;
+            if (highlightAmount <= 0)
+            {
+                return;
+            }
+
+            isHighlightSlotInit = true;
+            Debug.Log("sim");
+
             RuntimeMangicalEnergy.EnergySide side = effectPiar.EnergySide;
             foreach (Image slot in highlightSlotList)
             {
@@ -201,7 +219,7 @@ namespace Vanaring
             }
             if (maxLight > maxDark && side == RuntimeMangicalEnergy.EnergySide.LightEnergy)
             {
-                //Debug.Log("Display Light");
+                Debug.Log("Display Light");
                 if (lightScale <= 0)
                 {
                     return;
@@ -212,7 +230,10 @@ namespace Vanaring
                     {
                         if(i >= 0 && highlightAmount > 0 && i < lightScale)
                         {
-                            highlightSlotList[i].gameObject.SetActive(true);
+                            if (!highlightSlotList[i].gameObject.activeSelf)
+                            {
+                                highlightSlotList[i].gameObject.SetActive(true);
+                            }
                             highlightAmount--;
                         }
                     }
@@ -220,7 +241,7 @@ namespace Vanaring
             }
             if (maxDark > maxLight && side == RuntimeMangicalEnergy.EnergySide.DarkEnergy)
             {
-                //Debug.Log("Display Dark");
+                Debug.Log("Display Dark");
                 if (darkScale <= 0)
                 {
                     return;
@@ -231,12 +252,17 @@ namespace Vanaring
                     {
                         if (i >= 0 && highlightAmount > 0 && i < darkScale)
                         {
-                            highlightSlotList[i].gameObject.SetActive(true);
+                            if (!highlightSlotList[i].gameObject.activeSelf)
+                            {
+                                highlightSlotList[i].gameObject.SetActive(true);
+                                Debug.Log("Display Wink");
+                            }
                             highlightAmount--;
                         }
                     }
                 }
             }
+            
         }
         private void OnEnergyModified(CombatEntity caster, RuntimeMangicalEnergy.EnergySide side, int val)
         {
@@ -256,6 +282,8 @@ namespace Vanaring
         }
         public void HideHUDVisual()
         {
+            Debug.Log("disable display hud ");
+            isHighlightSlotInit = false;
             if (!_visualMesh.activeSelf)
                 return;
 
@@ -263,6 +291,7 @@ namespace Vanaring
         }
         public void DisplayHUDVisual()
         {
+            Debug.Log("display hud ");
             if (_visualMesh.activeSelf)
                 return;
 
@@ -270,6 +299,7 @@ namespace Vanaring
         }
         public void ClearBreakSlotHighlight()
         {
+            //if(isHighlightSlotInit)
             foreach (Image slot in highlightSlotList)
             {
                 if (slot.gameObject.activeSelf)
@@ -281,6 +311,8 @@ namespace Vanaring
             {
                 slot.gameObject.SetActive(false);
             }
+            Debug.Log("clear sim");
+            isHighlightSlotInit = false;
         }
         #endregion
         #region HP
