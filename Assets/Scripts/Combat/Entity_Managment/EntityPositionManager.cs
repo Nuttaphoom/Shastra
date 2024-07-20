@@ -102,7 +102,8 @@ namespace Vanaring
         }
         private void OnNewRound_RelocateEntityBack(ECompetatorSide n)
         {
-            RelocateEntityToitsOccupiedPosition(); 
+            if (n == ECompetatorSide.Ally)
+                RelocateEntityToitsOccupiedPosition(); 
         }
         private void OnTargetSelectionEnd_ReturnOccupiedAllyPosition(TargetSelectingData data)
         {
@@ -254,11 +255,9 @@ namespace Vanaring
 
             entity.GetComponent<CombatEntityAnimationHandler>().ShowVisualMesh();
 
-            Debug.Log("check p ") ; 
 
             entity.transform.position = data.Location.transform.position ;
             entity.transform.forward = data.Location.transform.forward;
-            Debug.Log("check position2 ");
 
 
             return; 
@@ -394,7 +393,6 @@ namespace Vanaring
 
         private void RelocateEntityToitsOccupiedPosition(List<CombatEntity> onlyThisEntity = null)
         {
-            Debug.Log("relocate entity to its occupied position");
 
             foreach (var occupiedData in GetAllOccupiedLocation())
             {

@@ -292,11 +292,9 @@ namespace Vanaring
 
             SetExhaunst(true);
 
-            Debug.Log(" BEF PerformActionInQueue ");
 
             yield return ActionHandler.PerformActionInQueue();
 
-            Debug.Log("AFTER PerformActionInQueue");
 
         }
 

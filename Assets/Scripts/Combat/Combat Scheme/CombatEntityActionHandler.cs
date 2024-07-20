@@ -76,7 +76,6 @@ namespace Vanaring
                 GetEventBroadcaster().InvokeEvent<EntityActionPair>(entityActionPair, "OnPerformAction");
 
                 _performerEntity.SetExhaunst(true);// = true;
-                Debug.Log("BEFORE  perform action");
 
                 yield return action.PerformAction();
 

@@ -47,12 +47,15 @@ namespace Vanaring
         [SerializeField, AllowNesting, NaughtyAttributes.ShowIf("_useActionTimelinePrefabLocation")]
         private ActionAnimationLocationBinder _actionAnimationLocationBinder;
 
+        private ActionTimelineSettingStruct _actionTimelineSetting;
 
         //private List<GameObject> _destroyedWithTimeline = new List<GameObject>();
 
         public void SetUpActor(PlayableDirector director, ActionTimelineSettingStruct actionTimelineSetting, SignalReceiver unitySignalReciver   )
         {
-            actionTimelineSetting.PrepareEntityAnimationForAction(); 
+            _actionTimelineSetting = actionTimelineSetting;
+
+            _actionTimelineSetting.PrepareEntityAnimationForAction(); 
 
             if (_lookAtBinder == null)
                 _lookAtBinder = new ActionTimelineLookAtBinder(); 
@@ -78,7 +81,7 @@ namespace Vanaring
                 {
                     string trackName = (track as CustomAnimatorCallerTrack).TrackName;
 
-                    if (objectWithTrackName = actionTimelineSetting.GetObjectWithTrackName(track.name))
+                    if (objectWithTrackName = _actionTimelineSetting.GetObjectWithTrackName(track.name))
                     {
                         //Debug.Log( track.name + " bind with " + objectWithTrackName.name);
 
@@ -91,7 +94,7 @@ namespace Vanaring
 
                     Debug.Log("track is CustoMeNTITYHiddenTrack with track name " + trackName); 
 
-                    if (objectWithTrackName = actionTimelineSetting.GetObjectWithTrackName(track.name))
+                    if (objectWithTrackName = _actionTimelineSetting.GetObjectWithTrackName(track.name))
                     {
                         //Debug.Log( track.name + " bind with " + objectWithTrackName.name);
 
@@ -111,11 +114,19 @@ namespace Vanaring
             
             }
 
-            AssignCasterTargetTransform(actionTimelineSetting);
+            HandleTargetsLocation();
+
+
+
+        }
+
+        private void HandleTargetsLocation()
+        {
+            AssignCasterTargetTransform(_actionTimelineSetting);
 
             //Set up Target and Caster transform, place them into correct location 
-            var targetActors = actionTimelineSetting.GetAllTimelineActors() ;
-            var casterActor = actionTimelineSetting.GetAllTimelineActors()[0];
+            var targetActors = _actionTimelineSetting.GetAllTimelineActors();
+            var casterActor = _actionTimelineSetting.GetAllTimelineActors()[0];
             targetActors.RemoveAt(0);
 
             //Uise ActionTimelinePrefab 
@@ -130,11 +141,11 @@ namespace Vanaring
                 if (!_actionAnimationLocationBinder.MoveCaster)
                 {
                     AssignCasterTransformToNewParent(casterActor);
-                } 
+                }
 
                 _actionAnimationLocationBinder.SetUpBinder(casterTransforms, _targetTransform, casterActor, targetActors);
 
-               
+
 
             }
             else
@@ -149,8 +160,7 @@ namespace Vanaring
                 _lookAtBinder.BindLookAtTargetsToEnemies(_targetTransform);
 
 
-            RelocateImpactVFXtoImpactTransform(casterActor, targetActors); 
-
+            RelocateImpactVFXtoImpactTransform(casterActor, targetActors);
         }
          
         private void RelocateImpactVFXtoImpactTransform(GameObject casters, List<GameObject> targets)

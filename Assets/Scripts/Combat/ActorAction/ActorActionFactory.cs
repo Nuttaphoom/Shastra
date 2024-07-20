@@ -123,7 +123,6 @@ namespace Vanaring
                 yield return new WaitForEndOfFrame();
             } while ((!_actionSignal.SignalTerminated()));
 
-            Debug.Log("BEF IsPLAYING Timeline");
 
             while (DirectorManager.Instance.IsPlayingTimeline)
             {
@@ -135,7 +134,6 @@ namespace Vanaring
                 yield return new WaitForEndOfFrame();
             }
             
-            Debug.Log("BEF _ongoingEffect Timeline");
             
             while (_ongoingEffect.Count > 0)
             {

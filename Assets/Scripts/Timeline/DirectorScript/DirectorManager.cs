@@ -76,6 +76,7 @@ namespace Vanaring
 
         public void PlayTimeline(ActionSignal signal)
         {
+            Debug.Log("Play Timeline");
             if (_currentPlayableDirector != null)
                 throw new System.Exception("Try to play multiple timeline simutanouly");
 
@@ -97,8 +98,9 @@ namespace Vanaring
             // 3.) Set currentSignal waiting
             currentDirector.Play();
 
+
             // 4.) Wait until Timeline is done
-            StartCoroutine (WaitForTimeline(currentDirector));
+            StartCoroutine(WaitForTimeline(currentDirector));
  
         }
 
@@ -110,7 +112,6 @@ namespace Vanaring
         /// <param name="actionTimelineSettingStruct"></param>
         public IEnumerator PlayTimelineCoroutine(TimelineInfo info, List<CombatEntity> actors )
         {
-            GetEventBroadcaster().InvokeEvent<List<CombatEntity>>(actors, "OnPlayTimelineWithActor");
 
             // 1.) Create PlayableDirector
             PlayableDirector currentDirector;
@@ -131,10 +132,14 @@ namespace Vanaring
             // 2.) Set up the TimelineAsset
             _currentTimelineActorSetupHandler.SetUpActor(currentDirector, timelineSettingStruct, _signalReceiver);
 
-            // 3.) Set currentSignal waiting
-            currentDirector.Play();
+            // 3.) signal broadcast that we want to play
+            GetEventBroadcaster().InvokeEvent<List<CombatEntity>>(actors, "OnPlayTimelineWithActor");
 
-            //// 4.) Wait until Timeline is done
+            // 4.) Set currentSignal waiting
+            currentDirector.Play(); 
+
+
+            //// 5.) Wait until Timeline is done
             yield return (WaitForTimeline(currentDirector));
         }
 

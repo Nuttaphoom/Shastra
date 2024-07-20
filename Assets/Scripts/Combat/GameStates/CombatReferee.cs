@@ -337,8 +337,6 @@ namespace Vanaring
 
             }
 
-           
-
             if (side == ECompetatorSide.Ally)
             {
                 foreach (var entity in entites)
@@ -522,7 +520,6 @@ namespace Vanaring
 
         public IEnumerator OnCharacterPerformAction(CombatEntity actor )
         {
-            Debug.Log("On Perform action");
             yield return actor.OnPerformAction( );
 
             ResolveEntityDead();
@@ -688,8 +685,6 @@ namespace Vanaring
         }
         private void HanderRefereeOrder()
         {
-            Debug.Log("hander referee order");
-
             foreach (ECompetatorSide side in Enum.GetValues(typeof(ECompetatorSide)))
             {
                 bool changeIndex = false;
