@@ -195,7 +195,8 @@ namespace Vanaring
 
             _currentEnemySize = newSize; 
             
-            int i = 0; 
+            int i = 0;
+
             foreach (var data in oldLocationData)
             {
                 if (data.EntityStandingHere == null)
@@ -214,6 +215,7 @@ namespace Vanaring
        
         public void OccupieLocation(ECompetatorSide side, int index,CombatEntity entity )
         {
+            Debug.Log("Call occupie with index " + index); 
 
             if (IsThisEntityOccupyLocation(entity) != null)
             {
@@ -245,13 +247,17 @@ namespace Vanaring
                 {
                     enemyOccupation[index].EntityStandingHere = entity;
                     data = enemyOccupation[index];
+                }else
+                {
+                    //throw new Exception("Try to force standing on the occupied location");
                 }
 
             }
 
             entity.GetComponent<CombatEntityAnimationHandler>().ShowVisualMesh();
 
-            Debug.Log("Entity is " + entity + " assign to " + data.Location.name + " with index " + index);     
+            Debug.Log("Entity is " + entity + " with index " + index);
+            Debug.Log(" assign to " + data.Location.name ); 
 
             entity.transform.position = data.Location.transform.position ;
             entity.transform.forward = data.Location.transform.forward;   
@@ -322,8 +328,44 @@ namespace Vanaring
                 }
             } 
         }
+        public void ReleasePositionBySide(ECompetatorSide side)
+        {
+            if (side == ECompetatorSide.Ally)
+            {
+                foreach (var data in GetAllAllyStandingLocation())
+                {
+                    data.EntityStandingHere = null;
+                    return;
+                }
+            }
 
+            else if (side == ECompetatorSide.Hostile)
+            {
+                foreach (var data in GetEnemyStandingLocations(_currentEnemySize))
+                {
+
+                    data.EntityStandingHere = null;
+                    return;
+
+                }
+            }
+        }
+
+
+        public void ReleaseAllPosition()
+        {
+            foreach (var data in GetAllAllyStandingLocation())
+            {
+                    data.EntityStandingHere = null;    
+            }
+
+            foreach (var data in GetEnemyStandingLocations(_currentEnemySize))
+            {
+                    data.EntityStandingHere = null;                
+            }
+        }
  
+
         
         #endregion 
 

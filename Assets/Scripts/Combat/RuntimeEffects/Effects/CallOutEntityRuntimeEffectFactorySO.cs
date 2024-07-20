@@ -46,13 +46,15 @@ namespace Vanaring
         {
             //throw new NotImplementedException(); 
             List<IEnumerator> ie = new List<IEnumerator>();
+            List<CombatEntity> prefabs = new List<CombatEntity>();
+            ECompetatorSide side = _entitiesData[0].Side  ;
+
             foreach (var entityData in _entitiesData)
             {
-                var prefabTemplate = entityData.CombatEntity;
-                var side = entityData.Side;
-
-                ie.Add(CombatReferee.Instance.InstantiateCompetator(prefabTemplate, side, true));
+                prefabs.Add(entityData.CombatEntity)  ;
             }
+
+            ie.Add(CombatReferee.Instance.InstantiateCompetator(prefabs, side, true));
 
             yield return new WaitAll(caster, ie.ToArray());
         }

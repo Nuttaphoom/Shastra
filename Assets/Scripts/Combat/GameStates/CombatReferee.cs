@@ -322,7 +322,6 @@ namespace Vanaring
         /// <returns></returns>
         private IEnumerator AssignCompetators(List<CombatEntity> entites, ECompetatorSide side, bool addDuringCombat = false)
         {
-            Debug.Log("assign competator of side " + side);
 
             List<IEnumerator> _allIEs = new List<IEnumerator>();
 
@@ -349,19 +348,25 @@ namespace Vanaring
             }
 
 
-            foreach (var entity in entites)
+            for (int i = 0; i < entites.Count; i++)
             {
-                CompetatorDetailStruct c = new CompetatorDetailStruct(side, entity);
+                
+
+                CompetatorDetailStruct c = new CompetatorDetailStruct(side, entites[i]);
                 _competators.Add(c);
+
+                _allIEs.Add(entites[i].InitializeEntityIntoCombat());
+
             }
 
             HanderRefereeOrder();
 
-            for  (int i =0; i< GetCompetatorsBySide(side).Count; i++)
+            EntityPositionManager.Instance.ReleaseAllPosition(); 
+
+            for (int i =0; i< GetCompetatorsBySide(side).Count; i++)
             {
-                var e = GetCompetatorsBySide(side); 
+                var e = GetCompetatorsBySide(side);
                 EntityPositionManager.Instance.OccupieLocation(side,i, e[i]);
-                _allIEs.Add(e[i].InitializeEntityIntoCombat());
             }
 
             yield return new WaitAll(this, _allIEs.ToArray());
@@ -493,17 +498,20 @@ namespace Vanaring
             return false;
         } 
 
-        public IEnumerator InstantiateCompetator(CombatEntity prefabNewCompetator, ECompetatorSide side, bool addDurningCombat = false)
+        public IEnumerator InstantiateCompetator(List<CombatEntity> prefabNewCompetator, ECompetatorSide side, bool addDurningCombat = false)
         {
             List<CombatEntity> entitesWithSameSide = new List<CombatEntity>();
             entitesWithSameSide = GetCompetatorsBySide(side);
 
             if (entitesWithSameSide.Count > _maxTeamSize)
-                throw new Exception("Can't spawn more competator into the combat"); 
-            
-            CombatEntity entity = _entityLoader.SpawnPrefab(prefabNewCompetator) ;
+                throw new Exception("Can't spawn more competator into the combat");
 
-            yield return AssignCompetators(new List<CombatEntity>() { entity } , side, addDurningCombat);
+            List<CombatEntity> newSpawnEnitites = new List<CombatEntity>(); 
+            foreach (var prefab in prefabNewCompetator)
+            {
+                newSpawnEnitites.Add(_entityLoader.SpawnPrefab(prefab) );
+            }
+            yield return AssignCompetators(newSpawnEnitites, side, addDurningCombat);
 
            
              
