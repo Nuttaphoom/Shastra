@@ -246,7 +246,7 @@ namespace Vanaring
             var animator = GetVisualMesh().GetComponent<Animator>();
             var stateInfo = animator.GetCurrentAnimatorStateInfo(0);
 
-            if (! stateInfo.IsName("Idle") && ! stateInfo.IsName("Stun Stay"))
+            if (! stateInfo.IsName("Idle") && ! stateInfo.IsName("Stun Stay") && ! stateInfo.IsName("Dead") )
                 return;
             
             captured_normalizedTimeAnimation = animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
