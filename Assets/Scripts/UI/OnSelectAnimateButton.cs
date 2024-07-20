@@ -17,7 +17,10 @@ namespace Vanaring
 
         public void OnDeselect()
         {
-            buttonAnim.Play(deselectAnimationName);
+            if(deselectAnimationName != "")
+            {
+                buttonAnim.Play(deselectAnimationName);
+            }
         }
     }
 }
