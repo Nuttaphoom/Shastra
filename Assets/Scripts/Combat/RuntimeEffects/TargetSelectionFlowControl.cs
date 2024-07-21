@@ -132,12 +132,15 @@ namespace Vanaring
                 //Debug.Log("simulate energy");
                 yield return action.Simulate(target);
 
+                bool affectArmor = target.SpellCaster.DoesSimluationAffectArmor(); 
+
                 if (target.SpellCaster.CheckSimulation())
                 {
                     _targetSelectionGUI.SelectBreakTarget(target);
-                }else if (target.SpellCaster.DoesSimluationAffectArmor())
+                }
+                else if (affectArmor)
                 {
-                    _targetSelectionGUI.SelectWeakTarget(target);   
+                    _targetSelectionGUI.SelectWeakTarget(target);
                 }
             }
         }
