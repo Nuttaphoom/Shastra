@@ -135,7 +135,7 @@ namespace Vanaring
                 if (target.SpellCaster.CheckSimulation())
                 {
                     _targetSelectionGUI.SelectBreakTarget(target);
-                }else
+                }else if (target.SpellCaster.DoesSimluationAffectArmor())
                 {
                     _targetSelectionGUI.SelectWeakTarget(target);   
                 }

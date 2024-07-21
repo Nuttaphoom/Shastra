@@ -9,7 +9,9 @@ namespace Vanaring
     public interface ISimulationApplier<T,U,V> 
     {
         public void Simulate(T argc, U argv, V arga) ;
-        public bool CheckSimulation() ; 
+        public bool CheckSimulation() ;
+
+        public bool DoesSimluationAffectArmor(); 
     }
 
 }
