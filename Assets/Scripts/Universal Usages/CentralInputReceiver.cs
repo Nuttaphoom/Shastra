@@ -143,10 +143,10 @@ namespace Vanaring
 
         private void TransmitInput(InputCode key)
         {
-            ColorfulLogger.LogWithColor("Transmit Input key : " + key,Color.cyan) ;     
+            //ColorfulLogger.LogWithColor("Transmit Input key : " + key,Color.cyan) ;     
             SelectButtonCheck();
             if (_receiverStack.Count > 0) {
-                ColorfulLogger.LogWithColor("transmit to  : " + _receiverStack.Peek(), Color.cyan);
+                //ColorfulLogger.LogWithColor("transmit to  : " + _receiverStack.Peek(), Color.cyan);
                 _receiverStack.Peek().ReceiveKeys(key);
             } 
         }
@@ -248,7 +248,6 @@ namespace Vanaring
 
         public void AddInputReceiverIntoStack(IInputReceiver receiver)
         {
-            ColorfulLogger.LogWithColor("Add Input into stack : " + receiver, Color.green);
             if (! _receiverStack.Contains(receiver))
             {
                 _receiverStack.Push(receiver); 
@@ -259,7 +258,6 @@ namespace Vanaring
         {
             if (receiver != null)
             {
-                ColorfulLogger.LogWithColor("Removing Input from stack: " + receiver, Color.red);
 
                 Stack<IInputReceiver> tempStack = new Stack<IInputReceiver>();
 
@@ -285,10 +283,7 @@ namespace Vanaring
                     _receiverStack.Push(tempStack.Pop());
                 }
 
-                if (_receiverStack.Count == 0)
-                {
-                    Debug.Log("remove everything in stack") ;  
-                }
+                
             }
             else
             {

@@ -135,6 +135,9 @@ namespace Vanaring
                 if (target.SpellCaster.CheckSimulation())
                 {
                     _targetSelectionGUI.SelectBreakTarget(target);
+                }else
+                {
+                    _targetSelectionGUI.SelectWeakTarget(target);   
                 }
             }
         }

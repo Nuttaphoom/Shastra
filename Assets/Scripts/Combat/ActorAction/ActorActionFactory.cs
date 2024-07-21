@@ -28,6 +28,10 @@ namespace Vanaring
         [SerializeField]
         protected ActionSignal _actionSignal;
 
+        public bool IsAOETargetAction()
+        {
+            return _targetSelector.MaxTarget > 1;
+        }
 
         public abstract ActorAction FactorizeRuntimeAction(CombatEntity combatEntity );
 
@@ -118,6 +122,8 @@ namespace Vanaring
 
                 yield return new WaitForEndOfFrame();
             } while ((!_actionSignal.SignalTerminated()));
+
+
             while (DirectorManager.Instance.IsPlayingTimeline)
             {
                 //if (_caster.BreakTriggerHandler.TriggerActive)
@@ -127,6 +133,8 @@ namespace Vanaring
 
                 yield return new WaitForEndOfFrame();
             }
+            
+            
             while (_ongoingEffect.Count > 0)
             {
                 if (_caster.BreakTriggerHandler.TriggerActive)

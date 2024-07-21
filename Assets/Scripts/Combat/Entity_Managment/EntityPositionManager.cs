@@ -102,7 +102,8 @@ namespace Vanaring
         }
         private void OnNewRound_RelocateEntityBack(ECompetatorSide n)
         {
-            RelocateEntityToitsOccupiedPosition(); 
+            if (n == ECompetatorSide.Ally)
+                RelocateEntityToitsOccupiedPosition(); 
         }
         private void OnTargetSelectionEnd_ReturnOccupiedAllyPosition(TargetSelectingData data)
         {
@@ -195,7 +196,8 @@ namespace Vanaring
 
             _currentEnemySize = newSize; 
             
-            int i = 0; 
+            int i = 0;
+
             foreach (var data in oldLocationData)
             {
                 if (data.EntityStandingHere == null)
@@ -214,7 +216,6 @@ namespace Vanaring
        
         public void OccupieLocation(ECompetatorSide side, int index,CombatEntity entity )
         {
-
             if (IsThisEntityOccupyLocation(entity) != null)
             {
                 ReleasePosition(entity);
@@ -245,61 +246,64 @@ namespace Vanaring
                 {
                     enemyOccupation[index].EntityStandingHere = entity;
                     data = enemyOccupation[index];
+                }else
+                {
+                    //throw new Exception("Try to force standing on the occupied location");
                 }
 
             }
 
             entity.GetComponent<CombatEntityAnimationHandler>().ShowVisualMesh();
 
-            Debug.Log("Entity is " + entity + " assign to " + data.Location.name + " with index " + index); 
 
             entity.transform.position = data.Location.transform.position ;
-            entity.transform.forward = data.Location.transform.forward;   
+            entity.transform.forward = data.Location.transform.forward;
 
 
             return; 
 
         } 
-        public void OccupieAnyValidLocation(ECompetatorSide side, CombatEntity entity   )
-        {
+        //public void OccupieAnyValidLocation(ECompetatorSide side, CombatEntity entity   )
+        //{
+        //    Debug.Log("occupy any location called ");
 
 
-            if (IsThisEntityOccupyLocation(entity) != null) {
-                ReleasePosition(entity);
-            }
+        //    if (IsThisEntityOccupyLocation(entity) != null) {
+        //        ReleasePosition(entity);
+        //    }
 
-            StandingLocationOccupierData validLocation = null ;
+        //    StandingLocationOccupierData validLocation = null ;
 
-            if (side == ECompetatorSide.Ally)
-            {
-                if (_allyMainStandLocation.EntityStandingHere != null)
-                    ReleasePosition(_allyMainStandLocation.EntityStandingHere);
+        //    if (side == ECompetatorSide.Ally)
+        //    {
+        //        if (_allyMainStandLocation.EntityStandingHere != null)
+        //            ReleasePosition(_allyMainStandLocation.EntityStandingHere);
 
-                validLocation = _allyMainStandLocation;
-            }
-            else
-            {
-                //Debug.Log(" GetEnemyStandingLocations( " + _currentEnemySize + "  ) : " + GetEnemyStandingLocations(_currentEnemySize).Count); 
-                foreach (var data in GetEnemyStandingLocations(_currentEnemySize))
-                {
-                    if (data.EntityStandingHere == null)
-                    {
-                        validLocation = data;
-                        break;
-                    }
-                }
-            }
+        //        validLocation = _allyMainStandLocation;
+        //    }
+        //    else
+        //    {
+        //        //Debug.Log(" GetEnemyStandingLocations( " + _currentEnemySize + "  ) : " + GetEnemyStandingLocations(_currentEnemySize).Count); 
+        //        foreach (var data in GetEnemyStandingLocations(_currentEnemySize))
+        //        {
+        //            if (data.EntityStandingHere == null)
+        //            {
+        //                validLocation = data;
+        //                break;
+        //            }
+        //        }
+        //    }
 
-            if (validLocation == null)
-                throw new Exception("validLocation is null");
+        //    if (validLocation == null)
+        //        throw new Exception("validLocation is null");
  
-            entity.GetComponent<CombatEntityAnimationHandler>().ShowVisualMesh();
-            validLocation.EntityStandingHere = entity;
-            entity.transform.position = validLocation.Location.position;
+        //    entity.GetComponent<CombatEntityAnimationHandler>().ShowVisualMesh();
+        //    validLocation.EntityStandingHere = entity;
+        //    entity.transform.position = validLocation.Location.position;
 
-            entity.transform.forward = validLocation.Location.forward;
+        //    entity.transform.forward = validLocation.Location.forward;
 
-        }
+        //}
 
         public void ReleasePosition(CombatEntity entity)
         {
@@ -322,8 +326,44 @@ namespace Vanaring
                 }
             } 
         }
+        public void ReleasePositionBySide(ECompetatorSide side)
+        {
+            if (side == ECompetatorSide.Ally)
+            {
+                foreach (var data in GetAllAllyStandingLocation())
+                {
+                    data.EntityStandingHere = null;
+                    return;
+                }
+            }
 
+            else if (side == ECompetatorSide.Hostile)
+            {
+                foreach (var data in GetEnemyStandingLocations(_currentEnemySize))
+                {
+
+                    data.EntityStandingHere = null;
+                    return;
+
+                }
+            }
+        }
+
+
+        public void ReleaseAllPosition()
+        {
+            foreach (var data in GetAllAllyStandingLocation())
+            {
+                    data.EntityStandingHere = null;    
+            }
+
+            foreach (var data in GetEnemyStandingLocations(_currentEnemySize))
+            {
+                    data.EntityStandingHere = null;                
+            }
+        }
  
+
         
         #endregion 
 

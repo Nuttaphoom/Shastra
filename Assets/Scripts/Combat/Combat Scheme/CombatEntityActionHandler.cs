@@ -70,9 +70,9 @@ namespace Vanaring
             //check if still be able to call the action
             if (_performerEntity.ReadyToPerformAction())
             {
-                
 
-                EntityActionPair  entityActionPair =  new EntityActionPair() { Actor = _performerEntity, PerformedAction = action };
+
+                EntityActionPair entityActionPair =  new EntityActionPair() { Actor = _performerEntity, PerformedAction = action };
                 GetEventBroadcaster().InvokeEvent<EntityActionPair>(entityActionPair, "OnPerformAction");
 
                 _performerEntity.SetExhaunst(true);// = true;
@@ -80,6 +80,7 @@ namespace Vanaring
                 yield return action.PerformAction();
 
                 yield return action.PostActionPerform();
+
 
                 GetEventBroadcaster().InvokeEvent<EntityActionPair>(entityActionPair, "OnPostPerformAction");
 

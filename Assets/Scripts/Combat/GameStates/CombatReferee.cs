@@ -322,7 +322,6 @@ namespace Vanaring
         /// <returns></returns>
         private IEnumerator AssignCompetators(List<CombatEntity> entites, ECompetatorSide side, bool addDuringCombat = false)
         {
-            Debug.Log("assign competator of side " + side);
 
             List<IEnumerator> _allIEs = new List<IEnumerator>();
 
@@ -338,8 +337,6 @@ namespace Vanaring
 
             }
 
-           
-
             if (side == ECompetatorSide.Ally)
             {
                 foreach (var entity in entites)
@@ -349,19 +346,24 @@ namespace Vanaring
             }
 
 
-            foreach (var entity in entites)
+            for (int i = 0; i < entites.Count; i++)
             {
-                CompetatorDetailStruct c = new CompetatorDetailStruct(side, entity);
+                CompetatorDetailStruct c = new CompetatorDetailStruct(side, entites[i]);
                 _competators.Add(c);
+
+                _allIEs.Add(entites[i].InitializeEntityIntoCombat());
+
             }
 
             HanderRefereeOrder();
 
-            for  (int i =0; i< GetCompetatorsBySide(side).Count; i++)
+            EntityPositionManager.Instance.ReleaseAllPosition(); 
+
+            for (int i =0; i< GetCompetatorsBySide(side).Count; i++)
             {
-                var e = GetCompetatorsBySide(side); 
-                EntityPositionManager.Instance.OccupieLocation(side,i, e[i]);
-                _allIEs.Add(e[i].InitializeEntityIntoCombat());
+                var e = GetCompetatorsBySide(side);
+                //ColorfulLogger.LogWithColor("IDK WHY THIS IS CCALLED", Color.yellow);
+                EntityPositionManager.Instance.OccupieLocation(side, i, e[i]);
             }
 
             yield return new WaitAll(this, _allIEs.ToArray());
@@ -400,6 +402,8 @@ namespace Vanaring
             while (true)
             {
                 yield return _sideTurnDisplayerManager.DisplaySideRoundCoroutine(_currentSide);
+
+                Debug.Log("Dislpay side turn done");
 
                 yield return _combatRefereeStateHandler.StateEnter(); 
 
@@ -491,17 +495,20 @@ namespace Vanaring
             return false;
         } 
 
-        public IEnumerator InstantiateCompetator(CombatEntity prefabNewCompetator, ECompetatorSide side, bool addDurningCombat = false)
+        public IEnumerator InstantiateCompetator(List<CombatEntity> prefabNewCompetator, ECompetatorSide side, bool addDurningCombat = false)
         {
             List<CombatEntity> entitesWithSameSide = new List<CombatEntity>();
             entitesWithSameSide = GetCompetatorsBySide(side);
 
             if (entitesWithSameSide.Count > _maxTeamSize)
-                throw new Exception("Can't spawn more competator into the combat"); 
-            
-            CombatEntity entity = _entityLoader.SpawnPrefab(prefabNewCompetator) ;
+                throw new Exception("Can't spawn more competator into the combat");
 
-            yield return AssignCompetators(new List<CombatEntity>() { entity } , side, addDurningCombat);
+            List<CombatEntity> newSpawnEnitites = new List<CombatEntity>(); 
+            foreach (var prefab in prefabNewCompetator)
+            {
+                newSpawnEnitites.Add(_entityLoader.SpawnPrefab(prefab) );
+            }
+            yield return AssignCompetators(newSpawnEnitites, side, addDurningCombat);
 
            
              
@@ -518,6 +525,7 @@ namespace Vanaring
             ResolveEntityDead();
 
             yield return PostPerformActionInEveryCharacter();
+
 
             yield return CheckForReactionAction(); 
 
@@ -618,9 +626,6 @@ namespace Vanaring
         /// </summary>
         public IEnumerator SetActiveActors()
         {
-
-            HanderRefereeOrder();
- 
             var team = GetCurrentTeam();
 
             _activeCombatEntities.Reset();
@@ -638,7 +643,6 @@ namespace Vanaring
 
             for (int i = 0; i < _activeCombatEntities.Count(); i++)
             {
-
                 if (_activeCombatEntities[i].WasGetForcedRelieved(true))
                 {
                     int repeatition = 0;
@@ -653,6 +657,13 @@ namespace Vanaring
                     //Debug.Log("exit loop with " + _activeCombatEntities[0] + " at 0");
                 }
             }
+
+            //if (_activeCombatEntities.Count() > 0)
+            //{
+            //    //If there is one active character, handle referee order 
+            //    //HanderRefereeOrder();
+
+            //}
 
             ////search for force relieve entities 
             //for (int i =0 ; i < _activeCombatEntities.Count() ; i++)
@@ -674,7 +685,6 @@ namespace Vanaring
         }
         private void HanderRefereeOrder()
         {
-
             foreach (ECompetatorSide side in Enum.GetValues(typeof(ECompetatorSide)))
             {
                 bool changeIndex = false;
