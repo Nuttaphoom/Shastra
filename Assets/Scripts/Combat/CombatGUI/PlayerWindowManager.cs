@@ -19,6 +19,7 @@ namespace Vanaring
         [SerializeField] private WeaponWindowGUI _weaponWindow;
         [SerializeField] private MainWindowGUI _mainWindow;
         [SerializeField] private EntityInpectWindowGUI _entityInpectWindow;
+        [SerializeField] private Animator _characterCombatPanelAnim;
 
         private CombatWindowGUI _lastWindowOpen;
 
@@ -38,6 +39,11 @@ namespace Vanaring
         {
             if (CombatReferee.Instance != null)
                 CombatReferee.Instance.UnSubOnCombatPreparation(LoadNewEntityIntoHUD);
+        }
+
+        public void PlayPanelAnimation(string animationName)
+        {
+            _characterCombatPanelAnim.Play(animationName);
         }
 
         private List<CombatWindowGUI> GetAllValidWindows()
@@ -95,10 +101,12 @@ namespace Vanaring
             else if (newWindowType == EWindowGUI.Spell)
             {
                 windowToOpen = _spellWindow;
+                PlayPanelAnimation("OpenDescription");
             }
             else if (newWindowType == EWindowGUI.Item)
             {
                 windowToOpen = _itemWindow;
+                PlayPanelAnimation("OpenDescription");
             }
             else if (newWindowType == EWindowGUI.Weapon)
             {
