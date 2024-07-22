@@ -458,6 +458,7 @@ namespace Vanaring
 
             if (/*prevEntity != newEntity &&*/ newEntity != null)
             {
+
                 FindObjectOfType<CharacterWindowManager>().SetActiveEntityGUI(newEntity);
 
                 
