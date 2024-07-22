@@ -100,6 +100,7 @@ namespace Vanaring  {
             if (key == InputCode.DeSelect)
             {
                 _windowManager.OpenWindow(EWindowGUI.Main);
+                _windowManager.PlayPanelAnimation("CloseDescription");
             }
 
             else if (key == InputCode.Select)
