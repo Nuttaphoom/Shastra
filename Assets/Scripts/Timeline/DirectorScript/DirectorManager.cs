@@ -76,7 +76,6 @@ namespace Vanaring
 
         public void PlayTimeline(ActionSignal signal)
         {
-            Debug.Log("Play Timeline");
             if (_currentPlayableDirector != null)
                 throw new System.Exception("Try to play multiple timeline simutanouly");
 

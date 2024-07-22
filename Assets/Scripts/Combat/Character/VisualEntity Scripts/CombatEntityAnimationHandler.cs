@@ -456,7 +456,6 @@ namespace Vanaring
                 _spawnVisualEffect.Play();
                 overallTime =  1.5f ;
 
-                Debug.Log("overallTime " + overallTime); 
                 yield return new WaitForSeconds(overallTime / 2);
             }
 
@@ -469,7 +468,6 @@ namespace Vanaring
                 _spawnVisualEffect.gameObject.SetActive(false);
             }
 
-            Debug.Log("spawn visual effect end");
         }
         #endregion
 

@@ -403,11 +403,10 @@ namespace Vanaring
             {
                 yield return _sideTurnDisplayerManager.DisplaySideRoundCoroutine(_currentSide);
 
-                Debug.Log("Dislpay side turn done");
+                GetEventBroadcaster().InvokeEvent<ECompetatorSide>(_currentSide, "OnNewRoundBegin");
 
                 yield return _combatRefereeStateHandler.StateEnter(); 
 
-                GetEventBroadcaster().InvokeEvent<ECompetatorSide>(_currentSide ,"OnNewRoundBegin");
 
                 yield return _combatRefereeStateHandler.AdvanceRound();
 
