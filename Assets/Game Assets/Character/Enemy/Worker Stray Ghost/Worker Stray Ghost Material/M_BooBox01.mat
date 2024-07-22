@@ -12,7 +12,8 @@ Material:
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
-  m_InvalidKeywords: []
+  m_InvalidKeywords:
+  - _SURFACE_TYPE_TRANSPARENT
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -31,6 +32,10 @@ Material:
         m_Texture: {fileID: 2800000, guid: d2160c1489d9c7c4ba6fa38d89cf67f2, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _Texture2DAsset_9e517cb6d89c4cf0ae2b0a34c78aea90_Out_0_Texture2D:
+        m_Texture: {fileID: 2800000, guid: 29406a1cad2604a438dab8d28c738393, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -45,15 +50,29 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _AlphaClip: 0
+    - _AlphaToMask: 0
+    - _Blend: 0
+    - _CastShadows: 1
+    - _Cull: 0
+    - _Dissolve: 0
+    - _DstBlend: 10
     - _FreshnelOffset: 10
     - _FreshnelPower: 25
+    - _Opacity: 1
     - _PolkaHardness: 0.05
     - _PolkaSize: 0.09
     - _PolkaWidth: 1
     - _QueueControl: 0
     - _QueueOffset: 0
     - _ShadeOffset: 0
+    - _SmoothStep: 0.34
     - _Smoothness: 0.01
+    - _SrcBlend: 5
+    - _Surface: 1
+    - _ZTest: 4
+    - _ZWrite: 0
+    - _ZWriteControl: 0
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 0}
     - _LightVector: {r: 1, g: 1, b: -1, a: 0}
