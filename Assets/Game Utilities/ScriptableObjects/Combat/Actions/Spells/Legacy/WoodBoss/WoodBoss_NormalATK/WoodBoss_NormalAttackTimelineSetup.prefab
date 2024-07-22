@@ -9820,6 +9820,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 3084956369901293586}
   - {fileID: 4410642794435228846}
   m_Father: {fileID: 1149797596626964522}
   m_RootOrder: -1
@@ -14910,10 +14911,10 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3347849181146901599}
-  m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 1.0338145, y: -1.6546779, z: 6.844345}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalRotation: {x: -0, y: -0.7071068, z: -0.7071068, w: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 6695738638324458776}
   - {fileID: 1223819826164370353}
@@ -14921,7 +14922,7 @@ Transform:
   - {fileID: 7101635265013494408}
   - {fileID: 1334344439036160842}
   - {fileID: 6198181120677468068}
-  m_Father: {fileID: 1149797596626964522}
+  m_Father: {fileID: 6994607169353217868}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!198 &4532646249372747560
@@ -19829,7 +19830,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_NoiseProfile: {fileID: 11400000, guid: 69ce8388f6785dd4c8c39915efece2f4, type: 2}
   m_PivotOffset: {x: 0, y: 0, z: 0}
-  m_AmplitudeGain: 0
+  m_AmplitudeGain: 3
   m_FrequencyGain: 1
   mNoiseOffsets: {x: 0, y: 0, z: 0}
 --- !u!1 &4472789148670485381
@@ -29742,7 +29743,6 @@ Transform:
   m_Children:
   - {fileID: 8223999238057057151}
   - {fileID: 6994607169353217868}
-  - {fileID: 3084956369901293586}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -29817,6 +29817,7 @@ MonoBehaviour:
   _lookAtBinder:
     _lookAtBinderDatas: []
   _useActionTimelinePrefabLocation: 1
+  _rotateTargetsToCaster: 0
   _actionAnimationLocationBinder:
     _moveCasters: 1
     _moveTargets: 1
