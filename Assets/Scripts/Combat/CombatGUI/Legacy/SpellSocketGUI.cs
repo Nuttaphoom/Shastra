@@ -39,6 +39,8 @@ namespace Vanaring
         private Sprite lightSpellSprite;
         [SerializeField]
         private Sprite darkSpellSprite;
+        [SerializeField]
+        private Sprite noneSpellSprite;
 
         [Header("Spell Socket Layer")]
         [SerializeField] private Image _fadeBlack;
@@ -59,6 +61,24 @@ namespace Vanaring
         public void Init(SpellActionSO spell, CombatEntity combatEntity)
         {
             int _spellRequireAmount = (int) MathF.Abs(spell.RequiredAmout) ;
+            if (_spellRequireAmount == 0)
+            {
+                _actionButton.GetComponent<Image>().sprite = noneSpellSprite;
+                Color c = _actionButton.GetComponent<Image>().color;
+                c = new Color(78f / 255f, 135f / 255f, 1f);
+                _actionButton.GetComponent<Image>().color = c;
+            }
+            else if (spell.RequiredSide == RuntimeMangicalEnergy.EnergySide.LightEnergy)
+            {
+                _actionButton.GetComponent<Image>().sprite = lightSpellSprite;
+                Color c = _actionButton.GetComponent<Image>().color;
+                c = new Color(1f, 189f / 255f, 0f);
+                _actionButton.GetComponent<Image>().color = c;
+            }
+            else
+            {
+                _actionButton.GetComponent<Image>().sprite = darkSpellSprite;
+            }
             _spellSO = spell;
             this._caster = combatEntity;
             _actionButton.onClick.AddListener(ChooseSpell);
@@ -83,7 +103,6 @@ namespace Vanaring
             //init slot layout
             if (spell.RequiredSide == RuntimeMangicalEnergy.EnergySide.LightEnergy)
             {
-                _actionButton.GetComponent<Image>().sprite = lightSpellSprite;
                 for (int i = 0; i < _spellRequireAmount; i++)
                 {
                     if(_spellRequireAmount <= 3)
@@ -109,7 +128,6 @@ namespace Vanaring
             }
             else
             {
-                _actionButton.GetComponent<Image>().sprite = darkSpellSprite;
                 for (int i = 0; i < _spellRequireAmount; i++)
                 {
                     if (_spellRequireAmount <= 3)
