@@ -14,6 +14,8 @@ namespace Vanaring
 {
     public class EnemyHUD : MonoBehaviour
     {
+        bool _impactMode = false;
+
         [Header("Spawning offset regard to VFX position of the Entity")]
         [SerializeField]
         private Vector3 _spawnOffset; 
@@ -288,12 +290,19 @@ namespace Vanaring
                 return;
 
             _visualMesh.gameObject.SetActive(false);
+
+
+            SetImpactMode(false);
         }
-        public void DisplayHUDVisual()
+
+        public void DisplayHUDVisual(bool impactMode = false)
         {
-            //Debug.Log("display hud ");
+             
+
             if (_visualMesh.activeSelf)
                 return;
+
+            SetImpactMode(impactMode); 
 
             _visualMesh.gameObject.SetActive(true); 
         }
@@ -311,14 +320,29 @@ namespace Vanaring
             {
                 slot.gameObject.SetActive(false);
             }
-            Debug.Log("clear sim");
             isHighlightSlotInit = false;
+        } 
+
+        public void SetImpactMode(bool impactMode)
+        {
+            //if (_impactMode == true && impactMode == false)
+            //{
+            //    _visualMesh.transform.localScale =   new Vector3(_visualMesh.transform.localScale.x  - 1, _visualMesh.transform.localScale.y - 1 , _visualMesh.transform.localScale.z + 1) ;
+            //}else if (_impactMode == false && impactMode == true)
+            //{
+            //    _visualMesh.transform.localScale = new Vector3(_visualMesh.transform.localScale.x + 1, _visualMesh.transform.localScale.y + 1, _visualMesh.transform.localScale.z + 1);
+
+            //}
+
+            _impactMode = impactMode; 
+
+            
         }
         #endregion
         #region HP
         private void OnHPModified(int damage)
         {
-            DisplayHUDVisual();
+            DisplayHUDVisual(true);
 
             hpVal = _owner.StatsAccumulator.GetHPAmount();
 
@@ -365,7 +389,15 @@ namespace Vanaring
         {
             if (_visualMesh.activeSelf)
             {
-                transform.position = UISpaceSingletonHandler.ObjectToUISpace(_owner.GetComponent<CombatEntityAnimationHandler>().GetHUDSpawnTransform());
+                if (_impactMode)
+                {
+                    transform.position = UISpaceSingletonHandler.ObjectToUISpace(_owner.GetComponent<CombatEntityAnimationHandler>().GetImpactTransform());
+
+                }
+                else
+                {
+                    transform.position = UISpaceSingletonHandler.ObjectToUISpace(_owner.GetComponent<CombatEntityAnimationHandler>().GetHUDSpawnTransform());
+                }
             }
         }
     }
