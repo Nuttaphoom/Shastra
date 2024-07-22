@@ -226,7 +226,6 @@ namespace Vanaring
         // Take control and leave control should have its own space 
         public virtual IEnumerator TakeControl()
         {
-            Debug.Log("take control"); 
             GetEventBroadcaster().InvokeEvent(this, "OnTakeControl");
 
             yield return null;
