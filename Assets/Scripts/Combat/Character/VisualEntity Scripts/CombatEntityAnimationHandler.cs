@@ -447,16 +447,19 @@ namespace Vanaring
         }
         public IEnumerator PlaySpawnVisualEffectCoroutine()
         {
+            HideVisualMesh(); 
+
             float overallTime = 0.0f;
             if (_spawnVisualEffect != null)
             {
                 _spawnVisualEffect.gameObject.SetActive(true);
                 _spawnVisualEffect.Play();
-                overallTime = _spawnVisualEffect.main.duration;
+                overallTime =  1.5f ;
+
                 yield return new WaitForSeconds(overallTime / 2);
             }
 
-            _visualMesh.SetActive(true);
+            ShowVisualMesh(); 
 
             yield return new WaitForSeconds(overallTime / 2);
 
@@ -464,6 +467,7 @@ namespace Vanaring
             {
                 _spawnVisualEffect.gameObject.SetActive(false);
             }
+
         }
         #endregion
 

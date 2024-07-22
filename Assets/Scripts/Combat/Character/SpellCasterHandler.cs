@@ -225,13 +225,10 @@ namespace Vanaring
             if (_simulateMagicalEnergy == null)
                 return false;
 
-            Debug.Log("Sim L : " + _simulateMagicalEnergy.GetEnergy(RuntimeMangicalEnergy.EnergySide.LightEnergy) + " Cur L + " + GetEnergyAmount(RuntimeMangicalEnergy.EnergySide.LightEnergy));
             if ( _simulateMagicalEnergy.GetEnergy(RuntimeMangicalEnergy.EnergySide.LightEnergy)  !=  GetEnergyAmount(RuntimeMangicalEnergy.EnergySide.LightEnergy ) ) 
             {
                 return true;
             }
-
-            Debug.Log("Sim D : " + _simulateMagicalEnergy.GetEnergy(RuntimeMangicalEnergy.EnergySide.DarkEnergy) + " Cur D + " + GetEnergyAmount(RuntimeMangicalEnergy.EnergySide.DarkEnergy));
 
             if (_simulateMagicalEnergy.GetEnergy(RuntimeMangicalEnergy.EnergySide.DarkEnergy) != GetEnergyAmount(RuntimeMangicalEnergy.EnergySide.DarkEnergy))
             {

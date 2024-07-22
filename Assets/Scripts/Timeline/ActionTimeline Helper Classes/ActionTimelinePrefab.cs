@@ -14,16 +14,16 @@ namespace Vanaring
     public class ActionTimelinePrefab : MonoBehaviour
     {
         #region Const 
-        
+
         private const string CasterTransformTag = "Combat/Animation/Action/CasterTransform";
         private const string TargetTransformTag = "Combat/Animation/Action/TargetTransform";
 
-        private const string AttachToImpactTransformTag = "Combat/Animation/Action/AttachToImpactTransform"; 
+        private const string AttachToImpactTransformTag = "Combat/Animation/Action/AttachToImpactTransform";
 
         #endregion
 
         #region Caster/Target Transform  
-        private Transform _casterTransform ;
+        private Transform _casterTransform;
 
         private List<Transform> _targetTransform;
 
@@ -34,15 +34,21 @@ namespace Vanaring
         [SerializeField]
         private bool _changeLookAt = false;
 
-        private CinemachineVirtualCamera _virtualCameraToChangeLookAt ;
+        private CinemachineVirtualCamera _virtualCameraToChangeLookAt;
 
-        [SerializeField, AllowNesting, NaughtyAttributes.ShowIf("_changeLookAt") ]
+        [SerializeField, AllowNesting, NaughtyAttributes.ShowIf("_changeLookAt")]
         private ActionTimelineLookAtBinder _lookAtBinder;
 
         ////////////////////////////
         [Header("Use ActionTimelinePrefab location")]
         [SerializeField]
         private bool _useActionTimelinePrefabLocation = false;
+
+        [Header("Use  automatically rotate targets forward direction to caster")]
+        [SerializeField]
+        private bool _rotateTargetsToCaster;
+
+        public bool IsThisTimelineUseInitialCamera => _rotateTargetsToCaster; 
 
         [SerializeField, AllowNesting, NaughtyAttributes.ShowIf("_useActionTimelinePrefabLocation")]
         private ActionAnimationLocationBinder _actionAnimationLocationBinder;
@@ -116,9 +122,9 @@ namespace Vanaring
 
             HandleTargetsLocation();
 
-
-
         }
+
+       
 
         private void HandleTargetsLocation()
         {
@@ -298,6 +304,8 @@ namespace Vanaring
         {
             if (_useActionTimelinePrefabLocation)
                 _actionAnimationLocationBinder.ResetPositionBack();
+
+            
 
             Destroy(_casterTransform.gameObject); 
             for (int i = _targetTransform.Count - 1; i >= 0 ; i--)
