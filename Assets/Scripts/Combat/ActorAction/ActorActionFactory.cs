@@ -123,6 +123,15 @@ namespace Vanaring
                 yield return new WaitForEndOfFrame();
             } while ((!_actionSignal.SignalTerminated()));
 
+            while (_ongoingEffect.Count > 0)
+            {
+                if (_caster.BreakTriggerHandler.TriggerActive)
+                {
+                    goto End;
+                }
+
+                yield return new WaitForEndOfFrame();
+            }
 
             while (DirectorManager.Instance.IsPlayingTimeline)
             {
@@ -135,15 +144,7 @@ namespace Vanaring
             }
             
             
-            while (_ongoingEffect.Count > 0)
-            {
-                if (_caster.BreakTriggerHandler.TriggerActive)
-                {
-                    goto End;
-                } 
-
-                yield return new WaitForEndOfFrame();
-            }
+            
 
 
         End:

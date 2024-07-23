@@ -55,6 +55,7 @@ namespace Vanaring
 
         private ActionTimelineSettingStruct _actionTimelineSetting;
 
+        private List<GameObject> _relocatedVFX;
         //private List<GameObject> _destroyedWithTimeline = new List<GameObject>();
 
         public void SetUpActor(PlayableDirector director, ActionTimelineSettingStruct actionTimelineSetting, SignalReceiver unitySignalReciver   )
@@ -171,13 +172,16 @@ namespace Vanaring
          
         private void RelocateImpactVFXtoImpactTransform(GameObject casters, List<GameObject> targets)
         {
+            _relocatedVFX = new List<GameObject>(); 
 
+            
             //Assign Target's first 
             //Target now is inside the TargetTransform
 
             if (_actionAnimationLocationBinder.MoveTargets)
             {
                 var allTargetTransform = ObjectFindingTool.QueryObjectInChildren(transform, TargetTransformTag);
+ 
 
                 for (int i = 0; i < targets.Count; i++)
                 {
@@ -186,6 +190,11 @@ namespace Vanaring
                     var target = targets[i];
 
                     List<GameObject> allVFXs = ObjectFindingTool.QueryObjectInChildren(allTargetTransform[i].transform, AttachToImpactTransformTag);
+
+                    foreach (var allVFX in allVFXs)
+                    {
+                        _relocatedVFX.Add(allVFX);
+                    }
 
                     Transform impactTransform = target.GetComponent<CombatEntityAnimationHandler>().GetImpactTransform();
 
@@ -212,7 +221,12 @@ namespace Vanaring
 
                     var target = targets[i];  
 
-                    List<GameObject> allVFXs = ObjectFindingTool.QueryObjectInChildren(allTargetTransform[i].transform, AttachToImpactTransformTag); 
+                    List<GameObject> allVFXs = ObjectFindingTool.QueryObjectInChildren(allTargetTransform[i].transform, AttachToImpactTransformTag);
+
+                    foreach (var allVFX in allVFXs)
+                    {
+                        _relocatedVFX.Add(allVFX);
+                    }
 
                     Transform  impactTransform = target.GetComponent<CombatEntityAnimationHandler>().GetImpactTransform(); 
 
@@ -305,7 +319,18 @@ namespace Vanaring
             if (_useActionTimelinePrefabLocation)
                 _actionAnimationLocationBinder.ResetPositionBack();
 
-            
+            for (int i = 0; i < _relocatedVFX.Count; i++)
+            {
+                if (_relocatedVFX[i] != null)
+                {
+                    Destroy(_relocatedVFX[i]);
+                }
+
+                _relocatedVFX.RemoveAt(i);
+                i--; 
+            }
+
+
 
             Destroy(_casterTransform.gameObject); 
             for (int i = _targetTransform.Count - 1; i >= 0 ; i--)
