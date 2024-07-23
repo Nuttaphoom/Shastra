@@ -74,7 +74,6 @@ namespace Vanaring
             List<CombatEntity> actors = data.Item1;
             //If we have actiontimeline prefab data 
           
-
             HideAllEntityMesh(actors);
             ShowEntityMesh(actors);
 
@@ -148,7 +147,6 @@ namespace Vanaring
 
         private void RotateMeshToLookToThisPosition(Vector3 worldPosition, ECompetatorSide side)
         {
-            Debug.Log("rotate mesh to look at pos " + worldPosition) ; 
             foreach (var entity in GetAllCompetators(side))
             {
                 entity.GetComponent<CombatEntityAnimationHandler>().RotateMeshLookAtToThisPosition(worldPosition);
@@ -157,7 +155,6 @@ namespace Vanaring
 
         private void RestoreRotateMeshLookAt()
         {
-            Debug.Log("restore look at");
             foreach (var entity in GetAllCompetators())
             {
                 entity.GetComponent<CombatEntityAnimationHandler>().RestoreLookAt(); 
