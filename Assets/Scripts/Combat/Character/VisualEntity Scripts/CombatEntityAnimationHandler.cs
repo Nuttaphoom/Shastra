@@ -236,6 +236,8 @@ namespace Vanaring
         private float captured_normalizedTimeAnimation = -1;
 
         private int capturedAnimatorHash = -1 ;
+
+        private bool stunBool = false; 
         private void CaptureAnimatorState()
         {
             if (gameObject.GetComponent<AIEntity>() != null)
@@ -250,6 +252,7 @@ namespace Vanaring
             if (! stateInfo.IsName("Idle") && ! stateInfo.IsName("Stun Stay") && ! stateInfo.IsName("Dead") && ! stateInfo.IsName("Stun") ) 
                 return;
 
+            stunBool =  animator.GetBool("Stun");
 
             captured_normalizedTimeAnimation = animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
 
@@ -271,6 +274,19 @@ namespace Vanaring
 
             var animator = GetVisualMesh().GetComponent<Animator>();
 
+            animator.SetBool("Stun", stunBool); 
+
+            //int i = 0;
+            //foreach (var animatorParametor in capturedParammeter)
+            //{
+            //    if (animator.parameters.Count() <= i  )
+            //        continue;
+
+            //    Debug.Log("paramCount : " + animator.parameters.Count()  + " vs i : " + i); 
+
+            //    animator.parameters[i] = animatorParametor ;
+            //    i++;
+            //}
             //ColorfulLogger.LogWithColor("restore captured_normalizedTimeAnimation in " + gameObject.name +" : " + captured_normalizedTimeAnimation, Color.red);
             animator.Play(capturedAnimatorHash, 0, captured_normalizedTimeAnimation);
             
@@ -339,10 +355,11 @@ namespace Vanaring
                 _deadVisualEffect.gameObject.SetActive(true);
                 _deadVisualEffect.Play();
 
-                yield return new WaitForSeconds(0.6f);
 
                 _visualMesh.transform.Translate(new Vector2(10000000, 1000000));
-                yield return new WaitForSeconds(2.5f);
+                yield return new WaitForSeconds(2.0f);
+
+                _deadVisualEffect.transform.parent = null; 
                 if (_deadVisualEffect)
                 {
                     Destroy(_deadVisualEffect.gameObject); 
@@ -438,22 +455,39 @@ namespace Vanaring
             
             _animator.Play("Idle", 0);
         }
+        public void SetBoolAnimation(string name, bool value)
+        {
+            _animator.SetBool(name, value);
+        } 
+
         public IEnumerator PlayTriggerAnimation(string triggerName)
         {
-            var stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
+            ///Stun animation is special that they need to Setbool instead of trigger
+            if (triggerName == "Stun")
+            {
+                SetBoolAnimation("Stun", true);
+            }
+            else if (triggerName == "StuntRelieve")
+            {
+                SetBoolAnimation("Stun", false);
+            }
+            else
+            {
+                var stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
 
-              
-            _animator.SetTrigger(triggerName);
 
-            // Get the hash of the animation state
-            int animationHash = Animator.StringToHash(triggerName);
-            AnimationClip[] clips = _animator.runtimeAnimatorController.animationClips;
+                _animator.SetTrigger(triggerName);
 
-            //yield return new WaitForEndOfFrame();
+                // Get the hash of the animation state
+                int animationHash = Animator.StringToHash(triggerName);
+                AnimationClip[] clips = _animator.runtimeAnimatorController.animationClips;
 
-            //yield return new WaitForSeconds(_animator.GetCurrentAnimatorStateInfo(0).length );
+                //yield return new WaitForEndOfFrame();
 
-            yield return new WaitForSeconds(3.0f);
+                //yield return new WaitForSeconds(_animator.GetCurrentAnimatorStateInfo(0).length );
+
+                yield return new WaitForSeconds(3.0f);
+            }
         }
         public IEnumerator PlaySpawnVisualEffectCoroutine()
         {
