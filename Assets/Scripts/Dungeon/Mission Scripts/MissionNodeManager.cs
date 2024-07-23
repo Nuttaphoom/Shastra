@@ -67,7 +67,8 @@ namespace Vanaring
             }
 
             _cameraPivot.transform.position = nodeToVisit.transform.position;
-            allCompanionUI.transform.position = nodeToVisit.transform.position;
+            allCompanionUI.transform.position = new Vector3(nodeToVisit.transform.position.x, 0f, nodeToVisit.transform.position.z);
+            //
 
 
             _currentDungeonNode = nodeToVisit;
