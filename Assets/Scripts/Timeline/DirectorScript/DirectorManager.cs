@@ -22,21 +22,21 @@ namespace Vanaring
             if (_eventBroadcaster == null)
             {
                 _eventBroadcaster = new EventBroadcaster();
-                _eventBroadcaster.OpenChannel<List<CombatEntity>>("OnPlayTimelineWithActor");
+                _eventBroadcaster.OpenChannel<(List<CombatEntity>, ActionTimelinePrefab)>("OnPlayTimelineWithActor");
         
             }
 
             return _eventBroadcaster;
         }
 
-        public void SubOnPlayTimelineWithActor(UnityAction<List<CombatEntity>> argc)
+        public void SubOnPlayTimelineWithActor(UnityAction<(List<CombatEntity>, ActionTimelinePrefab)> argc)
         {
-            GetEventBroadcaster().SubEvent<List<CombatEntity>>(argc, "OnPlayTimelineWithActor");
+            GetEventBroadcaster().SubEvent< (List<CombatEntity>, ActionTimelinePrefab)> (argc, "OnPlayTimelineWithActor");
         }
 
-        public void UnSubOnPlayTimelineWithActor(UnityAction<List<CombatEntity>> argc)
+        public void UnSubOnPlayTimelineWithActor(UnityAction<(List<CombatEntity>, ActionTimelinePrefab)> argc)
         {
-            GetEventBroadcaster().UnSubEvent<List<CombatEntity>>(argc, "OnPlayTimelineWithActor");
+            GetEventBroadcaster().UnSubEvent<(List<CombatEntity>, ActionTimelinePrefab)>(argc, "OnPlayTimelineWithActor");
         }
 
         #endregion
@@ -76,7 +76,6 @@ namespace Vanaring
 
         public void PlayTimeline(ActionSignal signal)
         {
-            Debug.Log("Play Timeline");
             if (_currentPlayableDirector != null)
                 throw new System.Exception("Try to play multiple timeline simutanouly");
 
@@ -91,9 +90,17 @@ namespace Vanaring
             currentDirector = actorSetupHandler.GetComponent<PlayableDirector>() ;
             _currentTimelineActorSetupHandler = actorSetupHandler.GetComponent<ActionTimelinePrefab>();
 
-            // 2.) Set up the TimelineAsset
-            _currentTimelineActorSetupHandler.SetUpActor(currentDirector, signal.GetActionTimelineSettingStruct, _signalReceiver); 
+            List<CombatEntity> combatActors = new List<CombatEntity>();
+            foreach (var obj in signal.GetActionTimelineSettingStruct.GetAllTimelineActors())
+                combatActors.Add(obj.GetComponent<CombatEntity>());
+            
+            GetEventBroadcaster().InvokeEvent<(List<CombatEntity>, ActionTimelinePrefab)>((combatActors, _currentTimelineActorSetupHandler), "OnPlayTimelineWithActor");
 
+            // 2.) Set up the TimelineAsset
+            _currentTimelineActorSetupHandler.SetUpActor(currentDirector, signal.GetActionTimelineSettingStruct, _signalReceiver);
+
+      
+            
 
             // 3.) Set currentSignal waiting
             currentDirector.Play();
@@ -112,6 +119,7 @@ namespace Vanaring
         /// <param name="actionTimelineSettingStruct"></param>
         public IEnumerator PlayTimelineCoroutine(TimelineInfo info, List<CombatEntity> actors )
         {
+            Debug.Log("play timeline coroutine"); 
 
             // 1.) Create PlayableDirector
             PlayableDirector currentDirector;
@@ -129,12 +137,16 @@ namespace Vanaring
             currentDirector = actorSetupHandler.GetComponent<PlayableDirector>();
             _currentTimelineActorSetupHandler = actorSetupHandler.GetComponent<ActionTimelinePrefab>();
 
+            // 3.) signal broadcast that we want to play
+            GetEventBroadcaster().InvokeEvent<(List<CombatEntity>, ActionTimelinePrefab)>((actors, _currentTimelineActorSetupHandler), "OnPlayTimelineWithActor");
+
+
             // 2.) Set up the TimelineAsset
             _currentTimelineActorSetupHandler.SetUpActor(currentDirector, timelineSettingStruct, _signalReceiver);
 
-            // 3.) signal broadcast that we want to play
-            GetEventBroadcaster().InvokeEvent<List<CombatEntity>>(actors, "OnPlayTimelineWithActor");
+            Debug.Log("_currentPlayableDirector  is " + _currentPlayableDirector); 
 
+        
             // 4.) Set currentSignal waiting
             currentDirector.Play(); 
 

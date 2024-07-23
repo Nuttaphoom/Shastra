@@ -1,3 +1,4 @@
+using PixelCrushers.DialogueSystem;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -34,7 +35,7 @@ namespace Vanaring
             CombatReferee.Instance.SubOnCompetitorEnterCombat(BindEntityEvent);
             CombatReferee.Instance.SubOnNewRoundBegin(OnNewRoundBegin); 
 
-            DirectorManager.Instance.SubOnPlayTimelineWithActor(PrepareEnittyMeshForTimelineAnimation);
+            DirectorManager.Instance.SubOnPlayTimelineWithActor(PrepareEntityMeshForTimelineAnimation);
 
             TargetSelectionFlowControl.Instance.SubOnTargetSelectionEnd(OnTargetSelectionEnd_HideAllyVisualMesh);
 
@@ -67,13 +68,28 @@ namespace Vanaring
             (CombatReferee.Instance.GetCurrentActor() as ControlableEntity).SetUpCameraAndPositio();  
 
         }
-        
-        private void PrepareEnittyMeshForTimelineAnimation(List<CombatEntity> actors)
+
+        private void PrepareEntityMeshForTimelineAnimation((List<CombatEntity>, ActionTimelinePrefab) data)
         {
+            List<CombatEntity> actors = data.Item1;
+            //If we have actiontimeline prefab data 
+          
             HideAllEntityMesh(actors);
             ShowEntityMesh(actors);
 
-            RestoreRotateMeshLookAt();
+            
+            if (data.Item2 != null)
+            {
+                ActionTimelinePrefab timeline = data.Item2;
+
+                //If use initial look at, don't restore look at 
+                if (timeline.IsThisTimelineUseInitialCamera)
+                {
+                    return;
+                }
+            }
+
+            RestoreRotateMeshLookAt( );
         }
 
         private void OnTargetSelectionEnd_HideAllyVisualMesh(TargetSelectingData data)
@@ -97,7 +113,8 @@ namespace Vanaring
         {
             List<CombatEntity> entitiesTakeControl = new List<CombatEntity>() {  entity };
             
-            RestoreRotateMeshLookAt(); 
+            if (CombatReferee.Instance.GetCompetatorSide(entity) == ECompetatorSide.Ally)
+                RestoreRotateMeshLookAt(); 
 
             if (CombatReferee.Instance.GetCompetatorSide(entity) == ECompetatorSide.Ally)
             {
@@ -116,23 +133,24 @@ namespace Vanaring
             foreach (var entity in entityActionPair.PerformedAction.GetActionTargets())
                 entityPerformAction.Add(entity);
 
-            PrepareEnittyMeshForTimelineAnimation(entityPerformAction);
+            //PrepareEntityMeshForTimelineAnimation((entityPerformAction, null));
 
         }
 
-        private void OnNewRoundBegin(ECompetatorSide n)
+        private void OnNewRoundBegin(ECompetatorSide newRoundSide)
         {
-            RestoreRotateMeshLookAt();
+            if (newRoundSide  == ECompetatorSide.Ally)
+                RestoreRotateMeshLookAt();
+            
             //ShowAllEntitMesh();
         }
 
         private void RotateMeshToLookToThisPosition(Vector3 worldPosition, ECompetatorSide side)
         {
-
-            //foreach(var entity in GetAllCompetators(side) ){
-            
-            //    entity.GetComponent<CombatEntityAnimationHandler>().RotateMeshLookAtToThisPosition(worldPosition);
-            //}
+            foreach (var entity in GetAllCompetators(side))
+            {
+                entity.GetComponent<CombatEntityAnimationHandler>().RotateMeshLookAtToThisPosition(worldPosition);
+            }
         }
 
         private void RestoreRotateMeshLookAt()

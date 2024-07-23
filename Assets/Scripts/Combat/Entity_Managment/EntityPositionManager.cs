@@ -96,7 +96,7 @@ namespace Vanaring
 
         }
         #region Observer Methods
-        private void PrepareEnittyLocationForTimelineAnimation(List<CombatEntity> actors = null)
+        private void PrepareEnittyLocationForTimelineAnimation((List<CombatEntity>, ActionTimelinePrefab) data )
         {
             RelocateEntityToitsOccupiedPosition();
         }
@@ -148,7 +148,7 @@ namespace Vanaring
 
         private void OnEntityPerformAction(EntityActionPair actionPair)
         {
-            PrepareEnittyLocationForTimelineAnimation(); 
+            PrepareEnittyLocationForTimelineAnimation((null,null) ); 
         }
 
         private void OnEntityTakeControl(CombatEntity entity)

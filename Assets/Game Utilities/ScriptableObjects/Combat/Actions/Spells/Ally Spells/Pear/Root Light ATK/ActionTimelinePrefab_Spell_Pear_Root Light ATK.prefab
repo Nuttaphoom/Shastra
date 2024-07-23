@@ -1428,7 +1428,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1857878342784453779}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1883,6 +1883,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3801966866684514746}
+  - component: {fileID: 7499585708513089783}
   m_Layer: 0
   m_Name: Caster VM Pivot
   m_TagString: Untagged
@@ -1906,6 +1907,27 @@ Transform:
   m_Father: {fileID: 8223999238057057151}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!95 &7499585708513089783
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2342166692896830493}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &2349986362378193939
 GameObject:
   m_ObjectHideFlags: 0
@@ -4087,13 +4109,15 @@ PlayableDirector:
   - key: {fileID: 5678101593322881192, guid: f35c228562fa6644e9036dede2f782d1, type: 2}
     value: {fileID: 0}
   - key: {fileID: -6042228043808332053, guid: f35c228562fa6644e9036dede2f782d1, type: 2}
-    value: {fileID: 0}
+    value: {fileID: 7099476061565465493}
   - key: {fileID: 5926236861631067560, guid: f35c228562fa6644e9036dede2f782d1, type: 2}
     value: {fileID: 0}
   - key: {fileID: 4033157711590758010, guid: f35c228562fa6644e9036dede2f782d1, type: 2}
     value: {fileID: 0}
   - key: {fileID: -7118868387629123752, guid: f35c228562fa6644e9036dede2f782d1, type: 2}
     value: {fileID: 3930658545139080978}
+  - key: {fileID: 7796946542112213832, guid: f35c228562fa6644e9036dede2f782d1, type: 2}
+    value: {fileID: 7499585708513089783}
   m_ExposedReferences:
     m_References:
     - 8ac6622da35620444887fa669d59420b: {fileID: 0}
@@ -4128,10 +4152,11 @@ MonoBehaviour:
   _changeLookAt: 0
   _lookAtBinder:
     _lookAtBinderDatas: []
-  _useActionTimelinePrefabLocation: 0
+  _useActionTimelinePrefabLocation: 1
+  _rotateTargetsToCaster: 1
   _actionAnimationLocationBinder:
-    _moveCasters: 0
-    _moveTargets: 0
+    _moveCasters: 1
+    _moveTargets: 1
 --- !u!1 &5217008532386732627
 GameObject:
   m_ObjectHideFlags: 0
@@ -7401,6 +7426,10 @@ PrefabInstance:
       propertyPath: mNoiseOffsets.z
       value: -481.44302
       objectReference: {fileID: 0}
+    - target: {fileID: 637285856223828861, guid: 20ebbe81a5eb24e419a7ba78e3bf07da, type: 3}
+      propertyPath: m_AmplitudeGain
+      value: 1.5
+      objectReference: {fileID: 0}
     - target: {fileID: 1812159330472235418, guid: 20ebbe81a5eb24e419a7ba78e3bf07da, type: 3}
       propertyPath: m_Transitions.m_InheritPosition
       value: 1
@@ -7419,31 +7448,31 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7898614350704921207, guid: 20ebbe81a5eb24e419a7ba78e3bf07da, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.19
+      value: -1.7085764
       objectReference: {fileID: 0}
     - target: {fileID: 7898614350704921207, guid: 20ebbe81a5eb24e419a7ba78e3bf07da, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.84
+      value: 1.0910001
       objectReference: {fileID: 0}
     - target: {fileID: 7898614350704921207, guid: 20ebbe81a5eb24e419a7ba78e3bf07da, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -1.11
+      value: 2.8654222
       objectReference: {fileID: 0}
     - target: {fileID: 7898614350704921207, guid: 20ebbe81a5eb24e419a7ba78e3bf07da, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.9863556
+      value: -0.23591404
       objectReference: {fileID: 0}
     - target: {fileID: 7898614350704921207, guid: 20ebbe81a5eb24e419a7ba78e3bf07da, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.16462882
+      value: -0.039375503
       objectReference: {fileID: 0}
     - target: {fileID: 7898614350704921207, guid: 20ebbe81a5eb24e419a7ba78e3bf07da, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0.95772755
       objectReference: {fileID: 0}
     - target: {fileID: 7898614350704921207, guid: 20ebbe81a5eb24e419a7ba78e3bf07da, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: -0.15985063
       objectReference: {fileID: 0}
     - target: {fileID: 7898614350704921207, guid: 20ebbe81a5eb24e419a7ba78e3bf07da, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x

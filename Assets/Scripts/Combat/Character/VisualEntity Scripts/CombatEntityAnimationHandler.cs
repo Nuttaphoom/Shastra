@@ -16,6 +16,7 @@ using Cinemachine;
 using DG.Tweening;
 using System.Runtime.InteropServices;
 using PixelCrushers.DialogueSystem.UnityGUI;
+using UnityEditor;
 //using UnityEditor.SceneManagement;
 
 namespace Vanaring 
@@ -246,9 +247,10 @@ namespace Vanaring
             var animator = GetVisualMesh().GetComponent<Animator>();
             var stateInfo = animator.GetCurrentAnimatorStateInfo(0);
 
-            if (! stateInfo.IsName("Idle") && ! stateInfo.IsName("Stun Stay") && ! stateInfo.IsName("Dead") )
+            if (! stateInfo.IsName("Idle") && ! stateInfo.IsName("Stun Stay") && ! stateInfo.IsName("Dead") && ! stateInfo.IsName("Stun") ) 
                 return;
-            
+
+
             captured_normalizedTimeAnimation = animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
 
             capturedAnimatorHash = animator.GetCurrentAnimatorStateInfo(0).fullPathHash ;
@@ -258,12 +260,14 @@ namespace Vanaring
 
         private void RestoreAnimatorState()
         {
+
             if (gameObject.GetComponent<AIEntity>() != null)
             {
                 //ColorfulLogger.LogWithColor("Restore " + gameObject.name + " animation state", Color.green);
             }
             if (capturedAnimatorHash == -1 || captured_normalizedTimeAnimation == -1)
-                return; 
+                return;
+
 
             var animator = GetVisualMesh().GetComponent<Animator>();
 
@@ -284,8 +288,10 @@ namespace Vanaring
 
         public void HideVisualMesh()
         {
+
             if (! GetVisualMesh().gameObject.activeSelf)
-                return;
+                return; 
+
 
             foreach (var attachedvfx in _attachedVFXs)
             {
@@ -302,6 +308,7 @@ namespace Vanaring
 
         public void ShowVisualMesh()
         {
+
             if (GetVisualMesh().gameObject.activeSelf)
                 return;
 
@@ -423,11 +430,14 @@ namespace Vanaring
         #region Animation Methods 
     
         public void PrepareEntityAnimationForAction() {
+            var animator = GetVisualMesh().GetComponent<Animator>();
+            var stateInfo = animator.GetCurrentAnimatorStateInfo(0);
 
+            if (stateInfo.IsName("Stun Stay") || stateInfo.IsName("Dead") || stateInfo.IsName("Stun"))
+                return;
+            
             _animator.Play("Idle", 0);
-
         }
-
         public IEnumerator PlayTriggerAnimation(string triggerName)
         {
             var stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
@@ -447,16 +457,19 @@ namespace Vanaring
         }
         public IEnumerator PlaySpawnVisualEffectCoroutine()
         {
+            HideVisualMesh(); 
+
             float overallTime = 0.0f;
             if (_spawnVisualEffect != null)
             {
                 _spawnVisualEffect.gameObject.SetActive(true);
                 _spawnVisualEffect.Play();
-                overallTime = _spawnVisualEffect.main.duration;
+                overallTime =  1.5f ;
+
                 yield return new WaitForSeconds(overallTime / 2);
             }
 
-            _visualMesh.SetActive(true);
+            ShowVisualMesh(); 
 
             yield return new WaitForSeconds(overallTime / 2);
 
@@ -464,6 +477,7 @@ namespace Vanaring
             {
                 _spawnVisualEffect.gameObject.SetActive(false);
             }
+
         }
         #endregion
 

@@ -39,7 +39,7 @@ namespace Vanaring
                     POPUPNumberTextManager.Instance.DisplayGeneralPOPUPText(_entity, "RESIST");
                 }else
                 {
-                    POPUPNumberTextManager.Instance.DisplayGeneralPOPUPText(_entity, "MISS") ;
+                    POPUPNumberTextManager.Instance.DisplayGeneralPOPUPText(_entity, "RESIST") ;
                 }
             }
         }

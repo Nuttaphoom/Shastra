@@ -220,8 +220,25 @@ namespace Vanaring
 
             return ret ;  
         }
+        public bool DoesSimluationAffectArmor()
+        {
+            if (_simulateMagicalEnergy == null)
+                return false;
 
-        
+            if ( _simulateMagicalEnergy.GetEnergy(RuntimeMangicalEnergy.EnergySide.LightEnergy)  !=  GetEnergyAmount(RuntimeMangicalEnergy.EnergySide.LightEnergy ) ) 
+            {
+                return true;
+            }
+
+            if (_simulateMagicalEnergy.GetEnergy(RuntimeMangicalEnergy.EnergySide.DarkEnergy) != GetEnergyAmount(RuntimeMangicalEnergy.EnergySide.DarkEnergy))
+            {
+                return true; 
+            }
+
+            return false; 
+        }
+
+
 
         #endregion
 

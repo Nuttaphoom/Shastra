@@ -236,7 +236,7 @@ namespace Vanaring
 
             GetComponent<EntityCameraManager>().DisableAllAttachedCamera();
 
-            DirectorManager.Instance.ClearCurrentTimeline();
+            //DirectorManager.Instance.ClearCurrentTimeline();
 
 
             yield return null;

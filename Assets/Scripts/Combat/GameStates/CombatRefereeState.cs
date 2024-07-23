@@ -136,7 +136,8 @@ namespace Vanaring
 
             while (true)
             {
-                
+                DirectorManager.Instance.ClearCurrentTimeline();
+
                 _actor = _stateHandler.Referee.GetCurrentActor() ;
 
                 if (_actor == null)

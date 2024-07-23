@@ -20,6 +20,7 @@ namespace Vanaring
 
         private Dictionary<CombatEntity, GameObject> _instantiatedBreakGUI = new Dictionary<CombatEntity, GameObject>();
 
+        private Dictionary<CombatEntity, GameObject> _instantiatedWeakGUI = new Dictionary<CombatEntity, GameObject>();
 
         //[SerializeField]
         //private GameObject _vfxPrefabTemplate;
@@ -40,8 +41,14 @@ namespace Vanaring
         public void HideTargetPointer(CombatEntity combatEntity)
         {
             _instantiatedTargetGUI[combatEntity].SetActive(false);
-            //_instantiatedVFXCircle[combatEntity].SetActive(false);
-            _instantiatedBreakGUI[combatEntity].SetActive(false);
+            //_instantiatedVFXCircle[combatEntity].SetActive(false) ; 
+
+            if (_instantiatedBreakGUI[combatEntity] != null) 
+                _instantiatedBreakGUI[combatEntity].SetActive(false);
+            
+            if (_instantiatedBreakGUI[combatEntity] != null)
+                _instantiatedWeakGUI[combatEntity].SetActive(false); 
+        
         }
 
         public void HideAllPointer()
@@ -54,6 +61,9 @@ namespace Vanaring
             
             foreach (var key in _instantiatedBreakGUI.Keys)
                 _instantiatedBreakGUI[key].SetActive(false);
+
+            foreach (var key in _instantiatedWeakGUI.Keys)
+                _instantiatedWeakGUI[key].SetActive(false);
 
         }
 
@@ -79,6 +89,13 @@ namespace Vanaring
                 if (!entities.Contains(key))
                     _instantiatedBreakGUI[key].SetActive(false);
             }
+
+            foreach (var key in _instantiatedWeakGUI.Keys)
+            {
+                if (!entities.Contains(key))
+                    _instantiatedWeakGUI[key].SetActive(false);
+            }
+
 
             foreach (var combatEntity in entities)
             {
@@ -108,6 +125,10 @@ namespace Vanaring
             }
         }
 
+        /// <summary>
+        /// The selected character armor may broken after use this action
+        /// </summary>
+        /// <param name="combatEntity"></param>
         public void SelectBreakTarget(CombatEntity combatEntity)
         {
             Vector3 location = GetIconPositioWithGivenEntity(combatEntity);
@@ -126,6 +147,31 @@ namespace Vanaring
             }
 
             targetGUI.SetBreakGUIPosition(_instantiatedBreakGUI[combatEntity], location);
+        }
+
+
+        /// <summary>
+        /// The selected character armor gauge may reduced after use this action, but not break
+        /// </summary>
+        /// <param name="combatEntity"></param>
+        public void SelectWeakTarget(CombatEntity combatEntity)
+        {
+            Vector3 location = GetIconPositioWithGivenEntity(combatEntity);
+
+            if (!_instantiatedWeakGUI.ContainsKey(combatEntity))
+            {
+
+                _instantiatedWeakGUI.Add(combatEntity, targetGUI.InstantiateWeakGUI(location, _parent));
+
+                _instantiatedWeakGUI[combatEntity].transform.position = location;// new Vector3(circleTranform.x, 0.03f, circleTranform.z);
+            }
+
+            if (!_instantiatedWeakGUI[combatEntity].activeSelf)
+            {
+                _instantiatedWeakGUI[combatEntity].SetActive(true);
+            }
+
+            targetGUI.SetBreakGUIPosition(_instantiatedWeakGUI[combatEntity], location);
         }
 
         private Vector3 GetIconPositioWithGivenEntity(CombatEntity entity)
