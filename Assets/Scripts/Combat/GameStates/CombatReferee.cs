@@ -142,6 +142,7 @@ namespace Vanaring
             _currentSide = ECompetatorSide.Ally;
             _activeCombatEntities = new CircularArray<CombatEntity>(new List<CombatEntity>());
             _combatRefereeStateHandler = new CombatRefereeStateHandler(this);
+
         }
 
          
@@ -403,9 +404,10 @@ namespace Vanaring
             {
                 yield return _sideTurnDisplayerManager.DisplaySideRoundCoroutine(_currentSide);
 
-                GetEventBroadcaster().InvokeEvent<ECompetatorSide>(_currentSide, "OnNewRoundBegin");
 
-                yield return _combatRefereeStateHandler.StateEnter(); 
+                yield return _combatRefereeStateHandler.StateEnter();
+
+                GetEventBroadcaster().InvokeEvent<ECompetatorSide>(_currentSide, "OnNewRoundBegin");
 
 
                 yield return _combatRefereeStateHandler.AdvanceRound();
@@ -417,6 +419,7 @@ namespace Vanaring
                 yield return new WaitForEndOfFrame();
             }
         }
+
 
         public bool IsGameEnd()
         {
