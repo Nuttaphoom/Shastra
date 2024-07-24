@@ -120,7 +120,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2796404598300276497}
-  m_LocalRotation: {x: 0.153092, y: 0.06834284, z: -0.010613576, w: 0.98578876}
+  m_LocalRotation: {x: 0.153092, y: 0.06834284, z: -0.010613574, w: 0.98578876}
   m_LocalPosition: {x: -0.62, y: 1.43, z: -4.45}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -214,7 +214,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3076468238324120876}
-  m_LocalRotation: {x: 3.1040999e-27, y: 0.9995685, z: -7.138205e-28, w: 0.029373687}
+  m_LocalRotation: {x: -2.3535212e-19, y: 0.9995685, z: 8.008888e-18, w: 0.029373687}
   m_LocalPosition: {x: -0.35, y: 0, z: 5.95}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -406,6 +406,8 @@ PlayableDirector:
     value: {fileID: 0}
   - key: {fileID: -6579074494984825190, guid: 6fc49d1fa6cd9ad4c9c9c57f158adc6c, type: 2}
     value: {fileID: 4715843160706969063}
+  - key: {fileID: 4063611417768428919, guid: 6fc49d1fa6cd9ad4c9c9c57f158adc6c, type: 2}
+    value: {fileID: 3076468238324120876}
   m_ExposedReferences:
     m_References:
     - c050607ad26fbd0428f417770dfcf74c: {fileID: 8792613186709433820}
@@ -427,10 +429,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 44aa76c08385dbf42b998e665246ee36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _attachVFXToBoneDatas: []
   _changeLookAt: 0
   _lookAtBinder:
     _lookAtBinderDatas: []
   _useActionTimelinePrefabLocation: 0
+  _rotateTargetsToCaster: 0
   _actionAnimationLocationBinder:
     _moveCasters: 0
     _moveTargets: 0
