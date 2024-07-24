@@ -386,12 +386,15 @@ namespace Vanaring
         /// </summary>
         /// <returns></returns>
         public IEnumerator PrepareRefereeForNewRound()
-        {   
+        {
             //_currentSide = ECompetatorSide.Ally;
             //_currentEntityIndex = 0;
+            
 
             yield return SetActiveActors(); 
             yield return SwitchControl(null,GetCurrentActor());
+
+            EntityPositionManager.Instance.SetNewEnemyCurrentSize(GetCompetatorsBySide(ECompetatorSide.Hostile).Count);
 
 
         }
@@ -573,6 +576,7 @@ namespace Vanaring
             }
             else
             {
+                
                 //yield return SwitchControl((), null);
 
                 yield return SetActiveActors();
