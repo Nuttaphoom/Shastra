@@ -8,9 +8,28 @@ using System;
 using NaughtyAttributes;
 using Vanaring.Assets.Scripts.Utilities;
 using static UnityEngine.UIElements.UxmlAttributeDescription;
+using System.Diagnostics.Tracing;
 
 namespace Vanaring
 {
+    [Serializable]
+    public class AttachVFXToBoneData
+    {
+        public string SourceVFXName;
+        public string CasterBoneName;
+
+        
+        private GameObject _sourceVFX;
+        private GameObject _casterBoneVFX ;
+
+        public GameObject SourceVFX => _sourceVFX; 
+
+        public void SetSourceVFX(GameObject sourceVFX)
+        {
+            _sourceVFX = sourceVFX; 
+        }
+    }
+
     public class ActionTimelinePrefab : MonoBehaviour
     {
         #region Const 
@@ -29,6 +48,8 @@ namespace Vanaring
 
         #endregion
 
+        [SerializeField]
+        private List<AttachVFXToBoneData> _attachVFXToBoneDatas; 
         /// Look At Variables //
         [Header("Dynamicall Chnage look at")]
         [SerializeField]
@@ -165,6 +186,25 @@ namespace Vanaring
 
 
             RelocateImpactVFXtoImpactTransform(casterActor, targetActors);
+            RelocateVFXtoBone(casterActor, targetActors); 
+        }
+
+        private void RelocateVFXtoBone(GameObject casters, List<GameObject> targets)
+        {
+            foreach (var data in _attachVFXToBoneDatas)     
+            {    
+                var sourceVFXs = ObjectFindingTool.QueryObjectInChildrenUsingName(transform, data.SourceVFXName) ;
+
+                data.SetSourceVFX(sourceVFXs[0]);
+
+                var boneLists = ObjectFindingTool.QueryObjectInChildrenUsingName(casters.transform, data.CasterBoneName);
+
+                data.SourceVFX.transform.parent = boneLists[0].transform;
+
+                data.SourceVFX.transform.localPosition = Vector3.zero;
+                data.SourceVFX.transform.localRotation = Quaternion.identity; 
+
+            }
         }
          
         private void RelocateImpactVFXtoImpactTransform(GameObject casters, List<GameObject> targets)
@@ -313,6 +353,8 @@ namespace Vanaring
 
         public void DestroyTimelineElement()
         {
+           
+
             if (_useActionTimelinePrefabLocation)
                 _actionAnimationLocationBinder.ResetPositionBack();
 
@@ -327,6 +369,9 @@ namespace Vanaring
                 i--; 
             }
 
+            foreach (var data in _attachVFXToBoneDatas)
+                Destroy(data.SourceVFX);
+
 
 
             Destroy(_casterTransform.gameObject); 
@@ -335,8 +380,10 @@ namespace Vanaring
                 Destroy(_targetTransform[i].gameObject);
             }
 
-            _lookAtBinder.DestroySpawnedObj(); 
-           
+            _lookAtBinder.DestroySpawnedObj();
+
+
+
 
             Destroy(gameObject);
 
