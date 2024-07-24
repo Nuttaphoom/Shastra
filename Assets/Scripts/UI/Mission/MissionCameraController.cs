@@ -17,6 +17,9 @@ namespace Vanaring
         {
             startPosition = pivotCamera.transform.position;
             endPosition = startPosition;
+
+            nodeField.rectTransform.localPosition = new Vector3(nodeField.rectTransform.localPosition.x - 100, nodeField.rectTransform.localPosition.y - 40, 0);
+
             StopAllCoroutines();
             StartCoroutine(CheckDirectionOverTime());
         }
