@@ -389,6 +389,7 @@ namespace Vanaring
 
         public IEnumerator LogicAttack(List<CombatEntity> targets, EDamageScaling scaling)
         {
+            Debug.Log("" + gameObject.name + " attack ") ;
             //Prepare for status effect  
             yield return _statusEffectHandler.ExecuteAttackStatusRuntimeEffectCoroutine();
 
