@@ -25,7 +25,7 @@ namespace Vanaring
         /// <summary>
         /// make sure to call this AFTER loading process.
         /// </summary>
-        public BaseMissionNode GetFirstNode
+        public BaseMissionNode GetLastVisitedNode
         {
             get
             {
@@ -37,6 +37,14 @@ namespace Vanaring
                 }
 
                 return _baseDungeonNode[0]; 
+            }
+        }
+
+        public BaseMissionNode GetFirstNode
+        {
+            get
+            {
+                return _baseDungeonNode[0];
             }
         }
 

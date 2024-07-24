@@ -10,6 +10,7 @@ namespace Vanaring
     {
         
         private BaseMissionNode firstNode;
+        private BaseMissionNode visitingNode;
         private List<BaseMissionNode> allConnectedNodeList = new List<BaseMissionNode>();
         private Queue<MissionNodeObject> unConnectNodeList = new Queue<MissionNodeObject>();
         private List<MissionNodeObject> nodeObjectList = new List<MissionNodeObject>();
@@ -44,9 +45,11 @@ namespace Vanaring
 
         public void Init(Null n)
         {
+            Debug.Log("Init minimap");
             missionNodeTransitionManager = FindObjectOfType<MissionNodeManager>().MissionNodeTransitionManager; 
             mission = DungeonManagerSingleton.Instance.MissionSetupHandler.DungeonEnvironment;
             firstNode = mission.GetFirstNode;
+            visitingNode = mission.GetLastVisitedNode;
             if(firstNode != null)
             {
                 curNode.gameObject.SetActive(true);
@@ -106,6 +109,7 @@ namespace Vanaring
                         newDun.GetComponent<RectTransform>().localPosition = new Vector3(
                             rectDun.localPosition.x + xForward, rectDun.localPosition.y + yForward, rectDun.transform.localPosition.z);
                         newDun.gameObject.SetActive(true);
+
                         if(connectNode is LootMissionNode)
                         {
                             newDun.GetNodeIcon.sprite = lootIcon;
@@ -145,6 +149,8 @@ namespace Vanaring
 
 
             }
+            curNode.InitBaseNode(visitingNode);
+            curNode.GetComponent<Animator>().Play("NodeObjectVisittingState");
         }
 
         

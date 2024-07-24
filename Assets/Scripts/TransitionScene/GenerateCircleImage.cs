@@ -32,13 +32,13 @@ namespace Vanaring
         public void OpenBlackScreen()
         {
             DrawBlackScreen();
-            StartCoroutine(Transition(1f, 0, 1));
+            StartCoroutine(Transition(0.5f, 0, 1));
         }
         [ContextMenu("In")]
         public void CloseBlackScreen()
         {
             DrawBlackScreen();
-            StartCoroutine(Transition(1f, 1, 0));
+            StartCoroutine(Transition(0.5f, 1, 0));
         }
 
         private void DrawBlackScreen()

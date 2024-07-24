@@ -102,7 +102,7 @@ namespace Vanaring
             yield return LoadEnvironmentData(dungeonMissionInstance.MissionData.MissionNodeEnvironment);
 
             //Set up logic transition detail
-            missionNodeManager.StartCoroutine(missionNodeManager.SetUpDungeonCoroutine(DungeonEnvironment.GetFirstNode));
+            missionNodeManager.StartCoroutine(missionNodeManager.SetUpDungeonCoroutine(DungeonEnvironment.GetLastVisitedNode));
 
             EventBroadcaster.InvokeEvent<Null>(null, "OnMissionSetUpComplete");
 

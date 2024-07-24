@@ -221,7 +221,7 @@ namespace Vanaring
             }
             if (maxLight > maxDark && side == RuntimeMangicalEnergy.EnergySide.LightEnergy)
             {
-                Debug.Log("Display Light");
+                //Debug.Log("Display Light");
                 if (lightScale <= 0)
                 {
                     return;
@@ -234,7 +234,7 @@ namespace Vanaring
                         {
                             if (!highlightSlotList[i].gameObject.activeSelf)
                             {
-                                Debug.Log("Display");
+                                //Debug.Log("Display");
                                 highlightSlotList[i].gameObject.SetActive(true);
                             }
                             highlightAmount--;
@@ -244,7 +244,7 @@ namespace Vanaring
             }
             if (maxDark > maxLight && side == RuntimeMangicalEnergy.EnergySide.DarkEnergy)
             {
-                Debug.Log("Display Dark");
+                //Debug.Log("Display Dark");
                 if (darkScale <= 0)
                 {
                     return;
@@ -258,7 +258,7 @@ namespace Vanaring
                             if (!highlightSlotList[i].gameObject.activeSelf)
                             {
                                 highlightSlotList[i].gameObject.SetActive(true);
-                                Debug.Log("Display Wink");
+                                //Debug.Log("Display Wink");
                             }
                             highlightAmount--;
                         }
