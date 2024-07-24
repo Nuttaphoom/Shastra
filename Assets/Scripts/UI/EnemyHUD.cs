@@ -212,7 +212,7 @@ namespace Vanaring
             }
 
             isHighlightSlotInit = true;
-            Debug.Log("sim");
+            //Debug.Log("sim");
 
             RuntimeMangicalEnergy.EnergySide side = effectPiar.EnergySide;
             foreach (Image slot in highlightSlotList)
@@ -234,6 +234,7 @@ namespace Vanaring
                         {
                             if (!highlightSlotList[i].gameObject.activeSelf)
                             {
+                                Debug.Log("Display");
                                 highlightSlotList[i].gameObject.SetActive(true);
                             }
                             highlightAmount--;
@@ -313,13 +314,16 @@ namespace Vanaring
             {
                 if (slot.gameObject.activeSelf)
                 {
+                    Debug.Log(slot);
                     slot.gameObject.SetActive(false);
+                    //slot.GetComponent<Animator>().Sto
                 }
             }
             foreach (Image slot in highlightSlotList)
             {
                 slot.gameObject.SetActive(false);
             }
+
             isHighlightSlotInit = false;
         } 
 
