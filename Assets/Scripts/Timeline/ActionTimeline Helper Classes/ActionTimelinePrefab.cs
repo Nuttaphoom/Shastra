@@ -98,9 +98,6 @@ namespace Vanaring
                 {
                     string trackName = (track as CustomEntityMeshHiddenTrack).TrackName;
 
-
-                    Debug.Log("track is CustoMeNTITYHiddenTrack with track name " + trackName); 
-
                     if (objectWithTrackName = _actionTimelineSetting.GetObjectWithTrackName(track.name))
                     {
                         //Debug.Log( track.name + " bind with " + objectWithTrackName.name);

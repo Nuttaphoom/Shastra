@@ -54,8 +54,18 @@ namespace Vanaring
 
             _signalReceiver = GetComponent<SignalReceiver>();
 
+
         }
 
+        private void Start()
+        {
+            CombatReferee.Instance.SubOnNewRoundBegin(OnNewRoundBegin_DestroyUnusedAnimationPrefab);
+        }
+
+        private void OnNewRoundBegin_DestroyUnusedAnimationPrefab(ECompetatorSide side)
+        {
+            ClearCurrentTimeline(); 
+        }
 
         [SerializeField] private List<ActionSignal> _currentSignal = new List<ActionSignal>();       
         private SignalReceiver _signalReceiver;
