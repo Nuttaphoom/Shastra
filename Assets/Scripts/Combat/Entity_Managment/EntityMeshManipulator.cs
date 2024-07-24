@@ -33,7 +33,7 @@ namespace Vanaring
             }
 
             CombatReferee.Instance.SubOnCompetitorEnterCombat(BindEntityEvent);
-            CombatReferee.Instance.SubOnNewRoundBegin(OnNewRoundBegin); 
+            //CombatReferee.Instance.SubOnNewRoundBegin(OnNewRoundBegin); 
 
             DirectorManager.Instance.SubOnPlayTimelineWithActor(PrepareEntityMeshForTimelineAnimation);
 
@@ -114,13 +114,16 @@ namespace Vanaring
             List<CombatEntity> entitiesTakeControl = new List<CombatEntity>() {  entity };
             
             if (CombatReferee.Instance.GetCompetatorSide(entity) == ECompetatorSide.Ally)
-                RestoreRotateMeshLookAt(); 
+                RestoreRotateMeshLookAt();
 
             if (CombatReferee.Instance.GetCompetatorSide(entity) == ECompetatorSide.Ally)
             {
+                Debug.Log("on ally take control");
+
                 ShowEntityMesh(entitiesTakeControl);
                 ShowAllEntitMesh(ECompetatorSide.Hostile) ;
-                HideAllEntityMesh(ECompetatorSide.Ally, entitiesTakeControl);
+                HideAllEntityMesh(ECompetatorSide.Ally, entitiesTakeControl); 
+                
                 RotateMeshToLookToThisPosition(entity.transform.position, ECompetatorSide.Hostile); 
             }
         }
@@ -147,6 +150,7 @@ namespace Vanaring
 
         private void RotateMeshToLookToThisPosition(Vector3 worldPosition, ECompetatorSide side)
         {
+            Debug.Log("rotate entity");
             foreach (var entity in GetAllCompetators(side))
             {
                 entity.GetComponent<CombatEntityAnimationHandler>().RotateMeshLookAtToThisPosition(worldPosition);

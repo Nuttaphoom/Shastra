@@ -181,7 +181,9 @@ namespace Vanaring
         public void SetNewEnemyCurrentSize(int newSize)
         {
             //if (_currentEnemySize == newSize)
-            //    return ; 
+            //    return ;  
+
+            Debug.Log("prev current enemy size was " + _currentEnemySize + " set new current enemy size to " + newSize);
 
             if (_currentEnemySize == -1)
             {
@@ -194,8 +196,9 @@ namespace Vanaring
 
             List<StandingLocationOccupierData> oldLocationData = GetEnemyStandingLocations(_currentEnemySize);
 
-            _currentEnemySize = newSize; 
-            
+            _currentEnemySize = newSize;
+
+
             int i = 0;
 
             foreach (var data in oldLocationData)
@@ -242,6 +245,7 @@ namespace Vanaring
             {
 
                 var enemyOccupation = GetEnemyStandingLocations(CurrentEnemySize);
+                Debug.Log("current enemy size : " + CurrentEnemySize); 
                 if (enemyOccupation[index].EntityStandingHere == null)
                 {
                     enemyOccupation[index].EntityStandingHere = entity;
