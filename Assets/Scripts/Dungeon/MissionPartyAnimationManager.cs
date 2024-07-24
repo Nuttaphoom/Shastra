@@ -10,10 +10,10 @@ namespace Vanaring
 
         public void LootBox()
         {
-            foreach (Animator anim in animatorList)
-            {
-                anim.Play("testLoot");
-            }
+            //foreach (Animator anim in animatorList)
+            //{
+            //    anim.Play("testLoot");
+            //}
         }
 
         public void PerformMoveAnimation(Vector3 direction)
@@ -23,6 +23,15 @@ namespace Vanaring
                 anim.SetBool("IsMoving", true);
                 anim.SetFloat("horizontalMove", direction.x);
                 anim.SetFloat("verticalMove", direction.z);
+                if(direction.x == -1 || direction.z == 1)
+                {
+                    anim.GetComponent<PixelCrushers.AlwaysFaceCamera>().rotate180 = true;
+                }
+                else
+                {
+                    anim.GetComponent<PixelCrushers.AlwaysFaceCamera>().rotate180 = false;
+                }
+                
             }
         }
 
@@ -45,7 +54,7 @@ namespace Vanaring
             Vector3 prevUIPos = transform.position;
             float progression = 0;
 
-            Vector3 destinationToVisit = new Vector3(nodeToVisit.transform.position.x, nodeToVisit.transform.position.y + 0.4f, nodeToVisit.transform.position.z);
+            Vector3 destinationToVisit = new Vector3(nodeToVisit.transform.position.x, 0.4f, nodeToVisit.transform.position.z);
 
             PerformMoveAnimation(direction);
 
@@ -58,6 +67,8 @@ namespace Vanaring
                 yield return null;
 
             }
+
+            //transform.position = new Vector3(transform.position.x + 2, 0, transform.position.z);
 
             PerformIdleAnimation();
         }

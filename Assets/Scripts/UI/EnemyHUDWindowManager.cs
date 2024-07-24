@@ -67,6 +67,7 @@ namespace Vanaring
 
         public void RemoveSlotBreakHighlightOnHUD()
         {
+            Debug.Log("Remove all highlightSlot");
             foreach (EnemyHUD hud in GetAllInstantiatedHUD())
             {
                 hud.ClearBreakSlotHighlight();

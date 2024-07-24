@@ -15,8 +15,8 @@ namespace Vanaring
         [SerializeField] private Image characterPortrait;
         private List<GameObject> bondRewardShowList = new List<GameObject>();
         [SerializeField] private List<float> bondRatio = new List<float>();
-        [SerializeField] private Image topBar;
-        [SerializeField] private Image arrow;
+        //[SerializeField] private Image topBar;
+        //[SerializeField] private Image arrow;
         private BondingRewardData rewardData;
         private int currentExp;
 
@@ -48,7 +48,7 @@ namespace Vanaring
 
         public override IEnumerator SettingUpNumber()
         {
-            topBar.gameObject.SetActive(false);
+            //topBar.gameObject.SetActive(false);
             introDirector.Play();
             //yield return new WaitForSeconds(1.0f);
             while (introDirector.state == PlayState.Playing)
@@ -61,12 +61,12 @@ namespace Vanaring
 
             while (fillBar.fillAmount < bondRatio[currentExp])
             {
-                topBar.gameObject.SetActive(true);
+                //topBar.gameObject.SetActive(true);
                 fillBar.fillAmount += 0.001f;
                 yield return new WaitForSeconds(0.01f);
             }
-            topBar.gameObject.SetActive(false);
-            arrow.gameObject.SetActive(true);
+            //topBar.gameObject.SetActive(false);
+            //arrow.gameObject.SetActive(true);
             yield return new WaitForSeconds(1.5f);
         }
 

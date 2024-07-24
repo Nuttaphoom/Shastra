@@ -71,11 +71,11 @@ namespace Vanaring
             if (_performerEntity.ReadyToPerformAction())
             {
 
-
                 EntityActionPair entityActionPair =  new EntityActionPair() { Actor = _performerEntity, PerformedAction = action };
-                GetEventBroadcaster().InvokeEvent<EntityActionPair>(entityActionPair, "OnPerformAction");
 
-                _performerEntity.SetExhaunst(true);// = true;
+                _performerEntity.SetExhaunst(true);// = true; 
+
+                GetEventBroadcaster().InvokeEvent<EntityActionPair>(entityActionPair, "OnPerformAction");
 
                 yield return action.PerformAction();
 

@@ -21,12 +21,17 @@ namespace Vanaring  {
         [SerializeField] private GameObject arrowDown;
         [SerializeField] private GameObject notificationBox;
         [SerializeField] private TextMeshProUGUI notificationText;
+
+        [SerializeField] private EnemyHUDWindowManager enemyHUDwindow;
+
         private int currentSelectedIndex = 0;
         public override void OnWindowActive()
         {
             FindObjectOfType<EnemyHUDWindowManager>().DisplayEnemyHUD(CombatReferee.Instance.GetCompetatorsBySide(ECompetatorSide.Hostile));
 
             StartCoroutine(PersistentTutorialManager.Instance.CheckTuitorialNotifier("SpellCastExplain"));
+
+            enemyHUDwindow.RemoveSlotBreakHighlightOnHUD();
         }
         public override void OnWindowDeActive()
         {
@@ -100,6 +105,7 @@ namespace Vanaring  {
             if (key == InputCode.DeSelect)
             {
                 _windowManager.OpenWindow(EWindowGUI.Main);
+                enemyHUDwindow.RemoveSlotBreakHighlightOnHUD();
                 _windowManager.PlayPanelAnimation("CloseDescription");
             }
 
