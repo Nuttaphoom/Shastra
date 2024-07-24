@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
@@ -245,7 +246,11 @@ namespace Vanaring
 
                 if (randomTarget)
                 {
-                    _currentSelectIndex = UnityEngine.Random.Range(0, _validTargets.Count);
+                    _currentSelectIndex = UnityEngine.Random.Range(0, _validTargets.Count) ; 
+
+                    if (_validTargets.Count <= actorAction.GetTargetSelector().MaxTarget)
+                        _currentSelectIndex = 0;
+                    
                     _selectedTarget.Add(_validTargets[_currentSelectIndex]);
                     _validTargets.RemoveAt(_currentSelectIndex);
                     _currentSelectIndex = 0;
