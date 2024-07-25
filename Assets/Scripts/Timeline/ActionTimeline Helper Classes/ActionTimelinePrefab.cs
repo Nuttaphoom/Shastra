@@ -337,6 +337,9 @@ namespace Vanaring
                     //Debug.Log("targets for relocation :  " + targets[i].gameObject.name) ;
                     var allTargetTransform = ObjectFindingTool.QueryObjectInChildren(targets[i].transform, TargetTransformTag);
 
+                    if (allTargetTransform.Count - 1 < i)
+                        continue; 
+
 
                     var target = targets[i];  
 

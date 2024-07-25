@@ -395,7 +395,7 @@ namespace Vanaring
             yield return SetActiveActors(); 
             yield return SwitchControl(null,GetCurrentActor());
 
-
+          
 
         }
 
@@ -612,9 +612,7 @@ namespace Vanaring
                     
                     _competators.RemoveAt(i);
 
-                    bool shouldRelocateEnemy = GetCurrentActiveEntities().Count != 0 && _currentSide == ECompetatorSide.Ally ;
-
-                    EntityPositionManager.Instance.SetNewEnemyCurrentSize(GetCompetatorsBySide(ECompetatorSide.Hostile).Count, shouldRelocateEnemy);
+       
                 }
             }
 
