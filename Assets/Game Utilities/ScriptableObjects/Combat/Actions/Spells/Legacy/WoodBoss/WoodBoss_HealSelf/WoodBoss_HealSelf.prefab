@@ -24479,7 +24479,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3076468238324120876}
-  m_LocalRotation: {x: 0.21908742, y: -0.000000016773608, z: 0.0000000038347916, w: 0.97570527}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -34289,6 +34289,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7294919733998345320}
+  - component: {fileID: 7326428439031493671}
   m_Layer: 0
   m_Name: Caster VM Pivot
   m_TagString: Untagged
@@ -34303,7 +34304,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4324492071859422870}
-  m_LocalRotation: {x: -0.0014766643, y: -0.9712487, z: -0.23798667, w: 0.0060264226}
+  m_LocalRotation: {x: -0.00012046832, y: -0.9997923, z: -0.019415285, w: 0.00620353}
   m_LocalPosition: {x: 0.36, y: 2, z: 8.03}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -34311,7 +34312,28 @@ Transform:
   - {fileID: 3000091232815743743}
   m_Father: {fileID: 1325867265942030577}
   m_RootOrder: -1
-  m_LocalEulerAnglesHint: {x: -27.536, y: -179.289, z: 0}
+  m_LocalEulerAnglesHint: {x: -2.225, y: -179.289, z: 0}
+--- !u!95 &7326428439031493671
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4324492071859422870}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &4649303833329271014
 GameObject:
   m_ObjectHideFlags: 0
@@ -34412,6 +34434,10 @@ PlayableDirector:
     value: {fileID: 7109911890855976696}
   - key: {fileID: -5759766178679508340, guid: 60a4fdeec04b63647a10c29e72589abb, type: 2}
     value: {fileID: 0}
+  - key: {fileID: 2441691263827309014, guid: 60a4fdeec04b63647a10c29e72589abb, type: 2}
+    value: {fileID: 4324492071859422870}
+  - key: {fileID: -2928304284926855072, guid: 60a4fdeec04b63647a10c29e72589abb, type: 2}
+    value: {fileID: 7326428439031493671}
   m_ExposedReferences:
     m_References:
     - f8a2c0e38a469574db6dd260f109b3c3: {fileID: 5661083396533106920}
