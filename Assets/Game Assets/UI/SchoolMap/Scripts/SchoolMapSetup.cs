@@ -106,17 +106,25 @@ namespace Vanaring
                 //NewNav.selectOnRight = pinObject[(i + 1) % pinObject.Count].TemplateButton;
                 pinObject[i].TemplateButton.navigation = NewNav;
             }
-            Navigation DunNav = new Navigation();
-            DunNav.mode = Navigation.Mode.Explicit;
-            DunNav.selectOnRight = pinObject[0].TemplateButton;
-            DunNav.selectOnUp = pinObject[pinObject.Count - 1].TemplateButton;
-            DunNav.selectOnLeft = pinObject[pinObject.Count - 1].TemplateButton;
-            _dungeonButton.navigation = DunNav;
 
+            if (pinObject.Count > 0)
+            {
+                Navigation DunNav = new Navigation();
+
+                DunNav.mode = Navigation.Mode.Explicit;
+                DunNav.selectOnRight = pinObject[0].TemplateButton;
+                DunNav.selectOnUp = pinObject[pinObject.Count - 1].TemplateButton;
+                DunNav.selectOnLeft = pinObject[pinObject.Count - 1].TemplateButton;
+                _dungeonButton.navigation = DunNav;
+            }
             // Setting Button Navigation with input control
             if (pinObject.Count > 0)
             {
                 pinObject[0].OnHoverButton();
+            }else
+            {
+                PersistentButtonSelector.Instance.AssignInitialButtons(_dungeonButton) ;
+
             }
         }
 
