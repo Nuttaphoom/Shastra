@@ -75,14 +75,13 @@ namespace Vanaring
                     //TODO : Instead of executing command, creating the Relationship detail instead
                     actualButton.onClick.AddListener(() => action.ExecuteCommand()); 
                 }
+
                 
                 actualButton.GetComponent<Image>().sprite = action.GetActionIconSprite;
 
-                // Setting Button Navigation with input control
-                Navigation NewNav = new Navigation();
-                NewNav.mode = Navigation.Mode.Explicit;
-                NewNav.selectOnLeft = actualButton;
-                mapButton.navigation = NewNav;
+                
+
+    
 
                 PersistentButtonSelector.Instance.AssignInitialButtons(actualButton);
                 //actualButton.Select();
@@ -95,6 +94,43 @@ namespace Vanaring
 
                 actionButtonList.Add(newActionButton);
                 i++;
+            }
+            // Setting Button Navigation with input control
+            Navigation NewNav = new Navigation();
+            NewNav.mode = Navigation.Mode.Explicit;
+            NewNav.selectOnLeft = actionButtonList[0].GetComponentInChildren<Button>();
+
+            mapButton.navigation = NewNav;
+
+            //Set nav binding of button 
+
+            for (int t =0; t <  actionButtonList.Count; t++)
+            {
+                NewNav = new Navigation();
+                NewNav.mode = Navigation.Mode.Explicit;
+                
+                NewNav.selectOnRight = mapButton;
+
+                var button = actionButtonList[t].GetComponentInChildren<Button>();
+                if (t == 0 && actionButtonList.Count > 1)
+                {
+                    Debug.Log("Select down on button " + gameObject.name);
+                    NewNav.selectOnDown = actionButtonList[t + 1].GetComponentInChildren<Button>();
+
+                }
+                else if (t == actionButtonList.Count - 1 && actionButtonList.Count > 1)
+                {
+                    Debug.Log("Select up on button " + gameObject.name);
+                    NewNav.selectOnUp = actionButtonList[t - 1].GetComponentInChildren<Button>();
+
+                }
+                else if (t != 0 && t != actionButtonList.Count - 1)
+                {
+                    NewNav.selectOnDown = actionButtonList[t + 1].GetComponentInChildren<Button>();
+                    NewNav.selectOnDown = actionButtonList[t - 1].GetComponentInChildren<Button>();
+                }
+
+                button.navigation = NewNav;
             }
             actionButton.SetActive(false);
             mapButton.onClick.AddListener(() => PersistentSceneLoader.Instance.LoadMapScene());
