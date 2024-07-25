@@ -19,6 +19,7 @@ using UnityEngine;
 using static UnityEngine.EventSystems.EventTrigger;
 using static UnityEngine.UI.CanvasScaler;
 using Vanaring.Assets.Scripts.Utilities;
+using PixelCrushers.DialogueSystem;
 
 
 namespace Vanaring
@@ -394,7 +395,6 @@ namespace Vanaring
             yield return SetActiveActors(); 
             yield return SwitchControl(null,GetCurrentActor());
 
-            EntityPositionManager.Instance.SetNewEnemyCurrentSize(GetCompetatorsBySide(ECompetatorSide.Hostile).Count);
 
 
         }
@@ -408,9 +408,11 @@ namespace Vanaring
                 yield return _sideTurnDisplayerManager.DisplaySideRoundCoroutine(_currentSide);
 
 
+
                 yield return _combatRefereeStateHandler.StateEnter();
 
                 GetEventBroadcaster().InvokeEvent<ECompetatorSide>(_currentSide, "OnNewRoundBegin");
+
 
 
                 yield return _combatRefereeStateHandler.AdvanceRound();
@@ -533,7 +535,9 @@ namespace Vanaring
             yield return PostPerformActionInEveryCharacter();
 
 
-            yield return CheckForReactionAction(); 
+            yield return CheckForReactionAction();
+
+
 
         }
 
@@ -576,7 +580,7 @@ namespace Vanaring
             }
             else
             {
-                
+      
                 //yield return SwitchControl((), null);
 
                 yield return SetActiveActors();
@@ -607,7 +611,10 @@ namespace Vanaring
                     EntityPositionManager.Instance.ReleasePosition(_competators[i].Competator);
                     
                     _competators.RemoveAt(i);
-                    
+
+                    bool shouldRelocateEnemy = GetCurrentActiveEntities().Count != 0 && _currentSide == ECompetatorSide.Ally ;
+
+                    EntityPositionManager.Instance.SetNewEnemyCurrentSize(GetCompetatorsBySide(ECompetatorSide.Hostile).Count, shouldRelocateEnemy);
                 }
             }
 
@@ -773,10 +780,19 @@ namespace Vanaring
             if (_activeCombatEntities.Count() == 0)
                 return null;
 
-            
+            CombatEntity actor = _activeCombatEntities[0];
+
+            foreach (var entity in _activeCombatEntities)
+            {
+                if (actor.CombatCharacterSheet.ActionPriority < entity.CombatCharacterSheet.ActionPriority)
+                {
+                    
+                    actor = entity;
+                } 
+            }
 
 
-            return _activeCombatEntities[0]; 
+            return actor ; 
         }
 
 

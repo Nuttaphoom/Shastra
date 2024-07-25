@@ -62,7 +62,12 @@ namespace Vanaring
         [SerializeField]
         private ControlableEntity _combatEntityPrefabAddress;
 
-        #region GETTER 
+        [Header("Act like a character speed")]
+        [SerializeField]
+        private int _actionPriority = 0 ;
+
+        #region GETTER
+        public int ActionPriority => _actionPriority; 
         public AilmentResistantDataInfo ResistantData => _ailmentResistantDataInfo;
 
         public Sprite GetCharacterIcon => _characterIconGUI;

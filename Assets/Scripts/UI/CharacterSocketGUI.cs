@@ -165,7 +165,6 @@ namespace Vanaring
         {
             
             hpVal = (int) _combatEntity.StatsAccumulator.GetHPAmount();
-            Debug.Log(hpVal);
             if (hpVal <= 0)
             {
                 foreach (Image image in fadeBlackImageList)

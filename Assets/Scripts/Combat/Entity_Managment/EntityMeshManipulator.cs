@@ -246,17 +246,7 @@ namespace Vanaring
                 entity.GetComponent<CombatEntityAnimationHandler>().ShowVisualMesh();//.SetActive(false);
             }
         }
-
-        public void ShowAllEntitMesh(List<CombatEntity> entityException = null)
-        {
-            foreach (var mesh in GetAllCompetators())
-            {
-                if (entityException != null && entityException.Contains(mesh))
-                    continue;
-
-                mesh.GetComponent<CombatEntityAnimationHandler>().ShowVisualMesh();//.SetActive(false);
-            }
-        }
+ 
 
         public void ShowAllEntitMesh(ECompetatorSide side)
         {

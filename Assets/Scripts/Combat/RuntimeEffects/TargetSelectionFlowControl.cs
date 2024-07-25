@@ -254,7 +254,6 @@ namespace Vanaring
                     if (_validTargets.Count <= actorAction.GetTargetSelector().MaxTarget)
                         _currentSelectIndex = 0;
 
-                    Debug.Log("Select " + _validTargets[_currentSelectIndex].gameObject + " when selected size is " + _selectedTarget.Count);
 
                     _selectedTarget.Add(_validTargets[_currentSelectIndex]);
                     _validTargets.RemoveAt(_currentSelectIndex);

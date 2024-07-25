@@ -12,13 +12,13 @@ namespace Vanaring
     {
 
         [SerializeField]
-        private CustomBoneAttachControlBehavior template = new CustomBoneAttachControlBehavior();
+        private CustomShakeCamControlBehavior template = new CustomShakeCamControlBehavior();
         public ClipCaps clipCaps {
             get { return ClipCaps.None; } }
 
         public override Playable CreatePlayable(PlayableGraph graph, GameObject owner)
         {
-            return ScriptPlayable<CustomBoneAttachControlBehavior>.Create(graph, template);
+            return ScriptPlayable<CustomShakeCamControlBehavior>.Create(graph, template);
         }
     }
 }
