@@ -15,7 +15,7 @@ namespace Vanaring
     public class PersonalityRewardDisplayerPanel : BaseRewardDisplayerPanel, IInputReceiver
     {
         [SerializeField]
-        private float _animationDuration = 3.0f;
+        private float _animationDuration = 1.0f;
         private List<Trait.Trait_Type> traitRewardShowList = new List<Trait.Trait_Type>();
         private int coroutineRunningCount = 0;
 
