@@ -98,7 +98,7 @@ namespace Vanaring
         #region Observer Methods
         private void PrepareEnittyLocationForTimelineAnimation((List<CombatEntity>, ActionTimelinePrefab) data )
         {
-            RelocateEntityToitsOccupiedPosition();
+            //RelocateEntityToitsOccupiedPosition();
         }
         private void OnNewRound_RelocateEntityBack(ECompetatorSide n)
         {
@@ -178,13 +178,13 @@ namespace Vanaring
             return ret; 
         }
        
-        public void SetNewEnemyCurrentSize(int newSize)
+        public void SetNewEnemyCurrentSize(int newSize , bool relocateObj = true )
         {
             //if (_currentEnemySize == newSize)
             //    return ;  
 
 
-            if (_currentEnemySize == -1)
+            if (_currentEnemySize == -1 || ! relocateObj)
             {
                 _currentEnemySize = newSize;
                 return;
@@ -244,7 +244,6 @@ namespace Vanaring
             {
 
                 var enemyOccupation = GetEnemyStandingLocations(CurrentEnemySize);
-                Debug.Log("current enemy size : " + CurrentEnemySize); 
                 if (enemyOccupation[index].EntityStandingHere == null || enemyOccupation[index].EntityStandingHere == entity)
                 {
                     enemyOccupation[index].EntityStandingHere = entity;
@@ -315,7 +314,6 @@ namespace Vanaring
 
         public void ReleasePosition(CombatEntity entity)
         {
-            Debug.Log("release position of " + entity);
 
             foreach (var data in GetAllAllyStandingLocation( ))
             {
@@ -406,7 +404,6 @@ namespace Vanaring
 
         private void RelocateEntityToitsOccupiedPosition(List<CombatEntity> onlyThisEntity = null)
         {
-
             foreach (var occupiedData in GetAllOccupiedLocation())
             {
                 if (onlyThisEntity != null)

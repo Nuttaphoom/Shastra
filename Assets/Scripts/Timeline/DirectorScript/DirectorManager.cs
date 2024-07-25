@@ -64,7 +64,7 @@ namespace Vanaring
 
         private void OnNewRoundBegin_DestroyUnusedAnimationPrefab(ECompetatorSide side)
         {
-            ClearCurrentTimeline(); 
+            ClearCurrentTimeline();
         }
 
         [SerializeField] private List<ActionSignal> _currentSignal = new List<ActionSignal>();       

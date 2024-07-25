@@ -87,11 +87,37 @@ namespace Vanaring
             yield return StateExit(); 
         }
 
+        private List<CombatEntity> OrganizeTeamActionOrderDependingOnPriority(List<CombatEntity> team)
+        {
+            var ret = team;// new List<CombatEntity>(); 
+
+            for (int i = 0; i < team.Count; i++)
+            {
+                for (int j =i+1; j < ret.Count; j++)
+                {
+
+                    if (ret[i].CombatCharacterSheet.ActionPriority < ret[j].CombatCharacterSheet.ActionPriority)
+                    {
+                        var temp = ret[i];
+                        ret[i] = ret[j];
+                        ret[j] = temp;
+                    }
+                }
+            }
+
+           
+
+            return ret;
+        }
+
         protected override IEnumerator StateEnter()
         {
 
             List<CombatEntity> team = _stateHandler.Referee.GetCurrentTeam();
 
+            team = OrganizeTeamActionOrderDependingOnPriority(team);
+
+            
 
             //1.) Prepare current team for Enter Turn of the entity, this included running status effect 
             foreach (CombatEntity entity in team)
@@ -99,12 +125,14 @@ namespace Vanaring
                 yield return entity.TurnEnter();     
             }
 
+
             foreach (CombatEntity actor in team)
             {
                 yield return actor.GetAilmentAction(); 
 
                 if (actor.ActionHandler.ActionQueueReady() )
                 {
+
                     yield return _stateHandler.Referee.OnCharacterPerformAction(actor);
                     yield return _stateHandler.Referee.ResolveOnEntityPerformAction();
                 }

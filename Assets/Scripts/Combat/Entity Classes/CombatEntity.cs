@@ -36,6 +36,7 @@ namespace Vanaring
         [SerializeField] 
         protected BreakTriggerHandler _breakTriggerHandler ;
 
+
         public BreakTriggerHandler BreakTriggerHandler {
             get
             {
