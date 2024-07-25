@@ -56,6 +56,13 @@ namespace Vanaring
                 Debug.Log("No baseNode can be access!");
             }
 
+            //animator.Play("NodeObjectVisittingState");
+        }
+
+        public void PlayVisitingAnimation()
+        {
+            Debug.Log("NodeVisitAnim");
+            //yield return new WaitForSeconds(1.0f);
             animator.Play("NodeObjectVisittingState");
         }
 
@@ -72,11 +79,11 @@ namespace Vanaring
 
         private void BeforeVisitNode(Null n)
         {
-            //Debug.Log("BeforeVisit");
+            Debug.Log("BeforeVisit");
             iconShown.gameObject.SetActive(true);
             state = NodeState.VISITING;
             SetFloorGraphicState(Color.yellow);
-            //animator.Play("NodeObjectVisittingState");
+            animator.Play("NodeObjectVisittingState");
             foreach (MissionPathObject path in pathList)
             {
                 path.PathReveal();
@@ -93,7 +100,7 @@ namespace Vanaring
         }
         private void FirstTimeVisit(Null n)
         {
-            //Debug.Log("First");
+            Debug.Log("First");
             animator.Play("NodeObjectVisittingState");
             foreach (MissionPathObject path in pathList)
             {
