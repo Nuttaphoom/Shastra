@@ -427,8 +427,13 @@ namespace Vanaring
             }
         }
 
-
-        public bool IsGameEnd()
+        /// <summary>
+        /// 0 = Not over
+        /// 1 = Enemy win 
+        /// 2 = Player win
+        /// </summary>
+        /// <returns></returns>
+        public int IsGameEnd()
         {
             for (int i = 0 ; i < GetCompetatorsBySide(ECompetatorSide.Ally).Count; i++)
             {
@@ -437,7 +442,7 @@ namespace Vanaring
                     break;
 
                 if (i == GetCompetatorsBySide(ECompetatorSide.Ally).Count - 1)
-                    return true; 
+                    return 1; 
             }
 
             for (int i = 0; i < GetCompetatorsBySide(ECompetatorSide.Hostile).Count; i++)
@@ -447,12 +452,13 @@ namespace Vanaring
                     break;
 
                 if (i == GetCompetatorsBySide(ECompetatorSide.Hostile).Count - 1)
-                    return true;
+                    return 2;
             }
 
             if (GetCompetatorsBySide(ECompetatorSide.Hostile).Count == 0)
-                return true;
-            return false;
+                return 2; 
+
+            return 0;
         }
 
         #region RefereeHandler Methods
@@ -575,11 +581,20 @@ namespace Vanaring
         {
             var prevActor = GetCurrentActor();
 
-            if (IsGameEnd())
+            int gameEnd = IsGameEnd();
+            if (gameEnd == 2)
             {
                 yield return FindObjectOfType<CombatRewardManager>().CombatRewardSchemeStart(this);
                 PersistentSceneLoader.Instance.LoadGeneralScene(PersistentSceneLoader.Instance.GetStackLoadedDataScene(1));
                 //FindObjectOfType<ThanksForPlayingDisplayer>().ShowThankForPlayingMenu();
+            } else if (gameEnd == 1)
+            {
+                FindObjectOfType<ThanksForPlayingDisplayer>().ShowThankForPlayingMenu(); 
+
+                while(true)
+                {
+                    yield return new WaitForEndOfFrame(); 
+                }
             }
             else
             {
