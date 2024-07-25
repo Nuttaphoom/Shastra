@@ -8,6 +8,8 @@ namespace Vanaring
     {
         [SerializeField] private List<Animator> animatorList = new List<Animator>();
 
+
+
         public void LootBox()
         {
             //foreach (Animator anim in animatorList)
@@ -69,6 +71,8 @@ namespace Vanaring
                 yield return null;
 
             }
+
+            //transform.position = nodeToVisit.transform.position;
 
             //transform.position = new Vector3(transform.position.x + 2, 0, transform.position.z);
 
