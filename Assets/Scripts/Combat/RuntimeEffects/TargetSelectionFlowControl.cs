@@ -218,8 +218,11 @@ namespace Vanaring
 
             PrepareCameraForTargetSelection(randomTarget, actorAction.GetTargetSelector().TargetAllyTeam, caster);
 
-
-            _validTargets = ArrangeEntityListInXAxis(_validTargets, Vector3.zero);
+            //if random target, we don't need to line axis perfectly
+            if (!randomTarget)
+            {
+                _validTargets = ArrangeEntityListInXAxis(_validTargets, Vector3.zero);
+            }
 
             _eventBroadcaster.InvokeEvent(targetSelectingData, "OnTargetSelectionEnter");
 
@@ -250,7 +253,9 @@ namespace Vanaring
 
                     if (_validTargets.Count <= actorAction.GetTargetSelector().MaxTarget)
                         _currentSelectIndex = 0;
-                    
+
+                    Debug.Log("Select " + _validTargets[_currentSelectIndex].gameObject + " when selected size is " + _selectedTarget.Count);
+
                     _selectedTarget.Add(_validTargets[_currentSelectIndex]);
                     _validTargets.RemoveAt(_currentSelectIndex);
                     _currentSelectIndex = 0;
@@ -361,23 +366,27 @@ namespace Vanaring
 
         #region Camera / Arrange Entity Helper Function 
 
-        private List<CombatEntity> ArrangeEntityListInXAxis(List<CombatEntity> entities, Vector3 rightVector)
+        private List<CombatEntity> ArrangeEntityListInXAxis(List<CombatEntity> entities, Vector3 rightVector  )
         {
-            if (rightVector != Vector3.zero)
-            {
-                if (rightVector.x > 0)
-                    entities.Sort((entity1, entity2) => entity1.transform.position.x.CompareTo(entity2.transform.position.x));
+            
+            
+                if (rightVector != Vector3.zero)
+                {
+                    if (rightVector.x > 0)
+                        entities.Sort((entity1, entity2) => entity1.transform.position.x.CompareTo(entity2.transform.position.x));
+                    else
+                        entities.Sort((entity1, entity2) => entity2.transform.position.x.CompareTo(entity1.transform.position.x));
+                }
                 else
-                    entities.Sort((entity1, entity2) => entity2.transform.position.x.CompareTo(entity1.transform.position.x));
-            }
-            else
-            {
-                if (Camera.main.transform.right.x > 0)
-                    entities.Sort((entity1, entity2) => entity1.transform.position.x.CompareTo(entity2.transform.position.x));
-                else
-                    entities.Sort((entity1, entity2) => entity2.transform.position.x.CompareTo(entity1.transform.position.x));
-            }
-            return entities;
+                {
+                    if (Camera.main.transform.right.x > 0)
+                        entities.Sort((entity1, entity2) => entity1.transform.position.x.CompareTo(entity2.transform.position.x));
+                    else
+                        entities.Sort((entity1, entity2) => entity2.transform.position.x.CompareTo(entity1.transform.position.x));
+                }
+                return entities;
+
+             
         }
 
         private void PrepareCameraForTargetSelection(bool randomTarget, bool targetAlly, CombatEntity caster)
@@ -447,6 +456,8 @@ namespace Vanaring
             {
                 return caster == target;
             }
+            else if (caster == target)
+                return false;
 
             if (TargetOppose)
             {
