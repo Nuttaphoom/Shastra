@@ -33,7 +33,7 @@ namespace Vanaring
             }
 
             CombatReferee.Instance.SubOnCompetitorEnterCombat(BindEntityEvent);
-            //CombatReferee.Instance.SubOnNewRoundBegin(OnNewRoundBegin); 
+            CombatReferee.Instance.SubOnNewRoundBegin(OnNewRoundBegin);
 
             DirectorManager.Instance.SubOnPlayTimelineWithActor(PrepareEntityMeshForTimelineAnimation);
 
@@ -141,8 +141,13 @@ namespace Vanaring
 
         private void OnNewRoundBegin(ECompetatorSide newRoundSide)
         {
-            if (newRoundSide  == ECompetatorSide.Ally)
-                RestoreRotateMeshLookAt();
+            //if (newRoundSide  == ECompetatorSide.Ally)
+            //    RestoreRotateMeshLookAt();
+
+            if (newRoundSide == ECompetatorSide.Hostile)
+            {
+                HideAllEntityMesh(ECompetatorSide.Ally);
+            }
             
             //ShowAllEntitMesh();
         }
@@ -221,8 +226,11 @@ namespace Vanaring
             
             foreach (var mesh in GetAllCompetators(side))
             {
-                if (entityException.Contains(mesh))
-                    continue; 
+                if (entityException != null)
+                {
+                    if (entityException.Contains(mesh))
+                        continue;
+                }
 
                 mesh.GetComponent<CombatEntityAnimationHandler>().HideVisualMesh() ;//.SetActive(false);
             }
