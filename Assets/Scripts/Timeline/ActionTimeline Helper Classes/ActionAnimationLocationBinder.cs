@@ -46,9 +46,10 @@ namespace Vanaring
                     _movedEntity.transform.parent = null;
 
                 ////Maybe we don't need to restore transformation ? make it re-assign everytime switch control ?
-                //_movedEntity.transform.position = _oldTransform.transform.position; 
-                //_movedEntity.transform.rotation = _oldTransform.transform.rotation;
-                //_movedEntity.transform.localScale = _oldTransform.transform.localScale; 
+                _movedEntity.transform.position = _oldTransform.transform.position;
+                _movedEntity.transform.rotation = _oldTransform.transform.rotation;
+                _movedEntity.transform.localScale = _oldTransform.transform.localScale;
+
             }
         }
 

@@ -530,12 +530,13 @@ namespace Vanaring
 
         public IEnumerator OnCharacterPerformAction(CombatEntity actor )
         {
+
             yield return actor.OnPerformAction( );
+
 
             ResolveEntityDead();
 
             yield return PostPerformActionInEveryCharacter();
-
 
             yield return CheckForReactionAction();
 

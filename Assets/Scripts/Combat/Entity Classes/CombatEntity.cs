@@ -227,7 +227,6 @@ namespace Vanaring
         // Take control and leave control should have its own space 
         public virtual IEnumerator TakeControl()
         {
-            DirectorManager.Instance.ClearCurrentTimeline();
 
             GetEventBroadcaster().InvokeEvent(this, "OnTakeControl");
 
