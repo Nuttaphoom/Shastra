@@ -98,7 +98,7 @@ namespace Vanaring
         #region Observer Methods
         private void PrepareEnittyLocationForTimelineAnimation((List<CombatEntity>, ActionTimelinePrefab) data )
         {
-            //RelocateEntityToitsOccupiedPosition();
+            RelocateEntityToitsOccupiedPosition();
         }
         private void OnNewRound_RelocateEntityBack(ECompetatorSide n)
         {
