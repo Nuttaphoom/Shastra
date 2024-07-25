@@ -20,7 +20,8 @@ namespace Vanaring
         {
             foreach (Animator anim in animatorList)
             {
-                anim.SetBool("IsMoving", true);
+                //anim.SetBool("IsMoving", true);
+                anim.speed = 5f;
                 anim.SetFloat("horizontalMove", direction.x);
                 anim.SetFloat("verticalMove", direction.z);
                 if(direction.x == -1 || direction.z == 1)
@@ -40,7 +41,8 @@ namespace Vanaring
             
             foreach (Animator anim in animatorList)
             {
-                anim.SetBool("IsMoving", false);
+                //anim.SetBool("IsMoving", false);
+                anim.speed = 1f;
                 //anim.SetFloat("horizontalMove", 0.0f);
                 //anim.SetFloat("verticalMove", 0.0f);
             }
