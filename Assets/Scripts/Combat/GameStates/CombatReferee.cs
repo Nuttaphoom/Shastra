@@ -334,7 +334,9 @@ namespace Vanaring
                 {
                     newEnemySize = EntityPositionManager.Instance.CurrentEnemySize + entites.Count; 
                 }
-                 
+
+                EntityPositionManager.Instance.ReleaseAllPositionBySide(ECompetatorSide.Hostile);
+
                 EntityPositionManager.Instance.SetNewEnemyCurrentSize(newEnemySize);
 
             }
@@ -528,12 +530,13 @@ namespace Vanaring
 
         public IEnumerator OnCharacterPerformAction(CombatEntity actor )
         {
+
             yield return actor.OnPerformAction( );
+
 
             ResolveEntityDead();
 
             yield return PostPerformActionInEveryCharacter();
-
 
             yield return CheckForReactionAction();
 

@@ -29,6 +29,17 @@ namespace Vanaring
         private void Awake()
         {
             _missionNodeTransitionManager.Init(); 
+
+        }
+        private void Start()
+        {
+            StartCoroutine(SetCompanionToCameraPosition());
+        }
+
+        public IEnumerator SetCompanionToCameraPosition()
+        {
+            yield return new WaitForSeconds(0.3f);
+            allCompanionUI.transform.position = _cameraPivot.transform.position;
         }
         public IEnumerator SetUpDungeonCoroutine(BaseMissionNode firstNodeToStart)
         {
@@ -40,6 +51,7 @@ namespace Vanaring
         {
 
             //first time dungeon node is init 
+
             if (_currentDungeonNode != null)
             {
 
@@ -68,6 +80,7 @@ namespace Vanaring
 
             _cameraPivot.transform.position = nodeToVisit.transform.position;
             //allCompanionUI.transform.position = new Vector3(nodeToVisit.transform.position.x, 0f, nodeToVisit.transform.position.z);
+            //allCompanionUI.transform.position = nodeToVisit.transform.position;
             //
 
 

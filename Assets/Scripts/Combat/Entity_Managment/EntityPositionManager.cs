@@ -104,6 +104,9 @@ namespace Vanaring
         {
             if (n == ECompetatorSide.Ally)
                 RelocateEntityToitsOccupiedPosition(); 
+            if (n == ECompetatorSide.Hostile) 
+                RelocateEntityToitsOccupiedPosition(CombatReferee.Instance.GetCompetatorsBySide(ECompetatorSide.Ally)) ; 
+
         }
         private void OnTargetSelectionEnd_ReturnOccupiedAllyPosition(TargetSelectingData data)
         {
@@ -196,8 +199,7 @@ namespace Vanaring
             List<StandingLocationOccupierData> oldLocationData = GetEnemyStandingLocations(_currentEnemySize);
 
             _currentEnemySize = newSize;
-
-
+            
             int i = 0;
 
             foreach (var data in oldLocationData)
@@ -244,14 +246,18 @@ namespace Vanaring
             {
 
                 var enemyOccupation = GetEnemyStandingLocations(CurrentEnemySize);
+
                 if (enemyOccupation[index].EntityStandingHere == null || enemyOccupation[index].EntityStandingHere == entity)
                 {
                     enemyOccupation[index].EntityStandingHere = entity;
                     data = enemyOccupation[index];
-                }else
-                {
-                    throw new Exception( entity.gameObject.name + "Try to force standing on the occupied location || index is " + index + " with current enemy size " + CurrentEnemySize + " and  " + enemyOccupation[index].EntityStandingHere + " is standing here") ;
                 }
+                else
+                {
+                    throw new Exception(entity.gameObject.name + "Try to force standing on the occupied location || index is " + index + " with current enemy size " + CurrentEnemySize + " and  " + enemyOccupation[index].EntityStandingHere + " is standing here");
+                }
+
+                
 
             }
 
@@ -373,10 +379,28 @@ namespace Vanaring
                     data.EntityStandingHere = null;                
             }
         }
- 
 
-        
-        #endregion 
+        public void ReleaseAllPositionBySide(ECompetatorSide side)
+        {
+            if (side == ECompetatorSide.Ally)
+            {
+                foreach (var data in GetAllAllyStandingLocation())
+                {
+                    data.EntityStandingHere = null;
+                }
+            }
+            else if (side == ECompetatorSide.Hostile)
+            {
+
+                foreach (var data in GetEnemyStandingLocations(_currentEnemySize))
+                {
+                    data.EntityStandingHere = null;
+                }
+            }
+        }
+
+
+        #endregion
 
         private StandingLocationOccupierData IsThisEntityOccupyLocation(CombatEntity entity)
         {
@@ -391,11 +415,14 @@ namespace Vanaring
                 }
             }
 
-            foreach (var data in GetEnemyStandingLocations(_currentEnemySize))
+            for (int i = 0; i < 10; i++)
             {
-                if (data.EntityStandingHere == entity)
+                foreach (var data in GetEnemyStandingLocations(i))
                 {
-                    return data ;
+                    if (data.EntityStandingHere == entity)
+                    {
+                        return data;
+                    }
                 }
             }
 

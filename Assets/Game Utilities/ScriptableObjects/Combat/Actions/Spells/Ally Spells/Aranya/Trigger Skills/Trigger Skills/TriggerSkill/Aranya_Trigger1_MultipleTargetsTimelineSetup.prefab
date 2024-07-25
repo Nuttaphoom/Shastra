@@ -7710,6 +7710,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _spawnVisualEffect: {fileID: 0}
   _deadVisualEffect: {fileID: 0}
+  _deadVFXActivation: 1
 --- !u!114 &1083663764515362526
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10939,12 +10940,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 44aa76c08385dbf42b998e665246ee36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _attachVFXToBoneDatas: []
+  _attachTargetToCasterBoneDatas: []
   _changeLookAt: 0
   _lookAtBinder:
     _lookAtBinderDatas:
     - _virtualCameraToChangeLookAt: {fileID: 0}
       UseEnemiesCenterTarget: 1
   _useActionTimelinePrefabLocation: 1
+  _rotateTargetsToCaster: 0
   _actionAnimationLocationBinder:
     _moveCasters: 1
     _moveTargets: 0
@@ -36423,7 +36427,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4044844223608246, guid: 7558be78bd626304dbbc627760117bd5, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 4044844223608246, guid: 7558be78bd626304dbbc627760117bd5, type: 3}
       propertyPath: m_LocalPosition.z
