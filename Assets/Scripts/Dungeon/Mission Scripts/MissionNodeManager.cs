@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Vanaring
 {
-    public class MissionNodeManager : MonoBehaviour 
+    public class MissionNodeManager : MonoBehaviour, ISceneLoaderWaitForSignal
     {
         [SerializeField]
         private BaseMissionNode _currentDungeonNode;
@@ -28,7 +28,7 @@ namespace Vanaring
         #endregion
         private void Awake()
         {
-            _missionNodeTransitionManager.Init(); 
+            _missionNodeTransitionManager.Init();
 
         }
         private void Start()
@@ -117,6 +117,18 @@ namespace Vanaring
                 yield return null;
 
             }
+        }
+
+        public IEnumerator OnNewSceneLoad_BeforeSaveLoadPerform()
+        {
+            yield return null;
+            //throw new System.NotImplementedException();
+        }
+
+        public IEnumerator OnNotifySceneLoadingComplete()
+        {
+            
+            yield return null;
         }
     }
 
