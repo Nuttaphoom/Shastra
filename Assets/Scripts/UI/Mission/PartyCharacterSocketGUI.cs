@@ -26,7 +26,6 @@ namespace Vanaring
             hpNUM.text = member.GetRuntimeCombatMemberData.LevelAttributeHandler.GetSecondaryAttribute_MaxHP.ToString();
             mpNUM.text = member.GetRuntimeCombatMemberData.LevelAttributeHandler.GetSecondaryAttribute_MaxMP.ToString();
         }
-
         private void Update()
         {
             //Chang to better solution soon
