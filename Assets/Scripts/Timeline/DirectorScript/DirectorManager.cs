@@ -86,6 +86,8 @@ namespace Vanaring
 
         public void PlayTimeline(ActionSignal signal)
         {
+            ClearCurrentTimeline(); 
+
             if (_currentPlayableDirector != null)
                 throw new System.Exception("Try to play multiple timeline simutanouly");
 
@@ -129,7 +131,7 @@ namespace Vanaring
         /// <param name="actionTimelineSettingStruct"></param>
         public IEnumerator PlayTimelineCoroutine(TimelineInfo info, List<CombatEntity> actors )
         {
-            Debug.Log("play timeline coroutine"); 
+            ClearCurrentTimeline();
 
             // 1.) Create PlayableDirector
             PlayableDirector currentDirector;

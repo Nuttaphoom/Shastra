@@ -104,6 +104,9 @@ namespace Vanaring
         {
             if (n == ECompetatorSide.Ally)
                 RelocateEntityToitsOccupiedPosition(); 
+            if (n == ECompetatorSide.Hostile) 
+                RelocateEntityToitsOccupiedPosition(CombatReferee.Instance.GetCompetatorsBySide(ECompetatorSide.Ally)) ; 
+
         }
         private void OnTargetSelectionEnd_ReturnOccupiedAllyPosition(TargetSelectingData data)
         {
