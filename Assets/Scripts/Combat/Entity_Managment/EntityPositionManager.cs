@@ -198,6 +198,7 @@ namespace Vanaring
             _currentEnemySize = newSize;
 
 
+            
             int i = 0;
 
             foreach (var data in oldLocationData)
@@ -373,10 +374,28 @@ namespace Vanaring
                     data.EntityStandingHere = null;                
             }
         }
- 
 
-        
-        #endregion 
+        public void ReleaseAllPositionBySide(ECompetatorSide side)
+        {
+            if (side == ECompetatorSide.Ally)
+            {
+                foreach (var data in GetAllAllyStandingLocation())
+                {
+                    data.EntityStandingHere = null;
+                }
+            }
+            else if (side == ECompetatorSide.Hostile)
+            {
+
+                foreach (var data in GetEnemyStandingLocations(_currentEnemySize))
+                {
+                    data.EntityStandingHere = null;
+                }
+            }
+        }
+
+
+        #endregion
 
         private StandingLocationOccupierData IsThisEntityOccupyLocation(CombatEntity entity)
         {

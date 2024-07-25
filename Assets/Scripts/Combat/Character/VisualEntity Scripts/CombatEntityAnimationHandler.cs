@@ -257,7 +257,7 @@ namespace Vanaring
             var animator = GetVisualMesh().GetComponent<Animator>();
             var stateInfo = animator.GetCurrentAnimatorStateInfo(0);
 
-            if (! stateInfo.IsName("Idle") && ! stateInfo.IsName("Stun Stay") && ! stateInfo.IsName("Dead") && ! stateInfo.IsName("Stun") ) 
+            if (! stateInfo.IsName("Idle") && ! stateInfo.IsName("Stun Stay") && ! stateInfo.IsName("Dead") && ! stateInfo.IsName("Stun") && ! stateInfo.IsName("Stun Enter")) 
                 return;
 
             stunBool =  animator.GetBool("Stun");
