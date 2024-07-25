@@ -334,7 +334,9 @@ namespace Vanaring
                 {
                     newEnemySize = EntityPositionManager.Instance.CurrentEnemySize + entites.Count; 
                 }
-                 
+
+                EntityPositionManager.Instance.ReleaseAllPositionBySide(ECompetatorSide.Hostile);
+
                 EntityPositionManager.Instance.SetNewEnemyCurrentSize(newEnemySize);
 
             }
