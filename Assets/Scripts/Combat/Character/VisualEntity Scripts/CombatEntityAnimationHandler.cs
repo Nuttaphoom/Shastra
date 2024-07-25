@@ -212,6 +212,14 @@ namespace Vanaring
 
         private CombatEntity _combatEntity;
 
+        [SerializeField]
+        private bool _deadVFXActivation = true ; 
+
+        public void SetDeadVFXActivation(bool set)
+        {
+            _deadVFXActivation = set; 
+        }
+
 
         //[Header("Use for specially set where (CastTransform, TarTransform) position will be set to #Can leave blank")]
         //[SerializeField]
@@ -348,13 +356,23 @@ namespace Vanaring
             for (int i =  _attachedVFXs.Count - 1; i >= 0; i--) 
                 Destroy(_attachedVFXs[i].gameObject) ; 
 
-            if (_deadVisualEffect)
+            if (! _deadVFXActivation)
+                _visualMesh.transform.Translate(new Vector2(10000000, 1000000));
+            
+            if (_deadVisualEffect && _deadVFXActivation)
             {
                 StartCoroutine(PlayTriggerAnimation("Hurt") ) ;
+
+                //_deadVisualEffect.transform.parent = null;
+
+                _deadVisualEffect.transform.position = GetVisualMesh().transform.position;
+                _deadVisualEffect.transform.rotation = GetVisualMesh().transform.rotation;
+                //_deadVisualEffect.transform.localScale = GetVisualMesh().transform.localScale;
 
                 _deadVisualEffect.gameObject.SetActive(true);
                 _deadVisualEffect.Play();
 
+                _deadVisualEffect.transform.parent = null;
 
                 _visualMesh.transform.Translate(new Vector2(10000000, 1000000));
                 yield return new WaitForSeconds(2.0f);
@@ -369,8 +387,14 @@ namespace Vanaring
 
             else
             {
+
                 yield return PlayTriggerAnimation(_deadAnimationTrigger);
+
             }
+
+
+
+
         }
         #endregion 
         #region GETTER

@@ -42,7 +42,6 @@ namespace Vanaring
 
         public override IEnumerator ExecuteRuntimeCoroutine(CombatEntity caster)
         {
-            CombatEntity undeadKing = null ;
             List<CombatEntity> killTarget = new List<CombatEntity>(); 
 
             //creating vfx for coroutine for targets
@@ -50,23 +49,21 @@ namespace Vanaring
             {
                 if (t.CombatCharacterSheet.CharacterName == "Undead King")
                 {
-                    undeadKing = t;  
-                }else
+                    throw new Exception("Undead King should not be selected as spell target"); 
+                 }else
                 {
                     killTarget.Add(t); 
                 }
                 
             }
 
-            if (undeadKing == null)
-                throw new Exception("undeaKing variable can not be null");
-
-            Debug.Log("undead king is " + undeadKing);
-            Debug.Log("killed target .count is " + killTarget.Count); 
+            foreach (var target in killTarget) 
+                target.GetComponent<CombatEntityAnimationHandler>().SetDeadVFXActivation(false);
 
             yield return caster.LogicAttack(killTarget, EDamageScaling.High);
 
-            undeadKing.LogicHeal(_healStatModifer);
+
+            caster.LogicHeal(_healStatModifer);
 
 
             yield return null;

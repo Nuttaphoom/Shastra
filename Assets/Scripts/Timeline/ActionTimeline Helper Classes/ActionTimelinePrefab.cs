@@ -9,6 +9,7 @@ using NaughtyAttributes;
 using Vanaring.Assets.Scripts.Utilities;
 using static UnityEngine.UIElements.UxmlAttributeDescription;
 using System.Diagnostics.Tracing;
+using UnityEditor;
 
 namespace Vanaring
 {
@@ -20,14 +21,28 @@ namespace Vanaring
 
         
         private GameObject _sourceVFX;
-        private GameObject _casterBoneVFX ;
 
         public GameObject SourceVFX => _sourceVFX; 
 
         public void SetSourceVFX(GameObject sourceVFX)
         {
-            _sourceVFX = sourceVFX; 
+            _sourceVFX = sourceVFX ; 
         }
+
+    }
+
+    [Serializable]
+    public class AttachTargetToCasterBoneData
+    {
+        public int TargetNumber ;
+        public string CasterBoneName ;
+
+        [HideInInspector]
+        public GameObject MovedTarget ;
+        
+        
+
+
     }
 
     public class ActionTimelinePrefab : MonoBehaviour
@@ -49,7 +64,11 @@ namespace Vanaring
         #endregion
 
         [SerializeField]
-        private List<AttachVFXToBoneData> _attachVFXToBoneDatas; 
+        private List<AttachVFXToBoneData> _attachVFXToBoneDatas;
+
+        [SerializeField]
+        private List<AttachTargetToCasterBoneData> _attachTargetToCasterBoneDatas; 
+
         /// Look At Variables //
         [Header("Dynamicall Chnage look at")]
         [SerializeField]
@@ -187,6 +206,52 @@ namespace Vanaring
 
             RelocateImpactVFXtoImpactTransform(casterActor, targetActors);
             RelocateVFXtoBone(casterActor, targetActors); 
+            RelocateTargetsToBone(casterActor, targetActors);
+        }
+
+        private void RelocateTargetsToBone(GameObject casters, List<GameObject> targets)
+        {
+            foreach (var data in _attachTargetToCasterBoneDatas)
+            {
+                int targetIndex = data.TargetNumber;
+                var boneLists = ObjectFindingTool.QueryObjectInChildrenUsingName(casters.transform, data.CasterBoneName);
+
+                //Target now is inside the TargetTransform
+                if (_actionAnimationLocationBinder.MoveTargets)
+                {
+                    Debug.LogWarning("This functionality is only use for Undead King skill, DO NOT use it with other skill");
+                    var allTargetTransform = ObjectFindingTool.QueryObjectInChildren(transform, TargetTransformTag);
+
+
+                    for (int i = 0; i < targets.Count; i++)
+                    {
+                        
+                        //Debug.Log("targets for relocation :  " + targets[i].gameObject.name);
+                        //If this is not the target we want to move to bone, continue the loop
+                        if (i != targetIndex) 
+                            continue;
+
+                        allTargetTransform[i].transform.parent = boneLists[0].transform;
+                        allTargetTransform[i].transform.position = boneLists[0].transform.position ;
+                        allTargetTransform[i].transform.rotation = boneLists[0].transform.rotation ;
+
+
+                        targets[i].GetComponent<CombatEntityAnimationHandler>().GetVisualMesh().transform.localPosition = Vector3.zero;
+                        targets[i].GetComponent<CombatEntityAnimationHandler>().GetVisualMesh().transform.localRotation = Quaternion.identity;
+
+
+                    }
+                }
+                else
+                {
+                    throw new Exception("attach targets to bone without move target to Prefab location hasn't supported yet"); 
+
+                    //targets[targetIndex].GetComponent<CombatEntityAnimationHandler>().GetVisualMesh().transform.localPosition = Vector3.zero;
+                    //targets[targetIndex].GetComponent<CombatEntityAnimationHandler>().GetVisualMesh().transform.localRotation = Quaternion.identity ; 
+
+                }
+
+            }
         }
 
         private void RelocateVFXtoBone(GameObject casters, List<GameObject> targets)
@@ -211,7 +276,6 @@ namespace Vanaring
         {
             _relocatedVFX = new List<GameObject>(); 
 
-            
             //Assign Target's first 
             //Target now is inside the TargetTransform
 
@@ -353,7 +417,12 @@ namespace Vanaring
 
         public void DestroyTimelineElement()
         {
-           
+            //return attached target to caster bone first 
+            foreach (var data in _attachTargetToCasterBoneDatas)
+            {
+                if (data.MovedTarget != null)
+                    data.MovedTarget.transform.parent = null; 
+            }
 
             if (_useActionTimelinePrefabLocation)
                 _actionAnimationLocationBinder.ResetPositionBack();
