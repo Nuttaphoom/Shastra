@@ -118,7 +118,6 @@ namespace Vanaring
 
             if (CombatReferee.Instance.GetCompetatorSide(entity) == ECompetatorSide.Ally)
             {
-                Debug.Log("on ally take control");
 
                 ShowEntityMesh(entitiesTakeControl);
                 ShowAllEntitMesh(ECompetatorSide.Hostile) ;
@@ -150,7 +149,6 @@ namespace Vanaring
 
         private void RotateMeshToLookToThisPosition(Vector3 worldPosition, ECompetatorSide side)
         {
-            Debug.Log("rotate entity");
             foreach (var entity in GetAllCompetators(side))
             {
                 entity.GetComponent<CombatEntityAnimationHandler>().RotateMeshLookAtToThisPosition(worldPosition);

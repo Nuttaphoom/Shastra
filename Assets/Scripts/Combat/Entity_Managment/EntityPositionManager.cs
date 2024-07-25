@@ -183,7 +183,6 @@ namespace Vanaring
             //if (_currentEnemySize == newSize)
             //    return ;  
 
-            Debug.Log("prev current enemy size was " + _currentEnemySize + " set new current enemy size to " + newSize);
 
             if (_currentEnemySize == -1)
             {
@@ -246,18 +245,23 @@ namespace Vanaring
 
                 var enemyOccupation = GetEnemyStandingLocations(CurrentEnemySize);
                 Debug.Log("current enemy size : " + CurrentEnemySize); 
-                if (enemyOccupation[index].EntityStandingHere == null)
+                if (enemyOccupation[index].EntityStandingHere == null || enemyOccupation[index].EntityStandingHere == entity)
                 {
                     enemyOccupation[index].EntityStandingHere = entity;
                     data = enemyOccupation[index];
                 }else
                 {
-                    //throw new Exception("Try to force standing on the occupied location");
+                    throw new Exception( entity.gameObject.name + "Try to force standing on the occupied location || index is " + index + " with current enemy size " + CurrentEnemySize + " and  " + enemyOccupation[index].EntityStandingHere + " is standing here") ;
                 }
 
             }
 
+            if (data == null)
+            {
+                throw new Exception("data is null for " + entity + " with side " + side + " and CurrentEnemySize : " + CurrentEnemySize);
+            }
             entity.GetComponent<CombatEntityAnimationHandler>().ShowVisualMesh();
+
 
 
             entity.transform.position = data.Location.transform.position ;
@@ -311,6 +315,8 @@ namespace Vanaring
 
         public void ReleasePosition(CombatEntity entity)
         {
+            Debug.Log("release position of " + entity);
+
             foreach (var data in GetAllAllyStandingLocation( ))
             {
                 if (data.EntityStandingHere == entity)
@@ -320,15 +326,18 @@ namespace Vanaring
                     return;
                 }
             }
-           
-            foreach (var data in GetEnemyStandingLocations(_currentEnemySize))
+
+            for (int i = 0; i < 10; i++)
             {
-                if (data.EntityStandingHere == entity)
+                foreach (var data in GetEnemyStandingLocations(i))
                 {
-                    data.EntityStandingHere = null;
-                    return;
+                    if (data.EntityStandingHere == entity)
+                    {
+                        data.EntityStandingHere = null;
+                        return;
+                    }
                 }
-            } 
+            }
         }
         public void ReleasePositionBySide(ECompetatorSide side)
         {
@@ -455,7 +464,6 @@ namespace Vanaring
         [Serializable]
         public class StandingLocationOccupierData
         {
-            [HideInInspector] 
             public CombatEntity EntityStandingHere;
             public Transform Location; 
         }

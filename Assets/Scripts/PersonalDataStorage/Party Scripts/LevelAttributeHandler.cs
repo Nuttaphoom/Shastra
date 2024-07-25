@@ -26,7 +26,7 @@ namespace Vanaring
 
         private void DebugOnLevelUpTest(int lvl)
         {
-            ColorfulLogger.LogWithColor("Upgrade Level to " + lvl, Color.red); 
+            //ColorfulLogger.LogWithColor("Upgrade Level to " + lvl, Color.red); 
         }
 
         public void ReceiveEXP(float exp)
