@@ -452,23 +452,24 @@ namespace Vanaring
             ECompetatorSide casterSide = CombatReferee.Instance.GetCompetatorSide(caster);
             ECompetatorSide targetSide = CombatReferee.Instance.GetCompetatorSide(target);
 
-            if (TargetCasterItself)
-            {
-                return caster == target;
-            }
-            else if (caster == target)
-                return false;
-
             if (TargetOppose)
             {
-                return (casterSide != targetSide);
+                return casterSide != targetSide;
             }
 
             if (TargetAllyTeam)
             {
-                return (casterSide == targetSide);
+                if (!TargetCasterItself && caster == target)
+                {
+                    return false;
+                }
+                return casterSide == targetSide;
             }
 
+            if (TargetCasterItself)
+            {
+                return caster == target;
+            }
 
             return false;
         }
