@@ -8,7 +8,7 @@ using UnityEngine.Timeline;
 namespace Vanaring
 {
     [Serializable]
-    public class CustomShakeCamClip : PlayableAsset, ITimelineClipAsset
+    public class CustomBoneAttachClip : PlayableAsset, ITimelineClipAsset
     {
 
         [SerializeField]

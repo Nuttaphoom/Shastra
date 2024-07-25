@@ -18,11 +18,12 @@ namespace Vanaring
     {
         public string SourceVFXName;
         public string CasterBoneName;
-
         
         private GameObject _sourceVFX;
 
         public GameObject SourceVFX => _sourceVFX; 
+
+
 
         public void SetSourceVFX(GameObject sourceVFX)
         {
@@ -37,8 +38,11 @@ namespace Vanaring
         public int TargetNumber ;
         public string CasterBoneName ;
 
+        [Header("WaitForAttachBoneTrack will only attach Target to Bone when AttachBoneTrack is enable")]
+        public bool WaitForAttachBoneTrack = false ;
+        
         [HideInInspector]
-        public GameObject MovedTarget ;
+        public GameObject MovedTarget ; 
         
         
 
@@ -63,9 +67,10 @@ namespace Vanaring
 
         #endregion
 
+        
         [SerializeField]
         private List<AttachVFXToBoneData> _attachVFXToBoneDatas;
-
+        
         [SerializeField]
         private List<AttachTargetToCasterBoneData> _attachTargetToCasterBoneDatas; 
 
@@ -97,6 +102,9 @@ namespace Vanaring
 
         private List<GameObject> _relocatedVFX;
         //private List<GameObject> _destroyedWithTimeline = new List<GameObject>();
+
+        private GameObject _caster;
+        private List<GameObject> _targets;
 
         public void SetUpActor(PlayableDirector director, ActionTimelineSettingStruct actionTimelineSetting, SignalReceiver unitySignalReciver   )
         {
@@ -168,9 +176,15 @@ namespace Vanaring
         {
             AssignCasterTargetTransform(_actionTimelineSetting);
 
+
             //Set up Target and Caster transform, place them into correct location 
             var targetActors = _actionTimelineSetting.GetAllTimelineActors();
             var casterActor = _actionTimelineSetting.GetAllTimelineActors()[0];
+
+            _caster = casterActor;
+            _targets = targetActors;
+
+
             targetActors.RemoveAt(0);
 
             //Uise ActionTimelinePrefab 
@@ -206,15 +220,19 @@ namespace Vanaring
 
             RelocateImpactVFXtoImpactTransform(casterActor, targetActors);
             RelocateVFXtoBone(casterActor, targetActors); 
-            RelocateTargetsToBone(casterActor, targetActors);
+            RelocateTargetsToBone(false);
         }
 
-        private void RelocateTargetsToBone(GameObject casters, List<GameObject> targets)
+
+        public void RelocateTargetsToBone( bool TrackCallAttachBone)
         {
             foreach (var data in _attachTargetToCasterBoneDatas)
             {
+                if (data.WaitForAttachBoneTrack && !TrackCallAttachBone)
+                    continue;
+
                 int targetIndex = data.TargetNumber;
-                var boneLists = ObjectFindingTool.QueryObjectInChildrenUsingName(casters.transform, data.CasterBoneName);
+                var boneLists = ObjectFindingTool.QueryObjectInChildrenUsingName(_caster.transform, data.CasterBoneName);
 
                 //Target now is inside the TargetTransform
                 if (_actionAnimationLocationBinder.MoveTargets)
@@ -223,7 +241,7 @@ namespace Vanaring
                     var allTargetTransform = ObjectFindingTool.QueryObjectInChildren(transform, TargetTransformTag);
 
 
-                    for (int i = 0; i < targets.Count; i++)
+                    for (int i = 0; i < _targets.Count; i++)
                     {
                         
                         //Debug.Log("targets for relocation :  " + targets[i].gameObject.name);
@@ -236,8 +254,8 @@ namespace Vanaring
                         allTargetTransform[i].transform.rotation = boneLists[0].transform.rotation ;
 
 
-                        targets[i].GetComponent<CombatEntityAnimationHandler>().GetVisualMesh().transform.localPosition = Vector3.zero;
-                        targets[i].GetComponent<CombatEntityAnimationHandler>().GetVisualMesh().transform.localRotation = Quaternion.identity;
+                        _targets[i].GetComponent<CombatEntityAnimationHandler>().GetVisualMesh().transform.localPosition = Vector3.zero;
+                        _targets[i].GetComponent<CombatEntityAnimationHandler>().GetVisualMesh().transform.localRotation = Quaternion.identity;
 
 
                     }
