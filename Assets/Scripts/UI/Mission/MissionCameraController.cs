@@ -18,10 +18,14 @@ namespace Vanaring
             startPosition = pivotCamera.transform.position;
             endPosition = startPosition;
 
-            nodeField.rectTransform.localPosition = new Vector3(nodeField.rectTransform.localPosition.x - 100, nodeField.rectTransform.localPosition.y - 40, 0);
+            //nodeField.rectTransform.localPosition = new Vector3(nodeField.rectTransform.localPosition.x - 100, nodeField.rectTransform.localPosition.y - 40, 0);
 
             StopAllCoroutines();
             StartCoroutine(CheckDirectionOverTime());
+        }
+        public void InitNodeFieldStartPoint()
+        {
+            //nodeField.rectTransform.localPosition = new Vector3()
         }
 
         private IEnumerator CheckDirectionOverTime()
@@ -43,19 +47,19 @@ namespace Vanaring
 
                     if(direction.x > 0)
                     {
-                        endPosition = new Vector3(nodeField.rectTransform.localPosition.x - 100, nodeField.rectTransform.localPosition.y - 40, 0);
+                        endPosition = new Vector3(nodeField.rectTransform.localPosition.x - 100, nodeField.rectTransform.localPosition.y - 40, 0); //forward
                     }
                     else if (direction.z > 0)
                     {
-                        endPosition = new Vector3(nodeField.rectTransform.localPosition.x + 100, nodeField.rectTransform.localPosition.y - 60, 0);
+                        endPosition = new Vector3(nodeField.rectTransform.localPosition.x + 100, nodeField.rectTransform.localPosition.y - 60, 0); //left
                     }
                     else if (direction.x < 0)
                     {
-                        endPosition = new Vector3(nodeField.rectTransform.localPosition.x + 100, nodeField.rectTransform.localPosition.y + 40, 0);
+                        endPosition = new Vector3(nodeField.rectTransform.localPosition.x + 100, nodeField.rectTransform.localPosition.y + 40, 0); //back
                     }
                     else if (direction.z < 0)
                     {
-                        endPosition = new Vector3(nodeField.rectTransform.localPosition.x - 100, nodeField.rectTransform.localPosition.y + 60, 0);
+                        endPosition = new Vector3(nodeField.rectTransform.localPosition.x - 100, nodeField.rectTransform.localPosition.y + 60, 0); //right
                     }
                     break;
                 }

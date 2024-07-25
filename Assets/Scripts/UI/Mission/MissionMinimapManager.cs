@@ -30,6 +30,8 @@ namespace Vanaring
         [SerializeField] private Sprite dungeonIcon;
         [SerializeField] private Sprite cutsceneIcon;
 
+        private MissionNodeObject curNodeVisit;
+
         [ContextMenu("Init Minimap")]
 
         private void Start()
@@ -81,19 +83,19 @@ namespace Vanaring
                         {
                             case TransitionDirection.Forward_Z:
                                 path = pathNode_x;
-                                yForward = 70;
+                                yForward = 70; //left
                                 break;
                             case TransitionDirection.MinusForward_Z:
                                 path = pathNode_x;
-                                yForward = -70;
+                                yForward = -70; //right
                                 break;
                             case TransitionDirection.MinusRight_X:
                                 path = pathNode_z;
-                                xForward = -70;
+                                xForward = -70; //back
                                 break;
                             case TransitionDirection.Right_X:
                                 path = pathNode_z;
-                                xForward = 70;
+                                xForward = 70; //front
                                 break;
                         }
 
@@ -118,6 +120,15 @@ namespace Vanaring
                         {
                             newDun.GetNodeIcon.sprite = dungeonIcon;
                         }
+                        if (mission.GetFirstNode == mission.GetLastVisitedNode)
+                        {
+                            curNode.PlayVisitingAnimation();
+                        }
+                        else if(connectNode == mission.GetLastVisitedNode)
+                        {
+                            curNodeVisit = newDun;
+                        }
+
                         newDun.Init(connectNode);
                         newDun.transform.SetAsLastSibling();
 
@@ -140,19 +151,65 @@ namespace Vanaring
                 else
                 {
                     //ColorfulLogger.LogWithColor("No node has to find its connect", Color.red);
+                    yield return SetCurrentNodeAnim();
                     curNode.NodeReveal();
                     foreach (MissionPathObject path in curNode.GetPathList)
                     {
                         path.PathReveal();
                     }
                 }
-
-
             }
-            curNode.InitBaseNode(visitingNode);
-            curNode.GetComponent<Animator>().Play("NodeObjectVisittingState");
+            //curNode.InitBaseNode(visitingNode);
+            //curNode.GetComponent<Animator>().Play("NodeObjectVisittingState");
         }
 
-        
+        private IEnumerator SetCurrentNodeAnim()
+        {
+            if(curNodeVisit != null)
+            {
+                curNodeVisit.PlayVisitingAnimation();
+                Vector3 curVisitingNodePos = (curNodeVisit.GetComponent<RectTransform>().localPosition - curNode.GetComponent<RectTransform>().localPosition);
+                Debug.Log("X: " + curVisitingNodePos.x + "Y: " + curVisitingNodePos.y);
+                float xforward = (float)(curVisitingNodePos.x / 140f);
+                float xback = (float)(curVisitingNodePos.x / 140f);
+                float yleft = Mathf.Abs((float)(curVisitingNodePos.y / 140f));
+                float yright = Mathf.Abs((float)(curVisitingNodePos.y / 140f));
+                Debug.Log("Front: " + xforward + " Back" + xback + " LEFT" + yleft + " RIGHT" + yright);
+                //float ymul = (curVisitingNodePos.y / 140f);
+                for (int i = 0; i < xforward; i++)
+                {
+                    nodeField.GetComponent<RectTransform>().localPosition =
+                    new Vector3(nodeField.GetComponent<RectTransform>().localPosition.x - 100,
+                    nodeField.GetComponent<RectTransform>().localPosition.y - 40, 0);
+                }
+                //for (int i = 0; i < xback; i++)
+                //{
+                //    nodeField.GetComponent<RectTransform>().localPosition =
+                //    new Vector3(nodeField.GetComponent<RectTransform>().localPosition.x + 100,
+                //    nodeField.GetComponent<RectTransform>().localPosition.y + 40, 0);
+                //}
+                if (curNodeVisit.GetComponent<RectTransform>().localPosition.y > curNode.GetComponent<RectTransform>().localPosition.y)
+                {
+                    Debug.Log("LEft");
+                    for (int i = 0; i < yleft; i++)
+                    {
+                        nodeField.GetComponent<RectTransform>().localPosition =
+                            new Vector3(nodeField.GetComponent<RectTransform>().localPosition.x + 100,
+                            nodeField.GetComponent<RectTransform>().localPosition.y - 60, 0);
+                    }
+                }
+                else
+                {
+                    Debug.Log("Right");
+                    for (int i = 0; i < yright; i++)
+                    {
+                        nodeField.GetComponent<RectTransform>().localPosition =
+                            new Vector3(nodeField.GetComponent<RectTransform>().localPosition.x - 100,
+                            nodeField.GetComponent<RectTransform>().localPosition.y + 60, 0);
+                    }
+                }
+            }
+            yield return null;
+        }
     }
 }
