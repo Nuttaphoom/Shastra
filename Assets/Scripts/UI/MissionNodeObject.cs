@@ -57,7 +57,6 @@ namespace Vanaring
             }
 
             animator.Play("NodeObjectVisittingState");
-            //Debug.Log("Init");
         }
 
         private void SetFloorGraphicState(Color color)
