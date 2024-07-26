@@ -353,6 +353,7 @@ namespace Vanaring
             float hptemp = maxHP == 0 ? (hpVal == 0 ? 1 : hpVal) : maxHP;
 
             float hpScale = (float)hpVal / hptemp;
+            Debug.Log("Damage deal " + damage + "CurHP: " + hpVal + " " + hptemp);
             if (hpScale < 0.05f && hpScale >= 0)
             {
                 hpScale = 0.05f;

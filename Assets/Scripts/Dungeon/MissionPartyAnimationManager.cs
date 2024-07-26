@@ -30,8 +30,9 @@ namespace Vanaring
                 //anim.SetBool("IsMoving", true);
                 anim.speed = 5f;
                 anim.GetComponent<Image>().sprite = walkSpriteList[i];
-                anim.SetFloat("horizontalMove", direction.x);
-                anim.SetFloat("verticalMove", direction.z);
+                //Debug.Log(i);
+                //anim.SetFloat("horizontalMove", direction.x);
+                //anim.SetFloat("verticalMove", direction.z);
                 Debug.Log("dir: " + direction.x + " " + direction.z);
                 if(direction.x == -1 || direction.z == 1 || direction.z > direction.x)
                 {

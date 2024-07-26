@@ -307,11 +307,19 @@ namespace Vanaring
             controlBoxList[allyIndex].SetActiveImage(true);
             if (isAllyMode)
             {
+                if (allyButtonList.Count <= allyIndex)
+                {
+                    return;    
+                }
                 allyButtonList[allyIndex].GetComponent<Button>().onClick.Invoke();
                 
             }
             else
             {
+                if (enemyButtonList.Count <= allyIndex)
+                {
+                    return;
+                }
                 enemyButtonList[allyIndex].GetComponent<Button>().onClick.Invoke();
                 
             }
