@@ -23,7 +23,7 @@ namespace Vanaring
             characterName.text = member.GetRuntimeCombatMemberData.GetCharacterSheet.CharacterName;
             hpBar.fillAmount = (float)member.GetCurrentPartyMemberHP / member.GetRuntimeCombatMemberData.LevelAttributeHandler.GetSecondaryAttribute_MaxHP;
             mpBar.fillAmount = (float)member.GetCurrentPartyMemberMP / member.GetRuntimeCombatMemberData.LevelAttributeHandler.GetSecondaryAttribute_MaxMP;
-            hpNUM.text = member.GetRuntimeCombatMemberData.LevelAttributeHandler.GetSecondaryAttribute_MaxHP.ToString();
+            hpNUM.text = member.GetCurrentPartyMemberHP.ToString();
             mpNUM.text = member.GetRuntimeCombatMemberData.LevelAttributeHandler.GetSecondaryAttribute_MaxMP.ToString();
         }
         private void Update()
