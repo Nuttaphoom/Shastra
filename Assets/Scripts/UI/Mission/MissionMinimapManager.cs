@@ -47,7 +47,6 @@ namespace Vanaring
 
         public void Init(Null n)
         {
-            Debug.Log("Init minimap");
             missionNodeTransitionManager = FindObjectOfType<MissionNodeManager>().MissionNodeTransitionManager; 
             mission = DungeonManagerSingleton.Instance.MissionSetupHandler.DungeonEnvironment;
             firstNode = mission.GetFirstNode;
@@ -169,12 +168,12 @@ namespace Vanaring
             {
                 curNodeVisit.PlayVisitingAnimation();
                 Vector3 curVisitingNodePos = (curNodeVisit.GetComponent<RectTransform>().localPosition - curNode.GetComponent<RectTransform>().localPosition);
-                Debug.Log("X: " + curVisitingNodePos.x + "Y: " + curVisitingNodePos.y);
+                //Debug.Log("X: " + curVisitingNodePos.x + "Y: " + curVisitingNodePos.y);
                 float xforward = (float)(curVisitingNodePos.x / 140f);
                 float xback = (float)(curVisitingNodePos.x / 140f);
                 float yleft = Mathf.Abs((float)(curVisitingNodePos.y / 140f));
                 float yright = Mathf.Abs((float)(curVisitingNodePos.y / 140f));
-                Debug.Log("Front: " + xforward + " Back" + xback + " LEFT" + yleft + " RIGHT" + yright);
+                //Debug.Log("Front: " + xforward + " Back" + xback + " LEFT" + yleft + " RIGHT" + yright);
                 //float ymul = (curVisitingNodePos.y / 140f);
                 for (int i = 0; i < xforward; i++)
                 {
@@ -190,7 +189,7 @@ namespace Vanaring
                 //}
                 if (curNodeVisit.GetComponent<RectTransform>().localPosition.y > curNode.GetComponent<RectTransform>().localPosition.y)
                 {
-                    Debug.Log("LEft");
+                    //Debug.Log("LEft");
                     for (int i = 0; i < yleft; i++)
                     {
                         nodeField.GetComponent<RectTransform>().localPosition =
@@ -200,7 +199,7 @@ namespace Vanaring
                 }
                 else
                 {
-                    Debug.Log("Right");
+                    //Debug.Log("Right");
                     for (int i = 0; i < yright; i++)
                     {
                         nodeField.GetComponent<RectTransform>().localPosition =

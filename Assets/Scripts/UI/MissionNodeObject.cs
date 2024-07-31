@@ -28,7 +28,7 @@ namespace Vanaring
             if (baseNode.IsCurrentlyVisiting)
             {
                 SetFloorGraphicState(Color.yellow);
-                Debug.Log("pathList Count: " + pathList.Count);
+                //Debug.Log("pathList Count: " + pathList.Count);
                 foreach (MissionPathObject path in pathList)
                 {
                     path.PathReveal();
@@ -61,7 +61,7 @@ namespace Vanaring
 
         public void PlayVisitingAnimation()
         {
-            Debug.Log("NodeVisitAnim");
+            //Debug.Log("NodeVisitAnim");
             //yield return new WaitForSeconds(1.0f);
             animator.Play("NodeObjectVisittingState");
         }
@@ -79,7 +79,7 @@ namespace Vanaring
 
         private void BeforeVisitNode(Null n)
         {
-            Debug.Log("BeforeVisit");
+            //Debug.Log("BeforeVisit");
             iconShown.gameObject.SetActive(true);
             state = NodeState.VISITING;
             SetFloorGraphicState(Color.yellow);
@@ -100,7 +100,7 @@ namespace Vanaring
         }
         private void FirstTimeVisit(Null n)
         {
-            Debug.Log("First");
+            //Debug.Log("First");
             animator.Play("NodeObjectVisittingState");
             foreach (MissionPathObject path in pathList)
             {

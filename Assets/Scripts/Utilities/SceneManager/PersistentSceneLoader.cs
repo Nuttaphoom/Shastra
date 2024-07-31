@@ -9,7 +9,6 @@ using UnityEngine.SceneManagement;
 using Vanaring; 
 using Vanaring_Utility_Tool;
 using UnityEditor;
-using UnityEngine;
 using UnityEngine.Tilemaps;
 namespace Vanaring
 {
@@ -19,6 +18,7 @@ namespace Vanaring
 
         private string _currentLoadedLocationScene ;
         private SceneDataSO _sceneToLoad;
+        private SceneDataSO _dungeonSceneToLoad;
         private TransitionObject transitionScreenObj;
 
         
@@ -51,6 +51,18 @@ namespace Vanaring
         public bool IsSceneLoading => _isLoading ; 
 
         #endregion
+
+        public SceneDataSO DungeonSceneToLoad
+        {
+            get
+            {
+                return _dungeonSceneToLoad;
+            }
+            set
+            {
+                _dungeonSceneToLoad = value;
+            }
+        }
 
         #region Load Location 
 

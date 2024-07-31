@@ -33,15 +33,15 @@ namespace Vanaring
                 //Debug.Log(i);
                 //anim.SetFloat("horizontalMove", direction.x);
                 //anim.SetFloat("verticalMove", direction.z);
-                Debug.Log("dir: " + direction.x + " " + direction.z);
+                //Debug.Log("dir: " + direction.x + " " + direction.z);
                 if(direction.x == -1 || direction.z == 1 || direction.z > direction.x)
                 {
-                    Debug.Log("Flip Left");
+                    //Debug.Log("Flip Left");
                     anim.GetComponent<PixelCrushers.AlwaysFaceCamera>().rotate180 = true;
                 }
                 else
                 {
-                    Debug.Log("Flip Right");
+                    //Debug.Log("Flip Right");
                     anim.GetComponent<PixelCrushers.AlwaysFaceCamera>().rotate180 = false;
                 }
                 i++;

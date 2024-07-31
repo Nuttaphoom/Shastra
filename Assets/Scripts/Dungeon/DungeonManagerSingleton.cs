@@ -131,6 +131,7 @@ namespace Vanaring
         public void LoadSelectedMission(DungeonMissionInstance missionInstance)
         {
             //Visually dispaly confirm selection 
+            //_dungeonSceneToLoad = 
             PersistentSceneLoader.Instance.CreateLoaderDataUser<DungeonMissionInstance>("DungeonMissionInstanceFromDungeonManager", missionInstance) ;
             PersistentSceneLoader.Instance.LoadGeneralScene( PersistentAddressableResourceLoader.Instance.LoadResourceOperation<SceneDataSO>(_base_missionScene) ) ;
 
@@ -149,6 +150,7 @@ namespace Vanaring
             _missionManager.SetUpMission();
 
             _currentActiveMission = missionInstance;
+            Debug.Log(missionInstance);
             _currentActiveMission.OnStartMission(); 
         }
 

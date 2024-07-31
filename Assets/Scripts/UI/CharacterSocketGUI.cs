@@ -199,11 +199,11 @@ namespace Vanaring
 
         private void OnEnergyModified(CombatEntity caster, RuntimeMangicalEnergy.EnergySide side, int val)
         {
-            Debug.Log(side + " val: " + val);
+            //Debug.Log(side + " val: " + val);
             
             if (side == RuntimeMangicalEnergy.EnergySide.LightEnergy)
             {
-                Debug.Log(lightVal);
+                //Debug.Log(lightVal);
                 if (lightVal > 0)
                 {
                     lightVal += val;
@@ -213,7 +213,7 @@ namespace Vanaring
             }
             else
             {
-                Debug.Log(darkVal);
+                //Debug.Log(darkVal);
                 if (darkVal > 0)
                 {
                     darkVal += val;
