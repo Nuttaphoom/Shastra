@@ -968,12 +968,9 @@ MonoBehaviour:
       _itemReward:
         _rewards: {fileID: 11400000, guid: cab6a1cf038672342bb1ea8975adc564, type: 2}
       _cashReward:
-        _rewards:
-          _rewardData:
-            RewardName: 
-            RewardDescription: 
-            RewardIcon: {fileID: 0}
-          _amount: 0
+        RewardAmount: 0
+        CashRewardable:
+          _rewards: {fileID: 0}
 --- !u!1 &1622888083185478383
 GameObject:
   m_ObjectHideFlags: 0
@@ -1041,12 +1038,9 @@ MonoBehaviour:
     _itemReward:
       _rewards: {fileID: 11400000, guid: cab6a1cf038672342bb1ea8975adc564, type: 2}
     _cashReward:
-      _rewards:
-        _rewardData:
-          RewardName: 
-          RewardDescription: 
-          RewardIcon: {fileID: 0}
-        _amount: 0
+      RewardAmount: 0
+      CashRewardable:
+        _rewards: {fileID: 0}
   - _rewardIsItem: 1
     _rewardIsSpell: 0
     _rewardIsCash: 0
@@ -1055,12 +1049,9 @@ MonoBehaviour:
     _itemReward:
       _rewards: {fileID: 11400000, guid: 7578d9754d9f20c40bc2538544d10e10, type: 2}
     _cashReward:
-      _rewards:
-        _rewardData:
-          RewardName: 
-          RewardDescription: 
-          RewardIcon: {fileID: 0}
-        _amount: 0
+      RewardAmount: 0
+      CashRewardable:
+        _rewards: {fileID: 0}
   lootBoxAnimator: {fileID: 2890191291589145401}
 --- !u!1 &1639838335360169733
 GameObject:
@@ -2120,12 +2111,9 @@ MonoBehaviour:
       _itemReward:
         _rewards: {fileID: 11400000, guid: cab6a1cf038672342bb1ea8975adc564, type: 2}
       _cashReward:
-        _rewards:
-          _rewardData:
-            RewardName: 
-            RewardDescription: 
-            RewardIcon: {fileID: 0}
-          _amount: 0
+        RewardAmount: 0
+        CashRewardable:
+          _rewards: {fileID: 0}
 --- !u!1 &2787142809001325882
 GameObject:
   m_ObjectHideFlags: 0
@@ -2640,12 +2628,9 @@ MonoBehaviour:
       _itemReward:
         _rewards: {fileID: 11400000, guid: cab6a1cf038672342bb1ea8975adc564, type: 2}
       _cashReward:
-        _rewards:
-          _rewardData:
-            RewardName: 
-            RewardDescription: 
-            RewardIcon: {fileID: 0}
-          _amount: 0
+        RewardAmount: 0
+        CashRewardable:
+          _rewards: {fileID: 0}
 --- !u!1 &3167027523193999719
 GameObject:
   m_ObjectHideFlags: 0
@@ -3308,7 +3293,18 @@ MonoBehaviour:
   _combatSceneData: {fileID: 11400000, guid: ddbf44867eadcb8419af19eed48b2e15, type: 2}
   _combatDungeonNodeLoaderData:
     EnemyLoaderPool: {fileID: 11400000, guid: 48ae02c2456aeb84d8f22bf928f022e1, type: 2}
-    CombatRewards: []
+    CombatRewards:
+    - _rewardIsItem: 0
+      _rewardIsSpell: 0
+      _rewardIsCash: 1
+      _spellReward:
+        _rewards: {fileID: 0}
+      _itemReward:
+        _rewards: {fileID: 0}
+      _cashReward:
+        RewardAmount: 100
+        CashRewardable:
+          _rewards: {fileID: 11400000, guid: 309528b7e5ca7894cb32aafa0fec0274, type: 2}
 --- !u!1 &3643285375883522950
 GameObject:
   m_ObjectHideFlags: 0
@@ -6914,12 +6910,9 @@ MonoBehaviour:
     _itemReward:
       _rewards: {fileID: 11400000, guid: cab6a1cf038672342bb1ea8975adc564, type: 2}
     _cashReward:
-      _rewards:
-        _rewardData:
-          RewardName: 
-          RewardDescription: 
-          RewardIcon: {fileID: 0}
-        _amount: 0
+      RewardAmount: 0
+      CashRewardable:
+        _rewards: {fileID: 0}
   - _rewardIsItem: 1
     _rewardIsSpell: 0
     _rewardIsCash: 0
@@ -6928,12 +6921,9 @@ MonoBehaviour:
     _itemReward:
       _rewards: {fileID: 11400000, guid: 7578d9754d9f20c40bc2538544d10e10, type: 2}
     _cashReward:
-      _rewards:
-        _rewardData:
-          RewardName: 
-          RewardDescription: 
-          RewardIcon: {fileID: 0}
-        _amount: 0
+      RewardAmount: 0
+      CashRewardable:
+        _rewards: {fileID: 0}
   lootBoxAnimator: {fileID: 4995986363200236494}
 --- !u!1 &6756872285763451325
 GameObject:
@@ -7259,12 +7249,9 @@ MonoBehaviour:
     _itemReward:
       _rewards: {fileID: 11400000, guid: cab6a1cf038672342bb1ea8975adc564, type: 2}
     _cashReward:
-      _rewards:
-        _rewardData:
-          RewardName: 
-          RewardDescription: 
-          RewardIcon: {fileID: 0}
-        _amount: 0
+      RewardAmount: 0
+      CashRewardable:
+        _rewards: {fileID: 0}
   - _rewardIsItem: 1
     _rewardIsSpell: 0
     _rewardIsCash: 0
@@ -7273,12 +7260,9 @@ MonoBehaviour:
     _itemReward:
       _rewards: {fileID: 11400000, guid: 7578d9754d9f20c40bc2538544d10e10, type: 2}
     _cashReward:
-      _rewards:
-        _rewardData:
-          RewardName: 
-          RewardDescription: 
-          RewardIcon: {fileID: 0}
-        _amount: 0
+      RewardAmount: 0
+      CashRewardable:
+        _rewards: {fileID: 0}
   lootBoxAnimator: {fileID: 2796009913547464834}
 --- !u!1 &6906362795017385342
 GameObject:
@@ -8216,12 +8200,9 @@ MonoBehaviour:
     _itemReward:
       _rewards: {fileID: 11400000, guid: cab6a1cf038672342bb1ea8975adc564, type: 2}
     _cashReward:
-      _rewards:
-        _rewardData:
-          RewardName: 
-          RewardDescription: 
-          RewardIcon: {fileID: 0}
-        _amount: 0
+      RewardAmount: 0
+      CashRewardable:
+        _rewards: {fileID: 0}
   - _rewardIsItem: 1
     _rewardIsSpell: 0
     _rewardIsCash: 0
@@ -8230,12 +8211,9 @@ MonoBehaviour:
     _itemReward:
       _rewards: {fileID: 11400000, guid: 7578d9754d9f20c40bc2538544d10e10, type: 2}
     _cashReward:
-      _rewards:
-        _rewardData:
-          RewardName: 
-          RewardDescription: 
-          RewardIcon: {fileID: 0}
-        _amount: 0
+      RewardAmount: 0
+      CashRewardable:
+        _rewards: {fileID: 0}
   lootBoxAnimator: {fileID: 7148944811571217885}
 --- !u!1 &7873525766966215314
 GameObject:

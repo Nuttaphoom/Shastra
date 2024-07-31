@@ -11,6 +11,13 @@ using JetBrains.Annotations;
 using static UnityEngine.InputSystem.LowLevel.InputStateHistory;
 namespace Vanaring
 {
+
+    [Serializable]  
+    public struct CastRewardDataStruct
+    {
+        public int RewardAmount ; 
+        public EventReward<CashRewardableSO> CashRewardable;
+    }
     
     public abstract class EventReward
     {
@@ -38,7 +45,7 @@ namespace Vanaring
         private EventReward<BackpackItemSO> _itemReward;
 
         [SerializeField, AllowNesting, NaughtyAttributes.ShowIf("RewardIsCash")]
-        private EventReward<CashRewardableSO> _cashReward; 
+        private CastRewardDataStruct _cashReward; 
 
         #region Getter 
         public bool RewardIsItem => _rewardIsItem;
@@ -71,7 +78,8 @@ namespace Vanaring
                 return _spellReward.GetEventRewards() ;
             }else if (RewardIsCash)
             {
-                return _cashReward.GetEventRewards() ;
+                (_cashReward.CashRewardable.GetEventRewards() as CashRewardableSO) .SetRewardAmount( _cashReward.RewardAmount) ;
+                return _cashReward.CashRewardable.GetEventRewards() ;
             }
 
             throw new Exception("Reward hasn't been properly assigned"); 
