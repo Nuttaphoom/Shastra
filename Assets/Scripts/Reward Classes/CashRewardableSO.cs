@@ -13,7 +13,7 @@ namespace Vanaring
     /// 
     [Serializable] 
     [CreateAssetMenu(fileName = "CashRewardableSO", menuName = "ScriptableObject/CustomReward/Cash")]
-    public class CashRewardableSO :  IRewardable
+    public class CashRewardableSO : ScriptableObject,IRewardable
     {
         [SerializeField]
         private RewardData _rewardData;
@@ -21,14 +21,16 @@ namespace Vanaring
         [SerializeField] 
         private int _amount = -1 ; 
 
-   
 
         public RewardData GetRewardData()
         {
             return _rewardData; 
         }
 
-        
+        public void SetRewardAmount(int amount)
+        {
+            _amount = amount ;  
+        }
 
         public void SubmitReward()
         {
@@ -37,7 +39,10 @@ namespace Vanaring
 
             PersistentPlayerPersonalDataManager.Instance.GetBackpack.ModifyCash(_amount) ;
 
- 
+            _amount = -1; 
+
+
+
         }
 
      }
