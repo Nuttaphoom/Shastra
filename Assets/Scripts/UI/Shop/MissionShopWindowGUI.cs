@@ -25,6 +25,7 @@ namespace Vanaring
             }
             selectingIndex = 0;
             UpdateCurrentCash();
+            CentralInputReceiver.Instance.AddInputReceiverIntoStack(this);
         }
 
         public IEnumerator OnNotifySceneLoadingComplete()
@@ -64,7 +65,7 @@ namespace Vanaring
 
         public void ReceiveKeys(InputCode key)
         {
-            if (key == InputCode.Up)
+            if (key == InputCode.Down)
             {
                 foreach (ShopItemSocketGUI socket in shopItemSocketList)
                 {
@@ -76,7 +77,7 @@ namespace Vanaring
                 }
                 shopItemSocketList[selectingIndex].OnSelectSocket();
             }
-            if (key == InputCode.Down)
+            if (key == InputCode.Up)
             {
                 foreach (ShopItemSocketGUI socket in shopItemSocketList)
                 {
@@ -88,14 +89,24 @@ namespace Vanaring
                 }
                 shopItemSocketList[selectingIndex].OnSelectSocket();
             }
+            if(key == InputCode.Item)
+            {
+                shopItemSocketList[selectingIndex].ItemButton.onClick.Invoke();
+            }
+            if (key == InputCode.Select)
+            {
+                EnterDungeon();
+            }
         }
 
         public IEnumerator OnNewSceneLoad_BeforeSaveLoadPerform()
         {
             yield return new WaitForEndOfFrame();
         }
+        [ContextMenu("GOGO")]
         public void EnterDungeon()
         {
+            CentralInputReceiver.Instance.RemoveInputReceiverIntoStack(this);
             SceneDataSO newScene = PersistentAddressableResourceLoader.Instance.LoadResourceOperation<SceneDataSO>(_base_missionScene);
             PersistentSceneLoader.Instance.LoadGeneralScene(newScene);
         }
