@@ -36,7 +36,6 @@ namespace Vanaring
 
         private void Init()
         {
-
              currentLocationSO = PersistentSceneLoader.Instance.ExtractLastSavedData<LoadLocationMenuCommandData>().GetData(); 
             //(loaderDataContainer.UseDataInContainer() as LoaderDataUser<LoadLocationMenuCommandData>).GetData() ; //.action_on_this_location;
 
@@ -48,9 +47,9 @@ namespace Vanaring
                 break; 
             }
             int i = 0;
+            bool addInitializeButton = false;
             foreach (BaseLocationActionCommand action in actionCommandList)
             {
-                
                 GameObject newActionButton = Instantiate(actionButton, buttonTransform[i]);
                 newActionButton.SetActive(true);
 
@@ -76,14 +75,13 @@ namespace Vanaring
                     actualButton.onClick.AddListener(() => action.ExecuteCommand()); 
                 }
 
-                
                 actualButton.GetComponent<Image>().sprite = action.GetActionIconSprite;
 
-                
-
-    
-
-                PersistentButtonSelector.Instance.AssignInitialButtons(actualButton);
+                if (!addInitializeButton)
+                {
+                    PersistentButtonSelector.Instance.AssignInitialButtons(actualButton);
+                    addInitializeButton = true;
+                }
                 //actualButton.Select();
                 actualButton.onClick.AddListener(delegate { PersistentButtonSelector.Instance.AddPreviousButton(actualButton); });
 
