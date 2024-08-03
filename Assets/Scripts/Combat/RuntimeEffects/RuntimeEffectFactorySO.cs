@@ -49,6 +49,8 @@ namespace Vanaring
             yield return null;
         }
 
+      
+
         public void AssignTarget(CombatEntity target)
         {
             _targets.Add(target);

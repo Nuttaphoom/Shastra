@@ -103,19 +103,7 @@ namespace Vanaring
             DontDestroyOnLoad(gameObject);
         }
 
-        private void Update()
-        {
-            if (Input.GetKeyDown(KeyCode.U)) {
-                _dungeons[0].SelectThisDungeon();
-                LoadSelectedMission(_dungeons[0].GetSelectMission(0)) ;
-            }
-            if (Input.GetKeyDown(KeyCode.J))
-            {
-                _dungeons[0].SelectThisDungeon();
-                LoadSelectedMission(_dungeons[0].GetSelectMission(1));
-            }
-        }
-
+        
         /// <summary>
         /// This should be called before save / load scheme
         /// </summary>

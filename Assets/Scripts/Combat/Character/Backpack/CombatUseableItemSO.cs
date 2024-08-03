@@ -14,7 +14,10 @@ namespace Vanaring
         [SerializeField]
         private ItemActionFactorySO _itemActionFactory;
 
+        [SerializeField]
+        private BackpackActionFactorySO _backpackActionFactorySO; 
 
+        
         public override DescriptionBaseField GetDescriptionBaseField()
         {
             return _itemActionFactory.DescriptionBaseField; 
@@ -23,6 +26,8 @@ namespace Vanaring
 
         #region GETTER 
         public ItemActionFactorySO ItemActionFactory => _itemActionFactory;
+
+        public BackpackActionFactorySO BackpackActionFactorySO => _backpackActionFactorySO; 
         #endregion
 
 

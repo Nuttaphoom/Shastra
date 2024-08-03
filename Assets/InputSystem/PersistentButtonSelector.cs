@@ -39,12 +39,18 @@ namespace Vanaring
             {
                 isSub = true; 
                 PersistentSceneLoader.Instance.GetTransitionManager.SubOnSceneLoaderComplete(ResetInitialButtonSelected);
+                PersistentSceneLoader.Instance.GetTransitionManager.SubOnSceneLoaderComplete(ClearPreviousButtons);
             }
         }
 
         public void ResetInitialButtonSelected(Null n)
         {
             initialButtonSelected = false;
+        }
+
+        public void ClearPreviousButtons(Null n)
+        {
+            previousButtons.Clear();
         }
 
         public void AssignInitialButtons(Button button)
@@ -55,7 +61,6 @@ namespace Vanaring
         {
             if (initialButton == null)
             {
-                //Debug.LogWarning("initialButton is null");
                 return;
             }
             if (!initialButtonSelected)
@@ -68,7 +73,6 @@ namespace Vanaring
         {
             if (dummyButton == null)
             {
-                //Debug.LogWarning("dummyButton is null");
                 return;
             }
 

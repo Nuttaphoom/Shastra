@@ -12,13 +12,20 @@ namespace Vanaring
     [CreateAssetMenu(fileName = "Item Ability", menuName = "ScriptableObject/Combat/ItemAbility")]
     public class ItemActionFactorySO : ActorActionFactory 
     {
+
+
+        
         public Sprite ItemSprite  => this.AbilityImage;
 
         public override ActorAction FactorizeRuntimeAction(CombatEntity user)
         {
             return new ItemAbilityRuntime(user,this, user.ItemUser  ) ;
         }
+
+        
     }
+
+    
 
     public class ItemAbilityRuntime  : ActorAction 
     {
@@ -36,14 +43,8 @@ namespace Vanaring
             
         }
 
-
-
-     
-
         #region INTERFACE
  
-
-        
 
         public override IEnumerator PostActionPerform()
         {
