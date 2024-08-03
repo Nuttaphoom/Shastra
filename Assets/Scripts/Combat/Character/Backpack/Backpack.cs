@@ -26,7 +26,9 @@ namespace Vanaring
 
         private InventoryDatabaseSO m_inventoryDatabase;
 
+        [SerializeField] 
         private int _currentCash = 0 ;
+        
         #region GETTER
         public List<BackpackItemData> GetCombatUseableItemSOs()
         {
@@ -42,6 +44,8 @@ namespace Vanaring
             }
             return _backpackItemSO;
         }
+
+
 
         public int GetCurrentCash
         {
