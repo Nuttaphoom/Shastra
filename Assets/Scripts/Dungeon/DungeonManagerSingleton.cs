@@ -121,7 +121,8 @@ namespace Vanaring
             //Visually dispaly confirm selection 
             //_dungeonSceneToLoad = 
             PersistentSceneLoader.Instance.CreateLoaderDataUser<DungeonMissionInstance>("DungeonMissionInstanceFromDungeonManager", missionInstance) ;
-            PersistentSceneLoader.Instance.LoadGeneralScene( PersistentAddressableResourceLoader.Instance.LoadResourceOperation<SceneDataSO>(_base_missionScene) ) ;
+            //PersistentSceneLoader.Instance.LoadGeneralScene( PersistentAddressableResourceLoader.Instance.LoadResourceOperation<SceneDataSO>(_base_missionScene) ) ;
+            PersistentSceneLoader.Instance.LoadGeneralScene(PersistentAddressableResourceLoader.Instance.LoadResourceOperation<SceneDataSO>("Location_MissionShop"));
 
         }
 
