@@ -74,19 +74,19 @@ namespace Vanaring
         //    }
         //}
 
-        public IEnumerator UseItem(int backpackItemIndex)
-        {
-            BackpackItemData usedItem = _loadedBackpackItem[backpackItemIndex];
+        //public IEnumerator UseItem(int backpackItemIndex)
+        //{
+        //    BackpackItemData usedItem = _loadedBackpackItem[backpackItemIndex];
 
-            //yield return SelectingTargetCoroutine(); 
+        //    //yield return SelectingTargetCoroutine(); 
 
-            BackpackItemAbilityRuntime runtimeEffect = (usedItem.BackpackItem as CombatUseableItemSO).BackpackActionFactorySO.FactorizeBackpackItemAbilityRuntime(user,target) ; 
+        //    //BackpackItemAbilityRuntime runtimeEffect = (usedItem.BackpackItem as CombatUseableItemSO).BackpackActionFactorySO.FactorizeBackpackItemAbilityRuntime(user,target) ; 
 
-            yield return runtimeEffect.UseItemAbilityOutsideCombat() ;
+        //    //yield return runtimeEffect.UseItemAbilityOutsideCombat() ;
 
-            _backpack.RemoveItemFromBackpack(_loadedBackpackItem[backpackItemIndex].BackpackItem,1) ;
+        //    _backpack.RemoveItemFromBackpack(_loadedBackpackItem[backpackItemIndex].BackpackItem,1) ;
 
-        }
+        //}
 
         public IEnumerator SetUpBackpack()
         {
