@@ -32,6 +32,7 @@ namespace Vanaring
 
         public void SelectThisMission()
         {
+            missionButton.Select();
             missionButton.GetComponent<Image>().color = Color.yellow;
             selectIcon.gameObject.SetActive(true);
         }

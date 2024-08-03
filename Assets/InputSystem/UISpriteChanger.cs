@@ -16,6 +16,7 @@ namespace Vanaring
         {
             CentralInputReceiver.Instance.SubOnControllerSchemeChange(ChangeSprite);
             _image = GetComponent<Image>();
+            ChangeSprite(CentralInputReceiver.Instance.currentScheme);
         }
 
         private void ChangeSprite(ControlScheme scheme)

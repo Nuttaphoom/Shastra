@@ -48,7 +48,7 @@ namespace Vanaring
         public PlayerInput playerInput_;
 
         [SerializeField]
-        private ControlScheme currentScheme;
+        public ControlScheme currentScheme;
 
         [Serializable]
         struct ControlSchemeUI
@@ -89,6 +89,33 @@ namespace Vanaring
 
         #endregion
 
+        private bool isSub = false;
+
+        void Awake()
+        {
+            if (playerInput_ == null)
+            {
+                playerInput_ = GetComponent<PlayerInput>();
+            }
+            SubSelectSceneLoader();
+        }
+
+        private void FixedUpdate()
+        {
+            SubSelectSceneLoader();
+        }
+        private void SubSelectSceneLoader()
+        {
+            if (isSub)
+                return;
+
+            if (PersistentSceneLoader.Instance.GetTransitionManager != null)
+            {
+                isSub = true;
+                PersistentSceneLoader.Instance.GetTransitionManager.SubOnSceneLoaderComplete(SelectButtonCheck);
+            }
+        }
+
         public Sprite GetUISprite(InputCode code)
         {
             for (int i = 0; i < controlSchemeSets.Count; i++)
@@ -103,15 +130,7 @@ namespace Vanaring
             return null;
         }
 
-        void Awake()
-        {
-            if (playerInput_ == null)
-            {
-                playerInput_ = GetComponent<PlayerInput>();
-            }
-        }
-
-        void Check()
+        void Check(Null n)
         {
             // Check if Input is Playstation 4
             //Debug.Log("Device count: " + playerInput_.devices.Count);
@@ -128,7 +147,6 @@ namespace Vanaring
 
                 GetEventBroadcaster().InvokeEvent(currentScheme, "OnControllerSchemeChange");
             }
-           
         }
 
         public CentralInputReceiver()
@@ -144,7 +162,7 @@ namespace Vanaring
         private void TransmitInput(InputCode key)
         {
             //ColorfulLogger.LogWithColor("Transmit Input key : " + key,Color.cyan) ;     
-            SelectButtonCheck();
+            SelectButtonCheck(null);
             if (_receiverStack.Count > 0) {
                 //ColorfulLogger.LogWithColor("transmit to  : " + _receiverStack.Peek(), Color.cyan);
                 _receiverStack.Peek().ReceiveKeys(key);
@@ -152,7 +170,7 @@ namespace Vanaring
         }
 
         //if button is not select and not in tutorial select it.
-        private void SelectButtonCheck()
+        private void SelectButtonCheck(Null n)
         {
 
             if (!PersistentTutorialManager.Instance.IsShowingTutorial)
@@ -165,8 +183,7 @@ namespace Vanaring
 
         private void OnNavigate(InputValue value)
         {
-            
-            Check();
+            Check(null);
 
             Vector2 inputValue = value.Get<Vector2>();
             if (inputValue.Equals(new Vector2(1.0f,0.0f)))
@@ -189,32 +206,32 @@ namespace Vanaring
         }
         private void OnInspectionUIOpen()
         {
-            Check();
+            Check(null);
             TransmitInput(InputCode.InspectionOpen); 
         }
 
 
         private void OnSelect()
         {
-            Check();
+            Check(null);
             TransmitInput(InputCode.Select);
         }
 
         private void OnSkill()
         {
-            Check();
+            Check(null);
             TransmitInput(InputCode.Skill);
         }
 
         private void OnItem()
         {
-            Check();
+            Check(null);
             TransmitInput(InputCode.Item);
         }
 
         private void OnDeSelect()
         {
-            Check();
+            Check(null);
             TransmitInput(InputCode.DeSelect);
         }
 
