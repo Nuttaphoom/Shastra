@@ -7,6 +7,9 @@ namespace Vanaring
     public class QuickMissionBackpack : MonoBehaviour, ISceneLoaderWaitForSignal, IInputReceiver
     {
         //Easy State machine 
+        [SerializeField] private Animator quickItemUIAnim;
+        [SerializeField] private QuickItemSocketGUI quickItemSocketTemplate;
+        [SerializeField] private GameObject socketTransform;
         private void Awake()
         {
             CentralInputReceiver.Instance.AddInputReceiverIntoStack(this); 
@@ -41,6 +44,7 @@ namespace Vanaring
 
         public IEnumerator OnNotifySceneLoadingComplete()
         {
+            quickItemUIAnim.Play("OnOpen");
             yield return SetUpBackpack(); 
                 
             yield return null; 
@@ -79,6 +83,13 @@ namespace Vanaring
             _loadedBackpackItem = _backpack.GetCombatUseableItemSOs() ;
 
             //Load UI here 
+            //foreach (BackpackItemData item in _loadedBackpackItem)
+            //{
+            //    QuickItemSocketGUI newSocket = Instantiate(quickItemSocketTemplate, socketTransform.transform);
+            //    newSocket.Init(item);
+            //    newSocket.gameObject.SetActive(true);
+            //}
+            //quickItemSocketTemplate.gameObject.SetActive(false);
 
             yield return null; 
 
@@ -91,6 +102,7 @@ namespace Vanaring
             {
                 if (key == InputCode.Item)
                 {
+                    quickItemUIAnim.Play("OnSelectState");
                     Debug.Log("Enter select item state");
                     _state = EQuckMissionBackpackState.SelectItem;  
                 }
@@ -108,7 +120,11 @@ namespace Vanaring
                         _selectedItem += 1; 
                 }else if (key == InputCode.Select)
                 {
+                    quickItemUIAnim.Play("OnSelectTargetState");
                     StartCoroutine(UseItem( _selectedItem)); 
+                }else if (key == InputCode.Item) {
+                    quickItemUIAnim.Play("OnOpen");
+                    _state = EQuckMissionBackpackState.Closed;
                 }
             }
 
