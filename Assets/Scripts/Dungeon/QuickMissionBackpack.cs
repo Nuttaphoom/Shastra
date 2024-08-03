@@ -4,8 +4,29 @@ using UnityEngine;
 
 namespace Vanaring
 {
-    public class QuickMissionBackpack : MonoBehaviour, ISceneLoaderWaitForSignal
+    public class QuickMissionBackpack : MonoBehaviour, ISceneLoaderWaitForSignal, IInputReceiver
     {
+        //Easy State machine 
+        private void Awake()
+        {
+            CentralInputReceiver.Instance.AddInputReceiverIntoStack(this); 
+        }
+        private enum EQuckMissionBackpackState
+        {
+            Closed, 
+            SelectItem, 
+            SelectTarget 
+        }
+
+        private EQuckMissionBackpackState _state = EQuckMissionBackpackState.Closed ;
+        //Target selection parameters 
+        private int _selectedTarget = 0;
+        private int _selectedItem = 0;
+
+        private List<RuntimePartyMember> _selectedPartyMember = new List<RuntimePartyMember>(); 
+
+        //////
+
         private Backpack _backpack;
 
         /// <summary>
@@ -25,68 +46,31 @@ namespace Vanaring
             yield return null; 
         }
 
-        private void Update()
+         
+
+        public IEnumerator UseItem(int backpackItemIndex)
         {
-            //Test UseItem functionality  
+            Debug.Log("use item at index " + backpackItemIndex) ;  
 
-            //if (Input.GetKeyDown(KeyCode.T))
-            //{
-            //    var caster = DungeonManagerSingleton.Instance.MissionManager.DungeonPartyHandler.PartyMembers[0];
-            //    List<RuntimePartyMember> target = new List<RuntimePartyMember>();
+            _state = EQuckMissionBackpackState.SelectTarget; 
 
-            //    target.Add(DungeonManagerSingleton.Instance.MissionManager.DungeonPartyHandler.PartyMembers[0]);
+            BackpackItemData usedItem = _loadedBackpackItem[backpackItemIndex];
 
+            //Assign target            
+            while (_selectedPartyMember.Count == 0) 
+            { 
+                yield return null; 
+            }
 
+            ////////
 
-            //    StartCoroutine(UseItem(0, caster, target));
-            //}
-            //if (Input.GetKeyDown(KeyCode.Y))
-            //{
-            //    var caster = DungeonManagerSingleton.Instance.MissionManager.DungeonPartyHandler.PartyMembers[0];
-            //    List<RuntimePartyMember> target = new List<RuntimePartyMember>();
+            BackpackItemAbilityRuntime runtimeEffect = (usedItem.BackpackItem as CombatUseableItemSO).BackpackActionFactorySO.FactorizeBackpackItemAbilityRuntime(_selectedPartyMember[0], _selectedPartyMember) ; 
 
-            //    target.Add(DungeonManagerSingleton.Instance.MissionManager.DungeonPartyHandler.PartyMembers[1]);
+            yield return runtimeEffect.UseItemAbilityOutsideCombat() ;
 
+            _backpack.RemoveItemFromBackpack(_loadedBackpackItem[backpackItemIndex].BackpackItem,1) ;
 
-
-            //    StartCoroutine(UseItem(0, caster, target));
-            //}
-            //if (Input.GetKeyDown(KeyCode.U))
-            //{
-            //    var caster = DungeonManagerSingleton.Instance.MissionManager.DungeonPartyHandler.PartyMembers[0];
-            //    List<RuntimePartyMember> target = new List<RuntimePartyMember>();
-
-            //    target.Add(DungeonManagerSingleton.Instance.MissionManager.DungeonPartyHandler.PartyMembers[2]);
-
-
-
-            //    StartCoroutine(UseItem(0, caster, target));
-            //}
         }
-
-        //private IEnumerator SelectingTargetCoroutine(out List<RuntimePartyMember> selectedTarget)
-        //{
-        //    selectedTarget = new List<RuntimePartyMember>(); 
-
-        //    while (selectedTarget.Count == 0)
-        //    {
-        //        yield return null; 
-        //    }
-        //}
-
-        //public IEnumerator UseItem(int backpackItemIndex)
-        //{
-        //    BackpackItemData usedItem = _loadedBackpackItem[backpackItemIndex];
-
-        //    //yield return SelectingTargetCoroutine(); 
-
-        //    //BackpackItemAbilityRuntime runtimeEffect = (usedItem.BackpackItem as CombatUseableItemSO).BackpackActionFactorySO.FactorizeBackpackItemAbilityRuntime(user,target) ; 
-
-        //    //yield return runtimeEffect.UseItemAbilityOutsideCombat() ;
-
-        //    _backpack.RemoveItemFromBackpack(_loadedBackpackItem[backpackItemIndex].BackpackItem,1) ;
-
-        //}
 
         public IEnumerator SetUpBackpack()
         {
@@ -94,8 +78,65 @@ namespace Vanaring
 
             _loadedBackpackItem = _backpack.GetCombatUseableItemSOs() ;
 
+            //Load UI here 
+
             yield return null; 
 
+        }
+
+        public void ReceiveKeys(InputCode key)
+        {
+
+            if (_state == EQuckMissionBackpackState.Closed)
+            {
+                if (key == InputCode.Item)
+                {
+                    Debug.Log("Enter select item state");
+                    _state = EQuckMissionBackpackState.SelectItem;  
+                }
+            }
+
+            //Highlighted selected item here 
+            else if (_state == EQuckMissionBackpackState.SelectItem)
+            {
+                if (key == InputCode.Left) { 
+                    if (_selectedItem > 0)
+                        _selectedItem -= 1; 
+                } else if (key == InputCode.Right)
+                {
+                    if (_selectedItem < _loadedBackpackItem.Count - 1  ) 
+                        _selectedItem += 1; 
+                }else if (key == InputCode.Select)
+                {
+                    StartCoroutine(UseItem( _selectedItem)); 
+                }
+            }
+
+
+            else if (_state == EQuckMissionBackpackState.SelectTarget)
+            {
+                if (key == InputCode.Left)
+                {
+                    if (_selectedTarget > 0)
+                        _selectedTarget -= 1;
+                }
+                else if (key == InputCode.Right)
+                {
+                    if (_selectedTarget < GetActivePartyMembers().Count - 1)
+                        _selectedTarget += 1;
+                }
+                else if (key == InputCode.Select)
+                {
+                    _selectedPartyMember.Add(GetActivePartyMembers()[_selectedTarget]); 
+                }
+            }
+
+
+        }
+
+        private List<RuntimePartyMember> GetActivePartyMembers()
+        {
+            return DungeonManagerSingleton.Instance.MissionManager.DungeonPartyHandler.PartyMembers; 
         }
     }
 }
