@@ -10,17 +10,22 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fbb70f611a2885742aa47e3710377f95, type: 3}
-  m_Name: TestMissionDataSO
+  m_Name: Full Mission
   m_EditorClassIdentifier: 
   _eventRewardData:
     _rewardIsItem: 1
     _rewardIsSpell: 0
+    _rewardIsCash: 0
     _spellReward:
       _rewards: {fileID: 11400000, guid: b6df476e163f6c34998356688290d643, type: 2}
     _itemReward:
       _rewards: {fileID: 11400000, guid: cab6a1cf038672342bb1ea8975adc564, type: 2}
-  _missionNodeEnvironment: {fileID: 3265370556205706257, guid: 5c8948313122ee444aa51bb597c5a3b7, type: 3}
+    _cashReward:
+      RewardAmount: 0
+      CashRewardable:
+        _rewards: {fileID: 0}
+  _missionNodeEnvironment: {fileID: 3265370556205706257, guid: f7fa856095c0a024d83ce711525d1d6d, type: 3}
   _missionDescription:
-    _fieldName: Mission test 1
+    _fieldName: The lair of undead
     _fieldDescription: 
     _fieldImage: {fileID: 0}
