@@ -15,7 +15,6 @@ namespace Vanaring
 
         [SerializeField]
         private Button mapbutton; 
-        //[SerializeField] private 
 
         private void OnEnable()
         {
@@ -32,6 +31,19 @@ namespace Vanaring
             if (key == InputCode.DeSelect)
             {
                 mapbutton.onClick?.Invoke();
+            }
+            if (key == InputCode.Up)
+            {
+                PrevMissionIndex();
+            }
+            if (key == InputCode.Down)
+            {
+                NextMissionIndex();
+            }
+            if (key == InputCode.Select)
+            {
+                missionButtonList[selectingIndex].EnterTheMission();
+
             }
         }
 
@@ -89,24 +101,5 @@ namespace Vanaring
             }
             
         }
-
-        private void Update()
-        {
-            if (Input.GetKeyDown(KeyCode.W))
-            {
-                PrevMissionIndex();
-            }
-            if(Input.GetKeyDown(KeyCode.S))
-            {
-                NextMissionIndex();
-            }
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                missionButtonList[selectingIndex].EnterTheMission();
-                
-            }
-        }
-
-       
     }
 }
