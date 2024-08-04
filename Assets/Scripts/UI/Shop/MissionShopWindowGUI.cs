@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using TMPro;
+using UnityEngine.UI;
 
 namespace Vanaring
 {
@@ -10,10 +11,16 @@ namespace Vanaring
     {
         [SerializeField] private DungeonShopManager _dungeonShopManager;
         [SerializeField] private TextMeshProUGUI currentCashText;
+        [Header("Item")]
         [SerializeField] private ShopItemSocketGUI shopItemSocketTemplate;
         [SerializeField] private GameObject itemListTransform;
-        [SerializeField]
-        private AssetReferenceT<EssentialSceneDataSO> _base_missionScene;
+        [Header("Inventory")]
+        [SerializeField] private GameObject inventorySlotGUITemplate;
+        [SerializeField] private GameObject inventorySlotTransform;
+        private List<GameObject> inventoryItemSlotList = new List<GameObject>();
+        [Header("Mission")]
+        [SerializeField] private AssetReferenceT<EssentialSceneDataSO> _base_missionScene;
+        [SerializeField] private EmbarkConfirmWindow embarkConfirmWindow;
         private List<ShopItemSocketGUI> shopItemSocketList = new List<ShopItemSocketGUI>();
         private int selectingIndex;
 
@@ -36,6 +43,8 @@ namespace Vanaring
             //yield return PersistentPlayerPersonalDataManager.
         }
 
+        
+
         private IEnumerator SetupShop()
         {
             int i = 0;
@@ -54,10 +63,31 @@ namespace Vanaring
             shopItemSocketList[selectingIndex].OnSelectSocket();
             shopItemSocketTemplate.gameObject.SetActive(false);
 
+            UpdateInventoryGUI();
 
+            embarkConfirmWindow.ConfirmButton.onClick.AddListener(EnterDungeon);
+            embarkConfirmWindow.Init(this);
 
             yield return new WaitForEndOfFrame();
         }
+
+        public void UpdateInventoryGUI()
+        {
+            foreach (var item in inventoryItemSlotList)
+            {
+                Destroy(item.gameObject);
+            }
+            foreach (BackpackItemData itemData in PersistentPlayerPersonalDataManager.Instance.GetBackpack.GetCombatUseableItemSOs())
+            {
+                GameObject newItem = Instantiate(inventorySlotGUITemplate, inventorySlotTransform.transform);
+                newItem.GetComponentInChildren<Image>().sprite = itemData.BackpackItem.GetDescriptionBaseField().FieldImage;
+                newItem.GetComponentInChildren<TextMeshProUGUI>().text = "x" + itemData.Amount.ToString();
+                newItem.SetActive(true);
+                inventoryItemSlotList.Add(newItem);
+            }
+            inventorySlotGUITemplate.gameObject.SetActive(false);
+        }
+
         public void UpdateCurrentCash()
         {
             currentCashText.text = PersistentPlayerPersonalDataManager.Instance.GetBackpack.GetCurrentCash.ToString();
@@ -92,10 +122,14 @@ namespace Vanaring
             if(key == InputCode.Item)
             {
                 shopItemSocketList[selectingIndex].ItemButton.onClick.Invoke();
+                UpdateInventoryGUI();
             }
             if (key == InputCode.Select)
             {
-                EnterDungeon();
+                CentralInputReceiver.Instance.ClearStack();
+                embarkConfirmWindow.gameObject.SetActive(true);
+                embarkConfirmWindow.OpenWindow();
+                CentralInputReceiver.Instance.AddInputReceiverIntoStack(embarkConfirmWindow);
             }
         }
 
@@ -103,7 +137,6 @@ namespace Vanaring
         {
             yield return new WaitForEndOfFrame();
         }
-        [ContextMenu("GOGO")]
         public void EnterDungeon()
         {
             CentralInputReceiver.Instance.RemoveInputReceiverIntoStack(this);

@@ -945,7 +945,7 @@ GameObject:
   - component: {fileID: 3237174773182283228}
   - component: {fileID: 3457147367031798810}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: EnterDun
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1502,7 +1502,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &9198541872599698928
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1515,7 +1515,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1645201151363396140}
+  m_Father: {fileID: 1172609117816811492}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -3422,6 +3422,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1172609117816811492}
+  - component: {fileID: 5921812079034805153}
   m_Layer: 5
   m_Name: EmbarkConfirm
   m_TagString: Untagged
@@ -3441,6 +3442,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 9198541872599698928}
   - {fileID: 3073459912520377353}
   m_Father: {fileID: 1645201151363396140}
   m_RootOrder: -1
@@ -3450,6 +3452,20 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &5921812079034805153
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3889099532602898420}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 804a209943ea20e4e908b81437ad59dc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  confirmButton: {fileID: 1658159178041965277}
+  cancelButton: {fileID: 7722492513206272192}
 --- !u!1 &3959967809552413545
 GameObject:
   m_ObjectHideFlags: 0
@@ -3782,11 +3798,14 @@ MonoBehaviour:
   currentCashText: {fileID: 246283172480467637}
   shopItemSocketTemplate: {fileID: 1880575501764731181}
   itemListTransform: {fileID: 8337583879230483393}
+  inventorySlotGUITemplate: {fileID: 8710359304611735778}
+  inventorySlotTransform: {fileID: 2265834089740060891}
   _base_missionScene:
     m_AssetGUID: 91b2e552c2a4adf4fbb90fa589c54ae1
     m_SubObjectName: 
     m_SubObjectType: 
     m_EditorAssetChanged: 0
+  embarkConfirmWindow: {fileID: 5921812079034805153}
 --- !u!320 &6936575709156362297
 PlayableDirector:
   m_ObjectHideFlags: 0
@@ -6006,7 +6025,7 @@ GameObject:
   - component: {fileID: 6250175766175564326}
   - component: {fileID: 7722492513206272192}
   m_Layer: 5
-  m_Name: Image (1)
+  m_Name: No
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6095,7 +6114,7 @@ MonoBehaviour:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_SelectedColor: {r: 0.9372549, g: 0, b: 1, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -6853,7 +6872,6 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 9198541872599698928}
   - {fileID: 1172609117816811492}
   - {fileID: 6428240487390036480}
   m_Father: {fileID: 594903943351504788}
@@ -7390,7 +7408,7 @@ GameObject:
   - component: {fileID: 5921957753745019607}
   - component: {fileID: 1658159178041965277}
   m_Layer: 5
-  m_Name: Image
+  m_Name: Yes
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7479,7 +7497,7 @@ MonoBehaviour:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_SelectedColor: {r: 0.93840027, g: 0, b: 1, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -8110,7 +8128,7 @@ GameObject:
   - component: {fileID: 7527918310213292258}
   - component: {fileID: 6781184957413254929}
   m_Layer: 5
-  m_Name: Image
+  m_Name: Asha
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9306,7 +9324,6 @@ GameObject:
   m_Component:
   - component: {fileID: 5185574730345012394}
   - component: {fileID: 5831006765226814984}
-  - component: {fileID: 505567329982454273}
   m_Layer: 5
   m_Name: InventorySlot
   m_TagString: Untagged
@@ -9344,36 +9361,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8710359304611735778}
   m_CullTransparentMesh: 1
---- !u!114 &505567329982454273
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8710359304611735778}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0.08235294, b: 0.21568629, a: 0}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 0}
-  m_Type: 0
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
 --- !u!1 &8768750626463160077
 GameObject:
   m_ObjectHideFlags: 0
