@@ -79,6 +79,15 @@ namespace Vanaring
 
             _backpack.RemoveItemFromBackpack(_loadedBackpackItem[backpackItemIndex].BackpackItem,1) ;
 
+            CloseQuickMissionBackpack(); 
+        }
+
+        private void CloseQuickMissionBackpack()
+        {
+            CentralInputReceiver.Instance.RemoveInputReceiverIntoStack(this) ;
+
+            _state = EQuckMissionBackpackState.Closed;
+
         }
 
         public IEnumerator SetUpBackpack()
