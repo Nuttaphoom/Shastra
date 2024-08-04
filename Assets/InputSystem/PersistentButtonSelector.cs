@@ -15,7 +15,7 @@ namespace Vanaring
         private Button initialButton;
 
         [SerializeField]
-        private Button dummyButton;
+        public List<Button> ButtonsPool = new List<Button>();
 
         private bool initialButtonSelected = false;
 
@@ -28,8 +28,27 @@ namespace Vanaring
 
         private void FixedUpdate()
         {
-            SubSelectSceneLoader(); 
+            SubSelectSceneLoader();
+
+            GetButtonsPool();
         }
+
+        private void GetButtonsPool()
+        {
+            Button[] Buttons = FindObjectsOfType<Button>();
+            for (int i = 0; i < Buttons.Length; i++)
+            {
+                if (!ButtonsPool.Contains(Buttons[i]))
+                {
+                    ButtonsPool.Add(Buttons[i]);
+                }
+            }
+        }
+        private void ClearButtonsPool(Null n)
+        {
+            ButtonsPool.Clear();
+        }
+
         private void SubSelectSceneLoader()
         {
             if (isSub)
@@ -40,6 +59,7 @@ namespace Vanaring
                 isSub = true; 
                 PersistentSceneLoader.Instance.GetTransitionManager.SubOnSceneLoaderComplete(ResetInitialButtonSelected);
                 PersistentSceneLoader.Instance.GetTransitionManager.SubOnSceneLoaderComplete(ClearPreviousButtons);
+                PersistentSceneLoader.Instance.GetTransitionManager.SubOnSceneLoaderComplete(ClearButtonsPool);
             }
         }
 
@@ -68,15 +88,6 @@ namespace Vanaring
                 initialButton.Select();
                 initialButtonSelected = true;
             }
-        }
-        public void DeselectButton()
-        {
-            if (dummyButton == null)
-            {
-                return;
-            }
-
-            dummyButton.Select();
         }
 
         public void AddPreviousButton(Button button)
