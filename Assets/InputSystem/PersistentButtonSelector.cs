@@ -15,6 +15,9 @@ namespace Vanaring
         private Button initialButton;
 
         [SerializeField]
+        private Button dummyButton;
+
+        [SerializeField]
         public List<Button> ButtonsPool = new List<Button>();
 
         private bool initialButtonSelected = false;
@@ -31,6 +34,8 @@ namespace Vanaring
             SubSelectSceneLoader();
 
             GetButtonsPool();
+
+            
         }
 
         private void GetButtonsPool()
