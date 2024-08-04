@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
+using UnityEngine.UI;
 
 namespace Vanaring
 {
@@ -10,6 +12,9 @@ namespace Vanaring
         [SerializeField] private Animator quickItemUIAnim;
         [SerializeField] private QuickItemSocketGUI quickItemSocketTemplate;
         [SerializeField] private GameObject socketTransform;
+        private List<QuickItemSocketGUI> quickItemSocketList = new List<QuickItemSocketGUI>();
+        [SerializeField] private TextMeshProUGUI itemNameText;
+        [SerializeField] private TextMeshProUGUI itemDescriptionText;
         private void Awake()
         {
             CentralInputReceiver.Instance.AddInputReceiverIntoStack(this); 
@@ -83,16 +88,32 @@ namespace Vanaring
             _loadedBackpackItem = _backpack.GetCombatUseableItemSOs() ;
 
             //Load UI here 
-            //foreach (BackpackItemData item in _loadedBackpackItem)
-            //{
-            //    QuickItemSocketGUI newSocket = Instantiate(quickItemSocketTemplate, socketTransform.transform);
-            //    newSocket.Init(item);
-            //    newSocket.gameObject.SetActive(true);
-            //}
-            //quickItemSocketTemplate.gameObject.SetActive(false);
+            foreach (BackpackItemData item in _loadedBackpackItem)
+            {
+                QuickItemSocketGUI newSocket = Instantiate(quickItemSocketTemplate, socketTransform.transform);
+                newSocket.Init(item);
+                newSocket.gameObject.SetActive(true);
+                //newSocket.GetComponent<Button>().onClick.AddListener(() => DisplayItemDetail(item));
+                newSocket.OnDeSelect();
+                quickItemSocketList.Add(newSocket);
+            }
+            DisplayItemDetail(_loadedBackpackItem[_selectedItem]);
+            quickItemSocketTemplate.gameObject.SetActive(false);
+            
 
             yield return null; 
 
+        }
+
+        public void DisplayItemDetail(BackpackItemData data)
+        {
+            foreach (QuickItemSocketGUI socket in quickItemSocketList)
+            {
+                socket.OnDeSelect();
+            }
+            quickItemSocketList[_selectedItem].OnSelect();
+            itemNameText.text = data.BackpackItem.GetRewardData().RewardName;
+            itemDescriptionText.text = data.BackpackItem.GetRewardData().RewardDescription;
         }
 
         public void ReceiveKeys(InputCode key)
@@ -104,6 +125,7 @@ namespace Vanaring
                 {
                     quickItemUIAnim.Play("OnSelectState");
                     Debug.Log("Enter select item state");
+                    quickItemSocketList[0].OnSelect();
                     _state = EQuckMissionBackpackState.SelectItem;  
                 }
             }
@@ -113,17 +135,31 @@ namespace Vanaring
             {
                 if (key == InputCode.Left) { 
                     if (_selectedItem > 0)
-                        _selectedItem -= 1; 
-                } else if (key == InputCode.Right)
+                    {
+                        _selectedItem -= 1;
+                        DisplayItemDetail(_loadedBackpackItem[_selectedItem]);
+                    }                
+                } 
+                else if (key == InputCode.Right)
                 {
-                    if (_selectedItem < _loadedBackpackItem.Count - 1  ) 
-                        _selectedItem += 1; 
-                }else if (key == InputCode.Select)
+                    if (_selectedItem < _loadedBackpackItem.Count - 1  )
+                    {
+                        _selectedItem += 1;
+                        DisplayItemDetail(_loadedBackpackItem[_selectedItem]);
+                    }
+                }
+                else if (key == InputCode.Select)
                 {
                     quickItemUIAnim.Play("OnSelectTargetState");
                     StartCoroutine(UseItem( _selectedItem)); 
-                }else if (key == InputCode.Item) {
+                }
+                else if (key == InputCode.DeSelect) 
+                {
                     quickItemUIAnim.Play("OnOpen");
+                    foreach (QuickItemSocketGUI socket in quickItemSocketList)
+                    {
+                        socket.OnDeSelect();
+                    }
                     _state = EQuckMissionBackpackState.Closed;
                 }
             }
@@ -143,7 +179,8 @@ namespace Vanaring
                 }
                 else if (key == InputCode.Select)
                 {
-                    _selectedPartyMember.Add(GetActivePartyMembers()[_selectedTarget]); 
+                    _selectedPartyMember.Add(GetActivePartyMembers()[_selectedTarget]);
+                    quickItemSocketList[_selectedItem].UseItemUpdate();
                 }
             }
 
