@@ -48,7 +48,7 @@ namespace Vanaring
         public float GetCurrentPartyMemberHP => _currentHP;
         public float GetCurrentPartyMemberMP => _currentMP;
 
-        public void UpdateValue(float hp, float mp)
+        public void UpdateNewValueAfterCombat(float hp, float mp)
         {
             _currentHP = hp; 
 
@@ -57,6 +57,28 @@ namespace Vanaring
 
             _currentMP = mp; 
         } 
+
+        public void ModifyPartyMembetHP(float updatedValue)
+        {
+            _currentHP += updatedValue; 
+
+            if (_currentHP <= 0) 
+                _currentHP = 1; 
+
+            if (_currentHP > _runtimeCombatMemberData.LevelAttributeHandler.GetSecondaryAttribute_MaxHP)
+                _currentHP = _runtimeCombatMemberData.LevelAttributeHandler.GetSecondaryAttribute_MaxHP; 
+            
+
+        }
+
+        public void ModifyPartyMembetMP(float updatedValue)
+        {
+            _currentMP += updatedValue;
+
+            if (_currentMP > _runtimeCombatMemberData.LevelAttributeHandler.GetSecondaryAttribute_MaxMP)
+                _currentMP = _runtimeCombatMemberData.LevelAttributeHandler.GetSecondaryAttribute_MaxMP;
+
+        }
 
         public RuntimeCombatMemberData GetRuntimeCombatMemberData
         {
@@ -119,7 +141,7 @@ namespace Vanaring
                 if (member.GetCharacterSheet.CharacterName != combatEntity.CombatCharacterSheet.CharacterName)
                     continue;
 
-                 member.UpdateValue(combatEntity.StatsAccumulator.GetHPAmount(), combatEntity.SpellCaster.GetMP);
+                 member.UpdateNewValueAfterCombat(combatEntity.StatsAccumulator.GetHPAmount(), combatEntity.SpellCaster.GetMP);
 
             }
         }

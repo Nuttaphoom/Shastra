@@ -265,6 +265,8 @@ namespace Vanaring
 
         public void AddInputReceiverIntoStack(IInputReceiver receiver)
         {
+            Debug.Log("Add " + receiver + " into stack"); 
+
             if (! _receiverStack.Contains(receiver))
             {
                 _receiverStack.Push(receiver); 

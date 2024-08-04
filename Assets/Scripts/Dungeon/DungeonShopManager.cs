@@ -41,8 +41,8 @@ namespace Vanaring
         private IEnumerator BuyProductCO(ProductData data)
         {
             PersistentPlayerPersonalDataManager.Instance.GetBackpack.ModifyCash(-data.Cost);//        } 
-
-            yield return data.Reward.GetReward(); 
+            data.Reward.GetReward().SubmitReward();
+            yield return null; 
         }
     }
 }
