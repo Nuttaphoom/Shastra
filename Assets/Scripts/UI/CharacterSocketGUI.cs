@@ -163,7 +163,7 @@ namespace Vanaring
 
         private void OnHPModified(int damage)
         {
-            
+
             hpVal = (int) _combatEntity.StatsAccumulator.GetHPAmount();
             if (hpVal <= 0)
             {
@@ -176,6 +176,9 @@ namespace Vanaring
                 }
             }
             float hptemp = maxHpVal == 0 ? (hpVal == 0 ? 1 : hpVal) : maxHpVal;
+
+            ColorfulLogger.LogWithColor("damage modified in HP Bar ui is " + damage + " with hptemp : " + hptemp + " and hpVal : " + hpVal, Color.blue);
+
             UpdateHPScaleGUI();
             //StopAllCoroutines();
             StartCoroutine(IEAnimateBarScale(hpVal, hptemp, secondHpBar));

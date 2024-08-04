@@ -90,10 +90,11 @@ namespace Kryz.CharacterStats
 			float finalValue = BaseValue;
 			float sumPercentAdd = 0;
 
-			statModifiers.Sort(CompareModifierOrder);
+			//statModifiers.Sort(CompareModifierOrder);
 
 			for (int i = 0; i < statModifiers.Count; i++)
 			{
+
 				StatModifier mod = statModifiers[i];
 
 				if (mod.Type == StatModType.Flat)
@@ -118,11 +119,13 @@ namespace Kryz.CharacterStats
                 if (_peakValue > 0)
                     finalValue = finalValue > _peakValue ? _peakValue : finalValue;
 
+                Debug.Log("finalValue : " + finalValue);
+
             }
 
 
 
-			if (_peakValue > 0)
+            if (_peakValue > 0)
 				finalValue = finalValue > _peakValue ? _peakValue : finalValue; 
 
 			// Workaround for float calculation errors, like displaying 12.00001 instead of 12

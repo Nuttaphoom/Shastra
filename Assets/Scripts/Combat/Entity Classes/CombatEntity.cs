@@ -434,6 +434,12 @@ namespace Vanaring
                     _isDead = true;
                 }
 
+                ColorfulLogger.LogWithColor("finalDMG : " + finalDMG, Color.yellow) ;
+
+                if (finalDMG > 0)
+                    throw new Exception("FinalDMG was " + finalDMG + " and it's more than 0 which is not allowed" );
+                
+
                 StartCoroutine(VisualHurt(finalDMG, "Hurt"));
             }
 
@@ -446,6 +452,11 @@ namespace Vanaring
         }
         public void LogicHeal(StatModifier statModifier)
         {
+            ColorfulLogger.LogWithColor("healAmount : " + statModifier.Value , Color.yellow);
+
+            if (statModifier.Value < 0)
+                throw new Exception("heal was " + statModifier.Value + " and it's less than 0 which is not allowed");
+
             StatsAccumulator.ModifyHPStat(statModifier);
             StartCoroutine(VisualHeal((int)statModifier.Value));
         }

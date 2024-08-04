@@ -59,10 +59,10 @@ namespace Vanaring
 
         public IEnumerator UseItem(int backpackItemIndex)
         {
-            Debug.Log("use item at index " + backpackItemIndex) ;  
+            Debug.Log("use item at index " + backpackItemIndex) ;
 
-            _state = EQuckMissionBackpackState.SelectTarget; 
-
+            SetQuickBackpackStaet(EQuckMissionBackpackState.SelectTarget); 
+            
             BackpackItemData usedItem = _loadedBackpackItem[backpackItemIndex];
 
             //Assign target            
@@ -82,11 +82,17 @@ namespace Vanaring
             CloseQuickMissionBackpack(); 
         }
 
+        private void SetQuickBackpackStaet(EQuckMissionBackpackState nextState)
+        {
+
+            _state = nextState;  
+        }
+
         private void CloseQuickMissionBackpack()
         {
             CentralInputReceiver.Instance.RemoveInputReceiverIntoStack(this) ;
 
-            _state = EQuckMissionBackpackState.Closed;
+            SetQuickBackpackStaet(EQuckMissionBackpackState.Closed);
 
         }
 
@@ -164,6 +170,8 @@ namespace Vanaring
                 }
                 else if (key == InputCode.DeSelect) 
                 {
+                    CloseQuickMissionBackpack(); 
+
                     quickItemUIAnim.Play("OnOpen");
                     foreach (QuickItemSocketGUI socket in quickItemSocketList)
                     {
