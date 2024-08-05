@@ -11,7 +11,7 @@ namespace Vanaring
         [SerializeField] private MissionBookSetup missionBook;
         [SerializeField] private List<Button> dungeonButton = new List<Button>();
 
-        [SerializeField] private Button closeButton;
+        //[SerializeField] private Button closeButton;
         [SerializeField] private Button initialMissionButton;
 
         public IEnumerator OnNewSceneLoad_BeforeSaveLoadPerform()
@@ -30,12 +30,12 @@ namespace Vanaring
             {
                 dungeonButton[dungeonIndex].onClick.AddListener(() => LoadAllMission(dungeon));
                 Button button = dungeonButton[dungeonIndex];
-                dungeonButton[dungeonIndex].onClick.AddListener(delegate { PersistentButtonSelector.Instance.AddPreviousButton(button); } );
+                //dungeonButton[dungeonIndex].onClick.AddListener(delegate { PersistentButtonSelector.Instance.AddPreviousButton(button); } );
                 dungeonIndex++;
             }
             //template.gameObject.SetActive(false);
-            closeButton.onClick.AddListener(PersistentButtonSelector.Instance.SelectPreviousButton);
-            closeButton.onClick.AddListener(PersistentButtonSelector.Instance.RemoveLastPreviousButton);
+            //closeButton.onClick.AddListener(PersistentButtonSelector.Instance.SelectPreviousButton);
+            //closeButton.onClick.AddListener(PersistentButtonSelector.Instance.RemoveLastPreviousButton);
             yield return null;
         }
 

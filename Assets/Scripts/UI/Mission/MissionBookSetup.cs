@@ -67,6 +67,7 @@ namespace Vanaring
                 newButton.gameObject.SetActive(true);
                 newButton.UnSelectThisMission();
                 missionButtonList.Add(newButton);
+                orderIndex++;
             }
             missionButtonList[selectingIndex].SelectThisMission();
             missionButtonTemplate.gameObject.SetActive(false);
@@ -77,6 +78,7 @@ namespace Vanaring
         {
             if (selectingIndex < missionButtonList.Count - 1)
             {
+                Debug.Log(selectingIndex);
                 //foreach (MissionButtonObjectGUI obj in missionButtonList)
                 //{
                 //    obj.UnSelectThisMission();
@@ -91,6 +93,7 @@ namespace Vanaring
         {
             if (selectingIndex > 0)
             {
+                Debug.Log(selectingIndex);
                 //foreach (MissionButtonObjectGUI obj in missionButtonList)
                 //{
                 //    obj.UnSelectThisMission();
