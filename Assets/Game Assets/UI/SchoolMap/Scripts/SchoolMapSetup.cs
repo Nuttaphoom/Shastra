@@ -87,23 +87,24 @@ namespace Vanaring
                 Navigation NewNav = new Navigation();
                 NewNav.mode = Navigation.Mode.Explicit;
                 NewNav.selectOnDown = _dungeonButton;
-                if ((i - 1) < 0)
-                {
-                    NewNav.selectOnLeft = _dungeonButton;
-                }
-                else
-                {
-                    NewNav.selectOnLeft = pinObject[((i - 1) < 0) ? (pinObject.Count - 1) : (i - 1)].TemplateButton;
-                }
-                if ((i + 1) >= pinObject.Count)
-                {
-                    NewNav.selectOnRight = _dungeonButton;
-                }
-                else
-                {
-                    NewNav.selectOnRight = pinObject[(i + 1) % pinObject.Count].TemplateButton;
-                }
-                //NewNav.selectOnRight = pinObject[(i + 1) % pinObject.Count].TemplateButton;
+                //if ((i - 1) < 0)
+                //{
+                //    NewNav.selectOnLeft = _dungeonButton;
+                //}
+                //else
+                //{
+                //    NewNav.selectOnLeft = pinObject[((i - 1) < 0) ? (pinObject.Count - 1) : (i - 1)].TemplateButton;
+                //}
+                //if ((i + 1) >= pinObject.Count)
+                //{
+                //    NewNav.selectOnRight = _dungeonButton;
+                //}
+                //else
+                //{
+                //    NewNav.selectOnRight = pinObject[(i + 1) % pinObject.Count].TemplateButton;
+                //}
+                NewNav.selectOnLeft = pinObject[((i - 1) < 0) ? (pinObject.Count - 1) : (i - 1)].TemplateButton;
+                NewNav.selectOnRight = pinObject[(i + 1) % pinObject.Count].TemplateButton;
                 pinObject[i].TemplateButton.navigation = NewNav;
             }
 
@@ -112,9 +113,9 @@ namespace Vanaring
                 Navigation DunNav = new Navigation();
 
                 DunNav.mode = Navigation.Mode.Explicit;
-                DunNav.selectOnRight = pinObject[0].TemplateButton;
+                //DunNav.selectOnRight = pinObject[0].TemplateButton;
                 DunNav.selectOnUp = pinObject[pinObject.Count - 1].TemplateButton;
-                DunNav.selectOnLeft = pinObject[pinObject.Count - 1].TemplateButton;
+                //DunNav.selectOnLeft = pinObject[pinObject.Count - 1].TemplateButton;
                 _dungeonButton.navigation = DunNav;
             }
             // Setting Button Navigation with input control

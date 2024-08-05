@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace Vanaring
@@ -13,6 +14,9 @@ namespace Vanaring
 
         [SerializeField]
         private Button initialButton;
+
+        [SerializeField]
+        private Button capturedButton;
 
         [SerializeField]
         private Button dummyButton;
@@ -32,10 +36,6 @@ namespace Vanaring
         private void FixedUpdate()
         {
             SubSelectSceneLoader();
-
-            GetButtonsPool();
-
-            
         }
 
         private void GetButtonsPool()
@@ -93,6 +93,21 @@ namespace Vanaring
                 initialButton.Select();
                 initialButtonSelected = true;
             }
+        }
+
+        public void CaptureCurrentSelectedButton()
+        {
+            capturedButton = EventSystem.current.currentSelectedGameObject.GetComponent<Button>();
+        }
+
+        public void DeSelectedButton()
+        {
+            dummyButton.Select();
+        }
+
+        public void RestoreCaptureButton()
+        {
+            capturedButton.Select();
         }
 
         public void AddPreviousButton(Button button)
