@@ -45,6 +45,7 @@ namespace Vanaring
             tenText.text = tenDigit.ToString();
             unitText.text = unitDigit.ToString();
             priceText.text = itemPrice.ToString();
+            priceText.color = Color.white;
             this.itemPrice = itemPrice;
         }
 

@@ -13,6 +13,7 @@ namespace Vanaring
         [SerializeField] private Image selectIcon;
         [SerializeField] private Image missionIcon;
         [SerializeField] private TextMeshProUGUI missionName;
+        [SerializeField] private TextMeshProUGUI missionNameTitle;
         [SerializeField] private TextMeshProUGUI missionDetail;
         [SerializeField] private TextMeshProUGUI missionTime;
         [SerializeField] private TextMeshProUGUI missionOrderNum;
@@ -24,12 +25,20 @@ namespace Vanaring
                 return missionButton;
             }
         }
+        private RuntimeDungeon dungeon;
+        private int order;
 
         public void Init(RuntimeDungeon dungeon, DungeonMissionInstance mission, int order)
         {
+            this.dungeon = dungeon;
+            this.order = order;
             missionOrderNum.text = order.ToString();
             UnSelectThisMission();
             missionButton.onClick.AddListener(() => DungeonManagerSingleton.Instance.LoadSelectedMission(mission));
+
+            missionName.text = dungeon.DungeonDataSO.GetMissionDataSOes[order-1].MissionDescription.FieldName;
+            missionNameTitle.text = dungeon.DungeonDataSO.GetMissionDataSOes[order-1].MissionDescription.FieldName;
+            missionDetail.text = dungeon.DungeonDataSO.GetMissionDataSOes[order-1].MissionDescription.FieldDescription;
 
             // Setting Button Navigation with input control
             Navigation NewNav = new Navigation();
@@ -38,9 +47,17 @@ namespace Vanaring
             closeButton.navigation = NewNav;
         }
 
+        public void UpdateMissionDetail()
+        {
+            missionName.text = dungeon.DungeonDataSO.GetMissionDataSOes[order - 1].MissionDescription.FieldName;
+            missionNameTitle.text = dungeon.DungeonDataSO.GetMissionDataSOes[order - 1].MissionDescription.FieldName;
+            missionDetail.text = dungeon.DungeonDataSO.GetMissionDataSOes[order - 1].MissionDescription.FieldDescription;
+        }
+
         public void SelectThisMission()
         {
             missionButton.Select();
+            UpdateMissionDetail();
             missionButton.GetComponent<Image>().color = Color.yellow;
             selectIcon.gameObject.SetActive(true);
         }
