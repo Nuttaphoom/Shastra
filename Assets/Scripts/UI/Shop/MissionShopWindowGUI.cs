@@ -9,24 +9,29 @@ namespace Vanaring
 {
     public class MissionShopWindowGUI : MonoBehaviour, IInputReceiver, ISceneLoaderWaitForSignal
     {
-        [SerializeField] private DungeonShopManager _dungeonShopManager;
+        private DungeonShopManager _dungeonShopManager;
         [SerializeField] private TextMeshProUGUI currentCashText;
+
         [Header("Item")]
         [SerializeField] private ShopItemSocketGUI shopItemSocketTemplate;
         [SerializeField] private GameObject itemListTransform;
+
         [Header("Inventory")]
         [SerializeField] private GameObject inventorySlotGUITemplate;
         [SerializeField] private GameObject inventorySlotTransform;
         private List<GameObject> inventoryItemSlotList = new List<GameObject>();
+
         [Header("Mission")]
         [SerializeField] private AssetReferenceT<EssentialSceneDataSO> _base_missionScene;
         [SerializeField] private EmbarkConfirmWindow embarkConfirmWindow;
+        [SerializeField] private MissionShopBuyConfirmWindow missionShopBuyConfirmWindow;
         private List<ShopItemSocketGUI> shopItemSocketList = new List<ShopItemSocketGUI>();
         private int selectingIndex;
 
         private void Start()
         {
-            if(_dungeonShopManager == null)
+            _dungeonShopManager = FindAnyObjectByType<DungeonShopManager>();
+            if (_dungeonShopManager == null)
             {
                 Debug.LogError("no shop manager can be founded!");
             }
@@ -37,14 +42,8 @@ namespace Vanaring
 
         public IEnumerator OnNotifySceneLoadingComplete()
         {
-            
             yield return SetupShop();
-
-            //yield return PersistentPlayerPersonalDataManager.
         }
-
-        
-
         private IEnumerator SetupShop()
         {
             int i = 0;
@@ -53,7 +52,8 @@ namespace Vanaring
                 int index = i;
                 ShopItemSocketGUI newSocket = Instantiate(shopItemSocketTemplate, itemListTransform.transform);
                 newSocket.Init(itemData);
-                newSocket.ItemButton.onClick.AddListener(() => _dungeonShopManager.BuyProduct(index));
+                //newSocket.ItemButton.onClick.AddListener(() => _dungeonShopManager.BuyProduct(index));
+                newSocket.ItemButton.onClick.AddListener(() => SelectAmountToBuy(itemData, index));
                 newSocket.ItemButton.onClick.AddListener(UpdateCurrentCash);
                 newSocket.gameObject.SetActive(true);
                 newSocket.OnDeSelectSocket();
@@ -70,7 +70,7 @@ namespace Vanaring
 
             yield return new WaitForEndOfFrame();
         }
-
+        #region UPDATE_GUI
         public void UpdateInventoryGUI()
         {
             foreach (var item in inventoryItemSlotList)
@@ -92,7 +92,7 @@ namespace Vanaring
         {
             currentCashText.text = PersistentPlayerPersonalDataManager.Instance.GetBackpack.GetCurrentCash.ToString();
         }
-
+        #endregion
         public void ReceiveKeys(InputCode key)
         {
             if (key == InputCode.Down)
@@ -121,19 +121,19 @@ namespace Vanaring
             }
             if(key == InputCode.Item)
             {
+                CentralInputReceiver.Instance.ClearStack();
+                CentralInputReceiver.Instance.AddInputReceiverIntoStack(missionShopBuyConfirmWindow);
                 shopItemSocketList[selectingIndex].ItemButton.onClick.Invoke();
-                UpdateInventoryGUI();
+                //UpdateInventoryGUI();
             }
             if (key == InputCode.Select)
             {
-                Debug.Log("koko");
                 CentralInputReceiver.Instance.ClearStack();
                 embarkConfirmWindow.gameObject.SetActive(true);
                 embarkConfirmWindow.OpenWindow();
                 CentralInputReceiver.Instance.AddInputReceiverIntoStack(embarkConfirmWindow);
             }
         }
-
         public IEnumerator OnNewSceneLoad_BeforeSaveLoadPerform()
         {
             yield return new WaitForEndOfFrame();
@@ -143,6 +143,12 @@ namespace Vanaring
             CentralInputReceiver.Instance.RemoveInputReceiverIntoStack(this);
             SceneDataSO newScene = PersistentAddressableResourceLoader.Instance.LoadResourceOperation<SceneDataSO>(_base_missionScene);
             PersistentSceneLoader.Instance.LoadGeneralScene(newScene);
+        }
+        public void SelectAmountToBuy(DungeonShopManager.ProductData itemData, int index)
+        {
+            missionShopBuyConfirmWindow.gameObject.SetActive(true);
+            embarkConfirmWindow.OpenWindow();
+            missionShopBuyConfirmWindow.Init(this, _dungeonShopManager, itemData.Cost, index);
         }
         
     }
