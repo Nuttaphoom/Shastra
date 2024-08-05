@@ -126,6 +126,7 @@ namespace Vanaring
             }
             if (key == InputCode.Select)
             {
+                Debug.Log("koko");
                 CentralInputReceiver.Instance.ClearStack();
                 embarkConfirmWindow.gameObject.SetActive(true);
                 embarkConfirmWindow.OpenWindow();

@@ -29,11 +29,13 @@ namespace Vanaring
         private void Start()
         {
             cancelButton.onClick.AddListener(CloseWindow);
+            cancelButton.onClick.AddListener(delegate { PersistentButtonSelector.Instance.DeSelectedButton(); });
         }
 
-        public void OpenWindow()
+        public IEnumerator OpenWindow()
         {
             //CentralInputReceiver.Instance.AddInputReceiverIntoStack(this);
+            yield return new WaitForEndOfFrame();
             cancelButton.Select();
         }
         public void CloseWindow()
@@ -48,11 +50,11 @@ namespace Vanaring
         {
             if(key == InputCode.Right)
             {
-                confirmButton.Select();
+                cancelButton.Select();
             }
             if (key == InputCode.Left)
             {
-                cancelButton.Select();
+                confirmButton.Select();
             }
         }
 
