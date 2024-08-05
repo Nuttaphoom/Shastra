@@ -71,6 +71,10 @@ namespace Vanaring
             }
             missionButtonList[selectingIndex].SelectThisMission();
             missionButtonTemplate.gameObject.SetActive(false);
+            Navigation NewNav = new Navigation();
+            NewNav.mode = Navigation.Mode.Explicit;
+            NewNav.selectOnLeft = missionButtonList[0].MissionButton;
+            mapbutton.navigation = NewNav;
             //Debug.Log(missionButtonList.Count);
         }
 

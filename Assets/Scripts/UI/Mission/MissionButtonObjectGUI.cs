@@ -17,6 +17,14 @@ namespace Vanaring
         [SerializeField] private TextMeshProUGUI missionTime;
         [SerializeField] private TextMeshProUGUI missionOrderNum;
 
+        public Button MissionButton
+        {
+            get
+            {
+                return missionButton;
+            }
+        }
+
         public void Init(RuntimeDungeon dungeon, DungeonMissionInstance mission, int order)
         {
             missionOrderNum.text = order.ToString();
