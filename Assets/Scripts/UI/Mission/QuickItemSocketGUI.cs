@@ -32,6 +32,25 @@ namespace Vanaring
             buttonIndicator.SetActive(true);
             highlightFrame.SetActive(true);
         }
+
+        public void OnSelectIndex(int cur, int max)
+        {
+            prevArrow.SetActive(true);
+            nextArrow.SetActive(true);
+            if (cur == 0)
+            {
+                prevArrow.SetActive(false);
+            }
+            if(cur == max - 1)
+            {
+                nextArrow.SetActive(false);
+            }
+            
+            
+            buttonIndicator.SetActive(true);
+            highlightFrame.SetActive(true);
+        }
+
         public void OnDeSelect()
         {
             nextArrow.SetActive(false);

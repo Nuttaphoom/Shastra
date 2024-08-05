@@ -15,6 +15,7 @@ namespace Vanaring
         private List<QuickItemSocketGUI> quickItemSocketList = new List<QuickItemSocketGUI>();
         [SerializeField] private TextMeshProUGUI itemNameText;
         [SerializeField] private TextMeshProUGUI itemDescriptionText;
+        [SerializeField] private Animator floatingBox;
         private void Awake()
         {
             CentralInputReceiver.Instance.AddInputReceiverIntoStack(this); 
@@ -106,6 +107,8 @@ namespace Vanaring
         {
             CentralInputReceiver.Instance.RemoveInputReceiverIntoStack(this) ;
 
+            quickItemUIAnim.Play("OnDeSelectState");
+
             SetQuickBackpackStaet(EQuckMissionBackpackState.Closed);
 
         }
@@ -140,7 +143,7 @@ namespace Vanaring
             {
                 socket.OnDeSelect();
             }
-            quickItemSocketList[_selectedItem].OnSelect();
+            quickItemSocketList[_selectedItem].OnSelectIndex(_selectedItem, quickItemSocketList.Count);
             itemNameText.text = data.BackpackItem.GetRewardData().RewardName;
             itemDescriptionText.text = data.BackpackItem.GetRewardData().RewardDescription;
         }
@@ -154,7 +157,7 @@ namespace Vanaring
                 {
                     quickItemUIAnim.Play("OnSelectState");
                     Debug.Log("Enter select item state");
-                    quickItemSocketList[0].OnSelect();
+                    quickItemSocketList[0].OnSelectIndex(_selectedItem, quickItemSocketList.Count);
                     _state = EQuckMissionBackpackState.SelectItem;  
                 }
             }
@@ -180,6 +183,7 @@ namespace Vanaring
                 else if (key == InputCode.Select)
                 {
                     quickItemUIAnim.Play("OnSelectTargetState");
+                    floatingBox.Play("OnSelectTargetState");
                     StartCoroutine(UseItem( _selectedItem)); 
                 }
                 else if (key == InputCode.DeSelect) 

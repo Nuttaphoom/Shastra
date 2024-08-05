@@ -42,7 +42,9 @@ namespace Vanaring
 
         public IEnumerator OnNotifySceneLoadingComplete()
         {
+            //yield return new WaitForSeconds(1.5f);
             yield return SetupShop();
+            //yield return new WaitForSeconds(1f);
         }
         private IEnumerator SetupShop()
         {
@@ -60,13 +62,16 @@ namespace Vanaring
                 shopItemSocketList.Add(newSocket);
                 i++;
             }
-            shopItemSocketList[selectingIndex].OnSelectSocket();
+            
             shopItemSocketTemplate.gameObject.SetActive(false);
 
             UpdateInventoryGUI();
 
             embarkConfirmWindow.ConfirmButton.onClick.AddListener(EnterDungeon);
             embarkConfirmWindow.Init(this);
+
+            
+            shopItemSocketList[selectingIndex].OnSelectSocket();
 
             yield return new WaitForEndOfFrame();
         }
