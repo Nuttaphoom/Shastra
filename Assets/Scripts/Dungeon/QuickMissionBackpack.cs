@@ -85,7 +85,21 @@ namespace Vanaring
         private void SetQuickBackpackStaet(EQuckMissionBackpackState nextState)
         {
 
-            _state = nextState;  
+            _state = nextState;
+            switch (_state)
+            {
+                case EQuckMissionBackpackState.Closed:
+                    quickItemUIAnim.Play("OnOpen");
+                    foreach (QuickItemSocketGUI socket in quickItemSocketList)
+                    {
+                        socket.OnDeSelect();
+                    }
+                    break;
+                case EQuckMissionBackpackState.SelectItem:
+                    break;
+                case EQuckMissionBackpackState.SelectTarget:
+                    break;
+            }
         }
 
         private void CloseQuickMissionBackpack()
@@ -171,13 +185,6 @@ namespace Vanaring
                 else if (key == InputCode.DeSelect) 
                 {
                     CloseQuickMissionBackpack(); 
-
-                    quickItemUIAnim.Play("OnOpen");
-                    foreach (QuickItemSocketGUI socket in quickItemSocketList)
-                    {
-                        socket.OnDeSelect();
-                    }
-                    _state = EQuckMissionBackpackState.Closed;
                 }
             }
 
