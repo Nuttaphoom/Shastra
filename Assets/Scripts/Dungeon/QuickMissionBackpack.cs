@@ -56,8 +56,6 @@ namespace Vanaring
             yield return null; 
         }
 
-         
-
         public IEnumerator UseItem(int backpackItemIndex)
         {
             Debug.Log("use item at index " + backpackItemIndex) ;
@@ -68,7 +66,9 @@ namespace Vanaring
 
             //Assign target            
             while (_selectedPartyMember.Count == 0) 
-            { 
+            {
+                if (_state == EQuckMissionBackpackState.Closed)
+                    goto End; 
                 yield return null; 
             }
 
@@ -80,7 +80,10 @@ namespace Vanaring
 
             _backpack.RemoveItemFromBackpack(_loadedBackpackItem[backpackItemIndex].BackpackItem,1) ;
 
-            CloseQuickMissionBackpack(); 
+            CloseQuickMissionBackpack();
+
+        End:
+            yield return null; 
         }
 
         private void SetQuickBackpackStaet(EQuckMissionBackpackState nextState)
@@ -105,9 +108,11 @@ namespace Vanaring
 
         private void CloseQuickMissionBackpack()
         {
-            CentralInputReceiver.Instance.RemoveInputReceiverIntoStack(this) ;
-
+            Debug.Log("close item");
+            //CentralInputReceiver.Instance.RemoveInputReceiverIntoStack(this) ;
+            PersistentButtonSelector.Instance.RestoreCaptureButton(); 
             quickItemUIAnim.Play("OnDeSelectState");
+            _selectedPartyMember.Clear(); 
 
             SetQuickBackpackStaet(EQuckMissionBackpackState.Closed);
 
@@ -153,8 +158,14 @@ namespace Vanaring
 
             if (_state == EQuckMissionBackpackState.Closed)
             {
+                Debug.Log("here"); 
+
                 if (key == InputCode.Item)
                 {
+                    PersistentButtonSelector.Instance.CaptureCurrentSelectedButton() ;
+
+                    PersistentButtonSelector.Instance.DeSelectedButton() ;
+
                     quickItemUIAnim.Play("OnSelectState");
                     Debug.Log("Enter select item state");
                     quickItemSocketList[0].OnSelectIndex(_selectedItem, quickItemSocketList.Count);
@@ -209,6 +220,10 @@ namespace Vanaring
                 {
                     _selectedPartyMember.Add(GetActivePartyMembers()[_selectedTarget]);
                     quickItemSocketList[_selectedItem].UseItemUpdate();
+                }
+                else if (key == InputCode.DeSelect)
+                {
+                    CloseQuickMissionBackpack();
                 }
             }
 
