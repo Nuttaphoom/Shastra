@@ -56,6 +56,10 @@ namespace Vanaring
             {
                 confirmButton.Select();
             }
+            if (key == InputCode.DeSelect)
+            {
+                cancelButton.onClick.Invoke();
+            }
         }
 
         private MissionShopWindowGUI _shopWindow;

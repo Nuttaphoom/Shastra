@@ -18,6 +18,7 @@ namespace Vanaring
         [SerializeField] private TextMeshProUGUI tenText;
         [SerializeField] private TextMeshProUGUI unitText;
         [SerializeField] private TextMeshProUGUI priceText;
+        [SerializeField] private Image itemImage;
         
         private ItemAmountDigit digit;
         private int itemPrice;
@@ -31,7 +32,7 @@ namespace Vanaring
         private DungeonShopManager _shopManager;
         private int tmpIndex;
         private int totalAmount;
-        public void Init(MissionShopWindowGUI window, DungeonShopManager manager, int itemPrice, int index)
+        public void Init(MissionShopWindowGUI window, DungeonShopManager manager, DungeonShopManager.ProductData item, int index)
         {
             totalAmount = 1;
             tenDigit = 0;
@@ -46,7 +47,8 @@ namespace Vanaring
             unitText.text = unitDigit.ToString();
             priceText.text = itemPrice.ToString();
             priceText.color = Color.white;
-            this.itemPrice = itemPrice;
+            this.itemPrice = item.Cost;
+            itemImage.sprite = item.Reward.GetReward().GetRewardData().RewardIcon;
         }
 
         public void AdjustAmount(bool isUp)

@@ -14,32 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _availableLocationHandler:
     _locationInfos:
-    - Location: {fileID: 11400000, guid: 0ad811a300fcecf47986f86de13fdaf8, type: 2}
-      _selectionCommandCenter:
-      - _commandType: 2
-        _loadLocationCommand:
-          _actionName: Exercise
-          _actionDescription: Do exercise at home.
-          _actionIconAsset: {fileID: 0}
-          _activityCutscene: {fileID: 11400000, guid: 4e7621518c97ae542a20f2ecdf90a8c4, type: 2}
-          _personalityRewards:
-          - _rewardTrait: 3
-            _rewardAmount: 1
-        _lectureParticipationActionCommand:
-          _actionName: Lecture
-          _actionDescription: Learn new spell
-          _actionIconAsset: {fileID: 21300000, guid: b3b6c8e61b792a348bf59c181f302d58, type: 3}
-          _availableLecture:
-          - _availableLecture: {fileID: 11400000, guid: 73ea015fd775cda449545291ac8d2516, type: 2}
-          - _availableLecture: {fileID: 11400000, guid: 6f1290713704a9b42aaae006a366b378, type: 2}
-        _npcBondingActionCommand:
-          _actionName: 
-          _actionDescription: 
-          _actionIconAsset: {fileID: 0}
-          _characterRelationshipDataSO: {fileID: 0}
-        EnableAtMorning: 1
-        EnableAtNoon: 1
-        EnableAtNight: 0
     - Location: {fileID: 11400000, guid: efe0368ba25161144ab2f34466cf6239, type: 2}
       _selectionCommandCenter:
       - _commandType: 3
@@ -107,6 +81,32 @@ MonoBehaviour:
           _characterRelationshipDataSO: {fileID: 11400000, guid: c0c0defcc3a150045a7324fad27a7483, type: 2}
         EnableAtMorning: 0
         EnableAtNoon: 0
+        EnableAtNight: 0
+    - Location: {fileID: 11400000, guid: 0ad811a300fcecf47986f86de13fdaf8, type: 2}
+      _selectionCommandCenter:
+      - _commandType: 2
+        _loadLocationCommand:
+          _actionName: Exercise
+          _actionDescription: Do exercise at home.
+          _actionIconAsset: {fileID: 0}
+          _activityCutscene: {fileID: 11400000, guid: 4e7621518c97ae542a20f2ecdf90a8c4, type: 2}
+          _personalityRewards:
+          - _rewardTrait: 3
+            _rewardAmount: 1
+        _lectureParticipationActionCommand:
+          _actionName: Lecture
+          _actionDescription: Learn new spell
+          _actionIconAsset: {fileID: 21300000, guid: b3b6c8e61b792a348bf59c181f302d58, type: 3}
+          _availableLecture:
+          - _availableLecture: {fileID: 11400000, guid: 73ea015fd775cda449545291ac8d2516, type: 2}
+          - _availableLecture: {fileID: 11400000, guid: 6f1290713704a9b42aaae006a366b378, type: 2}
+        _npcBondingActionCommand:
+          _actionName: 
+          _actionDescription: 
+          _actionIconAsset: {fileID: 0}
+          _characterRelationshipDataSO: {fileID: 0}
+        EnableAtMorning: 1
+        EnableAtNoon: 1
         EnableAtNight: 0
     - Location: {fileID: 11400000, guid: ec596210af1aa3f499c3c3a5845805c1, type: 2}
       _selectionCommandCenter:

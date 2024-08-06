@@ -153,7 +153,7 @@ namespace Vanaring
         {
             missionShopBuyConfirmWindow.gameObject.SetActive(true);
             embarkConfirmWindow.OpenWindow();
-            missionShopBuyConfirmWindow.Init(this, _dungeonShopManager, itemData.Cost, index);
+            missionShopBuyConfirmWindow.Init(this, _dungeonShopManager, itemData, index);
         }
         
     }
