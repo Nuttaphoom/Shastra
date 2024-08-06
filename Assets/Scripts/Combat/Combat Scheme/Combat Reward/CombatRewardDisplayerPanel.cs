@@ -10,6 +10,8 @@ namespace Vanaring
     public class CombatRewardDisplayerPanel : BaseRewardDisplayerPanel
     {
         [SerializeField] private TextMeshProUGUI expRunningText;
+        [SerializeField] private TextMeshProUGUI cashRunningText;
+        [SerializeField] private TextMeshProUGUI isItemCollectText;
         [SerializeField] private CharacterEXPSocketGUI socketTemplate;
         [SerializeField] private GameObject hrzLayout;
         [SerializeField] private GameObject gfx;
@@ -26,6 +28,7 @@ namespace Vanaring
         public void SetUpReward(CombatRewardManager.CombatRewardData combat)
         {
             gfx.gameObject.SetActive(true);
+            isItemCollectText.gameObject.SetActive(false);
             StartCoroutine(LoadCharacterEXPGainWindow(combat));
         }
 
@@ -68,6 +71,10 @@ namespace Vanaring
                 //reward.ControlEntity.CombatCharacterSheet;
 
             }
+            if (rewardList.Rewards.Count > 0)
+            {
+                isItemCollectText.gameObject.SetActive(true);
+            }
             foreach (EventRewardData eventReward in rewardList.Rewards)
             {
                 MissionItemRewardSocketGUI newSocket = Instantiate(itemSocketTemplate, itemVerticalLayout.transform);
@@ -88,7 +95,8 @@ namespace Vanaring
                 socket.StartPlayeEXPBarAnimation();
             }
 
-            yield return RunNumberUp(0, rewardList.RewardForEntities[0].ReceivedExp, 1.0f);
+            yield return RunNumberUp(0, rewardList.RewardForEntities[0].ReceivedExp, 1.0f, expRunningText);
+            yield return RunNumberUp(0, 100, 1.0f, cashRunningText);
 
             if (missionItemRewardSocketList.Count != 0)
             {
@@ -144,17 +152,17 @@ namespace Vanaring
                 end, itemVerticalLayout.GetComponent<RectTransform>().localPosition.z);
         }
 
-        public IEnumerator RunNumberUp(float start, float end, float duration)
+        public IEnumerator RunNumberUp(float start, float end, float duration, TextMeshProUGUI displayText)
         {
             float timer = 0f;
             while (timer < duration)
             {
                 float expVal = Mathf.Lerp(start, end, timer / duration);
-                expRunningText.text = "+" + Mathf.Round(expVal).ToString();
+                displayText.text = "+" + Mathf.Round(expVal).ToString();
                 timer += Time.deltaTime;
                 yield return null;
             }
-            expRunningText.text = "+" + Mathf.Round(end).ToString();
+            displayText.text = "+" + Mathf.Round(end).ToString();
         }
 
     }

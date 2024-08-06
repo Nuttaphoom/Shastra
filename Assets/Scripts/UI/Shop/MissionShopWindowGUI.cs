@@ -124,19 +124,24 @@ namespace Vanaring
                 }
                 shopItemSocketList[selectingIndex].OnSelectSocket();
             }
-            if(key == InputCode.Item)
+            if(key == InputCode.Select)
             {
                 CentralInputReceiver.Instance.ClearStack();
                 CentralInputReceiver.Instance.AddInputReceiverIntoStack(missionShopBuyConfirmWindow);
                 shopItemSocketList[selectingIndex].ItemButton.onClick.Invoke();
                 //UpdateInventoryGUI();
             }
-            if (key == InputCode.Select)
+            if (key == InputCode.Item)
             {
                 CentralInputReceiver.Instance.ClearStack();
                 embarkConfirmWindow.gameObject.SetActive(true);
                 embarkConfirmWindow.OpenWindow();
                 CentralInputReceiver.Instance.AddInputReceiverIntoStack(embarkConfirmWindow);
+            }
+            if (key == InputCode.DeSelect)
+            {
+                CentralInputReceiver.Instance.RemoveInputReceiverIntoStack(this);
+                PersistentSceneLoader.Instance.LoadMapScene();
             }
         }
         public IEnumerator OnNewSceneLoad_BeforeSaveLoadPerform()
