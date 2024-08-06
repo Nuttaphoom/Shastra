@@ -41,10 +41,10 @@ namespace Vanaring
             missionDetail.text = dungeon.DungeonDataSO.GetMissionDataSOes[order-1].MissionDescription.FieldDescription;
 
             // Setting Button Navigation with input control
-            Navigation NewNav = new Navigation();
-            NewNav.mode = Navigation.Mode.Explicit;
-            NewNav.selectOnDown = missionButton;
-            closeButton.navigation = NewNav;
+            //Navigation NewNav = new Navigation();
+            //NewNav.mode = Navigation.Mode.Explicit;
+            //NewNav.selectOnDown = missionButton;
+            //closeButton.navigation = NewNav;
         }
 
         public void UpdateMissionDetail()

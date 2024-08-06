@@ -42,8 +42,7 @@ namespace Vanaring
             }
             if (key == InputCode.Select)
             {
-                missionButtonList[selectingIndex].EnterTheMission();
-
+                //missionButtonList[selectingIndex].EnterTheMission();
             }
         }
 
@@ -75,6 +74,8 @@ namespace Vanaring
             NewNav.mode = Navigation.Mode.Explicit;
             NewNav.selectOnLeft = missionButtonList[0].MissionButton;
             mapbutton.navigation = NewNav;
+
+            mapbutton.onClick.AddListener(delegate { PersistentButtonSelector.Instance.SelectPreviousButton(); });
             //Debug.Log(missionButtonList.Count);
         }
 
