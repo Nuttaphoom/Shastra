@@ -98,6 +98,8 @@ namespace Vanaring
         public void CaptureCurrentSelectedButton()
         {
             capturedButton = EventSystem.current.currentSelectedGameObject.GetComponent<Button>();
+
+            Debug.Log("capturedButton : " + capturedButton); 
         }
 
         public void DeSelectedButton()

@@ -271,22 +271,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _productsData:
-  - DisplayedProductName: '[L] MP Potion'
-    Cost: 0
-    Reward:
-      _rewardIsItem: 1
-      _rewardIsSpell: 0
-      _rewardIsCash: 0
-      _spellReward:
-        _rewards: {fileID: 0}
-      _itemReward:
-        _rewards: {fileID: 11400000, guid: 7578d9754d9f20c40bc2538544d10e10, type: 2}
-      _cashReward:
-        RewardAmount: 0
-        CashRewardable:
-          _rewards: {fileID: 0}
-  - DisplayedProductName: '[S] HP Potion'
-    Cost: 20
+  - DisplayedProductName: 
+    Cost: 125
     Reward:
       _rewardIsItem: 1
       _rewardIsSpell: 0
@@ -299,8 +285,36 @@ MonoBehaviour:
         RewardAmount: 0
         CashRewardable:
           _rewards: {fileID: 0}
-  - DisplayedProductName: '[S] MP Potion'
-    Cost: 20
+  - DisplayedProductName: 
+    Cost: 200
+    Reward:
+      _rewardIsItem: 1
+      _rewardIsSpell: 0
+      _rewardIsCash: 0
+      _spellReward:
+        _rewards: {fileID: 0}
+      _itemReward:
+        _rewards: {fileID: 11400000, guid: eec6d9c8a0f8afa41aa80ba4d50234bd, type: 2}
+      _cashReward:
+        RewardAmount: 0
+        CashRewardable:
+          _rewards: {fileID: 0}
+  - DisplayedProductName: 
+    Cost: 50
+    Reward:
+      _rewardIsItem: 1
+      _rewardIsSpell: 0
+      _rewardIsCash: 0
+      _spellReward:
+        _rewards: {fileID: 0}
+      _itemReward:
+        _rewards: {fileID: 11400000, guid: dda2125d17d9345478189b26c46c4f67, type: 2}
+      _cashReward:
+        RewardAmount: 0
+        CashRewardable:
+          _rewards: {fileID: 0}
+  - DisplayedProductName: 
+    Cost: 80
     Reward:
       _rewardIsItem: 1
       _rewardIsSpell: 0
@@ -309,20 +323,6 @@ MonoBehaviour:
         _rewards: {fileID: 0}
       _itemReward:
         _rewards: {fileID: 11400000, guid: 7578d9754d9f20c40bc2538544d10e10, type: 2}
-      _cashReward:
-        RewardAmount: 0
-        CashRewardable:
-          _rewards: {fileID: 0}
-  - DisplayedProductName: '[L] HP Potion'
-    Cost: 60
-    Reward:
-      _rewardIsItem: 1
-      _rewardIsSpell: 0
-      _rewardIsCash: 0
-      _spellReward:
-        _rewards: {fileID: 0}
-      _itemReward:
-        _rewards: {fileID: 11400000, guid: cab6a1cf038672342bb1ea8975adc564, type: 2}
       _cashReward:
         RewardAmount: 0
         CashRewardable:
@@ -1066,6 +1066,10 @@ PrefabInstance:
     - target: {fileID: 6066510312131126476, guid: 1507725819814c943ae2dd0baad7c206, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6160708744269652629, guid: 1507725819814c943ae2dd0baad7c206, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6375499799847667624, guid: 1507725819814c943ae2dd0baad7c206, type: 3}
       propertyPath: m_AnchorMax.y
