@@ -142,8 +142,9 @@ namespace Vanaring
                     for (int i = 0; i < totalAmount; i++)
                     {
                         _shopManager.BuyProduct(tmpIndex);
-                        _shopWindow.UpdateCurrentCash();
                     }
+                    _shopWindow.UpdateCurrentCash();
+                    _shopWindow.UpdateInventoryGUI();
                 }
                 //confirmButton.onClick.Invoke();
             }

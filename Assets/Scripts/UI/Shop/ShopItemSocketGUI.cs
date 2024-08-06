@@ -27,7 +27,7 @@ namespace Vanaring
 
         public void Init(DungeonShopManager.ProductData item)
         {
-            itemNameText.text = item.DisplayedProductName;
+            itemNameText.text = item.Reward.GetReward().GetRewardData().RewardName;
             itemPriceText.text = item.Cost.ToString();
             itemDescriptionText.text = item.Reward.ItemReward.GetRewardData().RewardDescription;
             itemIcon.sprite = item.Reward.ItemReward.GetRewardData().RewardIcon;

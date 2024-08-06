@@ -34,9 +34,19 @@ namespace Vanaring
             yield return null; 
         }
 
+        public void OnSelectHighlight()
+        {
+            highlightElement.GetComponent<Animator>().Play("OnSelectTargetUseItem");
+        }
+
+        public void OnDeSelectHighlight()
+        {
+            highlightElement.GetComponent<Animator>().Play("OnDeSelectTargetUseItem");
+        }
+
         public void OnSelectTargetSocketHighlight(int targetIndex)
         {
-            highlightElement.DOMove(socketList[targetIndex].GetComponent<RectTransform>().position, 1f).SetEase(Ease.InOutQuad);
+            highlightElement.DOMove(socketList[targetIndex].GetComponent<RectTransform>().position, 0.2f).SetEase(Ease.InOutQuad);
         }
  
     }
