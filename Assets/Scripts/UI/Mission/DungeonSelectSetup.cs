@@ -9,7 +9,7 @@ namespace Vanaring
     {
         private List<RuntimeDungeon> dungeonList = new List<RuntimeDungeon>();
         [SerializeField] private MissionBookSetup missionBook;
-        [SerializeField] private List<Button> dungeonButton = new List<Button>();
+        [SerializeField] private List<Button> dungeonButtons = new List<Button>();
 
         //[SerializeField] private Button closeButton;
         [SerializeField] private Button initialMissionButton;
@@ -28,9 +28,10 @@ namespace Vanaring
             yield return new WaitForSeconds(1.0f);
             foreach (RuntimeDungeon dungeon in dungeonList)
             {
-                dungeonButton[dungeonIndex].onClick.AddListener(() => LoadAllMission(dungeon));
-                Button button = dungeonButton[dungeonIndex];
-                //dungeonButton[dungeonIndex].onClick.AddListener(delegate { PersistentButtonSelector.Instance.AddPreviousButton(button); } );
+                Debug.Log("Add1");
+                dungeonButtons[dungeonIndex].onClick.AddListener(() => LoadAllMission(dungeon));
+                Button button = dungeonButtons[dungeonIndex];
+                dungeonButtons[dungeonIndex].onClick.AddListener(delegate { PersistentButtonSelector.Instance.AddPreviousButton(button); } );
                 dungeonIndex++;
             }
             //template.gameObject.SetActive(false);
