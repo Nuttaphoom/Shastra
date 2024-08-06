@@ -147,6 +147,7 @@ namespace Vanaring
                     }
                     _shopWindow.UpdateCurrentCash();
                     _shopWindow.UpdateInventoryGUI();
+                    CloseWindow();
                 }
                 //confirmButton.onClick.Invoke();
             }

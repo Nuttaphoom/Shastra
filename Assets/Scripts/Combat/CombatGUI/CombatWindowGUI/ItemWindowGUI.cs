@@ -145,7 +145,7 @@ namespace Vanaring
             {
                 if (itemSocketGUIList[i] != null)
                 {
-                    if (displayingItemIndexList[i] == 6)
+                    if (displayingItemIndexList[i] == 0)
                     {
                         displayingItemIndexList[i] = displayingItemIndexList[i] + 1;
                         itemSocketGUIList[i].GetComponent<RectTransform>().DOAnchorPos(itemTransformList[displayingItemIndexList[i]].localPosition, 0.1f);

@@ -160,10 +160,7 @@ namespace Vanaring
                 newSocket.OnDeSelect();
                 quickItemSocketList.Add(newSocket);
             }
-            if(PersistentPlayerPersonalDataManager.Instance.GetBackpack.GetCombatUseableItemSOs().Count > 0)
-            {
-                DisplayItemDetail(_loadedBackpackItem[_selectedItem]);
-            }
+            
             quickItemSocketTemplate.gameObject.SetActive(false);
         }
 
