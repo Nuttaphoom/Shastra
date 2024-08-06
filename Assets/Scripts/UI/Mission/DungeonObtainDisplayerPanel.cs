@@ -26,10 +26,15 @@ namespace Vanaring
 
         private Dictionary<string, RewardSocketData> rewardObjectDictionary = new Dictionary<string, RewardSocketData>();
 
+        private Coroutine rewardCorotine;
+
+        private bool skipRequested = false;
+
 
         public void SetupData(List<IRewardable> allRewardList)
         {
             this.allRewardList = allRewardList;
+            rewardCorotine = null;
         }
 
         public override IEnumerator SettingUpNumber()
@@ -81,7 +86,8 @@ namespace Vanaring
 
             foreach (KeyValuePair<string, RewardSocketData> rewardData in rewardObjectDictionary)
             {
-                yield return PlayMissionRewardPopup(rewardData.Key, rewardData.Value);
+                rewardCorotine = StartCoroutine(PlayMissionRewardPopup(rewardData.Key, rewardData.Value));
+                yield return rewardCorotine;
             }
             socketGFX.SetActive(false);
             glow.SetActive(false);
@@ -92,21 +98,40 @@ namespace Vanaring
 
         private IEnumerator PlayMissionRewardPopup(string name, RewardSocketData data)
         {
+            skipRequested = false;
+
             socketGFX.SetActive(true);
             glow.SetActive(true);
             nextButton.Select();
 
+
             animator.Play("NodeRewardFadeUp");
             rewardImage.sprite = data.rewardImage;
             rewardName.text = name;
-            rewardAmount.text = "x"+data.amount.ToString();
+            rewardAmount.text = "x" + data.amount.ToString();
 
-            yield return new WaitForSeconds(1.5f);
-            //while (!socketGFX.activeSelf)
-            //{
-            //    yield return new WaitForEndOfFrame();
-            //}
+            float waitTime = 1.5f;
+            float elapsedTime = 0.0f;
 
+            while (elapsedTime < waitTime)
+            {
+                if (skipRequested)
+                {
+                    yield break;
+                }
+                elapsedTime += Time.deltaTime;
+                yield return null;
+            }
+
+            
+
+            //yield return new WaitForSeconds(1.5f);
+
+        }
+
+        public void OnSkipButtonClicked()
+        {
+            skipRequested = true;
         }
     }
 }

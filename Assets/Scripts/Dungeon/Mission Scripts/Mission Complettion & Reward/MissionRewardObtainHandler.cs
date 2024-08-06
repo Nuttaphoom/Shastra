@@ -26,6 +26,8 @@ namespace Vanaring
                 ColorfulLogger.LogWithColor("Submit reward " + reward.GetRewardData().RewardName, Color.yellow);
 
             }
+
+            FindAnyObjectByType<QuickMissionBackpack>().UpdateItemAmount();
         }
     }
 }

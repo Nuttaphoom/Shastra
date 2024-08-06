@@ -75,12 +75,22 @@ namespace Vanaring
             {
                 isItemCollectText.gameObject.SetActive(true);
             }
+            int totalCashReward = 0;
             foreach (EventRewardData eventReward in rewardList.Rewards)
             {
-                MissionItemRewardSocketGUI newSocket = Instantiate(itemSocketTemplate, itemVerticalLayout.transform);
-                newSocket.InitSocket(eventReward);
-                missionItemRewardSocketList.Add(newSocket);
+                if (eventReward.RewardIsCash)
+                {
+                    totalCashReward = eventReward.CashReward.RewardAmount;
+                }
+                else
+                {
+                    MissionItemRewardSocketGUI newSocket = Instantiate(itemSocketTemplate, itemVerticalLayout.transform);
+                    newSocket.InitSocket(eventReward);
+                    missionItemRewardSocketList.Add(newSocket);
+                }
             }
+
+            
 
             itemSocketTemplate.gameObject.SetActive(false);
             socketTemplate.gameObject.SetActive(false);

@@ -16,7 +16,7 @@ namespace Vanaring
         [SerializeField] private TextMeshProUGUI itemNameText;
         [SerializeField] private TextMeshProUGUI itemDescriptionText;
         [SerializeField] private Animator floatingBox;
-        [SerializeField] private GameObject OnSelectTargetFader;
+        [SerializeField] private GameObject onSelectTargetFader;
         private void Awake()
         {
             CentralInputReceiver.Instance.AddInputReceiverIntoStack(this); 
@@ -52,7 +52,7 @@ namespace Vanaring
         public IEnumerator OnNotifySceneLoadingComplete()
         {
             quickItemUIAnim.Play("OnOpen");
-            OnSelectTargetFader.SetActive(false);
+            onSelectTargetFader.SetActive(false);
             yield return SetUpBackpack(); 
                 
             yield return null; 
@@ -82,6 +82,8 @@ namespace Vanaring
 
             _backpack.RemoveItemFromBackpack(_loadedBackpackItem[backpackItemIndex].BackpackItem,1) ;
 
+            UpdateItemAmount();
+
             CloseQuickMissionBackpack();
 
         End:
@@ -108,6 +110,11 @@ namespace Vanaring
         private void CloseQuickMissionBackpack()
         {
             Debug.Log("close item");
+            foreach (QuickItemSocketGUI socket in quickItemSocketList)
+            {
+                socket.OnDeSelect();
+            }
+            onSelectTargetFader.SetActive(false);
             //CentralInputReceiver.Instance.RemoveInputReceiverIntoStack(this) ;
             PersistentButtonSelector.Instance.RestoreCaptureButton(); 
             quickItemUIAnim.Play("OnDeSelectState");
@@ -125,6 +132,10 @@ namespace Vanaring
 
             //Load UI here 
             UpdateItemAmount();
+            foreach (QuickItemSocketGUI socket in quickItemSocketList)
+            {
+                socket.OnDeSelect();
+            }
 
             yield return null; 
 
@@ -138,7 +149,10 @@ namespace Vanaring
                 Destroy(gui.gameObject);
             }
             quickItemSocketList.Clear();
-            foreach (BackpackItemData item in _loadedBackpackItem)
+
+            Debug.Log(PersistentPlayerPersonalDataManager.Instance.GetBackpack.GetCombatUseableItemSOs().Count);
+
+            foreach (BackpackItemData item in PersistentPlayerPersonalDataManager.Instance.GetBackpack.GetCombatUseableItemSOs())
             {
                 QuickItemSocketGUI newSocket = Instantiate(quickItemSocketTemplate, socketTransform.transform);
                 newSocket.Init(item);
@@ -146,7 +160,10 @@ namespace Vanaring
                 newSocket.OnDeSelect();
                 quickItemSocketList.Add(newSocket);
             }
-            DisplayItemDetail(_loadedBackpackItem[_selectedItem]);
+            if(PersistentPlayerPersonalDataManager.Instance.GetBackpack.GetCombatUseableItemSOs().Count > 0)
+            {
+                DisplayItemDetail(_loadedBackpackItem[_selectedItem]);
+            }
             quickItemSocketTemplate.gameObject.SetActive(false);
         }
 
@@ -166,9 +183,9 @@ namespace Vanaring
 
             if (_state == EQuckMissionBackpackState.Closed)
             {
-                Debug.Log("here"); 
+                //Debug.Log("here"); 
 
-                if (key == InputCode.Item)
+                if (key == InputCode.Item && PersistentPlayerPersonalDataManager.Instance.GetBackpack.GetCombatUseableItemSOs().Count > 0)
                 {
                     PersistentButtonSelector.Instance.CaptureCurrentSelectedButton() ;
 
@@ -203,9 +220,10 @@ namespace Vanaring
                 {
                     quickItemUIAnim.Play("OnSelectTargetState");
                     floatingBox.Play("OnSelectTargetState");
-                    OnSelectTargetFader.SetActive(true);
+                    onSelectTargetFader.SetActive(true);
                     FindAnyObjectByType<MissionPartyHUDManager>().OnSelectHighlight();
-                    StartCoroutine(UseItem( _selectedItem)); 
+                    StartCoroutine(UseItem( _selectedItem));
+                    FindAnyObjectByType<MissionPartyHUDManager>().OnSelectTargetSocketHighlight(0);
                 }
                 else if (key == InputCode.DeSelect) 
                 {
@@ -236,13 +254,13 @@ namespace Vanaring
                 {
                     _selectedPartyMember.Add(GetActivePartyMembers()[_selectedTarget]);
                     quickItemSocketList[_selectedItem].UseItemUpdate();
-                    OnSelectTargetFader.SetActive(false);
+                    onSelectTargetFader.SetActive(false);
                     foreach (QuickItemSocketGUI socket in quickItemSocketList)
                     {
                         socket.OnDeSelect();
                     }
                     FindAnyObjectByType<MissionPartyHUDManager>().OnDeSelectHighlight();
-                    UpdateItemAmount();
+                    
                 }
                 else if (key == InputCode.DeSelect)
                 {

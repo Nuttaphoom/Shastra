@@ -50,7 +50,14 @@ namespace Vanaring
         #region Getter 
         public bool RewardIsItem => _rewardIsItem;
         public bool RewardIsSpell => _rewardIsSpell;
-        public bool RewardIsCash => _rewardIsCash;  
+        public bool RewardIsCash => _rewardIsCash;
+        public CastRewardDataStruct CashReward
+        {
+            get
+            {
+                return _cashReward;
+            }
+        }
 
         public EventReward<SpellActionSO> SpellReward
         {
