@@ -209,12 +209,18 @@ namespace Vanaring
                 if (key == InputCode.Left)
                 {
                     if (_selectedTarget > 0)
+                    {
                         _selectedTarget -= 1;
+                        FindAnyObjectByType<MissionPartyHUDManager>().OnSelectTargetSocketHighlight(_selectedTarget);
+                    }
                 }
                 else if (key == InputCode.Right)
                 {
                     if (_selectedTarget < GetActivePartyMembers().Count - 1)
+                    {
                         _selectedTarget += 1;
+                        FindAnyObjectByType<MissionPartyHUDManager>().OnSelectTargetSocketHighlight(_selectedTarget);
+                    }
                 }
                 else if (key == InputCode.Select)
                 {

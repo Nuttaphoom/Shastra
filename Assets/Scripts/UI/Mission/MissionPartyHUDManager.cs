@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 namespace Vanaring
 {
@@ -8,6 +9,7 @@ namespace Vanaring
     {
         [SerializeField] private PartyCharacterSocketGUI socketTemplate;
         [SerializeField] private GameObject horizontalLayout;
+        [SerializeField] private RectTransform highlightElement;
         private List<PartyCharacterSocketGUI> socketList = new List<PartyCharacterSocketGUI>();
 
         public IEnumerator OnNewSceneLoad_BeforeSaveLoadPerform()
@@ -30,6 +32,11 @@ namespace Vanaring
             socketTemplate.gameObject.SetActive(false);
 
             yield return null; 
+        }
+
+        public void OnSelectTargetSocketHighlight(int targetIndex)
+        {
+            highlightElement.DOMove(socketList[targetIndex].GetComponent<RectTransform>().position, 1f).SetEase(Ease.InOutQuad);
         }
  
     }
