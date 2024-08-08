@@ -4,7 +4,7 @@ using UnityEngine;
 using Cinemachine;
 using Unity.VisualScripting;
 
-namespace Vanaring_DepaDemo
+namespace Vanaring 
 {
     public class CameraSetUPManager : MonoBehaviour
     {

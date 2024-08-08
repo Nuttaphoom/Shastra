@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEngine.Experimental.GlobalIllumination;
 
 
-namespace Vanaring_DepaDemo
+namespace Vanaring
 {
     [CreateAssetMenu(fileName = "AttackRuntimeEffectFactory", menuName = "ScriptableObject/RuntimeEffect/AttackRuntimeEffectFactory")]
     public class AttackRuntimeEffectFactory : RuntimeEffectFactorySO
@@ -21,7 +21,7 @@ namespace Vanaring_DepaDemo
         [SerializeField]
         private ActionAnimationInfo _actionAnimation;
 
-        public override IEnumerator Factorize(List<CombatEntity> targets)
+        public override RuntimeEffect Factorize(List<CombatEntity> targets)
         {
             AttackRuntimeEffect retEffect = new AttackRuntimeEffect(_damagScaling,realDmg, _actionAnimation );
             if (targets != null)
@@ -30,7 +30,7 @@ namespace Vanaring_DepaDemo
                     retEffect.AssignTarget(target);
             }
 
-            yield return retEffect;
+            return retEffect;
         }
     }
 
@@ -57,8 +57,7 @@ namespace Vanaring_DepaDemo
             //Command caster to attack enemy 
             if (caster == null)
                 throw new Exception("Caster can not be null");
-
-
+ 
             yield return caster.LogicAttack(_targets, _damagScaling ) ;
 
             //2 Visual 
@@ -86,6 +85,7 @@ namespace Vanaring_DepaDemo
             coroutines.Add(caster.CombatEntityAnimationHandler.PlayActionAnimation(_actionAnimation));
 
             //2.3.) running animation scheme
+
             yield return new WaitAll(caster, coroutines.ToArray());
 
             //3.) Running after attack

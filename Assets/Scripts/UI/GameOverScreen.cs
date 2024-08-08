@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using TMPro;
 
-namespace Vanaring_DepaDemo
+namespace Vanaring 
 {
     public class GameOverScreen : MonoBehaviour
     {

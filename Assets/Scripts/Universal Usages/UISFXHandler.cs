@@ -5,7 +5,7 @@ using Unity.VisualScripting;
 using System;
 using UnityEngine;
 
-namespace Vanaring_DepaDemo
+namespace Vanaring 
 {
     public class UISFXHandler : MonoBehaviour
     {

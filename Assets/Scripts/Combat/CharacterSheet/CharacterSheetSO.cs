@@ -4,7 +4,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace Vanaring_DepaDemo
+namespace Vanaring
 {
     [CreateAssetMenu( fileName = "CharacterSheet",menuName = "ScriptableObject/Combat/Character/CharacterSheet" )]
     public class CharacterSheetSO : ScriptableObject
@@ -72,8 +72,6 @@ namespace Vanaring_DepaDemo
             }
             else
             {
-
-
                 _defaultValue += value ;
                 if (peakUpdate)
                     _peakValue += value;
@@ -88,8 +86,7 @@ namespace Vanaring_DepaDemo
                 }
             }
             return ret; 
-               
-        }
+        } 
 
         public void ModifyPeakValue(int value)
         {
@@ -103,6 +100,7 @@ namespace Vanaring_DepaDemo
         {
             return (_increasedValue + _defaultValue);
         }
+
         #endregion
 
 

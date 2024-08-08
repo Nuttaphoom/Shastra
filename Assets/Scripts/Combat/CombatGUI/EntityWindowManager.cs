@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine; 
 
-namespace Vanaring_DepaDemo
+namespace Vanaring 
 {
     public class EntityWindowManager 
     {
@@ -51,9 +51,14 @@ namespace Vanaring_DepaDemo
 
         public void ClearStack()
         {
-            while (_windowStack.Count > 0 )
+            if (_windowStack.Count > 0)
             {
-                _windowStack.Pop().OnWindowOverlayed() ; 
+                _windowStack.Pop().OnWindowOverlayed();
+
+                while (_windowStack.Count > 0)
+                {
+                    _windowStack.Pop();
+                }
             }
         }
     }

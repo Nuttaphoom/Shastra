@@ -2,7 +2,7 @@
 using TMPro;
 using UnityEngine;
 
-namespace Vanaring_DepaDemo
+namespace Vanaring 
 {
     [Serializable]
     public class DamageOutputPopupHandler  

@@ -9,7 +9,7 @@ using Unity.Collections;
 using Unity.Jobs;
 using DG.Tweening;
 
-namespace Vanaring_DepaDemo
+namespace Vanaring 
 {
     public class StatGUIScaler : MonoBehaviour
     {
@@ -22,9 +22,6 @@ namespace Vanaring_DepaDemo
 
         [SerializeField]
         private CombatEntity _owner  ;
-
-        [SerializeField]
-        private GameObject _guiObj; 
 
         public TextMeshProUGUI lightNumText;
         public TextMeshProUGUI darkNumText;
@@ -183,10 +180,6 @@ namespace Vanaring_DepaDemo
         {
             float tickRate = 0.5f / ((Mathf.Abs((hpVal / maxHP) - secondhpImage.fillAmount))*100);
 
-            Debug.Log("hpVal : " + hpVal);
-            Debug.Log("hpVal / max hp : " + hpVal / maxHP);
-
-
             yield return new WaitForSeconds(0.5f);
             while (secondhpImage.fillAmount < hpVal/maxHP)
             {
@@ -201,7 +194,6 @@ namespace Vanaring_DepaDemo
 
             if (hpVal <= 0)
             {
-                Destroy(_guiObj);
                 Destroy(gameObject);
             }
 

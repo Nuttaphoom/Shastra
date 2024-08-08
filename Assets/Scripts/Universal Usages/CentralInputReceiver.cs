@@ -10,7 +10,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Utilities;
 using UnityEngine.TextCore.Text;
 
-namespace Vanaring_DepaDemo
+namespace Vanaring 
 {
     public class CentralInputReceiver 
     {
@@ -30,9 +30,9 @@ namespace Vanaring_DepaDemo
         } 
          ~CentralInputReceiver()
         {
-            InputSystem.onAnyButtonPress
-                .Call(ctrl => Debug.Log("test")) ;
+            _receiverStack.Clear(); 
         } 
+
         public static CentralInputReceiver Instance()
         {
             if (instance == null)

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using UnityEngine;
 
-namespace Vanaring_DepaDemo
+namespace Vanaring 
 {
     public class VfxTelegraphySingletonHandler : MonoBehaviour
     {

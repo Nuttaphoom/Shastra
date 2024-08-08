@@ -1,7 +1,7 @@
 
 using UnityEngine;
 
-namespace Vanaring_DepaDemo
+namespace Vanaring 
 {
     public abstract class RequireInitializationHandler<T, U, V>
     {

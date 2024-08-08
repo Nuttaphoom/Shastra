@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-namespace Vanaring_DepaDemo
+namespace Vanaring 
 {
     public class EnergyBarOnSpellPanel : MonoBehaviour
     {
@@ -27,7 +27,6 @@ namespace Vanaring_DepaDemo
         }
         private void OnEnable()
         {
-            Debug.Log("On Enable");
             lightVal = _combatEntity.SpellCaster.GetEnergyAmount(RuntimeMangicalEnergy.EnergySide.LightEnergy);
             darkVal = _combatEntity.SpellCaster.GetEnergyAmount(RuntimeMangicalEnergy.EnergySide.DarkEnergy);
             DisplayEnergy();

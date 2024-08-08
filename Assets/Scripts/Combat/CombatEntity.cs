@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing.Printing;
+using System.Numerics;
 using System.Runtime.InteropServices;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -12,16 +13,13 @@ using static Cinemachine.CinemachineTargetGroup;
 using static UnityEngine.EventSystems.EventTrigger;
 using static UnityEngine.GraphicsBuffer;
 
-namespace Vanaring_DepaDemo
+namespace Vanaring
 {
-    [RequireComponent(typeof(BaseEntityBrain))]
-    public class CombatEntity : MonoBehaviour, IStatusEffectable, ITurnState, IDamagable, IAttackter
+    public abstract class CombatEntity : MonoBehaviour, IStatusEffectable, ITurnState, IDamagable, IAttackter
     {
         [Header("Right now we manually assign CharacterSheet, TO DO : Make it loaded from the main database")]
         [SerializeField]
         private CharacterSheetSO _characterSheet;
-
-        private BaseEntityBrain _baseEntityBrain;
 
         [SerializeField]
         private SpellCasterHandler _spellCaster;
@@ -43,20 +41,20 @@ namespace Vanaring_DepaDemo
         [SerializeField]
         private DamageOutputPopupHandler _dmgOutputPopHanlder; 
 
-
         private bool _isDead = false;
+        private bool _isExhausted = false; 
 
         public bool IsDead => _isDead;
-        public void Awake()
+
+        public bool IsExhausted => _isExhausted;
+
+        protected Queue<IActorAction> _actionQueue = new Queue<IActorAction>(); 
+        protected virtual void Awake()
         {
             _dmgOutputPopHanlder = new DamageOutputPopupHandler(_dmgOutputPopHanlder, this); 
             _runtimeCharacterStatsAccumulator = new RuntimeCharacterStatsAccumulator(_characterSheet);
             _energyOverflowHandler = GetComponent<EnergyOverflowHandler>();
-
-            if (!TryGetComponent(out _baseEntityBrain))
-            {
-                throw new Exception("BaseEntityBrain haven't been assigned");
-            }
+            _statusEffectHandler = new StatusEffectHandler(this); 
 
             if (_spellCaster == null)
             {
@@ -67,88 +65,93 @@ namespace Vanaring_DepaDemo
         }
 
         #region Turn Handler Methods 
-        public IEnumerator TurnEnter()
+        public virtual IEnumerator TurnEnter()
         {
-            if (_baseEntityBrain == null)
-                throw new Exception("Base Entity Brain of " + gameObject.name + " hasn't been assgined");
-
             if (_statusEffectHandler == null)
                 throw new Exception("Status Effect Handler hasn't never been init");
 
             yield return (_statusEffectHandler.ExecuteStatusRuntimeEffectCoroutine());
 
-            yield return _baseEntityBrain.TurnEnter();
-
-            //If the entity is clear for control, make it idle 
-            if (ReadyForControl())
-            {
-                _combatEntityAnimationHandler.PlayTriggerAnimation("Idle");
-            }
         }
 
-        public IEnumerator TurnLeave()
+        public virtual IEnumerator TurnLeave()
         {
-            if (_baseEntityBrain == null)
-                throw new Exception("Base Entity Brain of " + gameObject.name + " hasn't been assgined");
+            _isExhausted = false; 
 
             yield return _runtimeCharacterStatsAccumulator.ResetTemporaryIncreasedValue();
 
             yield return _statusEffectHandler.RunStatusEffectExpiredScheme();
-
-            yield return _baseEntityBrain.TurnLeave();
         }
 
-        public IEnumerator GetAction()
-        {
-            if (_baseEntityBrain == null)
-                throw new Exception("Base Entity Brain of " + gameObject.name + " hasn't been assgined");
+        public abstract IEnumerator GetAction();
 
-            IEnumerator coroutine = (_baseEntityBrain.GetAction());
-
-            while (coroutine.MoveNext())
-            {
-                //No need to return null 
-                if (coroutine.Current != null && coroutine.Current is RuntimeEffect)
-                {
-                    //Need to cast to RuntimeEffect before returning            
-                    yield return (RuntimeEffect)coroutine.Current;
-                }
-                else
-                    yield return coroutine.Current;
-            }
-        }
-
-
-
-
-        public IEnumerator TakeControl()
-        {
-            yield return _baseEntityBrain.TakeControl();
-        }
-
-        public IEnumerator TakeControlSoftLeave()
-        {
-            yield return _baseEntityBrain.TakeControlSoftLeave();
-        }
-        public IEnumerator LeaveControl()
-        {
-            yield return _baseEntityBrain.TakeControlLeave();
-            yield return null; 
-        }
-
+        // Take control and leave control should have its own space 
+        public abstract IEnumerator TakeControl();
+        public abstract IEnumerator TakeControlLeave();
+         
+        //is okay 
         public bool ReadyForControl()
         {
-            return !_runtimeCharacterStatsAccumulator.IsStunt() && !IsDead;
+            return !_runtimeCharacterStatsAccumulator.IsStunt() && !IsDead && !IsExhausted;
         }
+
+
+        #endregion
+        public IActorAction GetActionRuntimeEffect(bool peek = false)
+        {
+            if (_actionQueue == null)
+                _actionQueue = new Queue<IActorAction>();
+
+            if (_actionQueue.Count == 0)
+                return null;
+
+            if (peek)
+                return _actionQueue.Peek();
+
+            return _actionQueue.Dequeue();
+        }
+
+        public void AddActionQueue(IActorAction actorAction)
+        {
+            _actionQueue.Enqueue(actorAction);
+        }
+
 
         public StatusEffectHandler GetStatusEffectHandler()
         {
             return _statusEffectHandler;
         }
 
+        /// <summary>
+        /// Invoked before this character perform any action
+        /// </summary>
+        public IEnumerator OnPerformAction(IActorAction action)
+        {
+            //Call on perform action of the ActorAction
+            yield return action.PreActionPerform();
 
-        #endregion
+            var eff = action.GetRuntimeEffect();
 
+            //check if still be able to call the action
+            if (ReadyForControl())
+            {
+                _isExhausted = true;
+
+                yield return eff.ExecuteRuntimeCoroutine(this);
+
+                yield return eff.OnExecuteRuntimeDone(this);
+
+                yield return action.PostActionPerform();
+
+            }
+
+
+        }
+
+        public IEnumerator OnPostPerformAction()
+        {
+            yield return GetStatusEffectHandler().RunStatusEffectExpiredScheme();
+        }
         #region GETTER
         public RuntimeCharacterStatsAccumulator StatsAccumulator => _runtimeCharacterStatsAccumulator;
         public SpellCasterHandler SpellCaster => _spellCaster;
@@ -160,12 +163,11 @@ namespace Vanaring_DepaDemo
         #endregion
 
         #region InterfaceFunction 
-        private UnityAction<int> _OnUpdateVisualDMG;
-        private UnityAction<int> _OnUpdateVisualDMGEnd;
+        private UnityAction<int> _OnUpdateVisualDMG ;
+        private UnityAction<int> _OnUpdateVisualDMGEnd ;
         public void LogicHurt(CombatEntity attacker, int inputdmg)
         {
             float trueDmg = inputdmg;
-
             //Do some math here
             trueDmg = -trueDmg;
 
@@ -271,19 +273,15 @@ namespace Vanaring_DepaDemo
             _OnUpdateVisualDMGEnd -= argc;
         }
 
-        public IEnumerator AfterGetAction()
-        {
-            yield return GetStatusEffectHandler().RunStatusEffectExpiredScheme();
-            yield return _baseEntityBrain.AfterGetAction() ;
-        }
+        /// <summary>
+        /// this function is invoked in every character after certain action is applied
+        /// </summary>
+        /// <returns></returns>
+   
 
         public IEnumerator DeadVisualClear()
         {
             yield return _combatEntityAnimationHandler.DestroyVisualMesh();
-
-            yield return _baseEntityBrain.OnDeadVisualClear(); 
-
-
         }
 
 

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace Vanaring_DepaDemo
+namespace Vanaring 
 {
     public class TargetStatusIconUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {

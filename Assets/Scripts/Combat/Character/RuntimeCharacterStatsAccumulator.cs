@@ -11,7 +11,7 @@ using UnityEngine;
 
  
 
-namespace Vanaring_DepaDemo 
+namespace Vanaring
 {
 
     public enum ECharacterStatType

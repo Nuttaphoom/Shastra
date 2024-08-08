@@ -14,7 +14,7 @@ using UnityEngine.Events;
 using UnityEngine.VFX;
 using Cinemachine;
 
-namespace Vanaring_DepaDemo
+namespace Vanaring 
 {
     [Serializable]
     public class CombatEntityAnimationHandler : MonoBehaviour
@@ -88,6 +88,7 @@ namespace Vanaring_DepaDemo
         }
         public IEnumerator PlayActionAnimation(ActionAnimationInfo actionAnimation )
         {
+
             List<IEnumerator> coroutines = new List<IEnumerator>();
 
             //Self VFX
@@ -108,6 +109,7 @@ namespace Vanaring_DepaDemo
 
         public IEnumerator PlayVFXActionAnimation<T>(VFXEntity vfxEntity,  VFXCallbackHandler<T>.VFXCallback  argc  , T pam)
         {
+
             VFXCallbackHandler<T> callbackHandler = new VFXCallbackHandler<T>(GetComponent<CombatEntity>(),
                 vfxEntity , GetVFXSpawnPos(),  argc  );
 
@@ -115,6 +117,7 @@ namespace Vanaring_DepaDemo
         }
         public IEnumerator PlayVFXActionAnimation<T>(VFXEntity vfxEntity, VFXCallbackHandler<T>.VFXCallback argc, T pam, Vector3 casterpos, Vector3 targetpos)
         {
+
             VFXCallbackHandler<T> callbackHandler = new VFXCallbackHandler<T>(GetComponent<CombatEntity>(),
                 vfxEntity, GetVFXSpawnPos(), argc);
 

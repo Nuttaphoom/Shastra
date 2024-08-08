@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using TMPro;
 using UnityEngine.Events;
 
-namespace Vanaring_DepaDemo
+namespace Vanaring 
 {
     public class CharacterSocketGUI : MonoBehaviour
     {

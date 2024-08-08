@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEngine.Experimental.GlobalIllumination;
 
 
-namespace Vanaring_DepaDemo
+namespace Vanaring 
 {
     [CreateAssetMenu(fileName = "EnergyModifierRuntimeEffectFactory", menuName = "ScriptableObject/RuntimeEffect/EnergyModifierRuntimeEffectFactory")]
     public class EnergyModifierRuntimeEffectFactory : RuntimeEffectFactorySO
@@ -19,7 +19,7 @@ namespace Vanaring_DepaDemo
         private ActionAnimationInfo _actionAnimation;
 
         public EnergyModifierData ModifierData => _data;
-        public override IEnumerator Factorize(List<CombatEntity> targets)
+        public override RuntimeEffect Factorize(List<CombatEntity> targets)
         {
             EnergyModifierRuntimeEffect retEffect = new EnergyModifierRuntimeEffect(_data, _actionAnimation);
             if (targets != null)
@@ -28,7 +28,7 @@ namespace Vanaring_DepaDemo
                     retEffect.AssignTarget(target);
             }
 
-            yield return retEffect;
+            return retEffect;
         }
     }
 

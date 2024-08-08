@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-namespace Vanaring_DepaDemo
+namespace Vanaring 
 {
     public class ButtonHover : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {

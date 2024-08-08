@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.Experimental.GlobalIllumination;
 
 
-namespace Vanaring_DepaDemo
+namespace Vanaring 
 {
     [CreateAssetMenu(fileName = "EvokeHavocRuntimeEffectFactory", menuName = "ScriptableObject/RuntimeEffect/EvokeHavocRuntimeEffectFactory")]
     public class EvokeHavocRuntimeEffectFactory : RuntimeEffectFactorySO
@@ -19,7 +19,7 @@ namespace Vanaring_DepaDemo
 
         [SerializeField]
         private ActionAnimationInfo _actionAnimationInfo; 
-        public override IEnumerator Factorize(List<CombatEntity> targets)
+        public override RuntimeEffect Factorize(List<CombatEntity> targets)
         {
             EvokeHavocRuntimeEffect retEffect = new EvokeHavocRuntimeEffect(_energyModifierData,_actionAnimationInfo);
             if (targets != null)
@@ -28,7 +28,7 @@ namespace Vanaring_DepaDemo
                     retEffect.AssignTarget(target);
             }
 
-            yield return retEffect;
+            return retEffect;
         }
     }
 

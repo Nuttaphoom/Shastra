@@ -8,7 +8,7 @@ using UnityEngine.Experimental.GlobalIllumination;
 using static UnityEngine.EventSystems.EventTrigger;
 
 
-namespace Vanaring_DepaDemo
+namespace Vanaring 
 {
     [CreateAssetMenu(fileName = "HealRuntimeEffectFactorySO", menuName = "ScriptableObject/RuntimeEffect/HealRuntimeEffectFactorySO")]
     public class HealRuntimeEffectFactorySO : RuntimeEffectFactorySO
@@ -20,7 +20,7 @@ namespace Vanaring_DepaDemo
         private int _hp = 0 ;
  
 
-        public override IEnumerator Factorize(List<CombatEntity> targets)
+        public override RuntimeEffect Factorize(List<CombatEntity> targets)
         {
             HealRuntimeEffect retEffect = new HealRuntimeEffect(_actionAnimationInfo, _hp);
             if (targets != null)
@@ -29,7 +29,7 @@ namespace Vanaring_DepaDemo
                     retEffect.AssignTarget(target);
             }
 
-            yield return retEffect;
+            return retEffect;
         }
     }
 

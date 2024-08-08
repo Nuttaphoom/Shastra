@@ -5,15 +5,12 @@ using UnityEngine;
 using UnityEngine.Experimental.GlobalIllumination;
 
 
-namespace Vanaring_DepaDemo
+namespace Vanaring 
 {
     public abstract class RuntimeEffectFactorySO : ScriptableObject
     {
-        [SerializeField]
-        private TargetSelector _targetSelector ;
-        
-        public TargetSelector TargetSelect => _targetSelector;
-        public abstract IEnumerator Factorize( List<CombatEntity> targets)  ;
+
+        public abstract RuntimeEffect Factorize( List<CombatEntity> targets)  ;
     }
 
     public abstract class RuntimeEffect 

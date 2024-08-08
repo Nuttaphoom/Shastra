@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine.Events;
 
-namespace Vanaring_DepaDemo 
+namespace Vanaring
 {
     public enum EDamageScaling
     {
@@ -16,17 +16,14 @@ namespace Vanaring_DepaDemo
          
     }
 
-
     public interface IAttackter
     {
         public IEnumerator LogicAttack(List<CombatEntity> targets, EDamageScaling multiplier);
-
     }
     public interface IDamagable
     {
         public void LogicHurt(CombatEntity attacker, int inputdmg);
         public IEnumerator VisualHurt(CombatEntity attacker, string animationTrigger = "Hurt");
-
 
         public void SubOnDamageVisualEvent(UnityAction<int> argc);
         public void UnSubOnDamageVisualEvent(UnityAction<int> argc);

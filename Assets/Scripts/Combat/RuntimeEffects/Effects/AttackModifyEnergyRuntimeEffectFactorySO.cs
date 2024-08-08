@@ -8,7 +8,7 @@ using UnityEngine.Experimental.GlobalIllumination;
 using static UnityEngine.EventSystems.EventTrigger;
 
 
-namespace Vanaring_DepaDemo
+namespace Vanaring 
 {
     [CreateAssetMenu(fileName = "AttackModifyEnergyRuntimeEffectFactorySO", menuName = "ScriptableObject/RuntimeEffect/AttackModifyEnergyRuntimeEffectFactorySO")]
     public class AttackModifyEnergyRuntimeEffectFactorySO : RuntimeEffectFactorySO
@@ -25,7 +25,7 @@ namespace Vanaring_DepaDemo
         [SerializeField]
         private ActionAnimationInfo _actionAnimation;
 
-        public override IEnumerator Factorize(List<CombatEntity> targets)
+        public override RuntimeEffect Factorize(List<CombatEntity> targets)
         {
             AttackModifyEnergyRuntimeEffect retEffect = new AttackModifyEnergyRuntimeEffect(_damagScaling, realDmg, _energyModifierData, _actionAnimation);
             if (targets != null)
@@ -34,7 +34,7 @@ namespace Vanaring_DepaDemo
                     retEffect.AssignTarget(target);
             }
 
-            yield return retEffect;
+            return retEffect;
         }
     }
 

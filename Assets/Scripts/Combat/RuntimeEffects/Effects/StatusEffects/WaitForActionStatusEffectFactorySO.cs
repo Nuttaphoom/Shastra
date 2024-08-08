@@ -5,13 +5,13 @@ using UnityEngine;
 using static UnityEngine.GraphicsBuffer;
 
 
-namespace Vanaring_DepaDemo
+namespace Vanaring 
 {
 
     [CreateAssetMenu(fileName = "WaitForActionStatusEffectFactorySO", menuName = "ScriptableObject/RuntimeEffect/StatusEffect/WaitForActionStatusEffectFactorySO")]
     public class WaitForActionStatusEffectFactorySO : StatusRuntimeEffectFactorySO
     {
-        public override IEnumerator Factorize(List<CombatEntity> targets)
+        public override RuntimeEffect Factorize(List<CombatEntity> targets)
         {
             WaitForActionStatusEffect retEffect = new WaitForActionStatusEffect(this);
             foreach (CombatEntity target in targets)
@@ -19,7 +19,7 @@ namespace Vanaring_DepaDemo
                  retEffect.AssignTarget(target);
             }
 
-            yield return retEffect;
+            return retEffect;
         }
     }
 

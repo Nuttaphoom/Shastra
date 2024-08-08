@@ -8,15 +8,12 @@ using UnityEngine.UI;
 using TMPro;
 using System.Collections;
 
-namespace Vanaring_DepaDemo
+namespace Vanaring 
 {
-    public class WeaponSocketGUI : MonoBehaviour, ISocketGUI<SpellAbilitySO>
+    public class WeaponSocketGUI : MonoBehaviour 
     {
 
-        public void HandleGUI(SpellAbilitySO weapon)
-        {
-
-        }
+      
 
         //[SerializeField]
         //private Button _actionButton ;

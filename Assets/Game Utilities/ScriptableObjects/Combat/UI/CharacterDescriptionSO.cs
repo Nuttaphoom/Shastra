@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Vanaring_DepaDemo
+namespace Vanaring 
 {
     [CreateAssetMenu(fileName = "CharacterDescriptionSO", menuName = "ScriptableObject/UI/CharacterDescriptionSO")]
     public class CharacterDescriptionSO : ScriptableObject

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Vanaring_DepaDemo 
+namespace Vanaring 
 {
     public interface ITurnState
     {
@@ -13,8 +13,7 @@ namespace Vanaring_DepaDemo
 
         public abstract IEnumerator TurnEnter();
 
-        public abstract IEnumerator AfterGetAction(); 
-        public abstract IEnumerator TakeControlSoftLeave();
+    
 
 
         /// <summary>
