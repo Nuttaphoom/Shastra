@@ -118,7 +118,9 @@ namespace Vanaring
             //CentralInputReceiver.Instance.RemoveInputReceiverIntoStack(this) ;
             PersistentButtonSelector.Instance.RestoreCaptureButton(); 
             quickItemUIAnim.Play("OnDeSelectState");
-            _selectedPartyMember.Clear(); 
+            _selectedPartyMember.Clear();
+            _selectedItem = 0;
+            _selectedTarget = 0; 
 
             SetQuickBackpackStaet(EQuckMissionBackpackState.Closed);
 
@@ -249,6 +251,7 @@ namespace Vanaring
                 }
                 else if (key == InputCode.Select)
                 {
+                    _selectedTarget = 0;
                     _selectedPartyMember.Add(GetActivePartyMembers()[_selectedTarget]);
                     quickItemSocketList[_selectedItem].UseItemUpdate();
                     onSelectTargetFader.SetActive(false);

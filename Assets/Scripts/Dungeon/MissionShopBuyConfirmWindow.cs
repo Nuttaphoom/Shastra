@@ -46,8 +46,16 @@ namespace Vanaring
             tenText.text = tenDigit.ToString();
             unitText.text = unitDigit.ToString();
             priceText.text = itemPrice.ToString();
-            priceText.color = Color.white;
+            
             this.itemPrice = item.Cost;
+            if (PersistentPlayerPersonalDataManager.Instance.GetBackpack.GetCurrentCash > itemPrice)
+            {
+                priceText.color = Color.white;
+            }
+            else
+            {
+                priceText.color = Color.red;
+            }
             itemImage.sprite = item.Reward.GetReward().GetRewardData().RewardIcon;
         }
 
