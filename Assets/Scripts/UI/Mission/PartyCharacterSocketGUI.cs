@@ -25,7 +25,7 @@ namespace Vanaring
             mpBar.fillAmount = (float)member.GetCurrentPartyMemberMP / member.GetRuntimeCombatMemberData.LevelAttributeHandler.GetSecondaryAttribute_MaxMP;
             int myInt = Mathf.CeilToInt(member.GetCurrentPartyMemberHP);
             hpNUM.text = myInt.ToString();
-            mpNUM.text = member.GetRuntimeCombatMemberData.LevelAttributeHandler.GetSecondaryAttribute_MaxMP.ToString();
+            mpNUM.text = Mathf.CeilToInt(member.GetCurrentPartyMemberMP).ToString();
         }
         private void Update()
         {

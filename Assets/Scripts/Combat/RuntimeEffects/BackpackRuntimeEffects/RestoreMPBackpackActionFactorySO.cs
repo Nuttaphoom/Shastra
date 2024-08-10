@@ -32,7 +32,7 @@ namespace Vanaring
 
         public override IEnumerator UseItemAbilityOutsideCombat()
         {
-            Debug.Log("" + caster + " restore mp  " + targets[0] + " for " + _mpRestoreStatModifer.Value); 
+            Debug.Log("" + caster + " restore mp " + targets[0].GetRuntimeCombatMemberData.GetMemberName + " for " + _mpRestoreStatModifer.Value); 
             
             foreach (var target in targets)
             {
